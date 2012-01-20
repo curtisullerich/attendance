@@ -1,0 +1,71 @@
+<mockup version="1.0" skin="sketch" measuredW="1335" measuredH="444" mockupW="1179" mockupH="420">
+  <controls>
+    <control controlID="0" controlTypeID="com.balsamiq.mockups::BrowserWindow" x="156" y="39" w="532" h="405" measuredW="450" measuredH="400" zOrder="0" locked="true" isInGroup="-1">
+      <controlProperties>
+        <text>Director%20LogIn%0Ahttp%3A//www.marchingBandLogIn.edu</text>
+      </controlProperties>
+    </control>
+    <control controlID="2" controlTypeID="com.balsamiq.mockups::TabBar" x="156" y="108" w="532" h="313" measuredW="270" measuredH="100" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <selectedIndex>0</selectedIndex>
+        <tabHPosition>left</tabHPosition>
+        <text>Director%2C%20Student%2C%20Staff/TA</text>
+        <underline>false</underline>
+      </controlProperties>
+    </control>
+    <control controlID="3" controlTypeID="com.balsamiq.mockups::RadioButtonGroup" x="202" y="158" w="229" h="232" measuredW="162" measuredH="208" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>18</size>
+        <text>%28o%29%20Student%20to%20LogIn%0A%20%0A%28%20%29%20Student%20List%0A%20%0A%28%20%29%20Attendance%0A%20%0A%28%20%29%20Special%20Student%0A%20</text>
+      </controlProperties>
+    </control>
+    <control controlID="4" controlTypeID="com.balsamiq.mockups::Button" x="539" y="331" w="82" h="41" measuredW="51" measuredH="27" zOrder="3" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Next</text>
+      </controlProperties>
+    </control>
+    <control controlID="5" controlTypeID="com.balsamiq.mockups::BrowserWindow" x="755" y="24" w="580" h="420" measuredW="450" measuredH="400" zOrder="4" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Attandance%0Ahttp%3A//</text>
+      </controlProperties>
+    </control>
+    <control controlID="10" controlTypeID="com.balsamiq.mockups::ProgressBar" x="792" y="390" w="178" h="20" measuredW="100" measuredH="20" zOrder="5" locked="false" isInGroup="-1"/>
+    <control controlID="12" controlTypeID="com.balsamiq.mockups::SubTitle" x="848" y="178" w="-1" h="-1" measuredW="134" measuredH="33" zOrder="6" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>User%20Name%3A</text>
+      </controlProperties>
+    </control>
+    <control controlID="13" controlTypeID="com.balsamiq.mockups::SubTitle" x="867" y="247" w="-1" h="-1" measuredW="115" measuredH="33" zOrder="7" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Password%3A</text>
+      </controlProperties>
+    </control>
+    <control controlID="14" controlTypeID="com.balsamiq.mockups::SubTitle" x="823" y="354" w="-1" h="-1" measuredW="97" measuredH="33" zOrder="8" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>2second</text>
+      </controlProperties>
+    </control>
+    <control controlID="15" controlTypeID="com.balsamiq.mockups::Button" x="1200" y="361" w="77" h="36" measuredW="61" measuredH="27" zOrder="9" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>13</size>
+        <text>cancel</text>
+      </controlProperties>
+    </control>
+    <control controlID="16" controlTypeID="com.balsamiq.mockups::TextInput" x="1007" y="184" w="142" h="-1" measuredW="79" measuredH="27" zOrder="10" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="17" controlTypeID="com.balsamiq.mockups::TextInput" x="1007" y="250" w="142" h="-1" measuredW="79" measuredH="27" zOrder="11" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="18" controlTypeID="com.balsamiq.mockups::Label" x="839" y="123" w="180" h="26" measuredW="152" measuredH="21" zOrder="12" locked="false" isInGroup="-1">
+      <controlProperties>
+        <state>up</state>
+        <text>XXXX%20Band%20/%20Spring%202012</text>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>

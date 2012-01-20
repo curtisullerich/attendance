@@ -1,0 +1,67 @@
+<mockup version="1.0" skin="sketch" measuredW="1239" measuredH="452" mockupW="1196" mockupH="434">
+  <controls>
+    <control controlID="1" controlTypeID="com.balsamiq.mockups::BrowserWindow" x="43" y="19" w="567" h="433" measuredW="450" measuredH="400" zOrder="0" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>View%20One%20Student%0Ahttp%3A//</text>
+      </controlProperties>
+    </control>
+    <control controlID="2" controlTypeID="com.balsamiq.mockups::TabBar" x="43" y="84" w="567" h="339" measuredW="270" measuredH="100" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <selectedIndex>-1</selectedIndex>
+        <tabHPosition>left</tabHPosition>
+        <text>Director%2C%20Student%2C%20Staff/TA</text>
+        <underline>false</underline>
+        <verticalScrollbar>true</verticalScrollbar>
+      </controlProperties>
+    </control>
+    <control controlID="3" controlTypeID="com.balsamiq.mockups::VerticalTabBar" x="43" y="109" w="552" h="314" measuredW="200" measuredH="178" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>First%20Tab%0ASecond%20Tab%0AThird%20Tab%0AFourth%20Tab</text>
+      </controlProperties>
+    </control>
+    <control controlID="7" controlTypeID="com.balsamiq.mockups::PieChart" x="184" y="156" w="-1" h="-1" measuredW="180" measuredH="180" zOrder="3" locked="false" isInGroup="-1"/>
+    <control controlID="8" controlTypeID="com.balsamiq.mockups::ComboBox" x="477" y="133" w="-1" h="-1" measuredW="66" measuredH="23" zOrder="4" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Month</text>
+      </controlProperties>
+    </control>
+    <control controlID="9" controlTypeID="com.balsamiq.mockups::Label" x="415" y="134" w="68" h="20" measuredW="53" measuredH="21" zOrder="5" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Sort%20By%3A</text>
+      </controlProperties>
+    </control>
+    <control controlID="10" controlTypeID="com.balsamiq.mockups::BrowserWindow" x="672" y="18" w="567" h="433" measuredW="450" measuredH="400" zOrder="6" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>View%20One%20Student%0Ahttp%3A//</text>
+      </controlProperties>
+    </control>
+    <control controlID="11" controlTypeID="com.balsamiq.mockups::VerticalTabBar" x="672" y="108" w="552" h="314" measuredW="200" measuredH="178" zOrder="7" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>First%20Tab%0ASecond%20Tab%0AThird%20Tab%0AFourth%20Tab</text>
+      </controlProperties>
+    </control>
+    <control controlID="12" controlTypeID="com.balsamiq.mockups::ComboBox" x="1111" y="148" w="-1" h="-1" measuredW="66" measuredH="23" zOrder="8" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Month</text>
+      </controlProperties>
+    </control>
+    <control controlID="13" controlTypeID="com.balsamiq.mockups::Label" x="1049" y="149" w="68" h="20" measuredW="53" measuredH="21" zOrder="9" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Sort%20By%3A</text>
+      </controlProperties>
+    </control>
+    <control controlID="14" controlTypeID="com.balsamiq.mockups::ColumnChart" x="819" y="158" w="-1" h="-1" measuredW="187" measuredH="175" zOrder="10" locked="false" isInGroup="-1"/>
+    <control controlID="15" controlTypeID="com.balsamiq.mockups::Label" x="203" y="132" w="-1" h="-1" measuredW="113" measuredH="21" zOrder="11" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>2012%20Spring%20March</text>
+      </controlProperties>
+    </control>
+    <control controlID="16" controlTypeID="com.balsamiq.mockups::Label" x="789" y="133" w="-1" h="-1" measuredW="113" measuredH="21" zOrder="12" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>2012%20Spring%20March</text>
+      </controlProperties>
+    </control>
+    <control controlID="17" controlTypeID="com.balsamiq.mockups::Calendar" x="474" y="195" w="-1" h="-1" measuredW="96" measuredH="96" zOrder="13" locked="false" isInGroup="-1"/>
+    <control controlID="18" controlTypeID="com.balsamiq.mockups::Calendar" x="1092" y="231" w="-1" h="-1" measuredW="96" measuredH="96" zOrder="14" locked="false" isInGroup="-1"/>
+  </controls>
+</mockup>
