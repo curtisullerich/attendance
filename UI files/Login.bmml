@@ -1,0 +1,53 @@
+<mockup version="1.0" skin="sketch" measuredW="711" measuredH="443" mockupW="572" mockupH="405">
+  <controls>
+    <control controlID="0" controlTypeID="com.balsamiq.mockups::BrowserWindow" x="139" y="38" w="572" h="405" measuredW="450" measuredH="400" zOrder="0" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>ISU%20Marching%20Band%20@10Dance%20-%20Login%0Ahttp%3A//www.at10dance.edu</text>
+      </controlProperties>
+    </control>
+    <control controlID="2" controlTypeID="com.balsamiq.mockups::SubTitle" x="274" y="223" w="-1" h="-1" measuredW="134" measuredH="33" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>User%20Name%3A</text>
+      </controlProperties>
+    </control>
+    <control controlID="3" controlTypeID="com.balsamiq.mockups::SubTitle" x="293" y="267" w="-1" h="-1" measuredW="115" measuredH="33" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Password%3A</text>
+      </controlProperties>
+    </control>
+    <control controlID="5" controlTypeID="com.balsamiq.mockups::Button" x="590" y="356" w="77" h="36" measuredW="53" measuredH="27" zOrder="3" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>13</size>
+        <text>Back</text>
+      </controlProperties>
+    </control>
+    <control controlID="6" controlTypeID="com.balsamiq.mockups::TextInput" x="433" y="225" w="142" h="-1" measuredW="79" measuredH="27" zOrder="4" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="7" controlTypeID="com.balsamiq.mockups::TextInput" x="433" y="270" w="142" h="-1" measuredW="79" measuredH="27" zOrder="5" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="9" controlTypeID="com.balsamiq.mockups::BreadCrumbs" x="171" y="114" w="-1" h="-1" measuredW="89" measuredH="24" zOrder="6" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Home%2C%20Login</text>
+      </controlProperties>
+    </control>
+    <control controlID="10" controlTypeID="com.balsamiq.mockups::HelpButton" x="667" y="123" w="-1" h="-1" measuredW="18" measuredH="18" zOrder="7" locked="false" isInGroup="-1"/>
+    <control controlID="11" controlTypeID="com.balsamiq.mockups::Label" x="165" y="156" w="519" h="38" measuredW="509" measuredH="37" zOrder="8" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>28</size>
+        <state>up</state>
+        <text>ISU%20Varsity%20Marching%20Band%20/%20Spring%202012</text>
+      </controlProperties>
+    </control>
+    <control controlID="12" controlTypeID="com.balsamiq.mockups::Button" x="463" y="308" w="82" h="33" measuredW="54" measuredH="27" zOrder="9" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Login</text>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>

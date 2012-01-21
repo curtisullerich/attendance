@@ -1,0 +1,26 @@
+<mockup version="1.0" skin="sketch" measuredW="688" measuredH="444" mockupW="532" mockupH="405">
+  <controls>
+    <control controlID="0" controlTypeID="com.balsamiq.mockups::BrowserWindow" x="156" y="39" w="532" h="405" measuredW="450" measuredH="400" zOrder="0" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>ISU%20Marching%20Band%20@10Dance%20-%20Directors%0Ahttp%3A//www.at10dance.edu</text>
+      </controlProperties>
+    </control>
+    <control controlID="3" controlTypeID="com.balsamiq.mockups::RadioButtonGroup" x="202" y="158" w="283" h="232" measuredW="278" measuredH="208" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>18</size>
+        <text>%28o%29%20Add%20Students%0A%20%0A%28%20%29%20View%20Student%20List%20and%20Reports%0A%20%0A%28%20%29%20View%20Absence%20Forms%0A%20%0A%28%20%29%20Make%20Attendance%20Modifications%0A%20</text>
+      </controlProperties>
+    </control>
+    <control controlID="4" controlTypeID="com.balsamiq.mockups::Button" x="548" y="329" w="82" h="41" measuredW="51" measuredH="27" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Next</text>
+      </controlProperties>
+    </control>
+    <control controlID="19" controlTypeID="com.balsamiq.mockups::BreadCrumbs" x="168" y="114" w="-1" h="-1" measuredW="104" measuredH="24" zOrder="3" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Home%2C%20Director</text>
+      </controlProperties>
+    </control>
+    <control controlID="20" controlTypeID="com.balsamiq.mockups::HelpButton" x="627" y="140" w="-1" h="-1" measuredW="18" measuredH="18" zOrder="4" locked="false" isInGroup="-1"/>
+  </controls>
+</mockup>

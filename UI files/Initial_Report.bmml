@@ -1,0 +1,44 @@
+<mockup version="1.0" skin="sketch" measuredW="757" measuredH="459" mockupW="620" mockupH="403">
+  <controls>
+    <control controlID="0" controlTypeID="com.balsamiq.mockups::TitleWindow" x="137" y="56" w="620" h="403" measuredW="450" measuredH="400" zOrder="0" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>@10Dance%20Maker</text>
+      </controlProperties>
+    </control>
+    <control controlID="5" controlTypeID="com.balsamiq.mockups::Button" x="372" y="388" w="170" h="36" measuredW="166" measuredH="27" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>13</size>
+        <text>Submit%20and%20Return%20Home</text>
+      </controlProperties>
+    </control>
+    <control controlID="8" controlTypeID="com.balsamiq.mockups::Label" x="178" y="101" w="519" h="38" measuredW="507" measuredH="37" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <align>center</align>
+        <size>28</size>
+        <state>up</state>
+        <text>ISU%20Varsity%20Marching%20Band%20/%20Spring%202012</text>
+      </controlProperties>
+    </control>
+    <control controlID="9" controlTypeID="com.balsamiq.mockups::Label" x="178" y="139" w="519" h="38" measuredW="160" measuredH="37" zOrder="3" locked="false" isInGroup="-1">
+      <controlProperties>
+        <align>center</align>
+        <size>28</size>
+        <state>up</state>
+        <text>Initial%20Report</text>
+      </controlProperties>
+    </control>
+    <control controlID="10" controlTypeID="com.balsamiq.mockups::DataGrid" x="208" y="183" w="489" h="198" measuredW="291" measuredH="135" zOrder="4" locked="false" isInGroup="-1">
+      <controlProperties>
+        <alternateRowColor>16777215</alternateRowColor>
+        <borderStyle>square</borderStyle>
+        <hasHeader>true</hasHeader>
+        <hLines>true</hLines>
+        <rowHeight>22</rowHeight>
+        <selectedIndex>2</selectedIndex>
+        <text>Name%2C%20NetID%2C%20Year%2C%20Present%0ABrandon%20Maxwell%2C%20bmaxwell%2C%20Soph%2C%20%5Bx%5D%0ACurtis%20Ullerich%2C%20cullerich%2C%20Junior%2C%20%5B%20%5D%0ATodd%20Wegter%2C%20twegter%2C%20Soph%2C%20%5Bx%5D%0AYifei%20Zhu%2C%20yfz%2C%20Soph%2C%20%5Bx%5D%0A...</text>
+        <vLines>true</vLines>
+      </controlProperties>
+    </control>
+    <control controlID="11" controlTypeID="com.balsamiq.mockups::VerticalScrollBar" x="681" y="183" w="-1" h="198" measuredW="16" measuredH="100" zOrder="5" locked="false" isInGroup="-1"/>
+  </controls>
+</mockup>
