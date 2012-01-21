@@ -5,7 +5,7 @@
         <text>ISU%20Marching%20Band%20@10Dance%0Ahttp%3A//www.at10dance.edu</text>
       </controlProperties>
     </control>
-    <control controlID="7" controlTypeID="com.balsamiq.mockups::RadioButtonGroup" x="329" y="190" w="-1" h="-1" measuredW="171" measuredH="130" zOrder="1" locked="false" isInGroup="-1">
+    <control controlID="7" controlTypeID="com.balsamiq.mockups::RadioButtonGroup" x="335" y="193" w="-1" h="-1" measuredW="171" measuredH="130" zOrder="1" locked="false" isInGroup="-1">
       <controlProperties>
         <bold>true</bold>
         <size>18</size>

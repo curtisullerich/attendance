@@ -15,7 +15,7 @@
         <text>Password%3A</text>
       </controlProperties>
     </control>
-    <control controlID="5" controlTypeID="com.balsamiq.mockups::Button" x="590" y="356" w="77" h="36" measuredW="53" measuredH="27" zOrder="3" locked="false" isInGroup="-1">
+    <control controlID="5" controlTypeID="com.balsamiq.mockups::Button" x="156" y="366" w="77" h="36" measuredW="53" measuredH="27" zOrder="3" locked="false" isInGroup="-1">
       <controlProperties>
         <size>13</size>
         <text>Back</text>
@@ -47,6 +47,11 @@
     <control controlID="12" controlTypeID="com.balsamiq.mockups::Button" x="463" y="308" w="82" h="33" measuredW="54" measuredH="27" zOrder="9" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Login</text>
+      </controlProperties>
+    </control>
+    <control controlID="13" controlTypeID="com.balsamiq.mockups::Button" x="309" y="307" w="82" h="33" measuredW="74" measuredH="27" zOrder="10" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Register</text>
       </controlProperties>
     </control>
   </controls>

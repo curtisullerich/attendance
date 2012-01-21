@@ -12,7 +12,7 @@
         <text>%20%0A%20Name%3A%20FirstName%2C%20%20LastName%0APosition%3A%20xxxx%0AMajor%3A%20CPR%20E%0AEmail%3A%20aaa@iastate.edu%0AAttendance%3A100/100%0AGrade%3A%20A%0A%20%0ACourse%3AMusic%20190%0AInstructor%3AFIRSTn%20LASTn%0AInstructor%20email%3A%20a@iastate.edu%0A%20</text>
       </controlProperties>
     </control>
-    <control controlID="9" controlTypeID="com.balsamiq.mockups::PointyButton" x="341" y="259" w="206" h="-1" measuredW="99" measuredH="27" zOrder="2" locked="false" isInGroup="-1">
+    <control controlID="9" controlTypeID="com.balsamiq.mockups::PointyButton" x="340" y="198" w="206" h="-1" measuredW="99" measuredH="27" zOrder="2" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Email%20Director</text>
       </controlProperties>
@@ -27,17 +27,21 @@
         <text>Home%2C%20Students</text>
       </controlProperties>
     </control>
-    <control controlID="12" controlTypeID="com.balsamiq.mockups::PointyButton" x="341" y="292" w="206" h="-1" measuredW="118" measuredH="27" zOrder="5" locked="false" isInGroup="-1">
+    <control controlID="12" controlTypeID="com.balsamiq.mockups::PointyButton" x="340" y="231" w="206" h="-1" measuredW="145" measuredH="27" zOrder="5" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>View%20Attendance</text>
+        <text>View%20Own%20Attendance</text>
       </controlProperties>
     </control>
-    <control controlID="13" controlTypeID="com.balsamiq.mockups::Webcam" x="379" y="139" w="129" h="105" measuredW="177" measuredH="146" zOrder="6" locked="false" isInGroup="-1"/>
-    <control controlID="14" controlTypeID="com.balsamiq.mockups::PointyButton" x="341" y="325" w="206" h="-1" measuredW="202" measuredH="27" zOrder="7" locked="false" isInGroup="-1">
+    <control controlID="14" controlTypeID="com.balsamiq.mockups::PointyButton" x="340" y="264" w="206" h="-1" measuredW="203" measuredH="27" zOrder="6" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>Submit%20Absense%20Approval%20Form</text>
+        <text>Submit%20Absence%20Approval%20Form</text>
       </controlProperties>
     </control>
-    <control controlID="15" controlTypeID="com.balsamiq.mockups::HelpButton" x="537" y="106" w="-1" h="-1" measuredW="18" measuredH="18" zOrder="8" locked="false" isInGroup="-1"/>
+    <control controlID="15" controlTypeID="com.balsamiq.mockups::HelpButton" x="537" y="106" w="-1" h="-1" measuredW="18" measuredH="18" zOrder="7" locked="false" isInGroup="-1"/>
+    <control controlID="16" controlTypeID="com.balsamiq.mockups::PointyButton" x="340" y="298" w="206" h="-1" measuredW="67" measuredH="27" zOrder="8" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Edit%20Info</text>
+      </controlProperties>
+    </control>
   </controls>
 </mockup>

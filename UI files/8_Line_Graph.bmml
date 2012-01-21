@@ -6,7 +6,7 @@
         <text>ISU%20Marching%20Band%20@10Dance%20-%20Student%20-%20View%20Attendance%0Ahttp%3A//www.at10dance.edu</text>
       </controlProperties>
     </control>
-    <control controlID="12" controlTypeID="com.balsamiq.mockups::VerticalTabBar" x="63" y="133" w="552" h="295" measuredW="200" measuredH="157" zOrder="1" locked="false" isInGroup="-1">
+    <control controlID="12" controlTypeID="com.balsamiq.mockups::VerticalTabBar" x="83" y="133" w="532" h="295" measuredW="200" measuredH="157" zOrder="1" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Bar%20Graph%0APie%20Chart%0ALine%20Graph</text>
       </controlProperties>
@@ -53,9 +53,15 @@
       </controlProperties>
     </control>
     <control controlID="22" controlTypeID="com.balsamiq.mockups::HelpButton" x="583" y="108" w="-1" h="-1" measuredW="18" measuredH="18" zOrder="11" locked="false" isInGroup="-1"/>
-    <control controlID="23" controlTypeID="com.balsamiq.mockups::Button" x="508" y="376" w="69" h="35" measuredW="53" measuredH="27" zOrder="12" locked="false" isInGroup="-1">
+    <control controlID="23" controlTypeID="com.balsamiq.mockups::Button" x="76" y="376" w="69" h="35" measuredW="53" measuredH="27" zOrder="12" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Back</text>
+      </controlProperties>
+    </control>
+    <control controlID="24" controlTypeID="com.balsamiq.mockups::Calendar" x="475" y="260" w="-1" h="-1" measuredW="96" measuredH="96" zOrder="13" locked="false" isInGroup="-1"/>
+    <control controlID="25" controlTypeID="com.balsamiq.mockups::Label" x="477" y="239" w="-1" h="-1" measuredW="87" measuredH="21" zOrder="14" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Today%27s%20Date%3A</text>
       </controlProperties>
     </control>
   </controls>

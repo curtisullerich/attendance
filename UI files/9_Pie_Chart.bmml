@@ -52,9 +52,15 @@
       </controlProperties>
     </control>
     <control controlID="15" controlTypeID="com.balsamiq.mockups::HelpButton" x="563" y="98" w="-1" h="-1" measuredW="18" measuredH="18" zOrder="11" locked="false" isInGroup="-1"/>
-    <control controlID="16" controlTypeID="com.balsamiq.mockups::Button" x="488" y="368" w="69" h="35" measuredW="53" measuredH="27" zOrder="12" locked="false" isInGroup="-1">
+    <control controlID="16" controlTypeID="com.balsamiq.mockups::Button" x="482" y="368" w="69" h="35" measuredW="53" measuredH="27" zOrder="12" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Back</text>
+      </controlProperties>
+    </control>
+    <control controlID="17" controlTypeID="com.balsamiq.mockups::Calendar" x="467" y="258" w="-1" h="-1" measuredW="96" measuredH="96" zOrder="13" locked="false" isInGroup="-1"/>
+    <control controlID="18" controlTypeID="com.balsamiq.mockups::Label" x="470" y="237" w="-1" h="-1" measuredW="87" measuredH="21" zOrder="14" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Today%27s%20Date%3A</text>
       </controlProperties>
     </control>
   </controls>

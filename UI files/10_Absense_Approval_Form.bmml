@@ -5,18 +5,18 @@
         <text>ISU%20Marching%20Band%20@10Dance%20-%20Student%20-%20Absence%20Approval%20Form%0Ahttp%3A//www.at10dance.edu</text>
       </controlProperties>
     </control>
-    <control controlID="3" controlTypeID="com.balsamiq.mockups::Button" x="409" y="368" w="69" h="35" measuredW="53" measuredH="27" zOrder="1" locked="false" isInGroup="-1">
+    <control controlID="3" controlTypeID="com.balsamiq.mockups::Button" x="41" y="374" w="69" h="35" measuredW="53" measuredH="27" zOrder="1" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Back</text>
       </controlProperties>
     </control>
-    <control controlID="4" controlTypeID="com.balsamiq.mockups::BreadCrumbs" x="56" y="95" w="-1" h="-1" measuredW="270" measuredH="24" zOrder="2" locked="false" isInGroup="-1">
+    <control controlID="4" controlTypeID="com.balsamiq.mockups::BreadCrumbs" x="56" y="95" w="-1" h="-1" measuredW="420" measuredH="24" zOrder="2" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>Home%2C%20Students%2C%20Absense%20Approval%20Form</text>
+        <text>Home%2C%20Students%2C%20Absense%20Approval%20Form%20%28Rehearsal/Performance%29</text>
       </controlProperties>
     </control>
     <control controlID="8" controlTypeID="com.balsamiq.mockups::HelpButton" x="537" y="106" w="-1" h="-1" measuredW="18" measuredH="18" zOrder="3" locked="false" isInGroup="-1"/>
-    <control controlID="9" controlTypeID="com.balsamiq.mockups::Button" x="156" y="367" w="69" h="35" measuredW="63" measuredH="27" zOrder="4" locked="false" isInGroup="-1">
+    <control controlID="9" controlTypeID="com.balsamiq.mockups::Button" x="501" y="373" w="69" h="35" measuredW="63" measuredH="27" zOrder="4" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Submit</text>
       </controlProperties>
@@ -36,7 +36,7 @@
         <text>Reason%3A</text>
       </controlProperties>
     </control>
-    <control controlID="16" controlTypeID="com.balsamiq.mockups::Label" x="306" y="146" w="-1" h="-1" measuredW="249" measuredH="21" zOrder="8" locked="false" isInGroup="-1">
+    <control controlID="16" controlTypeID="com.balsamiq.mockups::Label" x="306" y="146" w="249" h="21" measuredW="249" measuredH="21" zOrder="8" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Will%20this%20be%20a%20Recurring%20Absense%20or%20Tardy%3F</text>
       </controlProperties>
@@ -67,5 +67,10 @@
       </controlProperties>
     </control>
     <control controlID="22" controlTypeID="com.balsamiq.mockups::Calendar" x="194" y="142" w="-1" h="-1" measuredW="96" measuredH="96" zOrder="14" locked="false" isInGroup="-1"/>
+    <control controlID="23" controlTypeID="com.balsamiq.mockups::Label" x="180" y="380" w="-1" h="-1" measuredW="253" measuredH="21" zOrder="15" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>You%20will%20be%20notified%20if%20your%20request%20is%20denied.</text>
+      </controlProperties>
+    </control>
   </controls>
 </mockup>
