@@ -5,18 +5,18 @@
         <text>ISU%20Marching%20Band%20@10Dance%20-%20Directors%0Ahttp%3A//www.at10dance.edu</text>
       </controlProperties>
     </control>
-    <control controlID="3" controlTypeID="com.balsamiq.mockups::RadioButtonGroup" x="202" y="158" w="283" h="232" measuredW="278" measuredH="208" zOrder="1" locked="false" isInGroup="-1">
+    <control controlID="3" controlTypeID="com.balsamiq.mockups::RadioButtonGroup" x="301" y="158" w="283" h="232" measuredW="239" measuredH="156" zOrder="1" locked="false" isInGroup="-1">
       <controlProperties>
         <size>18</size>
-        <text>%28o%29%20Add%20Students%0A%20%0A%28%20%29%20View%20Student%20List%20and%20Reports%0A%20%0A%28%20%29%20View%20Absence%20Forms%0A%20%0A%28%20%29%20Make%20Attendance%20Modifications%0A%20</text>
+        <text>%28%20%29%20View%20and%20Edit%20Student%20List%0A%20%0A%28%20%29%20View%20Reports%0A%20%0A%28o%29%20View%20Absence%20Forms%0A%20</text>
       </controlProperties>
     </control>
-    <control controlID="4" controlTypeID="com.balsamiq.mockups::Button" x="548" y="329" w="82" h="41" measuredW="51" measuredH="27" zOrder="2" locked="false" isInGroup="-1">
+    <control controlID="4" controlTypeID="com.balsamiq.mockups::Button" x="381" y="308" w="82" h="41" measuredW="51" measuredH="27" zOrder="2" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Next</text>
       </controlProperties>
     </control>
-    <control controlID="19" controlTypeID="com.balsamiq.mockups::BreadCrumbs" x="168" y="114" w="-1" h="-1" measuredW="104" measuredH="24" zOrder="3" locked="false" isInGroup="-1">
+    <control controlID="19" controlTypeID="com.balsamiq.mockups::BreadCrumbs" x="168" y="114" w="-1" h="-1" measuredW="105" measuredH="24" zOrder="3" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Home%2C%20Director</text>
       </controlProperties>
