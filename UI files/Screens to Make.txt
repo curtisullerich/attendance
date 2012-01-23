@@ -1,4 +1,0 @@
--All TA pages
--Edit/Add/Register Student Page
--Whole Class Graphs
--Attendance Edit
