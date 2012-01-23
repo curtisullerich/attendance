@@ -1,4 +1,4 @@
-<mockup version="1.0" skin="sketch" measuredW="711" measuredH="489" mockupW="572" mockupH="451">
+<mockup version="1.0" skin="sketch" measuredW="999" measuredH="562" mockupW="860" mockupH="533">
   <controls>
     <control controlID="0" controlTypeID="com.balsamiq.mockups::BrowserWindow" x="139" y="38" w="572" h="405" measuredW="450" measuredH="400" zOrder="0" locked="false" isInGroup="-1">
       <controlProperties>
@@ -31,7 +31,7 @@
         <text/>
       </controlProperties>
     </control>
-    <control controlID="9" controlTypeID="com.balsamiq.mockups::BreadCrumbs" x="171" y="114" w="-1" h="-1" measuredW="89" measuredH="24" zOrder="6" locked="false" isInGroup="-1">
+    <control controlID="9" controlTypeID="com.balsamiq.mockups::BreadCrumbs" x="171" y="114" w="-1" h="-1" measuredW="90" measuredH="24" zOrder="6" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Home%2C%20Login</text>
       </controlProperties>
@@ -59,6 +59,26 @@
         <curvature>-1</curvature>
         <rightArrow>false</rightArrow>
         <text/>
+      </controlProperties>
+    </control>
+    <control controlID="15" controlTypeID="com.balsamiq.mockups::Label" x="505" y="479" w="206" h="83" measuredW="923" measuredH="21" zOrder="12" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>This%20only%20shows%20up%20if%20attempting%20to%20login%20as%20a%20student.%20Only%20Student%20accounts%20can%20be%20added%20by%20users.%20The%20Director%20account%20will%20be%20setup%20by%20the%20programming%20team.</text>
+      </controlProperties>
+    </control>
+    <control controlID="16" controlTypeID="com.balsamiq.mockups::Alert" x="749" y="29" w="250" h="113" measuredW="200" measuredH="113" zOrder="13" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Alert%0AThat%20NetID%20is%20not%20recognized.%0ARetry%2CIgnore</text>
+      </controlProperties>
+    </control>
+    <control controlID="17" controlTypeID="com.balsamiq.mockups::Alert" x="749" y="156" w="250" h="113" measuredW="200" measuredH="113" zOrder="14" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Alert%0AInvalid%20Password%0ARetry%2CReset%20Password</text>
+      </controlProperties>
+    </control>
+    <control controlID="18" controlTypeID="com.balsamiq.mockups::Alert" x="749" y="283" w="250" h="81" measuredW="200" measuredH="92" zOrder="15" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Alert%0AYour%20temporary%20password%20has%20been%20sent%20to%20you%20CyMail%20account.</text>
       </controlProperties>
     </control>
   </controls>

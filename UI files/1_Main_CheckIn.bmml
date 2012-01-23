@@ -1,4 +1,4 @@
-<mockup version="1.0" skin="sketch" measuredW="722" measuredH="449" mockupW="564" mockupH="424">
+<mockup version="1.0" skin="sketch" measuredW="958" measuredH="449" mockupW="800" mockupH="424">
   <controls>
     <control controlID="8" controlTypeID="com.balsamiq.mockups::Label" x="181" y="110" w="519" h="38" measuredW="507" measuredH="37" zOrder="1" locked="false" isInGroup="-1">
       <controlProperties>
@@ -30,12 +30,17 @@
     </control>
     <control controlID="14" controlTypeID="com.balsamiq.mockups::MultilineButton" x="309" y="196" w="-1" h="-1" measuredW="261" measuredH="81" zOrder="5" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>Latest%20Class%20List%3A%20MM/DD/YYYY%0AClick%20Here%20To%20Update%0A%28Must%20be%20connected%20to%20internet%29</text>
+        <text>Latest%20Class%20List%3A%20MM/DD/YYYY%0AClick%20Here%20To%20Update%0A%28Must%20be%20connected%20to%20Internet%29</text>
       </controlProperties>
     </control>
     <control controlID="15" controlTypeID="com.balsamiq.mockups::BrowserWindow" x="158" y="25" w="564" h="424" measuredW="450" measuredH="400" zOrder="0" locked="false" isInGroup="-1">
       <controlProperties>
         <text>ISU%20Marching%20Band%20@10Dance%0Ahttp%3A//www.at10dance.edu</text>
+      </controlProperties>
+    </control>
+    <control controlID="16" controlTypeID="com.balsamiq.mockups::Alert" x="758" y="25" w="-1" h="-1" measuredW="200" measuredH="113" zOrder="6" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Alert%0ANot%20Connected%20to%20the%20Internet%0ARetry%2CIgnore</text>
       </controlProperties>
     </control>
   </controls>

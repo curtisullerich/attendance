@@ -16,7 +16,7 @@
       </controlProperties>
     </control>
     <control controlID="25" controlTypeID="com.balsamiq.mockups::HelpButton" x="641" y="105" w="-1" h="-1" measuredW="18" measuredH="18" zOrder="3" locked="false" isInGroup="-1"/>
-    <control controlID="29" controlTypeID="com.balsamiq.mockups::BreadCrumbs" x="94" y="102" w="-1" h="-1" measuredW="525" measuredH="24" zOrder="4" locked="false" isInGroup="-1">
+    <control controlID="29" controlTypeID="com.balsamiq.mockups::BreadCrumbs" x="94" y="102" w="-1" h="-1" measuredW="522" measuredH="24" zOrder="4" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Home%2C%20Directors%2C%20View%20and%20Edit%20Student%20List%2C%20View%20Student%2C%20View%20Individual%20Report</text>
       </controlProperties>
@@ -33,7 +33,7 @@
         <verticalScrollbar>true</verticalScrollbar>
       </controlProperties>
     </control>
-    <control controlID="32" controlTypeID="com.balsamiq.mockups::Button" x="217" y="231" w="-1" h="-1" measuredW="52" measuredH="27" zOrder="6" locked="false" isInGroup="-1">
+    <control controlID="32" controlTypeID="com.balsamiq.mockups::Button" x="211" y="232" w="-1" h="-1" measuredW="52" measuredH="27" zOrder="6" locked="false" isInGroup="-1">
       <controlProperties>
         <text>View</text>
       </controlProperties>
@@ -43,7 +43,7 @@
         <text>Back</text>
       </controlProperties>
     </control>
-    <control controlID="34" controlTypeID="com.balsamiq.mockups::Button" x="217" y="198" w="-1" h="-1" measuredW="52" measuredH="27" zOrder="8" locked="false" isInGroup="-1">
+    <control controlID="34" controlTypeID="com.balsamiq.mockups::Button" x="211" y="199" w="-1" h="-1" measuredW="52" measuredH="27" zOrder="8" locked="false" isInGroup="-1">
       <controlProperties>
         <text>View</text>
       </controlProperties>
