@@ -28,9 +28,9 @@
         <text>Tardy%20Check-In</text>
       </controlProperties>
     </control>
-    <control controlID="14" controlTypeID="com.balsamiq.mockups::MultilineButton" x="342" y="206" w="-1" h="-1" measuredW="195" measuredH="81" zOrder="5" locked="false" isInGroup="-1">
+    <control controlID="14" controlTypeID="com.balsamiq.mockups::MultilineButton" x="309" y="196" w="-1" h="-1" measuredW="261" measuredH="81" zOrder="5" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>Latest%20Class%20List%3A%20Date%0AClick%20Here%20To%20Update%0A%28Must%20be%20connected%20to%20internet%29</text>
+        <text>Latest%20Class%20List%3A%20MM/DD/YYYY%0AClick%20Here%20To%20Update%0A%28Must%20be%20connected%20to%20internet%29</text>
       </controlProperties>
     </control>
     <control controlID="15" controlTypeID="com.balsamiq.mockups::BrowserWindow" x="158" y="25" w="564" h="424" measuredW="450" measuredH="400" zOrder="0" locked="false" isInGroup="-1">

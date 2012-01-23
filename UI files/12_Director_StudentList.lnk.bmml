@@ -5,7 +5,7 @@
         <text>ISU%20Marching%20Band%20@10Dance%20-%20Directors%20-%20View%20Students%0Ahttp%3A//www.at10dance.edu</text>
       </controlProperties>
     </control>
-    <control controlID="5" controlTypeID="com.balsamiq.mockups::DataGrid" x="50" y="172" w="634" h="157" measuredW="563" measuredH="157" zOrder="1" locked="false" isInGroup="-1">
+    <control controlID="5" controlTypeID="com.balsamiq.mockups::DataGrid" x="50" y="172" w="634" h="157" measuredW="578" measuredH="157" zOrder="1" locked="false" isInGroup="-1">
       <controlProperties>
         <borderStyle>square</borderStyle>
         <hasHeader>true</hasHeader>
@@ -49,7 +49,7 @@
         <text>View%20Student%28s%29</text>
       </controlProperties>
     </control>
-    <control controlID="26" controlTypeID="com.balsamiq.mockups::BreadCrumbs" x="50" y="106" w="-1" h="-1" measuredW="284" measuredH="24" zOrder="9" locked="false" isInGroup="-1">
+    <control controlID="26" controlTypeID="com.balsamiq.mockups::BreadCrumbs" x="50" y="106" w="-1" h="-1" measuredW="281" measuredH="24" zOrder="9" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Home%2C%20Directors%2C%20View%20and%20Edit%20Student%20List</text>
       </controlProperties>
