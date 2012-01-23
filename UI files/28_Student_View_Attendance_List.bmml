@@ -1,0 +1,48 @@
+<mockup version="1.0" skin="sketch" measuredW="694" measuredH="474" mockupW="592" mockupH="433">
+  <controls>
+    <control controlID="1" controlTypeID="com.balsamiq.mockups::DataGrid" x="231" y="195" w="433" h="157" measuredW="296" measuredH="157" zOrder="6" locked="false" isInGroup="-1">
+      <controlProperties>
+        <borderStyle>square</borderStyle>
+        <hasHeader>true</hasHeader>
+        <hLines>false</hLines>
+        <rowHeight>33</rowHeight>
+        <selectedIndex>-1</selectedIndex>
+        <text>Date%20%5E%2CPresent%2CAbsent%2CTardy%2CExcused%0A8/21%2C%5Bx%5D%2C%5B%20%5D%2C%5B%20%5D%2C%5B%20%5D%0A8/22%2C%5B%20%5D%2C%5Bx%5D%2C%5B%20%5D%2C%5Bx%5D%0A8/23%2C%5Bx%5D%2C%5B%20%5D%2C%5B%20%5D%2C%5B%20%5D%0A8/24%2C%5B%20%5D%2C%5B%20%5D%2C%5Bx%5D%2C%5B%20%5D</text>
+        <value>27</value>
+        <verticalScrollbar>true</verticalScrollbar>
+      </controlProperties>
+    </control>
+    <control controlID="6" controlTypeID="com.balsamiq.mockups::PointyButton" x="379" y="367" w="135" h="-1" measuredW="105" measuredH="27" zOrder="7" locked="false" isInGroup="-1">
+      <controlProperties>
+        <direction>center</direction>
+        <text>Save%20Changes</text>
+      </controlProperties>
+    </control>
+    <control controlID="23" controlTypeID="com.balsamiq.mockups::BrowserWindow" x="102" y="41" w="592" h="433" measuredW="450" measuredH="400" zOrder="0" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>ISU%20Marching%20Band%20@10Dance%20-%20Student%20-%20View%20Attendance%0Ahttp%3A//www.at10dance.edu</text>
+      </controlProperties>
+    </control>
+    <control controlID="24" controlTypeID="com.balsamiq.mockups::VerticalTabBar" x="114" y="150" w="565" h="288" measuredW="200" measuredH="199" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Bar%20Graph%0APie%20Chart%0ALine%20Graph%0AAbsence%20List%0AAbsence%20Forms</text>
+      </controlProperties>
+    </control>
+    <control controlID="25" controlTypeID="com.balsamiq.mockups::Label" x="231" y="165" w="-1" h="-1" measuredW="128" measuredH="21" zOrder="2" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>NetID%2C%20Student%20Name</text>
+      </controlProperties>
+    </control>
+    <control controlID="26" controlTypeID="com.balsamiq.mockups::HelpButton" x="661" y="125" w="-1" h="-1" measuredW="18" measuredH="18" zOrder="3" locked="false" isInGroup="-1"/>
+    <control controlID="27" controlTypeID="com.balsamiq.mockups::BreadCrumbs" x="114" y="122" w="-1" h="-1" measuredW="228" measuredH="24" zOrder="4" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Logout%2C%20Student%2C%20View%20Attendance</text>
+      </controlProperties>
+    </control>
+    <control controlID="30" controlTypeID="com.balsamiq.mockups::Button" x="129" y="411" w="-1" h="-1" measuredW="53" measuredH="27" zOrder="5" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Back</text>
+      </controlProperties>
+    </control>
+  </controls>
+</mockup>
