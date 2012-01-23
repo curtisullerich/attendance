@@ -5,11 +5,6 @@
         <text>ISU%20Marching%20Band%20@10Dance%20-%20Student%20-%20View%20Attendance%0Ahttp%3A//www.at10dance.edu</text>
       </controlProperties>
     </control>
-    <control controlID="1" controlTypeID="com.balsamiq.mockups::VerticalTabBar" x="43" y="123" w="552" h="295" measuredW="200" measuredH="157" zOrder="1" locked="false" isInGroup="-1">
-      <controlProperties>
-        <text>Bar%20Graph%0APie%20Chart%0ALine%20Graph</text>
-      </controlProperties>
-    </control>
     <control controlID="2" controlTypeID="com.balsamiq.mockups::ComboBox" x="482" y="144" w="-1" h="-1" measuredW="66" measuredH="23" zOrder="2" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Month</text>
@@ -20,14 +15,14 @@
         <text>Sort%20By%3A</text>
       </controlProperties>
     </control>
-    <control controlID="5" controlTypeID="com.balsamiq.mockups::Label" x="160" y="144" w="-1" h="-1" measuredW="160" measuredH="21" zOrder="4" locked="false" isInGroup="-1">
+    <control controlID="5" controlTypeID="com.balsamiq.mockups::Label" x="178" y="144" w="-1" h="-1" measuredW="128" measuredH="21" zOrder="4" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>2012%20Spring%20Marching%20Band</text>
+        <text>NetID%2C%20Student%20Name</text>
       </controlProperties>
     </control>
     <control controlID="9" controlTypeID="com.balsamiq.mockups::BreadCrumbs" x="56" y="95" w="-1" h="-1" measuredW="228" measuredH="24" zOrder="5" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>Home%2C%20Students%2C%20View%20Attendance</text>
+        <text>Logout%2C%20Student%2C%20View%20Attendance</text>
       </controlProperties>
     </control>
     <control controlID="10" controlTypeID="com.balsamiq.mockups::PieChart" x="199" y="191" w="-1" h="-1" measuredW="180" measuredH="180" zOrder="6" locked="false" isInGroup="-1"/>
@@ -52,15 +47,20 @@
       </controlProperties>
     </control>
     <control controlID="15" controlTypeID="com.balsamiq.mockups::HelpButton" x="563" y="98" w="-1" h="-1" measuredW="18" measuredH="18" zOrder="11" locked="false" isInGroup="-1"/>
-    <control controlID="16" controlTypeID="com.balsamiq.mockups::Button" x="482" y="368" w="69" h="35" measuredW="53" measuredH="27" zOrder="12" locked="false" isInGroup="-1">
+    <control controlID="16" controlTypeID="com.balsamiq.mockups::Button" x="67" y="371" w="69" h="35" measuredW="53" measuredH="27" zOrder="12" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Back</text>
       </controlProperties>
     </control>
-    <control controlID="17" controlTypeID="com.balsamiq.mockups::Calendar" x="467" y="258" w="-1" h="-1" measuredW="96" measuredH="96" zOrder="13" locked="false" isInGroup="-1"/>
-    <control controlID="18" controlTypeID="com.balsamiq.mockups::Label" x="470" y="237" w="-1" h="-1" measuredW="87" measuredH="21" zOrder="14" locked="false" isInGroup="-1">
+    <control controlID="17" controlTypeID="com.balsamiq.mockups::Calendar" x="467" y="240" w="-1" h="-1" measuredW="96" measuredH="96" zOrder="13" locked="false" isInGroup="-1"/>
+    <control controlID="18" controlTypeID="com.balsamiq.mockups::Label" x="467" y="219" w="-1" h="-1" measuredW="87" measuredH="21" zOrder="14" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Today%27s%20Date%3A</text>
+      </controlProperties>
+    </control>
+    <control controlID="19" controlTypeID="com.balsamiq.mockups::VerticalTabBar" x="56" y="119" w="543" h="288" measuredW="200" measuredH="199" zOrder="1" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Bar%20Graph%0APie%20Chart%0ALine%20Graph%0AAbsence%20List%0AAbsence%20Forms</text>
       </controlProperties>
     </control>
   </controls>

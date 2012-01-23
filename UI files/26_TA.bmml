@@ -1,18 +1,18 @@
-<mockup version="1.0" skin="sketch" measuredW="688" measuredH="444" mockupW="532" mockupH="405">
+<mockup version="1.0" skin="sketch" measuredW="957" measuredH="444" mockupW="801" mockupH="405">
   <controls>
     <control controlID="0" controlTypeID="com.balsamiq.mockups::BrowserWindow" x="156" y="39" w="532" h="405" measuredW="450" measuredH="400" zOrder="0" locked="false" isInGroup="-1">
       <controlProperties>
         <text>ISU%20Marching%20Band%20@10Dance%20-%20TA%0Ahttp%3A//www.at10dance.edu</text>
       </controlProperties>
     </control>
-    <control controlID="4" controlTypeID="com.balsamiq.mockups::Button" x="388" y="328" w="-1" h="-1" measuredW="63" measuredH="27" zOrder="1" locked="false" isInGroup="-1">
+    <control controlID="4" controlTypeID="com.balsamiq.mockups::Button" x="556" y="273" w="-1" h="-1" measuredW="63" measuredH="27" zOrder="1" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Upload</text>
       </controlProperties>
     </control>
-    <control controlID="19" controlTypeID="com.balsamiq.mockups::BreadCrumbs" x="168" y="114" w="-1" h="-1" measuredW="77" measuredH="24" zOrder="2" locked="false" isInGroup="-1">
+    <control controlID="19" controlTypeID="com.balsamiq.mockups::BreadCrumbs" x="168" y="114" w="-1" h="-1" measuredW="83" measuredH="24" zOrder="2" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>Home%2C%20TA</text>
+        <text>Logout%2C%20TA</text>
       </controlProperties>
     </control>
     <control controlID="20" controlTypeID="com.balsamiq.mockups::HelpButton" x="627" y="140" w="-1" h="-1" measuredW="18" measuredH="18" zOrder="3" locked="false" isInGroup="-1"/>
@@ -21,7 +21,7 @@
         <text>Please%20login%20as%20a%20student%20to%20view%20your%20attendance%2C%20etc.</text>
       </controlProperties>
     </control>
-    <control controlID="29" controlTypeID="com.balsamiq.mockups::TextInput" x="192" y="286" w="344" h="-1" measuredW="79" measuredH="27" zOrder="5" locked="false" isInGroup="-1">
+    <control controlID="29" controlTypeID="com.balsamiq.mockups::TextInput" x="191" y="274" w="344" h="-1" measuredW="79" measuredH="27" zOrder="5" locked="false" isInGroup="-1">
       <controlProperties>
         <text/>
       </controlProperties>
@@ -32,12 +32,12 @@
         <text>Upload%20Attendance%20File</text>
       </controlProperties>
     </control>
-    <control controlID="31" controlTypeID="com.balsamiq.mockups::Button" x="545" y="285" w="-1" h="-1" measuredW="67" measuredH="27" zOrder="7" locked="false" isInGroup="-1">
+    <control controlID="31" controlTypeID="com.balsamiq.mockups::Button" x="470" y="272" w="-1" h="-1" measuredW="67" measuredH="27" zOrder="7" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Browse</text>
       </controlProperties>
     </control>
-    <control controlID="32" controlTypeID="com.balsamiq.mockups::ProgressBar" x="370" y="370" w="-1" h="-1" measuredW="100" measuredH="20" zOrder="8" locked="false" isInGroup="-1">
+    <control controlID="32" controlTypeID="com.balsamiq.mockups::ProgressBar" x="372" y="378" w="-1" h="-1" measuredW="100" measuredH="20" zOrder="8" locked="false" isInGroup="-1">
       <controlProperties>
         <indeterminate>false</indeterminate>
         <scrollBarValue>66</scrollBarValue>
@@ -47,6 +47,37 @@
       <controlProperties>
         <size>18</size>
         <text>NetID%2C%20FirstN%20LastN</text>
+      </controlProperties>
+    </control>
+    <control controlID="34" controlTypeID="com.balsamiq.mockups::Alert" x="708" y="40" w="249" h="113" measuredW="200" measuredH="127" zOrder="10" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Alert%0AThe%20specified%20file%20was%20not%20found%0AOk</text>
+      </controlProperties>
+    </control>
+    <control controlID="35" controlTypeID="com.balsamiq.mockups::Alert" x="708" y="173" w="249" h="113" measuredW="200" measuredH="127" zOrder="11" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Alert%0AThe%20specified%20filetype%20is%20not%20supported%0AOk</text>
+      </controlProperties>
+    </control>
+    <control controlID="36" controlTypeID="com.balsamiq.mockups::Button" x="556" y="335" w="-1" h="-1" measuredW="63" measuredH="27" zOrder="12" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Upload</text>
+      </controlProperties>
+    </control>
+    <control controlID="37" controlTypeID="com.balsamiq.mockups::TextInput" x="191" y="336" w="344" h="-1" measuredW="79" measuredH="27" zOrder="13" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text/>
+      </controlProperties>
+    </control>
+    <control controlID="38" controlTypeID="com.balsamiq.mockups::Label" x="324" y="307" w="-1" h="-1" measuredW="171" measuredH="26" zOrder="14" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>18</size>
+        <text>Upload%20Tardy%20Report</text>
+      </controlProperties>
+    </control>
+    <control controlID="39" controlTypeID="com.balsamiq.mockups::Button" x="470" y="335" w="-1" h="-1" measuredW="67" measuredH="27" zOrder="15" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Browse</text>
       </controlProperties>
     </control>
   </controls>

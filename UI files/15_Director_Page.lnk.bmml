@@ -5,22 +5,34 @@
         <text>ISU%20Marching%20Band%20@10Dance%20-%20Directors%0Ahttp%3A//www.at10dance.edu</text>
       </controlProperties>
     </control>
-    <control controlID="3" controlTypeID="com.balsamiq.mockups::RadioButtonGroup" x="302" y="189" w="-1" h="-1" measuredW="239" measuredH="104" zOrder="1" locked="false" isInGroup="-1">
+    <control controlID="3" controlTypeID="com.balsamiq.mockups::RadioButtonGroup" x="302" y="277" w="-1" h="-1" measuredW="239" measuredH="104" zOrder="1" locked="false" isInGroup="-1">
       <controlProperties>
         <size>18</size>
         <text>%28%20%29%20View%20and%20Edit%20Student%20List%0A%20%0A%28o%29%20View%20Class%20Reports%0A%20%20%20%20%20and%20Absence%20Forms%20</text>
       </controlProperties>
     </control>
-    <control controlID="4" controlTypeID="com.balsamiq.mockups::Button" x="381" y="323" w="82" h="41" measuredW="51" measuredH="27" zOrder="2" locked="false" isInGroup="-1">
+    <control controlID="4" controlTypeID="com.balsamiq.mockups::Button" x="563" y="309" w="82" h="41" measuredW="51" measuredH="27" zOrder="2" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Next</text>
       </controlProperties>
     </control>
-    <control controlID="19" controlTypeID="com.balsamiq.mockups::BreadCrumbs" x="168" y="114" w="-1" h="-1" measuredW="104" measuredH="24" zOrder="3" locked="false" isInGroup="-1">
+    <control controlID="19" controlTypeID="com.balsamiq.mockups::BreadCrumbs" x="168" y="114" w="-1" h="-1" measuredW="110" measuredH="24" zOrder="3" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>Home%2C%20Director</text>
+        <text>Logout%2C%20Director</text>
       </controlProperties>
     </control>
     <control controlID="20" controlTypeID="com.balsamiq.mockups::HelpButton" x="627" y="140" w="-1" h="-1" measuredW="18" measuredH="18" zOrder="4" locked="false" isInGroup="-1"/>
+    <control controlID="21" controlTypeID="com.balsamiq.mockups::List" x="294" y="158" w="255" h="110" measuredW="100" measuredH="126" zOrder="5" locked="false" isInGroup="-1">
+      <controlProperties>
+        <rowHeight>21</rowHeight>
+        <size>16</size>
+        <text>%20%0AName%3A%20FirstName%2C%20%20LastName%0ANetID%3A%20aaa%0AEmail%3A%20aaa@iastate.edu</text>
+      </controlProperties>
+    </control>
+    <control controlID="22" controlTypeID="com.balsamiq.mockups::Button" x="182" y="356" w="82" h="41" measuredW="63" measuredH="27" zOrder="6" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Logout</text>
+      </controlProperties>
+    </control>
   </controls>
 </mockup>

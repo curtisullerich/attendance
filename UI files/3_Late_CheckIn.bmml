@@ -61,7 +61,12 @@
     </control>
     <control controlID="17" controlTypeID="com.balsamiq.mockups::Alert" x="749" y="29" w="-1" h="-1" measuredW="200" measuredH="113" zOrder="11" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>Alert%0AThat%20NetID%20is%20not%20recognized.%0ARetry%2CIgnore</text>
+        <text>Alert%0AThat%20NetID%20is%20not%20recognized.%0AOk</text>
+      </controlProperties>
+    </control>
+    <control controlID="18" controlTypeID="com.balsamiq.mockups::Alert" x="749" y="154" w="-1" h="-1" measuredW="200" measuredH="113" zOrder="12" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Alert%0APlease%20submit%20a%20reason.%0AOk</text>
       </controlProperties>
     </control>
   </controls>

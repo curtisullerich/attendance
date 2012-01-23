@@ -21,9 +21,9 @@
       </controlProperties>
     </control>
     <control controlID="14" controlTypeID="com.balsamiq.mockups::ColumnChart" x="247" y="203" w="-1" h="-1" measuredW="187" measuredH="175" zOrder="4" locked="false" isInGroup="-1"/>
-    <control controlID="16" controlTypeID="com.balsamiq.mockups::Label" x="210" y="151" w="-1" h="-1" measuredW="254" measuredH="21" zOrder="5" locked="false" isInGroup="-1">
+    <control controlID="16" controlTypeID="com.balsamiq.mockups::Label" x="211" y="145" w="-1" h="-1" measuredW="128" measuredH="21" zOrder="5" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>2012%20Spring%20Marching%20Band%20-%20Student%20Name</text>
+        <text>NetID%2C%20Student%20Name</text>
       </controlProperties>
     </control>
     <control controlID="19" controlTypeID="com.balsamiq.mockups::Label" x="316" y="389" w="37" h="20" measuredW="28" measuredH="21" zOrder="6" locked="false" isInGroup="-1">
@@ -59,9 +59,9 @@
         <text>Today%27s%20Date%3A</text>
       </controlProperties>
     </control>
-    <control controlID="29" controlTypeID="com.balsamiq.mockups::BreadCrumbs" x="94" y="102" w="-1" h="-1" measuredW="522" measuredH="24" zOrder="14" locked="false" isInGroup="-1">
+    <control controlID="29" controlTypeID="com.balsamiq.mockups::BreadCrumbs" x="94" y="102" w="-1" h="-1" measuredW="521" measuredH="24" zOrder="14" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>Home%2C%20Directors%2C%20View%20and%20Edit%20Student%20List%2C%20View%20Student%2C%20View%20Individual%20Report</text>
+        <text>Logout%2C%20Director%2C%20View%20and%20Edit%20Student%20List%2C%20View%20Student%2C%20View%20Individual%20Report</text>
       </controlProperties>
     </control>
     <control controlID="30" controlTypeID="com.balsamiq.mockups::PointyButton" x="347" y="177" w="-1" h="-1" measuredW="48" measuredH="27" zOrder="15" locked="false" isInGroup="-1">

@@ -12,25 +12,31 @@
     </control>
     <control controlID="4" controlTypeID="com.balsamiq.mockups::BreadCrumbs" x="56" y="95" w="-1" h="-1" measuredW="270" measuredH="24" zOrder="2" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>Home%2C%20Students%2C%20Absense%20Approval%20Form</text>
+        <text>Logout%2C%20Student%2C%20Absense%20Approval%20Form</text>
       </controlProperties>
     </control>
     <control controlID="8" controlTypeID="com.balsamiq.mockups::HelpButton" x="537" y="106" w="-1" h="-1" measuredW="18" measuredH="18" zOrder="3" locked="false" isInGroup="-1"/>
-    <control controlID="9" controlTypeID="com.balsamiq.mockups::Button" x="270" y="275" w="69" h="35" measuredW="51" measuredH="27" zOrder="4" locked="false" isInGroup="-1">
+    <control controlID="9" controlTypeID="com.balsamiq.mockups::Button" x="272" y="317" w="69" h="35" measuredW="51" measuredH="27" zOrder="4" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Next</text>
       </controlProperties>
     </control>
-    <control controlID="24" controlTypeID="com.balsamiq.mockups::RadioButtonGroup" x="250" y="197" w="-1" h="-1" measuredW="110" measuredH="63" zOrder="5" locked="false" isInGroup="-1">
+    <control controlID="24" controlTypeID="com.balsamiq.mockups::RadioButtonGroup" x="250" y="197" w="-1" h="-1" measuredW="110" measuredH="105" zOrder="5" locked="false" isInGroup="-1">
       <controlProperties>
         <bold>true</bold>
-        <text>%28o%29%20Performance%0A%28%20%29%20Rehearsal%0A%28%20%29%20Class%20Conflict</text>
+        <text>%28o%29%20Performance%0A%20%0A%28%20%29%20Rehearsal%0A%20%0A%28%20%29%20Class%20Conflict</text>
       </controlProperties>
     </control>
-    <control controlID="25" controlTypeID="com.balsamiq.mockups::Label" x="238" y="171" w="137" h="52" measuredW="128" measuredH="21" zOrder="6" locked="false" isInGroup="-1">
+    <control controlID="25" controlTypeID="com.balsamiq.mockups::Label" x="238" y="163" w="137" h="52" measuredW="128" measuredH="21" zOrder="6" locked="false" isInGroup="-1">
       <controlProperties>
         <align>center</align>
         <text>Select%20Type%20of%20Form%3A</text>
+      </controlProperties>
+    </control>
+    <control controlID="26" controlTypeID="com.balsamiq.mockups::Label" x="56" y="128" w="-1" h="-1" measuredW="195" measuredH="28" zOrder="7" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>20</size>
+        <text>NetID%2C%20Student%20Name</text>
       </controlProperties>
     </control>
   </controls>
