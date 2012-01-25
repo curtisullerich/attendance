@@ -10,7 +10,7 @@
         <text>Back</text>
       </controlProperties>
     </control>
-    <control controlID="4" controlTypeID="com.balsamiq.mockups::BreadCrumbs" x="56" y="95" w="-1" h="-1" measuredW="420" measuredH="24" zOrder="2" locked="false" isInGroup="-1">
+    <control controlID="4" controlTypeID="com.balsamiq.mockups::BreadCrumbs" x="56" y="95" w="-1" h="-1" measuredW="419" measuredH="24" zOrder="2" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Logout%2C%20Student%2C%20Absense%20Approval%20Form%20%28Rehearsal/Performance%29</text>
       </controlProperties>
@@ -21,7 +21,7 @@
         <text>Submit</text>
       </controlProperties>
     </control>
-    <control controlID="11" controlTypeID="com.balsamiq.mockups::TextInput" x="195" y="267" w="360" h="-1" measuredW="79" measuredH="27" zOrder="5" locked="false" isInGroup="-1">
+    <control controlID="11" controlTypeID="com.balsamiq.mockups::TextInput" x="205" y="257" w="360" h="-1" measuredW="79" measuredH="27" zOrder="5" locked="false" isInGroup="-1">
       <controlProperties>
         <text/>
       </controlProperties>
@@ -31,7 +31,7 @@
         <text>Date%20Requested%3A</text>
       </controlProperties>
     </control>
-    <control controlID="15" controlTypeID="com.balsamiq.mockups::Label" x="127" y="269" w="-1" h="-1" measuredW="53" measuredH="21" zOrder="7" locked="false" isInGroup="-1">
+    <control controlID="15" controlTypeID="com.balsamiq.mockups::Label" x="137" y="259" w="-1" h="-1" measuredW="53" measuredH="21" zOrder="7" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Reason%3A</text>
       </controlProperties>
@@ -56,12 +56,12 @@
         <text>Weekly</text>
       </controlProperties>
     </control>
-    <control controlID="20" controlTypeID="com.balsamiq.mockups::TextInput" x="195" y="313" w="360" h="-1" measuredW="79" measuredH="27" zOrder="12" locked="false" isInGroup="-1">
+    <control controlID="20" controlTypeID="com.balsamiq.mockups::TextInput" x="205" y="292" w="360" h="-1" measuredW="79" measuredH="27" zOrder="12" locked="false" isInGroup="-1">
       <controlProperties>
         <text/>
       </controlProperties>
     </control>
-    <control controlID="21" controlTypeID="com.balsamiq.mockups::Label" x="33" y="315" w="-1" h="-1" measuredW="147" measuredH="21" zOrder="13" locked="false" isInGroup="-1">
+    <control controlID="21" controlTypeID="com.balsamiq.mockups::Label" x="45" y="294" w="-1" h="-1" measuredW="147" measuredH="21" zOrder="13" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Additional%20Info%20%28Optional%29%3A</text>
       </controlProperties>
@@ -76,6 +76,21 @@
       <controlProperties>
         <size>20</size>
         <text>NetID%2C%20Student%20Name</text>
+      </controlProperties>
+    </control>
+    <control controlID="26" controlTypeID="com.balsamiq.mockups::TextInput" x="205" y="324" w="360" h="-1" measuredW="271" measuredH="27" zOrder="17" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Upload%20a%20Doctor%27s%20Note%2C%20Funeral%20Bulliten%2C%20Etc.%20</text>
+      </controlProperties>
+    </control>
+    <control controlID="27" controlTypeID="com.balsamiq.mockups::Label" x="33" y="327" w="172" h="21" measuredW="167" measuredH="21" zOrder="18" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Upload%20Document%20%28Optional%29%3A</text>
+      </controlProperties>
+    </control>
+    <control controlID="28" controlTypeID="com.balsamiq.mockups::Button" x="497" y="327" w="68" h="24" measuredW="67" measuredH="27" zOrder="19" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Browse</text>
       </controlProperties>
     </control>
   </controls>
