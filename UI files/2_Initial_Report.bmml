@@ -1,9 +1,9 @@
 <mockup version="1.0" skin="sketch" measuredW="730" measuredH="461" mockupW="572" mockupH="436">
   <controls>
-    <control controlID="5" controlTypeID="com.balsamiq.mockups::Button" x="372" y="388" w="170" h="36" measuredW="166" measuredH="27" zOrder="1" locked="false" isInGroup="-1">
+    <control controlID="5" controlTypeID="com.balsamiq.mockups::Button" x="359" y="388" w="170" h="36" measuredW="157" measuredH="27" zOrder="1" locked="false" isInGroup="-1">
       <controlProperties>
         <size>13</size>
-        <text>Submit%20and%20Return%20Home</text>
+        <text>Save%20and%20Return%20Home</text>
       </controlProperties>
     </control>
     <control controlID="8" controlTypeID="com.balsamiq.mockups::Label" x="178" y="101" w="519" h="38" measuredW="507" measuredH="37" zOrder="2" locked="false" isInGroup="-1">
@@ -22,7 +22,7 @@
         <text>Initial%20Report</text>
       </controlProperties>
     </control>
-    <control controlID="10" controlTypeID="com.balsamiq.mockups::DataGrid" x="208" y="183" w="489" h="198" measuredW="384" measuredH="135" zOrder="4" locked="false" isInGroup="-1">
+    <control controlID="10" controlTypeID="com.balsamiq.mockups::DataGrid" x="199" y="183" w="489" h="198" measuredW="384" measuredH="135" zOrder="4" locked="false" isInGroup="-1">
       <controlProperties>
         <alternateRowColor>16777215</alternateRowColor>
         <borderStyle>square</borderStyle>

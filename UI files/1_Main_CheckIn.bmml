@@ -16,13 +16,13 @@
         <text>Check-In%20App</text>
       </controlProperties>
     </control>
-    <control controlID="10" controlTypeID="com.balsamiq.mockups::Button" x="379" y="306" w="-1" h="-1" measuredW="122" measuredH="27" zOrder="3" locked="false" isInGroup="-1">
+    <control controlID="10" controlTypeID="com.balsamiq.mockups::Button" x="379" y="292" w="-1" h="-1" measuredW="122" measuredH="27" zOrder="3" locked="false" isInGroup="-1">
       <controlProperties>
         <size>18</size>
         <text>Initial%20Report</text>
       </controlProperties>
     </control>
-    <control controlID="11" controlTypeID="com.balsamiq.mockups::Button" x="367" y="348" w="-1" h="-1" measuredW="146" measuredH="27" zOrder="4" locked="false" isInGroup="-1">
+    <control controlID="11" controlTypeID="com.balsamiq.mockups::Button" x="367" y="325" w="-1" h="-1" measuredW="146" measuredH="27" zOrder="4" locked="false" isInGroup="-1">
       <controlProperties>
         <size>18</size>
         <text>Tardy%20Check-In</text>
@@ -43,10 +43,10 @@
         <text>Alert%0ANot%20Connected%20to%20the%20Internet%0ARetry%2CIgnore</text>
       </controlProperties>
     </control>
-    <control controlID="17" controlTypeID="com.balsamiq.mockups::Button" x="347" y="382" w="186" h="29" measuredW="186" measuredH="27" zOrder="7" locked="false" isInGroup="-1">
+    <control controlID="17" controlTypeID="com.balsamiq.mockups::Button" x="334" y="359" w="211" h="29" measuredW="221" measuredH="27" zOrder="7" locked="false" isInGroup="-1">
       <controlProperties>
         <size>18</size>
-        <text>Submit%20Tardy%20Report</text>
+        <text>Upload%20Attendance%20Data</text>
       </controlProperties>
     </control>
   </controls>
