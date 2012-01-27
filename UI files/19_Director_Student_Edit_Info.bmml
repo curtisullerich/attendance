@@ -11,9 +11,9 @@
       </controlProperties>
     </control>
     <control controlID="63" controlTypeID="com.balsamiq.mockups::HelpButton" x="687" y="143" w="-1" h="-1" measuredW="18" measuredH="18" zOrder="1" locked="false" isInGroup="-1"/>
-    <control controlID="64" controlTypeID="com.balsamiq.mockups::Button" x="568" y="388" w="-1" h="-1" measuredW="95" measuredH="27" zOrder="2" locked="false" isInGroup="-1">
+    <control controlID="64" controlTypeID="com.balsamiq.mockups::Button" x="607" y="388" w="-1" h="-1" measuredW="54" measuredH="27" zOrder="2" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>Add%20Student</text>
+        <text>Finish</text>
       </controlProperties>
     </control>
     <control controlID="67" controlTypeID="com.balsamiq.mockups::Alert" x="755" y="58" w="177" h="113" measuredW="200" measuredH="113" zOrder="3" locked="false" isInGroup="-1">
@@ -89,16 +89,16 @@
         <text/>
       </controlProperties>
     </control>
-    <control controlID="82" controlTypeID="com.balsamiq.mockups::TextInput" x="368" y="232" w="293" h="-1" measuredW="79" measuredH="26" zOrder="16" locked="false" isInGroup="-1">
+    <control controlID="82" controlTypeID="com.balsamiq.mockups::TextInput" x="368" y="232" w="293" h="-1" measuredW="46" measuredH="26" zOrder="16" locked="false" isInGroup="-1">
       <controlProperties>
         <size>12</size>
-        <text/>
+        <text>Smith</text>
       </controlProperties>
     </control>
-    <control controlID="83" controlTypeID="com.balsamiq.mockups::TextInput" x="368" y="205" w="293" h="-1" measuredW="79" measuredH="26" zOrder="17" locked="false" isInGroup="-1">
+    <control controlID="83" controlTypeID="com.balsamiq.mockups::TextInput" x="368" y="205" w="293" h="-1" measuredW="39" measuredH="26" zOrder="17" locked="false" isInGroup="-1">
       <controlProperties>
         <size>12</size>
-        <text/>
+        <text>Bob%09</text>
       </controlProperties>
     </control>
     <control controlID="84" controlTypeID="com.balsamiq.mockups::ComboBox" x="367" y="356" w="159" h="-1" measuredW="94" measuredH="23" zOrder="18" locked="false" isInGroup="-1">

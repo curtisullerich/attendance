@@ -64,16 +64,5 @@
         <text>Logout%2C%20Director%2C%20View%20and%20Edit%20Student%20List%2C%20View%20Student%2C%20View%20Individual%20Report</text>
       </controlProperties>
     </control>
-    <control controlID="30" controlTypeID="com.balsamiq.mockups::PointyButton" x="347" y="177" w="-1" h="-1" measuredW="48" measuredH="27" zOrder="15" locked="false" isInGroup="-1">
-      <controlProperties>
-        <text>Next</text>
-      </controlProperties>
-    </control>
-    <control controlID="31" controlTypeID="com.balsamiq.mockups::PointyButton" x="292" y="178" w="-1" h="-1" measuredW="49" measuredH="27" zOrder="16" locked="false" isInGroup="-1">
-      <controlProperties>
-        <direction>left</direction>
-        <text>Prev</text>
-      </controlProperties>
-    </control>
   </controls>
 </mockup>
