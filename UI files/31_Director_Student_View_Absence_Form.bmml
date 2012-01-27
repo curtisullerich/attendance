@@ -5,7 +5,7 @@
         <text>ISU%20Marching%20Band%20@10Dance%20-%20Director%20-%20View%20Absence%20Approval%20Form%0Ahttp%3A//www.at10dance.edu</text>
       </controlProperties>
     </control>
-    <control controlID="20" controlTypeID="com.balsamiq.mockups::Label" x="257" y="195" w="70" h="21" measuredW="39" measuredH="21" zOrder="1" locked="false" isInGroup="-1">
+    <control controlID="20" controlTypeID="com.balsamiq.mockups::Label" x="257" y="195" w="70" h="21" measuredW="38" measuredH="21" zOrder="1" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Date%3A</text>
       </controlProperties>
