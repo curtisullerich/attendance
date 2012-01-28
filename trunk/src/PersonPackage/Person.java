@@ -1,4 +1,4 @@
-package main;
+package PersonPackage;
 
 public class Person 
 {

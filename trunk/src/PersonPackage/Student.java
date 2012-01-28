@@ -1,4 +1,5 @@
-package main;
+package PersonPackage;
+
 
 public class Student extends Person
 {
