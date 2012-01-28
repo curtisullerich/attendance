@@ -1,5 +1,7 @@
 package main;
 
-public class Absence {
+public class Absence 
+{
+	private boolean isApproved;
 
 }
