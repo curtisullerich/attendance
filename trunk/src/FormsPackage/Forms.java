@@ -9,5 +9,4 @@ public class Forms {
 	private Date endDate;
 	private String reason;
 	private boolean Isapproved;
-
 }
