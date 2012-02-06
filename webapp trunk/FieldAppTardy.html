@@ -1,0 +1,23 @@
+<html>
+	<head>
+		<script type="text/javascript">
+			var tardyList = "";
+			
+			function submitTardy() {
+				var d = new Date();
+				tardyList = tardyList + document.getElementById('student').value + ' ' + d.getTime() + '<br/>';
+				document.getElementById('tardies').innerHTML = tardyList;
+				return false;
+			}
+		</script>
+	</head>
+	<body>
+	<h1>Marching Band Tardy Check-In</h1>
+		<form id="tardyReport" onsubmit="return submitTardy();">
+            <input type="text" id="student" placeholder="netID"/>
+			<input type="submit" value="Submit"/>
+        </form>
+		
+		<div id="tardies"></div>
+	</body>
+</html>
