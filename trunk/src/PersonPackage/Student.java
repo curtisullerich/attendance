@@ -1,6 +1,10 @@
 package PersonPackage;
 
-
+/**
+ * 
+ * @author Brandon AND ONLY BRANDON!
+ *
+ */
 public class Student extends Person
 {
 	//Need a way to store the absences -> actual dates

@@ -1,5 +1,9 @@
 package PersonPackage;
-
+/**
+ * 
+ * @author Brandon AND ONLY BRANDON!
+ *
+ */
 public class Person 
 {
 	private String netID;
