@@ -1,5 +1,7 @@
 package FormsPackage;
 
+//Authors: Todd Wegter, Curtis Ullerich, Brandon Maxwell, and Yifei Zhu
+
 import sun.util.calendar.LocalGregorianCalendar.Date;
 import PersonPackage.Person;
 
