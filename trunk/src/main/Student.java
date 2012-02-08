@@ -1,5 +1,9 @@
 package main;
-
+/**
+ * 
+ * @author: Todd Wegter, Curtis Ullerich, Brandon Maxwell, and Yifei Zhu
+ *
+ */
 public class Student extends Person
 {
 	//Need a way to store the absences -> actual dates
