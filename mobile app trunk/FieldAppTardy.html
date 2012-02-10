@@ -1,22 +1,66 @@
 <html>
 	<head>
-		<script type="text/javascript">
-			var tardyList = "";
+		<script>
 			
-			function submitTardy() {
+			var nextID = localStorage.getItem('uniqueTardyID');
+			if(nextID == null)
+			{
+				localStorage.setItem('uniqueTardyID', 0);
+				nextID = 0;
+			}
+			var tardyPrepend = 'tardyStudent';
+			
+			// autorun on pageload
+			window.onload = function(){
+				var text_input = document.getElementById ('student');
+				text_input.focus ();
+				text_input.select ();
+			}
+			
+			function submitTardy(nextID) {
 				var d = new Date();
-				tardyList = tardyList + document.getElementById('student').value + ' ' + d.getTime() + '<br/>';
+				var tardyEntry = document.getElementById('student').value + ' ' + d.getTime();
+				storeTardy(tardyEntry);
+				return true;
+			}
+			
+			function storeTardy(tardyEntry){
+				localStorage.setItem(tardyPrepend+nextID,tardyEntry);
+				nextID++;
+				localStorage.setItem('uniqueTardyID', nextID);
+			}
+			
+			function retrieveTardies(){
+				var returnString = "<br>The Following Students Were Tardy:</br>";
+				for(var i = 0, l = localStorage.length; i<l; i++)
+				{
+					var key = localStorage.key(i);
+					if(key.substring(0,12) == tardyPrepend)
+					{
+						var value = localStorage[key];
+						returnString += value + '</br>';
+					}
+				}
+				document.getElementById('tardies').innerHTML = returnString;
+			}
+			
+			function clearLocalStorage()
+			{
+				clear: localStorage.clear();
+				tardyList = "";
 				document.getElementById('tardies').innerHTML = tardyList;
-				return false;
 			}
 		</script>
 	</head>
 	<body>
 	<h1>Marching Band Tardy Check-In</h1>
-		<form id="tardyReport" onsubmit="return submitTardy();">
+		<form id="tardyReport" onsubmit="return submitTardy();">netID
             <input type="text" id="student" placeholder="netID"/>
 			<input type="submit" value="Submit"/>
         </form>
+		
+		<input type="submit" value="View Tardies" onclick="javascript: retrieveTardies();"></input>
+		<input type="submit" value="Clear Tardy List" onclick='javascript: clearLocalStorage();'></input>
 		
 		<div id="tardies"></div>
 	</body>
