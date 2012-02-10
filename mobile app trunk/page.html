@@ -1,20 +1,32 @@
 <html>
     <script type="text/javascript">
+        
         function loaded() {
             var length = window.localStorage.length;
             document.querySelector('#local-count').innerHTML = length;
             document.querySelector('#submit').addEventListener('click',processData,false);
         }
 
-        function processData() {
+        function addStudents() {
             
-            var str="<br>These people were here: </br>";
+            var str="<br>These people have been recorded as absent:</br>";
             var myform = document.getElementById('initialReport').elements;
-            for(var i = 0; i <myform.length; i++) {
-              if (myform[i].checked == 1) {
-                str += "<br>" + myform[i].value + " </br>";
-              }
+            
+            for (var i = 0; i < myform.length; i++) {
+               if (myform[i].checked == 1 && myform[i].type=="checkbox") {
+                    var d = new Date();
+                    localStorage.setItem("absentStudent"+d.getTime(),myform[i].value);
+                }
             }
+            
+            for (var i = 0, l = localStorage.length; i<l; i++) {
+                var key = localStorage.key(i);
+                if (key.substring(0,13) == "absentStudent") {
+                    var value = localStorage[key];            
+                    str+=value + " ";
+                }
+            }
+
             document.getElementById('thisplace').innerHTML = str;            
         }
         
@@ -34,21 +46,26 @@
             
         }
         
+        function clearLocalStorage() {
+            localStorage.clear();            
+        }
         
     </script>
 
     <body>
 
-        <form id="initialReport" name="initialReport" method="get">
-        
-            <input type="checkbox" name="student" value="Todd Wegter"/> Todd Wegter<br/>
-            <input type="checkbox" name="student" value="Curtis Ullerich"/> Curtis Ullerich<br/>
-            <input type="checkbox" name="student" value="Fei Zhu"/> Fei Zhu<br/>
-            <input type="checkbox" name="student" value="Brandon Maxwell"/> Brandon Maxwell<br/>
+        <form id="initialReport" name="initialReport" method="get">        
+            <input type="radio" name="eventType" value="rehearsal"/>Rehearsal<br/>
+            <input type="radio" name="eventType" value="performance"/>Performance<br/>
+            <input type="checkbox" name="student" value="Todd Wegter"/>Todd Wegter<br/>
+            <input type="checkbox" name="student" value="Curtis Ullerich"/>Curtis Ullerich<br/>
+            <input type="checkbox" name="student" value="Fei Zhu"/>Fei Zhu<br/>
+            <input type="checkbox" name="student" value="Brandon Maxwell"/>Brandon Maxwell<br/>
         </form>
-        <input type="submit" value="Submit" onClick="readfile();"/>        
+        <input type="submit" value="Add Absent Students" onClick="addStudents();"/>     
+        <input type="submit" value="Clear All" onClick="clearLocalStorage();"/>   
+        <input type="submit" value="Upload" onClick="upload();"/>   
         <div id="thisplace"></div>
-
     </body>
 </html>
 
