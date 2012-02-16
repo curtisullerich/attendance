@@ -1,25 +1,23 @@
 <html>
-    <script type="text/javascript">
+    <script src="script.js">
+	</script>
+	
+	<script>
         //other things TODO
         //add an undo/resubmit button
         //add a view all currently stored (without reloading form)
-        //add an edit today's submission button
-        //add validation (like making sure it's a real netid for the tardy form, etc)
+        //add an edit today"s submission button
+        //add validation (like making sure it"s a real netid for the tardy form, etc)
         //more meaningful printing
         //how can we prevent localstorage from being cleared?
-          
-        var absentPrepend = "absentStudent";
-        var eventPrepend = "storedEvent";
+        
         
         //when true, adding new students to the cache also removes any unchecked students
         var currentlyEditing = false;
-        
-        function stringContains(sub, str) {            
-            return str.indexOf(sub) !== -1;
-        }
+		
         
         function cacheEvent() {
-            var eventForm = document.getElementById('event').elements;
+            var eventForm = document.getElementById("event").elements;
             var type = "";
             if (eventForm[0].checked == 1) {
                 type = eventForm[0].value; //rehearsal
@@ -37,13 +35,10 @@
             localStorage.setItem(key,value);        
         }
 
-        function dateToday() {
-            var d = new Date();        
-            return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
-        }        
+              
 
         function getCurrentEventTimes() {
-            var eventForm = document.getElementById('event').elements;
+            var eventForm = document.getElementById("event").elements;
             var startTime = eventForm[2].value + ":" + eventForm[3].value;
             var endTime = eventForm[4].value + ":" + eventForm[5].value;
             return startTime + " " + endTime;
@@ -51,7 +46,7 @@
 
         //clears form and stores contents to localStorage
         function cacheAbsences() {
-            var myform = document.getElementById('absences').elements;
+            var myform = document.getElementById("absences").elements;
 
             for (var i = 0; i < myform.length; i++) {
 
@@ -68,7 +63,7 @@
                if (myform[i].checked == 1 && myform[i].type=="checkbox") {
                     
                     
-                    //this shouldn't store any duplicates, by nature
+                    //this shouldn"t store any duplicates, by nature
                     localStorage.setItem(key,value);
                     
                     myform[i].checked = 0;
@@ -82,17 +77,17 @@
             
             var searchKey = dateToday() + " " + getCurrentEventTimes();
             
-            var form = document.getElementById('absences').elements;
+            var form = document.getElementById("absences").elements;
             for (var i = 0, l = localStorage.length; i<l; i++) {
                 var key = localStorage.key(i);
                 
                 //check all keys in the datastore that are absences and match the current date and time
                 if (stringContains(searchKey, key) && stringContains(absentPrepend, key)) {
-                    //grab the value so we can extract the student's name and set that checkbox
+                    //grab the value so we can extract the student"s name and set that checkbox
                     var value = localStorage[key];
                     for (var j = 0; j < form.length; j++) {
                         if (stringContains(form[j].value,value)) {
-                            //they're in the database, so check the box
+                            //they"re in the database, so check the box
                             form[j].checked = 1;
                         }
                         
@@ -118,7 +113,7 @@
                 }
             }
 
-            document.getElementById('absenceDiv').innerHTML = str;            
+            document.getElementById("absenceDiv").innerHTML = str;            
         }
 
         function printEvent() {
@@ -131,19 +126,14 @@
                 }            
             }
             
-            document.getElementById('eventDiv').innerHTML = str;
+            document.getElementById("eventDiv").innerHTML = str;
         }
                 
         function clearLocalStorage() {
             localStorage.clear();            
         }
         
-        function upload() {
-            //this will send the data to the server eventually
-
-            //ONLY IF UPLOAD WAS SUCCESSFUL
-            clearLocalStorage();
-        }
+        
         function cacheAndPrint() {
             cacheAbsences();
             printAbsences();
@@ -155,7 +145,7 @@
     </script>
 
     <body>
-        <br><strong>Marching Band Attendance Report</strong></br>
+        <h1>Marching Band Attendance Report</h1>
         
         <form id="event" name="event" method="get">
             <br><strong>What type of event is this?</strong></br>
