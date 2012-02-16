@@ -1,5 +1,7 @@
 <html>
 	<head>
+		<script src='script.js'>
+		</script>
 		<script>
 			
 			var nextID = localStorage.getItem('uniqueTardyID');
@@ -61,7 +63,8 @@
 		
 		<input type="submit" value="View Tardies" onclick="javascript: retrieveTardies();"></input>
 		<input type="submit" value="Clear Tardy List" onclick='javascript: clearLocalStorage();'></input>
-		
+		<input type="submit" value="click me" onclick='javascript: hello();'></input>
+		<div id="test button"></div>
 		<div id="tardies"></div>
 	</body>
 </html>
