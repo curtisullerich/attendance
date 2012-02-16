@@ -4,6 +4,11 @@
 		</script>
 		<script>
 		
+			/**
+			* TODO
+			*	chronological and alphabetical sorting of tardy list (radio buttons or value changing button)
+			**/
+		
 			//This prepares the unique tardy ID. If there is no unique tardy ID, it is set to 0.
 			//Otherwise, the existing value is preserved
 			if(localStorage.getItem("uniqueTardyID") == null)
@@ -125,8 +130,8 @@
 					if(stringContains(tardyPrepend,key))
 					{
 						localStorage.removeItem(key);
-						l = localStorage.length;
-						i--; //accounts for removal of entry
+						l--; //accounts for removal of entry in length of localStorage
+						i--; //accounts for removal of entry in position of search
 					}
 				}
 				//turn off printed tardy list
