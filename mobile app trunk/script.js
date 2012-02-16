@@ -18,6 +18,4 @@ function timeNow() {
 	return d.getHours()+":"+d.getMinutes();
 } 
 
-
-
 //end hiding script from old browsers -->
