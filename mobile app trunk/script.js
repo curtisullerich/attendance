@@ -58,26 +58,26 @@ function getLastName(netID){
 	return "lastname";
 }
 
-function localStorageContains(prepend, searchKey){
-	for(var i = 0, l = localStorage.length; i<l; i++)
-	{
-		var key = localStorage.key(i);
-		if(stringContains(prepend,key) && stringContains(searchKey,key))
-			return key;
-	}
-	return null;
-}
+// function localStorageContains(prepend, searchKey){
+	// for(var i = 0, l = localStorage.length; i<l; i++)
+	// {
+		// var key = localStorage.key(i);
+		// if(stringContains(prepend,key) && stringContains(searchKey,key))
+			// return key;
+	// }
+	// return null;
+// }
 
-
-function localStorageContainsEvent(time){
-	for(var i = 0, l = localStorage.length; i<l; i++)
-	{
-		var key = localStorage.key(i);
-		if(stringContains(eventPrepend,key) && keyDelimiter(key, "starttime")<time && keyDelimiter(key, "endtime")>time)
-			return true;
-	}
-	return false;
-}
+// //sadd date
+// function localStorageContainsEvent(time){
+	// for(var i = 0, l = localStorage.length; i<l; i++)
+	// {
+		// var key = localStorage.key(i);
+		// if(stringContains(eventPrepend,key) && keyDelimiter(key, "starttime")<time && keyDelimiter(key, "endtime")>time)
+			// return true;
+	// }
+	// return false;
+// }
 
 /**
 * Stores an entry with the standard key: prepend firstname lastname netID date startTime endTime
@@ -104,34 +104,34 @@ function clearLocalStoragewithPrepend(prepend){
 * This function delineates the key into an array (index 0=prepend, 1=firstname, 2=lastname, 3=netID, 4=date, 5=startTime, 6=endTime).
 * It then returns the desired component of the key
 **/
-function keyDelimiter(key,delimiter){
+function keyDelimiter(key,delimitee){
 	var keyArray = new Array();
 	keyArray = key.split(" ");
-	if(delimiter=="date"){
+	if(delimitee=="date"){
 		return keyArray[4];
 	}
-	else if(delimiter=="netID"){
+	else if(delimitee=="netID"){
 		return keyArray[3];
 	}
-	else if(delimiter=="lastname"){
+	else if(delimitee=="lastname"){
 		return keyArray[2];
 	}
-	else if(delimiter=="firstname"){
+	else if(delimitee=="firstname"){
 		return keyArray[1];
 	}
-	else if(delimiter=="dateandtime"){
+	else if(delimitee=="dateandtime"){
 		return keyArray[4]+keyArray[5]+keyArray[6];
 	}
-	else if(delimiter=="starttime"){
+	else if(delimitee=="starttime"){
 		return keyArray[5];
 	}
-	else if(delimiter=="endtime"){
+	else if(delimitee=="endtime"){
 		return keyArray[6];
 	}
 	return key;
 }
 
-function storeToArray(prepend, searchKey, delimiter){
+function storeToArray(prepend, searchKey, delimitee){
 	var index = 0;
 	var array = new Array();
 	for(var i = 0, l = localStorage.length; i<l; i++)
@@ -139,7 +139,7 @@ function storeToArray(prepend, searchKey, delimiter){
 		var key = localStorage.key(i);
 		if(stringContains(prepend,key) && stringContains(searchKey,key))
 		{
-			array[index++] = [keyDelimiter(key,delimiter),localStorage.getItem(key)];
+			array[index++] = [keyDelimiter(key,delimitee),localStorage.getItem(key)];
 		}
 	}
 	return array;

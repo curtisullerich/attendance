@@ -36,6 +36,7 @@
 				var netID = document.getElementById("student").value
 				if(!validate(netID))
 				{
+					netIDSelect();
 					return false;
 				}
 				//format of tardy (24 hour time): netID YYYY-MM-DD 12:30 am
@@ -137,24 +138,7 @@
 				//check if netID is registered
 				//*****************************//
 				
-				//check if there is a current event
-				if(!localStorageContainsEvent(timeNow())){
-					alert("There is no current event to be tardy for.");
-					document.getElementById("student").value = "";
-					return false;
-				}
 				
-				//check if student is already tardy for current event
-				var alreadyTardyKey = localStorageContains(tardyPrepend, netID+" "+dateToday());
-				if(alreadyTardyKey != null){
-					var tardyTime = keyDelimiter(alreadyTardyKey,"starttime");
-					if(localStorageContainsEvent(tardyTime)){
-						//alert for previously entered netID
-						alert("That netID has already been checked in tardy for this event.");
-						document.getElementById("student").value = "";
-						return false;
-					}
-				}
 				return true;
 			}
 			
