@@ -5,6 +5,8 @@
 *
 * @author Todd Wegter, Curtis Ullerich
 *
+* Latest Rev: 2-18-12
+*
 * standard key for localStorage: prepend firstname lastname netID date startTime endTime
 **/
 
