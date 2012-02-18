@@ -25,6 +25,12 @@
 				text_input.select ();
 			}
 			
+			function netIDSelect(){
+				var text_input = document.getElementById ("student");
+				text_input.focus ();
+				text_input.select ();
+			}
+			
 			/**
 			* This function submits a tardy to the local storage based on the netID entered in the input box
 			**/
@@ -37,22 +43,18 @@
 					return false;
 				}
 				//format of tardy (24 hour time): netID YYYY-MM-DD hh:mm
-				var tardyEntry = document.getElementById("student").value + " " + dateToday() + " " + timeNow();
-				storeTardy(tardyEntry);
-				retrieveTardies()
+				var netID = document.getElementById("student").value
+				var tardyEntry = netID + " " + dateToday() + " " + timeNow();
+				//store tardy with appropriate key
+				storeEntry(tardyPrepend, netID, dateToday(), timeNow(), "|", tardyEntry);
+				
 				document.getElementById("student").value = "";
+				retrieveTardies();
+				netIDSelect();
 				return false;
 			}
 			
-			/**
-			* This helper function stores a tardyEntry to the localStorage and increments the unique tardy ID
-			**/
-			function storeTardy(tardyEntry){
-				//stores tardy entry with key: tardyStudent0, tardyStudent1, etc.
-				localStorage.setItem(tardyPrepend+localStorage.getItem("uniqueTardyID"),tardyEntry);
-				//since all localStorage is entered as a String, parseInt is used to change "0" to 0 so 1 can be added
-				localStorage.setItem("uniqueTardyID", parseInt(localStorage.getItem("uniqueTardyID"))+1); 
-			}
+			
 			
 			/**
 			* This function shows and hides the tardy list, viewTardiesOn keeps track of whether the tardy list
@@ -72,27 +74,15 @@
 				if(viewTardiesOn){
 					//array for sorting
 					var tardyArray = new Array();
-					var tardyArrayIndex = 0;
 					var returnString = "<br>The Following Students Reported Being Tardy:</br>";
-					//iterates through all entries in localStorage
-					for(var i = 0, l = localStorage.length; i<l; i++)
-					{
-						var key = localStorage.key(i);
-						if(stringContains(tardyPrepend,key))
-						{
-							tardyArray[tardyArrayIndex++] = [key,localStorage.getItem(key)];
-						}
-					}
+					//stores localStorage to array to be sorted
+					tardyArray = storeToArray(tardyPrepend, dateToday(), "time");
 					//if people were tardy, sort them and print
 					if(tardyArray.length > 0){
 						//sort array
 						var sortedTardyArray = tardyArray.sort();
 						//assign sorted array to String
-						for(var i = 0, l = sortedTardyArray.length; i<l; i++)
-						{
-							var value = sortedTardyArray[i][1];
-							returnString += value + "</br>";
-						}
+						returnString += storageArrayToString(sortedTardyArray);
 						document.getElementById("tardies").innerHTML = returnString;
 						//changes button text
 						document.getElementById("viewButton").value = "Hide Tardies";
@@ -120,20 +110,10 @@
 				document.getElementById("clear").disabled = true;
 				document.getElementById("submit").disabled = true;
 				document.getElementById("viewButton").disabled = true;
+				document.getElementById("back").disabled = true;
 				document.getElementById("clear").value = "Clearing...";
-				//reset unique tardy ID to 0
-				localStorage.setItem("uniqueTardyID", 0);
-				//iterate through all localStorage entries
-				for(var i = 0, l = localStorage.length; i<l; i++)
-				{
-					var key = localStorage.key(i);
-					if(stringContains(tardyPrepend,key))
-					{
-						localStorage.removeItem(key);
-						l--; //accounts for removal of entry in length of localStorage
-						i--; //accounts for removal of entry in position of search
-					}
-				}
+				//clear all tardy records
+				clearLocalStoragewithPrepend(tardyPrepend);
 				//turn off printed tardy list
 				viewTardiesOn = false;
 				retrieveTardies();
@@ -143,8 +123,9 @@
 					document.getElementById("clear").disabled = false;
 					document.getElementById("submit").disabled = false;
 					document.getElementById("viewButton").disabled = false;
+					document.getElementById("back").disabled = false;
 					document.getElementById("clear").value = "Clear Tardy List";
-				},500);
+				},1000);
 			}
 			
 			/**
@@ -155,6 +136,10 @@
 				//check if the student field is blank
 				if(document.getElementById("student").value == "")
 					return false;
+				//check if student is tardy today
+				else if(localStorageContains(dateToday(){
+					///////////////////////////
+				}
 				else
 					return true;
 			}
