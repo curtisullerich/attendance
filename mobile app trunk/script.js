@@ -131,7 +131,19 @@ function keyDelimiter(key,delimitee){
 	return key;
 }
 
-function storeToArray(prepend, searchKey, delimitee){
+/**
+ * @date 2/17/12
+ * @author Todd Wegter
+ *
+ * 
+ * possible sortKeys: date, netID, lastname, firstname, dateandtime, starttime, endtime
+ *
+ * @param prepend the identifier that is prepended to the key in question
+ * @param searchKey the string by which to search
+ * @param sortKey the name of the field by which to search
+ *
+ */
+function storeToArray(prepend, searchKey, sortKey){
 	var index = 0;
 	var array = new Array();
 	for(var i = 0, l = localStorage.length; i<l; i++)
@@ -139,7 +151,7 @@ function storeToArray(prepend, searchKey, delimitee){
 		var key = localStorage.key(i);
 		if(stringContains(prepend,key) && stringContains(searchKey,key))
 		{
-			array[index++] = [keyDelimiter(key,delimitee),localStorage.getItem(key)];
+			array[index++] = [keyDelimiter(key,sortKey),localStorage.getItem(key)];
 		}
 	}
 	return array;
