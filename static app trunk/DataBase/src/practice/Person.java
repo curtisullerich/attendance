@@ -1,6 +1,6 @@
 package practice;
 
-import com.google.apphosting.api.DatastorePb.GetResponse.Entity;
+import com.google.appengine.api.datastore.*;
 
 /**
  * 
