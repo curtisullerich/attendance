@@ -9,12 +9,6 @@
 			*	chronological and alphabetical sorting of tardy list (radio buttons or value changing button)
 			**/
 		
-			//This prepares the unique tardy ID. If there is no unique tardy ID, it is set to 0.
-			//Otherwise, the existing value is preserved
-			if(localStorage.getItem("uniqueTardyID") == null)
-			{
-				localStorage.setItem("uniqueTardyID", 0);
-			}
 			
 			/**
 			* This function selects the netID input box by default on pageload
@@ -25,6 +19,9 @@
 				text_input.select ();
 			}
 			
+			/**
+			* This function selects the netID input box by default when called
+			**/
 			function netIDSelect(){
 				var text_input = document.getElementById ("student");
 				text_input.focus ();
@@ -36,18 +33,15 @@
 			**/
 			function submitTardy() {
 				//checks for valid ID
-				if(!validate())
+				var netID = document.getElementById("student").value
+				if(!validate(netID))
 				{
-					//alert for invalid netID
-					alert("Please enter a valid netID.");
 					return false;
 				}
-				//format of tardy (24 hour time): netID YYYY-MM-DD hh:mm
-				var netID = document.getElementById("student").value
-				var tardyEntry = netID + " " + dateToday() + " " + timeNow();
+				//format of tardy (24 hour time): netID YYYY-MM-DD 12:30 am
+				var tardyEntry = netID + " " + dateToday() + " " + twelveHourTimeNow();
 				//store tardy with appropriate key
-				storeEntry(tardyPrepend, netID, dateToday(), timeNow(), "|", tardyEntry);
-				
+				storeEntry(tardyPrepend, getFirstName(netID), getLastName(netID), netID, dateToday(), timeNow(), "|", tardyEntry);
 				document.getElementById("student").value = "";
 				retrieveTardies();
 				netIDSelect();
@@ -76,7 +70,7 @@
 					var tardyArray = new Array();
 					var returnString = "<br>The Following Students Reported Being Tardy:</br>";
 					//stores localStorage to array to be sorted
-					tardyArray = storeToArray(tardyPrepend, dateToday(), "time");
+					tardyArray = storeToArray(tardyPrepend, dateToday(), "starttime");
 					//if people were tardy, sort them and print
 					if(tardyArray.length > 0){
 						//sort array
@@ -132,16 +126,36 @@
 			* This function check the locally stored copy of the list of students to ensure that the
 			* entered netID is valid
 			**/
-			function validate(){
+			function validate(netID){
 				//check if the student field is blank
-				if(document.getElementById("student").value == "")
+				if(netID == ""){
+					//alert for invalid netID
+					alert("Please enter a valid netID.");
+					document.getElementById("student").value = "";
 					return false;
-				//check if student is tardy today
-				else if(localStorageContains(dateToday(){
-					///////////////////////////
 				}
-				else
-					return true;
+				//check if netID is registered
+				//*****************************//
+				
+				//check if there is a current event
+				if(!localStorageContainsEvent(timeNow())){
+					alert("There is no current event to be tardy for.");
+					document.getElementById("student").value = "";
+					return false;
+				}
+				
+				//check if student is already tardy for current event
+				var alreadyTardyKey = localStorageContains(tardyPrepend, netID+" "+dateToday());
+				if(alreadyTardyKey != null){
+					var tardyTime = keyDelimiter(alreadyTardyKey,"starttime");
+					if(localStorageContainsEvent(tardyTime)){
+						//alert for previously entered netID
+						alert("That netID has already been checked in tardy for this event.");
+						document.getElementById("student").value = "";
+						return false;
+					}
+				}
+				return true;
 			}
 			
 		</script>
