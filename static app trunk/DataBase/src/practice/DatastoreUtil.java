@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.logging.*;
 
 import com.google.appengine.api.datastore.*;
-import com.google.appengine.api.search.Util;
 
 public class DatastoreUtil 
 {
@@ -16,23 +15,7 @@ public class DatastoreUtil
 	public static void addPerson(Person toAdd)
 	{
 		//Checks to see if this person is already in the data store
-		Key key = KeyFactory.createKey("Person", toAdd.getNetID());
-		Entity person;
-		try 
-		{	  
-		  	  person = datastore.get(key);
-		} 
-		catch (EntityNotFoundException e) 
-		{
-		  	  person = null;
-		}
-		//If the person wasn't found in the database
-		if (person == null)
-		{
-			person = new Entity("Person", toAdd.getNetID());
-			//Can add other properties with
-			//person.setProperty("name", something else);
-		}
+		Entity person = createEntityFromPerson(toAdd);
 		logger.log(Level.INFO, "Saving Person");
 		datastore.put(person);
 	}
@@ -52,6 +35,18 @@ public class DatastoreUtil
 		}
 	}
 	
+	public static void deleteEntity(String netId)
+	{	
+		try
+		{
+			datastore.delete(KeyFactory.createKey("Person", netId));
+		}
+		catch (IllegalArgumentException e)
+		{
+			System.out.println("Entity is not in the datastore");
+		}
+	}
+	
 	public static void addList(List<Person> list)
 	{
 		
@@ -62,5 +57,28 @@ public class DatastoreUtil
 		//May need to add all the properties to the Entity so create a 
 		//full person object to add to the list
 		return null;
+	}
+	
+	//Returns null if that person is already there
+	private static Entity createEntityFromPerson(Person person)
+	{
+		Entity entity = findEntity(person.getNetID());
+		//Person is found
+		if (entity != null)
+		{
+			return null;
+		}
+		
+		//Person is not found so add a new one
+		entity = new Entity("Person", person.getNetID());
+		entity.setProperty("netId", person.getNetID());
+		entity.setProperty("firstName", person.getFirstName());
+		entity.setProperty("lastName", person.getLastName()); //lastName
+		entity.setProperty("password", person.getPassword()); //password
+		entity.setProperty("major", person.getMajor()); //major
+		entity.setProperty("advisor", person.getAdvisor()); //advisor
+		entity.setProperty("position", person.getPosition()); //position
+		
+		return entity;
 	}
 }
