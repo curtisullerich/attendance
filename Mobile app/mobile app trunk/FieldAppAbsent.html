@@ -1,14 +1,16 @@
 <html>
-    <script src="script.js"></script>	
+    <script src="script.js">
+	</script>
+	
 	<script>
         //other things TODO
         //add an undo/resubmit button
         //add a view all currently stored (without reloading form)
         //add an edit today"s submission button
-        //add validation (like making sure it's a real netid for the tardy form, etc)
+        //add validation (like making sure it"s a real netid for the tardy form, etc)
         //more meaningful printing
         //how can we prevent localstorage from being cleared?
-        //implement sorting of arrays
+        
         
         //when true, adding new students to the cache also removes any unchecked students
         var currentlyEditing = false;
@@ -86,18 +88,8 @@
         function repopulateForm() {
             
             var searchKey = dateToday() + " " + getCurrentEventStartTime()+" "+getCurrentEventEndTime();
-            var sortKey = "date";
-            var prepend = absentPrepend;
-
-            var array = storeToArray(prepend, searchKey, sortKey);
-            for (var j = 0; j < form.length; j++) {
-                
-                
-                
-            }
             
-            
-/*            var form = document.getElementById("absences").elements;
+            var form = document.getElementById("absences").elements;
             for (var i = 0, l = localStorage.length; i<l; i++) {
                 var key = localStorage.key(i);
                 
@@ -113,7 +105,7 @@
                         
                     }
                 }
-            }*/
+            }
             currentlyEditing = true;
         }
 
