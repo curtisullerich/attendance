@@ -19,6 +19,18 @@
 				return false;
 			}
 			
+			function absensePage(){
+				//check that entered TA data is valid
+				if(!validate())
+				{
+					//alert for invalid netID
+					alert("Please enter a valid TA netID.");
+					return false;
+				}
+				parent.location = "FieldAppAbsent.html";
+				return false;
+			}
+			
 			function validate(){
 				//check if the student field is blank
 				if(document.getElementById("TAnetID").value == "" || document.getElementById("TApassword").value == "")
@@ -27,21 +39,31 @@
 					return true;
 			}
 			
+			function help(){
+				alert("This page is the start page for the @10dance Mobile App.\n\nThe Update Class List button shows when the list of students was last updated."+
+				"\nClicking it updates the class list from the server."+
+				"\n\nThe Tardy Check-In button navigates to the tardy check-in page."+
+				"\n\nThe Report Absenses button navigates to the absense reporting page."+
+				"\n\nThe Upload Attendance Data button uploads the attendance data to the server."+
+				"\nUpon successful upload, the local attendance data is cleared."+
+				"\n\nBoth reporting absenses and uploading attendance data require valid TA login info.");
+				return false;
+			}
+			
 		</script>
 	</head>
-		<h1>Marching Band Mobile @10dance</h1>
-		
-		<input type="submit" id="update" value="Latest Class List: None&#13;&#10;Click to Update Class List" onclick="javascript: clearTardies();"></input></br>
-		<input type="submit" id="absent" value="Report Absences" onclick="parent.location='FieldAppAbsent.html'"></input>
-		<input type="submit" id="tardy" value="Tardy Check-In" onclick="parent.location='FieldAppTardy.html'"></input>
-		<input type="submit" id="export" value="Export Data" onclick="javascript: tardiesOnOff();"></input>
+		<h1>Marching Band Mobile @10dance
+		<input type="button" id="help" value="Help" onclick="javascript: help();"/></h1>
+		<input type="button" id="update" value="Latest Class List: None&#13;&#10;Click to Update Class List" onclick="javascript: update();"></input></br>
+		<input type="button" id="tardy" value="Tardy Check-In" onclick="parent.location='FieldAppTardy.html'"></input>
 		<div></br></div>
-		<form id="tardyReport" onsubmit="return upload();">Attendance Data Upload</br>
+		<form id="tardyReport" onsubmit="return upload();">TA Login Required to Record Absenses and Upload Data</br>
             <input type="text" id="TAnetID" placeholder="TA netID"/>
-			TA Login Required to Upload Data</br>
+			<input type="button" id="absent" value="Report Absences" onclick="javascript: absensePage();"/></br>
 			<input type="password" id="TApassword" placeholder="password"/>
 			<input type="submit" id="submit" value="Upload Attendance Data"/>
         </form>
+		<input type="button" id="export" value="Export Data" onclick="javascript: exportData();"></input>
 	<body>
 	</body>
 </html>
