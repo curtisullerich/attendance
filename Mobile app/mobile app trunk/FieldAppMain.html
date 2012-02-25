@@ -1,7 +1,11 @@
 <html>
 	<head>
+	
+		<link rel="stylesheet" type="text/css" href="FieldAppCSS.css" />
+	
 		<script src="script.js">
 		</script>
+		
 		<script>
 			
 			function upload() {
@@ -46,14 +50,17 @@
 				"\n\nThe Report Absenses button navigates to the absense reporting page."+
 				"\n\nThe Upload Attendance Data button uploads the attendance data to the server."+
 				"\nUpon successful upload, the local attendance data is cleared."+
-				"\n\nBoth reporting absenses and uploading attendance data require valid TA login info.");
+				"\n\nBoth reporting absenses and uploading attendance data require valid TA login info."+
+				"\n\nExport Data stores the data to the computer so it can be uploaded using the main @10dance system at a later time and clears the data from the app's local storage. "+
+				"TA login info is not required to export data.");
 				return false;
 			}
 			
 		</script>
 	</head>
-		<h1>Marching Band Mobile @10dance
-		<input type="button" id="help" value="Help" onclick="javascript: help();"/></h1>
+		<h1>@10dance<br/>Mobile Attendance App</h1>
+		
+		<input type="button" id="help" value="Help" onclick="javascript: help();"/><br/><br/>
 		<input type="button" id="update" value="Latest Class List: None&#13;&#10;Click to Update Class List" onclick="javascript: update();"></input></br>
 		<input type="button" id="tardy" value="Tardy Check-In" onclick="parent.location='FieldAppTardy.html'"></input>
 		<div></br></div>
@@ -61,9 +68,10 @@
             <input type="text" id="TAnetID" placeholder="TA netID"/>
 			<input type="button" id="absent" value="Report Absences" onclick="javascript: absensePage();"/></br>
 			<input type="password" id="TApassword" placeholder="password"/>
-			<input type="submit" id="submit" value="Upload Attendance Data"/>
+			<input type="submit" id="submit" value="Upload Attendance Data"/>	|	
+			<input type="button" id="export" value="Export Data" onclick="javascript: exportData();"></input>
         </form>
-		<input type="button" id="export" value="Export Data" onclick="javascript: exportData();"></input>
+		
 	<body>
 	</body>
 </html>

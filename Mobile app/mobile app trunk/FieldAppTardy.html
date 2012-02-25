@@ -1,5 +1,8 @@
 <html>
 	<head>
+		
+		<link rel="stylesheet" type="text/css" href="FieldAppCSS.css" />
+	
 		<script src="script.js">
 		</script>
 		
@@ -178,21 +181,21 @@
 	</head>
 	
 	<body>
-	<h1>Marching Band Tardy Check-In</h1>
-		<form id="tardyReport" onsubmit="return submitTardy();">netID
+	<h1>@10dance<br/>Tardy Check-In</h1>
+		<form id="tardyReport" onsubmit="return submitTardy();">
             <input type="text" id="student" placeholder="netID"/>
 			<input type="submit" id="submit" value="Submit Tardy"/>
         </form>
 		
 		<input type="button" id="viewButton" value="View Tardies" onclick="javascript: tardiesOnOff();"></input>
-		<input type="hidden" id="clear" value="Clear Tardy List" onclick="javascript: clearTardies();"></input></br>
+		<input type="button" id="clear" value="Clear Tardy List" onclick="javascript: clearTardies();"></input></br>
 		
 		<div></br></div>
 		
 		<form id="tardySortType">
 			<u>Tardy List Sort Style</u></br>
-			<input type="radio" name="sortType" value="Time" checked/>Time<br/>
-			<input type="radio" name="sortType" value="netID"/>netID
+			<input type="radio" name="sortType" value="Time" checked/>Time
+			<input type="radio" name="sortType" value="netID"/>netID<br/>
 			<input type="button" id="resort" value="Re-Sort Tardy List" onclick="javascript: retrieveTardies();"/><br/>
 		</form>
 		

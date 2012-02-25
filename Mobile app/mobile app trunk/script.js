@@ -37,9 +37,9 @@ function dateToday() {
 	var month = d.getMonth()+1;
 	var date = d.getDate();
 	//add 0 for sortability
-	if(parseInt(month)<10)
+	if(parseInt(month,10)<10)
 		month = "0"+month;
-	if(parseInt(date)<10)
+	if(parseInt(date,10)<10)
 		date = "0"+date;
 	return d.getFullYear()+"-"+month+"-"+date;
 }
@@ -56,9 +56,9 @@ function timeNow() {
 	var hours = d.getHours();
 	var minutes = d.getMinutes();
 	//add 0 for sortability
-	if(parseInt(hours)<10)
+	if(parseInt(hours,10)<10)
 		hours = "0"+hours;
-	if(parseInt(minutes)<10)
+	if(parseInt(minutes,10)<10)
 		minutes = "0"+minutes;
 	return hours+minutes;
 } 
@@ -75,18 +75,18 @@ function twelveHourTimeNow(){
 	var hours = d.getHours();
 	var ampm;
 	//decide if am or pm
-	if((parseInt(hours)) < 12)
+	if((parseInt(hours,10)) < 12)
 		ampm = "am";
 	else
 		ampm = "pm";
 	//use 12 for 0, else just mod the time by 12 to get the hours
-	if(parseInt(hours) == 0)
+	if(parseInt(hours,10) == 0)
 		hours = 12;
 	else
-		hours = parseInt(hours)%12;
+		hours = parseInt(hours,10)%12;
 	var minutes = d.getMinutes();
 	//add 0 for sortability
-	if(parseInt(minutes)<10)
+	if(parseInt(minutes,10)<10)
 		minutes = "0"+minutes;
 	return hours+":"+minutes+" "+ampm;
 }
@@ -139,9 +139,9 @@ function storeEntry(prepend, firstname, lastname, netID, date, startTime, endTim
 *
 * @author Curtis Ullerich
 **/
-function removeEntry(prepend, firstname, lastname, netID, date, startTime, endTime, entry){
+function removeEntry(prepend, firstname, lastname, netID, date, startTime, endTime){
 	var key = prepend+" "+firstname+" "+lastname+" "+netID+" "+date+" "+startTime+" "+endTime;
-	localStorage.removeItem(key,entry);
+	localStorage.removeItem(key);
 }
 
 
