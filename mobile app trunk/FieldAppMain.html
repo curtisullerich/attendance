@@ -1,0 +1,47 @@
+<html>
+	<head>
+		<script src="script.js">
+		</script>
+		<script>
+			
+			function upload() {
+				//check that entered TA data is valid
+				if(!validate())
+				{
+					//alert for invalid netID
+					alert("Please enter a valid TA netID.");
+					return false;
+				}
+				//this will send the data to the server eventually
+
+				//ONLY IF UPLOAD WAS SUCCESSFUL
+				//clearLocalStorage();
+				return false;
+			}
+			
+			function validate(){
+				//check if the student field is blank
+				if(document.getElementById("TAnetID").value == "" || document.getElementById("TApassword").value == "")
+					return false;
+				else
+					return true;
+			}
+			
+		</script>
+	</head>
+		<h1>Marching Band Mobile @10dance</h1>
+		
+		<input type="submit" id="update" value="Latest Class List: None&#13;&#10;Click to Update Class List" onclick="javascript: clearTardies();"></input></br>
+		<input type="submit" id="absent" value="Report Absences" onclick="parent.location='FieldAppAbsent.html'"></input>
+		<input type="submit" id="tardy" value="Tardy Check-In" onclick="parent.location='FieldAppTardy.html'"></input>
+		<input type="submit" id="export" value="Export Data" onclick="javascript: tardiesOnOff();"></input>
+		<div></br></div>
+		<form id="tardyReport" onsubmit="return upload();">Attendance Data Upload</br>
+            <input type="text" id="TAnetID" placeholder="TA netID"/>
+			TA Login Required to Upload Data</br>
+			<input type="password" id="TApassword" placeholder="password"/>
+			<input type="submit" id="submit" value="Upload Attendance Data"/>
+        </form>
+	<body>
+	</body>
+</html>

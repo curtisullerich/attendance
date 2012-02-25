@@ -1,0 +1,86 @@
+<html>
+    <script type="text/javascript">
+        //other things TODO
+        //add an undo/resubmit button
+        //add a view all currently stored (without reloading form)
+        //add an edit submission button
+          
+        var absentPrepend = "absentStudent";
+        function loaded() {
+            var length = window.localStorage.length;
+            document.querySelector('#local-count').innerHTML = length;
+            document.querySelector('#submit').addEventListener('click',processData,false);
+        }
+
+        function addStudents() {
+            
+            var str="<br>These people have been recorded as absent:</br>";
+            var myform = document.getElementById('initialReport').elements;
+            
+            for (var i = 0; i < myform.length; i++) {
+               if (myform[i].checked == 1 && myform[i].type=="checkbox") {
+                    var d = new Date();
+                    localStorage.setItem(absentPrepend+d.getTime(),myform[i].value);
+                }
+            }
+            
+            for (var i = 0, l = localStorage.length; i<l; i++) {
+                var key = localStorage.key(i);
+                if (key.substring(0,13) == absentPrepend) {
+                    var value = localStorage[key];            
+                    str+=value + " ";
+                }
+            }
+
+            document.getElementById('thisplace').innerHTML = str;            
+        }
+        
+        function readfile() {
+            var file = new XMLHttpRequest();
+            file.open("GET","http://dl.dropbox.com/u/3942841/names.txt");
+            file.onreadystatechange = function() {
+                if (file.readyState === 4) {
+                    if (file.status === 200) {
+                        allText = file.responseText;
+                        lines = file.responseText.split("\n");
+                    }
+                }
+            
+            }
+            file.send(null);
+            
+        }
+        
+        function clearLocalStorage() {
+            localStorage.clear();            
+        }
+        
+        function upload() {
+            //this will send the data to the server eventually
+
+            //ONLY IF UPLOAD WAS SUCCESSFUL
+            clearLocalStorage();
+        }
+        
+    </script>
+
+    <body>
+        <br><strong>Marching Band Attendance Report</strong></br>
+        <form id="initialReport" name="initialReport" method="get">        
+            <br><strong>What type of event is this?</strong></br>
+            <input type="radio" name="eventType" value="rehearsal"/>Rehearsal<br/>
+            <input type="radio" name="eventType" value="performance"/>Performance<br/>
+            <br><strong>Mark all students that are absent.</strong></br>
+            <input type="checkbox" name="student" value="Todd Wegter"/>Todd Wegter<br/>
+            <input type="checkbox" name="student" value="Curtis Ullerich"/>Curtis Ullerich<br/>
+            <input type="checkbox" name="student" value="Fei Zhu"/>Fei Zhu<br/>
+            <input type="checkbox" name="student" value="Brandon Maxwell"/>Brandon Maxwell<br/>
+        </form>
+
+        <input type="submit" value="Add Absent Students" onClick="addStudents();"/>     
+        <input type="submit" value="Clear All" onClick="clearLocalStorage();"/>   
+        <input type="submit" value="Upload" onClick="upload();"/>   
+        <div id="thisplace"></div>
+    </body>
+</html>
+
