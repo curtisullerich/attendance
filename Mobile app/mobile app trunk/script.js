@@ -82,7 +82,7 @@ function twelveHourTimeNow(){
 	else
 		ampm = "pm";
 	//use 12 for 0, else just mod the time by 12 to get the hours
-	if(parseInt(hours,10) == 0)
+	if(parseInt(hours,10) == 0 || parseInt(hours,10) == 12)
 		hours = 12;
 	else
 		hours = parseInt(hours,10)%12;

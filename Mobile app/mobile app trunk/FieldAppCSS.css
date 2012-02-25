@@ -4,3 +4,20 @@ body {text-align:center;}
 body {font-family:"Calibri", Calibri, sansserif;}
 
 h1 {color:white;}
+
+.help {
+	position: absolute;
+	top: 7px;
+	right: 0.5em;
+}
+
+.back{
+	position: absolute;
+	top: 7px;
+	left: 0.5em;
+}
+
+.button{
+	width: 14em;
+	height: 3em;
+}
