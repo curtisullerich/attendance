@@ -79,11 +79,12 @@ var search = function(entity) {
 	$('.message').hide();
 	// collecting the field values from the form
 	 var formEleList = $('form#'+entity+'-search-form').serializeArray();
+	 
 	 //assigning the filter criteria
 	 var filterParam=new Array();
 	 for(var i=0;i<formEleList.length;i++){
 		 filterParam[filterParam.length]=new param(formEleList[i].name,formEleList[i].value); 
-		 alert("alertttttttt  "+filterParam[0].value);
+		 //HERE
 	 }
 	 //calling population of the list through ajax
 	 populateList(entity,filterParam);
@@ -201,6 +202,7 @@ var deleteEntity = function(entity,id,parentid) {
 	});
 }
 
+//TODO????????????????????????????????????????????????????????????????????????????????????????????
 // function to get the data by setting url, filter, success function and error function
 var getData=function(url,filterData,successFn,errorFn){
 	// making the ajax call
@@ -208,23 +210,32 @@ var getData=function(url,filterData,successFn,errorFn){
 		url : url,
 		type : "GET",
 		data:filterData,
-		success : function(resp) {
+		success : function(resp) //resp??????????????????????????????? 
+		{
+			alert("hi1");
 			//calling the user defined success function
-			if(successFn)
+			if(successFn) 
 			successFn(resp);	
+			
+			alert("hi end");
 		},
-	error:function(e){
-		//calling the user defined error function
-		if(errorFn)
-		 errorFn(e);
-	}
+		
+		error:function(e)
+		{
+			//calling the user defined error function
+			if(errorFn)
+			 errorFn(e);
+		}
 	});
 }
 
+//?????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
 //function to populate the select box which takes input as id of the selectbox element and url to get the data
-var populateSelectBox = function(id, url) {
+var populateSelectBox = function(id, url) 
+{
 	//specifying the success function. When the ajax response is successful then the following function will be called
-	var successFn=function(resp){
+	var successFn=function(resp)
+	{
 		//getting the select box element
 		var selectBox=$('#'+id);
 		//setting the content inside as empty
@@ -234,11 +245,14 @@ var populateSelectBox = function(id, url) {
 		//appending the first option as select to the select box
 		selectBox.append('<option value="">Select</option>');
 		//adding all other values
-		for (var i=0;i<data.length;i++) {
-			selectBox.append('<option value="'+data[i].name+'">'+data[i].name+'</option>');
+		
+		for (var i=0;i<data.length;i++) 
+		{
+			selectBox.append('<option value="'+data[i].name+'">'+data[i].name+'</option>');	
 		}
 	}
 	//calling the getData function with the success function
+
 	getData(url,null,successFn,null);
 }
 
@@ -254,32 +268,59 @@ var populateList=function(entity, filter){
 		}
 		//creating the html content
 		var htm='';
-		if(data.length > 0){
-			for (var i=0;i<data.length;i++){
+		
+		//temp variable, to store all of the data
+		var temp='';
+			
+		if(data.length > 0)
+		{
+			for (var i=0;i<data.length;i++)
+			{
 				//creating a row
 				htm+='<tr>';
 				switch(entity)
 				{
 				case ENTITY_PRODUCT:
 					htm+='<td>'+data[i].name+'</td><td>'+data[i].description+'</td>';
+//					alert(" data[i].name:"+data[i].name+ "..... data[i].description:"+data[i].description);
+					temp+=data[i].name;
+					temp+=', ';
 					break;
-				case ENTITY_ITEM:
-					htm+='<td>'+data[i].name+'</td><td>'+data[i].price+'</td><td>'+data[i].product+'</td>';
-					break;
+//				case ENTITY_ITEM:
+//					htm+='<td>'+data[i].name+'</td><td>'+data[i].price+'</td><td>'+data[i].product+'</td>';
+//					break;
 				default:
 					htm+=""; 
 				}
-				if(entity == ENTITY_ITEM)
-					htm+='<td><a href="#" class="delete-entity" onclick=\'deleteEntity("'+entity+'","'+data[i].name+'","'+data[i].product+'")\'>Delete</a> | <a href="#" class="edit-entity" onclick=\'edit("'+entity+'","'+data[i].name+'")\'>Edit</a></td></tr>';
-				else
-					htm+='<td><a href="#" class="delete-entity" onclick=\'deleteEntity("'+entity+'","'+data[i].name+'")\'>Delete</a> | <a href="#" class="edit-entity" onclick=\'edit("'+entity+'","'+data[i].name+'")\'>Edit</a></td></tr>';
+			//FOR ACTION
+				//ENTITY_ITEM   --item
+//				if(entity == ENTITY_ITEM)
+//				{	
+//					htm+='<td><a href="#" class="delete-entity" onclick=\'deleteEntity("'+entity+'","'+data[i].name+'","'+data[i].product+'")\'>Delete</a> | <a href="#" class="edit-entity" onclick=\'edit("'+entity+'","'+data[i].name+'")\'>Edit</a></td></tr>';
+////					 alert("name is: "+data[i].name+" product:"+data[i].product);
+//
+//				}
+//				ENTITY_PRODUCT ---product
+//				else
+//				{
+//					alert(" entity:"+entity+ " name is:"+data[i].name);
+//					htm+='<td><a href="#" class="delete-entity" onclick=\'deleteEntity("'+entity+'","'+data[i].name+'")\'>Delete</a> | <a href="#" class="edit-entity" onclick=\'edit("'+entity+'","'+data[i].name+'")\'>Edit</a></td></tr>';
+//				}
+
 			}
+			
+			alert("all the data: "+temp);
 		}
-		else{
-			//condition to show message when data is not available
-			var thElesLength=$('#'+entity+'-list-ctr table thead th').length;
-			htm+='<tr><td colspan="'+thElesLength+'">No items found</td></tr>';
-		}
+		
+		//UNKNOW ????????????
+//		else
+//		{
+//			//condition to show message when data is not available
+//			var thElesLength=$('#'+entity+'-list-ctr table thead th').length;
+//			htm+='<tr><td colspan="'+thElesLength+'">No items found</td></tr>';
+//			 alert("NOT HERE ");
+//
+//		}
 		$('#'+entity+'-list-tbody').html(htm);
 	}
 	getData("/"+entity,filter,successFn,null);
