@@ -11,7 +11,7 @@
 **/
 
 var absentPrepend = "absentStudent";
-var rehearsalPrepend = "storedEvent";
+var eventPrepend = "storedEvent";
 var tardyPrepend = "tardyStudent";
 
 
@@ -133,6 +133,17 @@ function storeEntry(prepend, firstname, lastname, netID, date, startTime, endTim
 	var key = prepend+" "+firstname+" "+lastname+" "+netID+" "+date+" "+startTime+" "+endTime;
 	localStorage.setItem(key,entry);
 }
+
+/**
+* Removes an entry with the standard key: prepend firstname lastname netID date startTime endTime
+*
+* @author Curtis Ullerich
+**/
+function removeEntry(prepend, firstname, lastname, netID, date, startTime, endTime, entry){
+	var key = prepend+" "+firstname+" "+lastname+" "+netID+" "+date+" "+startTime+" "+endTime;
+	localStorage.removeItem(key,entry);
+}
+
 
 /**
 * Clears all items in localStorage which have the specified prepend
