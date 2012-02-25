@@ -10,10 +10,6 @@
         //We need to formalize all handling of time. Pick a 12-hour format and modify every instance of it to match that. Make it human-readable.
         //store all current data upon page close?
         //prompt to leave open if page closes?
-        
-        //when true, adding new students to the cache also removes any unchecked students
-        var currentlyEditing = false;
-
 
 //        window.onload = junk;
         window.onload = function() {
@@ -100,6 +96,14 @@
             if (endPM) {
                 endHour += 12;
             }
+
+            if (!startPM && startHour==12) {
+                startHour-=12;
+            }
+            
+            if(!endPM && endHour==12) {
+                endHour-=12;
+            }
                         
             if (startHour > endHour) {
                 return false;
@@ -110,17 +114,15 @@
             }
             
             return true;
-        
         }
         
-        
-        function getCurrentEventType(){
-            var eventForm = document.getElementById("event").elements;
+        function getCurrentEventType() {
+            var eventFormElements = document.getElementById("event").elements;
             var type = "";
-            if (eventForm[0].checked == 1) {
-                type = eventForm[0].value; //rehearsal
-            } else if (eventForm[1].checked == 1) {
-                type = eventForm[1].value; //performance
+            if (eventFormElements[0].checked == 1) {
+                type = eventFormElements[0].value; //rehearsal
+            } else if (eventFormElements[1].checked == 1) {
+                type = eventFormElements[1].value; //performance
             } else {
                 type = null;
             }
@@ -131,17 +133,17 @@
         function cacheEvent() {
             var type = getCurrentEventType();
 
-            var startTime = parseInt(getCurrentEventStartTime(),10);
-            if (startTime < 12) {
-              startTime = startTime + 12;
-            }
-            
-            var endTime = parseInt(getCurrentEventEndTime(),10);//
-            if (endTime < 12) {
-                endTime = endTime + 12;
-            }
+            var startTime = parseInt(getCurrentEventStartTime(24),10);
+            var endTime = parseInt(getCurrentEventEndTime(24),10);
             
 			var entry = type + " " + dateToday() + " " + startTime + " " + endTime;
+			var eventPrepend;
+			if (type == "rehearsal") {
+                eventPrepend = rehearsalPrepend;
+            } else {
+                eventPrepend = performancePrepend;
+            }			
+			
 			storeEntry(eventPrepend, type, "|", "|", dateToday(), startTime, endTime, entry);
 		}
 
@@ -149,157 +151,165 @@
         function uncacheEvent() {
             var type = getCurrentEventType();
 
-            var startTime = parseInt(getCurrentEventStartTime(),10);
-            if (startTime < 12) {
-              startTime = startTime + 12;
-            }
-            
-            var endTime = parseInt(getCurrentEventEndTime(),10);
-            if (endTime < 12) {
-                endTime = endTime + 12;
-            }
+            var startTime = parseInt(getCurrentEventStartTime(24),10);
+            var endTime = parseInt(getCurrentEventEndTime(24),10);
             
 			var entry = type + " " + dateToday() + " " + startTime + " " + endTime;
+			var eventPrepend;
+			if (type == "rehearsal") {
+                eventPrepend = rehearsalPrepend;
+            } else {
+                eventPrepend = performancePrepend;
+            }			
+			//alert(eventPrepend+" "+type+" "+"|"+" "+"|"+" "+dateToday()+" "+startTime+" "+endTime);
 			removeEntry(eventPrepend, type, "|", "|", dateToday(), startTime, endTime, entry);
         }
 
+		function getCurrentEventStartTime(radix) {
+            var startHour = parseInt(document.getElementById("startHour").value,10);
+            var startMinute = parseInt(document.getElementById("startMinute").value,10);
+
+            if (radix == 12) {
+                //do nothing, because values are stored in the form
+                //in twelve-hour format
+            } else if (radix == 24) {
+                var isStartPM = document.getElementById("startPM").checked == 1;
+                if (isStartPM) {
+                    startHour += 12;
+                }
+                if (!isStartPM && startHour==12) {
+                    startHour -= 12;
+                }
+                
+            }
+            //pad for ASCII sorting
+   			if(startHour<10)
+   				startHour = "0"+startHour;
+   			if(startMinute<10)
+   				startMinute = "0"+startMinute;
 		
-		function getCurrentEventStartTime() {
-//            var eventForm = document.getElementById("event").elements;
-			var startHour = document.getElementById("startHour").value;
-            var startMinute = document.getElementById("startMinute").value;
-            
-            
-            
-            //TODO: why do we prepend before the hour? Do we want to put a colon here? same below
-			if(parseInt(startHour)<10)
-				startHour = "0"+startHour;
-			if(parseInt(startMinute)<10)
-				startMinute = "0"+startMinute;
-			
-            return startHour+startMinute;
+            return startHour+""+startMinute;//to make sure it's a string?
         }
 		
-		function getCurrentEventEndTime() {
-           // var eventForm = document.getElementById("event").elements;
-			
-            var endHour = document.getElementById("endHour").value;
-			var endMinute = document.getElementById("endMinute").value;
-			
-			if(parseInt(endHour)<10)
-				endHour = "0"+endHour;
-			if(parseInt(endMinute)<10)
-				endMinute = "0"+endMinute;
-            return endHour+endMinute;
+		function getCurrentEventEndTime(radix) {
+            var endHour = parseInt(document.getElementById("endHour").value,10);
+            var endMinute = parseInt(document.getElementById("endMinute").value,10);
+
+            if (radix == 12) {
+                //do nothing, because values are stored in the form
+                //in twelve-hour format
+            } else if (radix == 24) {
+                var isEndPM = document.getElementById("endPM").checked == 1;
+                if (isEndPM) {
+                    endHour += 12;
+                }
+                if (!isEndPM && endHour==12) {
+                    endHour -= 12;
+                }
+                
+            }
+            //pad for ASCII sorting
+   			if(endHour<10)
+   				endHour = "0"+endHour;
+   			if(endMinute<10)
+   				endMinute = "0"+endMinute;
+		
+            return endHour+""+endMinute;//to make sure it's a string?
         }
-        
-        
+
         //clears form and stores contents to localStorage
         function cacheAbsences() {
             var myform = document.getElementById("absences").elements;
 
             for (var i = 0; i < myform.length; i++) {
-
-                    //of the form "netID 2012-12-21"
-                    var eventTimes = getCurrentEventStartTime()+" "+getCurrentEventEndTime();
-                    var value = myform[i].value + " " + dateToday() + " " + eventTimes;
-                    //of the form "absentStudent netID 2012-12-21 1200 1350"
-                    var key = absentPrepend + " " + value;
-
-                if (myform[i].type =="checkbox" && currentlyEditing && myform[i].checked == 0) {
-                    localStorage.removeItem(key);
-                }
-
                if (myform[i].checked == 1 && myform[i].type=="checkbox") {
+
+                    var value = myform[i].value + " " + dateToday() + " " + getCurrentEventStartTime(24)+" "+getCurrentEventEndTime(24);
                     
-                    //this shouldn"t store any duplicates, by nature
-                    localStorage.setItem(key,value);
+                    var firstname = myform[i].value.split(" ")[0];
+                    var lastname = myform[i].value.split(" ")[1];
+                    
+                    var absentPrepend = absentPrependPerformance;
+                    var type = getCurrentEventType();
+                    if (type == "rehearsal") {
+                        absentPrepend = absentPrependRehearsal;
+                    }
+                    
+                    storeEntry(absentPrepend, firstname, lastname, "|", dateToday(), getCurrentEventStartTime(24), getCurrentEventEndTime(24), value);
                     
                     myform[i].checked = 0;
                 }
             }
-            currentlyEditing = false;
-            document.getElementById("addOrEditButton").value="Add Absent Students";
         }
-        
-        function editEvent() {
-            markEventFieldsActive(true);
-            document.getElementById("delbut").type = "hidden";
-            document.getElementById("editEvent").type="hidden";
-            document.getElementById("editMain").type="hidden";
-        }
-        
-        //makes the event and its delete button active or inactive
-        function markEventFieldsActive(bool) {
-            var state = "";
-            if (!bool) {
-                state="disabled";
-            }
-            document.getElementById("rehearsalRadio").disabled = state;
-            document.getElementById("performanceRadio").disabled = state;
-            document.getElementById("startMinute").disabled = state;
-            document.getElementById("startAM").disabled = state;
-            document.getElementById("startPM").disabled = state;
-            document.getElementById("endMinute").disabled = state;
-            document.getElementById("endAM").disabled = state;
-            document.getElementById("endPM").disabled = state;
-            document.getElementById("endHour").disabled = state;
-            document.getElementById("startHour").disabled = state;
-        }
-        
+
         //takes everything from localstorage for the selected rehearsal and puts it back into the form
-        function repopulateForm() {        
-        
-            var startTime = parseInt(getCurrentEventStartTime(),10);
-            if (startTime < 12) {
-              startTime = startTime + 12;
-            }
-            
-            var endTime = parseInt(getCurrentEventEndTime(),10);//
-            if (endTime < 12) {
-                endTime = endTime + 12;
-            }
+        function repopulateForm() {
+
+            var startTime = parseInt(getCurrentEventStartTime(24),10);   
+            var endTime = parseInt(getCurrentEventEndTime(24),10);//
 
             //search for the event to make sure it happened. If it didn't, then the user should not have clicked edit, so don't allow submission of this data.
             if (!localStorageContainsEvent(getCurrentEventType(), dateToday(), startTime, endTime)) {
-                alert("The entered event is not currently cached.");
+                alert("The entered event is not currently cached. No changes were made.");
                return;
             }
             
-            //do this to remove the event if the user changes anything about it. New one will always be added below.
-            uncacheEvent();
+            var searchKey = dateToday() + " " + getCurrentEventStartTime(24)+" "+getCurrentEventEndTime(24);
+            var sortKey = "key";
             
-           
-            //mark event fields as inactive
-            markEventFieldsActive(false);
+            var absentPrepend = absentPrependPerformance;
+            var type = getCurrentEventType();
+            if (type == "rehearsal") {
+                absentPrepend = absentPrependRehearsal;
+            }
+
             
-            
-            document.getElementById("delete").style.visibility = "visible";
-            
-            var searchKey = dateToday() + " " + getCurrentEventStartTime()+" "+getCurrentEventEndTime();
-            var sortKey = "date";
             var prepend = absentPrepend;
 
             var array = storeToArray(prepend, searchKey, sortKey);
-            
-            var form = document.getElementById("absences").elements;
+            var formElements = document.getElementById("absences").elements;
+
+
             for (var i = 0, l = array.length; i<l; i++) {
-                var key = array[i];
+                var key = array[i][0];//array[i][1];//right? wrong? TODO 
                 
-//check all keys in the datastore that are absences and match the current date and time
-//grab the value so we can extract the student's name and set that checkbox
+//check all keys in the datastore that are absences and match the current date and time.
+//grab the value so we can extract the student's name and set that checkbox.
                 var value = array[i][1];
-                for (var j = 0; j < form.length; j++) {
-                    if (stringContains(form[j].value,value)) {
-                    //they're in the database, so check the box
-                        form[j].checked = 1;
+
+                for (var j = 0; j < formElements.length; j++) {
+                    //all _vars are from the current form.
+
+                    var _prepend = absentPrepend;
+//                    if (_type == "rehearsal") {
+  //                      _prepend = rehearsalPrepend;
+    //                }
+                    var _firstname = formElements[j].value.split(" ")[0];
+                    var _lastname = formElements[j].value.split(" ")[1];                
+                    var _date = dateToday();
+                    var _netID = "|";
+                    var _starttime = getCurrentEventStartTime(24);
+                    var _endtime = getCurrentEventEndTime(24);
+                    var _entry = "|";
+             //       alert(_prepend+" "+_firstname+" "+_lastname+" "+_netID+" "+_date+" "+_starttime+" "+_endtime+" "+_entry);
+                    //these are from the current key
+                    var firstname =  keyDelimiter(key,"firstname");
+                    var lastname = keyDelimiter(key,"lastname");
+//                    var netID = keyDelimiter(key,"netID");
+//                    var startTime = keyDelimiter(key,"starttime");
+//                    var endTime = keyDelimiter(key,"endtime");
+//                    var date = keyDelimiter(key,"date");
+                    var name = firstname + " " + lastname;
+//                  //  alert(formElements[j].value + "==" + name);
+                    var toremove = removeEntry(_prepend,_firstname,_lastname,_netID,_date,_starttime,_endtime,_entry);
+                //    alert(toremove);
+                    if (toremove){
+                        formElements[j].checked = 1;
+                        break;
                     }
-                    
                 }
             }
-            currentlyEditing = true;
-            document.getElementById("addOrEditButton").value="Submit Changes";
-            
+//            document.getElementById("addOrEditButton").value="Submit Changes";            
         }
 
         function stringifyEvent() {
@@ -310,50 +320,51 @@
 
         function printAbsences() {
             var str="<br>These people have been recorded as absent:</br>";
-            for (var i = 0, l = localStorage.length; i<l; i++) {
-                var key = localStorage.key(i);
-                if (stringContains(absentPrepend, key)) {
-                    var value = localStorage[key];            
-                    str+=value + "; ";
-                }
+            var array = storeToArray(absentPrependPerformance," ","date");
+            var array2 = storeToArray(absentPrependRehearsal," ","date");
+            var array3 = array.concat(array2);
+            for (var i = 0; i < array3.length; i++) {
+                str+=array3[i][1] + "; ";
             }
 
-            document.getElementById("absenceDiv").innerHTML = str;            
+            document.getElementById("absenceDiv").innerHTML = str;
         }
 
         function printEvent() {
             var str="<br>Events currently cached:</br>";
             for (var i = 0, l = localStorage.length; i<l; i++) {
                 var key = localStorage.key(i);
-                if (stringContains(eventPrepend, key)) {
+                if (stringContains(rehearsalPrepend, key) || stringContains(performancePrepend,key)) {
                     var value = localStorage[key];
                     str += value + "; ";
                 }            
             }
-            
+
             document.getElementById("eventDiv").innerHTML = str;
         }
                 
         function clearLocalStorage() {
-            localStorage.clear();            
+            localStorage.clear();   
+            document.getElementById("eventDiv").innerHTML = "";
+            document.getElementById("absenceDiv").innerHTML = "";
         }
         
-        
         function cacheAndPrint() {
-        
             if (validate()) {
                 cacheEvent();
                 cacheAbsences();
                 printAbsences();
                 printEvent();
-                document.getElementById("delete").style.visibility = "hidden";
-                document.getElementByID("delbut").type = "submit";
-                document.getElementById("editEvent").type="submit";
-                document.getElementById("editMain").type="submit";
-
             }
         }
         
+        function handleEdit() {
+            repopulateForm();
+            uncacheEvent();
+            printAbsences();
+            printEvent();
+            alert("The event you entered has been cleared from the cache. \nThe contents of that submission is currently in the form. Click 'submit' to re-cache it.");
+        }
         
     </script>
 
@@ -378,12 +389,8 @@
                 <input id="endAM" type="radio" name="endrdio" value="AM"/>AM
                 <input id="endPM" type="radio" name="endrdio" value="PM" checked="1"/>PM
         </form>        
-           <br/> Edit a local submission from a rehearsal that happened today at the above times: <input id="editMain" type="submit" value="Edit!" onClick="repopulateForm();"/>
-        <div id="delete" style="visibility:hidden">
-            <strong>Delete the event above and all absences associated with it or edit the event itself.</strong>
-            <input id="delbut" type="submit" value="Delete ALL data associated with this event" onClick="deleteCurrentEventData();"/> 
-            <input id="editEvent" type="submit" value="Edit the event" onClick="editEvent();"/>
-        </div>
+           <br/> Clear the cached report from the entered rehearsal. <input id="editMain" type="submit" value="Undo caching this event" onClick="handleEdit();"/>
+
         <div id="checkboxes">        
             <form id="absences" name="absences" method="get">        
                 <br><strong>Mark all students that are absent.</strong></br>
@@ -394,7 +401,7 @@
             </form>
         </div>
 
-        <input id="addOrEditButton" type="submit" value="Add Absent Students" onClick="cacheAndPrint();"/>     
+        <input id="addOrEditButton" type="submit" value="Add absences to this event." onClick="cacheAndPrint();"/>     
         <input type="submit" value="Clear All" onClick="clearLocalStorage();"/>   
 		
 		<div></br></div>

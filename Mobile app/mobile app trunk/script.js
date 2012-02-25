@@ -10,8 +10,10 @@
 * standard key for localStorage: prepend firstname lastname netID date startTime endTime
 **/
 
-var absentPrepend = "absentStudent";
-var eventPrepend = "storedEvent";
+var absentPrependPerformance = "absentStudentPerformance";
+var absentPrependRehearsal = "absentStudentRehearsal";
+var rehearsalPrepend = "storedRehearsal";
+var performancePrepend = "storedPerformance";
 var tardyPrepend = "tardyStudent";
 
 
@@ -108,7 +110,7 @@ function localStorageContainsEvent(eventType, date, starttime, endtime){
 	for(var i = 0, l = localStorage.length; i<l; i++)
 	{
 		var key = localStorage.key(i);
-		if(stringContains(eventPrepend,key) && keyDelimiter(key, "firstname")==eventType && keyDelimiter(key, "starttime")==starttime && keyDelimiter(key, "endtime")==endtime && keyDelimiter(key, "date")==date)
+		if((stringContains(rehearsalPrepend,key) || stringContains(performancePrepend,key)) && keyDelimiter(key, "firstname")==eventType && keyDelimiter(key, "starttime")==starttime && keyDelimiter(key, "endtime")==endtime && keyDelimiter(key, "date")==date)
 			return true;
 	}
 	return false;
@@ -141,7 +143,11 @@ function storeEntry(prepend, firstname, lastname, netID, date, startTime, endTim
 **/
 function removeEntry(prepend, firstname, lastname, netID, date, startTime, endTime){
 	var key = prepend+" "+firstname+" "+lastname+" "+netID+" "+date+" "+startTime+" "+endTime;
+    if (localStorage.getItem(key) == null) {
+        return false;
+    }   
 	localStorage.removeItem(key);
+	return true;
 }
 
 
@@ -182,8 +188,18 @@ function clearLocalStoragewithPrepend(prepend){
 * @author Todd Wegter
 **/
 function keyDelimiter(key,delimitee){
+	if (key == null || delimitee == null) {
+	    return null;
+	}
+	
 	var keyArray = new Array();
+	
 	keyArray = key.split(" ");
+	
+	if (delimitee=="key") {
+	  return key;//so we can access a subsection of the full localStorage as key-value pairs, in tact
+	}
+	
 	if(delimitee=="date"){
 		return keyArray[4];
 	}
