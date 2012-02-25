@@ -128,6 +128,7 @@
 			{
 				//disable buttons while clearing
 				document.getElementById("clear").disabled = true;
+				document.getElementById("student").disabled = true;
 				document.getElementById("submit").disabled = true;
 				document.getElementById("viewButton").disabled = true;
 				document.getElementById("back").disabled = true;
@@ -146,6 +147,7 @@
 					document.getElementById("viewButton").disabled = false;
 					document.getElementById("back").disabled = false;
 					document.getElementById("resort").disabled = false;
+					document.getElementById("student").disabled = false;
 					document.getElementById("clear").value = "Clear Tardy List";
 				},1000);
 				netIDSelect();
