@@ -1,9 +1,10 @@
 <html>
 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
 		
-		<link rel="stylesheet" type="text/css" href="FieldAppCSS.css" />
+		<link rel="stylesheet" type="text/css" href="FieldAppCSS.css">
 	
-		<script src="script.js">
+		<script src="./FieldAppTardy_files/script.js">
 		</script>
 		
 		<script>
@@ -183,35 +184,34 @@
 			}
 			
 		</script>
-	</head>
 	
-	<body class="box" class="rightalign">
-	<h1>Tardy Check-In</h1>
-		<form id="tardyReport" onsubmit="return submitTardy();">
-            <input type="text" id="student" placeholder="netID"/>
-			<input type="submit" id="submit" value="Submit Tardy"/>
+	<body class="box">
+	<h1>Tardy Check-In</h1></br></br>
+		<form class="centeralign" id="tardyReport" onsubmit="return submitTardy();">
+            <input type="text" id="student" placeholder="netID">
+			<input type="submit" id="submit" value="Submit Tardy">
         </form>
-        <br/>
-		<hr/>
-		<br/>
-
-    	<input type="button" id="viewButton" value="View Tardies" onclick="javascript: tardiesOnOff();"></input>
-
-
-		<input class="rightalign" type="button" id="clear" value="Clear Tardy List" onclick="javascript: clearTardies();"></input></br>
-		<form id="tardySortType">
-			<b>Sort Style</b>
-			<input type="radio" name="sortType" value="Time" checked/>time
-			<input type="radio" name="sortType" value="netID"/>netID<br/>
-			<input type="button" id="resort" value="Re-Sort Tardy List" onclick="javascript: retrieveTardies();"/>
+		
+        </br>
+		<hr>
+		</br>
+		
+		<form class="centeralign" id="tardyView">
+			<input type="button" id="viewButton" value="View Tardies" onclick="javascript: tardiesOnOff();">
+			<input type="button" id="resort" value="Re-Sort Tardy List" onclick="javascript: retrieveTardies();">
+			<input type="button" id="clear" value="Clear Tardy List" onclick="javascript: clearTardies();"><br>
 		</form>
 		
-		<div></br></div>
-		
-		
-		<input class="back" type="button" id="back" value="Back" onclick="parent.location='FieldAppMain.html'"></input></br>
-		<input class="help" type="button" id="help" value="Help" onclick="javascript: help();"/>
+		<form class="centeralign" id="tardySortType">
+			<b>Sort Style</b>
+			<input type="radio" name="sortType" value="Time" checked="">time
+			<input type="radio" name="sortType" value="netID">netID<br>
+		</form>
 		
 		<div id="tardies"></div>
-	</body>
-</html>
+		
+		<input class="back" type="button" id="back" value="Back" onclick="parent.location=&#39;FieldAppMain.html&#39;"><br>
+		<input class="help" type="button" id="help" value="Help" onclick="javascript: help();">
+	
+
+</body></html>
