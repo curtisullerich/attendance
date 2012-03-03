@@ -1,0 +1,9 @@
+	
+COMMEND
+<!--TODO: need to connected to specific page-->
+
+HELP BUTTON!!!!!!!!!!!!!
+
+		<a class="addthis_button"><img
+        src="http://icons.iconarchive.com/icons/deleket/button/24/Button-Help-icon.png"
+        width="16" height="16" border="0" alt="Share" /></a>
