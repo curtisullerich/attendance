@@ -14,3 +14,12 @@ image:
 	<h3>
 		<img src="Line_Graph.jpg" alt="Line_Graph" width="320" height="320" />	
 	</h3>
+
+
+DROP DOWN BUTTON:
+
+<select>
+  <option>Milk</option>
+  <option>Coffee</option>
+  <option>Tea</option>
+</select>
