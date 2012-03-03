@@ -153,6 +153,22 @@ function removeEntry(prepend, firstname, lastname, netID, date, startTime, endTi
 
 
 /**
+ * Removes all items from localStorage that have the given prepend.
+ * TODO test this.
+ * @author CurtisUllerich
+ * @date 3/3/12
+ * @param the string prepend to remove
+ */
+function removeByPrepend(prepend) {
+    var array = storeToArray(prepend, " ", "key");
+    for (var i = 0; i < array.length; i++) {
+        localStorage.removeItem(array[i][0]);
+    }    
+}
+
+
+
+/**
 * Clears all items in localStorage which have the specified prepend
 *
 * @author Todd Wegter

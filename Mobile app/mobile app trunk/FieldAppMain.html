@@ -2,38 +2,9 @@
 	
 		<link rel="stylesheet" type="text/css" href="FieldAppCSS.css">
 	
-		<script src="script.js">
-		</script>
-		
+		<script src="script.js"></script>
 		<script>
-			
-			function upload() {
-				//check that entered TA data is valid
-				if(!validate())
-				{
-					//alert for invalid netID
-					alert("Please enter a valid TA netID and password.");
-					return false;
-				}
-				//this will send the data to the server eventually
-
-                //check to see if we're online
-                if (!navigator.onLine) {
-                    alert('You are not connected to the internet. Please fix that. Upload aborted.');
-                    return false;
-                    
-                }
-                
-                
-//                var str = CALLBRANDONSMETHOD();
-                
-
-
-				//ONLY IF UPLOAD WAS SUCCESSFUL
-				//clearLocalStorage();
-				return false;
-			}
-			
+						
 			function absencePage(){
 				//check that entered TA data is valid
 				if(!validate())
@@ -81,14 +52,47 @@
 			}
 			
 			function updateList() {
+			    
 			    if (!navigator.onLine) {
 			        alert("You're not online. Update not performed.");
 			        return false;
 			    }
-                window.location = "http://localhost:8888/dummy(curtis).jsp";
+                uncacheClassList();
+                window.location = "http://localhost:8888/updateList.jsp";
 			}
+
+            /**
+             * Removes all student records currently stored in localStorage
+             * 
+             * @author Curtis Ullerich
+             * @date 3/3/12
+             */			
+			function uncacheClassList() {
+                removeByPrepend(studentRecord);
+			}
+			
+			function uploadAll() {
+				if(!validate())
+				{
+					//alert for invalid netID
+					alert("Please enter a valid TA netID and password.");
+					return false;
+				}
+
+                if (!navigator.onLine) {
+                    alert("You're not online. Upload not performed.");
+                    return false;
+                }
+                			    
+			    window.location = "http://localhost:8888/uploadr.jsp";
+
+			    for (var i = 0; i < localStorage.length; i++) {
+			        //STUFF TODO
+			    }
+			    localStorage.clear();
+			}
+			
 		</script>
-		
     </head>
     <body>
         <h1>@10dance</h1><br>
@@ -97,14 +101,27 @@
 
 		<div class="centeralign">
 			<input class="button" type="button" id="tardy" value="Tardy Check-In" onclick="parent.location=&#39;FieldAppTardy.html&#39;">
-			<input class="button" type="button" id="absent" value="Report Absences" onclick="absencePage();">
+			<input class="button" type="button" id="absent" value="Report Absences" onclick="absencePage();"> 
 			<div><br></div>
 			<input class="button" type="button" id="update" value="Update Class List" onclick="javascript: updateList();">
-			<input class="button" type="button" id="submit" value="Upload Attendance Data" onclick="javascript: upload();">
+			<input class="button" type="button" id="submit" value="Upload Attendance Data" onclick="javascript: uploadAll();">
 			<div><br></div>
 		</div>
 	
-		<div class="centeralign">Latest Class List: None<div>
-    
-	
-</div></div></body></html>
+		<div id="classList" class="centeralign">Latest Class List: None<div>
+</div></div>
+
+<script>
+window.onload = function() {
+    var array = storeToArray(studentPrepend," ","date");
+    var str;
+    if (array.length < 1) {
+        str="No class list is currently present.";
+    } else {
+        str="Current class list: " + array[0][0];
+    }
+
+    document.getElementById("classList").innerHTML = str;
+}
+</script>
+</body></html>
