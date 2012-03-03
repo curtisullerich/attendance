@@ -52,7 +52,7 @@
 				//format of tardy (24 hour time): netID YYYY-MM-DD hh:mm am/pm
 				var tardyEntry = netID + " " + dateToday() + " " + twelveHourTimeNow();
 				//store tardy with appropriate key
-				storeEntry(tardyPrepend, getFirstName(netID), getLastName(netID), netID, dateToday(), timeNow(), "|", tardyEntry);
+				storeEntry(tardyPrepend, getFirstName(netID), getLastName(netID), netID, dateToday(), timeNow(), "|", getRank(netID), tardyEntry);
 				document.getElementById("student").value = "";
 				//updates onscreen tardy list if necessary
 				retrieveTardies();

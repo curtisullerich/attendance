@@ -192,7 +192,7 @@
                 eventPrepend = performancePrepend;
             }			
 			
-			storeEntry(eventPrepend, type, "|", "|", dateToday(), startTime, endTime, entry);
+			storeEntry(eventPrepend, type, "|", "|", dateToday(), startTime, endTime, "|", entry);
 		}
 
 
@@ -218,7 +218,7 @@
             }			
 			// alert(eventPrepend+" "+type+" "+"|"+" "+"|"+" "+dateToday()+"
 			// "+startTime+" "+endTime);
-			removeEntry(eventPrepend, type, "|", "|", dateToday(), startTime, endTime, entry);
+			removeEntry(eventPrepend, type, "|", "|", dateToday(), startTime, endTime, "|", entry);
         }
 
         /**
@@ -300,16 +300,21 @@
 
                     var value = myform[i].value + " " + dateToday() + " " + getCurrentEventStartTime(24)+" "+getCurrentEventEndTime(24);
                     
-                    var firstname = myform[i].value.split(" ")[0];
-                    var lastname = myform[i].value.split(" ")[1];
-                    
+                    //var firstname = myform[i].value.split(" ")[0];
+                    //var lastname = myform[i].value.split(" ")[1];
+					var netID = myform[i].value;
+                    var firstname = getFirstName(netID);
+					var lastname = getLastName(netID);
+					var rank = getRank(netID);
+					
+					
                     var absentPrepend = absentPrependPerformance;
                     var type = getCurrentEventType();
                     if (type == "rehearsal") {
                         absentPrepend = absentPrependRehearsal;
                     }
                     
-                    storeEntry(absentPrepend, firstname, lastname, "|", dateToday(), getCurrentEventStartTime(24), getCurrentEventEndTime(24), value);
+                    storeEntry(absentPrepend, firstname, lastname, netID, dateToday(), getCurrentEventStartTime(24), getCurrentEventEndTime(24), rank, value);
                     
                     myform[i].checked = 0;
                 }
@@ -368,25 +373,26 @@
 // if (_type == "rehearsal") {
 // _prepend = rehearsalPrepend;
 // }
-                    var _firstname = formElements[j].value.split(" ")[0];
-                    var _lastname = formElements[j].value.split(" ")[1];                
+					var _netID = formElements[j].value;
+                    var _firstname = getFirstName(netID);
+                    var _lastname = getLastName(netID);                
                     var _date = dateToday();
-                    var _netID = "|";
                     var _starttime = getCurrentEventStartTime(24);
                     var _endtime = getCurrentEventEndTime(24);
                     var _entry = "|";
+					var _rank = "|";
 // alert(_prepend+" "+_firstname+" "+_lastname+" "+_netID+"
 // "+_date+" "+_starttime+" "+_endtime+" "+_entry);
 // these are from the current key
-                    var firstname =  keyDelimiter(key,"firstname");
-                    var lastname = keyDelimiter(key,"lastname");
+// var firstname =  keyDelimiter(key,"firstname");
+// var lastname = keyDelimiter(key,"lastname");
 // var netID = keyDelimiter(key,"netID");
 // var startTime = keyDelimiter(key,"starttime");
 // var endTime = keyDelimiter(key,"endtime");
 // var date = keyDelimiter(key,"date");
-                    var name = firstname + " " + lastname;
+// var name = firstname + " " + lastname;
 // alert(formElements[j].value + "==" + name);
-                    var toremove = removeEntry(_prepend,_firstname,_lastname,_netID,_date,_starttime,_endtime,_entry);
+                    var toremove = removeEntry(_prepend,_firstname,_lastname,_netID,_date,_starttime,_endtime,_rank,_entry);
 // alert(toremove);
                     if (toremove){
                         formElements[j].checked = 1;
