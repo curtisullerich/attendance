@@ -41,3 +41,7 @@ LINK----"Reply"
 
 NEW LINE:
 </br>
+
+Good Linkt to create a link
+http://www.splashnology.com/article/15-awesome-free-javascript-charts/325/
+http://www.liquidx.net/plotkit/
