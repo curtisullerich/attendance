@@ -15,6 +15,7 @@ var absentPrependRehearsal = "absentStudentRehearsal";
 var rehearsalPrepend = "storedRehearsal";
 var performancePrepend = "storedPerformance";
 var tardyPrepend = "tardyStudent";
+var studentPrepend = "studentRecord";//of the form "netid firstname lastname"
 
 
 /**
@@ -220,6 +221,9 @@ function keyDelimiter(key,delimitee){
 	}
 	else if(delimitee=="endtime"){
 		return keyArray[6];
+	}
+	else if (delimitee=="name"){
+	    return keyArray[1] + " " + keyArray[2];
 	}
 	return key;
 }

@@ -17,12 +17,24 @@
 				}
 				//this will send the data to the server eventually
 
+                //check to see if we're online
+                if (!navigator.onLine) {
+                    alert('You are not connected to the internet. Please fix that. Upload aborted.');
+                    return false;
+                    
+                }
+                
+                
+//                var str = CALLBRANDONSMETHOD();
+                
+
+
 				//ONLY IF UPLOAD WAS SUCCESSFUL
 				//clearLocalStorage();
 				return false;
 			}
 			
-			function absensePage(){
+			function absencePage(){
 				//check that entered TA data is valid
 				if(!validate())
 				{
@@ -59,41 +71,35 @@
 				alert("This page is the start page for the @10dance Mobile App.\n\nThe Update Class List button shows when the list of students was last updated."+
 				"\nClicking it updates the class list from the server."+
 				"\n\nThe Tardy Check-In button navigates to the tardy check-in page."+
-				"\n\nThe Report Absenses button navigates to the absense reporting page."+
+				"\n\nThe Report Absences button navigates to the absence reporting page."+
 				"\n\nThe Upload Attendance Data button uploads the attendance data to the server."+
 				"\nUpon successful upload, the local attendance data is cleared."+
-				"\n\nBoth reporting absenses and uploading attendance data require valid TA login info."+
+				"\n\nBoth reporting absences and uploading attendance data require valid TA login info."+
 				"\n\nExport Data stores the data to the computer so it can be uploaded using the main @10dance system at a later time and clears the data from the app's local storage. "+
 				"TA login info is not required to export data.");
 				return false;
 			}
 			
+			function updateList() {
+			    if (!navigator.onLine) {
+			        alert("You're not online. Update not performed.");
+			        return false;
+			    }
+                window.location = "http://localhost:8888/dummy(curtis).jsp";
+			}
 		</script>
 		
-		<script type="text/javascript" src="chrome-extension://jlhhbmloafbaonaondjcedenomeeggda/editorapp.js"></script><script>(function waitTillEditorLoadsAndThenEnableIt(incognito, language, autoEnable, defaultState, sortType, commitOnEnter, commitOnTab, commitOnSpace, cssUrl) {
-  var si = window.setInterval(function() {
-    if(window.GSEditor) {
-      if(!window.GSEditorCreated) {
-        window.GSEditorCreated = true;
-        var keyboardOptions = {commit_on_enter:commitOnEnter != "no", commit_on_tab:commitOnTab != "no", commit_on_space:commitOnSpace != "no"};
-        var editor = new window.GSEditor("https://google-scribe.appspot.com", keyboardOptions, undefined, "gsc", cssUrl);
-        editor.setAutoEnableActiveElement(true);
-        editor.setLanguage(language);
-        editor.setSortType(sortType);
-        editor.setStatus(autoEnable == "yes" ? !incognito : false, defaultState == "always" ? false : true)
-      }
-      window.clearInterval(si)
-    }
-  }, 500)
-})(false,"en","no","always","c","no","yes","no","chrome-extension://jlhhbmloafbaonaondjcedenomeeggda/menu.css");</script><link id="gscss" type="text/css" rel="stylesheet" href="chrome-extension://jlhhbmloafbaonaondjcedenomeeggda/menu.css?1330739729107"></head><link type="text/css" rel="stylesheet" href="data:text/css,"><body><h1>@10dance</h1><br>
+    </head>
+    <body>
+        <h1>@10dance</h1><br>
 		
 		<input class="help" type="button" id="help" value="Help" onclick="javascript: help();">
 
 		<div class="centeralign">
 			<input class="button" type="button" id="tardy" value="Tardy Check-In" onclick="parent.location=&#39;FieldAppTardy.html&#39;">
-			<input class="button" type="button" id="absent" value="Report Absences" onclick="absensePage();">
+			<input class="button" type="button" id="absent" value="Report Absences" onclick="absencePage();">
 			<div><br></div>
-			<input class="button" type="button" id="update" value="Update Class List" onclick="javascript: update();">
+			<input class="button" type="button" id="update" value="Update Class List" onclick="javascript: updateList();">
 			<input class="button" type="button" id="submit" value="Upload Attendance Data" onclick="javascript: upload();">
 			<div><br></div>
 		</div>

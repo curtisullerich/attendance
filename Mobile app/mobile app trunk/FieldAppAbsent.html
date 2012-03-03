@@ -14,8 +14,20 @@
 
 //        window.onload = junk;
         window.onload = function() {
-            listToForm(new Array("Todd Wegter","Curtis Ullerich","Brandon Maxwell",
+//            listToForm(new Array("Todd Wegter","Curtis Ullerich","Brandon Maxwell",
                 "Yifei Zhu", "Simanta Mitra","Steven Smyth"));
+
+            //TODO will need to be able to sort by rank
+            //students is a 2d array each element has an array of [netID, valueFromlocalStorage]
+            var array = new Array();
+            for (int i = 0; i < localStorage.length; i++) {
+                var key = localStorage.key(i);
+                var student = new Array(2);
+                student[0] = keyDelimiter(key,"netID");
+                student[1] = keyDelimiter(key,"name");
+                array.push([student[0],student[1]]);                
+            }
+            listToForm(array);
         }
         
         //converts an array of strings into a set of checkboxes, one per string
@@ -26,7 +38,7 @@
             
             for (var i = 0; i < array.length; i++) {
                 
-                form += '<input type="checkbox" name="student" value="'+array[i]+'">'+array[i]+'<br>\n';                
+                form += '<input type="checkbox" name="student" value="'+array[i][0]+'">'+array[i][1]+'<br>\n';
             }
 
             form += "</form>";
