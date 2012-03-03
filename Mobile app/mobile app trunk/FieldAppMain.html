@@ -5,11 +5,12 @@
 		<script src="script.js"></script>
 		<script>
 						
+		    
 			function absencePage(){
-				//check that entered TA data is valid
+				// check that entered TA data is valid
 				if(!validate())
 				{
-					//alert for invalid netID
+					// alert for invalid netID
 					alert("Please enter a valid TA netID and password.");
 					return false;
 				}
@@ -18,7 +19,7 @@
 			}
 			
 			function validate(){
-				//get TA checkin
+				// get TA checkin
 				var name=prompt("Please enter your TA netID:","TA netID");
 				if (name!=null && name!="")
 				{
@@ -62,11 +63,11 @@
 			}
 
             /**
-             * Removes all student records currently stored in localStorage
-             * 
-             * @author Curtis Ullerich
-             * @date 3/3/12
-             */			
+			 * Removes all student records currently stored in localStorage
+			 * 
+			 * @author Curtis Ullerich
+			 * @date 3/3/12
+			 */			
 			function uncacheClassList() {
                 removeByPrepend(studentRecord);
 			}
@@ -74,7 +75,7 @@
 			function uploadAll() {
 				if(!validate())
 				{
-					//alert for invalid netID
+					// alert for invalid netID
 					alert("Please enter a valid TA netID and password.");
 					return false;
 				}
@@ -87,7 +88,7 @@
 			    window.location = "http://localhost:8888/uploadr.jsp";
 
 			    for (var i = 0; i < localStorage.length; i++) {
-			        //STUFF TODO
+			        // STUFF TODO
 			    }
 			    localStorage.clear();
 			}
