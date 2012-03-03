@@ -5,10 +5,10 @@
  * 
  * @author Todd Wegter, Curtis Ullerich
  * 
- * Latest Rev: 2-18-12
+ * Latest Rev: 3-3-12
  * 
- * standard key for localStorage: prepend firstname lastname netID date
- * startTime endTime
+ * standard key for localStorage: prepend firstname lastname netID date startTime endTime rank
+ * rank is a 6 digit number with leading 0s
  */
 
 var absentPrependPerformance = "absentStudentPerformance";
@@ -16,8 +16,7 @@ var absentPrependRehearsal = "absentStudentRehearsal";
 var rehearsalPrepend = "storedRehearsal";
 var performancePrepend = "storedPerformance";
 var tardyPrepend = "tardyStudent";
-var studentPrepend = "studentRecord";// of the form "netid firstname
-										// lastname"
+var studentPrepend = "studentRecord";
 
 
 /**
@@ -127,7 +126,7 @@ function localStorageContainsEvent(eventType, date, starttime, endtime){
 
 
 /**
- * Will return first name associated with the given netID from the database
+ * Will return first name associated with the given netID from the localStorage
  * TODO
  * @param the netID to which the desired name corresponds
  * @author 
@@ -138,7 +137,7 @@ function getFirstName(netID){
 }
 
 /**
- * Will return last name associated with the given netID from the database
+ * Will return last name associated with the given netID from the localStorage
  * TODO
  * @param the netID to which the desired name corresponds
  * @author 
@@ -149,13 +148,25 @@ function getLastName(netID){
 }
 
 /**
+ * Will return the rank associated with the given netID from the localStorage
+ * TODO
+ * @param the netID to which the desired rank corresponds
+ * @author 
+ * @date 3/3/12
+ */
+function getRank(netID){
+	return "000000";
+}
+
+
+/**
  * Stores an entry with the standard key: prepend firstname lastname netID date
  * startTime endTime
  * 
  * @author Todd Wegter
  */
-function storeEntry(prepend, firstname, lastname, netID, date, startTime, endTime, entry){
-	var key = prepend+" "+firstname+" "+lastname+" "+netID+" "+date+" "+startTime+" "+endTime;
+function storeEntry(prepend, firstname, lastname, netID, date, startTime, endTime, rank, entry){
+	var key = prepend+" "+firstname+" "+lastname+" "+netID+" "+date+" "+startTime+" "+endTime+" "+rank;
 	localStorage.setItem(key,entry);
 }
 
@@ -165,8 +176,8 @@ function storeEntry(prepend, firstname, lastname, netID, date, startTime, endTim
  * 
  * @author Curtis Ullerich
  */
-function removeEntry(prepend, firstname, lastname, netID, date, startTime, endTime){
-	var key = prepend+" "+firstname+" "+lastname+" "+netID+" "+date+" "+startTime+" "+endTime;
+function removeEntry(prepend, firstname, lastname, netID, date, startTime, endTime, rank){
+	var key = prepend+" "+firstname+" "+lastname+" "+netID+" "+date+" "+startTime+" "+endTime+" "+rank;
     if (localStorage.getItem(key) == null) {
         return false;
     }   
@@ -181,8 +192,7 @@ function removeEntry(prepend, firstname, lastname, netID, date, startTime, endTi
  * 
  * @author CurtisUllerich
  * @date 3/3/12
- * @param the
- *            string prepend to remove
+ * @param the string prepend to remove
  */
 function removeByPrepend(prepend) {
     var array = storeToArray(prepend, " ", "key");
@@ -217,10 +227,10 @@ function clearLocalStoragewithPrepend(prepend){
 /**
  * This function delineates the specified standard format key into an array
  * (index 0=prepend, 1=firstname, 2=lastname, 3=netID, 4=date, 5=startTime,
- * 6=endTime). It then returns the desired component of the key
+ * 6=endTime, 7=rank). It then returns the desired component of the key
  * 
  * The options for return subcomponent of the key are "date", "netID",
- * "lastname", "firstname", "dateandtime", "starttime", and "endtime" The entire
+ * "lastname", "firstname", "dateandtime", "starttime", "endtime", and "rank". The entire
  * key is returned if the delimitee does not match one of the specified options
  * 
  * @param key -
@@ -269,6 +279,9 @@ function keyDelimiter(key,delimitee){
 	}
 	else if (delimitee=="name"){
 	    return keyArray[1] + " " + keyArray[2];
+	}
+	else if (delimitee=="rank"){
+	    return keyArray[7];
 	}
 	
 	return key;
