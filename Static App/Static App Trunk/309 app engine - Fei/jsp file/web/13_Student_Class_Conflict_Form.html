@@ -57,45 +57,55 @@
 		
 	<!--start date -->		
 		<tr>
-			<td>Start Date:</td>
-			<td><input type= "text" name="StartDate" id="StartDate"/></td>
+			<td>Start Date: <input type= "text" name="StartDate" id="StartDate"/></td>
+			
 		<tr>
 		
 		<tr>
-			<td>End Date:</ed>
-			<td><input type ="text" name="EndDate" id="EndDate"/></td>
+			<td>End Date:
+			<input type ="text" name="EndDate" id="EndDate"/></td>
 		</tr>
 		
 		<!--until/ start at/ completely miss-->
 			<tr><td>
-				<select>
-					<option>Yes</option>
-					<option>No</option>
-				</select>
+				<input type="radio" name="TimeMiss" value="Until"/>Util<br>
+			</td></tr>
+			<tr><td>
+				<input type="radio" name="TimeMiss"  value="StartAt"/>Start At
+				<input type= "text" name="StartDate" id="StartDate"/>
 			</td></tr>
 			
-			<tr><td>How ofen?</td></tr>
-			
+			<tr><td>
+				<input type="radio" name="TimeMiss" value="CompletelyMiss"/>Completely Miss<br>
+			</td></tr>	
 		</table>
 		</div>
-	
+		
+	<h1>*******************</h1>
 	<!--*********************drop down bar div*****************************-->
 
 		<table>
 			<tr>					
-				<td><label for="Reason">Reason:</label></td>
-				<td><input type= "Reason" name="Reason" id="Reason"/></td>
+				<td><label for="CourseDept">Course Dept:</label></td>
+				<td><input type= "text" name="CourseDept" id="CourseDept"/></td>
 			</tr>
 			
 			<tr>
-				<td><label for="Additional_Option">Additional(Option):</label></td>
-				<td><input type= "Additional" name="Additional" id="Additional"/></td>	
+				<td><label for="CourseNum">Course#:</label></td>
+				<td><input type= "text" name="CourseNum" id="CourseNum"/></td>	
+			</tr>
+			<tr>
+				<td><label for="Section">Section:</label></td>
+				<td><input type= "text" name="Section" id="Section"/></td>	
+			</tr>
+			<tr>
+				<td><label for="Bulding">Bulding:</label></td>
+				<td><input type= "text" name="Bulding" id="Bulding"/></td>	
 			</tr>
 			
 			<tr>
-				<td><label for="UploadDocument">UploadDocument(Optional):</label></td>
-				<td><input type= "UploadDocument" name="UploadDocument" id="UploadDocument"/></td>
-				<td><button type="Browse">Browse</button></td>				
+				<td><label for="Comments">Comments(Option):</label></td>
+				<td><input type= "text" name="Comments" id="Comments"/></td>	
 			</tr>
 
 		</table>

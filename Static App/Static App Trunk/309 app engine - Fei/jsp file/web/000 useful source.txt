@@ -1,4 +1,8 @@
 	
+GOOD HTML format >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+http://www.w3schools.com/html/html_forms.asp
+
+
 COMMEND >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 <!--TODO: need to connected to specific page-->
 
