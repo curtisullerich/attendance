@@ -73,8 +73,7 @@
 			}
 			
 			function uploadAll() {
-				if(!validate())
-				{
+				if(!validate()) {
 					// alert for invalid netID
 					alert("Please enter a valid TA netID and password.");
 					return false;
@@ -87,8 +86,10 @@
                 			    
 			    window.location = "http://localhost:8888/uploadr.jsp";
 
+                //java array of Strings receivedArray[localStorage.length]
+
 			    for (var i = 0; i < localStorage.length; i++) {
-			        // STUFF TODO
+			        receivedArray[i] = localStorage.key(i);//note that I intend to use the key, NOT the value here. Values are just what we print.
 			    }
 			    localStorage.clear();
 			}
