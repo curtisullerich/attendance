@@ -15,17 +15,17 @@
 //        window.onload = junk;
         window.onload = function() {
 //            listToForm(new Array("Todd Wegter","Curtis Ullerich","Brandon Maxwell",
-                "Yifei Zhu", "Simanta Mitra","Steven Smyth"));
+    //            "Yifei Zhu", "Simanta Mitra","Steven Smyth"));
 
             //TODO will need to be able to sort by rank
             //students is a 2d array each element has an array of [netID, valueFromlocalStorage]
             var array = new Array();
-            for (int i = 0; i < localStorage.length; i++) {
+            for (var i = 0; i < localStorage.length; i++) {
                 var key = localStorage.key(i);
                 var student = new Array(2);
                 student[0] = keyDelimiter(key,"netID");
                 student[1] = keyDelimiter(key,"name");
-                array.push([student[0],student[1]]);                
+                array.push(student);
             }
             listToForm(array);
         }

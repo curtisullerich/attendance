@@ -225,6 +225,7 @@ function keyDelimiter(key,delimitee){
 	else if (delimitee=="name"){
 	    return keyArray[1] + " " + keyArray[2];
 	}
+	
 	return key;
 }
 
