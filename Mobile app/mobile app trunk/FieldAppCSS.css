@@ -1,9 +1,13 @@
-body {background: url("gradient.jpg") fixed;;}
+html {background: url("gradient6.jpg") fixed;}
+html {background-color:black;}
 body {color:white;}
-body {text-align:center;}
-body {font-family:"Calibri", Calibri, sansserif;}
+body {font-family:"Arial", Arial, sansserif;}
 
-h1 {color:white;}
+h1 {
+    color:white;
+    margin: 1 px;
+    text-align: center;
+}
 
 .help {
 	position: absolute;
@@ -20,4 +24,25 @@ h1 {color:white;}
 .button{
 	width: 14em;
 	height: 3em;
+}
+
+.box {
+    width:400 px;
+    margin: auto;
+    border: 1px;
+}
+
+.centeralign{
+    text-align:center;
+
+}
+
+
+.leftalign{
+    text-align:left;
+    margin: 0 20px;
+}
+
+.rightalign{
+    text-align:right;   
 }
