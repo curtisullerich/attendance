@@ -18,8 +18,9 @@
             // students is a 2d array each element has an array of [netID,
 			// valueFromlocalStorage]
             var array = new Array();
-            for (var i = 0; i < localStorage.length; i++) {
-                var key = localStorage.key(i);
+            var curList = storeToArray(studentPrepend, " ", "key");
+            for (var i = 0; i < curList.length; i++) {
+                var key = curList[i][0];
                 var student = new Array(2);
                 student[0] = keyDelimiter(key,"netID");
                 student[1] = keyDelimiter(key,"name");
