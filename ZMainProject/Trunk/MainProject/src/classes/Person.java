@@ -35,10 +35,12 @@ public class Person
 	//This is where absences and tardies are stored
 	private AttendanceReport report;
 	
-	public Person(String netID, String password)
+	public Person(String netID, String password, String firstName, String lastName)
 	{
 		this.netID = netID;
 		this.password = password;
+		this.firstName = firstName;
+		this.lastName = lastName;
 		id = hash(netID);
 		report = new AttendanceReport();
 	}
