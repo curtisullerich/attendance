@@ -1,0 +1,133 @@
+<html><head>
+
+      <link rel="stylesheet" type="text/css" href="FieldAppCSS.css">
+
+      <script src="script.js"></script>
+      <script>
+
+
+         function absencePage(){
+            // check that entered TA data is valid
+            if(!validate())
+            {
+               // alert for invalid netID
+               alert("Please enter a valid TA netID and password.");
+               return false;
+            }
+            parent.location = "FieldAppAbsent.html";
+            return false;
+         }
+
+         function validate(){
+            // get TA checkin
+            var name=prompt("Please enter your TA netID:","TA netID");
+            if (name!=null && name!="")
+            {
+               var password=prompt("Please enter your TA password:","password");
+               if (password!=null && password!="")
+                  return true;
+               else
+               {
+                  alert("Invalid Password");
+                  return false;
+               }
+            }
+            else
+            {
+               alert("Invalid netID");
+               return false;
+            }
+         }
+
+         function help(){
+            alert("This page is the start page for the @10dance Mobile App.\n\nThe Update Class List button shows when the list of students was last updated."+
+            "\nClicking it updates the class list from the server."+
+            "\n\nThe Tardy Check-In button navigates to the tardy check-in page."+
+            "\n\nThe Report Absences button navigates to the absence reporting page."+
+            "\n\nThe Upload Attendance Data button uploads the attendance data to the server."+
+            "\nUpon successful upload, the local attendance data is cleared."+
+            "\n\nBoth reporting absences and uploading attendance data require valid TA login info."+
+            "\n\nExport Data stores the data to the computer so it can be uploaded using the main @10dance system at a later time and clears the data from the app's local storage. "+
+            "TA login info is not required to export data.");
+            return false;
+         }
+
+         function updateList() {
+
+            if (!navigator.onLine) {
+               alert("You're not online. Update not performed.");
+               return false;
+            }
+               uncacheClassList();
+               window.location = "http://localhost:8888/JSPPages/updateList.jsp";
+         }
+
+            /**
+         * Removes all student records currently stored in localStorage
+         *
+         * @author Curtis Ullerich
+         * @date 3/3/12
+         */
+         function uncacheClassList() {
+               removeByPrepend(studentPrepend);
+         }
+
+         function uploadAll() {
+            if(!validate()) {
+               // alert for invalid netID
+               alert("Please enter a valid TA netID and password.");
+               return false;
+            }
+
+               if (!navigator.onLine) {
+                  alert("You're not online. Upload not performed.");
+                  return false;
+               }
+
+
+               var str = "";
+            for (var i = 0; i < localStorage.length; i++) {
+               str += localStorage.key(i)+",";//note that I intend to use the key, NOT the value here. Values are just what we print.
+            }
+            document.getElementById("tempForUpload").innerHTML = str;
+               alert("Going to server! Hang on! Warpspeed!");
+               //the server will remove the text from the div once successful
+            window.location = "http://localhost:8888/JSPPages/uploadr.jsp";
+
+            localStorage.clear();
+         }
+
+      </script>
+   </head>
+   <body>
+      <h1>@10dance</h1><br>
+
+      <input class="help" type="button" id="help" value="Help" onclick="javascript: help();">
+
+      <div class="centeralign">
+         <input class="button" type="button" id="tardy" value="Tardy Check-In" onclick="parent.location=&#39;FieldAppTardy.html&#39;">
+         <input class="button" type="button" id="absent" value="Report Absences" onclick="absencePage();">
+         <div><br></div>
+         <input class="button" type="button" id="update" value="Update Class List" onclick="javascript: updateList();">
+         <input class="button" type="button" id="submit" value="Upload Attendance Data" onclick="javascript: uploadAll();">
+         <div><br></div>
+      </div>
+
+      <div id="classList" class="centeralign">Latest Class List: None</div>
+      <div id="tempForUpload" style="DISPLAY: none"></div>
+</div></div>
+
+<script>
+window.onload = function() {
+   var array = storeToArray(studentPrepend," ","date");
+   var str;
+   if (array.length < 1) {
+      str="No class list is currently present.";
+   } else {
+      str="Current class list: " + array[0][0];
+   }
+
+   document.getElementById("classList").innerHTML = str;
+}
+</script>
+</body></html>
