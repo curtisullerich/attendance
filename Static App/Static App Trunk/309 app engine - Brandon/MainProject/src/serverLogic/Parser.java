@@ -2,6 +2,8 @@ package serverLogic;
 
 import java.util.Scanner;
 
+import classes.*;
+
 public class Parser 
 {	
 	public static void parseAndAdd(String add)
