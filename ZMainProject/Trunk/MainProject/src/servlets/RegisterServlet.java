@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import classes.Person;
+
 import serverLogic.DatabaseUtil;
 
 @SuppressWarnings("serial")
@@ -17,19 +19,22 @@ public class RegisterServlet extends HttpServlet
 			throws IOException {
 		//Reads in the stuff from NetID, Password, and Re-Enter Password then makes a person from there
 		String buttonPressed = req.getParameter("Register");
-		String netID, password, reEnter;
+		String netID, password, reEnter, firstName, lastName;
 		if (buttonPressed != null)
 		{
 			//Grab all the data from the fields
 			netID = req.getParameter("NetID");
 			password = req.getParameter("Password");
 			reEnter = req.getParameter("Re-Enter Password");
+			firstName = req.getParameter("FirstName");
+			lastName = req.getParameter("LastName");
 			
-			if (netID != null && password != null && reEnter != null)
+			if (netID != null && password != null && reEnter != null && firstName != null && lastName != null)
 			{
 				//Need to do various other checks and stuff. Like whether this account already exists
 				//Create a new person with this partial information and put it in the datastore
-				DatabaseUtil.addPerson(netID, password);
+				Person p = new Person(netID, password, firstName, lastName);
+				DatabaseUtil.addPerson(p);
 				//Send them back to the login page?
 				resp.sendRedirect("/JSPPages/loginPage.jsp");
 			}
