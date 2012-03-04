@@ -3,12 +3,12 @@ package classes;
 public class Time 
 {
 	private int hour;
-	private int second;
+	private int minute;
 	
-	public Time(int hour, int second)
+	public Time(int hour, int minute)
 	{
 		this.hour = hour;
-		this.second = second;
+		this.minute = minute;
 	}
 
 }

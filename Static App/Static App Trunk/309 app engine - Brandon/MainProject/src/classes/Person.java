@@ -139,13 +139,13 @@ public class Person
 	}
 	
 
-	public void addTardy(String prepend, String date, String start, String end)
+	public void addTardy(Tardy newTardy)
 	{
-		
+		report.addTardy(newTardy);
 	}
 	
-	public void addAbsence(String prepend, String date, String start, String end)
+	public void addAbsence(Absence newAbsence)
 	{
-
+		report.addAbsence(newAbsence);
 	}
 }
