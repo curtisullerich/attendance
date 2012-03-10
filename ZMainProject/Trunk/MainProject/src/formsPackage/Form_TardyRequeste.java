@@ -1,4 +1,4 @@
-package toMerge.FormsPackage;
+package formsPackage;
 
 //Authors: Todd Wegter, Curtis Ullerich, Brandon Maxwell, and Yifei Zhu
 
