@@ -10,15 +10,13 @@
  * standard key for localStorage: prepend firstname lastname netID date startTime endTime rank
  * rank is a 6 digit number with leading 0s
  */
-
 var absentPrependPerformance = "absentStudentPerformance";
 var absentPrependRehearsal = "absentStudentRehearsal";
 var rehearsalPrepend = "storedRehearsal";
 var performancePrepend = "storedPerformance";
 var tardyPrepend = "tardyStudent";
 var studentPrepend = "studentRecord";
-var usernamePrepend = "storedUsername";
-var passwordPrepend = "storedPassword";
+var loginPrepend = "storedLogin";
 
 /**
  * Determines if a substring (sub) is contained within a string (str)
@@ -296,7 +294,6 @@ function keyDelimiter(key,delimitee){
 	else if (delimitee=="rank"){
 	    return keyArray[7];
 	}
-	
 	return key;
 }
 

@@ -17,42 +17,29 @@
             return false;
          }
 
-         function validUsername(username) {
-            var usernames = storeToArray(usernamePrepend);
-            for (var i = 0; i < usernames.length; i++) {
-                if (usernames[i] == username) {
-                    return true;
-                }    
-            }
-            return false;
-         }
-
-        function validHashedPassword(hash) {
-            var hashes = storeToArray(passwordPrepend);
-            for (var i = 0; i < hashes.length; i++) {
-                if (hash == hashes[i]) {
-                    return true;
-                }
-            }
-            return false;
-        }
-
          function validate(){
             // get TA checkin
             var name=prompt("Please enter your TA netID:","TA netID");
 
-//            if (!validUsername(name) {
+            
             if (name!=null && name!="")
             {
                var password=prompt("Please enter your TA password:","password");
-//               if (!validPassword(Sha1.hash(password,true))) {
-               if (password != null && password != "")
-                  return true;
-               else
-               {
-                  alert("Invalid Password");
-                  return false;
-               }
+
+
+                for (var i = 0; i < localStorage.length; i++) {
+                    var key = localStorage.key(i);
+                    if (keyDelimiter(key,"netID") == name) {
+                        if (localStorage[key] == Sha1.hash(password,true)) {
+                            return true;
+                        } else {
+                            alert("Invalid Password");
+                        }
+                    } else {
+                        alert("Invalid netID");
+                    }
+                }
+
             }
             else
             {
@@ -82,9 +69,10 @@
             }
                uncacheClassList();
                window.location = "http://localhost:8888/JSPPages/updateList.jsp";
+               window.location = "http://localhost:8888/JSPPages/TALogins.jsp";//TODO get from Brandon
          }
-
-            /**
+         
+        /**
          * Removes all student records currently stored in localStorage
          *
          * @author Curtis Ullerich
