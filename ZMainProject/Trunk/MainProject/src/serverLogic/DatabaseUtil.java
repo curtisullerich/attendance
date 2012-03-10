@@ -17,11 +17,10 @@ import classes.Person;
 public class DatabaseUtil 
 {
 	
-	public static void addPerson(String netID, String password)
+	public static void addPerson(Person p)
 	{
 		EntityManager em = EMFService.get().createEntityManager();
-		Person toAdd = new Person(netID, password);
-		em.persist(toAdd);
+		em.persist(p);
 		em.close();
 	}
 	
