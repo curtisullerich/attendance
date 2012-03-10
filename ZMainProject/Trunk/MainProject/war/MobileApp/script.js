@@ -17,7 +17,8 @@ var rehearsalPrepend = "storedRehearsal";
 var performancePrepend = "storedPerformance";
 var tardyPrepend = "tardyStudent";
 var studentPrepend = "studentRecord";
-
+var usernamePrepend = "storedUsername";
+var passwordPrepend = "storedPassword";
 
 /**
  * Determines if a substring (sub) is contained within a string (str)
@@ -134,7 +135,7 @@ function localStorageContainsEvent(eventType, date, starttime, endtime){
  * @date 3/9/12
  */
 function getFirstName(netID){
-	var key = returnFirstLocalKey(StudentRecord, netID)
+	var key = returnFirstLocalKey(studentPrepend, netID)
 	if(key != null)
 		var firstName = keyDelimiter(key, "firstname");
 	return firstName;
@@ -149,7 +150,7 @@ function getFirstName(netID){
  * @date 3/9/12
  */
 function getLastName(netID){
-	var key = returnFirstLocalKey(StudentRecord, netID)
+	var key = returnFirstLocalKey(studentPrepend, netID)
 	if(key != null)
 		var lastName = keyDelimiter(key, "lastname");
 	return lastName;
@@ -164,7 +165,7 @@ function getLastName(netID){
  * @date 3/9/12
  */
 function getRank(netID){
-	var key = returnFirstLocalKey(StudentRecord, netID)
+	var key = returnFirstLocalKey(studentPrepend, netID)
 	if(key != null)
 		var rank = keyDelimiter(key, "rank");
 	return rank;

@@ -1,9 +1,9 @@
-<html manifest="FieldAppCache.appcache">
+<html><!-- manifest="FieldAppCache.appcache"-->
 	<head>
       <link rel="stylesheet" type="text/css" href="FieldAppCSS.css">
       <script src="script.js"></script>
+      <script src="sha.js"></script>
       <script>
-
 
          function absencePage(){
             // check that entered TA data is valid
@@ -17,13 +17,36 @@
             return false;
          }
 
+         function validUsername(username) {
+            var usernames = storeToArray(usernamePrepend);
+            for (var i = 0; i < usernames.length; i++) {
+                if (usernames[i] == username) {
+                    return true;
+                }    
+            }
+            return false;
+         }
+
+        function validHashedPassword(hash) {
+            var hashes = storeToArray(passwordPrepend);
+            for (var i = 0; i < hashes.length; i++) {
+                if (hash == hashes[i]) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
          function validate(){
             // get TA checkin
             var name=prompt("Please enter your TA netID:","TA netID");
+
+//            if (!validUsername(name) {
             if (name!=null && name!="")
             {
                var password=prompt("Please enter your TA password:","password");
-               if (password!=null && password!="")
+//               if (!validPassword(Sha1.hash(password,true))) {
+               if (password != null && password != "")
                   return true;
                else
                {
