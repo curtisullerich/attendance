@@ -26,5 +26,5 @@
 	    }
 		//Need to do this so it passes the localhost
 		localStorage[""];
-		window.location = "http://localhost:8888/FieldAppMain.html";
+		window.location = "http://localhost:8888/MobileApp/FieldAppMain.html";
 	</script>
