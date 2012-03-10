@@ -18,7 +18,7 @@ public class Parser
 	{
 		//Splats the massive string into an array of strings for each person
 		String[] people = add.split(" ");
-		
+		System.out.println("The string is: " + add);
 		//Need to make a new Event and persist it
 		//For every element go thru this
 		for (String e: people)
