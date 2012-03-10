@@ -1,14 +1,14 @@
 Mobile App TODO
 
 CURTIS
-*Implement TA login
+*Implement TA login --------------------------------------------------- DONE(ish)
 *Finish CSS
 *Upload stuff and receive confirmation
 
 TODD
 *Test and remove debugging buttons
 *Fix clear all button and view button in absence
-*Application Caching!!!!!! - DONE(ish)
+*Application Caching!!!!!! -------------------------------------------- DONE(ish)
 *Pretty Print
 *Help Buttons
 *Not connected to internet error/404 server not found page
