@@ -1,4 +1,4 @@
-package main;
+package toMerge.main;
 /**
  * 
  * @author: Todd Wegter, Curtis Ullerich, Brandon Maxwell, and Yifei Zhu

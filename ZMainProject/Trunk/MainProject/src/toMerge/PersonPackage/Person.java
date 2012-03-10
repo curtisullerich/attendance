@@ -1,4 +1,4 @@
-package PersonPackage;
+package toMerge.PersonPackage;
 /**
  * 
  * @author Brandon AND ONLY BRANDON!
