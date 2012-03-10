@@ -127,35 +127,47 @@ function localStorageContainsEvent(eventType, date, starttime, endtime){
 
 /**
  * Will return first name associated with the given netID from the localStorage
- * TODO
+ * 
  * @param the netID to which the desired name corresponds
- * @author 
- * @date 2/18/12
+ * @return the first name associated with the netID, null if netID doesn't exist
+ * @author Todd Wegter
+ * @date 3/9/12
  */
 function getFirstName(netID){
-	return "firstname";
+	var key = returnFirstLocalKey(StudentRecord, netID)
+	if(key != null)
+		var firstName = keyDelimiter(key, "firstname");
+	return firstName;
 }
 
 /**
  * Will return last name associated with the given netID from the localStorage
  * TODO
  * @param the netID to which the desired name corresponds
- * @author 
- * @date 2/18/12
+ * @return the last name associated with the netID, null if netID doesn't exist
+ * @author Todd Wegter
+ * @date 3/9/12
  */
 function getLastName(netID){
-	return "lastname";
+	var key = returnFirstLocalKey(StudentRecord, netID)
+	if(key != null)
+		var lastName = keyDelimiter(key, "lastname");
+	return lastName;
 }
 
 /**
  * Will return the rank associated with the given netID from the localStorage
- * TODO
+ * 
  * @param the netID to which the desired rank corresponds
- * @author 
- * @date 3/3/12
+ * @return the rank associated with the netID specified, null if netID doesn't exist
+ * @author Todd Wegter
+ * @date 3/9/12
  */
 function getRank(netID){
-	return "000000";
+	var key = returnFirstLocalKey(StudentRecord, netID)
+	if(key != null)
+		var rank = keyDelimiter(key, "rank");
+	return rank;
 }
 
 
@@ -253,7 +265,7 @@ function keyDelimiter(key,delimitee){
 	
 	if (delimitee=="key") {
 	  return key;// so we can access a subsection of the full localStorage as
-					// key-value pairs, in tact
+				 // key-value pairs, in tact
 	}
 	
 	if(delimitee=="date"){
@@ -286,6 +298,31 @@ function keyDelimiter(key,delimitee){
 	
 	return key;
 }
+
+/**
+ * Returns the key of the first matching item in LocalStorage
+ * 
+ * @param prepend - 
+ *		the prepedn for the key of the elements to be stored
+ * @param searchKey - 
+ *			the other component of the the key to be returned
+ * @return the key of the desired locally stored element, null if none is found
+ *
+ */
+function returnFirstLocalKey(prepend, searchKey){
+	for(var i = 0, l = localStorage.length; i<l; i++)
+	{
+		var key = localStorage.key(i);
+		// if the key contains the prepend and the searchKey, store it and the
+		// desired part of the key into the array
+		if(stringContains(prepend,key) && stringContains(searchKey,key))
+		{
+			return key;
+		}
+	}
+	return null;
+}
+
 
 /**
  * Stores the specified contents of the localStorage to an array (useful for
