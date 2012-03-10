@@ -95,12 +95,13 @@
                }
 
 
-               var str = "";
+            var str = "";
             for (var i = 0; i < localStorage.length; i++) {
                str += localStorage.key(i)+",";//note that I intend to use the key, NOT the value here. Values are just what we print.
             }
-            document.getElementById("tempForUpload").innerHTML = str;
-               alert("Going to server! Hang on! Warpspeed!");
+            document.getElementById("tempForUpload").value = str;
+            alert(str);
+            alert("Going to server! Hang on! Warpspeed!");
                //the server will remove the text from the div once successful
             window.location = "http://localhost:8888/JSPPages/uploadr.jsp";
 
@@ -114,17 +115,22 @@
 
       <input class="help" type="button" id="help" value="Help" onclick="javascript: help();">
 
-		<div class="centeralign">
+		<form method="POST" action="/JSPPages/uploadr.jsp" class="centeralign">
 			<input class="button" type="button" id="tardy" value="Tardy Check-In" onclick="parent.location=&#39;FieldAppTardy.html&#39;">
 			<input class="button" type="button" id="absent" value="Report Absences" onclick="absencePage();">
 			<div><br></div>
 			<input class="button" type="button" id="update" value="Update Class List" onclick="javascript: updateList();">
-			<input class="button" type="button" id="submit" value="Upload Attendance Data" onclick="javascript: uploadAll();">
+			<input class="submit" type="submit" id="submit" value="Upload Attendance Data" onclick="uploadAll();">
+			<input type="hidden" id="tempForUpload" name="tempForUpload" value=""/>
 			<div><br></div>
-		</div>
+		</form>
+		
+		<form method="POST" action="/JSPPages/uploadr.jsp">
+			<input type="submit" name="submit" value="submit" onclick="uploadAll();"/>
+		</form>
 
 		<div id="classList" class="centeralign">Latest Class List: None</div>
-		<div id="tempForUpload" style="DISPLAY: none"></div>
+		<!-- <div id="tempForUpload" style="DISPLAY: none"></div> -->
 		</div>
 		</div>
 		
