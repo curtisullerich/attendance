@@ -1,7 +1,6 @@
-<html><head>
-
+<html manifest="FieldAppCache.appcache">
+	<head>
       <link rel="stylesheet" type="text/css" href="FieldAppCSS.css">
-
       <script src="script.js"></script>
       <script>
 
@@ -104,30 +103,32 @@
 
       <input class="help" type="button" id="help" value="Help" onclick="javascript: help();">
 
-      <div class="centeralign">
-         <input class="button" type="button" id="tardy" value="Tardy Check-In" onclick="parent.location=&#39;FieldAppTardy.html&#39;">
-         <input class="button" type="button" id="absent" value="Report Absences" onclick="absencePage();">
-         <div><br></div>
-         <input class="button" type="button" id="update" value="Update Class List" onclick="javascript: updateList();">
-         <input class="button" type="button" id="submit" value="Upload Attendance Data" onclick="javascript: uploadAll();">
-         <div><br></div>
-      </div>
+		<div class="centeralign">
+			<input class="button" type="button" id="tardy" value="Tardy Check-In" onclick="parent.location=&#39;FieldAppTardy.html&#39;">
+			<input class="button" type="button" id="absent" value="Report Absences" onclick="absencePage();">
+			<div><br></div>
+			<input class="button" type="button" id="update" value="Update Class List" onclick="javascript: updateList();">
+			<input class="button" type="button" id="submit" value="Upload Attendance Data" onclick="javascript: uploadAll();">
+			<div><br></div>
+		</div>
 
-      <div id="classList" class="centeralign">Latest Class List: None</div>
-      <div id="tempForUpload" style="DISPLAY: none"></div>
-</div></div>
+		<div id="classList" class="centeralign">Latest Class List: None</div>
+		<div id="tempForUpload" style="DISPLAY: none"></div>
+		</div>
+		</div>
 
-<script>
-window.onload = function() {
-   var array = storeToArray(studentPrepend," ","date");
-   var str;
-   if (array.length < 1) {
-      str="No class list is currently present.";
-   } else {
-      str="Current class list: " + array[0][0];
-   }
+		<script>
+			window.onload = function() {
+			   var array = storeToArray(studentPrepend," ","date");
+			   var str;
+			   if (array.length < 1) {
+				  str="No class list is currently present.";
+			   } else {
+				  str="Current class list: " + array[0][0];
+			   }
 
-   document.getElementById("classList").innerHTML = str;
-}
-</script>
-</body></html>
+			   document.getElementById("classList").innerHTML = str;
+			}
+		</script>
+	</body>
+</html>

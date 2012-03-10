@@ -1,4 +1,4 @@
-<html>
+<html manifest="FieldAppCache.appcache">
     <link rel="stylesheet" type="text/css" href="FieldAppCSS.css" />
     <script src="script.js"></script>	
 	<script>
@@ -11,8 +11,8 @@
         // prompt to leave open if page closes?
 
         window.onload = function() {
-// listToForm(new Array("Todd Wegter","Curtis Ullerich","Brandon Maxwell",
-// "Yifei Zhu", "Simanta Mitra","Steven Smyth"));
+			// listToForm(new Array("Todd Wegter","Curtis Ullerich","Brandon Maxwell",
+			// "Yifei Zhu", "Simanta Mitra","Steven Smyth"));
 
             // TODO will need to be able to sort by rank
             // students is a 2d array each element has an array of [netID,
@@ -506,9 +506,9 @@
                 <input id="endAM" type="radio" name="endrdio" value="AM"/>AM
                 <input id="endPM" type="radio" name="endrdio" value="PM" checked="1"/>PM
         </form>        
-           <br/> Remove the above event: <input id="editMain" type="submit" value="Remove" onClick="handleEdit();"/>
+        <br/> Remove the above event: <input id="editMain" type="submit" value="Remove" onClick="handleEdit();"/>
 
-<hr/>
+		<hr/>
         <div id="checkboxes" class="leftalign">        
             <form id="absences" name="absences" method="get">        
                 <br><strong>Mark all students that are absent.</strong></br>
