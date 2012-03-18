@@ -1,9 +1,10 @@
-<html><!-- manifest="FieldAppCache.appcache"-->
-	<head>
-      <link rel="stylesheet" type="text/css" href="FieldAppCSS.css">
-      <script src="script.js"></script>
-      <script src="sha.js"></script>
-      <script>
+<html>
+<!-- manifest="FieldAppCache.appcache"-->
+<head>
+<link rel="stylesheet" type="text/css" href="FieldAppCSS.css">
+<script src="script.js"></script>
+<script src="sha.js"></script>
+<script>
 
          function absencePage(){
             // check that entered TA data is valid
@@ -29,6 +30,8 @@
 
                 for (var i = 0; i < localStorage.length; i++) {
                     var key = localStorage.key(i);
+
+                    //if this is the right netid, then hash the plaintext password and check it
                     if (keyDelimiter(key,"netID") == name) {
                         if (localStorage[key] == Sha1.hash(password,true)) {
                             return true;
@@ -89,11 +92,10 @@
                return false;
             }
 
-               if (!navigator.onLine) {
-                  alert("You're not online. Upload not performed.");
-                  return false;
-               }
-
+            if (!navigator.onLine) {
+               alert("You're not online. Upload not performed.");
+               return false;
+            }
 
             var str = "";
             for (var i = 0; i < localStorage.length; i++) {
@@ -109,34 +111,47 @@
          }
 
       </script>
-   </head>
-   <body>
-      <h1>@10dance</h1><br>
+</head>
+<body>
+	<h1>@10dance</h1>
+	<br>
 
-      <input class="help" type="button" id="help" value="Help" onclick="javascript: help();">
+	<input class="help" type="button" id="help" value="Help"
+		onclick="javascript: help();">
 
-		<form method="POST" action="/JSPPages/uploadr.jsp" class="centeralign">
-			<input class="button" type="button" id="tardy" value="Tardy Check-In" onclick="parent.location=&#39;FieldAppTardy.html&#39;">
-			<input class="button" type="button" id="absent" value="Report Absences" onclick="absencePage();">
-			<div><br></div>
-			<input class="button" type="button" id="update" value="Update Class List" onclick="javascript: updateList();">
-			<input class="submit" type="submit" id="submit" value="Upload Attendance Data" onclick="uploadAll();">
-			<input type="hidden" id="tempForUpload" name="tempForUpload" value=""/>
-			<div><br></div>
-		</form>
-		
-		<form method="POST" action="/JSPPages/uploadr.jsp">
-			<input type="submit" name="submit" value="submit" onclick="uploadAll();"/>
-		</form>
-
-		<div id="classList" class="centeralign">Latest Class List: None</div>
-		<!-- <div id="tempForUpload" style="DISPLAY: none"></div> -->
+	<form method="POST" action="/JSPPages/uploadr.jsp" class="centeralign">
+		<input class="button" type="button" id="tardy" value="Tardy Check-In"
+			onclick="parent.location=&#39;FieldAppTardy.html&#39;"> <input
+			class="button" type="button" id="absent" value="Report Absences"
+			onclick="absencePage();">
+		<div>
+			<br>
 		</div>
+		<input class="button" type="button" id="update"
+			value="Update Class List" onclick="javascript: updateList();">
+		<input class="submit" type="submit" id="submit"
+			value="Upload Attendance Data" onclick="uploadAll();"> <input
+			type="hidden" id="tempForUpload" name="tempForUpload" value="" />
+		<div>
+			<br>
 		</div>
-		
-		<div class="centeralign"><br>UPDATE THE APPCACHE WHENEVER CHANGES ARE MADE!!!</br></div>
-		
-		<script>
+	</form>
+
+	<form method="POST" action="/JSPPages/uploadr.jsp">
+		<input type="submit" name="submit" value="submit"
+			onclick="uploadAll();" />
+	</form>
+
+	<div id="classList" class="centeralign">Latest Class List: None</div>
+	<!-- <div id="tempForUpload" style="DISPLAY: none"></div> -->
+	</div>
+	</div>
+
+	<div class="centeralign">
+		<br>UPDATE THE APPCACHE WHENEVER CHANGES ARE MADE!!!</br>
+	</div>
+
+	<script>
 			window.onload = function() {
 			   var array = storeToArray(studentPrepend," ","date");
 			   var str;
@@ -149,5 +164,5 @@
 			   document.getElementById("classList").innerHTML = str;
 			}
 		</script>
-	</body>
+</body>
 </html>
