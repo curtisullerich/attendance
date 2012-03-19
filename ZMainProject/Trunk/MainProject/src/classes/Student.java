@@ -8,12 +8,10 @@ import javax.persistence.*;
  * @author Brandon AND ONLY BRANDON!
  *
  */
-@Entity
+@Entity(name="Student")
+@DiscriminatorValue("Student")
 public class Student extends Person
 {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
 	//Need a way to store the absences -> actual dates
 	//AttendanceRecord class?
 	
