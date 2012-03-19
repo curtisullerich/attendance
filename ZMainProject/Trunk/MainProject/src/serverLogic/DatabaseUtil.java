@@ -6,6 +6,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 import classes.Person;
+import classes.Student;
 
 
 
@@ -32,14 +33,14 @@ public class DatabaseUtil
 	{
 		//Need to try and catch for the netID not being valid
 		EntityManager em = EMFService.get().createEntityManager();
-		Query q = em.createQuery("select p from Person p where p.netID = :netID");
+		Query q = em.createQuery("select p from Student p where p.netID = :netID");
 		q.setParameter("netID", netID);
 		Person p;
 		
 		//See if that person actually exists
 		try
 		{
-			p = (Person) q.getSingleResult();
+			p = (Student) q.getSingleResult();
 		}
 		catch (NoResultException e)
 		{
