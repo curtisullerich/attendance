@@ -1,10 +1,13 @@
 package servlets;
 
 import java.io.IOException;
+
+import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import classes.Person;
 import classes.Student;
 
 import serverLogic.DatabaseUtil;
@@ -31,8 +34,8 @@ public class RegisterServlet extends HttpServlet
 			{
 				//Need to do various other checks and stuff. Like whether this account already exists
 				//Create a new person with this partial information and put it in the datastore
-				Student s = new Student(netID, password, firstName, lastName);
-				DatabaseUtil.addStudent(s);
+				Person p = new Student(netID, password, firstName, lastName);
+				DatabaseUtil.addPerson(p);
 				//Send them back to the login page?
 				resp.sendRedirect("/JSPPages/loginPage.jsp");
 			}
