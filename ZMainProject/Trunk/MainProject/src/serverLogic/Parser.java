@@ -57,7 +57,7 @@ public class Parser
 		return new Time(hour, minute);
 	}
 	
-	private static void updateStudent(Person p, String prepend, Date eventDate, Time start, Time end)
+	private static void updateStudent(Student p, String prepend, Date eventDate, Time start, Time end)
 	{
 		if (prepend.equalsIgnoreCase(absentPrependPerformance))
 		{
