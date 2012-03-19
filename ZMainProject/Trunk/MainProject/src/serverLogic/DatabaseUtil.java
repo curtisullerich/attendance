@@ -3,11 +3,9 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 import classes.Person;
-import classes.Student;
 
 
 
@@ -18,13 +16,6 @@ import classes.Student;
  */
 public class DatabaseUtil 
 {
-	public static void addStudent(Student s)
-	{
-		EntityManager em = Persistence.createEntityManagerFactory("transactions-optional").createEntityManager();
-		em.persist(s);
-		em.close();
-	}
-	
 	public static void addPerson(Person p)
 	{
 		EntityManager em = EMFService.get().createEntityManager();
@@ -59,7 +50,6 @@ public class DatabaseUtil
 	
 	public static String[] listAll()
 	{
-		//TODO send password with the TA stuff
 		EntityManager em = EMFService.get().createEntityManager();
 		Query q = em.createQuery("select m from Person m");
 		List<Person> people = q.getResultList();
