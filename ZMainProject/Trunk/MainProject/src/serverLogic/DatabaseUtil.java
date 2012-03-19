@@ -57,8 +57,7 @@ public class DatabaseUtil
 		for (int i = 0; i < people.size(); i++)
 		{
 			Person p = people.get(i);
-			toRet[i] = (p.getNetID() + " " +  (p.isComplete() ? p.getFirstName(): "null") 
-					+ " " + (p.isComplete() ? p.getLastName() : "null"));
+			toRet[i] = p.toString();
 		}
 		em.close();
 		return toRet;	
