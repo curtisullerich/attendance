@@ -9,13 +9,16 @@ import javax.persistence.*;
  * @author Brandon AND ONLY BRANDON!
  *
  */
-//@Entity
+@Entity(name="Person")
+@Inheritance
+@MappedSuperclass
+@DiscriminatorColumn(name="PersonType")
 public class Person
 {
 	//This should be the hashed value of the person's key
-//	@Id
-//	@GeneratedValue(strategy = GenerationType.IDENTITY)
-//	protected Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	protected Long id;
 	
 	private String netID;
 	//Can take these 2 strings and put them into 1 and delimit
@@ -31,7 +34,7 @@ public class Person
 		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		//id = hash(netID);
+		id = hash(netID);
 	}
 	
 	public Person(String netID, String firstName, String lastName, String password, String major, String advisor, String position)
@@ -40,7 +43,7 @@ public class Person
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.password = password;
-		//id = hash(netID);
+		id = hash(netID);
 	}
 	
 	public String getFirstName() 
