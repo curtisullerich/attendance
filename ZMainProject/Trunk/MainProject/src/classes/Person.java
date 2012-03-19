@@ -2,24 +2,20 @@ package classes;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 /**
  * 
  * @author Brandon AND ONLY BRANDON!
  *
  */
-@Entity
+//@Entity
 public class Person
 {
 	//This should be the hashed value of the person's key
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+//	@Id
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
+//	protected Long id;
 	
 	private String netID;
 	//Can take these 2 strings and put them into 1 and delimit
@@ -28,21 +24,14 @@ public class Person
 	
 	//Instance variables are pretty obvious
 	private String password;
-	private String major;
-	private String advisor;
-	private String position;
-	
-	//This is where absences and tardies are stored
-	private AttendanceReport report;
-	
+
 	public Person(String netID, String password, String firstName, String lastName)
 	{
 		this.netID = netID;
 		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		id = hash(netID);
-		report = new AttendanceReport();
+		//id = hash(netID);
 	}
 	
 	public Person(String netID, String firstName, String lastName, String password, String major, String advisor, String position)
@@ -51,11 +40,7 @@ public class Person
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.password = password;
-		this.major = major;
-		this.advisor = advisor;
-		this.position = position;
-		id = hash(netID);
-		report = new AttendanceReport();
+		//id = hash(netID);
 	}
 	
 	public String getFirstName() 
@@ -83,29 +68,6 @@ public class Person
 		this.password = password;
 	}
 
-	public String getMajor() {
-		return major;
-	}
-
-	public void setMajor(String major) {
-		this.major = major;
-	}
-
-	public String getAdvisor() {
-		return advisor;
-	}
-
-	public void setAdvisor(String advisor) {
-		this.advisor = advisor;
-	}
-
-	public String getPosition() {
-		return position;
-	}
-
-	public void setPosition(String position) {
-		this.position = position;
-	}
 
 	public String getNetID() {
 		return netID;
@@ -117,13 +79,13 @@ public class Person
 
 	public String toString()
 	{
-		return netID + " " + firstName + " " + lastName + " " + major + " " + advisor + " " + position;
+		return netID + " " + firstName + " " + lastName;
 	}
 	public boolean isComplete() {return (firstName != null && lastName != null);}
 
-	public long hash(String netID)
-
+	//protected long getId() {return id;}
 	
+	public long hash(String netID)
 	{
 		try {
 			MessageDigest cript = MessageDigest.getInstance("SHA-1");
@@ -139,15 +101,5 @@ public class Person
 		}
 		
 	}
-	
 
-	public void addTardy(Tardy newTardy)
-	{
-		report.addTardy(newTardy);
-	}
-	
-	public void addAbsence(Absence newAbsence)
-	{
-		report.addAbsence(newAbsence);
-	}
 }
