@@ -1,4 +1,4 @@
-<html> <!-- manifest="FieldAppCache.appcache"-->
+<html><!-- manifest="FieldAppCache.appcache" -->
 
 <!-- UPDATE THE APPCACHE WHENEVER CHANGES ARE MADE!!! -->
 
@@ -7,20 +7,7 @@
 		<script src="script.js"></script>
 		<script src="sha.js"></script>
 		<script>
-
-        function absencePage(){
-            // check that entered TA data is valid
-            if(!validate())
-            {
-               // alert for invalid netID
-               alert("Please enter a valid TA netID and password.");
-               return false;
-            }
-            parent.location = "FieldAppAbsent.html";
-            return false;
-        }
-
-        
+		
 
         function help(){
             alert("This page is the start page for the @10dance Mobile App.\n\nThe Update Class List button shows when the list of students was last updated."+
@@ -56,28 +43,30 @@
         }
 
         function uploadAll() {
-            if(!validate()) {
-               // alert for invalid netID
-               alert("Please enter a valid TA netID and password.");
-               return false;
+            if(!validateTA()) 
+			{
+				return false;
             }
+			else
+			{
+				if (!navigator.onLine) {
+				   alert("You're not online. Upload not performed.");
+				   return false;
+				}
 
-            if (!navigator.onLine) {
-               alert("You're not online. Upload not performed.");
-               return false;
-            }
+				var str = "";
+				for (var i = 0; i < localStorage.length; i++) {
+				   str += localStorage.key(i)+",";//note that I intend to use the key, NOT the value here. Values are just what we print.
+				}
+				document.getElementById("tempForUpload").value = str;
+				alert(str);
+				alert("Going to server! Hang on! Warpspeed!");
+				   //the server will remove the text from the div once successful
+				window.location = "http://localhost:8888/JSPPages/uploadr.jsp";
 
-            var str = "";
-            for (var i = 0; i < localStorage.length; i++) {
-               str += localStorage.key(i)+",";//note that I intend to use the key, NOT the value here. Values are just what we print.
-            }
-            document.getElementById("tempForUpload").value = str;
-            alert(str);
-            alert("Going to server! Hang on! Warpspeed!");
-               //the server will remove the text from the div once successful
-            window.location = "http://localhost:8888/JSPPages/uploadr.jsp";
-
-            localStorage.clear();
+				localStorage.clear();
+			}
+			return false;
         }
 
 		</script>
@@ -88,7 +77,7 @@
 
 		<input class="help" type="button" id="help" value="Help" onclick="javascript: help();">
 
-		<form method="POST" action="/JSPPages/uploadr.jsp" class="centeralign">
+		<form method="POST" class="centeralign">
 			<input class="button" type="button" id="tardy" value="Tardy Check-In" onclick="parent.location=&#39;FieldAppTardy.html&#39;"> 
 			<input class="button" type="button" id="absent" value="Report Absences" onclick="parent.location = &#39;FieldAppAbsent.html&#39;">
 			<div>

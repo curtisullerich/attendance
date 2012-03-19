@@ -1,14 +1,15 @@
 Mobile App TODO
 
 CURTIS
-*Implement TA login ---------------------------------- Need to check on pageLoad
+*Implement TA login -------------------------------------------------- DONE
 *Finish CSS
 *Upload stuff and receive confirmation
 
 TODD
 *Test and remove debugging buttons
 *Fix clear all button and view button in absence
-*Application Caching!!!!!! -------------------------------------------- DONE(ish)
+*Application Caching!!!!!! -------------------------------------------- DONE (don't forget to turn on)
 *Pretty Print --------------------------------------------------------- DONE
 *Help Buttons
-*Not connected to internet error/404 server not found page
+*Not connected to internet error -------------------------------------- DONE (must switch Firefox to offline mode)
+*404 page
