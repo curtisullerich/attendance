@@ -1,23 +1,53 @@
 package classes;
 
+import javax.persistence.Entity;
+import javax.persistence.*;
+
 /**
  * 
  * @author Brandon AND ONLY BRANDON!
  *
  */
+@Entity
 public class Student extends Person
 {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	//Need a way to store the absences -> actual dates
 	//AttendanceRecord class?
-		
+	
+	//This is where absences and tardies are stored
+	private AttendanceReport report;	
+	
 	//This field can be used to determine the grade without having to
 	//iterate thru all the absences and count them
 	private int numAbsences = 0;
+	private String major;
+	private String advisor;
+	private String position;
 
 	public Student(String netID, String firstName, String lastName,
 			String password, String major, String advisor, String position) {
 		super(netID, firstName, lastName, password, major, advisor, position);
-		// TODO Auto-generated constructor stub
+
+		this.major = major;
+		this.advisor = advisor;
+		this.position = position;		
+		report = new AttendanceReport();
+		this.id = hash(netID);
+	}
+	
+	public Student(String netID, String password, String firstName, String lastName)
+	{
+		super(netID, password, firstName, lastName);
+		report = new AttendanceReport();
+		this.id = hash(netID);
+	}
+	
+	public String toString()
+	{
+		return super.toString() + " " + major + " " + advisor + " " + position;
 	}
 	
 	public int getNumAbsences() {
@@ -31,6 +61,40 @@ public class Student extends Person
 	public void addNumAbsences()
 	{
 		this.numAbsences++;
+	}
+	
+	public void addTardy(Tardy newTardy)
+	{
+		report.addTardy(newTardy);
+	}
+	
+	public void addAbsence(Absence newAbsence)
+	{
+		report.addAbsence(newAbsence);
+	}
+
+	public String getMajor() {
+		return major;
+	}
+
+	public void setMajor(String major) {
+		this.major = major;
+	}
+
+	public String getAdvisor() {
+		return advisor;
+	}
+
+	public void setAdvisor(String advisor) {
+		this.advisor = advisor;
+	}
+
+	public String getPosition() {
+		return position;
+	}
+
+	public void setPosition(String position) {
+		this.position = position;
 	}
 
 }
