@@ -23,6 +23,7 @@ public class LoginServlet extends HttpServlet
 			String password = req.getParameter("Password");
 			//Check that they actually added something
 			
+			//Hash the password
 			if(!validateLogin(DatabaseUtil.getPerson(netID), password))
 			{
 				directTo = "/JSPPages/invalidLogin.jsp";
