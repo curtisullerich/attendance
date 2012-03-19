@@ -24,6 +24,7 @@ public class Student extends Person
 	private String major;
 	private String advisor;
 	private String position;
+	private String rank;
 
 	public Student(String netID, String firstName, String lastName,
 			String password, String major, String advisor, String position) {
@@ -31,7 +32,8 @@ public class Student extends Person
 
 		this.major = major;
 		this.advisor = advisor;
-		this.position = position;		
+		this.position = position;
+		rank = "|";
 		report = new AttendanceReport();
 		this.id = hash(netID);
 	}
@@ -39,13 +41,14 @@ public class Student extends Person
 	public Student(String netID, String password, String firstName, String lastName)
 	{
 		super(netID, password, firstName, lastName);
+		rank = "|";
 		report = new AttendanceReport();
 		this.id = hash(netID);
 	}
 	
 	public String toString()
 	{
-		return super.toString() + " " + major + " " + advisor + " " + position;
+		return super.toString() + " " + major + " " + advisor + " " + position + " " + rank;
 	}
 	
 	public int getNumAbsences() {
