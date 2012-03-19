@@ -52,7 +52,7 @@ public class DatabaseUtil
 	public static String[] listAll()
 	{
 		EntityManager em = EMFService.get().createEntityManager();
-		Query q = em.createQuery("select m from Person m");
+		Query q = em.createQuery("select m from Student m");
 		List<Person> people = q.getResultList();
 		String[] toRet = new String[people.size()];
 		for (int i = 0; i < people.size(); i++)

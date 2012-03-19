@@ -495,11 +495,11 @@ function addRowToTable(table,value)
 
 function validateTA(){
 	// get TA checkin
-	var name=prompt("Please enter your TA netID:","");
+	var name=prompt("Please enter your TA netID:","TA netID");
 	
 	if (name!=null && name!="")
 	{
-	   var password=prompt("Please enter your TA password:","");
+	   var password=prompt("Please enter your TA password:","password");
 			
 		if (password!=null && password != "")
 		{
@@ -510,12 +510,10 @@ function validateTA(){
 				if (keyDelimiter(key,"netID") == name) {
 					if (localStorage[key] == Sha1.hash(password,true)) {
 						return true;
-					} else {
-						alert("Invalid Password");
-					}
+					} 
 				} 
 			}
-			alert("Invalid netID");
+			alert("Invalid netID or password");
 		}
 		else
 		{
