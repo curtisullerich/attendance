@@ -493,5 +493,39 @@ function addRowToTable(table,value)
 	return;
 }
 
+function validateTA(){
+            // get TA checkin
+            var name=prompt("Please enter your TA netID:","");
+			
+            if (name!=null && name!="")
+            {
+               var password=prompt("Please enter your TA password:","");
+					
+				if (password!=null && password != "")
+				{
+					for (var i = 0; i < localStorage.length; i++) {
+						var key = localStorage.key(i);
+
+						//if this is the right netid, then hash the plaintext password and check it
+						if (keyDelimiter(key,"netID") == name) {
+							if (localStorage[key] == Sha1.hash(password,true)) {
+								return true;
+							} else {
+								alert("Invalid Password");
+							}
+						} 
+					}
+					alert("Invalid netID");
+				}
+				else
+				{
+					return false;
+				}
+            }
+            else
+            {
+               return false;
+            }
+        }
 
 // end hiding script from old browsers -->

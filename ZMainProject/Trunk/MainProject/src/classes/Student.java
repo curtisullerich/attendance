@@ -97,5 +97,12 @@ public class Student extends Person
 	public void setPosition(String position) {
 		this.position = position;
 	}
+	
+	public String getRank(){
+		return rank;
+	}
+	public void setRank(String rank){
+		this.rank = rank;
+	}
 
 }

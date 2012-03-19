@@ -85,6 +85,11 @@ public class Person
 		return netID + " " + firstName + " " + lastName;
 	}
 	public boolean isComplete() {return (firstName != null && lastName != null);}
+	
+	public String getRank(){
+		return "|";
+	}
+
 
 	//protected long getId() {return id;}
 	

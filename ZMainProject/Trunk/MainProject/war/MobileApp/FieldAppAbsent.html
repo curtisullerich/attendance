@@ -12,7 +12,7 @@
 			// prompt to leave open if page closes?
 
 			window.onload = function() {
-				
+							
 				var array = new Array();
 				var curList = storeKeysToArray(studentPrepend, "rank");
 				curList.sort();
@@ -24,6 +24,19 @@
 					array.push(student);
 				}
 				listToForm(array);
+				
+				//prompt for TA login -- try/catch catcheds error if user refreshes page
+				try
+				{
+					if(!validateTA())
+					{
+						parent.location = "FieldAppMain.html";
+					}
+				}
+				catch(error)
+				{
+					parent.location = "FieldAppAbsent.html";
+				}
 			}
 			
 			
