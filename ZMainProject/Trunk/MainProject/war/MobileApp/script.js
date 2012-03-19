@@ -236,6 +236,48 @@ function clearLocalStoragewithPrepend(prepend){
 }
 
 /**
+ * This function delineates the specified value into an array
+ * (index 0=prepend or netID, 1=date, 2=startTime, 3=endTime). 
+ * It then returns the desired component of the value
+ * 
+ * The options for return subcomponent of the value are 0, 1, 2, or 3. The entire
+ * value is returned if the delimitee does not match one of the specified options
+ * 
+ * @param value -
+ *            the value to be split
+ * @param delimitee -
+ *            the desired component of the value (i.e. date, etc.)
+ * 
+ * @return The desried specific component of the value (i.e. 2012-02-18, etc.)
+ * 
+ * @author Todd Wegter
+ */
+function valueDelimiter(value,delimitee){
+	if (value == null || delimitee == null) {
+	    return null;
+	}
+	
+	var valueArray = new Array();
+	
+	valueArray = value.split(" ");
+	
+	if(delimitee==0){
+		return valueArray[0];
+	}
+	else if(delimitee==1){
+		return valueArray[1];
+	}
+	else if(delimitee==2){
+		return valueArray[2];
+	}
+	else if(delimitee==3){
+		return valueArray[3];
+	}
+	return value;
+}
+
+
+/**
  * This function delineates the specified standard format key into an array
  * (index 0=prepend, 1=firstname, 2=lastname, 3=netID, 4=date, 5=startTime,
  * 6=endTime, 7=rank). It then returns the desired component of the key
@@ -360,12 +402,45 @@ function storeToArray(prepend, searchKey, delimitee){
 	return array;
 }
 
+
+/**
+ * Stores keys with desired prepend to array to be sorted by desired element
+ *
+ * @param prepend -
+ *            the prepend for the key of the elements to be stored
+ * @param delimitee -
+ *            the desired component of the key to be stored in the array
+ * 
+ * @return A 2D array: each row has two entries -> [i][0] is the desired
+ *         component of the key -> [i][1] is the full key
+ * 
+ * This allows the array to be sorted using array.sort() -> sorts by the 0th
+ * column, then the 1th column (for duplicates in 0th column)
+ * 
+ * @author Todd Wegter
+ */
+function storeKeysToArray(prepend, delimitee){
+	var index = 0;
+	var array = new Array();
+	// search through all localStorage
+	for(var i = 0, l = localStorage.length; i<l; i++)
+	{
+		var key = localStorage.key(i);
+		// if the key contains the prepend and the searchKey, store it and the
+		// desired part of the key into the array
+		if(stringContains(prepend,key))
+		{
+			array[index++] = [keyDelimiter(key,delimitee),key];
+		}
+	}
+	return array;
+}
+
 /**
  * Takes a 2D array created with storeToArray(prepend, searchKey, delimitee) and
  * compiles its values (not the keys) to a string
  * 
- * @param array -
- *            the array to stringify
+ * @param array - the array to stringify
  * 
  * @return The string of the array
  */
@@ -379,5 +454,44 @@ function storageArrayToString(array){
 	}
 	return returnString;
 }
+
+/**
+ * Adds a row to the specified table with the given info
+ *
+ * @param table - table to be added to
+ * @param key - key to be added to table
+ * @param col1 - (string) the segment of the key to be stored in column 1
+ * @param col2 - (string) the segment of the key to be stored in column 2
+ * @param col3 - (string) the segment of the key to be stored in column 3
+ * @param col4 - (string) the segment of the key to be stored in column 4
+ *
+ * @author Todd Wegter
+ * @date 3-18-12
+ */
+function addRowToTable(table,value)
+{
+	if (!document.getElementsByTagName) return;
+	tabBody=document.getElementsByTagName("TBODY").item(table);
+	row=document.createElement("TR");
+	cell1 = document.createElement("TD");
+	cell2 = document.createElement("TD");
+	cell3 = document.createElement("TD");
+	cell4 = document.createElement("TD");
+	textnode1=document.createTextNode(valueDelimiter(value,0));
+	textnode2=document.createTextNode(valueDelimiter(value,1));
+	textnode3=document.createTextNode(valueDelimiter(value,2));
+	textnode4=document.createTextNode(valueDelimiter(value,3));
+	cell1.appendChild(textnode1);
+	cell2.appendChild(textnode2);
+	cell3.appendChild(textnode3);
+	cell4.appendChild(textnode4);
+	row.appendChild(cell1);
+	row.appendChild(cell2);
+	row.appendChild(cell3);
+	row.appendChild(cell4);
+	tabBody.appendChild(row);
+	return;
+}
+
 
 // end hiding script from old browsers -->

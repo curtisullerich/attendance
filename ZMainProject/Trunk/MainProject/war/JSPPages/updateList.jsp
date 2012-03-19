@@ -22,7 +22,8 @@
 	        var netID = splat[0];
 	        var firstname = splat[1];
 	        var lastname = splat[2];
-	        storeEntry("studentRecord", firstname, lastname, netID, dateToday(),"|","|","|");
+			var rank = splat[6];
+	        storeEntry("studentRecord", firstname, lastname, netID, dateToday(),"|","|",rank);
 	    }
 		//Need to do this so it passes the localhost
 		localStorage[""];
