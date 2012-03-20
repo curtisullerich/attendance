@@ -1,7 +1,7 @@
 Mobile App TODO
 
 CURTIS
-*Implement TA login -------------------------------------------------- DONE
+*Implement TA login --------------------------------------------------- change upload login style
 *Finish CSS
 *Upload stuff and receive confirmation
 
