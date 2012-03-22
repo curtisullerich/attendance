@@ -8,7 +8,6 @@
 	<head>
 		<title>@10Dance</title>
 	</head>
-	<!-- <form> name=form1 action="MainProjectServlet" method="GET"</form> -->
 	<body>
 		<h1>ISU Varsity Marching Band / Spring 2012</h1>
 		<form action ="/login" method ="post" accept-charset="uft-8">
