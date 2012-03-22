@@ -12,4 +12,4 @@ TODD
 *Pretty Print --------------------------------------------------------- DONE
 *Help Buttons
 *Not connected to internet error -------------------------------------- DONE (must switch Firefox to offline mode)
-*404 page
+*404 page ------------------------------------------------------------- DONE (not sure if this can be made offline or if that is even necessary)
