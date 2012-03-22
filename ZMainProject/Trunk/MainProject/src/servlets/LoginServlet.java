@@ -31,6 +31,11 @@ public class LoginServlet extends HttpServlet
 			
 			//Will go somewhere else once we have more stuff implemented
 			//directTo = "somewhere else";
+			else
+			{
+				//Figure out if it was a Director, TA, or Student
+				
+			}
 
 		}
 		else
@@ -48,7 +53,7 @@ public class LoginServlet extends HttpServlet
 	
 	private boolean validateLogin(Person attemptedAccount, String attemptedPassword)
 	{
-		if (attemptedAccount.getPassword().equals(attemptedPassword))
+		if (attemptedAccount != null && attemptedAccount.getPassword().equals(attemptedPassword))
 			return true;
 		return false;
 	}
