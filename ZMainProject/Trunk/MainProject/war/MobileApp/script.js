@@ -18,6 +18,10 @@ var tardyPrepend = "tardyStudent";
 var studentPrepend = "studentRecord";
 var loginPrepend = "storedLogin";
 
+//debug enable thingy
+var loginDebug = true;
+var debug = true;
+
 
 /**
  * Makes browser go back (same as hitting browser's back button
@@ -510,6 +514,9 @@ function addRowToTable(table,value)
   */
 function validateTA(){
 	// get TA checkin
+	if(loginDebug)
+		return true;
+	
 	var name=prompt("Please enter your TA netID:","TA netID");
 	
 	if (name!=null && name!="")
@@ -529,15 +536,19 @@ function validateTA(){
 				} 
 			}
 			alert("Invalid netID or password");
+			parent.location="FieldAppMain.html";
+			return false;
 		}
 		else
 		{
+			parent.location="FieldAppMain.html";
 			return false;
 		}
 	}
 	else
 	{
-	   return false;
+		parent.location="FieldAppMain.html";
+		return false;
 	}
 }
 

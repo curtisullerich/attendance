@@ -9,32 +9,45 @@ h1 {
     text-align: center;
 }
 
+	
+
 .help {
 	position: absolute;
 	top: 7px;
-	right: 0.5em;
+	right: 8px;
 }
 
 .back{
 	position: absolute;
 	top: 7px;
-	left: 0.5em;
+	left: 8px;
 }
 
 .button{
-	width: 14em;
-	height: 3em;
+	width: 220px;
+	height: 45px;
 }
 
 .box {
-    width: 400 px;
-    margin: auto;
-    border: 1px;
+    width: 500px;
+	margin: auto;
+	border: 1px;
+	text-align: center;
+}
+
+.checkboxes{
+	margin: 20px 60px;
+	text-align: left;
+}
+
+.table{
+	margin: 0px 65px;
+	text-align: left;
+	width: 400;
 }
 
 .centeralign{
     text-align:center;
-
 }
 
 
