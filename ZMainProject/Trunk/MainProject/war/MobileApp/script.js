@@ -18,6 +18,17 @@ var tardyPrepend = "tardyStudent";
 var studentPrepend = "studentRecord";
 var loginPrepend = "storedLogin";
 
+
+/**
+ * Makes browser go back (same as hitting browser's back button
+ * @author Todd Wegter
+ * @date 3/22/12
+ */
+function goBack()
+{
+	window.history.back()
+}
+
 /**
  * Determines if a substring (sub) is contained within a string (str)
  * 
@@ -493,6 +504,10 @@ function addRowToTable(table,value)
 	return;
 }
 
+ /**
+  * 
+  * @returns
+  */
 function validateTA(){
 	// get TA checkin
 	var name=prompt("Please enter your TA netID:","TA netID");

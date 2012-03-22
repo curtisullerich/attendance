@@ -186,21 +186,21 @@
 		</br>
 		
 		<form class="centeralign" id="tardyView">
-			<input type="button" id="viewButton" value="View Tardies" onclick="javascript: tardiesOnOff();">
-			<input type="button" id="resort" value="Re-Sort Tardy List" onclick="javascript: retrieveTardies();">
-			<input type="button" id="clear" value="Clear Tardy List" onclick="javascript: clearTardies();">
+			<input type="button" id="viewButton" value="View Tardies" onclick="javascript: tardiesOnOff();"/>
+			<input type="button" id="resort" value="Re-Sort Tardy List" onclick="javascript: retrieveTardies();"/>
+			<input type="button" id="clear" value="Clear Tardy List" onclick="javascript: clearTardies();"/>
 			<br>
 		</form>
 		
 		<form class="centeralign" id="tardySortType">
 			<b>Sort Style</b>
-			<input type="radio" name="sortType" value="Time" checked="">time
-			<input type="radio" name="sortType" value="netID">netID<br>
+			<input type="radio" name="sortType" value="Time" checked=""/>time
+			<input type="radio" name="sortType" value="netID"/>netID<br>
 		</form>
 		
 		<div id="tardies"></div>
 		
-		<input class="back" type="button" id="back" value="Back" onclick="parent.location=&#39;FieldAppMain.html&#39;"><br>
-		<input class="help" type="button" id="help" value="Help" onclick="javascript: help();">
+		<input class="back" type="button" id="back" value="Back" onclick="goBack()"/><br>
+		<input class="help" type="button" id="help" value="Help" onclick="javascript: help();"/>
 	</body>
 </html>

@@ -18,6 +18,16 @@ var performancePrepend = "storedPerformance";
 var tardyPrepend = "tardyStudent";
 var studentPrepend = "studentRecord";
 
+/**
+ * Makes browser go back (same as hitting browser's back button
+ * @author Todd Wegter
+ * @date 3/22/12
+ */
+function goBack()
+{
+	window.history.back()
+}
+
 
 /**
  * Determines if a substring (sub) is contained within a string (str)
