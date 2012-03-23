@@ -1,0 +1,216 @@
+<html> <!-- manifest="FieldAppCache.appcache" -->
+	<head>		
+		<link rel="stylesheet" type="text/css" href="FieldAppCSS.css">
+		<script src="script.js"></script>
+		<script>
+			
+			/**
+			* This function selects the netID input box by default on pageload
+			*
+			* @author Todd Wegter
+			**/
+			window.onload = function(){
+				if(debug){
+					document.getElementById("clear").hidden = false;
+				}
+				
+				var text_input = document.getElementById ("student");
+				text_input.focus ();
+				text_input.select ();
+			}
+			
+			/**
+			* This function selects the netID input box by default when called
+			*
+			* @author Todd Wegter
+			**/
+			function netIDSelect(){
+				var text_input = document.getElementById ("student");
+				text_input.focus ();
+				text_input.select ();
+			}
+			
+			/**
+			* This function submits a tardy to the local storage based on the netID entered in the input box
+			* @return false so page is not reloaded
+			*
+			* @author Todd Wegter
+			**/
+			function submitTardy() {
+				//checks for valid ID
+				var netID = document.getElementById("student").value
+				if(!validate(netID))
+				{
+					netIDSelect();
+					return false;
+				}
+				//format of tardy (24 hour time): netID YYYY-MM-DD hh:mm am/pm
+				var tardyEntry = netID + " " + dateToday() + " " + twelveHourTimeNow();
+				//store tardy with appropriate key
+				storeEntry(tardyPrepend, getFirstName(netID), getLastName(netID), netID, dateToday(), timeNow(), "|", getRank(netID), tardyEntry);
+				document.getElementById("student").value = "";
+				//updates onscreen tardy list if necessary
+				retrieveTardies();
+				//autoplace cursor in netID box
+				netIDSelect();
+				return false;
+			}
+			
+			
+			
+			/**
+			* This function shows and hides the tardy list, viewTardiesOn keeps track of whether the tardy list
+			* is being shown
+			*
+			* @author Todd Wegter
+			**/
+			//global variable to determine if tardy list is shown
+			var viewTardiesOn = false;
+			function tardiesOnOff(){
+				viewTardiesOn = !viewTardiesOn;
+				retrieveTardies();
+			}
+			
+			/**
+			* This helper function prints the tardies to the screen in chronologigical order of submission
+			* if viewTardiesOn is true;
+			*
+			* @author Todd Wegter
+			**/
+			function retrieveTardies(){
+				if(viewTardiesOn){
+					//array for sorting
+					var tardyArray = new Array();
+					var returnString = "<br>The Following Students Reported Being Tardy:</br>";
+					//stores localStorage to array to be sorted (to be sorted by time or netID)
+					var sortType;
+					var sortRadio = document.getElementById("tardySortType").elements;
+					//sort chronologically or by netID based on radio buttons
+					if (sortRadio[0].checked == 1) {
+						sortType = "starttime";
+					} else {
+						sortType = "netID";
+					}
+					tardyArray = storeToArray(tardyPrepend, dateToday(), sortType);
+					//if people were tardy, sort them and print
+					if(tardyArray.length > 0){
+						//sort array
+						var sortedTardyArray = tardyArray.sort();
+						//assign sorted array to String
+						returnString += storageArrayToString(sortedTardyArray);
+						document.getElementById("tardies").innerHTML = returnString;
+						//changes button text
+						document.getElementById("viewButton").value = "Hide Tardies";
+					}
+					//if no one was tardy, say so
+					else{
+						document.getElementById("tardies").innerHTML = "<br>No students were tardy.</br>";
+						//changes button text
+						document.getElementById("viewButton").value = "Hide Tardies";
+					}
+				}
+				else{
+					document.getElementById("tardies").innerHTML = "";
+					//changes button text
+					document.getElementById("viewButton").value = "View Tardies";
+				}
+			}
+			
+			/**
+			* This function clears all tardy entries in the localStorage
+			*
+			* @author Todd Wegter
+			**/
+			function clearTardies()
+			{
+				if(debug)
+				{
+					//disable buttons while clearing
+					document.getElementById("clear").disabled = true;
+					document.getElementById("student").disabled = true;
+					document.getElementById("submit").disabled = true;
+					document.getElementById("viewButton").disabled = true;
+					document.getElementById("back").disabled = true;
+					document.getElementById("re-sort").disabled = true;
+					document.getElementById("clear").value = "Clearing...";
+					//clear all tardy records
+					clearLocalStoragewithPrepend(tardyPrepend);
+					//turn off printed tardy list
+					viewTardiesOn = false;
+					retrieveTardies();
+					//wait .5 second to show disabled buttons in case operation takes very little time
+					setTimeout(function(){
+						//re-enable buttons
+						document.getElementById("clear").disabled = false;
+						document.getElementById("submit").disabled = false;
+						document.getElementById("viewButton").disabled = false;
+						document.getElementById("back").disabled = false;
+						document.getElementById("re-sort").disabled = false;
+						document.getElementById("student").disabled = false;
+						document.getElementById("clear").value = "Clear Tardy List";
+					},1000);
+					netIDSelect();
+				}
+			}
+			
+			/**
+			* This function check the locally stored copy of the list of students to ensure that the
+			* entered netID is valid
+			*
+			* @author Todd Wegter
+			**/
+			function validate(netID){
+				//check if the student field is blank
+				if(netID != "" || netID != null){
+					//alert for invalid netID
+					if(localStorageContainsStudent(netID))
+					{
+						netIDSelect();
+						return true;
+					}
+				}
+				alert("Please enter a valid netID.");
+				document.getElementById("student").placeholder = "netID";
+				netIDSelect();
+				return false;
+			}
+			
+			function help(){
+				alert("TODO");
+				return false;
+			}
+			
+		</script>
+	
+	<body>
+		<div class="box">
+			<h1>Tardy Check-In</h1></br>
+				<form class="centeralign" id="tardyReport" onsubmit="return submitTardy();">
+					<input type="text" id="student" placeholder="netID">
+					<input type="submit" id="submit" value="Submit Tardy">
+				</form>
+				
+				</br>
+				<hr>
+				</br>
+				
+				<form class="centeralign" id="tardyView">
+					<input type="button" id="viewButton" value="View Tardies" onclick="javascript: tardiesOnOff();"/>
+					<input type="button" id="re-sort" value="Re-Sort Tardy List" onclick="javascript: retrieveTardies();"/>
+					<input type="button" id="clear" value="Clear Tardy List" onclick="javascript: clearTardies();" hidden=true/>
+					<br>
+				</form>
+				
+				<form class="centeralign" id="tardySortType">
+					<b>Sort Style</b>
+					<input type="radio" name="sortType" value="Time" checked=""/>time
+					<input type="radio" name="sortType" value="netID"/>netID<br>
+				</form>
+				
+				<div id="tardies"></div>
+				
+				<input class="back" type="button" id="back" value="Back" onclick="parent.location='FieldAppMain.html'"/><br>
+				<input class="help" type="button" id="help" value="Help" onclick="javascript: help();"/>
+			</div>
+	</body>
+</html>

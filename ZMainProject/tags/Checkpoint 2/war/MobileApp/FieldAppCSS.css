@@ -1,0 +1,61 @@
+html {background: url("gradient6.jpg") fixed;}
+html {background-color:black;}
+body {color:white;}
+body {font-family:"Arial", Arial, sansserif;}
+
+h1 {
+    color:white;
+    margin: 1 px;
+    text-align: center;
+}
+
+	
+
+.help {
+	position: absolute;
+	top: 7px;
+	right: 8px;
+}
+
+.back{
+	position: absolute;
+	top: 7px;
+	left: 8px;
+}
+
+.button{
+	width: 220px;
+	height: 45px;
+}
+
+.box {
+    width: 500px;
+	margin: auto;
+	border: 1px;
+	text-align: center;
+}
+
+.checkboxes{
+	margin: 20px 60px;
+	text-align: left;
+}
+
+.table{
+	margin: 0px 65px;
+	text-align: left;
+	width: 400;
+}
+
+.centeralign{
+    text-align:center;
+}
+
+
+.leftalign{
+    text-align:left;
+    margin: 0 20px;
+}
+
+.rightalign{
+    text-align:right;   
+}
