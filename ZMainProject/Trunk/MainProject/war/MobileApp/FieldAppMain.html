@@ -7,7 +7,22 @@
 		<script src="script.js"></script>
 		<script src="sha.js"></script>
 		<script>
-		
+				
+		window.onload = function() {
+					var array = storeToArray(studentPrepend," ","date");
+					var str;
+					if (array.length < 1) {
+						str="No class list is currently present.";
+					} else {
+						str="Current class list: " + array[0][0];
+					}
+
+					document.getElementById("classList").innerHTML = str;
+				   
+					if(debug){
+						document.getElementById("clear").hidden = false;
+					}
+				}
 
         function help(){
             alert("This page is the start page for the @10dance Mobile App.\n\nThe Update Class List button shows when the list of students was last updated."+
@@ -68,47 +83,56 @@
 			}
 			return false;
         }
+		
+		function clearAll(){
+			document.getElementById("clear").disabled = true;
+			document.getElementById("tardy").disabled = true;
+			document.getElementById("absent").disabled = true;
+			document.getElementById("update").disabled = true;
+			document.getElementById("submit").disabled = true;
+			document.getElementById("clear").value = "Clearing...";
+			localStorage.clear();
+			setTimeout(function(){
+				//re-enable buttons
+				document.getElementById("clear").disabled = false;
+				document.getElementById("tardy").disabled = false;
+				document.getElementById("absent").disabled = false;
+				document.getElementById("update").disabled = false;
+				document.getElementById("submit").disabled = false;
+				document.getElementById("clear").value = "Clear ALL THE THINGS!!!";
+				window.location.reload();
+			},1000);
+		}
 
 		</script>
 	</head>
 	<body>
-		<h1>@10dance</h1>
-		<br>
+		<div class="box">
+			<h1>@10dance</h1>
+			<br>
 
-		<input class="help" type="button" id="help" value="Help" onclick="javascript: help();">
+			<input class="help" type="button" id="help" value="Help" onclick="javascript: help();">
 
-		<form method="POST" class="centeralign">
-			<input class="button" type="button" id="tardy" value="Tardy Check-In" onclick="parent.location='FieldAppTardy.html'"> 
-			<input class="button" type="button" id="absent" value="Report Absences" onclick="parent.location = 'FieldAppAbsent.html'">
-			<div>
-				<br>
+			<form method="POST" class="centeralign">
+				<input class="button" type="button" id="tardy" value="Tardy Check-In" onclick="parent.location='FieldAppTardy.html'"> 
+				<input class="button" type="button" id="absent" value="Report Absences" onclick="parent.location = 'FieldAppAbsent.html'">
+				<div>
+					<br>
+				</div>
+				<input class="button" type="button" id="update" value="Update Class List" onclick="javascript: updateList();">
+				<input class="button" type="submit" id="submit" value="Upload Attendance Data" onclick="uploadAll();"> 
+				<input type="hidden" id="tempForUpload" name="tempForUpload" value="">
+				<div>
+					<br>
+				</div>
+			</form>
+
+
+			<div id="classList" class="centeralign">Latest Class List: None</div>
+			</br>
+			<div class="centeralign">
+				<input class="button" type="button" id="clear" value="Clear ALL THE THINGS!!!" onClick="clearAll();" hidden=true/>
 			</div>
-			<input class="button" type="button" id="update" value="Update Class List" onclick="javascript: updateList();">
-			<input class="button" type="submit" id="submit" value="Upload Attendance Data" onclick="uploadAll();"> 
-			<input type="hidden" id="tempForUpload" name="tempForUpload" value="">
-			<div>
-				<br>
-			</div>
-		</form>
-
-
-		<div id="classList" class="centeralign">Latest Class List: None</div>
-		<!-- <div id="tempForUpload" style="DISPLAY: none"></div> -->
 		</div>
-		</div>
-
-		<script>
-				window.onload = function() {
-				   var array = storeToArray(studentPrepend," ","date");
-				   var str;
-				   if (array.length < 1) {
-					  str="No class list is currently present.";
-				   } else {
-					  str="Current class list: " + array[0][0];
-				   }
-
-				   document.getElementById("classList").innerHTML = str;
-				}
-		</script>
 	</body>
 </html>

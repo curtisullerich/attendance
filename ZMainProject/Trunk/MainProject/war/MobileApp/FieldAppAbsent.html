@@ -30,8 +30,8 @@
 				document.getElementById("rehearsalRadio").checked = 0;
 				document.getElementById("performanceRadio").checked = 0;
 				
-				if(!debug){
-					document.getElementById("clear").hidden = true;
+				if(debug){
+					document.getElementById("clear").hidden = false;
 				}
 				
 				//prompt for TA login -- try/catch catcheds error if user refreshes page
@@ -649,7 +649,7 @@
 			<input class="button" type="button" id="viewButton" value="View Absences" onclick="absencesOnOff();"/>
 			
 			<div></br></div>
-			<input class="back" type="submit" id="back" value="Back" onclick="goBack()"/></br>
+			<input class="back" type="submit" id="back" value="Back" onclick="parent.location='FieldAppMain.html'"/></br>
 			<input class="help" type="button" id="help" value="Help" onclick="javascript: help();"/>
 
 			<div id="eventDiv"></div>
@@ -663,7 +663,7 @@
 				</tbody>
 			</Table>
 			</br>
-			<input class="button" type="submit" id="clear" value="Clear Absence Data" onClick="clearAbsences();"/>
+			<input class="button" type="submit" id="clear" value="Clear Absence Data" onClick="clearAbsences();" hidden=true/>
 			</br>
 		</div>
     </body>

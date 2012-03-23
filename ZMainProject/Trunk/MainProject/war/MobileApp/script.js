@@ -138,6 +138,26 @@ function localStorageContainsEvent(eventType, date, starttime, endtime){
 	return false;
 }
 
+/**
+ * Returns true if localStorage contains a studen with the specified netID
+ *
+ * @param netID
+ *			- netID of desired student
+ * 
+ * @return true if the specified student netID
+ * 
+ * @author Todd Wegter
+ */
+function localStorageContainsStudent(netID){
+	for(var i = 0, l = localStorage.length; i<l; i++)
+	{
+		var key = localStorage.key(i);
+		if(stringContains(studentPrepend, key) && keyDelimiter(key, "netID")==netID)
+			return true;
+	}
+	return false;
+}
+
 
 /**
  * Will return first name associated with the given netID from the localStorage

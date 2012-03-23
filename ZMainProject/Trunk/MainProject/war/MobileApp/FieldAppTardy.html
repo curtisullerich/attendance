@@ -10,6 +10,10 @@
 			* @author Todd Wegter
 			**/
 			window.onload = function(){
+				if(debug){
+					document.getElementById("clear").hidden = false;
+				}
+				
 				var text_input = document.getElementById ("student");
 				text_input.focus ();
 				text_input.select ();
@@ -127,7 +131,7 @@
 					document.getElementById("submit").disabled = true;
 					document.getElementById("viewButton").disabled = true;
 					document.getElementById("back").disabled = true;
-					document.getElementById("resort").disabled = true;
+					document.getElementById("re-sort").disabled = true;
 					document.getElementById("clear").value = "Clearing...";
 					//clear all tardy records
 					clearLocalStoragewithPrepend(tardyPrepend);
@@ -141,13 +145,12 @@
 						document.getElementById("submit").disabled = false;
 						document.getElementById("viewButton").disabled = false;
 						document.getElementById("back").disabled = false;
-						document.getElementById("resort").disabled = false;
+						document.getElementById("re-sort").disabled = false;
 						document.getElementById("student").disabled = false;
 						document.getElementById("clear").value = "Clear Tardy List";
 					},1000);
 					netIDSelect();
 				}
-				return;
 			}
 			
 			/**
@@ -158,17 +161,18 @@
 			**/
 			function validate(netID){
 				//check if the student field is blank
-				if(netID == ""){
+				if(netID != "" || netID != null){
 					//alert for invalid netID
-					alert("Please enter a valid netID.");
-					document.getElementById("student").value = "";
-					netIDSelect();
-					return false;
+					if(localStorageContainsStudent(netID))
+					{
+						netIDSelect();
+						return true;
+					}
 				}
-				//check if netID is registered
-				//*****************************//
-				
-				return true;
+				alert("Please enter a valid netID.");
+				document.getElementById("student").placeholder = "netID";
+				netIDSelect();
+				return false;
 			}
 			
 			function help(){
@@ -178,33 +182,35 @@
 			
 		</script>
 	
-	<body class="box">
-	<h1>Tardy Check-In</h1></br></br>
-		<form class="centeralign" id="tardyReport" onsubmit="return submitTardy();">
-            <input type="text" id="student" placeholder="netID">
-			<input type="submit" id="submit" value="Submit Tardy">
-        </form>
-		
-        </br>
-		<hr>
-		</br>
-		
-		<form class="centeralign" id="tardyView">
-			<input type="button" id="viewButton" value="View Tardies" onclick="javascript: tardiesOnOff();"/>
-			<input type="button" id="resort" value="Re-Sort Tardy List" onclick="javascript: retrieveTardies();"/>
-			<input type="button" id="clear" value="Clear Tardy List" onclick="javascript: clearTardies();"/>
-			<br>
-		</form>
-		
-		<form class="centeralign" id="tardySortType">
-			<b>Sort Style</b>
-			<input type="radio" name="sortType" value="Time" checked=""/>time
-			<input type="radio" name="sortType" value="netID"/>netID<br>
-		</form>
-		
-		<div id="tardies"></div>
-		
-		<input class="back" type="button" id="back" value="Back" onclick="goBack()"/><br>
-		<input class="help" type="button" id="help" value="Help" onclick="javascript: help();"/>
+	<body>
+		<div class="box">
+			<h1>Tardy Check-In</h1></br>
+				<form class="centeralign" id="tardyReport" onsubmit="return submitTardy();">
+					<input type="text" id="student" placeholder="netID">
+					<input type="submit" id="submit" value="Submit Tardy">
+				</form>
+				
+				</br>
+				<hr>
+				</br>
+				
+				<form class="centeralign" id="tardyView">
+					<input type="button" id="viewButton" value="View Tardies" onclick="javascript: tardiesOnOff();"/>
+					<input type="button" id="re-sort" value="Re-Sort Tardy List" onclick="javascript: retrieveTardies();"/>
+					<input type="button" id="clear" value="Clear Tardy List" onclick="javascript: clearTardies();" hidden=true/>
+					<br>
+				</form>
+				
+				<form class="centeralign" id="tardySortType">
+					<b>Sort Style</b>
+					<input type="radio" name="sortType" value="Time" checked=""/>time
+					<input type="radio" name="sortType" value="netID"/>netID<br>
+				</form>
+				
+				<div id="tardies"></div>
+				
+				<input class="back" type="button" id="back" value="Back" onclick="parent.location='FieldAppMain.html'"/><br>
+				<input class="help" type="button" id="help" value="Help" onclick="javascript: help();"/>
+			</div>
 	</body>
 </html>
