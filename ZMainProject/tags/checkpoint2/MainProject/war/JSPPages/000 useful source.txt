@@ -1,0 +1,66 @@
+	
+GOOD HTML format >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+http://www.w3schools.com/html/html_forms.asp
+
+
+COMMEND >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+<!--TODO: need to connected to specific page-->
+
+HELP BUTTON!!!>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+	<!--HELP BUTTON-->	
+		<a class="addthis_button"><img
+        src="http://icons.iconarchive.com/icons/deleket/button/24/Button-Help-icon.png"
+        width="16" height="16" border="0" alt="Share" /></a>
+
+
+image:>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	<h3>
+		<img src="Line_Graph.jpg" alt="Line_Graph" width="320" height="320" />	
+	</h3>
+
+
+DROP DOWN BUTTON:>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+<select>
+  <option>Milk</option>
+  <option>Coffee</option>
+  <option>Tea</option>
+</select>
+
+
+Calendar.jpg >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+<tr><td>
+	<img src="Calendar.jpg" alt="Calendar" width="100" height="100" />	
+</td></tr>
+
+
+<DIV>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+		<div>
+		<table>
+			<tr><td>Name:</td> <td>FirstName, LastName</td></tr>
+			<tr><td>NetID:</td> <td>aaaa</td></tr>
+			<tr><td>Position:</td> <td>xxxxx</td></tr>
+			<tr><td>Major:</td> <td>CPR E</td></tr>
+			<tr><td>Email:</td> <td>helloworld@iastate.edu</td></tr>
+			<tr><td>Attendance:</td> <td>100/100</td></tr>
+		
+			<tr><td> </td> </tr>
+			<tr><td> </td> </tr>
+			<tr><td> </td> </tr>
+		
+			<tr><td>Instructor:</td> <td>FIRSTn LASTn</td></tr>
+			<tr><td>Instructor Email:</td> <td>a@iastate.edu</td></tr>
+			
+			<tr><td> </td> </tr>
+			<tr><td> </td> </tr>
+			<tr><td> </td> </tr>
+			
+			<tr><td>Advisor:</td> <td>FIRSTn LASTn</td></tr>
+			<tr><td>Advisor Email:</td> <td>advisor@iastate.edu</td></tr>		
+		</table>
+		</div>
+
+
+Random>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+<table border="1">
