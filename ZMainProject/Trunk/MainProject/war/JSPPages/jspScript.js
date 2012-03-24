@@ -43,16 +43,6 @@ function dateToday() {
 }
 
 /**
- * Makes browser go back (same as hitting browser's back button
- * @author Todd Wegter
- * @date 3/22/12
- */
-function goBack()
-{
-	window.history.back()
-}
-
-/**
  * 
  * @returns
  */
