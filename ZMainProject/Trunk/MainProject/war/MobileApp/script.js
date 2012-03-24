@@ -79,7 +79,7 @@ function timeNow() {
 		hours = "0"+hours;
 	if(parseInt(minutes,10)<10)
 		minutes = "0"+minutes;
-	return hours+minutes;
+	return ""+hours+minutes;
 } 
 
 /**
