@@ -1,4 +1,4 @@
-package TEMPtime;
+package time;
 /**
  * 
  * @author Yifei Zhu
