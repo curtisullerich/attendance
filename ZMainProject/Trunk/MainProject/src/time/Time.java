@@ -17,13 +17,13 @@ public class Time implements Comparable<Time> {
 	private Date date;
 	private String dayOfWeek;
 
-	public Time(int hour, int minute, int second, Date date, String dayOfWeek) {
+	public Time(int hour, int minute, int second, Date date) {
 		// //time
 		this.hour = hour;
 		this.minute = minute;
 		this.second = second;
 		this.date=date;
-		this.dayOfWeek=dayOfWeek;
+		this.dayOfWeek="";
 	}
 
 	public int getHour() {
