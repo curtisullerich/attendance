@@ -9,6 +9,12 @@
 <script src="/MobileApp/sha.js"/></script>
 <script>
 	
+	/**
+ 	 *
+ 	 * Hashes the password for sending to the server.
+	 * @author Curtis
+	 *
+	 */
 	function hashPassword() {
 		var str = Sha1.hash(document.getElementById("Password").value);
 		str = str.toUpperCase();
@@ -60,8 +66,5 @@
 		<input type="submit" value="Register" name="Register" />
 	</form>
 </body>
-
-
-
 
 </html>
