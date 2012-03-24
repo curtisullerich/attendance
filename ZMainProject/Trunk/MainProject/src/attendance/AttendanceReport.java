@@ -3,18 +3,20 @@ import java.util.ArrayList;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 import forms.Form;
 /**
  * 
  * @author Yifei Zhu
  *
  */
-public class AttendanceReport implements Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1562153563914794497L;
-
+public class AttendanceReport implements Serializable{
+	
 	List<Absence> absences;
 	List<Tardy> tardies;
 	private List<Form> forms;
