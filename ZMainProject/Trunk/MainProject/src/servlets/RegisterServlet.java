@@ -34,8 +34,8 @@ public class RegisterServlet extends HttpServlet
 			{
 				//Need to do various other checks and stuff. Like whether this account already exists
 				//Create a new person with this partial information and put it in the datastore
-				Person p = new Student(netID, password, firstName, lastName);
-				DatabaseUtil.addPerson(p);
+				Student s = new Student(netID, password, firstName, lastName);
+				DatabaseUtil.addStudent(s);
 				//Send them back to the login page?
 				resp.sendRedirect("/JSPPages/loginPage.jsp");
 			}
