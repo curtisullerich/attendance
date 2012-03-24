@@ -18,7 +18,6 @@ public class Course {
 	private Date sartDate;
 	private Date endDate;
 	
-	//TODO: not sure about mon--fri  
 	
 	public String getDepartment() {
 		return department;

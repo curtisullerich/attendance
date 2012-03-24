@@ -136,6 +136,7 @@ public class Date implements Comparable<Date>
 	
 	/**
 	 * calculate the dayOfYear from 2000-2099
+	 * http://www.terra.es/personal2/grimmer/
 	 * 
 	 * Example date July 13th, 2004
 	1.Take the last 2 digits of the year and add a quarter onto itself. (04 + 1 = 5)
