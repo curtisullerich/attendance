@@ -32,16 +32,24 @@ public class Parser {
 			String endTime = personalInfo[6];
 			if (prepend.equalsIgnoreCase(studentPrepend))
 				continue;
-			// Now get the person that this info goes to
-			Person person = DatabaseUtil.getPerson(netID);
-
-			// These classes don't exist anymore and I will take care of it
-			// -Brandon
-			Date useDate = parseDate(date);
-			Time start = parseTime(startTime, useDate);
-			Time end = parseTime(endTime, useDate);
-			// Now I need to find out what type of absence or tardy it is
-			updateStudent(person, prepend, useDate, start, end);
+			else if (prepend.equalsIgnoreCase(rehearsalPrepend) || prepend.equalsIgnoreCase(performancePrepend))
+			{
+				//Store the Event
+			}
+			else if (prepend.equalsIgnoreCase(absentPrependPerformance) || prepend.equalsIgnoreCase(absentPrependRehearsal)
+					|| prepend.equalsIgnoreCase(tardyPrepend))
+			{
+				// Now get the person that this info goes to
+				Person person = DatabaseUtil.getPerson(netID);
+	
+				// These classes don't exist anymore and I will take care of it
+				// -Brandon
+				Date useDate = parseDate(date);
+				Time start = parseTime(startTime, useDate);
+				Time end = parseTime(endTime, useDate);
+				// Now I need to find out what type of absence or tardy it is
+				updateStudent(person, prepend, useDate, start, end);
+			}
 		}
 		// Parse the string and then add whatever it is
 	}
