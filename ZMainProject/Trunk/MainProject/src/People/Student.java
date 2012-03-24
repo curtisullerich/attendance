@@ -2,7 +2,8 @@ package People;
 
 import javax.persistence.*;
 
-import Time.Absence;
+import time.Absence;
+
 
 
 
