@@ -4,15 +4,9 @@
 		<link rel="stylesheet" type="text/css" href="FieldAppCSS.css" />
 		<script src="script.js"></script>	
 		<script>
-			// other things TODO
-			// add a view all currently stored (without reloading form)
-			// add an edit today's submission button
-			// more meaningful printing
-			// how can we prevent localstorage from being cleared?
 			// store all current data upon page close?
 			// prompt to leave open if page closes?
 			
-
 			window.onload = function() {
 				//populate the checkbox list of students
 				var array = new Array();
@@ -44,6 +38,18 @@
 				{
 					parent.location = "FieldAppAbsent.html";
 				}
+			}
+			
+			function help(){
+				alert("This page is the absence reporting page for the @10dance Mobile App.\n"+
+				"\nSelect the event type, a start time, and an end time, and then select the absent students."+
+				"Clicking submit will store the event and the absent student records locally."+
+				"\n\nThe Tardy Check-In button navigates to the tardy check-in page."+
+				"\n\nThe Report Absences button navigates to the absence reporting page."+
+				"\n\nThe Upload Attendance Data button uploads the attendance data to the server."+
+				"\nUpon successful upload, the local attendance data is cleared."+
+				"\n\nBoth reporting absences and uploading attendance data require valid TA login info.");
+				return false;
 			}
 			
 			

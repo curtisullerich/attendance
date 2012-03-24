@@ -11,8 +11,11 @@
 	String info = request.getParameter("tempForUpload");
 	//String info= "<script> document.writeln(str)</script>";
 	out.println("value="+info);
-  	Parser.splat(info);
+  	//Parser.splat(info);
 %>
+
+<!-- This should be changed to reflect successful processing when we can -->
+<!-- Parser.splat(info) should return true if successful -->
 
 <script>
 	if (<%=info != null%>)
@@ -23,5 +26,4 @@
 	{
 		localStorage.setItem("success", false);
 	}
-
 </script>

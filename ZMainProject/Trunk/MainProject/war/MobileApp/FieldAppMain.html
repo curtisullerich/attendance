@@ -26,15 +26,13 @@
 				}
 
         function help(){
-            alert("This page is the start page for the @10dance Mobile App.\n\nThe Update Class List button shows when the list of students was last updated."+
-            "\nClicking it updates the class list from the server."+
+            alert("This page is the start page for the @10dance Mobile App.\n"+
+            "\nClicking the Update Class List button updates the class list from the server."+
             "\n\nThe Tardy Check-In button navigates to the tardy check-in page."+
             "\n\nThe Report Absences button navigates to the absence reporting page."+
             "\n\nThe Upload Attendance Data button uploads the attendance data to the server."+
             "\nUpon successful upload, the local attendance data is cleared."+
-            "\n\nBoth reporting absences and uploading attendance data require valid TA login info."+
-            "\n\nExport Data stores the data to the computer so it can be uploaded using the main @10dance system at a later time and clears the data from the app's local storage. "+
-            "TA login info is not required to export data.");
+            "\n\nBoth reporting absences and uploading attendance data require valid TA login info.");
             return false;
         }
 
@@ -79,11 +77,22 @@
 				//the server will remove the text from the div once successful
 				window.location = "http://localhost:8888/JSPPages/uploadr.jsp";
 				
-				
-				
-				localStorage.clear();
+				if(localStorage.getItem("success")){
+					//clear all absence and tardy data
+					clearLocalStoragewithPrepend(absentPrependPerformance);
+					clearLocalStoragewithPrepend(absentPrependRehearsal);
+					clearLocalStoragewithPrepend(rehearsalPrepend);
+					clearLocalStoragewithPrepend(performancePrepend);
+					clearLocalStoragewithPrepend(tardyPrepend);
+					alert("Absence Data Successfully Uploaded and Locally Removed");
+					return true;
+				}
+				else{
+					alert("Absence Data Upload Unsuccessful - Local Data Was Not Changed");
+					return false;
+				}
 			}
-			return false;
+			
         }
 		
 		function clearAll(){
