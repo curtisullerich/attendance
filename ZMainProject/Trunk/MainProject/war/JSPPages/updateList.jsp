@@ -4,7 +4,7 @@
 <%@ page import="serverLogic.DatabaseUtil"%>
 
 <%String[] peeps = DatabaseUtil.listAll();%>
-	<script src = "script.js"></script>
+	<script src = "jspScript.js"></script>
 	
 	<script>
 		var str = new Array();
@@ -25,6 +25,7 @@
 			var rank = splat[6];
 	        storeEntry("studentRecord", firstname, lastname, netID, dateToday(),"|","|",rank);
 	    }
+		
 		//Need to do this so it passes the localhost
 		localStorage[""];
 		window.location = "http://localhost:8888/MobileApp/FieldAppMain.html";
