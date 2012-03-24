@@ -212,6 +212,7 @@
 				}			
 				
 				storeEntry(eventPrepend, type, "|", "|", dateToday(), startTime24, endTime24, "|", entry);
+				return true;
 			}
 
 
@@ -360,6 +361,7 @@
 						myform[i].checked = 0;
 					}
 				}
+				return true;
 			}
 
 			/**
@@ -484,6 +486,7 @@
 					//changes button text
 					document.getElementById("viewButton").value = "View Absences";
 				}
+				return true;
 			}
 			
 			/**
@@ -541,7 +544,7 @@
 					}
 				}
 				else{
-					document.getElementById("eventDiv").innerHTML = "No events have been cached.</br>";
+					document.getElementById("eventDiv").innerHTML = "</br>No events have been cached.</br></br>";
 				}
 			}
 					
@@ -592,9 +595,12 @@
 			 */
 			function cache() {
 				if (validate()) {
-					cacheEvent();
-					cacheAbsences();
-					retrieveAbsences();
+					if(cacheEvent() && cacheAbsences() && retrieveAbsences())
+						alert("Absence Data Successful Cached Locally");
+					else{
+						alert("Absence Data Was Not Successfully Cached Locally");
+						handleEdit(false);
+					}
 				}
 			}
 			
@@ -604,12 +610,13 @@
 			 * @author Curtis Ullerich
 			 * @date 2/18/12
 			 */
-			function handleEdit() {
+			function handleEdit(manualEdit) {
 				repopulateForm();
 				uncacheEvent();
 				printEvent();
 				printAbsences();
-				alert("The event you entered has been cleared from the cache. \nThe contents of that submission is currently in the form. Click 'submit' to re-cache it.");
+				if(manualEdit)
+					alert("The event you entered has been cleared from the cache. \nThe contents of that submission is currently in the form. Click 'submit' to re-cache it.");
 			}
 			
 		</script>
@@ -636,7 +643,7 @@
 					<input id="endAM" type="radio" name="endrdio" value="AM"/>AM
 					<input id="endPM" type="radio" name="endrdio" value="PM" checked="1"/>PM
 			</form>        
-			<br/> Remove the above event: <input class="button" id="editMain" type="submit" value="Remove" onClick="handleEdit();"/>
+			<br/> Remove the above event: <input class="button" id="editMain" type="submit" value="Remove" onClick="handleEdit(true);"/>
 
 			<hr/>
 	
@@ -649,7 +656,6 @@
 			<input class="button" type="submit" id="addOrEditButton" value="Submit" onClick="cache();"/>
 			<input class="button" type="button" id="viewButton" value="View Absences" onclick="absencesOnOff();"/>
 			
-			<div></br></div>
 			<input class="back" type="submit" id="back" value="Back" onclick="parent.location='FieldAppMain.html'"/></br>
 			<input class="help" type="button" id="help" value="Help" onclick="javascript: help();"/>
 
