@@ -1,6 +1,8 @@
-package People;
+package people;
 
 import java.io.File;
+
+import javax.persistence.*;
 
 
 /**

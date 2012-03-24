@@ -1,4 +1,4 @@
-package People;
+package people;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;

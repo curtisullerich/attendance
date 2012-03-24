@@ -2,7 +2,7 @@ package serverLogic;
 
 import java.util.Scanner;
 
-import People.*;
+import people.*;
 
 public class Parser 
 {	

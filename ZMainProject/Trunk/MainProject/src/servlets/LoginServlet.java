@@ -3,7 +3,7 @@ package servlets;
 import java.io.IOException;
 import javax.servlet.http.*;
 
-import People.Person;
+import people.Person;
 
 import serverLogic.DatabaseUtil;
 

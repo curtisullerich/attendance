@@ -6,8 +6,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
-import People.Person;
-import People.Student;
+import people.Person;
+import people.Student;
 
 /**
  * This is a class used to add stuff to the database

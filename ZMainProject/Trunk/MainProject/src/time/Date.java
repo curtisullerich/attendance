@@ -1,4 +1,4 @@
-package Time;
+package time;
 /**
  * 
  * @author Yifei Zhu
