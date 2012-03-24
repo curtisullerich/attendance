@@ -1,6 +1,6 @@
 package attendance;
 
-import java.sql.Time;
+import time.Time;
 
 import time.Date;
 
