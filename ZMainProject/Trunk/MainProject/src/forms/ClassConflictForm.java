@@ -4,9 +4,8 @@ import people.Person;
 import time.Date;
 
 /**
- * 
  * @author Yifei Zhu
- *
+ * 
  */
 public class ClassConflictForm extends Form{
 
