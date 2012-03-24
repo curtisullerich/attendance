@@ -1,7 +1,10 @@
-package classes;
+package attendance;
 
-public class PerformanceTardy extends Tardy
-{
+import time.Time;
+
+import time.Date;
+
+public class PerformanceTardy extends Tardy {
 
 	public PerformanceTardy(Date date, Time start, Time end) {
 		super(date, start, end);

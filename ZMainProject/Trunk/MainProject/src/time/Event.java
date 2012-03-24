@@ -3,10 +3,10 @@ package time;
 public class Event 
 {
 	private Date date;
-	private DateAndTime startTime;
-	private DateAndTime endTime;
+	private Time startTime;
+	private Time endTime;
 	
-	public Event(Date date, DateAndTime start, DateAndTime end)
+	public Event(Date date, Time start, Time end)
 	{
 		this.date = date;
 		startTime = start;

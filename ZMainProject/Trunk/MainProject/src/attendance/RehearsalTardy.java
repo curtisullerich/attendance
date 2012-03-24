@@ -1,7 +1,9 @@
-package classes;
+package attendance;
 
-public class RehearsalTardy extends Tardy
-{
+import time.Date;
+import time.Time;
+
+public class RehearsalTardy extends Tardy {
 
 	public RehearsalTardy(Date date, Time start, Time end) {
 		super(date, start, end);

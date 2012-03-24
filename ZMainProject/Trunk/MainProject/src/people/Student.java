@@ -3,9 +3,9 @@ package people;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
-import classes.Absence;
-import formsPackage.AttendanceReport;
-import formsPackage.Tardy;
+import attendance.Absence;
+import attendance.AttendanceReport;
+import attendance.Tardy;
 
 /**
  * 
