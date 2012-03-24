@@ -1,18 +1,37 @@
 package attendance;
 
-import time.Date;
 import time.Time;
-
-public class Event 
+/**
+ * 
+ * @author Yifei Zhu
+ *
+ */
+public abstract class Event 
 {
-	private Date date;
 	private Time startTime;
 	private Time endTime;
 	
-	public Event(Date date, Time start, Time end)
+	public Event(Time start, Time end)
 	{
-		this.date = date;
 		startTime = start;
 		endTime = end;
 	}
+
+	public Time getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(Time startTime) {
+		this.startTime = startTime;
+	}
+
+	public Time getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(Time endTime) {
+		this.endTime = endTime;
+	}
+	
+	
 }
