@@ -107,7 +107,7 @@ function twelveHourTimeNow(){
 	// add 0 for sortability
 	if(parseInt(minutes,10)<10)
 		minutes = "0"+minutes;
-	return hours+":"+minutes+" "+ampm;
+	return hours+":"+minutes+""+ampm;
 }
 
 /**

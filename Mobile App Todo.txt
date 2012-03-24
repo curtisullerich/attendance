@@ -2,14 +2,16 @@ Mobile App TODO
 
 CURTIS
 *Implement TA login --------------------------------------------------- change upload login style
-*Upload stuff and receive confirmation -- can't see that this works
+*Upload stuff and receive confirmation -------------------------------- DONE
 
 TODD
 *Debug Functionality -------------------------------------------------- DONE
 *Fix clear all button and view button in absence ---------------------- DONE
 *Application Caching!!!!!! -------------------------------------------- DONE (don't forget to turn on)
 *Pretty Print --------------------------------------------------------- DONE
-*Help Buttons
+*Help Buttons --------------------------------------------------------- DONE
 *Not connected to internet error -------------------------------------- DONE (must switch Firefox to offline mode)
 *404 page ------------------------------------------------------------- DONE (not sure if this can be made offline or if that is even necessary)
-Finish CSS ------------------ closer
+*Finish CSS ------------------ closer
+
+*Format the html files!!!!

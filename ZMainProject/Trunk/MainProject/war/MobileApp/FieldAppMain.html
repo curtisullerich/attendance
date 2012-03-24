@@ -4,46 +4,52 @@
 
 	<head>
 		<title>@10dance Mobile App</title>
-		<link rel="stylesheet" type="text/css" href="FieldAppCSS.css">
+		
+		<link rel="stylesheet" type="text/css" href="FieldAppCSS.css"></link>
+		
 		<script src="script.js"></script>
+		
 		<script src="sha.js"></script>
+		
 		<script>
+		
 				
 		window.onload = function() {
-					var array = storeToArray(studentPrepend," ","date");
-					var str;
-					if (array.length < 1) {
-						str="No class list is currently present.";
-					} else {
-						str="Current class list: " + array[0][0];
-					}
-					document.getElementById("classList").innerHTML = str;
-					
-					if(localStorage.getItem("success") == "true"){
-						//clear all absence and tardy data
-						clearLocalStoragewithPrepend(absentPrependPerformance);
-						clearLocalStoragewithPrepend(absentPrependRehearsal);
-						clearLocalStoragewithPrepend(rehearsalPrepend);
-						clearLocalStoragewithPrepend(performancePrepend);
-						clearLocalStoragewithPrepend(tardyPrepend);
-						alert("Absence Data Successfully Uploaded and Locally Removed");
-						
-						localStorage.removeItem("success");
-					}
-					else if(!localStorage.getItem("success") == "false"){
-						alert("Absence Data Upload Unsuccessful - Local Data Was Not Changed");
-						localStorage.removeItem("success");
-					}
-					else if(localStorage.getItem("success") == "emptyString")
-					{
-						alert("Nothing was uploaded to the server")
-						localStorage.removeItem("success");
-					}
-				   
-					if(debug){
-						document.getElementById("clear").hidden = false;
-					}
-				}
+			var array = storeToArray(studentPrepend," ","date");
+			var str;
+			if (array.length < 1) {
+				str="No class list is currently present.";
+			} else {
+				str="Current class list: " + array[0][0];
+			}
+			document.getElementById("classList").innerHTML = str;
+		   
+				
+			if(localStorage.getItem("success") == "true"){
+				//clear all absence and tardy data
+				clearLocalStoragewithPrepend(absentPrependPerformance);
+				clearLocalStoragewithPrepend(absentPrependRehearsal);
+				clearLocalStoragewithPrepend(rehearsalPrepend);
+				clearLocalStoragewithPrepend(performancePrepend);
+				clearLocalStoragewithPrepend(tardyPrepend);
+				alert("Absence Data Successfully Uploaded and Locally Removed");
+				
+				localStorage.removeItem("success");
+			}
+			else if(!localStorage.getItem("success") == "false"){
+				alert("Absence Data Upload Unsuccessful - Local Data Was Not Changed");
+				localStorage.removeItem("success");
+			}
+			else if(localStorage.getItem("success") == "emptyString")
+			{
+				alert("Nothing was uploaded to the server")
+				localStorage.removeItem("success");
+			}
+		   
+			if(debug){
+				document.getElementById("clear").hidden = false;
+			}
+		}
 
         function help(){
             alert("This page is the start page for the @10dance Mobile App.\n"+
@@ -51,7 +57,7 @@
             "\n\nThe Tardy Check-In button navigates to the tardy check-in page."+
             "\n\nThe Report Absences button navigates to the absence reporting page."+
             "\n\nThe Upload Attendance Data button uploads the attendance data to the server."+
-            "\nUpon successful upload, the local attendance data is cleared."+
+            "Upon successful upload, the local attendance data is cleared."+
             "\n\nBoth reporting absences and uploading attendance data require valid TA login info.");
             return false;
         }
@@ -83,10 +89,15 @@
 			}
 
 			var str = "";
+			var key;
 			for (var i = 0; i < localStorage.length; i++) {
-			   str += localStorage.key(i)+",";//note that I intend to use the key, NOT the value here. Values are just what we print.
+				key = localStorage.key(i);
+				if(!stringContains(studentPrepend,key) && !stringContains(loginPrepend,key)){
+					str += key + ",";
+				}
 			}
 			document.getElementById("tempForUpload").value = str;
+			
 			//alert(str);
 			//the server will remove the text from the div once successful			 
         }

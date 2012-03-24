@@ -11,9 +11,8 @@
 	{
 		<%
 			String info = request.getParameter("tempForUpload");
-			//out.println("value="+info);
 			//Parser.splat(info);
-			System.out.println("We got here");
+			System.out.println("We got here - " + info);
 		%>
 		<%if (info != null && !info.equalsIgnoreCase(""))
 		{%>

@@ -46,7 +46,7 @@
 					return false;
 				}
 				//format of tardy (24 hour time): netID YYYY-MM-DD hh:mm am/pm
-				var tardyEntry = netID + " " + dateToday() + " " + twelveHourTimeNow();
+				var tardyEntry = getFirstName(netID) + " " + getLastName(netID) + " " + dateToday() + " " + twelveHourTimeNow();
 				//store tardy with appropriate key
 				storeEntry(tardyPrepend, getFirstName(netID), getLastName(netID), netID, dateToday(), timeNow(), "|", getRank(netID), tardyEntry);
 				document.getElementById("student").value = "";
@@ -81,8 +81,8 @@
 			function retrieveTardies(){
 				if(viewTardiesOn){
 					//array for sorting
-					var tardyArray = new Array();
-					var returnString = "<br>The Following Students Reported Being Tardy:</br>";
+					//var tardyArray = new Array();
+					//var returnString = "<br>The Following Students Reported Being Tardy:</br>";
 					//stores localStorage to array to be sorted (to be sorted by time or netID)
 					var sortType;
 					var sortRadio = document.getElementById("tardySortType").elements;
@@ -92,29 +92,66 @@
 					} else {
 						sortType = "netID";
 					}
-					tardyArray = storeToArray(tardyPrepend, dateToday(), sortType);
+					printTardies(sortType);
+					//tardyArray = storeToArray(tardyPrepend, dateToday(), sortType);
 					//if people were tardy, sort them and print
-					if(tardyArray.length > 0){
+					//if(tardyArray.length > 0){
 						//sort array
-						var sortedTardyArray = tardyArray.sort();
+						//var sortedTardyArray = tardyArray.sort();
 						//assign sorted array to String
-						returnString += storageArrayToString(sortedTardyArray);
-						document.getElementById("tardies").innerHTML = returnString;
+						//returnString += storageArrayToString(sortedTardyArray);
+						//document.getElementById("tardies").innerHTML = returnString;
 						//changes button text
-						document.getElementById("viewButton").value = "Hide Tardies";
-					}
+						//document.getElementById("viewButton").value = "Hide Tardies";
+					//}
 					//if no one was tardy, say so
-					else{
-						document.getElementById("tardies").innerHTML = "<br>No students were tardy.</br>";
+					//else{
+						//document.getElementById("tardies").innerHTML = "<br>No students were tardy.</br>";
 						//changes button text
-						document.getElementById("viewButton").value = "Hide Tardies";
-					}
+						//document.getElementById("viewButton").value = "Hide Tardies";
+					//}
 				}
 				else{
 					document.getElementById("tardies").innerHTML = "";
+					//clear existing table
+					var table = document.getElementById("tardyTable");
+					for(var i = table.rows.length - 1; i >= 0; i--)
+					{
+						table.deleteRow(i);
+					}
 					//changes button text
 					document.getElementById("viewButton").value = "View Tardies";
 				}
+			}
+			
+			
+			/**
+			 * Inserts the absences currently stored into localStorage into
+			 * tardyTable.
+			 * 
+			 * @author Todd Wegter
+			 * @date 3/23/12
+			 */
+			function printTardies(sortType) {
+				//clear existing table
+				var table = document.getElementById("tardyTable");
+				for(var i = table.rows.length - 1; i >= 0; i--)
+				{
+					table.deleteRow(i);
+				}
+				
+				var array = storeToArray(tardyPrepend, dateToday(), sortType);
+				if(array.length > 0){
+					array.sort();
+					document.getElementById("tardies").innerHTML = "<br>The Following Students Reported Being Tardy:</br></br>";
+					for (var i = 0; i < array.length; i++) {
+						addRowToTable("0",array[i][1]);
+					}
+				}
+				else{
+					document.getElementById("tardies").innerHTML = "<br>No students were tardy.</br>";
+				}
+				document.getElementById("viewButton").value = "Hide Tardies";
 			}
 			
 			/**
@@ -177,7 +214,10 @@
 			}
 			
 			function help(){
-				alert("TODO");
+				alert("This page is the tardy check-in page for the @10dance Mobile App.\n"+
+				"\nValid netIDs may be entered to mark a student as tardy."+
+				"\n\nClicking View Tardies will show the recorded tardies."+
+				"\n\nThe Re-Sort Tardy List button allows the user to resort the tardy entries by either time or netID.");
 				return false;
 			}
 			
@@ -209,6 +249,10 @@
 				</form>
 				
 				<div id="tardies"></div>
+				<Table id="tardyTable" class="table"> <!-- table 0 -->
+					<tbody>
+					</tbody>
+				</Table>
 				
 				<input class="back" type="button" id="back" value="Back" onclick="parent.location='FieldAppMain.html'"/><br>
 				<input class="help" type="button" id="help" value="Help" onclick="javascript: help();"/>
