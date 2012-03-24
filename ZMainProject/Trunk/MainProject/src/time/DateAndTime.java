@@ -16,7 +16,7 @@ public class DateAndTime extends Date
 	
 	public DateAndTime(int year, int month, int day, int hour, int minute, int second) {
 		super(year, month, day);
-//		//time
+		//time
 		this.hour = hour;
 		this.minute = minute;
 		this.second=second;
