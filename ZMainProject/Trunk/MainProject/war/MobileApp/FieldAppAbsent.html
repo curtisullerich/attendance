@@ -39,7 +39,10 @@
 			}
 			
 			window.onbeforeunload = function(){
-				return "If you leave this page, any un-submitted data will be lost!";
+				if (!cached)
+					return "If you leave this page, any un-submitted data will be lost!";
+				else
+					return;
 			}
 			
 			function help(){
@@ -339,6 +342,7 @@
 			 * @author Curtis Ullerich
 			 * @date 2/18/12
 			 */
+			var cached = false; 
 			function cacheAbsences() {
 				var myform = document.getElementById("absences").elements;
 
@@ -368,6 +372,7 @@
 						myform[i].checked = 0;
 					}
 				}
+				cached = true;
 				return true;
 			}
 
