@@ -18,7 +18,6 @@ public class Time implements Comparable<Time> {
 	private String dayOfWeek;
 
 	public Time(int hour, int minute, int second, Date date, String dayOfWeek) {
-
 		// //time
 		this.hour = hour;
 		this.minute = minute;
