@@ -155,7 +155,6 @@ public class Date implements Comparable<Date>
 		
 		//take away 7
 		int result=addAll%7;
-		System.out.println("HELLO : "+monthCode);
 		return getMyDayOfWeek(result);
 	}
 
