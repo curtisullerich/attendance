@@ -11,15 +11,37 @@
 //debug enable thingy
 var loginDebug = true;
 var debug = true;
+
 /**
- * Stores an entry with the standard key: prepend firstname lastname netID date
- * startTime endTime
+ * Stores an entry with the standard key: prepend firstname lastname netID date startTime endTime rank
+ * Pipes "|" should be used to denote a blank field
  * 
+ * @param prepend
+ * 			- string which denotes the type of entry
+ * @param firstname
+ * 			- the entry's first name
+ * @param lastname
+ * 			- the entry's last name
+ * @param netID
+ * 			- the entry's netID
+ * @param date
+ * 			- the date of the entry
+ * @param startTime
+ * 			- the start time of the entry
+ * @param endTime
+ * 			- the end time of the entry
+ * @param rank
+ * 			- the rank of the entry
+ * @param entry
+ * 			- the value to be stored (this is primarily used for printing the entry)
+ * @returns true if successful
  * @author Todd Wegter
+ * @date 1-31-12
  */
 function storeEntry(prepend, firstname, lastname, netID, date, startTime, endTime, rank, entry){
 	var key = prepend+" "+firstname+" "+lastname+" "+netID+" "+date+" "+startTime+" "+endTime+" "+rank;
 	localStorage.setItem(key,entry);
+	return true;
 }
 
 /**

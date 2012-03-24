@@ -39,7 +39,14 @@
 			}
 			
 			window.onbeforeunload = function(){
-				if (!cached)
+				var unEnteredData = false
+				var myform = document.getElementById("absences").elements;
+				for (var i = 0; i < myform.length; i++) {
+					   if (myform[i].checked == 1 && myform[i].type=="checkbox") {
+						   unEnteredData = true;
+					   }
+				}
+				if (unEnteredData)
 					return "If you leave this page, any un-submitted data will be lost!";
 				else
 					return;
