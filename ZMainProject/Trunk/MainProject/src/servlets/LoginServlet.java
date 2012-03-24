@@ -30,7 +30,6 @@ public class LoginServlet extends HttpServlet
 			{
 				directTo = "/JSPPages/invalidLogin.jsp";
 			}
-			
 			//Will go somewhere else once we have more stuff implemented
 			//directTo = "somewhere else";
 			else

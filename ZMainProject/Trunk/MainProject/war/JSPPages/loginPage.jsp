@@ -6,13 +6,6 @@
 
 <html>
 	<head>
-		<script>
-			function setUser() {
-				
-				
-				
-			}
-		</script>	
 		<title>@10Dance</title>
 	</head>
 	<body>
