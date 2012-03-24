@@ -15,7 +15,7 @@ public class Time implements Comparable<Time> {
 	private int minute;
 	private int second;
 	private Date date;
-	private String dayOfWeek;
+
 
 	public Time(int hour, int minute, int second, Date date) {
 		// //time
@@ -23,7 +23,7 @@ public class Time implements Comparable<Time> {
 		this.minute = minute;
 		this.second = second;
 		this.date=date;
-		this.dayOfWeek="";
+	
 	}
 
 	public int getHour() {
@@ -50,7 +50,6 @@ public class Time implements Comparable<Time> {
 		this.second = second;
 	}
 	
-	
 
 	public Date getDate() {
 		return date;
@@ -60,13 +59,6 @@ public class Time implements Comparable<Time> {
 		this.date = d;
 	}
 
-	public String getDayOfWeek() {
-		return dayOfWeek;
-	}
-
-	public void setDayOfWeek(String dayOfWeek) {
-		this.dayOfWeek = dayOfWeek;
-	}
 
 	public String get24Format() {
 		return hour + ":" + minute + ":" + second;
