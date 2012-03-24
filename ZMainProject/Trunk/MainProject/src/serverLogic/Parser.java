@@ -26,10 +26,6 @@ public class Parser {
 			// rank
 			String[] personalInfo = e.split(" ");
 			String prepend = personalInfo[0];
-			String netID = personalInfo[3];
-			String date = personalInfo[4];
-			String startTime = personalInfo[5];
-			String endTime = personalInfo[6];
 			if (prepend.equalsIgnoreCase(studentPrepend))
 				continue;
 			else if (prepend.equalsIgnoreCase(rehearsalPrepend) || prepend.equalsIgnoreCase(performancePrepend))
@@ -39,6 +35,10 @@ public class Parser {
 			else if (prepend.equalsIgnoreCase(absentPrependPerformance) || prepend.equalsIgnoreCase(absentPrependRehearsal)
 					|| prepend.equalsIgnoreCase(tardyPrepend))
 			{
+				String netID = personalInfo[3];
+				String date = personalInfo[4];
+				String startTime = personalInfo[5];
+				String endTime = personalInfo[6];
 				// Now get the person that this info goes to
 				Person person = DatabaseUtil.getPerson(netID);
 				Date useDate = parseDate(date);
@@ -72,7 +72,7 @@ public class Parser {
 
 	private static void updateStudent(Person p, String prepend,
 			Date eventDate, Time start, Time end) {
-		if (p.getClass() == people.Student.class)
+		if ( p!= null && (p.getClass() == people.Student.class))
 		{
 			Student s = (Student) p;
 			if (prepend.equalsIgnoreCase(absentPrependPerformance)) {
