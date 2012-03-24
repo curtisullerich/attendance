@@ -17,8 +17,28 @@
 					} else {
 						str="Current class list: " + array[0][0];
 					}
-
 					document.getElementById("classList").innerHTML = str;
+					
+					if(localStorage.getItem("success") == "true"){
+						//clear all absence and tardy data
+						clearLocalStoragewithPrepend(absentPrependPerformance);
+						clearLocalStoragewithPrepend(absentPrependRehearsal);
+						clearLocalStoragewithPrepend(rehearsalPrepend);
+						clearLocalStoragewithPrepend(performancePrepend);
+						clearLocalStoragewithPrepend(tardyPrepend);
+						alert("Absence Data Successfully Uploaded and Locally Removed");
+						
+						localStorage.removeItem("success");
+					}
+					else if(!localStorage.getItem("success") == "false"){
+						alert("Absence Data Upload Unsuccessful - Local Data Was Not Changed");
+						localStorage.removeItem("success");
+					}
+					else if(localStorage.getItem("success") == "emptyString")
+					{
+						alert("Nothing was uploaded to the server")
+						localStorage.removeItem("success");
+					}
 				   
 					if(debug){
 						document.getElementById("clear").hidden = false;
@@ -57,42 +77,18 @@
         }
 
         function uploadAll() {
-            if(!validateTA()) 
-			{
-				return false;
-            }
-			else
-			{
-				if (!navigator.onLine) {
-				   alert("You're not online. Upload not performed.");
-				   return false;
-				}
-
-				var str = "";
-				for (var i = 0; i < localStorage.length; i++) {
-				   str += localStorage.key(i)+",";//note that I intend to use the key, NOT the value here. Values are just what we print.
-				}
-				document.getElementById("tempForUpload").value = str;
-				//alert(str);
-				//the server will remove the text from the div once successful
-				window.location = "http://localhost:8888/JSPPages/uploadr.jsp";
-				
-				if(localStorage.getItem("success")){
-					//clear all absence and tardy data
-					clearLocalStoragewithPrepend(absentPrependPerformance);
-					clearLocalStoragewithPrepend(absentPrependRehearsal);
-					clearLocalStoragewithPrepend(rehearsalPrepend);
-					clearLocalStoragewithPrepend(performancePrepend);
-					clearLocalStoragewithPrepend(tardyPrepend);
-					alert("Absence Data Successfully Uploaded and Locally Removed");
-					return true;
-				}
-				else{
-					alert("Absence Data Upload Unsuccessful - Local Data Was Not Changed");
-					return false;
-				}
+			if (!navigator.onLine) {
+			   alert("You're not online. Upload not performed.");
+			   return false;
 			}
-			
+
+			var str = "";
+			for (var i = 0; i < localStorage.length; i++) {
+			   str += localStorage.key(i)+",";//note that I intend to use the key, NOT the value here. Values are just what we print.
+			}
+			document.getElementById("tempForUpload").value = str;
+			//alert(str);
+			//the server will remove the text from the div once successful			 
         }
 		
 		function clearAll(){
@@ -124,7 +120,7 @@
 
 			<input class="help" type="button" id="help" value="Help" onclick="javascript: help();">
 
-			<form method="POST" class="centeralign">
+			<form method="POST" action="/JSPPages/uploadr.jsp" class="centeralign">
 				<input class="button" type="button" id="tardy" value="Tardy Check-In" onclick="parent.location='FieldAppTardy.html'"> 
 				<input class="button" type="button" id="absent" value="Report Absences" onclick="parent.location = 'FieldAppAbsent.html'">
 				<div>

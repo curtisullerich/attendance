@@ -19,7 +19,7 @@ var studentPrepend = "studentRecord";
 var loginPrepend = "storedLogin";
 
 //debug enable thingy
-var loginDebug = true;
+var loginDebug = false;
 var debug = true;
 
 

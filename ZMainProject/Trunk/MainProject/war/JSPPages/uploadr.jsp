@@ -3,27 +3,32 @@
 <%@ page import="java.util.ArrayList"%>
 <%@ page import="java.lang.String" %>
 
-<!--  <script>
-	var str = document.getElementById("tempForUpload").innerHTML;
-</script>  -->
-
-<%
-	String info = request.getParameter("tempForUpload");
-	//String info= "<script> document.writeln(str)</script>";
-	out.println("value="+info);
-  	//Parser.splat(info);
-%>
-
 <!-- This should be changed to reflect successful processing when we can -->
 <!-- Parser.splat(info) should return true if successful -->
-
+<script src = "jspScript.js"></script>
 <script>
-	if (<%=info != null%>)
+	if(validateTA()) 
 	{
-		localStorage.setItem("success", true);
+		<%
+			String info = request.getParameter("tempForUpload");
+			//out.println("value="+info);
+			//Parser.splat(info);
+			System.out.println("We got here");
+		%>
+		<%if (info != null && !info.equalsIgnoreCase(""))
+		{%>
+			localStorage.setItem("success", true);
+		<%}%>
+		
+		<%if (info == null)
+		{%>
+			localStorage.setItem("success", false);
+		<%}%>
+		
+		<%if (info.equalsIgnoreCase(""))
+		{%>
+			localStorage.setItem("success", "emptyString");	
+		<%}%>
 	}
-	else
-	{
-		localStorage.setItem("success", false);
-	}
+	window.location = "/MobileApp/FieldAppMain.html";
 </script>
