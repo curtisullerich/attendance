@@ -1,5 +1,14 @@
 package attendance;
+import time.Time;
+/**
+ * 
+ * @author Yifei Zhu
+ *
+ */
+public class EarlyCheckOut extends AWOL{
 
-public class EarlyCheckOut {
+	public EarlyCheckOut(Time s, Time e) {
+		super(s, e);
+	}
 
 }

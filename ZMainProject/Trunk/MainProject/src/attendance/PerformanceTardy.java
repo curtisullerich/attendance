@@ -2,13 +2,15 @@ package attendance;
 
 import time.Time;
 
-import time.Date;
-
+/**
+ * 
+ * @author Yifei Zhu
+ *
+ */
 public class PerformanceTardy extends Tardy {
 
-	public PerformanceTardy(Date date, Time start, Time end) {
-		super(date, start, end);
-		// TODO Auto-generated constructor stub
+	public PerformanceTardy(Time start, Time end) {
+		super(start, end);
 	}
 
 }

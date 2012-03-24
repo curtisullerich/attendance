@@ -2,14 +2,17 @@ package attendance;
 
 import time.Time;
 
-import time.Date;
-
+/**
+ * 
+ * @author Yifei Zhu
+ *
+ */
 public class PerformanceAbsence extends Absence
 {
 
-	public PerformanceAbsence(Date date, time.Time start, time.Time end) 
+	public PerformanceAbsence( Time start, Time end) 
 	{
-		super(date, start, end);
+		super(start, end);
 		// TODO Auto-generated constructor stub
 	}
 

@@ -1,12 +1,16 @@
 package attendance;
 
-import time.Date;
 import time.Time;
 
+/**
+ * 
+ * @author Yifei Zhu
+ *
+ */
 public class RehearsalTardy extends Tardy {
 
-	public RehearsalTardy(Date date, Time start, Time end) {
-		super(date, start, end);
+	public RehearsalTardy(Time start, Time end) {
+		super(start, end);
 		// TODO Auto-generated constructor stub
 	}
 
