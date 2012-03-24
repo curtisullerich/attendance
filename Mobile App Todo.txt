@@ -2,7 +2,7 @@ Mobile App TODO
 
 CURTIS
 *Implement TA login --------------------------------------------------- change upload login style
-*Upload stuff and receive confirmation
+*Upload stuff and receive confirmation -- can't see that this works
 
 TODD
 *Debug Functionality -------------------------------------------------- DONE
@@ -12,4 +12,4 @@ TODD
 *Help Buttons
 *Not connected to internet error -------------------------------------- DONE (must switch Firefox to offline mode)
 *404 page ------------------------------------------------------------- DONE (not sure if this can be made offline or if that is even necessary)
-Finish CSS ------ closer
+Finish CSS ------------------ closer
