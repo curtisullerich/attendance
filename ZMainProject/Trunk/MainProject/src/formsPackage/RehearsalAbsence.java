@@ -1,8 +1,8 @@
 package formsPackage;
 
-import Time.Absence;
-import Time.Date;
-import Time.DateAndTime;
+import time.Absence;
+import time.Date;
+import time.DateAndTime;
 
 public class RehearsalAbsence extends Absence
 {

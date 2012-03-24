@@ -2,7 +2,8 @@ package formsPackage;
 
 import java.util.*;
 
-import Time.Absence;
+import time.Absence;
+
 
 
 public class AttendanceReport 

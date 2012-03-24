@@ -1,7 +1,7 @@
 package formsPackage;
 
-import Time.Date;
-import Time.DateAndTime;
+import time.Date;
+import time.DateAndTime;
 
 public class PerformanceTardy extends Tardy
 {
