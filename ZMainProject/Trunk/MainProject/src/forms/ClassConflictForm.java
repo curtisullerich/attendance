@@ -1,9 +1,32 @@
 package forms;
 
-//Authors: Todd Wegter, Curtis Ullerich, Brandon Maxwell, and Yifei Zhu
+import people.Person;
+import time.Date;
 
+/**
+ * 
+ * @author Yifei Zhu
+ *
+ */
 public class ClassConflictForm extends Form{
 
-	private Course c;
+	private Course course;
+	
+	public ClassConflictForm(Person person, Date startDate, Date endDate,
+			String reason, boolean isapproved, Course c) {
+		super(person, startDate, endDate, reason, isapproved);
+		
+		this.setCourse(c);
+	}
+
+	public Course getCourse() {
+		return course;
+	}
+
+	public void setCourse(Course course) {
+		this.course = course;
+	}
+
+	
 	
 }
