@@ -23,8 +23,10 @@ public class LoginServlet extends HttpServlet
 			String password = req.getParameter("Password");
 			//Check that they actually added something
 			
+			Person user = DatabaseUtil.getPerson(netID);
+			
 			//Hash the password
-			if(!validateLogin(DatabaseUtil.getPerson(netID), password))
+			if(!validateLogin(user, password))
 			{
 				directTo = "/JSPPages/invalidLogin.jsp";
 			}
@@ -34,7 +36,16 @@ public class LoginServlet extends HttpServlet
 			else
 			{
 				//Figure out if it was a Director, TA, or Student
+				if (user.getClass() == people.Student.class) {
+					directTo = "/JSPPages/7_Student_Page.jsp";
+				} else if (user.getClass() == people.TA.class) {
+					directTo = "/JSPPages/26_TA_Page.jsp";
+				} else if (user.getClass() == people.Director.class){
+					directTo = "/JSPPages/15_Director_Page.jsp";
+				}
 				
+				//add the user to the session
+				req.getSession().setAttribute("user", netID);
 			}
 
 		}

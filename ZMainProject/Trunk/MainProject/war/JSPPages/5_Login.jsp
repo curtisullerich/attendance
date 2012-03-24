@@ -2,6 +2,11 @@
 <html>
 	<head>
 		<title>@10Dance</title>
+		<%//query database for Person object and set the attribute
+		Person user = queryqueryquery;
+		session.setAttribute("user", user.getNetID());
+		System.out.println("Set user id " user.getNetID());		
+				%>
 	</head>
 
 	<body>
@@ -46,7 +51,4 @@
 		</form>		
 	</body>
 	
-
-
-
 </html>

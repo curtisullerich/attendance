@@ -6,15 +6,22 @@
 
 <html>
 	<head>
+		<script>
+			function setUser() {
+				
+				
+				
+			}
+		</script>	
 		<title>@10Dance</title>
 	</head>
 	<body>
 		<h1>ISU Varsity Marching Band / Spring 2012</h1>
-		<form action ="/login" method ="post" accept-charset="uft-8">
+		<form action ="/login" method ="post" accept-charset="utf-8">
 				<table>
 					<tr>
 					
-						<td><label for="User Name">UserName</label></td>
+						<td><label for="User Name">Username</label></td>
 						<td><input type= "text" name="User Name" id="User Name"/></td>
 					</tr>
 					
@@ -25,7 +32,7 @@
 				</table>
 				
 				<input type="submit" value="Register" name="Register"/>
-				<input type="submit" value="Login" name ="Login"/>
+				<input type="submit" value="Login" name ="Login" onClick="setUser();"/>
 		</form>		
 	</body>
 </html>
