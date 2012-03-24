@@ -1,9 +1,12 @@
 package attendance;
-
 import time.Time;
 
 import time.Date;
-
+/**
+ * 
+ * @author Yifei Zhu
+ *
+ */
 public class Absence {
 	private Date date;
 	private Time startTime;

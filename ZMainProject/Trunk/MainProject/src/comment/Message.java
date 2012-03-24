@@ -1,36 +1,30 @@
 package comment;
-
-import time.Date;
-
+import people.Person;
+import time.Time;
+/**
+ * 
+ * @author Yifei Zhu
+ *
+ */
 public class Message {
-	private String fromSomebody;
-	private String toSomebody;
+	private Person fromSomebody;
 	private boolean isRead;
 	private String content;
-	private Date date;
-	//TODO 
+	private Time time;
 	
-	public Message(String from, String to, String content, boolean isRead, Date d)
+	public Message(Person from, String content, boolean isRead, Time d)
 	{
 		this.fromSomebody=from;
-		this.toSomebody=to;
 		this.content=content;
 		this.isRead=isRead;
-		this.date=d;
-		
+		this.time=d;
 	}
 	
-	public String getFromSomebody() {
+	public Person getFromSomebody() {
 		return fromSomebody;
 	}
-	public void setFromSomebody(String fromSomebody) {
+	public void setFromSomebody(Person fromSomebody) {
 		this.fromSomebody = fromSomebody;
-	}
-	public String getToSomebody() {
-		return toSomebody;
-	}
-	public void setToSomebody(String toSomebody) {
-		this.toSomebody = toSomebody;
 	}
 	public boolean isRead() {
 		return isRead;
@@ -44,11 +38,11 @@ public class Message {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public Date getDate() {
-		return date;
+	public Time getDate() {
+		return time;
 	}
-	public void setDate(Date date) {
-		this.date = date;
+	public void setDate(Time time) {
+		this.time = time;
 	}
 	
 	

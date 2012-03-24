@@ -1,7 +1,14 @@
 package people;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+
+import forms.AbsenceRequestForm_Performance;
+import forms.AbsenceRequestForm_Rehearsal;
+import forms.Form;
 
 import attendance.Absence;
 import attendance.AttendanceReport;
@@ -29,6 +36,8 @@ public class Student extends Person
 	private String advisor;
 	private String position;
 	private String rank;
+	
+
 
 	public Student(String netID, String firstName, String lastName,
 			String password, String major, String advisor, String position) {
@@ -40,6 +49,7 @@ public class Student extends Person
 		rank = "|";
 		report = new AttendanceReport();
 		this.id = hash(netID);
+
 	}
 	
 	public Student(String netID, String password, String firstName, String lastName)

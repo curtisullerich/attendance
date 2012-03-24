@@ -1,15 +1,23 @@
 package attendance;
-
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
+import forms.Form;
+/**
+ * 
+ * @author Yifei Zhu
+ *
+ */
 public class AttendanceReport {
 	List<Absence> absences;
 	List<Tardy> tardies;
+	private List<Form> forms;
+
 
 	public AttendanceReport() {
 		absences = new LinkedList<Absence>();
 		tardies = new LinkedList<Tardy>();
+		forms = new ArrayList<Form>();
 	}
 
 	public void addAbsence(Absence newAbsence) {
@@ -19,5 +27,42 @@ public class AttendanceReport {
 	public void addTardy(Tardy newTardy) {
 		tardies.add(newTardy);
 	}
+	
+	
+	public List<Absence> getAbsences() {
+		return absences;
+	}
+
+	public void setAbsences(List<Absence> absences) {
+		this.absences = absences;
+	}
+
+	public List<Tardy> getTardies() {
+		return tardies;
+	}
+
+	public void setTardies(List<Tardy> tardies) {
+		this.tardies = tardies;
+	}
+
+	public List<Form> getForms() {
+		return forms;
+	}
+
+	public void setForms(List<Form> forms) {
+		this.forms = forms;
+	}
+
+	/**
+	 * Sort the forms by type, date, and so on
+	 * @param f --list of forms
+	 */
+	public void sort(Form f)
+	{
+		
+		
+	}
+	
+	
 
 }
