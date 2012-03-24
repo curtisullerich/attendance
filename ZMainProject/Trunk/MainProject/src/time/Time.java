@@ -1,100 +1,78 @@
 package time;
+
 /**
  * 
  * @author Yifei Zhu
- *
- *This class can be able to 
- *	-get date, hour, min, second
- *	-get or print time and date in 12 format and 24 format
- *	-compare to "date and time"
- *The default time format is in 24 hours
- *
- *default--24
- *printing--12 
+ * 
+ *         This class can be able to -get date, hour, min, second -get or print
+ *         time and date in 12 format and 24 format -compare to "date and time"
+ *         The default time format is in 24 hours
+ * 
+ *         default--24 printing--12
  */
-public class Time implements Comparable<Time>
-{
+public class Time implements Comparable<Time> {
 	private int hour;
 	private int minute;
 	private int second;
 	private Date d;
-	
-	
+
 	public Time(int hour, int minute, int second) {
-	
-//		//time
+
+		// //time
 		this.hour = hour;
 		this.minute = minute;
-		this.second=second;
+		this.second = second;
 	}
-
 
 	public int getHour() {
 		return hour;
 	}
 
-
 	public void setHour(int hour) {
 		this.hour = hour;
 	}
-
 
 	public int getMinute() {
 		return minute;
 	}
 
-
 	public void setMinute(int minute) {
 		this.minute = minute;
 	}
-
 
 	public int getSecond() {
 		return second;
 	}
 
-
 	public void setSecond(int second) {
 		this.second = second;
 	}
 
-	public String get24Format()
-	{
-		return hour+":"+minute+":"+second;
+	public String get24Format() {
+		return hour + ":" + minute + ":" + second;
 	}
-	public String get12Format()
-	{
-		if(this.hour>12)
-		{
-			return (this.hour-12)+":"+this.minute+":"+this.second+"PM";
+
+	public String get12Format() {
+		if (this.hour > 12) {
+			return (this.hour - 12) + ":" + this.minute + ":" + this.second
+					+ "PM";
+		} else {
+			return this.get24Format() + "AM";
 		}
-		else
-		{
-			return this.get24Format()+"AM";
-		}
-		
+
 	}
-	
-<<<<<<< .mine
-=======
-	public Date getDate()
-	{
+
+	public Date getDate() {
 		return this.d;
 	}
-	
-	
->>>>>>> .r328
-	public String toString(int format) {
-		if(format==12)
-		{
-			return this.toString()+" "+get12Format();
-		}
-		return this.toString()+" "+get24Format();
-	}
-<<<<<<< .mine
-=======
 
-	
+	public String toString(int format) {
+		if (format == 12) {
+			return this.toString() + " " + get12Format();
+		}
+		return this.toString() + " " + get24Format();
+	}
+
 	public int compareTo(Time dt)
 	{
 
@@ -125,9 +103,6 @@ public class Time implements Comparable<Time>
 		{
 			return 0;
 		}
-	
->>>>>>> .r328
 	}
-	
 
 }
