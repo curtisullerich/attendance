@@ -1,4 +1,4 @@
-package formsPackage;
+package forms;
 
 //Authors: Todd Wegter, Curtis Ullerich, Brandon Maxwell, and Yifei Zhu
 

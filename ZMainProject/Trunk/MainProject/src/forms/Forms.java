@@ -1,9 +1,9 @@
-package formsPackage;
+package forms;
 
 //Authors: Todd Wegter, Curtis Ullerich, Brandon Maxwell, and Yifei Zhu
 
-import classes.*;
 import people.Person;
+import time.Date;
 
 public class Forms {
 	private Person p;
