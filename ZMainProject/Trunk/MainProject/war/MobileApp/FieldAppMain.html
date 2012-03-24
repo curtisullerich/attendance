@@ -75,11 +75,12 @@
 				   str += localStorage.key(i)+",";//note that I intend to use the key, NOT the value here. Values are just what we print.
 				}
 				document.getElementById("tempForUpload").value = str;
-				alert(str);
-				alert("Going to server! Hang on! Warpspeed!");
-				   //the server will remove the text from the div once successful
+				//alert(str);
+				//the server will remove the text from the div once successful
 				window.location = "http://localhost:8888/JSPPages/uploadr.jsp";
-
+				
+				
+				
 				localStorage.clear();
 			}
 			return false;
