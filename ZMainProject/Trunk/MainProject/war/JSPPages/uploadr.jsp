@@ -7,16 +7,17 @@
 <!-- Parser.splat(info) should return true if successful -->
 <script src = "jspScript.js"></script>
 <script>
-	if(validateTA()) 
+	if(1) 
 	{
 		<%
 			String info = request.getParameter("tempForUpload");
 			//out.println("value="+info);
-			Parser.splat(info);
+			
 			//System.out.println("We got here");
 		%>
 		<%if (info != null && !info.equalsIgnoreCase(""))
 		{%>
+			<%Parser.splat(info);%>
 			localStorage.setItem("success", true);
 		<%}%>
 		

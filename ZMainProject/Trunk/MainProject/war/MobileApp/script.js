@@ -19,7 +19,7 @@ var studentPrepend = "studentRecord";
 var loginPrepend = "storedLogin";
 
 //debug enable thingy
-var loginDebug = true;
+var loginDebug = false;
 var debug = true;
 
 
@@ -528,46 +528,52 @@ function addRowToTable(table,value)
 	return;
 }
 
- /**
-  * 
-  * @returns
-  */
-function validateTA(){
-	// get TA checkin
-	if(loginDebug)
-		return true;
+ 
+function confirmTACredentials(){
+	if (loginDebug){
+		document.getElementById("login").hidden = true;
+		document.getElementById("main").hidden = false;
+		return false;
+	}
 	
-	var name=prompt("Please enter your TA netID:","TA netID");
+	var name = document.getElementById("TA").value;
+	var password = document.getElementById("password").value;
+	
+	//for debugging
+	storeEntry(loginPrepend, "|", "|", "TA", "|", "|", "|", "|", Sha1.hash("password",true));
 	
 	if (name!=null && name!="")
 	{
-	   var password=prompt("Please enter your TA password:","password");
-			
 		if (password!=null && password != "")
 		{
 			for (var i = 0; i < localStorage.length; i++) {
 				var key = localStorage.key(i);
 
 				//if this is the right netid, then hash the plaintext password and check it
-				if (keyDelimiter(key,"netID") == name) {
-					if (localStorage[key] == Sha1.hash(password,true)) {
-						return true;
-					} 
-				} 
+				if(stringContains(loginPrepend, key)){
+					if (keyDelimiter(key,"netID") == name) {
+						if (localStorage[key] == Sha1.hash(password,true)) {
+							document.getElementById("login").hidden = true;
+							document.getElementById("main").hidden = false;
+							//for debugging
+							localStorage.removeItem(key);
+							return false;
+						} 
+					}
+				}
 			}
 			alert("Invalid netID or password");
-			parent.location="FieldAppMain.html";
 			return false;
 		}
 		else
 		{
-			parent.location="FieldAppMain.html";
+			alert("Please enter a password");
 			return false;
 		}
 	}
 	else
 	{
-		parent.location="FieldAppMain.html";
+		alert("Please enter a TA netID");
 		return false;
 	}
 }

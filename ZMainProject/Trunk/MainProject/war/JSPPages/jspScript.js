@@ -34,7 +34,7 @@ var debug = true;
  * 			- the rank of the entry
  * @param entry
  * 			- the value to be stored (this is primarily used for printing the entry)
- * @returns true if successful
+ * @returns True if successful
  * @author Todd Wegter
  * @date 1-31-12
  */
@@ -48,15 +48,16 @@ function storeEntry(prepend, firstname, lastname, netID, date, startTime, endTim
  * Returns today's date in format YYYY-MM-DD where number less than 10 are
  * preceeded by 0
  * 
- * @return Date in specified format
- * 
- * @author Curtis Ullerich, Todd Wegter
+ * @returns Today's date in YYYY-MM-DD format
+ * @author Todd Wegter, Curtis Ullerich
+ * @date 1-31-12
  */
 function dateToday() {
 	var d = new Date();
+	//Date() month is from 0-11, so it needs to be incremented by 1
 	var month = d.getMonth()+1;
 	var date = d.getDate();
-	// add 0 for sortability
+	// add preceding 0 for sortability
 	if(parseInt(month,10)<10)
 		month = "0"+month;
 	if(parseInt(date,10)<10)
@@ -65,11 +66,14 @@ function dateToday() {
 }
 
 /**
+ * Collects user's netID and password to make sure they are a TA - best used upon pageload
  * 
- * @returns
+ * @returns True if the entered netID and password match a TA record in the localStorage
+ * @author Todd Wegter
+ * @date 3/22/2012
  */
 function validateTA(){
-	// get TA checkin
+	//debugging allows testers to skip TA login
 	if(loginDebug)
 		return true;
 	

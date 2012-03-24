@@ -2,10 +2,12 @@
 	<head>
 		<title>@10dance Absence Reporting</title>
 		<link rel="stylesheet" type="text/css" href="FieldAppCSS.css" />
-		<script src="script.js"></script>	
+		<script src="script.js"></script>
+		<script src="sha.js"></script>
 		<script>
 			
 			window.onload = function() {
+				
 				//populate the checkbox list of students
 				var array = new Array();
 				var curList = storeKeysToArray(studentPrepend, "rank");
@@ -28,14 +30,14 @@
 				}
 				
 				//prompt for TA login -- try/catch catcheds error if user refreshes page
-				try
+				/* try
 				{
 					validateTA();
 				}
 				catch(error)
 				{
 					parent.location = "FieldAppAbsent.html";
-				}
+				} */
 			}
 			
 			window.onbeforeunload = function(){
@@ -641,7 +643,7 @@
 		</script>
 	</head>
     <body>
-		<div class="box">
+		<div class="box" id="main" hidden=true>
 			<h1><b>Absence Report</b></h1><br/>
 			
 			
@@ -691,6 +693,16 @@
 			</br>
 			<input class="button" type="submit" id="clear" value="Clear Absence Data" onClick="clearAbsences();" hidden=true/>
 			</br>
+		</div>
+		
+		<div class="box" id="login">
+			<h1>TA Login</h1></br>
+			<form class="centeralign" id="TACredentials" onsubmit="return confirmTACredentials();">
+				<input type="text" id="TA" placeholder="TA netID"/></br>
+				<input type="password" id="password" placeholder="password"/></br>
+				<input type="submit" id="submit" value="Submit"/>
+				<input type="button" id="cancel" value="Cancel" onclick="window.location='FieldAppMain.html'"/>
+			</form>
 		</div>
     </body>
 </html>
