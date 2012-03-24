@@ -11,5 +11,17 @@
 	String info = request.getParameter("tempForUpload");
 	//String info= "<script> document.writeln(str)</script>";
 	out.println("value="+info);
-  	//Parser.splat(info);
+  	Parser.splat(info);
 %>
+
+<script>
+	if (<%=info != null%>)
+	{
+		localStorage.setItem("success", true);
+	}
+	else
+	{
+		localStorage.setItem("success", false);
+	}
+
+</script>
