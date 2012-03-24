@@ -7,10 +7,21 @@
 <html>
 	<head>
 		<title>@10Dance</title>
+		<script src="/MobileApp/sha.js"/></script>
+		<script>
+			
+		function hashPassword() {
+			var str = Sha1.hash(document.getElementById("Password").value);
+			str = str.toUpperCase();
+			document.getElementById("Password").value = str;
+			return true;
+		}
+
+		</script>
 	</head>
 	<body>
 		<h1>ISU Varsity Marching Band / Spring 2012</h1>
-		<form action ="/login" method ="post" accept-charset="utf-8">
+		<form action ="/login" method ="post" onSubmit="hashPassword();" accept-charset="utf-8">
 				<table>
 					<tr>
 					
@@ -24,8 +35,8 @@
 					</tr>
 				</table>
 				
-				<input type="submit" value="Register" name="Register"/>
-				<input type="submit" value="Login" name ="Login" onClick="setUser();"/>
+				<input type="button" value="Register" name="Register" onClick='window.location="/JSPPages/register.jsp"'/>
+				<input type="submit" value="Login" name ="Login"/>
 		</form>		
 	</body>
 </html>

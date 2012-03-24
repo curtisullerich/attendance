@@ -26,26 +26,24 @@ public class Person
 	private String lastName;
 	
 	//Instance variables are pretty obvious
-	private String password;
+	private String hashedPassword;
 
+	public String toHTML() {
+		String ret = "";
+		ret += "<p>Name: " + firstName + " " + lastName + "</p>\n";
+		ret += "<p>NetID: " + netID + "</p>\n";
+		return ret;
+	}
+	
 	public Person(String netID, String password, String firstName, String lastName)
 	{
 		this.netID = netID;
-		this.password = password;
+		this.hashedPassword = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		id = hash(netID);
 	}
-	
-	public Person(String netID, String firstName, String lastName, String password, String major, String advisor, String position)
-	{
-		this.setNetID(netID);
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.password = password;
-		id = hash(netID);
-	}
-	
+
 	public String getFirstName() 
 	{
 		return firstName;
@@ -64,13 +62,12 @@ public class Person
 	}
 
 	public String getPassword() {
-		return password;
+		return hashedPassword;
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
+		this.hashedPassword = Long.toHexString(hash(password)).toUpperCase();
 	}
-
 
 	public String getNetID() {
 		return netID;
@@ -90,9 +87,7 @@ public class Person
 		return "|";
 	}
 
-
 	//protected long getId() {return id;}
-	
 	public long hash(String netID)
 	{
 		try {

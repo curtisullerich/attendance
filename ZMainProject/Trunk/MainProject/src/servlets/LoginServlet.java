@@ -20,13 +20,13 @@ public class LoginServlet extends HttpServlet
 		{
 			//Check to see if the user name and password are correct
 			String netID = req.getParameter("User Name");
-			String password = req.getParameter("Password");
+			String hashedPassword = req.getParameter("Password");
 			//Check that they actually added something
 			
 			Person user = DatabaseUtil.getPerson(netID);
 			
 			//Hash the password
-			if(!validateLogin(user, password))
+			if(!validateLogin(user, hashedPassword))
 			{
 				directTo = "/JSPPages/invalidLogin.jsp";
 			}
