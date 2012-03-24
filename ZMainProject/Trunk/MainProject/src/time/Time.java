@@ -75,12 +75,15 @@ public class Time implements Comparable<Time>
 		
 	}
 	
+<<<<<<< .mine
+=======
 	public Date getDate()
 	{
 		return this.d;
 	}
 	
 	
+>>>>>>> .r328
 	public String toString(int format) {
 		if(format==12)
 		{
@@ -88,6 +91,8 @@ public class Time implements Comparable<Time>
 		}
 		return this.toString()+" "+get24Format();
 	}
+<<<<<<< .mine
+=======
 
 	
 	public int compareTo(Time dt)
@@ -121,10 +126,8 @@ public class Time implements Comparable<Time>
 			return 0;
 		}
 	
+>>>>>>> .r328
 	}
-	
-
-	
 	
 
 }
