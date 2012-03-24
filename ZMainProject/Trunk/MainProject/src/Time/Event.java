@@ -1,4 +1,4 @@
-package Time;
+package time;
 
 public class Event 
 {
