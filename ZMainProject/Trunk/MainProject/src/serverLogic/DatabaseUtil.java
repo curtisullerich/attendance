@@ -16,12 +16,29 @@ import people.Student;
  * 
  */
 public class DatabaseUtil {
+	
+	/**
+	 * A Method to add a person type to the database
+	 * @param p the Person to add
+	 */
 	public static void addPerson(Person p) {
 		EntityManager em = EMFService.get().createEntityManager();
 		em.persist(p);
 		em.close();
 	}
+	
+	/**
+	 * A Method to add a Student type to the database
+	 * @param s the Student to add
+	 */
+	public static void addStudent(Student s)
+	{
+		EntityManager em = EMFService.get().createEntityManager();
+		em.persist(s);
+		em.close();
+	}
 
+	
 	/**
 	 * A method that gets a person based off the given netID
 	 * 
@@ -29,13 +46,13 @@ public class DatabaseUtil {
 	 *            the netID registered with a student
 	 * @return either the person with that netID or null if not found
 	 */
-	public static Person getPerson(String netID) {
+	public static Student getPerson(String netID) {
 
 		EntityManager em = EMFService.get().createEntityManager();
 		Query q = em.createQuery("select p from Student p where p.netID = :netID");
 		q.setParameter("netID", netID);
 
-		Person p;
+		Student p;
 		// See if that person actually exists
 		try {
 			p = (Student) q.getSingleResult();

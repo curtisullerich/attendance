@@ -41,9 +41,6 @@ public class Parser {
 			{
 				// Now get the person that this info goes to
 				Person person = DatabaseUtil.getPerson(netID);
-	
-				// These classes don't exist anymore and I will take care of it
-				// -Brandon
 				Date useDate = parseDate(date);
 				Time start = parseTime(startTime, useDate);
 				Time end = parseTime(endTime, useDate);
@@ -63,9 +60,14 @@ public class Parser {
 	}
 
 	private static Time parseTime(String time, Date date) {
-		int hour = Integer.parseInt(time.substring(0, 2));
-		int minute = Integer.parseInt(time.substring(2, 4));
-		return new Time(hour, minute, 0, date, "");
+		if (time.length() >= 4)
+		{
+			int hour = Integer.parseInt(time.substring(0, 2));
+			int minute = Integer.parseInt(time.substring(2, 4));
+			return new Time(hour, minute, 0, date);
+		}
+		else //Return an empty date. This should only happen for Tardy endtimes cause it's just a |
+			return new Time(0,0,0,date);
 	}
 
 	private static void updateStudent(Person p, String prepend,
@@ -74,14 +76,14 @@ public class Parser {
 		{
 			Student s = (Student) p;
 			if (prepend.equalsIgnoreCase(absentPrependPerformance)) {
-				s.addAbsence(new PerformanceAbsence(eventDate, start, end));
+				s.addAbsence(new PerformanceAbsence(start, end));
 			} else if (prepend.equalsIgnoreCase(absentPrependRehearsal)) {
-				s.addAbsence(new RehearsalAbsence(eventDate, start, end));
+				s.addAbsence(new RehearsalAbsence(start, end));
 			}
 			// Need to do something to figure out what type of event this is or
 			// something
 			else if (prepend.equalsIgnoreCase(tardyPrepend)) {
-				s.addTardy(new Tardy(eventDate, start, end));
+				s.addTardy(new Tardy(start, end));
 			}
 		}
 	}
