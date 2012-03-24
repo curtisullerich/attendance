@@ -14,14 +14,17 @@ public class Time implements Comparable<Time> {
 	private int hour;
 	private int minute;
 	private int second;
-	private Date d;
+	private Date date;
+	private String dayOfWeek;
 
-	public Time(int hour, int minute, int second) {
+	public Time(int hour, int minute, int second, Date date, String dayOfWeek) {
 
 		// //time
 		this.hour = hour;
 		this.minute = minute;
 		this.second = second;
+		this.date=date;
+		this.dayOfWeek=dayOfWeek;
 	}
 
 	public int getHour() {
@@ -47,6 +50,24 @@ public class Time implements Comparable<Time> {
 	public void setSecond(int second) {
 		this.second = second;
 	}
+	
+	
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date d) {
+		this.date = d;
+	}
+
+	public String getDayOfWeek() {
+		return dayOfWeek;
+	}
+
+	public void setDayOfWeek(String dayOfWeek) {
+		this.dayOfWeek = dayOfWeek;
+	}
 
 	public String get24Format() {
 		return hour + ":" + minute + ":" + second;
@@ -62,9 +83,7 @@ public class Time implements Comparable<Time> {
 
 	}
 
-	public Date getDate() {
-		return this.d;
-	}
+
 
 	public String toString(int format) {
 		if (format == 12) {
@@ -79,9 +98,9 @@ public class Time implements Comparable<Time> {
 		if(dt==null)
 			return -1 ; //TODO return -1?
 	
-		if(d.compareTo(dt.getDate())!=0)
+		if(date.compareTo(dt.getDate())!=0)
 		{
-			return d.compareTo(dt.getDate());
+			return date.compareTo(dt.getDate());
 		}
 		//if date are the same
 		
