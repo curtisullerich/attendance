@@ -2,7 +2,7 @@ package serverLogic;
 
 import java.util.Scanner;
 
-import classes.*;
+import People.*;
 
 public class Parser 
 {	
@@ -34,6 +34,8 @@ public class Parser
 			
 			//Now get the person that this info goes to
 			Person person = DatabaseUtil.getPerson(netID);
+			
+			//These classes don't exist anymore and I will take care of it -Brandon
 			Date useDate = parseDate(date);
 			Time start = parseTime(startTime);
 			Time end = parseTime(endTime);
