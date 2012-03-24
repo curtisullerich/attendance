@@ -1,5 +1,6 @@
 package attendance;
 import java.util.ArrayList;
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import forms.Form;
@@ -8,7 +9,12 @@ import forms.Form;
  * @author Yifei Zhu
  *
  */
-public class AttendanceReport {
+public class AttendanceReport implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1562153563914794497L;
+
 	List<Absence> absences;
 	List<Tardy> tardies;
 	private List<Form> forms;

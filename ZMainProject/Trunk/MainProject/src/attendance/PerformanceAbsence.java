@@ -10,7 +10,7 @@ import time.Time;
 public class PerformanceAbsence extends Absence
 {
 
-	public PerformanceAbsence( Time start, Time end) 
+	public PerformanceAbsence(Time start, Time end) 
 	{
 		super(start, end);
 		// TODO Auto-generated constructor stub
