@@ -5,15 +5,16 @@
  * 
  * @author Todd Wegter
  * 
- * Latest Rev: 3-23-12
+ * Latest Rev: 3-24-12
  */
 
 //debug enable thingy
 var loginDebug = true;
 var debug = true;
 
+
 /**
- * Stores an entry with the standard key: prepend firstname lastname netID date startTime endTime rank
+ * Stores an entry with the standard key: "prepend firstname lastname netID date startTime endTime rank"
  * Pipes "|" should be used to denote a blank field
  * 
  * @param prepend
@@ -36,7 +37,7 @@ var debug = true;
  * 			- the value to be stored (this is primarily used for printing the entry)
  * @returns True if successful
  * @author Todd Wegter
- * @date 1-31-12
+ * @date 2-10-2012
  */
 function storeEntry(prepend, firstname, lastname, netID, date, startTime, endTime, rank, entry){
 	var key = prepend+" "+firstname+" "+lastname+" "+netID+" "+date+" "+startTime+" "+endTime+" "+rank;
@@ -44,17 +45,17 @@ function storeEntry(prepend, firstname, lastname, netID, date, startTime, endTim
 	return true;
 }
 
+
 /**
- * Returns today's date in format YYYY-MM-DD where number less than 10 are
- * preceeded by 0
+ * Returns today's date in format YYYY-MM-DD where number less than 10 are preceeded by 0
  * 
- * @returns Today's date in YYYY-MM-DD format
+ * @return Date in YYYY-MM_DD format
  * @author Todd Wegter, Curtis Ullerich
- * @date 1-31-12
+ * @date 1-31-2012
  */
 function dateToday() {
 	var d = new Date();
-	//Date() month is from 0-11, so it needs to be incremented by 1
+	//d.getMonth() returns value of 0-11, so we must add 1
 	var month = d.getMonth()+1;
 	var date = d.getDate();
 	// add preceding 0 for sortability
@@ -65,52 +66,6 @@ function dateToday() {
 	return d.getFullYear()+"-"+month+"-"+date;
 }
 
-/**
- * Collects user's netID and password to make sure they are a TA - best used upon pageload
- * 
- * @returns True if the entered netID and password match a TA record in the localStorage
- * @author Todd Wegter
- * @date 3/22/2012
- */
-function validateTA(){
-	//debugging allows testers to skip TA login
-	if(loginDebug)
-		return true;
-	
-	var name=prompt("Please enter your TA netID:","TA netID");
-	
-	if (name!=null && name!="")
-	{
-	   var password=prompt("Please enter your TA password:","password");
-			
-		if (password!=null && password != "")
-		{
-			for (var i = 0; i < localStorage.length; i++) {
-				var key = localStorage.key(i);
-
-				//if this is the right netid, then hash the plaintext password and check it
-				if (keyDelimiter(key,"netID") == name) {
-					if (localStorage[key] == Sha1.hash(password,true)) {
-						return true;
-					} 
-				} 
-			}
-			alert("Invalid netID or password");
-			parent.location="FieldAppMain.html";
-			return false;
-		}
-		else
-		{
-			parent.location="FieldAppMain.html";
-			return false;
-		}
-	}
-	else
-	{
-		parent.location="FieldAppMain.html";
-		return false;
-	}
-}
 
 /**
  * This function delineates the specified standard format key into an array
@@ -121,14 +76,13 @@ function validateTA(){
  * "lastname", "firstname", "dateandtime", "starttime", "endtime", and "rank". The entire
  * key is returned if the delimitee does not match one of the specified options
  * 
- * @param key -
- *            the key to be split
+ * @param key
+ *            - the key to be split
  * @param delimitee -
- *            the desired component of the key (i.e. date, etc.)
- * 
- * @return The desried specific component of the key (i.e. 2012-02-18, etc.)
- * 
+ *            - the desired component of the key (i.e. date, etc.)
+ * @returns The desried specific component of the key (i.e. 2012-02-18, etc.)
  * @author Todd Wegter
+ * @date 2-10-2012
  */
 function keyDelimiter(key,delimitee){
 	if (key == null || delimitee == null) {
@@ -137,14 +91,13 @@ function keyDelimiter(key,delimitee){
 	
 	var keyArray = new Array();
 	
+	//splits the key into multiple strings, delimited by spaces, and stores them into an array
 	keyArray = key.split(" ");
 	
 	if (delimitee=="key") {
-	  return key;// so we can access a subsection of the full localStorage as
-				 // key-value pairs, in tact
+	  return key;		// so we can access a subsection of the full localStorage as key-value pairs, in tact
 	}
-	
-	if(delimitee=="date"){
+	else if(delimitee=="date"){
 		return keyArray[4];
 	}
 	else if(delimitee=="netID"){
@@ -172,6 +125,58 @@ function keyDelimiter(key,delimitee){
 	    return keyArray[7];
 	}
 	return key;
+}
+
+
+/**
+ * Checks the netID and password fields on a page against the database, hides the login div, and shows the main div (not terribly secure, but good enough...)
+ * 
+ * @returns False (otherwise onsubmit calls to this function refresh the page, which is not desired)
+ * @author Todd Wegter
+ * @date 3-24-2012
+ */ 
+function confirmTACredentials(){
+	//creates dummy TA value if loginDebug is true: netID is TA, password is password
+	if (loginDebug){
+		storeEntry(loginPrepend, "|", "|", "TA", "|", "|", "|", "|", Sha1.hash("password",true));
+	}
+	//gets the netID and password from the page
+	var name = document.getElementById("TA").value;
+	var password = document.getElementById("password").value;
+	if (name!=null && name!="")
+	{
+		if (password!=null && password != "")
+		{
+			for (var i = 0; i < localStorage.length; i++) {
+				var key = localStorage.key(i);
+				//if this is the right netid, then hash the plaintext password and check it
+				if(stringContains(loginPrepend, key)){
+					if (keyDelimiter(key,"netID") == name) {
+						if (localStorage[key] == Sha1.hash(password,true)) {
+							document.getElementById("login").hidden = true;
+							document.getElementById("main").hidden = false;
+							//removes dummy TA value if loginDebug is true
+							if (loginDebug)
+								localStorage.removeItem(key);
+							return false;
+						} 
+					}
+				}
+			}
+			alert("Invalid netID or password");
+			return false;
+		}
+		else
+		{
+			alert("Please enter a password");
+			return false;
+		}
+	}
+	else
+	{
+		alert("Please enter a TA netID");
+		return false;
+	}
 }
 
 //end hiding script from old browsers -->

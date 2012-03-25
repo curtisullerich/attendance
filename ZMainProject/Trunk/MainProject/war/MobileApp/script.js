@@ -5,11 +5,13 @@
  * 
  * @author Todd Wegter, Curtis Ullerich
  * 
- * Latest Rev: 3-3-12
+ * Latest Rev: 3-24-12
  * 
  * standard key for localStorage: prepend firstname lastname netID date startTime endTime rank
  * rank is a 6 digit number with leading 0s
  */
+
+//Prepend variables
 var absentPrependPerformance = "absentStudentPerformance";
 var absentPrependRehearsal = "absentStudentRehearsal";
 var rehearsalPrepend = "storedRehearsal";
@@ -19,12 +21,12 @@ var studentPrepend = "studentRecord";
 var loginPrepend = "storedLogin";
 
 //debug enable thingy
-var loginDebug = false;
+var loginDebug = true;
 var debug = true;
 
 
 /**
- * Makes browser go back (same as hitting browser's back button
+ * Makes browser go back (same as hitting browser's back button)
  * @author Todd Wegter
  * @date 3/22/12
  */
@@ -36,26 +38,32 @@ function goBack()
 /**
  * Determines if a substring (sub) is contained within a string (str)
  * 
+ * @param sub
+ * 			- contained string
+ * @param str
+ * 			- containing string
+ * @returns True if sub is contained within str
  * @author Curtis Ullerich
+ * @date 1-31-2012
  */
 function stringContains(sub, str) {            
-	return str.indexOf(sub) !== -1;
+	return str.indexOf(sub) != -1;
 }
 
 
 /**
- * Returns today's date in format YYYY-MM-DD where number less than 10 are
- * preceeded by 0
+ * Returns today's date in format YYYY-MM-DD where number less than 10 are preceeded by 0
  * 
- * @return Date in specified format
- * 
+ * @return Date in YYYY-MM_DD format
  * @author Curtis Ullerich, Todd Wegter
+ * @date 1-31-2012
  */
 function dateToday() {
 	var d = new Date();
+	//d.getMonth() returns value of 0-11, so we must add 1
 	var month = d.getMonth()+1;
 	var date = d.getDate();
-	// add 0 for sortability
+	// add preceding 0 for sortability
 	if(parseInt(month,10)<10)
 		month = "0"+month;
 	if(parseInt(date,10)<10)
@@ -66,28 +74,29 @@ function dateToday() {
 /**
  * Returns the current time in 24 hour format: HHMM
  * 
- * @return The time in the specified format
- * 
+ * @return The time in 24 hour HHMM format
  * @author Curtis Ullerich, Todd Wegter
+ * @date 1-31-2012
  */
 function timeNow() {
 	var d = new Date();
 	var hours = d.getHours();
 	var minutes = d.getMinutes();
-	// add 0 for sortability
+	// add preceding 0 for sortability
 	if(parseInt(hours,10)<10)
 		hours = "0"+hours;
 	if(parseInt(minutes,10)<10)
 		minutes = "0"+minutes;
+	//ensure the return is a string
 	return ""+hours+minutes;
 } 
 
 /**
- * This functions returns the current time in 12 hour format: HH:MM am/pm
+ * This functions returns the current time in 12 hour format: HH:MMam/pm
  * 
- * @return The time in the specified format
- * 
+ * @return The time in HH:MMamp/pm format
  * @author Todd Wegter
+ * @date 1-31-2012
  */
 function twelveHourTimeNow(){
 	var d = new Date()
@@ -123,15 +132,16 @@ function twelveHourTimeNow(){
  *            specified start time of event
  * @param endtime -
  *            specified end time of event
- * 
- * @return true if the specified event exists
- * 
+ * @returns True if the specified event exists
  * @author Todd Wegter
+ * @date 2-10-2012
  */
 function localStorageContainsEvent(eventType, date, starttime, endtime){
+	//iterate through all of localStorage
 	for(var i = 0, l = localStorage.length; i<l; i++)
 	{
 		var key = localStorage.key(i);
+		//check if the key matches the desired event
 		if((stringContains(rehearsalPrepend,key) || stringContains(performancePrepend,key)) && keyDelimiter(key, "firstname")==eventType && keyDelimiter(key, "starttime")==starttime && keyDelimiter(key, "endtime")==endtime && keyDelimiter(key, "date")==date)
 			return true;
 	}
@@ -139,19 +149,20 @@ function localStorageContainsEvent(eventType, date, starttime, endtime){
 }
 
 /**
- * Returns true if localStorage contains a studen with the specified netID
+ * Returns true if localStorage contains a student with the specified netID
  *
  * @param netID
  *			- netID of desired student
- * 
- * @return true if the specified student netID
- * 
+ * @returns true if the specified student netID
  * @author Todd Wegter
+ * @date 2-10-2012
  */
 function localStorageContainsStudent(netID){
+	//iterate through all of localStorage
 	for(var i = 0, l = localStorage.length; i<l; i++)
 	{
 		var key = localStorage.key(i);
+		//check if the key matches the desired student
 		if(stringContains(studentPrepend, key) && keyDelimiter(key, "netID")==netID)
 			return true;
 	}
@@ -160,56 +171,83 @@ function localStorageContainsStudent(netID){
 
 
 /**
- * Will return first name associated with the given netID from the localStorage
+ * Returns the first name associated with the given netID from the localStorage
  * 
- * @param the netID to which the desired name corresponds
- * @return the first name associated with the netID, null if netID doesn't exist
+ * @param netID
+ * 			- the netID to which the desired name corresponds
+ * @returns The first name associated with the netID, null if netID doesn't exist
  * @author Todd Wegter
- * @date 3/9/12
+ * @date 3-9-2012
  */
 function getFirstName(netID){
-	var key = returnFirstLocalKey(studentPrepend, netID)
+	var key = returnFirstLocalKey(studentPrepend, netID);
+	var firstName = null;
 	if(key != null)
-		var firstName = keyDelimiter(key, "firstname");
+		firstName = keyDelimiter(key, "firstname");
 	return firstName;
 }
 
 /**
- * Will return last name associated with the given netID from the localStorage
- * TODO
- * @param the netID to which the desired name corresponds
- * @return the last name associated with the netID, null if netID doesn't exist
+ * Returns the last name associated with the given netID from the localStorage
+ *
+ * @param netID
+ * 			- the netID to which the desired name corresponds
+ * @returnsTthe last name associated with the netID, null if netID doesn't exist
  * @author Todd Wegter
- * @date 3/9/12
+ * @date 3-9-2012
  */
 function getLastName(netID){
-	var key = returnFirstLocalKey(studentPrepend, netID)
+	var key = returnFirstLocalKey(studentPrepend, netID);
+	var lastName = null;
 	if(key != null)
-		var lastName = keyDelimiter(key, "lastname");
+		lastName = keyDelimiter(key, "lastname");
 	return lastName;
 }
 
 /**
- * Will return the rank associated with the given netID from the localStorage
+ * Returns the rank associated with the given netID from the localStorage
  * 
- * @param the netID to which the desired rank corresponds
- * @return the rank associated with the netID specified, null if netID doesn't exist
+ * @param netID
+ * 			- the netID to which the desired rank corresponds
+ * @returns The rank associated with the netID specified, null if netID doesn't exist
  * @author Todd Wegter
- * @date 3/9/12
+ * @date 3-9-2012
  */
 function getRank(netID){
-	var key = returnFirstLocalKey(studentPrepend, netID)
+	var key = returnFirstLocalKey(studentPrepend, netID);
+	var rank = null;
 	if(key != null)
-		var rank = keyDelimiter(key, "rank");
+		rank = keyDelimiter(key, "rank");
 	return rank;
 }
 
 
+
 /**
- * Stores an entry with the standard key: prepend firstname lastname netID date
- * startTime endTime
+ * Stores an entry with the standard key: "prepend firstname lastname netID date startTime endTime rank"
+ * Pipes "|" should be used to denote a blank field
  * 
+ * @param prepend
+ * 			- string which denotes the type of entry
+ * @param firstname
+ * 			- the entry's first name
+ * @param lastname
+ * 			- the entry's last name
+ * @param netID
+ * 			- the entry's netID
+ * @param date
+ * 			- the date of the entry
+ * @param startTime
+ * 			- the start time of the entry
+ * @param endTime
+ * 			- the end time of the entry
+ * @param rank
+ * 			- the rank of the entry
+ * @param entry
+ * 			- the value to be stored (this is primarily used for printing the entry)
+ * @returns True if successful
  * @author Todd Wegter
+ * @date 2-10-2012
  */
 function storeEntry(prepend, firstname, lastname, netID, date, startTime, endTime, rank, entry){
 	var key = prepend+" "+firstname+" "+lastname+" "+netID+" "+date+" "+startTime+" "+endTime+" "+rank;
@@ -217,10 +255,27 @@ function storeEntry(prepend, firstname, lastname, netID, date, startTime, endTim
 }
 
 /**
- * Removes an entry with the standard key: prepend firstname lastname netID date
- * startTime endTime
+ * Removes an entry with the standard key: "prepend firstname lastname netID date startTime endTime rank"
  * 
+ *@param prepend
+ * 			- string which denotes the type of entry
+ * @param firstname
+ * 			- the entry's first name
+ * @param lastname
+ * 			- the entry's last name
+ * @param netID
+ * 			- the entry's netID
+ * @param date
+ * 			- the date of the entry
+ * @param startTime
+ * 			- the start time of the entry
+ * @param endTime
+ * 			- the end time of the entry
+ * @param rank
+ * 			- the rank of the entry
+ * @returns True if the entry was removed, false if it did not exist
  * @author Curtis Ullerich
+ * @date 2-10-2012
  */
 function removeEntry(prepend, firstname, lastname, netID, date, startTime, endTime, rank){
 	var key = prepend+" "+firstname+" "+lastname+" "+netID+" "+date+" "+startTime+" "+endTime+" "+rank;
@@ -233,26 +288,13 @@ function removeEntry(prepend, firstname, lastname, netID, date, startTime, endTi
 
 
 /**
- * Removes all items from localStorage that have the given prepend. TODO test
- * this.
- * 
- * @author CurtisUllerich
- * @date 3/3/12
- * @param the string prepend to remove
- */
-function removeByPrepend(prepend) {
-    var array = storeToArray(prepend, " ", "key");
-    for (var i = 0; i < array.length; i++) {
-        localStorage.removeItem(array[i][0]);
-    }    
-}
-
-
-
-/**
  * Clears all items in localStorage which have the specified prepend
  * 
+ * @param prepend
+ * 			- entries with this prepend in their keys are removes
+ * @returns True if successful
  * @author Todd Wegter
+ * @date 2-10-12
  */
 function clearLocalStoragewithPrepend(prepend){
 	// loop through whole localStorage
@@ -268,6 +310,7 @@ function clearLocalStoragewithPrepend(prepend){
 			i--; // accounts for removal of entry in position of search
 		}
 	}
+	return true;
 }
 
 /**
@@ -278,22 +321,22 @@ function clearLocalStoragewithPrepend(prepend){
  * The options for return subcomponent of the value are 0, 1, 2, or 3. The entire
  * value is returned if the delimitee does not match one of the specified options
  * 
- * @param value -
- *            the value to be split
- * @param delimitee -
- *            the desired component of the value (i.e. date, etc.)
- * 
- * @return The desried specific component of the value (i.e. 2012-02-18, etc.)
- * 
+ * @param value
+ *            - the value to be split
+ * @param delimitee
+ *            - the desired component of the value (i.e. date, etc.)
+ * @returns The desried specific component of the value (i.e. 2012-02-18, etc.)
  * @author Todd Wegter
+ * @date 3-3-2012
  */
-function valueDelimiter(value,delimitee){
+function valueDelimiter(value, delimitee){
 	if (value == null || delimitee == null) {
 	    return null;
 	}
 	
 	var valueArray = new Array();
 	
+	//splits the value into multiple strings, delimited by spaces, and stores them into an array
 	valueArray = value.split(" ");
 	
 	if(delimitee==0){
@@ -321,14 +364,13 @@ function valueDelimiter(value,delimitee){
  * "lastname", "firstname", "dateandtime", "starttime", "endtime", and "rank". The entire
  * key is returned if the delimitee does not match one of the specified options
  * 
- * @param key -
- *            the key to be split
+ * @param key
+ *            - the key to be split
  * @param delimitee -
- *            the desired component of the key (i.e. date, etc.)
- * 
- * @return The desried specific component of the key (i.e. 2012-02-18, etc.)
- * 
+ *            - the desired component of the key (i.e. date, etc.)
+ * @returns The desried specific component of the key (i.e. 2012-02-18, etc.)
  * @author Todd Wegter
+ * @date 2-10-2012
  */
 function keyDelimiter(key,delimitee){
 	if (key == null || delimitee == null) {
@@ -337,14 +379,13 @@ function keyDelimiter(key,delimitee){
 	
 	var keyArray = new Array();
 	
+	//splits the key into multiple strings, delimited by spaces, and stores them into an array
 	keyArray = key.split(" ");
 	
 	if (delimitee=="key") {
-	  return key;// so we can access a subsection of the full localStorage as
-				 // key-value pairs, in tact
+	  return key;		// so we can access a subsection of the full localStorage as key-value pairs, in tact
 	}
-	
-	if(delimitee=="date"){
+	else if(delimitee=="date"){
 		return keyArray[4];
 	}
 	else if(delimitee=="netID"){
@@ -374,22 +415,23 @@ function keyDelimiter(key,delimitee){
 	return key;
 }
 
+
 /**
  * Returns the key of the first matching item in LocalStorage
  * 
- * @param prepend - 
- *		the prepedn for the key of the elements to be stored
- * @param searchKey - 
- *			the other component of the the key to be returned
- * @return the key of the desired locally stored element, null if none is found
- *
+ * @param prepend
+ *				- the prepend for the key of the elements to be stored
+ * @param searchKey 
+ *				- the other component of the the key to be returned
+ * @returns The key of the desired locally stored element, null if none is found
+ * @author Todd Wegter
+ * @date 3-3-2012
  */
 function returnFirstLocalKey(prepend, searchKey){
 	for(var i = 0, l = localStorage.length; i<l; i++)
 	{
 		var key = localStorage.key(i);
-		// if the key contains the prepend and the searchKey, store it and the
-		// desired part of the key into the array
+		// if the key contains the prepend and the searchKey, return it
 		if(stringContains(prepend,key) && stringContains(searchKey,key))
 		{
 			return key;
@@ -427,8 +469,7 @@ function storeToArray(prepend, searchKey, delimitee){
 	for(var i = 0, l = localStorage.length; i<l; i++)
 	{
 		var key = localStorage.key(i);
-		// if the key contains the prepend and the searchKey, store it and the
-		// desired part of the key into the array
+		// if the key contains the prepend and the searchKey, store it and the value into the array
 		if(stringContains(prepend,key) && stringContains(searchKey,key))
 		{
 			array[index++] = [keyDelimiter(key,delimitee),localStorage.getItem(key)];
@@ -441,18 +482,19 @@ function storeToArray(prepend, searchKey, delimitee){
 /**
  * Stores keys with desired prepend to array to be sorted by desired element
  *
- * @param prepend -
- *            the prepend for the key of the elements to be stored
- * @param delimitee -
- *            the desired component of the key to be stored in the array
+ * @param prepend 
+ * 				- the prepend for the key of the elements to be stored
+ * @param delimitee
+ *				- the desired component of the key to be stored in the array
  * 
- * @return A 2D array: each row has two entries -> [i][0] is the desired
+ * @returns A 2D array: each row has two entries -> [i][0] is the desired
  *         component of the key -> [i][1] is the full key
  * 
  * This allows the array to be sorted using array.sort() -> sorts by the 0th
  * column, then the 1th column (for duplicates in 0th column)
  * 
  * @author Todd Wegter
+ * @date 3-3-2012
  */
 function storeKeysToArray(prepend, delimitee){
 	var index = 0;
@@ -471,13 +513,16 @@ function storeKeysToArray(prepend, delimitee){
 	return array;
 }
 
+
 /**
  * Takes a 2D array created with storeToArray(prepend, searchKey, delimitee) and
  * compiles its values (not the keys) to a string
  * 
- * @param array - the array to stringify
- * 
- * @return The string of the array
+ * @param array 
+ * 				- the array to stringify
+ * @returns The string of the array
+ * @author Todd Wegter
+ * @date 3-3-2012
  */
 function storageArrayToString(array){
 	var returnString = "";
@@ -490,16 +535,23 @@ function storageArrayToString(array){
 	return returnString;
 }
 
+
 /**
- * Adds a row to the specified table with the given info
+ * Adds a row to the specified table with the given info (pretty printing)
  *
- * @param table - table to be added to
- * @param key - key to be added to table
- * @param col1 - (string) the segment of the key to be stored in column 1
- * @param col2 - (string) the segment of the key to be stored in column 2
- * @param col3 - (string) the segment of the key to be stored in column 3
- * @param col4 - (string) the segment of the key to be stored in column 4
- *
+ * @param table 
+ * 				- table to be added to
+ * @param key 
+ * 				- key to be added to table
+ * @param col1
+				- (string) the segment of the key to be stored in column 1
+ * @param col2 
+ * 				- (string) the segment of the key to be stored in column 2
+ * @param col3 
+ * 				- (string) the segment of the key to be stored in column 3
+ * @param col4 
+ * 				- (string) the segment of the key to be stored in column 4
+ * @returns True if successful
  * @author Todd Wegter
  * @date 3-18-12
  */
@@ -525,38 +577,39 @@ function addRowToTable(table,value)
 	row.appendChild(cell3);
 	row.appendChild(cell4);
 	tabBody.appendChild(row);
-	return;
+	return true;
 }
 
- 
+/**
+ * Checks the netID and password fields on a page against the database, hides the login div, and shows the main div (not terribly secure, but good enough...)
+ * 
+ * @returns False (otherwise onsubmit calls to this function refresh the page, which is not desired)
+ * @author Todd Wegter
+ * @date 3-24-2012
+ */ 
 function confirmTACredentials(){
+	//creates dummy TA value if loginDebug is true: netID is TA, password is password
 	if (loginDebug){
-		document.getElementById("login").hidden = true;
-		document.getElementById("main").hidden = false;
-		return false;
+		storeEntry(loginPrepend, "|", "|", "TA", "|", "|", "|", "|", Sha1.hash("password",true));
 	}
-	
+	//gets the netID and password from the page
 	var name = document.getElementById("TA").value;
 	var password = document.getElementById("password").value;
-	
-	//for debugging
-	storeEntry(loginPrepend, "|", "|", "TA", "|", "|", "|", "|", Sha1.hash("password",true));
-	
 	if (name!=null && name!="")
 	{
 		if (password!=null && password != "")
 		{
 			for (var i = 0; i < localStorage.length; i++) {
 				var key = localStorage.key(i);
-
 				//if this is the right netid, then hash the plaintext password and check it
 				if(stringContains(loginPrepend, key)){
 					if (keyDelimiter(key,"netID") == name) {
 						if (localStorage[key] == Sha1.hash(password,true)) {
 							document.getElementById("login").hidden = true;
 							document.getElementById("main").hidden = false;
-							//for debugging
-							localStorage.removeItem(key);
+							//removes dummy TA value if loginDebug is true
+							if (loginDebug)
+								localStorage.removeItem(key);
 							return false;
 						} 
 					}

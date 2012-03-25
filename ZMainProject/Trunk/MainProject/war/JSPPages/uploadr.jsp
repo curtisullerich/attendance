@@ -6,13 +6,12 @@
 <!-- This should be changed to reflect successful processing when we can -->
 <!-- Parser.splat(info) should return true if successful -->
 <script src = "jspScript.js"></script>
+<link rel="stylesheet" type="text/css" href="/MobileApp/FieldAppCSS.css" />
 <script>
-	if(1) 
-	{
+	function uploadData(){
 		<%
 			String info = request.getParameter("tempForUpload");
 			//out.println("value="+info);
-			
 			//System.out.println("We got here");
 		%>
 		<%if (info != null && !info.equalsIgnoreCase(""))
@@ -30,6 +29,23 @@
 		{%>
 			localStorage.setItem("success", "emptyString");	
 		<%}%>
+		window.location = "/MobileApp/FieldAppMain.html";
 	}
-	window.location = "/MobileApp/FieldAppMain.html";
 </script>
+<html>
+	<body>
+		<div class="box" id="main" hidden=true>
+			<input type="button" class="button" id="uploadButton" onclick="uploadData();" value="Upload Attendance Data"/>
+		</div>
+		<div class="box" id="login">
+			<h1>TA Login</h1></br>
+			<form class="centeralign" id="TACredentials" onsubmit="return confirmTACredentials();">
+				<input type="text" id="TA" placeholder="TA netID"/></br>
+				<input type="password" id="password" placeholder="password"/></br>
+				<input type="submit" id="submit" value="Submit"/>
+				<input type="button" id="cancel" value="Cancel" onclick="window.location='FieldAppMain.html'"/>
+			</form>
+		</div>
+    </body>
+</html></body>
+</html>
