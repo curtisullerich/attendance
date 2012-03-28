@@ -75,15 +75,22 @@
 				viewTardiesOn = !viewTardiesOn;
 				retrieveTardies();
 			}
-//Continue here!!!!!		
+		
 			/**
 			 * If viewTardiesOn is true, calls printTardies and determines the order for the printed tardies (selected with radio buttons).
 			 * Otherwise it clears the table
 			 *
 			 * @author Todd Wegter
+			 * @date 3-23-2012
 			 */
 			function retrieveTardies(){
-				if(viewTardiesOn){
+				 //clear existing table
+					var table = document.getElementById("tardyTable");
+					for(var i = table.rows.length - 1; i >= 0; i--)
+					{
+						table.deleteRow(i);
+					}
+				 if(viewTardiesOn){
 					var sortType;
 					var sortRadio = document.getElementById("tardySortType").elements;
 					//sort chronologically or by netID based on radio buttons
@@ -92,16 +99,12 @@
 					} else {
 						sortType = "netID";
 					}
+					//fills table in desired order
 					printTardies(sortType);
+					document.getElementById("viewButton").value = "Hide Tardies";
 				}
 				else{
 					document.getElementById("tardies").innerHTML = "";
-					//clear existing table
-					var table = document.getElementById("tardyTable");
-					for(var i = table.rows.length - 1; i >= 0; i--)
-					{
-						table.deleteRow(i);
-					}
 					//changes button text
 					document.getElementById("viewButton").value = "View Tardies";
 				}
@@ -109,24 +112,23 @@
 			
 			
 			/**
-			 * Inserts the absences currently stored into localStorage into
+			 * Inserts the tardies currently stored into localStorage into
 			 * tardyTable.
+			 *
+			 * @param sortType
+			 *			- denotes how the tardies are sorted (any valid delimitee for keyDelimiter())
 			 * 
 			 * @author Todd Wegter
-			 * @date 3/23/12
+			 * @date 3-23-2012
 			 */
 			function printTardies(sortType) {
-				//clear existing table
-				var table = document.getElementById("tardyTable");
-				for(var i = table.rows.length - 1; i >= 0; i--)
-				{
-					table.deleteRow(i);
-				}
-				
+				//create array of tardy records from today
 				var array = storeToArray(tardyPrepend, dateToday(), sortType);
 				if(array.length > 0){
+					//sort array - first column takes precedence, sorted by ascii
 					array.sort();
 					document.getElementById("tardies").innerHTML = "<br>The Following Students Reported Being Tardy:</br></br>";
+					//add a new row for each record
 					for (var i = 0; i < array.length; i++) {
 						addRowToTable("0",array[i][1]);
 					}
@@ -134,14 +136,41 @@
 				else{
 					document.getElementById("tardies").innerHTML = "<br>No students were tardy.</br>";
 				}
-				document.getElementById("viewButton").value = "Hide Tardies";
 			}
 			
 			/**
-			* This function clears all tardy entries in the localStorage
+			* This function checks the locally stored copy of the list of students to ensure that the
+			* entered netID is valid
+			*
+			* @param netID
+			*			- the netID to be found in the localStorage
+			*
+			* @returns True if the netID is found; False if netID is an empty string, null, or not found in the localStorage
+			* @author Todd Wegter
+			* @date 3-23-2012
+			*/
+			function validate(netID){
+				//check if the student field is blank
+				if(netID != "" || netID != null){
+					//check if netID is in localStorage as student
+					if(localStorageContainsStudent(netID))
+					{
+						netIDSelect();
+						return true;
+					}
+				}
+				alert("Please enter a valid netID.");
+				document.getElementById("student").placeholder = "netID";
+				netIDSelect();
+				return false;
+			}
+			
+			/**
+			* This function clears all tardy entries in the localStorage; only enabled if the web app is in debug mode
 			*
 			* @author Todd Wegter
-			**/
+			* @date 2-27-2012
+			*/
 			function clearTardies()
 			{
 				if(debug)
@@ -159,7 +188,7 @@
 					//turn off printed tardy list
 					viewTardiesOn = false;
 					retrieveTardies();
-					//wait .5 second to show disabled buttons in case operation takes very little time
+					//wait 1 second to show disabled buttons in case operation takes very little time
 					setTimeout(function(){
 						//re-enable buttons
 						document.getElementById("clear").disabled = false;
@@ -175,70 +204,51 @@
 			}
 			
 			/**
-			* This function check the locally stored copy of the list of students to ensure that the
-			* entered netID is valid
-			*
-			* @author Todd Wegter
-			**/
-			function validate(netID){
-				//check if the student field is blank
-				if(netID != "" || netID != null){
-					//alert for invalid netID
-					if(localStorageContainsStudent(netID))
-					{
-						netIDSelect();
-						return true;
-					}
-				}
-				alert("Please enter a valid netID.");
-				document.getElementById("student").placeholder = "netID";
-				netIDSelect();
-				return false;
-			}
-			
+			 * Prints the help screen for the FieldAppTardy page
+			 *
+			 * @returns False (otherwise onsubmit calls to this function refresh the page, which is not desired)
+			 * @author Todd Wegter
+			 * @date 3-23-2012
+			 */
 			function help(){
 				alert("This page is the tardy check-in page for the @10dance Mobile App.\n"+
 				"\nValid netIDs may be entered to mark a student as tardy."+
 				"\n\nClicking View Tardies will show the recorded tardies."+
 				"\n\nThe Re-Sort Tardy List button allows the user to resort the tardy entries by either time or netID.");
 				return false;
-			}
+			}	
 			
 		</script>
-	
+	</head>
 	<body>
 		<div class="box">
-			<h1>Tardy Check-In</h1></br>
-				<form class="centeralign" id="tardyReport" onsubmit="return submitTardy();">
-					<input type="text" id="student" placeholder="netID">
-					<input type="submit" id="submit" value="Submit Tardy">
-				</form>
-				
+			<h1>Tardy Check-In</h1>
+			</br>
+			<form class="centeralign" id="tardyReport" onsubmit="return submitTardy();">
+				<input type="text" id="student" placeholder="netID"/>
+				<input type="submit" id="submit" value="Submit Tardy"/>
+			</form>
+			</br>
+			<hr>
+			</br>
+			<form class="centeralign" id="tardyView">
+				<input type="button" id="viewButton" value="View Tardies" onclick="javascript: tardiesOnOff();"/>
+				<input type="button" id="re-sort" value="Re-Sort Tardy List" onclick="javascript: retrieveTardies();"/>
+				<input type="button" id="clear" value="Clear Tardy List" onclick="javascript: clearTardies();" hidden=true/>
 				</br>
-				<hr>
+			</form>
+			<form class="centeralign" id="tardySortType">
+				<b>Sort Style</b>
+				<input type="radio" name="sortType" value="Time" checked="">time</input>
+				<input type="radio" name="sortType" value="netID">netID</input>
 				</br>
-				
-				<form class="centeralign" id="tardyView">
-					<input type="button" id="viewButton" value="View Tardies" onclick="javascript: tardiesOnOff();"/>
-					<input type="button" id="re-sort" value="Re-Sort Tardy List" onclick="javascript: retrieveTardies();"/>
-					<input type="button" id="clear" value="Clear Tardy List" onclick="javascript: clearTardies();" hidden=true/>
-					<br>
-				</form>
-				
-				<form class="centeralign" id="tardySortType">
-					<b>Sort Style</b>
-					<input type="radio" name="sortType" value="Time" checked=""/>time
-					<input type="radio" name="sortType" value="netID"/>netID<br>
-				</form>
-				
-				<div id="tardies"></div>
-				<Table id="tardyTable" class="table"> <!-- table 0 -->
-					<tbody>
-					</tbody>
-				</Table>
-				
-				<input class="back" type="button" id="back" value="Back" onclick="parent.location='FieldAppMain.html'"/><br>
-				<input class="help" type="button" id="help" value="Help" onclick="javascript: help();"/>
-			</div>
+			</form>
+			<div id="tardies"></div>
+			<Table id="tardyTable" class="table"> <!-- table 0 -->
+				<tbody></tbody>
+			</Table>
+			<input class="back" type="button" id="back" value="Back" onclick="parent.location='FieldAppMain.html'"/>
+			<input class="help" type="button" id="help" value="Help" onclick="javascript: help();"/>
+		</div>
 	</body>
 </html>

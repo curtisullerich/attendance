@@ -5,6 +5,7 @@
 
 <%String[] peeps = DatabaseUtil.listAll();%>
 	<script src = "jspScript.js"></script>
+	<link rel="stylesheet" type="text/css" href="/MobileApp/FieldAppCSS.css" />
 	
 	<script>
 		var str = new Array();

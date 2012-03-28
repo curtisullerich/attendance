@@ -38,14 +38,17 @@
 			<input type="button" class="button" id="uploadButton" onclick="uploadData();" value="Upload Attendance Data"/>
 		</div>
 		<div class="box" id="login">
-			<h1>TA Login</h1></br>
+			<h1>TA Login</h1>
+			</br>
 			<form class="centeralign" id="TACredentials" onsubmit="return confirmTACredentials();">
-				<input type="text" id="TA" placeholder="TA netID"/></br>
-				<input type="password" id="password" placeholder="password"/></br>
+				<input type="text" id="TA" placeholder="TA netID"/>
+				</br>
+				<input type="password" id="password" placeholder="password"/>
+				</br>
+				</br>
 				<input type="submit" id="submit" value="Submit"/>
 				<input type="button" id="cancel" value="Cancel" onclick="window.location='FieldAppMain.html'"/>
 			</form>
 		</div>
     </body>
-</html></body>
 </html>

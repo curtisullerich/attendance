@@ -6,7 +6,16 @@
 		<script src="sha.js"></script>
 		<script>
 			
-		
+			//global variables to determine if absence list is shown
+			var viewAbsencesOn = false;
+
+			/**
+			 *
+			 *
+			 *
+			 *
+			 *
+			 */
 			window.onload = function() {
 				//populate the checkbox list of students
 				var array = new Array();
@@ -40,31 +49,22 @@
 				} */
 			}
 			
+			/**
+			 *
+			 *
+			 *
+			 *
+			 *
+			 */
 			window.onbeforeunload = function(){
-				var unEnteredData = false
 				var myform = document.getElementById("absences").elements;
 				for (var i = 0; i < myform.length; i++) {
 					   if (myform[i].checked == 1 && myform[i].type=="checkbox") {
-						   unEnteredData = true;
+						   return "If you leave this page, any un-submitted data will be lost!";
 					   }
 				}
-				if (unEnteredData)
-					return "If you leave this page, any un-submitted data will be lost!";
-				else
-					return;
+				return;
 			}
-			
-			function help(){
-				alert("This page is the absence reporting page for the @10dance Mobile App.\n"+
-				"\nSelect the event type, a start time, and an end time, and then select the absent students."+
-				"Clicking submit will store the event and the absent student records locally."+
-				"\n\nClicking View Absences will show the recorded absences and events."+
-				"\n\nThe Remove button allows the user to remove the event and absent student records for the "+
-				"selected event for the current date. If the selected event does not exist, no data will be changed."+
-				"The removed data is then reloaded into the student list so it may be edited.");
-				return false;
-			}
-			
 			
 			/**
 			 * Converts an array of arrays into a set of checkboxes, one per
@@ -189,80 +189,6 @@
 			}
 			
 			/**
-			 * Retrieves the type of the current event.
-			 * 
-			 * @author Curtis Ullerich
-			 * @date 2/18/12
-			 */
-			function getCurrentEventType() {
-				var eventFormElements = document.getElementById("event").elements;
-				var type = "";
-				if (eventFormElements[0].checked == 1) {
-					type = eventFormElements[0].value; // rehearsal
-				} else if (eventFormElements[1].checked == 1) {
-					type = eventFormElements[1].value; // performance
-				} else {
-					type = null;
-				}
-				
-				return type;
-			}
-			
-			/**
-			 * Stores the event currently entered into the form into localStorage.
-			 * 
-			 * @author Curtis Ullerich
-			 * @date 2/18/12
-			 */
-			function cacheEvent() {
-				var type = getCurrentEventType();
-
-				var startTime24 = getCurrentEventStartTime(24);
-				var endTime24 = getCurrentEventEndTime(24);
-				var startTime12 = getCurrentEventStartTime(12);
-				var endTime12 = getCurrentEventEndTime(12);
-				
-				var entry = type + " " + dateToday() + " " + startTime12 + " " + endTime12;
-				var eventPrepend;
-				if (type == "rehearsal") {
-					eventPrepend = rehearsalPrepend;
-				} else {
-					eventPrepend = performancePrepend;
-				}			
-				
-				storeEntry(eventPrepend, type, "|", "|", dateToday(), startTime24, endTime24, "|", entry);
-				return true;
-			}
-
-
-			/**
-			 * Does the same processing as cacheEvent, excepts removes the entry
-			 * instead.
-			 * 
-			 * @author Curtis Ullerich
-			 * @date 2/18/12
-			 */
-			function uncacheEvent() {
-				var type = getCurrentEventType();
-
-				var startTime24 = getCurrentEventStartTime(24);
-				var endTime24 = getCurrentEventEndTime(24);
-				var startTime12 = getCurrentEventStartTime(12);
-				var endTime12 = getCurrentEventEndTime(12);
-				
-				var entry = type + " " + dateToday() + " " + startTime12 + " " + endTime12;
-				var eventPrepend;
-				if (type == "rehearsal") {
-					eventPrepend = rehearsalPrepend;
-				} else {
-					eventPrepend = performancePrepend;
-				}			
-				// alert(eventPrepend+" "+type+" "+"|"+" "+"|"+" "+dateToday()+"
-				// "+startTime+" "+endTime);
-				removeEntry(eventPrepend, type, "|", "|", dateToday(), startTime24, endTime24, "|", entry);
-			}
-
-			/**
 			 * Gets the start time currently stored into the event form.
 			 * 
 			 * @author Curtis Ullerich
@@ -344,14 +270,86 @@
 					return endHour+""+endMinute;
 			}
 
+			/**
+			 * Retrieves the type of the current event.
+			 * 
+			 * @author Curtis Ullerich
+			 * @date 2/18/12
+			 */
+			function getCurrentEventType() {
+				var eventFormElements = document.getElementById("event").elements;
+				var type = "";
+				if (eventFormElements[0].checked == 1) {
+					type = eventFormElements[0].value; // rehearsal
+				} else if (eventFormElements[1].checked == 1) {
+					type = eventFormElements[1].value; // performance
+				} else {
+					type = null;
+				}
+				
+				return type;
+			}
 			
+			/**
+			 * Stores the event currently entered into the form into localStorage.
+			 * 
+			 * @author Curtis Ullerich
+			 * @date 2/18/12
+			 */
+			function cacheEvent() {
+				var type = getCurrentEventType();
+
+				var startTime24 = getCurrentEventStartTime(24);
+				var endTime24 = getCurrentEventEndTime(24);
+				var startTime12 = getCurrentEventStartTime(12);
+				var endTime12 = getCurrentEventEndTime(12);
+				
+				var entry = type + " " + dateToday() + " " + startTime12 + " " + endTime12;
+				var eventPrepend;
+				if (type == "rehearsal") {
+					eventPrepend = rehearsalPrepend;
+				} else {
+					eventPrepend = performancePrepend;
+				}			
+				
+				storeEntry(eventPrepend, type, "|", "|", dateToday(), startTime24, endTime24, "|", entry);
+				return true;
+			}
+
+
+			/**
+			 * Does the same processing as cacheEvent, excepts removes the entry
+			 * instead.
+			 * 
+			 * @author Curtis Ullerich
+			 * @date 2/18/12
+			 */
+			function uncacheEvent() {
+				var type = getCurrentEventType();
+
+				var startTime24 = getCurrentEventStartTime(24);
+				var endTime24 = getCurrentEventEndTime(24);
+				var startTime12 = getCurrentEventStartTime(12);
+				var endTime12 = getCurrentEventEndTime(12);
+				
+				var entry = type + " " + dateToday() + " " + startTime12 + " " + endTime12;
+				var eventPrepend;
+				if (type == "rehearsal") {
+					eventPrepend = rehearsalPrepend;
+				} else {
+					eventPrepend = performancePrepend;
+				}			
+				// alert(eventPrepend+" "+type+" "+"|"+" "+"|"+" "+dateToday()+"
+				// "+startTime+" "+endTime);
+				removeEntry(eventPrepend, type, "|", "|", dateToday(), startTime24, endTime24, "|", entry);
+			}
+
 			/**
 			 * Clears form and stores contents to localStorage
 			 * 
 			 * @author Curtis Ullerich
 			 * @date 2/18/12
 			 */
-			var cached = false; 
 			function cacheAbsences() {
 				var myform = document.getElementById("absences").elements;
 
@@ -381,7 +379,6 @@
 						myform[i].checked = 0;
 					}
 				}
-				cached = true;
 				return true;
 			}
 
@@ -403,7 +400,7 @@
 				// this data.
 				if (!localStorageContainsEvent(getCurrentEventType(), dateToday(), startTime, endTime)) {
 					alert("The entered event is not currently cached. No changes were made.");
-				   return;
+				   return false;
 				}
 				
 				var searchKey = dateToday() + " " + getCurrentEventStartTime(24)+" "+getCurrentEventEndTime(24);
@@ -464,6 +461,7 @@
 						}
 					}
 				}
+				return true;
 // document.getElementById("addOrEditButton").value="Submit Changes";
 			}
 			
@@ -473,8 +471,6 @@
 			*
 			* @author Todd Wegter
 			**/
-			//global variable to determine if tardy list is shown
-			var viewAbsencesOn = false;
 			function absencesOnOff(){
 				viewAbsencesOn = !viewAbsencesOn;
 				retrieveAbsences();
@@ -486,6 +482,17 @@
 			* @author Todd Wegter
 			**/
 			function retrieveAbsences(){
+				//clear existing tables
+				var table = document.getElementById("absenceTable");
+				for(var i = table.rows.length - 1; i >= 0; i--)
+				{
+					table.deleteRow(i);
+				}
+				table = document.getElementById("eventTable");
+				for(var i = table.rows.length - 1; i >= 0; i--)
+				{
+					table.deleteRow(i);
+				}
 				if(viewAbsencesOn){
 					printEvent();
 					printAbsences();
@@ -494,16 +501,6 @@
 				else{
 					document.getElementById("eventDiv").innerHTML = "";
 					document.getElementById("absenceDiv").innerHTML = "";
-					var table = document.getElementById("absenceTable");
-					for(var i = table.rows.length - 1; i >= 0; i--)
-					{
-						table.deleteRow(i);
-					}
-					var table = document.getElementById("eventTable");
-					for(var i = table.rows.length - 1; i >= 0; i--)
-					{
-						table.deleteRow(i);
-					}
 					//changes button text
 					document.getElementById("viewButton").value = "View Absences";
 				}
@@ -518,13 +515,6 @@
 			 * @date 2/18/12
 			 */
 			function printAbsences() {
-				//clear existing table
-				var table = document.getElementById("absenceTable");
-				for(var i = table.rows.length - 1; i >= 0; i--)
-				{
-					table.deleteRow(i);
-				}
-				
 				var array = storeToArray(absentPrependPerformance,"", "lastname");
 				var array2 = storeToArray(absentPrependRehearsal,"", "lastname");
 				var array3 = array.concat(array2);
@@ -536,7 +526,7 @@
 					}
 				}
 				else{
-					document.getElementById("absenceDiv").innerHTML = "No students have been recorded as absent.";
+					document.getElementById("absenceDiv").innerHTML = "<br>No students have been recorded as absent.</br>";
 				}
 			}
 
@@ -547,12 +537,7 @@
 			 * @date 2/18/12
 			 */
 			function printEvent() {			
-				//clear existing table
-				var table = document.getElementById("eventTable");
-				for(var i = table.rows.length - 1; i >= 0; i--)
-				{
-					table.deleteRow(i);
-				}
+				
 				
 				var array = storeToArray(performancePrepend, "", "firstname");
 				var array2 = storeToArray(rehearsalPrepend, "", "firstname");
@@ -565,10 +550,46 @@
 					}
 				}
 				else{
-					document.getElementById("eventDiv").innerHTML = "</br>No events have been cached.</br></br>";
+					document.getElementById("eventDiv").innerHTML = "<br>No events have been cached.</br>";
 				}
 			}
 					
+			/**
+			 * Caches currently entered events and absences.
+			 * 
+			 * @author Curtis Ullerich
+			 * @date 2/18/12
+			 */
+			function cache() {
+				if (validate()) {
+					if(cacheEvent() && cacheAbsences() && retrieveAbsences()){
+						viewAbsencesOn = true;
+						retrieveAbsences();
+						alert("Absence Data Successful Cached Locally");
+					}
+					else{
+						alert("Absence Data Was Not Successfully Cached Locally");
+						handleEdit(false);
+					}
+				}
+			}
+			
+			/**
+			 * This function is called when the edit button is pressed.
+			 * 
+			 * @author Curtis Ullerich
+			 * @date 2/18/12
+			 */
+			function handleEdit(manualEdit) {
+				if(!repopulateForm())
+					return;
+				uncacheEvent();
+				viewAbsencesOn = true;
+				retrieveAbsences();
+				if(manualEdit)
+					alert("The event you entered has been cleared from the cache. \nThe contents of that submission is currently in the form. Click 'submit' to re-cache it.");
+			}
+			
 			/**
 			 * Clears absence data from localStorage when in debug mode.
 			 * 
@@ -584,17 +605,14 @@
 					document.getElementById("viewButton").disabled = true;
 					document.getElementById("editMain").disabled = true;
 					document.getElementById("clear").value = "Clearing...";
-					
 					//clear all absence data
 					clearLocalStoragewithPrepend(absentPrependPerformance);
 					clearLocalStoragewithPrepend(absentPrependRehearsal);
 					clearLocalStoragewithPrepend(rehearsalPrepend);
 					clearLocalStoragewithPrepend(performancePrepend);
-					
 					//turn off printed absences
 					viewAbsencesOn = false;
 					retrieveAbsences();
-					
 					//wait some time to show disabled buttons in case operation takes very little time
 					setTimeout(function(){
 						//re-enable buttons
@@ -605,101 +623,85 @@
 						document.getElementById("clear").value = "Clear Absence Data";
 					},1000);
 				}
-				return;
+				return false;
 			}
 			
 			/**
-			 * Caches currently entered events and absences.
-			 * 
-			 * @author Curtis Ullerich
-			 * @date 2/18/12
+			 *
+			 *
+			 *
+			 *
+			 *
 			 */
-			function cache() {
-				if (validate()) {
-					if(cacheEvent() && cacheAbsences() && retrieveAbsences())
-						alert("Absence Data Successful Cached Locally");
-					else{
-						alert("Absence Data Was Not Successfully Cached Locally");
-						handleEdit(false);
-					}
-				}
-			}
-			
-			/**
-			 * This function is called when the edit button is pressed.
-			 * 
-			 * @author Curtis Ullerich
-			 * @date 2/18/12
-			 */
-			function handleEdit(manualEdit) {
-				repopulateForm();
-				uncacheEvent();
-				printEvent();
-				printAbsences();
-				if(manualEdit)
-					alert("The event you entered has been cleared from the cache. \nThe contents of that submission is currently in the form. Click 'submit' to re-cache it.");
+			function help(){
+				alert("This page is the absence reporting page for the @10dance Mobile App.\n"+
+				"\nSelect the event type, a start time, and an end time, and then select the absent students."+
+				"Clicking submit will store the event and the absent student records locally."+
+				"\n\nClicking View Absences will show the recorded absences and events."+
+				"\n\nThe Remove button allows the user to remove the event and absent student records for the "+
+				"selected event for the current date. If the selected event does not exist, no data will be changed."+
+				"The removed data is then reloaded into the student list so it may be edited.");
+				return false;
 			}
 			
 		</script>
 	</head>
     <body>
 		<div class="box" id="main" hidden=true>
-			<h1><b>Absence Report</b></h1><br/>
-			
-			
+			<h1><b>Absence Report</b></h1>
+			</br>
 			<form id="event" name="event" method="get">
 				<strong>Event type </strong>
-				<input id="rehearsalRadio" type="radio" name="eventType" value="rehearsal"/>Rehearsal
-				<input id="performanceRadio" type="radio" name="eventType" value="performance"/>Performance<br/>
+				<input id="rehearsalRadio" type="radio" name="eventType" value="rehearsal">Rehearsal</input>
+				<input id="performanceRadio" type="radio" name="eventType" value="performance">Performance</input>
+				</br>
 			</form>
-			<form id="startAmPm" name="startAmPm" method="get">
-				Start time: <input id="startHour" size="5" type="number" name="startHour" min="01" max="12" value="4"/>
-					<input id="startMinute" size="5" type="number" name="startMinute" min="00" max="50" step="10" value="30"/>
-					<input id="startAM" type="radio" name="startrdio" value="AM"/>AM
-					<input id="startPM" type="radio" name="startrdio" value="PM" checked="1"/>PM
+			<form id="startAmPm" name="startAmPm" method="get">Start time: 
+				<input id="startHour" size="5" type="number" name="startHour" min="01" max="12" value="4"/>
+				<input id="startMinute" size="5" type="number" name="startMinute" min="00" max="50" step="10" value="30"/>
+				<input id="startAM" type="radio" name="startrdio" value="AM">AM</input>
+				<input id="startPM" type="radio" name="startrdio" value="PM" checked="1">PM</input>
 			</form>
-			<form id="endAmPm" name="endAmPm" method="get">
-				End time: <input id="endHour" size="5" type="number" name="endHour" min="01" max="12" value="5"/>
-					<input id="endMinute" size="5" type="number" name="endMinute" min="00" max="50" step="10" value="50"/>
-					<input id="endAM" type="radio" name="endrdio" value="AM"/>AM
-					<input id="endPM" type="radio" name="endrdio" value="PM" checked="1"/>PM
+			<form id="endAmPm" name="endAmPm" method="get">End time: 
+				<input id="endHour" size="5" type="number" name="endHour" min="01" max="12" value="5"/>
+				<input id="endMinute" size="5" type="number" name="endMinute" min="00" max="50" step="10" value="50"/>
+				<input id="endAM" type="radio" name="endrdio" value="AM">AM</input>
+				<input id="endPM" type="radio" name="endrdio" value="PM" checked="1">PM</input>
 			</form>        
-			<br/> Remove the above event: <input class="button" id="editMain" type="submit" value="Remove" onClick="handleEdit(true);"/>
-
-			<hr/>
-	
+			<br/> 
+			Remove the above event: 
+			<input class="button" id="editMain" type="submit" value="Remove" onClick="handleEdit(true);"/>
+			<hr>
 			<div id="checkboxes" class="checkboxes"> 
 				<form id="absences" name="absences" method="get">        
 					<br><strong>Mark all students that are absent.</strong></br>
 				</form>
 			</div>
-			
 			<input class="button" type="submit" id="addOrEditButton" value="Submit" onClick="cache();"/>
 			<input class="button" type="button" id="viewButton" value="View Absences" onclick="absencesOnOff();"/>
-			
-			<input class="back" type="submit" id="back" value="Back" onclick="parent.location='FieldAppMain.html'"/></br>
-			<input class="help" type="button" id="help" value="Help" onclick="javascript: help();"/>
-
 			<div id="eventDiv"></div>
 			<Table id="eventTable" class="table"> <!-- table 0 -->
-				<tbody>
-				</tbody>
+				<tbody></tbody>
 			</Table>
 			<div id="absenceDiv"></div>
 			<Table id="absenceTable" class="table"> <!-- table 1 -->
-				<tbody>
-				</tbody>
+				<tbody></tbody>
 			</Table>
 			</br>
 			<input class="button" type="submit" id="clear" value="Clear Absence Data" onClick="clearAbsences();" hidden=true/>
 			</br>
+			<input class="back" type="submit" id="back" value="Back" onclick="parent.location='FieldAppMain.html'"/>
+			<input class="help" type="button" id="help" value="Help" onclick="javascript: help();"/>
 		</div>
-		
 		<div class="box" id="login">
-			<h1>TA Login</h1></br>
+			<h1>TA Login</h1>
+			</br>
 			<form class="centeralign" id="TACredentials" onsubmit="return confirmTACredentials();">
-				<input type="text" id="TA" placeholder="TA netID"/></br>
-				<input type="password" id="password" placeholder="password"/></br>
+				<input type="text" id="TA" placeholder="TA netID"/>
+				</br>
+				<input type="password" id="password" placeholder="password"/>
+				</br>
+				</br>
 				<input type="submit" id="submit" value="Submit"/>
 				<input type="button" id="cancel" value="Cancel" onclick="window.location='FieldAppMain.html'"/>
 			</form>
