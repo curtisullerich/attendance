@@ -26,12 +26,11 @@ public class RegisterServlet extends HttpServlet
 			//Grab all the data from the fields
 			netID = req.getParameter("NetID");
 			password = req.getParameter("Hashed Password");
-			reEnter = req.getParameter("Re-Enter Hashed Password");
 			firstName = req.getParameter("FirstName");
 			lastName = req.getParameter("LastName");
 			univID = req.getParameter("Hashed UniversityID");
 			
-			if (netID != null && password != null && reEnter != null && firstName != null && lastName != null && univID != null)
+			if (netID != null && password != null && firstName != null && lastName != null && univID != null)
 			{
 				//Need to do various other checks and stuff. Like whether this account already exists
 				//Create a new person with this partial information and put it in the datastore
