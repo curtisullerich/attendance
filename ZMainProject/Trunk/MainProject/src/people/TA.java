@@ -15,8 +15,8 @@ import javax.persistence.*;
 @DiscriminatorValue("TA")
 public class TA extends Person{
 
-	public TA(String netID, String password, String firstName, String lastName) {
-		super(netID, password, firstName, lastName);
+	public TA(String netID, String password, String firstName, String lastName, String univID) {
+		super(netID, password, firstName, lastName, univID);
 		// TODO Auto-generated constructor stub
 	}
 	

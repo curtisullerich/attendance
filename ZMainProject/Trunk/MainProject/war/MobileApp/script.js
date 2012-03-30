@@ -222,6 +222,28 @@ function getRank(netID){
 }
 
 
+/**
+ * Returns the netID associated with the given university ID 
+ * 
+ * @param univID
+ * 			- the given University ID
+ * @returns the associated netID; null if no match is found
+ * @author Todd Wegter
+ * @date 3-30-2012
+ */
+function getNetID(univID){
+	//hash the university id
+	var hashedUnivID = Sha1.hash(univID,true).toUpperCase();;
+	//iterate through all of localStorage
+	for(var i = 0, l = localStorage.length; i<l; i++)
+	{
+		var key = localStorage.key(i);
+		//check if the key matches the desired student
+		if(localStorage.getItem(key) == hashedUnivID)
+			return keyDelimiter(key,"netID");
+	}
+	return null;
+}
 
 /**
  * Stores an entry with the standard key: "prepend firstname lastname netID date startTime endTime rank"
@@ -590,7 +612,7 @@ function addRowToTable(table,value)
 function confirmTACredentials(){
 	//creates dummy TA value if loginDebug is true: netID is TA, password is password
 	if (loginDebug){
-		storeEntry(loginPrepend, "|", "|", "TA", "|", "|", "|", "|", Sha1.hash("password",true));
+		storeEntry(loginPrepend, "|", "|", "TA", "|", "|", "|", "|", Sha1.hash("password",true).toUpperCase());
 	}
 	//gets the netID and password from the page
 	var name = document.getElementById("TA").value;
@@ -604,7 +626,7 @@ function confirmTACredentials(){
 				//if this is the right netid, then hash the plaintext password and check it
 				if(stringContains(loginPrepend, key)){
 					if (keyDelimiter(key,"netID") == name) {
-						if (localStorage[key] == Sha1.hash(password,true)) {
+						if (localStorage[key] == Sha1.hash(password,true).toUpperCase()) {
 							document.getElementById("login").hidden = true;
 							document.getElementById("main").hidden = false;
 							//removes dummy TA value if loginDebug is true

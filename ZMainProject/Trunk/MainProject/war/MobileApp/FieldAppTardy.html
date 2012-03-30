@@ -3,6 +3,7 @@
 		<title>@10dance Tardy Check-In</title>
 		<link rel="stylesheet" type="text/css" href="FieldAppCSS.css">
 		<script src="script.js"></script>
+		<script src="sha.js"></script>
 		<script>
 			
 			//global variable to determine if tardy list is shown
@@ -42,15 +43,31 @@
 			 *
 			 * @returns False (otherwise onsubmit calls to this function refresh the page, which is not desired)
 			 * @author Todd Wegter
-			 * @date 2-10-2012
+			 * @date 3-30-2012
 			 */
 			function submitTardy() {
-				//checks for valid ID
-				var netID = document.getElementById("student").value;
-				if(!validate(netID))
-				{
-					netIDSelect();
-					return false;
+				//converts input (universityID card or netID) to netID
+				var input = document.getElementById("student").value;
+				var netID;
+				if(input.charAt(0) == ";"){
+					//univID is char 7-15 of card string
+					var univID = input.substr(7,9);
+					netID = getNetID(univID);
+					if(netID == null){
+						alert("Please enter a valid netID.");
+						document.getElementById("student").placeholder = "netID";
+						netIDSelect();
+						return false;
+					}
+				}
+				else{
+					netID = input;
+					//checks for valid ID
+					if(!validate(netID))
+					{
+						netIDSelect();
+						return false;
+					}
 				}
 				//format of tardy (24 hour time): "netID YYYY-MM-DD HH:MMam/pm
 				var tardyEntry = getFirstName(netID) + " " + getLastName(netID) + " " + dateToday() + " " + twelveHourTimeNow();
@@ -61,6 +78,7 @@
 				retrieveTardies();
 				//autoplace cursor in netID box
 				netIDSelect();
+				alert(netID+" has successfully signed in.")
 				return false;
 			}
 			
@@ -225,7 +243,7 @@
 			<h1>Tardy Check-In</h1>
 			</br>
 			<form class="centeralign" id="tardyReport" onsubmit="return submitTardy();">
-				<input type="text" id="student" placeholder="netID"/>
+				<input type="password" id="student" placeholder="netID"/>
 				<input type="submit" id="submit" value="Submit Tardy"/>
 			</form>
 			</br>

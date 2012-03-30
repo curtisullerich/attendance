@@ -13,9 +13,9 @@ import javax.persistence.*;
 public class Director extends Person{
 
 	public Director(String netID, String password, String firstName,
-			String lastName) 
+			String lastName, String univID) 
 	{
-		super(netID, password, firstName, lastName);
+		super(netID, password, firstName, lastName, univID);
 	}
 
 	

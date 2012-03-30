@@ -24,6 +24,7 @@ public class Person
 	//Can take these 2 strings and put them into 1 and delimit
 	private String firstName;
 	private String lastName;
+	private String hashedUnivID;
 	
 	//Instance variables are pretty obvious
 	private String hashedPassword;
@@ -35,12 +36,13 @@ public class Person
 		return ret;
 	}
 	
-	public Person(String netID, String password, String firstName, String lastName)
+	public Person(String netID, String password, String firstName, String lastName, String univID)
 	{
 		this.netID = netID;
 		this.hashedPassword = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.hashedUnivID = univID;
 		id = hash(netID);
 	}
 
@@ -76,10 +78,18 @@ public class Person
 	public void setNetID(String netID) {
 		this.netID = netID;
 	}
+	
+	public String getUnivID(){
+		return hashedUnivID;
+	}
+	
+	public void setUnivID(String univID){
+		this.hashedUnivID =  Long.toHexString(hash(univID)).toUpperCase();
+	}
 
 	public String toString()
 	{
-		return netID + " " + firstName + " " + lastName;
+		return netID + " " + firstName + " " + lastName + " " + hashedUnivID;
 	}
 	public boolean isComplete() {return (firstName != null && lastName != null);}
 	

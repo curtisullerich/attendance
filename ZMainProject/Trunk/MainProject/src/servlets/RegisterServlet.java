@@ -20,21 +20,22 @@ public class RegisterServlet extends HttpServlet
 			throws IOException {
 		//Reads in the stuff from NetID, Password, and Re-Enter Password then makes a person from there
 		String buttonPressed = req.getParameter("Register");
-		String netID, password, reEnter, firstName, lastName;
+		String netID, password, reEnter, firstName, lastName, univID;
 		if (buttonPressed != null)
 		{
 			//Grab all the data from the fields
 			netID = req.getParameter("NetID");
-			password = req.getParameter("Password");
-			reEnter = req.getParameter("Re-Enter Password");
+			password = req.getParameter("Hashed Password");
+			reEnter = req.getParameter("Re-Enter Hashed Password");
 			firstName = req.getParameter("FirstName");
 			lastName = req.getParameter("LastName");
+			univID = req.getParameter("Hashed UniversityID");
 			
-			if (netID != null && password != null && reEnter != null && firstName != null && lastName != null)
+			if (netID != null && password != null && reEnter != null && firstName != null && lastName != null && univID != null)
 			{
 				//Need to do various other checks and stuff. Like whether this account already exists
 				//Create a new person with this partial information and put it in the datastore
-				Student s = new Student(netID, password, firstName, lastName);
+				Student s = new Student(netID, password, firstName, lastName, univID);
 				DatabaseUtil.addStudent(s);
 				//Send them back to the login page?
 				resp.sendRedirect("/JSPPages/loginPage.jsp");

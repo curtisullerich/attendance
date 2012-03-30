@@ -37,8 +37,8 @@ public class Student extends Person
 	private String rank;
 
 	public Student(String netID, String firstName, String lastName,
-			String password, String major, String instrument) {
-		super(netID, firstName, lastName, password);
+			String password, String univID, String major, String instrument) {
+		super(netID, firstName, lastName, password, univID);
 
 		this.major = major;
 		this.instrument = instrument;
@@ -48,8 +48,8 @@ public class Student extends Person
 	}
 
 	public Student(String netID, String password, String firstName,
-			String lastName) {
-		super(netID, password, firstName, lastName);
+			String lastName, String univID) {
+		super(netID, password, firstName, lastName, univID);
 		rank = "|";
 		report = new AttendanceReport();
 		this.id = hash(netID);
