@@ -239,7 +239,7 @@ function getNetID(univID){
 	{
 		var key = localStorage.key(i);
 		//check if the key matches the desired student
-		if(localStorage.getItem(key) == hashedUnivID)
+		if(stringContains(studentPrepend, key) && localStorage.getItem(key) == hashedUnivID)
 			return keyDelimiter(key,"netID");
 	}
 	return null;

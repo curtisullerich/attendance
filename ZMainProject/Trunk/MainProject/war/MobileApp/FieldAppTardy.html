@@ -20,10 +20,7 @@
 				if(debug){
 					document.getElementById("clear").hidden = false;
 				}
-				
-				var text_input = document.getElementById ("student");
-				text_input.focus ();
-				text_input.select ();
+				netIDSelect();
 			}
 			
 			/**
@@ -48,6 +45,7 @@
 			function submitTardy() {
 				//converts input (universityID card or netID) to netID
 				var input = document.getElementById("student").value;
+				document.getElementById("student").value = "";
 				var netID;
 				if(input.charAt(0) == ";"){
 					//univID is char 7-15 of card string
@@ -243,7 +241,7 @@
 			<h1>Tardy Check-In</h1>
 			</br>
 			<form class="centeralign" id="tardyReport" onsubmit="return submitTardy();">
-				<input type="password" id="student" placeholder="netID"/>
+				netID <input type="text" id="student" autocomplete="off"/>
 				<input type="submit" id="submit" value="Submit Tardy"/>
 			</form>
 			</br>
