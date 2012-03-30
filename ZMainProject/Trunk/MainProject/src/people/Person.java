@@ -10,7 +10,7 @@ import javax.persistence.*;
  *
  */
 @Entity(name="Person")
-@Inheritance
+@Inheritance(strategy=InheritanceType.JOINED)
 @MappedSuperclass
 @DiscriminatorColumn(name="PersonType")
 public class Person
@@ -95,6 +95,7 @@ public class Person
 			cript.reset();
 			cript.update(netID.getBytes("utf8"));
 			BigInteger bigot =  new BigInteger(cript.digest());
+			//Something about things
 			return bigot.longValue();
 			
 		} catch (Exception e) {

@@ -1,5 +1,9 @@
 package people;
 
+import java.util.*;
+import javax.persistence.*;
+import forms.*;
+import attendance.*;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
@@ -14,15 +18,19 @@ import attendance.Tardy;
  */
 @Entity(name = "Student")
 @DiscriminatorValue("Student")
-public class Student extends Person {
-	// Need a way to store the absences -> actual dates
-	// AttendanceRecord class?
-
-	// This is where absences and tardies are stored
-	private AttendanceReport report;
-
-	// This field can be used to determine the grade without having to
-	// iterate thru all the absences and count them
+public class Student extends Person
+{
+	//Need a way to store the absences -> actual dates
+	//AttendanceRecord class?
+	
+	//This is where absences and tardies are stored
+	@Column(name="Report")
+	@Lob
+	private AttendanceReport report;	
+	
+	//This field can be used to determine the grade without having to
+	//iterate thru all the absences and count them
+	private int numAbsences = 0;
 	private String major;
 	private String instrument;
 	private String position;
