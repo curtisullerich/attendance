@@ -18,7 +18,7 @@ public class Time implements Comparable<Time> {
 
 
 	public Time(int hour, int minute, int second, Date date) {
-		// //time
+		//time
 		this.hour = hour;
 		this.minute = minute;
 		this.second = second;

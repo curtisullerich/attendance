@@ -46,7 +46,7 @@ public class Date implements Comparable<Date>
 	@Override
 	public int compareTo(Date o) {
 		if(o==null)
-			return -1 ; //TODO;
+			return -1; //TODO
 
 		//if d==this
 		if(this.year==o.year && this.month==o.month && this.day==o.day)
