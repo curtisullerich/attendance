@@ -1,0 +1,68 @@
+Date.java
+
+Test Year:
+-year< 2000 (S)
+-year 2000--2999
+-year >2999 (S)
+
+Test Month:
+-month<1 (S)
+-month 1--12
+-month >12 (S)
+
+Test Day:
+-day<1 (S)
+-day ( not feb)  1--31
+-day (S) > 31
+-day (Feb, not leap) <28
+-day ( Feb, leap) <29
+
+
+Test isLeapYear
+-non leap year
+-leap year %4 !%100
+-leap year %400
+
+Test CompareTo(Date)
+
+Test toString
+- normal
+- num that < 10, num +0
+	e.g.: 2 --> print 02
+	
+Test dayOfWeek
+-Mon.
+-Tues.
+-Wed
+-Thur.
+-Fri.
+-Sat.
+-Sun.
+
+/*****************Time.java***********************************/
+getHour()
+-hr < 1
+-hr > 24
+-normal hr ( 3 normal test cases)
+
+getMinues()
+-min < 1
+-min > 60
+-normal min ( 3 normal test cases)
+
+getSecond()
+-sec < 1
+-sec > 60
+-normal sec ( 3 normal test cases)
+
+getDate()
+-3 normal test cases
+
+get24Format()
+
+
+get12Format()
+
+toString()
+
+compareTo()
