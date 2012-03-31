@@ -9,6 +9,8 @@
  * 
  * standard key for localStorage: prepend firstname lastname netID date startTime endTime rank
  * rank is a 6 digit number with leading 0s
+ * 
+ * for students, the entry or value is their hashed 
  */
 
 //Prepend variables

@@ -46,16 +46,16 @@ public class DatabaseUtil
 	 *            the netID registered with a student
 	 * @return either the person with that netID or null if not found
 	 */
-	public static Student getPerson(String netID) {
+	public static Person getPerson(String netID) {
 
 		EntityManager em = EMFService.get().createEntityManager();
-		Query q = em.createQuery("select p from Student p where p.netID = :netID");
+		Query q = em.createQuery("select p from Person p where p.netID = :netID");
 		q.setParameter("netID", netID);
 
-		Student p;
+		Person p;
 		// See if that person actually exists
 		try {
-			p = (Student) q.getSingleResult();
+			p = (Person) q.getSingleResult();
 		} catch (NoResultException e) {
 			p = null;
 		}

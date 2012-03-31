@@ -10,51 +10,46 @@
 			var viewAbsencesOn = false;
 
 			/**
+			 * Runs when the page loads: populates the list of students from.
+			 * Also enables the clearAll button if debug is true.
 			 *
-			 *
-			 *
-			 *
-			 *
+			 * @author Curtis Ullerich
+			 * @date 2-17-2012
 			 */
 			window.onload = function() {
 				//populate the checkbox list of students
 				var array = new Array();
 				var curList = storeKeysToArray(studentPrepend, "rank");
+				//sort array of keys by rank
 				curList.sort();
 				for (var i = 0; i < curList.length; i++) {
 					var key = curList[i][1];
 					var student = new Array(2);
+					//create array of student names and netIDs
 					student[0] = keyDelimiter(key,"netID");
 					student[1] = keyDelimiter(key,"name");
 					array.push(student);
 				}
+				//push array of student names and netIDs to the list
 				listToForm(array);
-				
 				//clear radio buttons
 				document.getElementById("rehearsalRadio").checked = 0;
 				document.getElementById("performanceRadio").checked = 0;
-				
+				//enable clear button if debug is true
 				if(debug){
 					document.getElementById("clear").hidden = false;
 				}
-				
-				//prompt for TA login -- try/catch catcheds error if user refreshes page
-				/* try
-				{
-					validateTA();
-				}
-				catch(error)
-				{
-					parent.location = "FieldAppAbsent.html";
-				} */
+				return;
 			}
 			
 			/**
+			 * Runs before leaving the page: checks to make sure the user submits entered data
+			 * before leaving the page.
 			 *
-			 *
-			 *
-			 *
-			 *
+			 * @returns Error string if the form has checked boxes, nothing if the form is blank
+			 *			- the error string causes a confirm popup, returning nothing allows the user to leave the page
+			 * @author Todd Wegter
+			 * @date 3-25-2012
 			 */
 			window.onbeforeunload = function(){
 				var myform = document.getElementById("absences").elements;
@@ -67,203 +62,196 @@
 			}
 			
 			/**
-			 * Converts an array of arrays into a set of checkboxes, one per
-			 * first-dimensional element. The arrays' first element is the netid and
+			 * Converts an 2D array into a set of checkboxes, one per
+			 * first-dimensional element. The array's first element is the netid and
 			 * the second dimension is the first and last name together.
 			 * 
+			 * @param array
+			 *            - the two-dimensional array from which to build the form
 			 * @author Curtis Ullerich
 			 * @date 2/27/12
-			 * @param array
-			 *            the two-dimensional array from which to build the form
+			 * 
 			 */
 			function listToForm(array) {
-
+				//define form
 				var form = "<form id='absences' name='absences' method='get'>\n";
 				form += "<br><strong>Mark all students that are absent.</strong></br>\n";
-				
+				//create each checkbox in the form
 				for (var i = 0; i < array.length; i++) {
-					
 					form += '<input type="checkbox" name="student" value="'+array[i][0]+'">'+array[i][1]+'<br>\n';
 				}
-
 				form += "</form>";
-
+				//set the html form to the created form
 				document.getElementById("checkboxes").innerHTML = form;            
-				
+				return;
 			}
-			
 			
 			/**
 			 * Checks that all data entered into the event form is valid and
 			 * complete.
 			 * 
+			 * @returns True if the entered data is valid, false otherwise
 			 * @author Curtis Ullerich
-			 * @date 2/27/12
+			 * @date 2-27-2012
 			 */
 			function validate() {
+				//get all data elements of page
 				var r1 = document.getElementById("rehearsalRadio").checked;
 				var r2 = document.getElementById("performanceRadio").checked;
-
 				var startHour = parseInt(document.getElementById("startHour").value,10);
 				var startMinute = parseInt(document.getElementById("startMinute").value,10);
-
 				var endHour = parseInt(document.getElementById("endHour").value,10);
 				var endMinute = parseInt(document.getElementById("endMinute").value,10);
-
+				//check for valid times
 				if (startHour < 1 || startHour > 12) {
 					alert("Hours must be entered in the range 1 to 12");
 					return false;
 				}
-
 				if (endHour < 1 || endHour > 12) {
 					alert("Hours must be entered in the range 1 to 12");
 					return false;
 				}
-
 				if (startMinute < 0 || startMinute > 59) {
 					alert("Minutes must be entered in the range 0 to 59");
 					return false;
 				}
-
 				if (endMinute < 0 || endMinute > 59) {
 					alert("Minutes must be entered in the range 0 to 59");
 					return false;
 				}
-
+				//check that an event type is selected
 				if (!(r1 || r2)) {
 					alert("You must select the event type at the top.");
 					return false;
 				}
-				 
+				//aler usert of invalid times
 				if (!currentTimesAreValid()) {
 					alert("Please enter a start time that is before the end time");
 					return false;
 				}
-				 
 				return true;
 			}
 			
-			
-			
 			/**
 			 * Checks that the currently entered start time is less than or equal to
-			 * the currently entered end time 2/18/12.
+			 * the currently entered end time.
 			 * 
+			 * @returns True if the start and end time are valid, false otherwise
 			 * @author Curtis Ullerich
-			 * @date 2/18/12
+			 * @date 2-18-2012
 			 */
 			function currentTimesAreValid() {
+				//get times
 				var startHour = parseInt(document.getElementById("startHour").value,10);
 				var startMinute = parseInt(document.getElementById("startMinute").value,10);
-
 				var endHour = parseInt(document.getElementById("endHour").value,10);
 				var endMinute = parseInt(document.getElementById("endMinute").value,10);
 				var startPM = document.getElementById("startPM").checked;
 				var endPM = document.getElementById("endPM").checked;
-
+				//convert to 24 hour time
 				if (startPM) {
 					startHour += 12;
 				}
-				
 				if (endPM) {
 					endHour += 12;
 				}
-
+				//midnight is 0 in 24 hour time
 				if (!startPM && startHour==12) {
 					startHour-=12;
 				}
-				
 				if(!endPM && endHour==12) {
 					endHour-=12;
 				}
-							
+				//check that endtime is after starttime			
 				if (startHour > endHour) {
 					return false;
 				}
-				
 				if (startHour == endHour && startMinute > endMinute) {
 					return false;
 				}
-				
 				return true;
 			}
 			
 			/**
 			 * Gets the start time currently stored into the event form.
 			 * 
+			 * @param radix
+			 *			- differentiates between 12 hour or 24 hour time (valid input is 12 or 24)
+			 *
+			 * @returns current event start time in 12 or 24 hour format
 			 * @author Curtis Ullerich
-			 * @date 2/18/12
+			 * @date 2-18-2012
 			 */
 			function getCurrentEventStartTime(radix) {
+				//get times entered on page
 				var startHour = parseInt(document.getElementById("startHour").value,10);
 				var startMinute = parseInt(document.getElementById("startMinute").value,10);
 				var ampm;
-				var isStartPM = document.getElementById("startPM").checked == 1;
-				
+				var isStartPM = (document.getElementById("startPM").checked == 1);
+				//do ampm computation if 12 hour time is desired
 				if (radix == 12) {
+					// do no conversion because values are stored in the form
+					// in twelve-hour format
 					if(isStartPM)
 						ampm = "pm";
 					else
 						ampm = "am";
-					// do nothing, because values are stored in the form
-					// in twelve-hour format
+				//convert 12 to 24 hour time
 				} else if (radix == 24) {
-					
-					if (isStartPM) {
+					if (isStartPM) 
 						startHour += 12;
-					}
-					if (!isStartPM && startHour==12) {
+					if (!isStartPM && startHour==12)
 						startHour -= 12;
-					}
-					
 				}
 				// pad for ASCII sorting
 				if(startHour<10)
 					startHour = "0"+startHour;
 				if(startMinute<10)
 					startMinute = "0"+startMinute;
-				
+				//return 12 or 24 hour time
 				if(radix == "12")
 					return startHour+":"+startMinute+""+ampm;
 				else
 					return startHour+""+startMinute;
-				
 			}
 			
 			/**
 			 * Gets the end time currently stored into the event form.
-			 * 
+			 *
+			 * @param radix
+			 *			- differentiates between 12 hour or 24 hour time (valid input is 12 or 24)
+			 *
+			 * @returns current event end time in 12 or 24 hour format
 			 * @author Curtis Ullerich
-			 * @date 2/18/12
+			 * @date 2-18-2012
 			 */
 			function getCurrentEventEndTime(radix) {
+				//get times entered on page
 				var endHour = parseInt(document.getElementById("endHour").value,10);
 				var endMinute = parseInt(document.getElementById("endMinute").value,10);
 				var ampm;
 				var isEndPM = document.getElementById("endPM").checked == 1;
-				
+				//do ampm computation if 12 hour time is desired
 				if (radix == 12) {
+					// do no computation because values are stored in the form
+					// in twelve-hour format
 					if(isEndPM)
 						ampm = "pm";
 					else
 						ampm = "am";
-					// do nothing, because values are stored in the form
-					// in twelve-hour format
+				//convert 12 to 24 hour time
 				} else if (radix == 24) {
-					if (isEndPM) {
+					if (isEndPM) 
 						endHour += 12;
-					}
-					if (!isEndPM && endHour==12) {
+					if (!isEndPM && endHour==12)
 						endHour -= 12;
-					}
-					
 				}
 				// pad for ASCII sorting
 				if(endHour<10)
 					endHour = "0"+endHour;
 				if(endMinute<10)
 					endMinute = "0"+endMinute;
-			
+				//return 12 or 24 hour format time
 				if(radix == "12")
 					return endHour+":"+endMinute+""+ampm;
 				else
@@ -273,12 +261,15 @@
 			/**
 			 * Retrieves the type of the current event.
 			 * 
+			 * @returns the type of event, null if none is selected
 			 * @author Curtis Ullerich
-			 * @date 2/18/12
+			 * @date 2-18-2012
 			 */
 			function getCurrentEventType() {
+				//get form elements
 				var eventFormElements = document.getElementById("event").elements;
 				var type = "";
+				//get event type from form elements
 				if (eventFormElements[0].checked == 1) {
 					type = eventFormElements[0].value; // rehearsal
 				} else if (eventFormElements[1].checked == 1) {
@@ -286,96 +277,88 @@
 				} else {
 					type = null;
 				}
-				
 				return type;
 			}
 			
 			/**
 			 * Stores the event currently entered into the form into localStorage.
 			 * 
+			 * @returns True if successful
 			 * @author Curtis Ullerich
-			 * @date 2/18/12
+			 * @date 2-18-2012
 			 */
 			function cacheEvent() {
+				//get event type and times
 				var type = getCurrentEventType();
-
 				var startTime24 = getCurrentEventStartTime(24);
 				var endTime24 = getCurrentEventEndTime(24);
 				var startTime12 = getCurrentEventStartTime(12);
 				var endTime12 = getCurrentEventEndTime(12);
-				
+				//create event entry
 				var entry = type + " " + dateToday() + " " + startTime12 + " " + endTime12;
 				var eventPrepend;
+				//select prepend
 				if (type == "rehearsal") {
 					eventPrepend = rehearsalPrepend;
 				} else {
 					eventPrepend = performancePrepend;
 				}			
-				
+				//store compiled key and entry
 				storeEntry(eventPrepend, type, "|", "|", dateToday(), startTime24, endTime24, "|", entry);
 				return true;
 			}
 
-
 			/**
-			 * Does the same processing as cacheEvent, excepts removes the entry
-			 * instead.
+			 * Removes event in form from localStorage.
 			 * 
+			 * @returns True if successful
 			 * @author Curtis Ullerich
-			 * @date 2/18/12
+			 * @date 2-18-2012
 			 */
 			function uncacheEvent() {
+				//get event type and times
 				var type = getCurrentEventType();
-
 				var startTime24 = getCurrentEventStartTime(24);
 				var endTime24 = getCurrentEventEndTime(24);
-				var startTime12 = getCurrentEventStartTime(12);
-				var endTime12 = getCurrentEventEndTime(12);
-				
-				var entry = type + " " + dateToday() + " " + startTime12 + " " + endTime12;
+				//select prepend
 				var eventPrepend;
 				if (type == "rehearsal") {
 					eventPrepend = rehearsalPrepend;
 				} else {
 					eventPrepend = performancePrepend;
-				}			
-				// alert(eventPrepend+" "+type+" "+"|"+" "+"|"+" "+dateToday()+"
-				// "+startTime+" "+endTime);
-				removeEntry(eventPrepend, type, "|", "|", dateToday(), startTime24, endTime24, "|", entry);
-			}
+				}
+				removeEntry(eventPrepend, type, "|", "|", dateToday(), startTime24, endTime24, "|");
+				return true;
+			 }
 
 			/**
 			 * Clears form and stores contents to localStorage
 			 * 
+			 * @returns True if successful
 			 * @author Curtis Ullerich
-			 * @date 2/18/12
+			 * @date 2-18-2012
 			 */
 			function cacheAbsences() {
+				//get absences from form
 				var myform = document.getElementById("absences").elements;
-
 				for (var i = 0; i < myform.length; i++) {
 				   if (myform[i].checked == 1 && myform[i].type=="checkbox") {
-
-						
-						//var firstname = myform[i].value.split(" ")[0];
-						//var lastname = myform[i].value.split(" ")[1];
+					    //get info for absent student key
 						var netID = myform[i].value;
 						var firstname = getFirstName(netID);
 						var lastname = getLastName(netID);
 						var rank = getRank(netID);
-						
+						//create entry for absent student
 						var value = firstname + " " + lastname + " " + dateToday() + " " + getCurrentEventStartTime(12)+" "+getCurrentEventEndTime(12);
-
-						
-						
+						//set prepend
 						var absentPrepend = absentPrependPerformance;
 						var type = getCurrentEventType();
 						if (type == "rehearsal") {
 							absentPrepend = absentPrependRehearsal;
 						}
-						
+						//store absent student record
 						storeEntry(absentPrepend, firstname, lastname, netID, dateToday(), getCurrentEventStartTime(24), getCurrentEventEndTime(24), rank, value);
-						
+						//uncheck checkbox
 						myform[i].checked = 0;
 					}
 				}
@@ -386,101 +369,69 @@
 			 * Takes everything from localStorage for the selected rehearsal and
 			 * puts it back into the form.
 			 * 
+			 * @returns True if successful, false if indicated event does not exist
 			 * @author Curtis Ullerich
-			 * @date 2/18/12
+			 * @date 2-18-2012
 			 */
 			function repopulateForm() {
-
-				var startTime = parseInt(getCurrentEventStartTime(24),10);   
-				var endTime = parseInt(getCurrentEventEndTime(24),10);//
-
-				// search for the event to make sure it happened. If it didn't, then
-				// the
-				// user should not have clicked edit, so don't allow submission of
-				// this data.
+				//get times
+				var startTime = getCurrentEventStartTime(24);   
+				var endTime = getCurrentEventEndTime(24);//
+				// search for the event to make sure it happened. If it didn't, then the
+				// user should not have clicked edit, so don't allow submission of this data.
 				if (!localStorageContainsEvent(getCurrentEventType(), dateToday(), startTime, endTime)) {
 					alert("The entered event is not currently cached. No changes were made.");
 				   return false;
 				}
-				
-				var searchKey = dateToday() + " " + getCurrentEventStartTime(24)+" "+getCurrentEventEndTime(24);
-				var sortKey = "key";
-				
+				//select absence prepend
 				var absentPrepend = absentPrependPerformance;
 				var type = getCurrentEventType();
 				if (type == "rehearsal") {
 					absentPrepend = absentPrependRehearsal;
 				}
-				
 				var prepend = absentPrepend;
-
-				var array = storeToArray(prepend, searchKey, sortKey);
+				//get absence checkboxes
 				var formElements = document.getElementById("absences").elements;
-
-
-				for (var i = 0, l = array.length; i<l; i++) {
-					var key = array[i][0];// array[i][1];//right? wrong? TODO
-					
-					// check all keys in the datastore that are absences and match
-					// the current date and time.
-					// grab the value so we can extract the student's name and set
-					// that checkbox.
-					var value = array[i][1];
-
-					for (var j = 0; j < formElements.length; j++) {
-						// all _vars are from the current form.
-
-						var _prepend = absentPrepend;
-	// if (_type == "rehearsal") {
-	// _prepend = rehearsalPrepend;
-	// }
-						var _netID = formElements[j].value;
-						var _firstname = getFirstName(_netID);
-						var _lastname = getLastName(_netID);                
-						var _date = dateToday();
-						var _starttime = getCurrentEventStartTime(24);
-						var _endtime = getCurrentEventEndTime(24);
-						var _entry = "|";
-						var _rank = "|";
-// alert(_prepend+" "+_firstname+" "+_lastname+" "+_netID+"
-// "+_date+" "+_starttime+" "+_endtime+" "+_entry);
-// these are from the current key
-// var firstname =  keyDelimiter(key,"firstname");
-// var lastname = keyDelimiter(key,"lastname");
-// var netID = keyDelimiter(key,"netID");
-// var startTime = keyDelimiter(key,"starttime");
-// var endTime = keyDelimiter(key,"endtime");
-// var date = keyDelimiter(key,"date");
-// var name = firstname + " " + lastname;
-// alert(formElements[j].value + "==" + name);
-						var toremove = removeEntry(_prepend,_firstname,_lastname,_netID,_date,_starttime,_endtime,_rank,_entry);
-// alert(toremove);
-						if (toremove){
-							formElements[j].checked = 1;
-							break;
-						}
+				//iterate through all students in the form
+				for (var j = 0; j < formElements.length; j++) {
+					//get student data from form
+					var form_netID = formElements[j].value;
+					var form_firstname = getFirstName(form_netID);
+					var form_lastname = getLastName(form_netID);                
+					var form_date = dateToday();
+					var form_starttime = getCurrentEventStartTime(24);
+					var form_endtime = getCurrentEventEndTime(24);
+					var form_rank = getRank(form_netID);
+					//remove absence entry for given student and event if it exists
+					//toremove is true if the absence record existed, false otherwise
+					var toremove = removeEntry(prepend,form_firstname,form_lastname,form_netID,form_date,form_starttime,form_endtime,form_rank);
+					//check the student's checkbox if s/he was previously marked absent
+					if (toremove){
+						formElements[j].checked = 1;
 					}
 				}
 				return true;
-// document.getElementById("addOrEditButton").value="Submit Changes";
 			}
 			
 			/**
-			* This function shows and hides the absence lists, viewAbsencesOn keeps track of whether the tardy list
-			* is being shown
-			*
-			* @author Todd Wegter
-			**/
+			 * This function shows and hides the absence lists
+			 *
+			 * @author Todd Wegter
+			 * @date 3-18-2012
+			 */
 			function absencesOnOff(){
 				viewAbsencesOn = !viewAbsencesOn;
 				retrieveAbsences();
+				return;
 			}
 			
 			/**
-			* This helper function prints the Absence data to the screen if viewAbsencesOn is true;
-			*
-			* @author Todd Wegter
-			**/
+			 * This helper function prints the Absence data to the screen if viewAbsencesOn is true;
+			 *
+			 * @returns True if successful
+			 * @author Todd Wegter
+			 * @date 3-18-2012
+			 */
 			function retrieveAbsences(){
 				//clear existing tables
 				var table = document.getElementById("absenceTable");
@@ -493,31 +444,34 @@
 				{
 					table.deleteRow(i);
 				}
+				//print absences and change button to hide if viewAbsencesOn is true
 				if(viewAbsencesOn){
 					printEvent();
 					printAbsences();
 					document.getElementById("viewButton").value = "Hide Absences";
 				}
+				//hide absences and change button to view if viewAbsencesOn is false
 				else{
 					document.getElementById("eventDiv").innerHTML = "";
 					document.getElementById("absenceDiv").innerHTML = "";
-					//changes button text
 					document.getElementById("viewButton").value = "View Absences";
 				}
 				return true;
 			}
 			
 			/**
-			 * Inserts the absences currently stored into localStorage into
-			 * absenceDiv.
+			 * Inserts the absences currently stored into localStorage into the absenceTable (table 1)
 			 * 
-			 * @author Curtis Ullerich
+			 * @returns True if successful
+			 * @author Curtis Ullerich, Todd Wegter
 			 * @date 2/18/12
 			 */
 			function printAbsences() {
+				//create array of all absence records
 				var array = storeToArray(absentPrependPerformance,"", "lastname");
 				var array2 = storeToArray(absentPrependRehearsal,"", "lastname");
 				var array3 = array.concat(array2);
+				//if there were absence records, sort them and add them to the table
 				if(array3.length > 0){
 					array3.sort();
 					document.getElementById("absenceDiv").innerHTML = "<br>These people have been recorded as absent:</br></br>";
@@ -525,23 +479,26 @@
 						addRowToTable("1",array3[i][1]);
 					}
 				}
+				//if no absence records were found, say so
 				else{
 					document.getElementById("absenceDiv").innerHTML = "<br>No students have been recorded as absent.</br>";
 				}
+				return true;
 			}
 
 			/**
-			 * Inserts the events currently stored into localStorage into eventDiv.
+			 * Inserts the events currently stored into localStorage into eventTable (Table 0)
 			 * 
-			 * @author Curtis Ullerich
-			 * @date 2/18/12
+			 * @returns True if successful
+			 * @author Curtis Ullerich, Todd Wegter
+			 * @date 2-18-2012
 			 */
 			function printEvent() {			
-				
-				
+				//create array of all event records
 				var array = storeToArray(performancePrepend, "", "firstname");
 				var array2 = storeToArray(rehearsalPrepend, "", "firstname");
 				var array3 = array.concat(array2);
+				//if there were event records, sort them and add them to the table
 				if(array3.length > 0){
 					document.getElementById("eventDiv").innerHTML = "<br>Events currently cached:</br></br>";
 					array3.sort();
@@ -549,52 +506,66 @@
 						addRowToTable("0",array3[i][1]);
 					}
 				}
+				//if no event records were found, say so
 				else{
 					document.getElementById("eventDiv").innerHTML = "<br>No events have been cached.</br>";
 				}
+				return true;
 			}
 					
 			/**
 			 * Caches currently entered events and absences.
 			 * 
+			 * @returns False to prevent page from reloading
 			 * @author Curtis Ullerich
-			 * @date 2/18/12
+			 * @date 2-18-2012
 			 */
 			function cache() {
+				//if form data is valid, cache the absence data and show the absences
 				if (validate()) {
 					if(cacheEvent() && cacheAbsences() && retrieveAbsences()){
 						viewAbsencesOn = true;
 						retrieveAbsences();
 						alert("Absence Data Successful Cached Locally");
 					}
+					//if caching was unsuccessful, say so
 					else{
 						alert("Absence Data Was Not Successfully Cached Locally");
+						//repopulate form - false prevents editing alert from being shown
 						handleEdit(false);
 					}
 				}
+				return false;
 			}
 			
 			/**
-			 * This function is called when the edit button is pressed.
+			 * This function is called when the edit button is pressed or caching is unsuccessful.
+			 * Repopulates the form, uncaches the event, prints absences to the screen, and shows alert
+			 * if the function was called by pressing the remove button.
 			 * 
+			 * @returns False to prevent page reload
 			 * @author Curtis Ullerich
-			 * @date 2/18/12
+			 * @date 2-18-2012
 			 */
 			function handleEdit(manualEdit) {
+				//repopulate form - if unsuccesful, break out of function
 				if(!repopulateForm())
-					return;
+					return false;
 				uncacheEvent();
 				viewAbsencesOn = true;
 				retrieveAbsences();
+				//if this function was called with the button, show the edit instructions
 				if(manualEdit)
-					alert("The event you entered has been cleared from the cache. \nThe contents of that submission is currently in the form. Click 'submit' to re-cache it.");
-			}
+					alert("The event you entered has been cleared from the cache. \nThe contents of that submission are currently in the form. Click 'submit' to re-cache it.");
+				return false;
+			 }
 			
 			/**
 			 * Clears absence data from localStorage when in debug mode.
 			 * 
+			 * returns True if successful
 			 * @author Todd Wegter, Curtis Ullerich
-			 * @date 3/22/12
+			 * @date 3-22-2012
 			 */
 			function clearAbsences() {
 				if(debug)
@@ -613,6 +584,9 @@
 					//turn off printed absences
 					viewAbsencesOn = false;
 					retrieveAbsences();
+					//clear radio buttons
+					document.getElementById("rehearsalRadio").checked = 0;
+					document.getElementById("performanceRadio").checked = 0;
 					//wait some time to show disabled buttons in case operation takes very little time
 					setTimeout(function(){
 						//re-enable buttons
@@ -627,11 +601,11 @@
 			}
 			
 			/**
+			 * Displays the page's help screen
 			 *
-			 *
-			 *
-			 *
-			 *
+			 * @returns False to prevent page reload
+			 * @author Todd Wegter
+			 * @date 2-28-2012
 			 */
 			function help(){
 				alert("This page is the absence reporting page for the @10dance Mobile App.\n"+
@@ -688,7 +662,7 @@
 				<tbody></tbody>
 			</Table>
 			</br>
-			<input class="button" type="submit" id="clear" value="Clear Absence Data" onClick="clearAbsences();" hidden=true/>
+			<input class="button" type="button" id="clear" value="Clear Absence Data" onClick="clearAbsences();" hidden=true/>
 			</br>
 			<input class="back" type="submit" id="back" value="Back" onclick="parent.location='FieldAppMain.html'"/>
 			<input class="help" type="button" id="help" value="Help" onclick="javascript: help();"/>

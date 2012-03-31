@@ -20,7 +20,7 @@ public class LoginServlet extends HttpServlet
 		{
 			//Check to see if the user name and password are correct
 			String netID = req.getParameter("User Name");
-			String hashedPassword = req.getParameter("Password");
+			String hashedPassword = req.getParameter("Hashed Password");
 			//Check that they actually added something
 			
 			Person user = DatabaseUtil.getPerson(netID);

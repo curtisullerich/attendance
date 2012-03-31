@@ -10,13 +10,15 @@
 		<script>
 			
 			/**
+			 * Runs when the page loads: determines if a class list is present, clears
+			 * attendance data if the page just uploaded the data, and alerts the user if the upload was
+			 * unsuccessful. Also enables the clearAll button if debug is true.
 			 *
-			 *
-			 *
-			 *
-			 *
+			 * @author Todd Wegter
+			 * @date 2-17-2012
 			 */
 			window.onload = function() {
+				//determine date of latest class list
 				var array = storeToArray(studentPrepend," ","date");
 				var str;
 				if (array.length < 1) {
@@ -25,8 +27,7 @@
 					str="Current class list: " + array[0][0];
 				}
 				document.getElementById("classList").innerHTML = str;
-			   
-					
+				//check for successful data upload	
 				if(localStorage.getItem("success") == "true"){
 					//clear all absence and tardy data
 					clearLocalStoragewithPrepend(absentPrependPerformance);
@@ -35,33 +36,34 @@
 					clearLocalStoragewithPrepend(performancePrepend);
 					clearLocalStoragewithPrepend(tardyPrepend);
 					alert("Absence Data Successfully Uploaded and Locally Removed");
-					
 					localStorage.removeItem("success");
 				}
+				//if upload unsuccessful, do not clear localStorage
 				else if(!localStorage.getItem("success") == "false"){
 					alert("Absence Data Upload Unsuccessful - Local Data Was Not Changed");
 					localStorage.removeItem("success");
 				}
+				//alert user if a blank string was uploaded
 				else if(localStorage.getItem("success") == "emptyString")
 				{
 					alert("Nothing was uploaded to the server")
 					localStorage.removeItem("success");
 				}
-			   
+			    //enable clear button if debug mode is enabled
 				if(debug){
 					document.getElementById("clear").hidden = false;
 				}
 			}
 						
 	        /**
+			 * Pulls the latest student list from the server by redirecting to the updateList.jsp
+			 * If the user is not connected to the internet (browser in offline mode), update is not performed.
 			 *
-			 *
-			 *
-			 *
-			 *
+			 * @author Curtis Ullerich
+			 * @date 3-15-2012
 			 */
 	        function updateList() {
-	
+				//check online status
 	            if (!navigator.onLine) {
 	               alert("You're not online. Update not performed.");
 	               return false;
@@ -71,18 +73,19 @@
 	        }
 	
 	        /**
+			 * Prepares attendance data for upload to the server if the user is online.
 			 *
-			 *
-			 *
-			 *
-			 *
+			 * @returns False if offline, True if online
+			 * @author Curtis Ullerich
+			 * @date 3-10-2012
 			 */
 	        function uploadAll() {
+				//check online status
 				if (!navigator.onLine) {
 				   alert("You're not online. Upload not performed.");
 				   return false;
 				}
-	
+				//create list of data to upload to the server
 				var str = "";
 				var key;
 				for (var i = 0; i < localStorage.length; i++) {
@@ -92,37 +95,40 @@
 					}
 				}
 				document.getElementById("tempForUpload").value = str;
-				
-				//alert(str);
-				//the server will remove the text from the div once successful			 
+				return true;			 
 	        }
 	        
 	        /**
 	         * Removes all student records currently stored in localStorage
 	         *
+	         * @returns True if successful
 	         * @author Curtis Ullerich
-	         * @date 3/3/12
+	         * @date 3-3-2012
 	         */
 	        function uncacheClassList() {
 	            clearLocalStoragewithPrepend(studentPrepend);
+	            return true;
 	        }
 			
 	        /**
+			 * Clears all localStorage, disabling the buttons in the meantime, if debug is true.
 			 *
-			 *
-			 *
-			 *
-			 *
+			 * @returns True if successful
+			 * @author Todd Wegter
+			 * @date 3-23-2012
 			 */
 			function clearAll(){
 	        	if(debug){
+	        		//disable buttons
 					document.getElementById("clear").disabled = true;
 					document.getElementById("tardy").disabled = true;
 					document.getElementById("absent").disabled = true;
 					document.getElementById("update").disabled = true;
 					document.getElementById("submit").disabled = true;
 					document.getElementById("clear").value = "Clearing...";
+					//clear localStorage
 					localStorage.clear();
+					//wait to renable buttons - clearing can be too fast
 					setTimeout(function(){
 						//re-enable buttons
 						document.getElementById("clear").disabled = false;
@@ -131,17 +137,19 @@
 						document.getElementById("update").disabled = false;
 						document.getElementById("submit").disabled = false;
 						document.getElementById("clear").value = "Clear ALL THE THINGS!!!";
+						//reloads page
 						window.location.reload();
 					},1000);
 	        	}
+	        	return true;
 			}
 	        
 			/**
+			 * Displays the page's help screen
 			 *
-			 *
-			 *
-			 *
-			 *
+			 * @returns False to prevent page reload
+			 * @author Todd Wegter
+			 * @date 2-28-2012
 			 */
 	        function help(){
 	            alert("This page is the start page for the @10dance Mobile App.\n"+

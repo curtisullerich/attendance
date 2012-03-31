@@ -19,7 +19,7 @@
 		function hashPassword() {
 			var str = Sha1.hash(document.getElementById("Password").value);
 			str = str.toUpperCase();
-			document.getElementById("Password").value = str;
+			document.getElementById("Hashed Password").value = str;
 			return true;
 		}
 
@@ -39,6 +39,11 @@
 						<td><label for="Password">Password</label></td>
 						<td><input type= "password" name="Password" id="Password"/></td>	
 					</tr>
+					
+					<tr>
+						<td><input type= "password" name="Hashed Password" id="Hashed Password" hidden=true/></td>	
+					</tr>
+					
 				</table>
 				
 				<input type="button" value="Register" name="Register" onClick='window.location="/JSPPages/register.jsp"'/>
