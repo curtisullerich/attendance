@@ -4,12 +4,8 @@ import java.util.*;
 import javax.persistence.*;
 import forms.*;
 import attendance.*;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
+import javax.persistence.*;
 
-import attendance.Absence;
-import attendance.AttendanceReport;
-import attendance.Tardy;
 
 /**
  * 
@@ -24,9 +20,12 @@ public class Student extends Person
 	//AttendanceRecord class?
 	
 	//This is where absences and tardies are stored
-	@Column(name="Report")
-	@Lob
-	private AttendanceReport report;	
+	//private AttendanceReport report;
+	
+	//Since we can't store large objects in the database we will store the attendance the same 
+	//way it's stored in the local app
+	private String absenceInfo;
+	private String tardyInfo;
 	
 	//This field can be used to determine the grade without having to
 	//iterate thru all the absences and count them
@@ -43,7 +42,8 @@ public class Student extends Person
 		this.major = major;
 		this.instrument = instrument;
 		this.rank = "|";
-		this.report = new AttendanceReport();
+		this.absenceInfo = "";
+		this.tardyInfo = "";
 		this.id = hash(netID);
 	}
 
@@ -51,7 +51,8 @@ public class Student extends Person
 			String lastName, String univID) {
 		super(netID, password, firstName, lastName, univID);
 		rank = "|";
-		report = new AttendanceReport();
+		this.absenceInfo = "";
+		this.tardyInfo = "";
 		this.id = hash(netID);
 	}
 
@@ -65,11 +66,15 @@ public class Student extends Person
 	}
 	
 	public void addTardy(Tardy newTardy) {
-		report.addTardy(newTardy);
+		//toString is in the form: "Date checkInTime" the student should know everything else it needs
+		//Extra space at the end so we can add more
+		tardyInfo += newTardy.toString() + " ";
 	}
 
 	public void addAbsence(Absence newAbsence) {
-		report.addAbsence(newAbsence);
+		//Same idea as addTardy with a form of:
+		//"Date startTime endTime"
+		absenceInfo += newAbsence.toString() + " ";
 	}
 
 	public String getMajor() {
