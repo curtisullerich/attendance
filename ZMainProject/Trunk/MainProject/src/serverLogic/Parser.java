@@ -85,6 +85,8 @@ public class Parser {
 			else if (prepend.equalsIgnoreCase(tardyPrepend)) {
 				s.addTardy(new Tardy(start, end));
 			}
+			//To update the student
+			DatabaseUtil.addStudent(s);
 		}
 	}
 
