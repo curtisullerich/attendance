@@ -12,6 +12,7 @@
 var loginDebug = true;
 var debug = true;
 
+var loginPrepend = "storedLogin";
 
 /**
  * Stores an entry with the standard key: "prepend firstname lastname netID date startTime endTime rank"
