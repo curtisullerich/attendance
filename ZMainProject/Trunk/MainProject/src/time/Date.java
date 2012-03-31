@@ -9,14 +9,12 @@ public class Date implements Comparable<Date>
 	private int year;
 	private int month;
 	private int day;
-//	private String dayOfWeek;
 	
 	public Date(int year, int month, int day)
 	{
-		this.year=year;
-		this.day=day;
-		this.month=month;
-//		this.dayOfWeek="";
+		setYear(year);
+		setMonth(month);
+		setDay(day);
 	}
 	
 	//Constructor to change from dataBase string to an Object
@@ -27,13 +25,29 @@ public class Date implements Comparable<Date>
 		month = Integer.parseInt(date[1]);
 		day = Integer.parseInt(date[2]);
 	}
+	
 
 	public int getYear() {
 		return year;
 	}
 
-	public void setYear(int year) {
-		this.year = year;
+	public void setYear(int year)
+	{
+		if(year<2000 || year>2099)
+		{
+			throw new IllegalArgumentException("Year must be > 2000 and <2099");
+		}
+		this.year=year;
+	}
+	
+	//Years that are divisible by four are leap years, 
+	//with the exception of years that are divisible by 100, 
+	//which are not leap years, and with the final exception of years divisible by 400, which are.
+	public boolean isLeapYear() {
+		//determine leap year
+		if((year%4==0 && year%100 !=0)|| year%400==0)
+			return true;
+		return false;
 	}
 
 	public int getMonth() {
@@ -41,6 +55,10 @@ public class Date implements Comparable<Date>
 	}
 
 	public void setMonth(int month) {
+		if(month<=0 || month>12)
+		{
+			throw new IllegalArgumentException("Invalid Input: Month");
+		}
 		this.month = month;
 	}
 
@@ -49,40 +67,62 @@ public class Date implements Comparable<Date>
 	}
 
 	public void setDay(int day) {
-		this.day = day;
+		if(day<0||day>31)
+			throw new IllegalArgumentException("Day cant <0 or >31");
+		if(getMonth()==2)
+		{
+			if(isLeapYear() && day<=29)
+			{
+				this.day=day;
+			}
+			else if(!isLeapYear()&&day<=28)
+			{
+				this.day=day;
+			}
+			else
+			{
+				throw new IllegalArgumentException("Feb. should be < 28 || < 29");
+			}
+		}
+		else
+		{
+			this.day = day;
+		}
 	}
 	
 	@Override
 	public int compareTo(Date o) {
 		if(o==null)
-			return -1; //TODO
-
+		{
+			throw new NullPointerException("date is null");
+		}
 		//if d==this
-		if(this.year==o.year && this.month==o.month && this.day==o.day)
-			return 0;
+		if(this.year==o.year && this.month==o.month)
+			return this.day-o.day;
 		
-		//if d>this
-		if(this.year-o.year>0)
-		{
-			return 1;
-		}
-		else if(this.month-o.month>0)
-		{
-			return 1;
-		}
-		else if(this.day-o.day>0)
-		{
-			return 1;
-		}
+		else if(this.year==o.year )
+				return this.month-o.month;
 		
-		//if d < this
-		return -1;
+		return this.year-o.year;
 	}
 	
 	public String toString()
 	{
-		return year+"-"+month+"-"+day;
+		return year+"-"+addZero(month)+"-"+addZero(day);
 	}
+	
+	/**
+	 * Add a zero in front of num that <10
+	 * @param num --the number
+	 * @return --return modified num
+	 */
+	private String addZero(int num)
+	{
+		if(num<10)
+			return "0"+num;
+		return ""+num;
+	}
+	
 	
 	/**
 	 * this is a helper method to get special integer for the month
