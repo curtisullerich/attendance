@@ -12,5 +12,12 @@ public class Tardy extends AWOL{
 		super(s, e);
 	}
 	
+	public String toString()
+	{
+		//Since tardies only have 1 time im going to forget about the endtime
+		//Should be in the form "year-month-day hour:minute:second"
+		return getStartTime().getDate().toString() + " " + getStartTime().get24Format();
+	}
+	
 	
 }
