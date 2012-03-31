@@ -40,7 +40,7 @@ public class Parser {
 				String startTime = personalInfo[5];
 				String endTime = personalInfo[6];
 				// Now get the person that this info goes to
-				Person person = DatabaseUtil.getPerson(netID);
+				User person = DatabaseUtil.getUser(netID);
 				Date useDate = parseDate(date);
 				Time start = parseTime(startTime, useDate);
 				Time end = parseTime(endTime, useDate);
@@ -70,23 +70,22 @@ public class Parser {
 			return new Time(0,0,0,date);
 	}
 
-	private static void updateStudent(Person p, String prepend,
+	private static void updateStudent(User guy, String prepend,
 			Date eventDate, Time start, Time end) {
-		if ( p!= null && (p.getClass() == people.Student.class))
+		if ( guy!= null && (guy.getType().equalsIgnoreCase("Student")))
 		{
-			Student s = (Student) p;
 			if (prepend.equalsIgnoreCase(absentPrependPerformance)) {
-				s.addAbsence(new PerformanceAbsence(start, end));
+				guy.addAbsence(new PerformanceAbsence(start, end));
 			} else if (prepend.equalsIgnoreCase(absentPrependRehearsal)) {
-				s.addAbsence(new RehearsalAbsence(start, end));
+				guy.addAbsence(new RehearsalAbsence(start, end));
 			}
 			// Need to do something to figure out what type of event this is or
 			// something
 			else if (prepend.equalsIgnoreCase(tardyPrepend)) {
-				s.addTardy(new Tardy(start, end));
+				guy.addTardy(new Tardy(start, end));
 			}
 			//To update the student
-			DatabaseUtil.addStudent(s);
+			DatabaseUtil.addUser(guy);
 		}
 	}
 

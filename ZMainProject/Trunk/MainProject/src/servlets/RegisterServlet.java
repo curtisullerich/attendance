@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import people.Person;
 import people.Student;
+import people.User;
 
 import serverLogic.DatabaseUtil;
 
@@ -34,8 +35,8 @@ public class RegisterServlet extends HttpServlet
 			{
 				//Need to do various other checks and stuff. Like whether this account already exists
 				//Create a new person with this partial information and put it in the datastore
-				Student s = new Student(netID, password, firstName, lastName, univID);
-				DatabaseUtil.addStudent(s);
+				User guy = new User(netID, password, firstName, lastName, univID, "Student");
+				DatabaseUtil.addUser(guy);
 				//Send them back to the login page?
 				resp.sendRedirect("/JSPPages/loginPage.jsp");
 			}

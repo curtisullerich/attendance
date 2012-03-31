@@ -10,7 +10,7 @@
 	String netID = (String) session.getAttribute("user"); 
 	
 	
-	Person user = DatabaseUtil.getPerson(netID);
+	User user = DatabaseUtil.getUser(netID);
 	%>
 	<script>
 		function viewForms() {

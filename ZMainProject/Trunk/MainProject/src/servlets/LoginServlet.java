@@ -4,6 +4,7 @@ import java.io.IOException;
 import javax.servlet.http.*;
 
 import people.Person;
+import people.User;
 
 import serverLogic.DatabaseUtil;
 
@@ -23,7 +24,7 @@ public class LoginServlet extends HttpServlet
 			String hashedPassword = req.getParameter("Hashed Password");
 			//Check that they actually added something
 			
-			Person user = DatabaseUtil.getPerson(netID);
+			User user = DatabaseUtil.getUser(netID);
 			
 			//Hash the password
 			if(!validateLogin(user, hashedPassword))
@@ -35,11 +36,11 @@ public class LoginServlet extends HttpServlet
 			else
 			{
 				//Figure out if it was a Director, TA, or Student
-				if (user.getClass() == people.Student.class) {
+				if (user.getType().equalsIgnoreCase("Student")) {
 					directTo = "/JSPPages/7_Student_Page.jsp";
-				} else if (user.getClass() == people.TA.class) {
+				} else if (user.getType().equalsIgnoreCase("TA")) {
 					directTo = "/JSPPages/26_TA_Page.jsp";
-				} else if (user.getClass() == people.Director.class){
+				} else if (user.getType().equalsIgnoreCase("Director")){
 					directTo = "/JSPPages/15_Director_Page.jsp";
 				}
 				
@@ -61,9 +62,13 @@ public class LoginServlet extends HttpServlet
 	
 	}
 	
-	private boolean validateLogin(Person attemptedAccount, String attemptedPassword)
+	private boolean validateLogin(User attemptedAccount, String attemptedPassword)
 	{
-		if (attemptedAccount != null && attemptedAccount.getPassword().equals(attemptedPassword))
+		if(attemptedAccount == null)
+		{
+			System.out.println("Null account");
+		}
+		if (attemptedAccount != null && attemptedAccount.getHashedPassword().equals(attemptedPassword))
 			return true;
 		return false;
 	}

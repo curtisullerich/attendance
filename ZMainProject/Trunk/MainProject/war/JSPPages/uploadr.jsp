@@ -31,7 +31,7 @@
 		<%}%>
 
 		//Need to do this so it passes the localhost
-		localStorage[""];
+		//localStorage[""];
 		window.location = "/MobileApp/FieldAppMain.html";
 	}
 </script>

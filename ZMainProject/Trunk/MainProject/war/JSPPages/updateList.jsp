@@ -3,7 +3,7 @@
 <%@ page import="java.util.Arrays" %>
 <%@ page import="serverLogic.DatabaseUtil"%>
 
-<%String[] peeps = DatabaseUtil.listAll();%>
+<%String[] peeps = DatabaseUtil.listAllUsers();%>
 	<script src = "script.js"></script>
 	<link rel="stylesheet" type="text/css" href="/MobileApp/FieldAppCSS.css" />
 	
@@ -16,6 +16,7 @@
 
 		for (var i = 0; i < str.length; i++) 
 		{
+
 			var splat = new Array();
 			var mystring = str[i];
 			splat = mystring.split(" ");

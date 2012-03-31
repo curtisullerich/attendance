@@ -50,27 +50,52 @@ public class User
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.hashedUnivID = univID;
-		rank = "|";
-		this.absenceInfo = "";
-		this.tardyInfo = "";
 		this.type = type;
 		id = hash(netID);
+		
+		if (type.equalsIgnoreCase("Student"))
+		{
+			rank = "|";
+			this.absenceInfo = "";
+			this.tardyInfo = "";
+		}
+		else
+		{
+			rank = null;
+			absenceInfo = null;
+			tardyInfo = null;
+		}
 	}
 	
 	public User(String netID, String firstName, String lastName,
-			String password, String univID, String major, String instrument, String type) {
+			String password, String univID, String major, String instrument, String type) 
+	{
+		//Common fields
 		this.netID = netID;
 		this.hashedPassword = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.hashedUnivID = univID;
-		this.major = major;
-		this.instrument = instrument;
-		this.rank = "|";
-		this.absenceInfo = "";
-		this.tardyInfo = "";
 		this.type = type;
 		this.id = hash(netID);
+		
+		//Student only fields
+		if (type.equalsIgnoreCase("Student"))
+		{
+			this.major = major;
+			this.instrument = instrument;
+			this.rank = "|";
+			this.absenceInfo = "";
+			this.tardyInfo = "";
+		}
+		else
+		{
+			this.major = null;
+			this.instrument = null;
+			this.rank = null;
+			this.absenceInfo = null;
+			this.tardyInfo = null;
+		}
 	}
 	
 	public String toString()
