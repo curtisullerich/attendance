@@ -29,23 +29,21 @@
 		{%>
 			localStorage.setItem("success", "emptyString");	
 		<%}%>
-
-		//Need to do this so it passes the localhost
-		//localStorage[""];
 		window.location = "/MobileApp/FieldAppMain.html";
+	}
+	
+	function loginAndUpload(){
+		if(confirmTAForUpload())
+			uploadData();
+		return false;
 	}
 </script>
 <html>
 	<body>
-		<div class="box" id="main" hidden=true>
-			</br>
-			</br>
-			<input type="button" class="button" id="uploadButton" onclick="uploadData();" value="Upload Attendance Data"/>
-		</div>
 		<div class="box" id="login">
 			<h1>Data Upload Login</h1>
 			</br>
-			<form class="centeralign" id="TACredentials" onsubmit="return confirmTACredentials();">
+			<form class="centeralign" id="TACredentials" onsubmit="return loginAndUpload();">
 				<input type="text" id="TA" placeholder="TA netID"/>
 				</br>
 				<input type="password" id="password" placeholder="password"/>

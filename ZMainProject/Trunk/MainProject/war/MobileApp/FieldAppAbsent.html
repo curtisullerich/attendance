@@ -198,10 +198,10 @@
 						ampm = "am";
 				//convert 12 to 24 hour time
 				} else if (radix == 24) {
-					if (isStartPM) 
-						startHour += 12;
-					if (!isStartPM && startHour==12)
-						startHour -= 12;
+					if (isStartPM){
+						if(startHour != 12)
+							startHour += 12;
+					} 
 				}
 				// pad for ASCII sorting
 				if(startHour<10)
@@ -241,10 +241,10 @@
 						ampm = "am";
 				//convert 12 to 24 hour time
 				} else if (radix == 24) {
-					if (isEndPM) 
-						endHour += 12;
-					if (!isEndPM && endHour==12)
-						endHour -= 12;
+					if (isEndPM) {
+						if(endHour != 12)
+							endHour += 12;
+					}
 				}
 				// pad for ASCII sorting
 				if(endHour<10)
@@ -284,7 +284,7 @@
 			 * Stores the event currently entered into the form into localStorage.
 			 * 
 			 * @returns True if successful
-			 * @author Curtis Ullerich
+			 * @author Curtis Ullerich, Todd Wegter
 			 * @date 2-18-2012
 			 */
 			function cacheEvent() {
@@ -312,7 +312,7 @@
 			 * Removes event in form from localStorage.
 			 * 
 			 * @returns True if successful
-			 * @author Curtis Ullerich
+			 * @author Curtis Ullerich, Todd Wegter
 			 * @date 2-18-2012
 			 */
 			function uncacheEvent() {
