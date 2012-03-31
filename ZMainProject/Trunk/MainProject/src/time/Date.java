@@ -165,6 +165,8 @@ public class Date implements Comparable<Date>
 	{
 		switch(num)
 		{
+		case 0:
+			return "Sunday";
 		case 1:
 			return "Monday";
 		case 2:
@@ -177,8 +179,7 @@ public class Date implements Comparable<Date>
 			return "Friday";
 		case 6:
 			return "Saturday";
-		case 7:
-			return "Sunday";
+		
 		}
 		return ""; //TODO
 	}
