@@ -6,7 +6,7 @@
 
 <html>
 <head>
-<script src="/MobileApp/sha.js"/></script>
+<script src="sha.js"/></script>
 <script>
 	
 	/**

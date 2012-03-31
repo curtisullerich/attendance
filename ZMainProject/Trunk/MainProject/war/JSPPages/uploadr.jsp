@@ -5,12 +5,12 @@
 
 <!-- This should be changed to reflect successful processing when we can -->
 <!-- Parser.splat(info) should return true if successful -->
-<script src = "jspScript.js"></script>
+<script src = "script.js"></script>
+<script src = "sha.js"></script>
 <link rel="stylesheet" type="text/css" href="/MobileApp/FieldAppCSS.css" />
 <script>
 	function uploadData(){
-		<%
-			String info = request.getParameter("tempForUpload");
+		<%String info = request.getParameter("tempForUpload");
 			//out.println("value="+info);
 			//System.out.println("We got here");
 		%>
@@ -29,16 +29,21 @@
 		{%>
 			localStorage.setItem("success", "emptyString");	
 		<%}%>
+
+		//Need to do this so it passes the localhost
+		localStorage[""];
 		window.location = "/MobileApp/FieldAppMain.html";
 	}
 </script>
 <html>
 	<body>
 		<div class="box" id="main" hidden=true>
+			</br>
+			</br>
 			<input type="button" class="button" id="uploadButton" onclick="uploadData();" value="Upload Attendance Data"/>
 		</div>
 		<div class="box" id="login">
-			<h1>TA Login</h1>
+			<h1>Data Upload Login</h1>
 			</br>
 			<form class="centeralign" id="TACredentials" onsubmit="return confirmTACredentials();">
 				<input type="text" id="TA" placeholder="TA netID"/>
@@ -47,7 +52,7 @@
 				</br>
 				</br>
 				<input type="submit" id="submit" value="Submit"/>
-				<input type="button" id="cancel" value="Cancel" onclick="window.location='FieldAppMain.html'"/>
+				<input type="button" id="cancel" value="Cancel" onclick="window.location='/MobileApp/FieldAppMain.html'"/>
 			</form>
 		</div>
     </body>

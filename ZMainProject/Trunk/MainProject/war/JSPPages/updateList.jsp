@@ -4,7 +4,7 @@
 <%@ page import="serverLogic.DatabaseUtil"%>
 
 <%String[] peeps = DatabaseUtil.listAll();%>
-	<script src = "jspScript.js"></script>
+	<script src = "script.js"></script>
 	<link rel="stylesheet" type="text/css" href="/MobileApp/FieldAppCSS.css" />
 	
 	<script>
@@ -30,5 +30,5 @@
 		
 		//Need to do this so it passes the localhost
 		localStorage[""];
-		window.location = "http://localhost:8888/MobileApp/FieldAppMain.html";
+		window.location = "/MobileApp/FieldAppMain.html";
 	</script>
