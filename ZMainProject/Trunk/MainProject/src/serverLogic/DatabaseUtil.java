@@ -6,6 +6,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import attendance.Event;
+
 import people.Person;
 import people.Student;
 import people.User;
@@ -18,6 +20,13 @@ import people.User;
  */
 public class DatabaseUtil 
 {
+	public static void addEvent(Event toAdd)
+	{
+		EntityManager em = EMFService.get().createEntityManager();
+		em.persist(toAdd);
+		em.close();
+	}
+	
 	public static void addUser(User guy)
 	{
 		EntityManager em = EMFService.get().createEntityManager();

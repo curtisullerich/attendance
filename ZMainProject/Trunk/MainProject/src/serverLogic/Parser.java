@@ -31,6 +31,14 @@ public class Parser {
 			else if (prepend.equalsIgnoreCase(rehearsalPrepend) || prepend.equalsIgnoreCase(performancePrepend))
 			{
 				//Store the Event
+				String date = personalInfo[4];
+				String startTime = personalInfo[5];
+				String endTime = personalInfo[6];
+				Date useDate = parseDate(date);
+				Time start = parseTime(startTime, useDate);
+				Time end = parseTime(endTime, useDate);
+				Event newEvent = new Event(start, end);
+				DatabaseUtil.addEvent(newEvent);
 			}
 			else if (prepend.equalsIgnoreCase(absentPrependPerformance) || prepend.equalsIgnoreCase(absentPrependRehearsal)
 					|| prepend.equalsIgnoreCase(tardyPrepend))

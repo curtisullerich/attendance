@@ -12,6 +12,12 @@ public class Tardy extends AWOL{
 		super(s, e);
 	}
 	
+	public Tardy(String dbTardy)
+	{
+		String[] tardy = dbTardy.split(" ");
+		setStartTime(new Time(tardy[0], tardy[1]));
+	}
+	
 	public String toString()
 	{
 		//Since tardies only have 1 time im going to forget about the endtime

@@ -6,11 +6,16 @@ import time.Time;
  * @author Yifei Zhu
  *
  */
-public abstract class AWOL 
+public class AWOL 
 {
 	private Time startTime;
 	private Time endtTime;
 	private boolean isApproved;
+	
+	public AWOL()
+	{
+		
+	}
 	
 	public AWOL (Time s, Time e)
 	{

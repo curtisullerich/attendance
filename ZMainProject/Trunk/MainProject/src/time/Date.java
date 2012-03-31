@@ -18,6 +18,15 @@ public class Date implements Comparable<Date>
 		this.month=month;
 //		this.dayOfWeek="";
 	}
+	
+	//Constructor to change from dataBase string to an Object
+	public Date(String dbDate)
+	{
+		String[] date = dbDate.split("-");
+		year = Integer.parseInt(date[0]);
+		month = Integer.parseInt(date[1]);
+		day = Integer.parseInt(date[2]);
+	}
 
 	public int getYear() {
 		return year;

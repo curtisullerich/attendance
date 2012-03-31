@@ -5,8 +5,7 @@ import java.security.MessageDigest;
 
 import javax.persistence.*;
 
-import attendance.Absence;
-import attendance.Tardy;
+import attendance.*;
 
 @Entity
 public class User 
@@ -106,18 +105,34 @@ public class User
 	
 	public void addTardy(Tardy newTardy) {
 		//toString is in the form: "Date checkInTime" the student should know everything else it needs
-		//Extra space at the end so we can add more
-		tardyInfo += newTardy.toString() + " ";
+		//Delimited by * for easy parsablitity
+		//split by * to get each tardy, split that by " " to get each part of the tardy
+		tardyInfo += newTardy.toString() + "*";
 	}
 	
 	public void addAbsence(Absence newAbsence) {
 		//Same idea as addTardy with a form of:
-		//"Date startTime endTime"
-		absenceInfo += newAbsence.toString() + " ";
+		//"Date startTime endTime" again, delimited by parsability
+		absenceInfo += newAbsence.toString() + "*";
 	}
 	
-	
-	
+	public AttendanceReport toAbsenceObject()
+	{
+		AttendanceReport myReport = new AttendanceReport();
+		//Each absence or tardy is delimited from the others by the *
+		String[] absences = absenceInfo.split("*");
+		String[] tardies = tardyInfo.split("*");
+		for (int i = 0; i < absences.length; i++)
+		{
+			myReport.addAbsence(new Absence(absences[i]));
+		}
+		for (int i = 0; i < tardies.length; i++)
+		{
+			myReport.addTardy(new Tardy(tardies[i]));
+		}
+		return myReport;
+		
+	}
 	
 	public String getAbsenceInfo() {
 		return absenceInfo;

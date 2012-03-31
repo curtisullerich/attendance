@@ -23,7 +23,16 @@ public class Time implements Comparable<Time> {
 		this.minute = minute;
 		this.second = second;
 		this.date=date;
-	
+	}
+	//Used to convert from the string in the database to the actual object
+	public Time(String dbDate, String dbTime)
+	{
+		//String in the form 
+		this.date = new Date(dbDate);
+		String[] time = dbTime.split(":");
+		this.hour = Integer.parseInt(time[0]);
+		this.minute = Integer.parseInt(time[1]);
+		this.second = Integer.parseInt(time[2]);
 	}
 
 	public int getHour() {
@@ -61,7 +70,17 @@ public class Time implements Comparable<Time> {
 
 
 	public String get24Format() {
-		return hour + ":" + minute + ":" + second;
+		String toRet = "" + hour + ":";
+		if (minute < 10)
+		{
+			toRet += "0" + minute + ":";
+		}
+		else
+		{
+			toRet += minute + ":";
+		}
+		toRet += second;
+		return toRet;
 	}
 
 	public String get12Format() {
