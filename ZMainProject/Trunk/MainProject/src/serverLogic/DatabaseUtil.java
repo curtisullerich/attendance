@@ -15,8 +15,8 @@ import people.Student;
  * @author Brandon
  * 
  */
-public class DatabaseUtil {
-	
+public class DatabaseUtil 
+{
 	/**
 	 * A Method to add a person type to the database
 	 * @param p the Person to add
@@ -59,6 +59,7 @@ public class DatabaseUtil {
 		} catch (NoResultException e) {
 			p = null;
 		}
+		em.close();
 		return p;
 	}
 
