@@ -49,7 +49,7 @@ public class DatabaseUtil
 	public static Person getPerson(String netID) {
 
 		EntityManager em = EMFService.get().createEntityManager();
-		Query q = em.createQuery("select p from Person p where p.netID = :netID");
+		Query q = em.createQuery("select p from Student p where p.netID = :netID");
 		q.setParameter("netID", netID);
 
 		Person p;
