@@ -15,7 +15,11 @@ import forms.Form;
  * @author Yifei Zhu
  *
  */
-public class AttendanceReport implements Serializable{
+
+public class AttendanceReport implements Serializable {
+//	@Id
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
+//	protected Long id;
 	
 	List<Absence> absences;
 	List<Tardy> tardies;
