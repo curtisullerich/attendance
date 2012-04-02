@@ -68,6 +68,15 @@ public class Course {
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
+
+	public List<DayOfWeek> getDayOfWeek() {
+		return dayOfWeek;
+	}
+
+	public void setDayOfWeek(List<DayOfWeek> dayOfWeek) {
+		this.dayOfWeek = dayOfWeek;
+	}
+	
 	
 
 	
