@@ -8,6 +8,11 @@ import org.junit.Test;
 
 import time.Date;
 
+/**
+ * 
+ * @author Yifei Zhu
+ *
+ */
 public class DateTest {
 
 /*********************TEST YEAR**********************************/

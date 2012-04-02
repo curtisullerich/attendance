@@ -7,7 +7,11 @@ import org.junit.Test;
 
 import time.Date;
 import time.Time;
-
+/**
+ * 
+ * @author Yifei Zhu
+ *
+ */
 public class TimeTest {
 
 	Time t;
