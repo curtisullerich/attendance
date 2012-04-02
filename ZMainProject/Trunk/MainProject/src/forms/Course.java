@@ -1,6 +1,7 @@
 package forms;
 
-import people.Person;
+import java.util.List;
+
 import time.Date;
 
 /**
@@ -17,7 +18,13 @@ public class Course {
 	//Date
 	private Date sartDate;
 	private Date endDate;
+	private List<DayOfWeek> dayOfWeek;
 	
+	public Course(String d,String c,String sec,String b,String com,Date s, Date e, List<DayOfWeek> l)
+	{
+		department=d;courseName=c;section=sec;building=b;comments=com;sartDate=s;
+		endDate=e;dayOfWeek=l;
+	}
 	
 	public String getDepartment() {
 		return department;
