@@ -1,6 +1,7 @@
 package forms;
 
 import java.io.File;
+import java.util.List;
 
 import people.Person;
 import time.Date;
@@ -13,15 +14,12 @@ public class AbsenceRequestForm extends Form {
 
 	private String additionalInfo;
 	private File file;
-	private String typeOfAbsence; //TODO :better structure 
 	
 	public AbsenceRequestForm(Person person, Date startDate, Date endDate,
-			String reason, boolean isapproved, File f,String typeAbsence) {
+			String reason, boolean isapproved, File f) {
 		super(person, startDate, endDate, reason, isapproved);
 		additionalInfo="";
 		this.file=f;
-		this.typeOfAbsence=typeAbsence;
-		//TODO : file in constructor 
 	}
 
 	public String getAdditionalInfo() {
@@ -39,14 +37,7 @@ public class AbsenceRequestForm extends Form {
 	public void setFile(File file) {
 		this.file = file;
 	}
-
-	public String getTypeOfAbsence() {
-		return typeOfAbsence;
-	}
-
-	public void setTypeOfAbsence(String typeOfAbsence) {
-		this.typeOfAbsence = typeOfAbsence;
-	}
+	
 	
 	
 	

@@ -1,5 +1,6 @@
 package forms;
 
+import java.util.List;
 import people.Person;
 import time.Date;
 /**
@@ -13,6 +14,7 @@ public abstract class Form {
 	private Date endDate;
 	private String reason;
 	private boolean Isapproved;
+	private List<DayOfWeek> listDayOfWeek;
 	
 	
 	public Form(Person person, Date startDate, Date endDate, String reason,
@@ -26,6 +28,16 @@ public abstract class Form {
 	}
 	
 	
+	public List<DayOfWeek> getListDayOfWeek() {
+		return listDayOfWeek;
+	}
+
+
+	public void setListDayOfWeek(List<DayOfWeek> listDayOfWeek) {
+		this.listDayOfWeek = listDayOfWeek;
+	}
+
+
 	public Person getPerson() {
 		return person;
 	}

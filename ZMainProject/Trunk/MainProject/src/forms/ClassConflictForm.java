@@ -25,6 +25,13 @@ public class ClassConflictForm extends Form{
 	public void setCourse(Course course) {
 		this.course = course;
 	}
+	/**
+	 * Overwrite toString method, return the type of form
+	 */
+	public String toString()
+	{
+		return "ClassConflictForm";
+	}
 
 	
 	

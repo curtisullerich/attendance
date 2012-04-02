@@ -8,9 +8,16 @@ import time.Date;
 public class AbsenceRequestForm_Rehearsal extends AbsenceRequestForm{
 
 	public AbsenceRequestForm_Rehearsal(Person person, Date startDate,
-			Date endDate, String reason, boolean isapproved, File f,
-			String typeAbsence) {
-		super(person, startDate, endDate, reason, isapproved, f, typeAbsence);
+			Date endDate, String reason, boolean isapproved, File f) 
+	{
+		super(person, startDate, endDate, reason, isapproved, f);
 	}
 
+	/**
+	 * Overwrite toString method, return the type of form
+	 */
+	public String toString()
+	{
+		return "RehearsalAbsenceRequestForm";
+	}
 }
