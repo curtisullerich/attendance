@@ -146,17 +146,10 @@ public class DateTest {
 	@Test
 	public void testDay2()
 	{
-		for(int i=0; i<=1000; i++)
-		{
-			Random r = new Random();
-			int month= r.nextInt(12)+1;
-			if(month!=2)
-			{
-				int day=r.nextInt(31)+1;
-				Date d = new Date(2000, month, day);
-				assertEquals("Test Random Day ( not include (Feb)",d.getDay(), day);
-			}
-		}
+		Date d = new Date(2000, 6, 30);
+		assertEquals("Test Random Day ( not include (Feb)",d.getDay(), 30);
+		d = new Date(2000, 3, 13);
+		assertEquals("Test Random Day ( not include (Feb)",d.getDay(), 13);
 	}
 	
 	/**
@@ -176,7 +169,7 @@ public class DateTest {
 		}
 		assertTrue(thrown);
 	}
-	
+
 	
 	/**
 	 * valid Day: Feb >28
@@ -204,6 +197,15 @@ public class DateTest {
 	{
 		Date d = new Date(2000,2, 29);
 		assertEquals("Leap year", d.getDay(), 29);
+	}
+	
+	/**
+	 * Invalid: day =31 in April
+	 */
+	@Test (expected = IllegalArgumentException.class)
+	public void testDay6()
+	{
+		new Date(2000,4,31);
 	}
 	
 	
