@@ -84,6 +84,10 @@ public class Date implements Comparable<Date>
 				throw new IllegalArgumentException("Feb. should be < 28 || < 29");
 			}
 		}
+		else if((getMonth()==4|| getMonth()==6|| getMonth()==9|| getMonth()==11)&&(day==31))
+		{
+			throw new IllegalArgumentException(getMonth()+"cant be == 31");
+		}
 		else
 		{
 			this.day = day;
@@ -158,7 +162,7 @@ public class Date implements Comparable<Date>
 		case 12:
 			return 4;
 		}
-		return 0; //??
+		throw new IllegalArgumentException("Invalid Month");
 	}
 	
 	private String getMyDayOfWeek(int num)

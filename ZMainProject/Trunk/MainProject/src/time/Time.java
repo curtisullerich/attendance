@@ -19,9 +19,9 @@ public class Time implements Comparable<Time> {
 
 	public Time(int hour, int minute, int second, Date date) {
 		//time
-		this.hour = hour;
-		this.minute = minute;
-		this.second = second;
+		setHour(hour);
+		setMinute(minute);
+		setSecond(second);
 		this.date=date;
 	}
 	//Used to convert from the string in the database to the actual object
@@ -39,15 +39,20 @@ public class Time implements Comparable<Time> {
 		return hour;
 	}
 
+	//range: 1-24
 	public void setHour(int hour) {
+		if(hour<1 || hour> 24)
+			throw new IllegalArgumentException("Hour must be < 1 || >24");
 		this.hour = hour;
 	}
 
 	public int getMinute() {
 		return minute;
 	}
-
+	//range: 0-59
 	public void setMinute(int minute) {
+		if(minute<0 || minute>59)
+			throw new IllegalArgumentException("Min must be < 0 || >59");
 		this.minute = minute;
 	}
 
@@ -56,6 +61,8 @@ public class Time implements Comparable<Time> {
 	}
 
 	public void setSecond(int second) {
+		if(second<0 || second>59)
+			throw new IllegalArgumentException("Sec must be < 0 || >59");
 		this.second = second;
 	}
 	
@@ -70,22 +77,12 @@ public class Time implements Comparable<Time> {
 
 
 	public String get24Format() {
-		String toRet = "" + hour + ":";
-		if (minute < 10)
-		{
-			toRet += "0" + minute + ":";
-		}
-		else
-		{
-			toRet += minute + ":";
-		}
-		toRet += second;
-		return toRet;
+		return addZero(this.getHour())+":"+addZero(this.minute)+":"+addZero(this.getSecond());
 	}
 
 	public String get12Format() {
 		if (this.hour > 12) {
-			return (this.hour - 12) + ":" + this.minute + ":" + this.second
+			return  addZero(this.getHour()-12)+":"+addZero(this.minute)+":"+addZero(this.getSecond())
 					+ "PM";
 		} else {
 			return this.get24Format() + "AM";
@@ -93,20 +90,26 @@ public class Time implements Comparable<Time> {
 
 	}
 
+	private String addZero(int num)
+	{
+		if(num<10)
+			return "0"+num;
+		return ""+num;
+	}
 
 
 	public String toString(int format) {
 		if (format == 12) {
-			return this.toString() + " " + get12Format();
+			return date.toString() + " " + get12Format();
 		}
-		return this.toString() + " " + get24Format();
+		return date.toString() + " " + get24Format();
 	}
 
 	public int compareTo(Time dt)
 	{
 
 		if(dt==null)
-			return -1 ; //TODO return -1?
+			throw new NullPointerException("Time is null");
 	
 		if(date.compareTo(dt.getDate())!=0)
 		{
@@ -115,14 +118,15 @@ public class Time implements Comparable<Time> {
 		//if date are the same
 		
 		//hour is different 
+		
 		if(this.getHour()!=dt.getHour())
 		{
 			return this.getHour()-dt.getHour();
 		}
 		//if also have the 
-		else if(this.getMinute()!=dt.getHour())
+		else if(this.getMinute()!=dt.getMinute())
 		{
-			return this.getMinute()-dt.getHour();
+			return this.getMinute()-dt.getMinute();
 		}
 		else if(this.getSecond()!=dt.getSecond())
 		{
