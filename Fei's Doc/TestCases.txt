@@ -16,6 +16,7 @@ Test Day:
 -day (S) > 31
 -day (Feb, not leap) <28
 -day ( Feb, leap) <29
+-day (04/31) invallid, cant =31 on april
 
 
 Test isLeapYear
@@ -59,10 +60,29 @@ getDate()
 -3 normal test cases
 
 get24Format()
+-normal cases:
+	hr<12, min<10, sec <10
+	hr>12,min>10, sec >10
+	
 
 
 get12Format()
+-normal cases:
+	hr<12, min<10, sec <10
+	hr>12,min>10, sec >10
+	
 
-toString()
+toString(int)
+-12 format
+	hr<12, min<10, sec <10
+	hr>12,min>10, sec >10
+-24 format
+	hr<12, min<10, sec <10
+	hr>12,min>10, sec >10
 
 compareTo()
+-date1>date2 time1<time2			>0
+-date1==date2 hr1<hr2, min1>min2, sec1>sec2	>0
+-date1==date2 hr1=hr2, min1>min2, sec1>sec2	>0
+-date1==date2 hr1=hr2, min1=min2, sec1>sec2	=0
+-date1==date2 hr1<hr2, min1>min2, sec1>sec2	<0
