@@ -13,7 +13,7 @@ package time;
 public class Time implements Comparable<Time> {
 	private int hour;
 	private int minute;
-	private int second;
+//	private int second;
 	private Date date;
 
 
@@ -21,7 +21,7 @@ public class Time implements Comparable<Time> {
 		//time
 		setHour(hour);
 		setMinute(minute);
-		setSecond(second);
+//		setSecond(second);
 		this.date=date;
 	}
 	//Used to convert from the string in the database to the actual object
@@ -32,7 +32,7 @@ public class Time implements Comparable<Time> {
 		String[] time = dbTime.split(":");
 		this.hour = Integer.parseInt(time[0]);
 		this.minute = Integer.parseInt(time[1]);
-		this.second = Integer.parseInt(time[2]);
+//		this.second = Integer.parseInt(time[2]);
 	}
 
 	public int getHour() {
@@ -41,8 +41,8 @@ public class Time implements Comparable<Time> {
 
 	//range: 1-24
 	public void setHour(int hour) {
-		if(hour<1 || hour> 24)
-			throw new IllegalArgumentException("Hour must be < 1 || >24");
+		if(hour<0 || hour> 23)
+			throw new IllegalArgumentException("Hour must be >=0 && <=23");
 		this.hour = hour;
 	}
 
@@ -56,15 +56,15 @@ public class Time implements Comparable<Time> {
 		this.minute = minute;
 	}
 
-	public int getSecond() {
-		return second;
-	}
+//	public int getSecond() {
+//		return second;
+//	}
 
-	public void setSecond(int second) {
-		if(second<0 || second>59)
-			throw new IllegalArgumentException("Sec must be < 0 || >59");
-		this.second = second;
-	}
+//	public void setSecond(int second) {
+//		if(second<0 || second>59)
+//			throw new IllegalArgumentException("Sec must be < 0 || >59");
+//		this.second = second;
+//	}
 	
 
 	public Date getDate() {
@@ -77,12 +77,12 @@ public class Time implements Comparable<Time> {
 
 
 	public String get24Format() {
-		return addZero(this.getHour())+":"+addZero(this.minute)+":"+addZero(this.getSecond());
+		return addZero(this.getHour())+":"+addZero(this.minute)/*+":"+addZero(this.getSecond())*/;
 	}
 
 	public String get12Format() {
 		if (this.hour > 12) {
-			return  addZero(this.getHour()-12)+":"+addZero(this.minute)+":"+addZero(this.getSecond())
+			return  addZero(this.getHour()-12)+":"+addZero(this.minute)/*+":"+addZero(this.getSecond())*/
 					+ "PM";
 		} else {
 			return this.get24Format() + "AM";
@@ -128,10 +128,10 @@ public class Time implements Comparable<Time> {
 		{
 			return this.getMinute()-dt.getMinute();
 		}
-		else if(this.getSecond()!=dt.getSecond())
-		{
-			return this.getSecond()-dt.getSecond();
-		}
+//		else if(this.getSecond()!=dt.getSecond())
+//		{
+//			return this.getSecond()-dt.getSecond();
+//		}
 		else 
 		{
 			return 0;
