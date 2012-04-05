@@ -8,9 +8,10 @@ import javax.persistence.Query;
 
 import attendance.Event;
 
-import people.Person;
-import people.Student;
 import people.User;
+
+//addAttendanceReport(AttendanceReport report);
+//getAttendanceReport(String netID);
 
 /**
  * This is a class used to add stuff to the database

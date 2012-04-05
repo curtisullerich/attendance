@@ -7,8 +7,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import people.Person;
-import people.Student;
 import people.User;
 
 import serverLogic.DatabaseUtil;
