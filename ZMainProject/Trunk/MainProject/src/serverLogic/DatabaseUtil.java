@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import attendance.AttendanceReport;
 import attendance.Event;
 
 import people.User;
@@ -21,6 +22,31 @@ import people.User;
  */
 public class DatabaseUtil 
 {
+	public static void addAttendanceReport(AttendanceReport report)
+	{
+		EntityManager em = EMFService.get().createEntityManager();
+		em.persist(report);
+		em.close();
+	}
+	
+	public static AttendanceReport getAttendanceReport(String netID)
+	{
+		EntityManager em = EMFService.get().createEntityManager();
+		Query q = em.createQuery("select a from AttendanceReport a where a.netID = :netID");
+		q.setParameter("netID", netID);
+		AttendanceReport result;
+		try
+		{
+			result = (AttendanceReport) q.getSingleResult();
+		}
+		catch (NoResultException e)
+		{
+			result = null;
+		}
+		em.close();
+		return result;
+	}
+	
 	public static void addEvent(Event toAdd)
 	{
 		EntityManager em = EMFService.get().createEntityManager();
