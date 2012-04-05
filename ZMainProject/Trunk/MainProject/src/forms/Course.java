@@ -8,6 +8,8 @@ import time.Date;
  * 
  * @author Yifei Zhu
  */
+
+
 public class Course {
 	//Course Info
 	private String department;
