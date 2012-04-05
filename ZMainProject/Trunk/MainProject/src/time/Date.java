@@ -10,6 +10,17 @@ public class Date implements Comparable<Date>
 	private int month;
 	private int day;
 	
+	public Date(){
+		//default construct creates current date   
+        java.text.DateFormat curYear = new java.text.SimpleDateFormat("yyyy");
+        java.text.DateFormat curMonth = new java.text.SimpleDateFormat("MM");
+        java.text.DateFormat curDay = new java.text.SimpleDateFormat("dd");
+        java.util.Date date = new java.util.Date();
+        this.year = Integer.parseInt(curYear.format(date));
+        this.month = Integer.parseInt(curMonth.format(date));
+        this.day = Integer.parseInt(curDay.format(date));   
+	}
+	
 	public Date(int year, int month, int day)
 	{
 		setYear(year);

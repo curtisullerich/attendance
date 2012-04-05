@@ -31,6 +31,7 @@ public class User
 	private String instrument;
 	private String position;
 	private String rank;
+	private double grade;
 	
 	
 	public String toHTML()
@@ -56,6 +57,7 @@ public class User
 		if (type.equalsIgnoreCase("Student"))
 		{
 			rank = "|";
+			grade = 100.00;
 			DatabaseUtil.addAttendanceReport(new AttendanceReport(netID));
 		}
 		else
@@ -64,6 +66,7 @@ public class User
 			major = null;
 			instrument = null;
 			position = null;
+			grade = (Double) null;
 		}
 	}
 	
@@ -84,6 +87,7 @@ public class User
 		{
 			this.major = major;
 			this.instrument = instrument;
+			this.grade = 100.00;
 			this.rank = "|";
 			DatabaseUtil.addAttendanceReport(new AttendanceReport(netID));
 		}
@@ -92,6 +96,7 @@ public class User
 			this.major = null;
 			this.instrument = null;
 			this.rank = null;
+			this.grade = (Double) null;
 			
 		}
 	}
@@ -99,7 +104,7 @@ public class User
 	public String toString()
 	{
 		return netID + " " + firstName + " " + lastName + " " + univID 
-				+ " " + major + " " + instrument + " " + position + " " + rank;
+				+ " " + major + " " + instrument + " " + position + " " + rank + " " + grade;
 	}
 	
 	public void addTardy(Tardy newTardy) {
@@ -206,6 +211,39 @@ public class User
 
 	public void setHashedPassword(String hashedPassword) {
 		this.hashedPassword = hashedPassword;
+	}
+	
+	public void setGrade(double grade) {
+		this.grade = grade;
+	}
+	
+	public double getGrade() {
+		return grade;
+	}
+	
+	public String getLetterGrade() {
+		String letterGrade;
+		if(grade >= 90.00)
+			letterGrade = "A";
+		else if(grade >= 80.00)
+			letterGrade = "B";
+		else if(grade >= 70.00)
+			letterGrade = "C";
+		else if(grade >= 60.00)
+			letterGrade = "D";
+		else
+			letterGrade = "F";
+		
+		if(grade%10 > 6.66 && grade < 90.00)
+			letterGrade += "+";
+		else if(grade%10 < 3.33)
+			letterGrade += "-";
+		
+		return letterGrade;
+	}	
+	
+	public void calculateGrade() {
+		//big crazy function to calculate grade based off absences, tardies, and excuses.
 	}
 
 	public long hash(String netID)

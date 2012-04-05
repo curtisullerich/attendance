@@ -17,7 +17,18 @@ public class Time implements Comparable<Time> {
 	private Date date;
 
 
-	public Time(int hour, int minute, int second, Date date) {
+	public Time() {
+		//gets current 24hr time and date
+		java.text.DateFormat curHour = new java.text.SimpleDateFormat("HH");
+        java.text.DateFormat curMinute = new java.text.SimpleDateFormat("mm");
+        java.util.Date date = new java.util.Date();
+        this.hour = Integer.parseInt(curHour.format(date));
+        this.minute = Integer.parseInt(curMinute.format(date));
+        this.date = new Date();   
+	}
+
+	
+	public Time(int hour, int minute, Date date) {
 		//time
 		setHour(hour);
 		setMinute(minute);
@@ -34,6 +45,16 @@ public class Time implements Comparable<Time> {
 		this.minute = Integer.parseInt(time[1]);
 //		this.second = Integer.parseInt(time[2]);
 	}
+	
+	public Time(String dbTimeAndDate)
+	{
+		String[] timeAndDate = dbTimeAndDate.split(" ");
+		this.date = new Date(timeAndDate[0]);
+		String[] time = timeAndDate[1].split(":");
+		this.hour = Integer.parseInt(time[0]);
+		this.minute = Integer.parseInt(time[1]);		
+	}
+	
 
 	public int getHour() {
 		return hour;

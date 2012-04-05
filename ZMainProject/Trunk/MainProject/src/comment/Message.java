@@ -1,36 +1,56 @@
 package comment;
-import people.Person;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+import people.User;
 import time.Time;
+
 /**
  * 
- * @author Yifei Zhu
+ * @author Yifei Zhu, Todd Wegter
  *
  */
+
+@Entity
 public class Message {
-	private Person fromSomebody;
-	private boolean isRead;
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)  //creates id for entry
+	private Long id;
+	
+	private String senderNetID;
+	private String recipientNetID;
+	private boolean read;
 	private String content;
-	private Time time;
+	private String time;
 	
-	public Message(Person from, String content, boolean isRead, Time d)
+	//search for messages by this string
+	private String correspondingAttendanceItem;
+	
+	public Message(String from, String to, String content, String correspondingAttendanceItem)
 	{
-		this.fromSomebody=from;
-		this.content=content;
-		this.isRead=isRead;
-		this.time=d;
+		this.senderNetID = from;
+		this.recipientNetID = to;
+		this.content= content;
+		this.read = false;
+		this.correspondingAttendanceItem = correspondingAttendanceItem;
+		this.time = new Time().toString(24);
 	}
 	
-	public Person getFromSomebody() {
-		return fromSomebody;
+	public String getSender() {
+		return senderNetID;
 	}
-	public void setFromSomebody(Person fromSomebody) {
-		this.fromSomebody = fromSomebody;
+	public void setSender(String netID) {
+		this.senderNetID = netID;
 	}
 	public boolean isRead() {
-		return isRead;
+		return read;
 	}
-	public void setRead(boolean isRead) {
-		this.isRead = isRead;
+	public void setRead(boolean read) {
+		this.read = read;
 	}
 	public String getContent() {
 		return content;
@@ -38,13 +58,19 @@ public class Message {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public Time getDate() {
-		return time;
+	public Time getTime() {
+		return new Time(time);
 	}
-	public void setDate(Time time) {
-		this.time = time;
+	public void setTime(Time time) {
+		this.time = time.toString(24);
 	}
 	
+	public String getCorrespondingItem(){
+		return correspondingAttendanceItem;
+	}
 	
+	public void setCorrespondingItem(String correspondingItem){
+		correspondingAttendanceItem = correspondingItem;
+	}
 
 }
