@@ -5,6 +5,7 @@
 
 <%String[] peeps = DatabaseUtil.listAllUsers();%>
 	<script src = "script.js"></script>
+	<script src = "sha.js"></script>
 	<link rel="stylesheet" type="text/css" href="/MobileApp/FieldAppCSS.css" />
 	
 	<script>
@@ -25,8 +26,8 @@
 	        var firstname = splat[1];
 	        var lastname = splat[2];
 			var rank = splat[7];
-			var univID = splat[3];
-	        storeEntry("studentRecord", firstname, lastname, netID, dateToday(),"|","|",rank,univID);
+			var hashedUnivID = Sha1.hash(splat[3],true).toUpperCase();
+	        storeEntry("studentRecord", firstname, lastname, netID, dateToday(),"|","|",rank,hashedUnivID);
 	    }
 		
 		//Need to do this so it passes the localhost

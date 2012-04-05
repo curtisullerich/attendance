@@ -16,20 +16,24 @@ import forms.Form;
  *
  */
 
-public class AttendanceReport implements Serializable {
-//	@Id
-//	@GeneratedValue(strategy = GenerationType.IDENTITY)
-//	protected Long id;
+public class AttendanceReport{
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	
-	List<Absence> absences;
-	List<Tardy> tardies;
+	private List<Absence> absences;
+	private List<Tardy> tardies;
 	private List<Form> forms;
+	
+	
+	private String netID; //netID of corresponding student
 
 
-	public AttendanceReport() {
-		absences = new LinkedList<Absence>();
-		tardies = new LinkedList<Tardy>();
-		forms = new ArrayList<Form>();
+	public AttendanceReport(String netID) {
+		this.netID = netID;
+		//absences = new LinkedList<Absence>();
+		//tardies = new LinkedList<Tardy>();
+		//forms = new ArrayList<Form>();
 	}
 
 	public void addAbsence(Absence newAbsence) {

@@ -30,10 +30,6 @@
 		 str = str.toUpperCase();
 		 document.getElementById("Hashed Password").value = str;
 		
-		 var str3 = Sha1.hash(document.getElementById("UniversityID").value);
-		 str3 = str3.toUpperCase();
-		 document.getElementById("Hashed UniversityID").value = str3;
-		
 		 return true;
 	}
 	
@@ -81,11 +77,6 @@
 				<td><label for="Re-Enter Password">Re-Enter Password</label></td>
 				<td><input type="password" name="Re-Enter Password" 
 					id="Re-Enter Password" /></td>
-			</tr>
-			
-			<tr>
-				<td><input type="password" name="Hashed Password" id="Hashed Password" hidden=true/>
-				<input type="text" name="Hashed UniversityID" id="Hashed UniversityID" hidden=true/></td>
 			</tr>
 			
 		</table>

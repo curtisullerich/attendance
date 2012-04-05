@@ -29,7 +29,7 @@ public class RegisterServlet extends HttpServlet
 			password = req.getParameter("Hashed Password");
 			firstName = req.getParameter("FirstName");
 			lastName = req.getParameter("LastName");
-			univID = req.getParameter("Hashed UniversityID");
+			univID = req.getParameter("UniversityID");
 			
 			if (netID != null && password != null && firstName != null && lastName != null && univID != null)
 			{

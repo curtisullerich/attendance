@@ -2,8 +2,11 @@ package people;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
+import java.util.List;
 
 import javax.persistence.*;
+
+import serverLogic.DatabaseUtil;
 
 import attendance.*;
 
@@ -13,26 +16,22 @@ public class User
 	@Id
 	private Long id;
 	
-	//Fields from the Person class
-	private String netID;
+	//Field to tell what they are
+	private String type;  //Student, Director, or TA
 	
+	//common fields
+	private String netID;
 	private String firstName;
 	private String lastName;
-	private String hashedUnivID;
-	
+	private String univID;
 	private String hashedPassword;
 	
-	//Fields from the Student class
-	private String absenceInfo;
-	private String tardyInfo;
-	
+	//student fields
 	private String major;
 	private String instrument;
 	private String position;
 	private String rank;
 	
-	//Field to tell what they are
-	private String type;
 	
 	public String toHTML()
 	{
@@ -48,21 +47,23 @@ public class User
 		this.hashedPassword = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.hashedUnivID = univID;
+		this.univID = univID;
 		this.type = type;
-		id = hash(netID);
+		this.id = hash(netID);
+		
+		//each student has a corresponding attendance report with field "netID" = the student's netID
 		
 		if (type.equalsIgnoreCase("Student"))
 		{
 			rank = "|";
-			this.absenceInfo = "";
-			this.tardyInfo = "";
+			DatabaseUtil.addAttendanceReport(new AttendanceReport(netID));
 		}
 		else
 		{
 			rank = null;
-			absenceInfo = null;
-			tardyInfo = null;
+			major = null;
+			instrument = null;
+			position = null;
 		}
 	}
 	
@@ -74,7 +75,7 @@ public class User
 		this.hashedPassword = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.hashedUnivID = univID;
+		this.univID = univID;
 		this.type = type;
 		this.id = hash(netID);
 		
@@ -84,62 +85,47 @@ public class User
 			this.major = major;
 			this.instrument = instrument;
 			this.rank = "|";
-			this.absenceInfo = "";
-			this.tardyInfo = "";
+			DatabaseUtil.addAttendanceReport(new AttendanceReport(netID));
 		}
 		else
 		{
 			this.major = null;
 			this.instrument = null;
 			this.rank = null;
-			this.absenceInfo = null;
-			this.tardyInfo = null;
+			
 		}
 	}
 	
 	public String toString()
 	{
-		return netID + " " + firstName + " " + lastName + " " + hashedUnivID 
+		return netID + " " + firstName + " " + lastName + " " + univID 
 				+ " " + major + " " + instrument + " " + position + " " + rank;
 	}
 	
 	public void addTardy(Tardy newTardy) {
-		//toString is in the form: "Date checkInTime" the student should know everything else it needs
-		//Delimited by * for easy parsablitity
-		//split by * to get each tardy, split that by " " to get each part of the tardy
-		tardyInfo += newTardy.toString() + "*";
+		//get student's attendance report, add the tardy, and re-store it in the database
+		AttendanceReport report = getAttendanceReport();
+		report.addTardy(newTardy);
+		DatabaseUtil.addAttendanceReport(report);
 	}
 	
 	public void addAbsence(Absence newAbsence) {
-		//Same idea as addTardy with a form of:
-		//"Date startTime endTime" again, delimited by parsability
-		absenceInfo += newAbsence.toString() + "*";
+		//get student's attendance report, add the absence, and re-store it in the database
+		AttendanceReport report = getAttendanceReport();
+		report.addAbsence(newAbsence);
+		DatabaseUtil.addAttendanceReport(report);
 	}
 	
-	public AttendanceReport toAbsenceObject()
-	{
-		AttendanceReport myReport = new AttendanceReport();
-		//Each absence or tardy is delimited from the others by the *
-		String[] absences = absenceInfo.split("*");
-		String[] tardies = tardyInfo.split("*");
-		for (int i = 0; i < absences.length; i++)
-		{
-			myReport.addAbsence(new Absence(absences[i]));
-		}
-		for (int i = 0; i < tardies.length; i++)
-		{
-			myReport.addTardy(new Tardy(tardies[i]));
-		}
-		return myReport;
-		
-	}
-	
-	public String getAbsenceInfo() {
-		return absenceInfo;
+	public AttendanceReport getAttendanceReport() {
+		return DatabaseUtil.getAttendanceReport(netID);
 	}
 
-	public String getTardyInfo() {
-		return tardyInfo;
+	public List<Absence> getAbsences() {
+		return getAttendanceReport().getAbsences();
+	}
+	
+	public List<Tardy> getTardies() {
+		return getAttendanceReport().getTardies();
 	}
 
 	public String getMajor() {
@@ -181,6 +167,46 @@ public class User
 	public void setType(String type) {
 		this.type = type;
 	}
+	
+	public String getNetID() {
+		return netID;
+	}
+
+	public void setNetID(String netID) {
+		this.netID = netID;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getUnivID() {
+		return univID;
+	}
+
+	public void setUnivID(String univID) {
+		this.univID = univID;
+	}
+
+	public String getHashedPassword() {
+		return hashedPassword;
+	}
+
+	public void setHashedPassword(String hashedPassword) {
+		this.hashedPassword = hashedPassword;
+	}
 
 	public long hash(String netID)
 	{
@@ -197,45 +223,5 @@ public class User
 			return 0;
 		}
 	}
-		public String getNetID() {
-			return netID;
-		}
-
-		public void setNetID(String netID) {
-			this.netID = netID;
-		}
-
-		public String getFirstName() {
-			return firstName;
-		}
-
-		public void setFirstName(String firstName) {
-			this.firstName = firstName;
-		}
-
-		public String getLastName() {
-			return lastName;
-		}
-
-		public void setLastName(String lastName) {
-			this.lastName = lastName;
-		}
-
-		public String getHashedUnivID() {
-			return hashedUnivID;
-		}
-
-		public void setHashedUnivID(String hashedUnivID) {
-			this.hashedUnivID = hashedUnivID;
-		}
-
-		public String getHashedPassword() {
-			return hashedPassword;
-		}
-
-		public void setHashedPassword(String hashedPassword) {
-			this.hashedPassword = hashedPassword;
-		}
-	
 
 }
