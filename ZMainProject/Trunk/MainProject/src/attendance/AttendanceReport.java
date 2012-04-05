@@ -1,6 +1,7 @@
 package attendance;
 import java.util.ArrayList;
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -9,76 +10,94 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import serverLogic.DatabaseUtil;
+
 import forms.Form;
 /**
  * 
- * @author Yifei Zhu
+ * @author Brandon Maxwell, Todd Wegter, Yifei Zhu
  *
  */
 
+@Entity
 public class AttendanceReport{
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)  //creates id for entry
 	private Long id;
-	
-	private List<Absence> absences;
-	private List<Tardy> tardies;
-	private List<Form> forms;
-	
 	
 	private String netID; //netID of corresponding student
 
-
 	public AttendanceReport(String netID) {
 		this.netID = netID;
-		//absences = new LinkedList<Absence>();
-		//tardies = new LinkedList<Tardy>();
-		//forms = new ArrayList<Form>();
 	}
 
 	public void addAbsence(Absence newAbsence) {
-		absences.add(newAbsence);
+		DatabaseUtil.addAbsence(newAbsence);
 	}
 
 	public void addTardy(Tardy newTardy) {
-		tardies.add(newTardy);
+		DatabaseUtil.addTardy(newTardy);
 	}
 	
 	
 	public List<Absence> getAbsences() {
-		return absences;
+		return DatabaseUtil.getAbsences(netID);
 	}
-
-	public void setAbsences(List<Absence> absences) {
-		this.absences = absences;
+	
+	public void setAbsences(List<Absence> absences){
+		DatabaseUtil.setAbsences(netID);
 	}
 
 	public List<Tardy> getTardies() {
-		return tardies;
+		return DatabaseUtil.getTardies(netID);
 	}
-
-	public void setTardies(List<Tardy> tardies) {
-		this.tardies = tardies;
+	
+	public void setTardies(List<Tardy> tardies){
+		DatabaseUtil.setTardies(netID);
 	}
 
 	public List<Form> getForms() {
-		return forms;
+		return DatabaseUtil.getForms(netID);
 	}
 
 	public void setForms(List<Form> forms) {
-		this.forms = forms;
+		DatabaseUtil.setForms(netID);
 	}
 
 	/**
-	 * Sort the forms by type, date, and so on
-	 * @param f --list of forms
+	 * Sort the forms by given Comparator (type, date, and so on) in descending order
+	 * @param comp - Comparator for comparing the forms
 	 */
-	public void sort(Form f)
+	public List<Form> sortFormsDescending(Comparator<Form> comp)
 	{
-		
-		
+		List<Form> forms = getForms();
+		for(int i = 0; i < forms.size()-1; i++){
+			for(int j = i+1; j < forms.size(); j++){
+				if(comp.compare(forms.get(i), forms.get(j)) < 0){ //larger first
+					Form temp = forms.get(i);
+					forms.set(i, forms.get(j));
+					forms.set(j, temp);
+				}
+			}
+		}
+		return forms;
 	}
 	
-	
+	/**
+	 * Sort the forms by given Comparator (type, date, and so on) in ascending order
+	 * @param comp - Comparator for comparing the forms
+	 */
+	public List<Form> sortFormsAscending(final Comparator<Form> comp)
+	{
+		return sortFormsDescending(new Comparator<Form>(){
+
+			@Override
+			public int compare(Form o1, Form o2) {
+				return -comp.compare(o1, o2);
+			}
+			
+		});
+	}
 
 }

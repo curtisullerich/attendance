@@ -1,30 +1,48 @@
 package forms;
 
 import java.util.List;
-import people.Person;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+import people.User;
 import time.Date;
+import time.Time;
+
 /**
  * 
- * @author Yifei Zhu
+ * @author Yifei Zhu, Todd Wegter
  *
  */
-public abstract class Form {
-	private Person person;
-	private Date startDate;
-	private Date endDate;
+
+@Entity
+public class Form {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)  //creates id for entry
+	private Long id;
+	
+	
+	private String netID;
+	private boolean approved;
 	private String reason;
-	private boolean Isapproved;
-	private List<DayOfWeek> listDayOfWeek;
+	//private Time startTime;
+	//private Time endTime;
 	
+	//private List<DayOfWeek> listDayOfWeek;
 	
-	public Form(Person person, Date startDate, Date endDate, String reason,
+	private String type;
+	
+	public Form(Person person, Time startTime, Time endTime, String reason,
 			boolean isapproved) {
 		//super(); TODO 
 		this.person = person;
-		this.startDate = startDate;
-		this.endDate = endDate;
+		this.startTime = startTime;
+		this.endTime = endTime;
 		this.reason = reason;
-		Isapproved = false;
+		approved = false;
 	}
 	
 	
@@ -44,17 +62,17 @@ public abstract class Form {
 	public void setPerson(Person person) {
 		this.person = person;
 	}
-	public Date getStartDate() {
-		return startDate;
+	public Time getStartTime() {
+		return startTime;
 	}
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
+	public void setStartTime(Time startTime) {
+		this.startTime = startTime;
 	}
-	public Date getEndDate() {
-		return endDate;
+	public Time getEndTime() {
+		return endTime;
 	}
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
+	public void setEndTime(Time endTime) {
+		this.endTime = endTime;
 	}
 	public String getReason() {
 		return reason;
@@ -62,14 +80,20 @@ public abstract class Form {
 	public void setReason(String reason) {
 		this.reason = reason;
 	}
-	public boolean isIsapproved() {
-		return Isapproved;
+	public boolean isApproved() {
+		return approved;
 	}
-	public void setIsapproved(boolean isapproved) {
-		Isapproved = isapproved;
+	public void setApproved(boolean approved) {
+		this.approved = approved;
 	}
 	
+	public String getType() {
+		return type;
+	}
 	
+	public void setType(String type) {
+		this.type = type;
+	}
 	
 	
 }
