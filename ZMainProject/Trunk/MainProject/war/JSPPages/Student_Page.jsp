@@ -1,0 +1,77 @@
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ page import="people.*" %>
+<%@ page import="serverLogic.DatabaseUtil" %>
+
+<html>
+	<head>
+		<title>@10Dance</title>
+	</head>
+	<%
+	String netID = (String) session.getAttribute("user"); 
+	
+	if (netID == null || netID.equals("")) 
+	{
+		response.sendRedirect("/JSPPages/logout.jsp");
+	}
+
+	User user = DatabaseUtil.getUser(netID);
+	%>
+	<script>
+		function viewForms() {
+			var div = document.getElementById("formsDiv")
+			if (div.style.display == "none") {
+				div.style.display = "block";
+			} else {
+				div.style.display = "none";
+			}
+		}
+		function pullAttendance() {
+			
+		}
+		function editInformation() {
+			
+		}
+	</script>
+	<body>
+<!--*********************Page Trail*****************************-->
+	
+	<!--TODO: need to connected to specific page-->
+	<!--<h1>-->
+		<li>
+			<a href="/" title="PageTrail_Home">Home</a> 
+			>
+			<a href="/JSPPages/Student_Page.jsp" title="PageTrail_Student">Student</a>
+			
+		You are logged in as <%= user.getFirstName() + " " + user.getLastName() %>
+		<a href="/JSPPages/logout.jsp">logout</a>		
+
+		<!--HELP BUTTON-->	
+		<a href="">Help</a>
+		</li>
+
+	<!--</h1>-->
+<!--*********************info*****************************-->
+
+	<!--*********************Student Info*****************************-->	
+		</br>
+		<div>
+		<table>
+			<tr><td>Name:</td> <td><%= user.getFirstName() + " " + user.getLastName()%></td></tr>
+			<tr><td>NetID:</td> <td><%= user.getNetID() %></td></tr>
+			<tr><td>Rank:</td> <td><%= user.getRank().equals("|") ? "none" : user.getRank() %></td></tr>
+		</table>
+		</div>
+	<h2>----------------------------------</h2>
+<p>
+		<!--********************* Button *****************************-->
+		<input type ="submit" onClick="viewForms();" style="view: none" value = "Forms">
+			<div id="formsDiv">
+				<p><a href="/JSPPages/13_Student_Absence_Approval_Form.jsp">Absence Approval Form</a></p>
+				<p><a href="/JSPPages/13_Student_Class_Conflict_Form.jsp">Class Conflict Form</a></p>
+			</div>
+		<a href="/JSPPages/Student_Attendance_Page.jsp">View Attendance</a>
+		<br/>
+		<a href="/JSPPages/11_Student_Edit_Info.jsp">Edit my information</a>
+	</body>
+
+</html>
