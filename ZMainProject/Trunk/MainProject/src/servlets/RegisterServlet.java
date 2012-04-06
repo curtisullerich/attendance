@@ -41,6 +41,7 @@ public class RegisterServlet extends HttpServlet
 			else
 			{
 				//Throw an alert that they didn't add a field
+				System.out.println("some fields were null");
 			}
 		}
 		

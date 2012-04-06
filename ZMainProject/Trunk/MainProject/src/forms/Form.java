@@ -35,8 +35,7 @@ public class Form {
 	
 	private String type;
 	
-	public Form(User person, Time startTime, Time endTime, String reason,
-			boolean isapproved) {
+	public Form(String netID) {
 		//super(); TODO 
 		this.person = person;
 		this.startTime = startTime;
