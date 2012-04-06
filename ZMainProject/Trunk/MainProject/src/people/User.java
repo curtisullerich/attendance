@@ -233,9 +233,9 @@ public class User
 		else
 			letterGrade = "F";
 		
-		if(grade%10 > 6.66 && grade < 90.00)
+		if(grade%10 > (20.0/3.0) && grade < 90.00)
 			letterGrade += "+";
-		else if(grade%10 < 3.33)
+		else if(grade%10 < (10.0/3.0))
 			letterGrade += "-";
 		
 		return letterGrade;
