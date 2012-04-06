@@ -66,12 +66,12 @@
 		<!--********************* Button *****************************-->
 		<input type ="submit" onClick="viewForms();" style="view: none" value = "Forms">
 			<div id="formsDiv">
-				<p><a href="/JSPPages/13_Student_Absence_Approval_Form.jsp">Absence Approval Form</a></p>
-				<p><a href="/JSPPages/13_Student_Class_Conflict_Form.jsp">Class Conflict Form</a></p>
+				<p><a href="/JSPPages/Student_Absence_Approval_Form.jsp">Absence Approval Form</a></p>
+				<p><a href="/JSPPages/Student_Class_Conflict_Form.jsp">Class Conflict Form</a></p>
 			</div>
 		<a href="/JSPPages/Student_Attendance_Page.jsp">View Attendance</a>
 		<br/>
-		<a href="/JSPPages/11_Student_Edit_Info.jsp">Edit my information</a>
+		<a href="/JSPPages/Student_Edit_Info.jsp">Edit my information</a>
 	</body>
 
 </html>

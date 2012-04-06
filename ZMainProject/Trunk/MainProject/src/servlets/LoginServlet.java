@@ -36,11 +36,11 @@ public class LoginServlet extends HttpServlet
 			{
 				//Figure out if it was a Director, TA, or Student
 				if (user.getType().equalsIgnoreCase("Student")) {
-					directTo = "/JSPPages/7_Student_Page.jsp";
+					directTo = "/JSPPages/Student_Page.jsp";
 				} else if (user.getType().equalsIgnoreCase("TA")) {
-					directTo = "/JSPPages/26_TA_Page.jsp";
+					directTo = "/JSPPages/TA_Page.jsp";
 				} else if (user.getType().equalsIgnoreCase("Director")){
-					directTo = "/JSPPages/15_Director_Page.jsp";
+					directTo = "/JSPPages/Director_Page.jsp";
 				}
 				
 				//add the user to the session
