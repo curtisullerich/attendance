@@ -32,7 +32,6 @@ public class User
 	private String position;
 	private String rank;
 	private double grade;
-	private String[] stringArray = {"this","is","a","string","array"};
 	
 	
 	public String toHTML()

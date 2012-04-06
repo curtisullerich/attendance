@@ -5,7 +5,7 @@
 <html>
 	<head>
 		<link rel="stylesheet" type="text/css" href="/JSPPages/404.css">
-		<script src="/JSPPages/jspScript.js"></script>
+		<script src="/JSPPages/script.js"></script>
 		<title>@10Dance 404!!</title>
 	</head>
 	<body>
