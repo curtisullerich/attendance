@@ -1,32 +1,40 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ page import="people.*" %>
+<%@ page import="serverLogic.DatabaseUtil" %>
+
 <html>
 	<head>
 		<title>@10Dance</title>
 	</head>
+	<%
+	String netID = (String) session.getAttribute("user"); 
+	
+	if (netID == null || netID.equals("")) 
+	{
+		response.sendRedirect("/JSPPages/logout.jsp");
+	}
+
+	User user = DatabaseUtil.getUser(netID);
+	%>
 
 	<body>
 	
 	<!--*********************Page Trail*****************************-->
 
-	<!--TODO: need to connected to specific page-->
-	<h3>
-		<li>
-			<a href="http://www.iastate.edu" title="PageTrail_Home">Home</a> 
-			>
-			<a href="http://www.iastate.edu" title="PageTrail_Student">Student</a>
-			>
-			<a href="http://www.iastate.edu" title="PageTrail_AbsenceApprovalForm_Rehearsal_Performance">AbsenceApprovalForm(Rehearsal/Performance)</a>
+	<a href="/" title="PageTrail_Home">Home</a> 
+	>
+	<a href="/JSPPages/Student_Page.jsp" title="PageTrail_Student">Student</a>
+	>
+	<a href="/JSPPages/Student_Absence_Approval_Form.jsp" title="PageTrail_AbsenceApprovalForm_Rehearsal_Performance">AbsenceApprovalForm(Rehearsal/Performance)</a>
 
-		<!--HELP BUTTON-->	
-		<a class="addthis_button"><img
-        src="http://icons.iconarchive.com/icons/deleket/button/24/Button-Help-icon.png"
-        width="16" height="16" border="0" alt="Share" /></a>
-		</li>
-	</h3>	
+	You are logged in as <%= user.getFirstName() + " " + user.getLastName() %>
+	<a href="/JSPPages/logout.jsp">logout</a>		
+	<!--HELP BUTTON-->	
+	<a href="">Help</a>
 
 	<!--*********************info*****************************-->
 	
-		<h1>NetID, Student Name</h1>
+		<h1><%=user.getNetID() + ", " + user.getFirstName() + " " + user.getLastName() %></h1>
 		
 		<!--*********************calander div*****************************-->
 		<div>
@@ -34,7 +42,7 @@
 				<tr><td>Date Requested:</td> </tr>
 				
 				<tr><td>
-					<img src="Calendar.jpg" alt="Calendar" width="100" height="100" />	
+
 				</td></tr>							
 			</table>
 		</div>
@@ -54,7 +62,7 @@
 				</select>
 			</td></tr>
 			
-			<tr><td>How ofen?</td></tr>
+			<tr><td>How often?</td></tr>
 			
 		<!--drop down button-->
 			<tr>
@@ -91,14 +99,8 @@
 		</table>
 	<!--*********************End Button*****************************-->
 
-				<h2>
-					<button type="Back">Back</button>
-					<button type="Submit">Submit</button>
-				<h2>
-		</form>		
+		<button type="Back">Back</button>
+		<button type="Submit">Submit</button>
 	</body>
-	
-
-
 
 </html>

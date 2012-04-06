@@ -235,7 +235,7 @@ public class User
 		
 		if(grade%10 > (20.0/3.0) && grade < 90.00)
 			letterGrade += "+";
-		else if(grade%10 < (10.0/3.0))
+		else if(grade%10 < (10.0/3.0) && grade < 100.00)
 			letterGrade += "-";
 		
 		return letterGrade;
@@ -259,6 +259,15 @@ public class User
 			e.printStackTrace();
 			return 0;
 		}
+	}
+	
+	public String getAttendanceHtml() {
+		//TODO
+		
+		//loop through all events and print the information in the format below
+		return "<tr><td>8/21</td><td>  </td><td>  </td><td>  </td><td>  </td><td><button onClick=\"sendMeToMyMessages();\">Messages</button></tr>";
+		
+		
 	}
 
 }

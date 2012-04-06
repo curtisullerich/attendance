@@ -46,8 +46,8 @@
 					
 				</table>
 				
-				<input type="button" value="Register" name="Register" onClick='window.location="/JSPPages/register.jsp"'/>
 				<input type="submit" value="Login" name ="Login"/>
+				<input type="button" value="Register" name="Register" onClick='window.location="/JSPPages/register.jsp"'/>
 		</form>		
 	</body>
 </html>

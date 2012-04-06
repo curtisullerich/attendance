@@ -36,8 +36,6 @@
 <!--*********************Page Trail*****************************-->
 	
 	<!--TODO: need to connected to specific page-->
-	<!--<h1>-->
-		<li>
 			<a href="/" title="PageTrail_Home">Home</a> 
 			>
 			<a href="/JSPPages/Student_Page.jsp" title="PageTrail_Student">Student</a>
@@ -47,9 +45,7 @@
 
 		<!--HELP BUTTON-->	
 		<a href="">Help</a>
-		</li>
 
-	<!--</h1>-->
 <!--*********************info*****************************-->
 
 	<!--*********************Student Info*****************************-->	
@@ -64,14 +60,14 @@
 	<h2>----------------------------------</h2>
 <p>
 		<!--********************* Button *****************************-->
-		<input type ="submit" onClick="viewForms();" style="view: none" value = "Forms">
-			<div id="formsDiv">
-				<p><a href="/JSPPages/Student_Absence_Approval_Form.jsp">Absence Approval Form</a></p>
-				<p><a href="/JSPPages/Student_Class_Conflict_Form.jsp">Class Conflict Form</a></p>
+		<input type ="submit" onClick="viewForms();"  value = "Forms">
+			<div id="formsDiv" style="display: none">
+				<p><a href="/JSPPages/Student_Absence_Approval_Form.jsp">-Absence Approval Form</a></p>
+				<p><a href="/JSPPages/Student_Class_Conflict_Form.jsp">-Class Conflict Form</a></p>
 			</div>
-		<a href="/JSPPages/Student_Attendance_Page.jsp">View Attendance</a>
+		<input type ="submit" onClick="window.location = '/JSPPages/Student_View_Attendance_List.jsp';"  value = "View Attendance">
 		<br/>
-		<a href="/JSPPages/Student_Edit_Info.jsp">Edit my information</a>
+		<input type ="submit" onClick="window.location = '/JSPPages/Student_Edit_Info.jsp';"  value = "Edit my information">
 	</body>
 
 </html>

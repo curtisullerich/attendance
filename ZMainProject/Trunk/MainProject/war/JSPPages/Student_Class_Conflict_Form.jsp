@@ -1,32 +1,42 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ page import="people.*" %>
+<%@ page import="serverLogic.DatabaseUtil" %>
+
 <html>
 	<head>
 		<title>@10Dance</title>
 	</head>
+	<%
+	String netID = (String) session.getAttribute("user"); 
+	
+	if (netID == null || netID.equals("")) 
+	{
+		response.sendRedirect("/JSPPages/logout.jsp");
+	}
+
+	User user = DatabaseUtil.getUser(netID);
+	%>
 
 	<body>
 	
 	<!--*********************Page Trail*****************************-->
 
 	<!--TODO: need to connected to specific page-->
-	<h3>
-		<li>
-			<a href="http://www.iastate.edu" title="PageTrail_Home">Home</a> 
+			<a href="/" title="PageTrail_Home">Home</a> 
 			>
-			<a href="http://www.iastate.edu" title="PageTrail_Student">Student</a>
+			<a href="/JSPPages/Student_Page.jsp" title="PageTrail_Student">Student</a>
 			>
-			<a href="http://www.iastate.edu" title="PageTrail_AbsenceApprovalForm_Class_Conflict">AbsenceApprovalForm(Class Conflict)</a>
+			<a href="/JSPPages/Student_Class_Conflict_Form.jsp" title="PageTrail_AbsenceApprovalForm_Class_Conflict">Class Conflict Form</a>
+
+		You are logged in as <%= user.getFirstName() + " " + user.getLastName() %>
+		<a href="/JSPPages/logout.jsp">logout</a>		
 
 		<!--HELP BUTTON-->	
-		<a class="addthis_button"><img
-        src="http://icons.iconarchive.com/icons/deleket/button/24/Button-Help-icon.png"
-        width="16" height="16" border="0" alt="Share" /></a>
-		</li>
-	</h3>	
+		<a href="">Help</a>
 
 	<!--*********************info*****************************-->
 	
-		<h1>NetID, Student Name</h1>
+		<h1><%=user.getNetID() + ", " + user.getFirstName() + " " + user.getLastName() %></h1>
 		
 		<!--*********************Pick a day div*****************************-->
 		<div>
@@ -34,16 +44,16 @@
 				<tr><td>Date Requested:</td> </tr>
 				
 				<tr><td>
-					<img src="Calendar.jpg" alt="Calendar" width="100" height="100" />	
+number entry here
 				</td></tr>							
 			</table>
 		</div>
 
 		<!--*********************Class info div*****************************-->
-		</br></br>
+		<br/><br/>
 		<div>
 		<table>
-			<tr><td> What is the recurrance of the class?</td></tr>
+			<tr><td> What is the recurrence of the class?</td></tr>
 		<!--Monday ~ Sunday -->
 		<tr><td> 
 			<input type="checkbox" name="Monday" value="Monday"> Monday
@@ -82,44 +92,10 @@
 		</table>
 		</div>
 		
-	<h1>*******************</h1>
-	<!--*********************drop down bar div*****************************-->
-
-		<table>
-			<tr>					
-				<td><label for="CourseDept">Course Dept:</label></td>
-				<td><input type= "text" name="CourseDept" id="CourseDept"/></td>
-			</tr>
-			
-			<tr>
-				<td><label for="CourseNum">Course#:</label></td>
-				<td><input type= "text" name="CourseNum" id="CourseNum"/></td>	
-			</tr>
-			<tr>
-				<td><label for="Section">Section:</label></td>
-				<td><input type= "text" name="Section" id="Section"/></td>	
-			</tr>
-			<tr>
-				<td><label for="Bulding">Bulding:</label></td>
-				<td><input type= "text" name="Bulding" id="Bulding"/></td>	
-			</tr>
-			
-			<tr>
-				<td><label for="Comments">Comments(Option):</label></td>
-				<td><input type= "text" name="Comments" id="Comments"/></td>	
-			</tr>
-
-		</table>
 	<!--*********************End Button*****************************-->
-
-				<h2>
-					<button type="Back">Back</button>
-					<button type="Submit">Submit</button>
-				<h2>
-		</form>		
+<br/>
+		<button type="Back">Back</button>
+		<button type="Submit">Submit</button>
 	</body>
-	
-
-
 
 </html>

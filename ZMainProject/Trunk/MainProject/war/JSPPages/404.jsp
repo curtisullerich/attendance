@@ -20,7 +20,7 @@
 				</br>
 				You can easily find your way to one of the main </br>@10dance pages using these fancy-shmancy buttons:
 				<form class="centeralign">
-					<input class="button" type="button" id="main" value="Main Home Page" onclick="parent.location='/'"/> 
+					<input class="button" type="button" id="main" value="Main Home Page" onclick="window.location='/'"/> 
 				</form>
 			</p>
 		</div>

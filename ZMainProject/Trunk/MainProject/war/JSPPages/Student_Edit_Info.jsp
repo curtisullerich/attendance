@@ -1,8 +1,43 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ page import="people.*" %>
+<%@ page import="serverLogic.DatabaseUtil" %>
 <html>
 	<head>
 		<title>@10Dance</title>
 	</head>
+	<%
+	String netID = (String) session.getAttribute("user"); 
+	
+	if (netID == null || netID.equals("")) 
+	{
+		response.sendRedirect("/JSPPages/logout.jsp");
+	}
+
+	User user = DatabaseUtil.getUser(netID);
+	%>
+		<script src="/MobileApp/sha.js"/></script>
+		<script>
+		
+		/**
+		 *
+		 * Hashes the password for sending to the server.
+		 * @author Curtis
+		 *
+		 */
+		function hashPassword() {
+			var str = Sha1.hash(document.getElementById("Password").value);
+			var str2 = Sha1.hash(document.getElementById("Password2").value);
+    		alert("Passwords do not match. Please ensure passwords match.");
+
+			if (str != str2) {
+				return false;
+			}
+			str = str.toUpperCase();
+			document.getElementById("Hashed Password").value = str;
+			return true;
+		}
+
+		</script>
 
 	<body>
 	
@@ -10,24 +45,21 @@
 	<!--*********************Page Trail*****************************-->
 
 	<!--TODO: need to connected to specific page-->
-	<h3>
-		<li>
 			<a href="/" title="PageTrail_Home">Home</a> 
 			>
 			<a href="/JSPPages/Student_Page.jsp" title="PageTrail_Student">Student</a>
 			>
 			<a href="/JSPPages/Student_Edit_Info.jsp" title="PageTrail_Edit_Info">Edit Info</a>
 
-	</h3>	
-
 	<!--*********************info*****************************-->
 	
-		<h1>NetID</h1>
-		<form action ="/login" method ="post" accept-charset="uft-8">
+		<h1><%= user.getNetID() %></h1>
+		<form action="/StudentEditInfo" method="post" onSubmit="return hashPassword();" accept-charset="utf-8">
+		
 				<table>
 					<tr>					
 						<td><label for="FirstName">First Name:</label></td>
-						<td><input type= "FirstName" name="FirstName" id="FirstName" value="<%=user.getFirstName() %>"/></td>
+						<td><input type="FirstName" name="FirstName" id="FirstName" value="<%=user.getFirstName() %>"/></td>
 					</tr>
 					
 					<tr>
@@ -48,7 +80,7 @@
 					<!--major-->
 					<tr>
 						<td><label for="Major">Major</label></td>
-						<td><input type= "major" name="Major" id="Major" value="<%=user.getMajor() %>"/></td>	
+						<td><input type= "major" name="Major" id="Major" value="<%=user.getMajor() == null ? "" : user.getMajor() %>"/></td>	
 					</tr>
 					
 					<!--Instrument-->
@@ -57,7 +89,7 @@
 						
 						<td>
 						<select>
-							<option><%= user.getInstrument() %></option>
+							<option><%= user.getInstrument() == null ? "" : user.getInstrument() %></option>
 							<option>Drums</option>
 							<option>Piccolo</option>
 							<option>Clarinet</option>
@@ -86,8 +118,5 @@
 				</h2>
 		</form>		
 	</body>
-	
-
-
 
 </html>
