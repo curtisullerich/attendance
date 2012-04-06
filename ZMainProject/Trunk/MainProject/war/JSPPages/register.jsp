@@ -79,6 +79,10 @@
 					id="Re-Enter Password" /></td>
 			</tr>
 			
+			<tr>
+				<td><input type="password" name="Hashed Password" id="Hashed Password" hidden=true/></td>
+			</tr>
+			
 		</table>
 		<input type="submit" value="Register" name="Register" />
 	</form>

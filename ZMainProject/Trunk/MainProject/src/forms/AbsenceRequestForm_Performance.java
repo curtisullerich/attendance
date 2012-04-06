@@ -3,7 +3,6 @@ package forms;
 import java.io.File;
 import java.util.List;
 
-import people.Person;
 import time.Date;
 
 public class AbsenceRequestForm_Performance extends AbsenceRequestForm {

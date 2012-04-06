@@ -35,7 +35,7 @@ public class Form {
 	
 	private String type;
 	
-	public Form(Person person, Time startTime, Time endTime, String reason,
+	public Form(User person, Time startTime, Time endTime, String reason,
 			boolean isapproved) {
 		//super(); TODO 
 		this.person = person;
