@@ -32,6 +32,7 @@ public class User
 	private String position;
 	private String rank;
 	private double grade;
+	private String[] stringArray = {"this","is","a","string","array"};
 	
 	
 	public String toHTML()
@@ -51,6 +52,7 @@ public class User
 		this.univID = univID;
 		this.type = type;
 		this.id = hash(netID);
+		
 		
 		//each student has a corresponding attendance report with field "netID" = the student's netID
 		
