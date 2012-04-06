@@ -1,15 +1,18 @@
 package serverLogic;
 
+import java.io.File;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
+import people.User;
+import attendance.Absence;
 import attendance.AttendanceReport;
 import attendance.Event;
-
-import people.User;
+import attendance.Tardy;
+import forms.Form;
 
 //addAttendanceReport(AttendanceReport report);
 //getAttendanceReport(String netID);
@@ -91,6 +94,56 @@ public class DatabaseUtil
 		}
 		em.close();
 		return toRet;
+	}
+
+	public static void addAbsence(Absence newAbsence) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public static void addTardy(Tardy newTardy) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public static List<Absence> getAbsences(String netID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static void setAbsences(String netID) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public static List<Tardy> getTardies(String netID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static void setTardies(String netID) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public static List<Form> getForms(String netID) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static void setForms(String netID) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public static File getFile(String attachedFile) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static String addFile(File attachedFile) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 //	
