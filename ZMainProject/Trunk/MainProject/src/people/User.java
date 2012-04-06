@@ -58,7 +58,7 @@ public class User
 		{
 			rank = "|";
 			grade = 100.00;
-//			DatabaseUtil.addAttendanceReport(new AttendanceReport(netID));
+			DatabaseUtil.addAttendanceReport(new AttendanceReport(netID));
 		}
 		else
 		{
@@ -66,7 +66,6 @@ public class User
 			major = null;
 			instrument = null;
 			position = null;
-			grade = (Double) null;
 		}
 	}
 	
@@ -89,14 +88,13 @@ public class User
 			this.instrument = instrument;
 			this.grade = 100.00;
 			this.rank = "|";
-//			DatabaseUtil.addAttendanceReport(new AttendanceReport(netID));
+			DatabaseUtil.addAttendanceReport(new AttendanceReport(netID));
 		}
 		else
 		{
 			this.major = null;
 			this.instrument = null;
 			this.rank = null;
-			this.grade = (Double) null;
 			
 		}
 	}
