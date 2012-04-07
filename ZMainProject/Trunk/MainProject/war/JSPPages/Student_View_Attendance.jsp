@@ -28,6 +28,7 @@
 			>
 			<a href="/JSPPages/Student_View_Attendance.jsp" title="PageTrail_ViewAttendance">View Attendance</a>
 	<%
+	System.out.println("Student_View_Attendance: inside header");
 	String netID = (String) session.getAttribute("user"); 
 	
 	if (netID == null || netID.equals("")) 
@@ -36,8 +37,10 @@
 	}
 
 	User user = DatabaseUtil.getUser(netID);
+	System.out.println("Student_View_Attendance: netID= " +netID );
+
 	%>
-			
+
 		You are logged in as <%= user.getFirstName() + " " + user.getLastName() %>
 		<a href="/JSPPages/logout.jsp">logout</a>		
 
@@ -51,17 +54,31 @@
 	<!--*********************Student Table*****************************-->	
 	<br/>
 	<br/>
-			
+<!-- 			
 			<%
+			System.out.println("Student_View_Attendance: getting tardies");
+
 			List<Tardy> tardies = user.getTardies();
 			String tardyHtml = "";
 			if (tardies != null) {
-				for (Tardy t : tardies) {
+ 				for (Tardy t : tardies) {
 					tardyHtml +=
-						"<tr><td>"+t.getTime().getDate()+"</td> <td>"+t.getType()+"</td><td></td><td>x</td><td>" +(t.isApproved() ? "x" : "") + "</td><td><button onClick='sendMeToMyTardyMessages("+t.getID() +");'>Messages</button></tr><tr>" + (t.hasNewMessageFor(netID) ? "x" : "") + "</tr>";
+					"<tr><td>"
+					+t.getTime().getDate()
+					+"</td> <td>"
+					+t.getType()
+					+"</td><td></td><td>x</td><td>" 
+					+(t.isApproved() ? "x" : "") 
+					+ "</td><td><button onClick='sendMeToMyTardyMessages("
+					+t.getID() 
+					+");'>Messages</button></tr><tr>" 
+					+ (t.hasNewMessageFor(netID) ? "x" : "") 
+					+ "</tr>";
 				}
 			}
 			
+			System.out.println("Student_View_Attendance: getting absences");
+
 			List<Absence> absences = user.getAbsences();
 			String absenceHtml = "";
 			if (absences != null) {
@@ -75,6 +92,8 @@
 			<%
 			String html = tardyHtml +absenceHtml;
 			String insert = "";
+			System.out.println("Student_View_Attendance: building html");
+
 			if (!html.equals("")){
 					insert = 
 					"		<div>"
@@ -94,6 +113,7 @@
 			%>
 
 			<%= insert %>
+			-->
 	
 	<h3>
 		<!--button-->

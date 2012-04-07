@@ -34,12 +34,13 @@ public class Tardy {
 	private boolean approved;
 	// Either rehearsal or performance or unknown if there was no Event
 	private String type;
-	private String[] messageIDs;
+	private String[] messageIDs = {"",""};
 
 	public Tardy(String netID, Time time, String type) {
 		this.netID = netID;
 		this.checkInTime = time.toString(24);
 		approved = false;
+		this.type = type;
 	}
 
 	// public Tardy(String dbTardy)

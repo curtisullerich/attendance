@@ -174,7 +174,7 @@ public class DatabaseUtil
 		{
 			tardies = null;
 		}
-		em.close();
+//		em.close();
 		return tardies;
 	}
 
@@ -191,7 +191,7 @@ public class DatabaseUtil
 		{
 			result = null;
 		}
-		em.close();
+		em.close(); //TODO might need to cose this?
 		return result;
 	}
 	
