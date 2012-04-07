@@ -9,7 +9,8 @@ java code(all basic java class)
 junit (time, date)
 form A servlet
 form C servlet 
-
+form D jsp
+all the forms director need to view page jsp
 
 *****TODO**************************************
 
