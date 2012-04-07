@@ -91,20 +91,54 @@ public class Parser {
 		{
 			if (prepend.equalsIgnoreCase(absentPrependPerformance)) 
 			{
+				Absence toAdd = new Absence(guy.getNetID(), start, end, "Performance");
 				//guy.addAbsence(new Absence(start, end, "Performance"));
-				absences.put(guy, new Absence(guy.getNetID(), start, end, "Performance"));
+				if (!absences.containsKey(guy))
+					absences.put(guy, toAdd);
+				else
+				{
+					if (timeLaterThan(absences.get(guy).getStartTime(), toAdd.getStartTime()))
+					{
+						absences.put(guy, toAdd);
+					}
+				}
 			} else if (prepend.equalsIgnoreCase(absentPrependRehearsal)) 
 			{
 				//guy.addAbsence(new Absence(start, end, "Rehearsal"));
-				absences.put(guy, new Absence(guy.getNetID(), start, end, "Rehearsal"));
+				Absence toAdd = new Absence(guy.getNetID(), start, end, "Rehearsal");
+				if (!absences.containsKey(guy))
+					absences.put(guy, toAdd);
+				else
+				{
+					if (timeLaterThan(absences.get(guy).getStartTime(), toAdd.getStartTime()))
+					{
+						absences.put(guy, toAdd);
+					}
+				}
 			}
 			else if (prepend.equalsIgnoreCase(tardyPrepend)) 
 			{
 				//guy.addTardy(new Tardy(start, "unknown"));
-				tardies.put(guy, new Tardy(guy.getNetID(), start, "unknown"));
+				Tardy toAdd = new Tardy(guy.getNetID(), start, "unknown");
+				if (!tardies.containsKey(guy))
+					tardies.put(guy, toAdd);
+				else
+				{
+					if (timeLaterThan(tardies.get(guy).getTime(), toAdd.getTime()));
+					{
+						tardies.put(guy, toAdd);
+					}
+				}
 			}
 		}
 	}
+	
+	//Returns true if second time is later  than first time
+	private static boolean timeLaterThan(Time firstTime, Time secondTime)
+	{
+		return secondTime.compareTo(firstTime) > 0;
+	}
+	
 	private static void updateALLTheThings(HashMap<User, Absence> absences, HashMap<User, Tardy> tardies, List<Event> events)
 	{
 		//If they are in the TardyMap then take them out of the AbsentMap
@@ -125,6 +159,7 @@ public class Parser {
 				}
 			}
 		}
+		
 		for (User u: absences.keySet())
 		{
 			DatabaseUtil.addAbsence(absences.get(u));

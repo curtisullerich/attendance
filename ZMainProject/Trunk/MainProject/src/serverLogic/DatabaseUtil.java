@@ -1,5 +1,6 @@
 package serverLogic;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -91,7 +92,7 @@ public class DatabaseUtil
 			if (!p.getType().equalsIgnoreCase("Director"))
 				toRet[i] = p.toString();
 		}
-		em.close();
+		//em.close();
 		return toRet;
 	}
 
@@ -121,7 +122,7 @@ public class DatabaseUtil
 		{
 			absences = null;
 		}
-		em.close();
+		//em.close();
 		return absences;
 	}
 	
@@ -174,13 +175,14 @@ public class DatabaseUtil
 		{
 			tardies = null;
 		}
-//		em.close();
+		//em.close();
+
 		return tardies;
 	}
 
 	public static List<Form> getForms(String netID) {
 		EntityManager em = EMFService.get().createEntityManager();
-		Query q = em.createQuery("select a from From a where a.netID = :netID");
+		Query q = em.createQuery("select a from Form a where a.netID = :netID");
 		q.setParameter("netID", netID);
 		List<Form> result;
 		try
@@ -191,7 +193,7 @@ public class DatabaseUtil
 		{
 			result = null;
 		}
-		em.close(); //TODO might need to cose this?
+		//em.close();
 		return result;
 	}
 	
@@ -203,7 +205,25 @@ public class DatabaseUtil
 	}
 	
 	public static List<Message> getMessages(String[] messageIDs) {
-		return null; //TODO
+		EntityManager em = EMFService.get().createEntityManager();
+		List<Message> result = new LinkedList<Message>();
+		for (int i = 0; i < messageIDs.length; i++)
+		{
+			Long id = Long.parseLong(messageIDs[i]);
+			Query q = em.createQuery("select m from Message m where m.id := id");
+			q.setParameter("id", id);
+	
+			try
+			{
+				result.addAll((List<Message>) q.getResultList());
+			}
+			catch (NoResultException e)
+			{
+				result = null;
+			}
+			//em.close; <- always leave this open!
+		}
+		return result;
 	}
 
 //	public static File getFile(String attachedFile) {
