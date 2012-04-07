@@ -107,6 +107,16 @@ public class Tardy {
 		return DatabaseUtil.getMessages(messageIDs);
 	}
 	
+
+	@Override
+	public boolean equals(Object o)
+	{
+		if (o == null) return false;
+		if (o.getClass() != this.getClass()) return false;
+		Tardy t = (Tardy) o;
+		return t.netID.equals(netID) && t.getTime().compareTo(getTime()) == 0 && t.type.equalsIgnoreCase(type);
+	}
+
 	/**
 	 * 
 	 * Adds a new message associated with this Tardy.
@@ -132,6 +142,7 @@ public class Tardy {
 	 * @param netId the user in question
 	 * @return true if this tardy has a new message for this user. False otherwise.
 	 */
+
 	public boolean hasNewMessageFor(String netId) {
 		for (Message m : this.getMessages()) {
 			if (!m.readBy(netId)) {

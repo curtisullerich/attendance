@@ -106,5 +106,15 @@ public class Absence{
 	public long getID(){
 		return id;
 	}
+	
+	@Override
+	public boolean equals(Object o)
+	{
+		if (o == null) return false;
+		if (o.getClass() != this.getClass()) return false;
+		Absence a = (Absence) o;
+		return a.netID.equals(netID) && a.getStartTime().compareTo(getStartTime()) == 0 
+				&& a.getEndTime().compareTo(getEndTime()) == 0 && a.type.equalsIgnoreCase(type);
+	}
 
 }
