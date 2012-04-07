@@ -1,4 +1,6 @@
-package testAttendance;
+package attendanceTest;
+
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +26,7 @@ public class AttendanceReportTest {
 	Date date;
 	List<Form> list;
 	AttendanceReport report;
+	FormIsApprovedComp comp;
 	
 	@Before
 	public void setUp() throws Exception {
@@ -39,9 +42,10 @@ public class AttendanceReportTest {
 		list.add(f1);
 		list.add(f2);
 		report=new AttendanceReport("abc");
-		report
-		
-	
+		comp=new FormIsApprovedComp();
+		comp.compare(f1, f2);
+		report.sortFormsAscending(comp);
+
 	}
 
 	@After
@@ -50,7 +54,9 @@ public class AttendanceReportTest {
 
 	@Test
 	public void test() {
-		report.sortFormsDescending(new FormIsApprovedComp());
+		//report.sortFormsDescending(new FormIsApprovedComp());
+		System.out.println("hh");
+		assertTrue(1==1);
 		
 	}
 

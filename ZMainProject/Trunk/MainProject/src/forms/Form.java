@@ -104,7 +104,14 @@ public class Form {
 	public void setType(String type) {
 		this.type = type;
 	}
+	
+	public String toString()
+	{
+		return "ID:"+this.netID+" start time:"+this.startTime+" end time:"+this.endTime
+				+" approved?:"+this.approved;
+	}
 
+	
 //	public File getFile() {
 //		return DatabaseUtil.getFile(attachedFile); // get file with this key
 //													// from database
