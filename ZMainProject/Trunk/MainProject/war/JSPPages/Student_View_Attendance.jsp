@@ -54,7 +54,7 @@
 	<!--*********************Student Table*****************************-->	
 	<br/>
 	<br/>
-<!-- 			
+ 			
 			<%
 			System.out.println("Student_View_Attendance: getting tardies");
 
@@ -64,16 +64,16 @@
  				for (Tardy t : tardies) {
 					tardyHtml +=
 					"<tr><td>"
-					+t.getTime().getDate()
+					+t.getTime().getDate() + " " +t.getTime().get12Format()
 					+"</td> <td>"
 					+t.getType()
 					+"</td><td></td><td>x</td><td>" 
 					+(t.isApproved() ? "x" : "") 
 					+ "</td><td><button onClick='sendMeToMyTardyMessages("
 					+t.getID() 
-					+");'>Messages</button></tr><tr>" 
+					+");'>Messages</button></td><td>" 
 					+ (t.hasNewMessageFor(netID) ? "x" : "") 
-					+ "</tr>";
+					+"</td></tr>";
 				}
 			}
 			
@@ -84,7 +84,19 @@
 			if (absences != null) {
 				for (Absence a : absences) {
 					absenceHtml += 
-						"<tr><td>" + a.getStartTime().getDate()+"</td> <td>"+a.getType()+"</td><td>x</td><td></td><td>" +(a.isApproved() ? "x" : "") + "</td><td><button onClick='sendMeToMyAbsenceMessages("+a.getID() +");'>Messages</button></tr><tr>" + ("") + "</tr>";
+						"<tr><td>" + a.getStartTime().getDate()+"</td> <td>"+a.getType()+"</td><td>x</td><td></td><td>" +(a.isApproved() ? "x" : "") + "</td><td><button onClick='sendMeToMyAbsenceMessages("+a.getID() +");'>Messages</button></td><td>" + ("") + "</td></tr>";
+					absenceHtml +=
+					"<tr><td>"
+					+a.getStartTime().getDate()
+					+"</td> <td>"
+					+a.getType()
+					+"</td><td></td><td>x</td><td>" 
+					+(a.isApproved() ? "x" : "") 
+					+ "</td><td><button onClick='sendMeToMyTardyMessages("
+					+a.getID() 
+					+");'>Messages</button></td><td>" 
+					+ (a.hasNewMessageFor(netID) ? "x" : "") 
+					+"</td></tr>";
 				}
 			}			
 			%>
@@ -98,7 +110,7 @@
 					insert = 
 					"		<div>"
 					+"		<table border='1'>"
-					+"			<tr><th>Date</th><th>Type</th><th>Absent</th><th>Tardy</th><th>Excused</th><th></th></tr><tr>New message?</tr>"
+					+"			<tr><th>Date</th><th>Type</th><th>Absent</th><th>Tardy</th><th>Excused</th><th> </th><th>New message?</th></tr>"
 								
 								+tardyHtml + absenceHtml
 								
@@ -113,7 +125,7 @@
 			%>
 
 			<%= insert %>
-			-->
+			
 	
 	<h3>
 		<!--button-->

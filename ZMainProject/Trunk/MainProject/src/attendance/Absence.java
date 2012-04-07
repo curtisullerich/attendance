@@ -1,12 +1,21 @@
 package attendance;
+<<<<<<< .mine
+import java.util.Arrays;
+import java.util.List;
+
+=======
 import java.math.BigInteger;
 import java.security.MessageDigest;
 
+>>>>>>> .r468
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import comment.Message;
+
+import serverLogic.DatabaseUtil;
 import time.*;
 /**
  * 
@@ -29,6 +38,9 @@ public class Absence{
 	private boolean isApproved;
 	//Either Rehearsal or Performance
 	private String type;
+	private String[] messageIDs = {"","","","","","","","",""};
+	private int currentIndex;
+	
 	
 	public Absence(String netID, Time startTime, Time endTime, String type) {
 		this.netID = netID;
@@ -36,7 +48,11 @@ public class Absence{
 		this.endTime = endTime.toString(24);
 		this.isApproved = false;
 		setType(type);
+<<<<<<< .mine
+		this.currentIndex = 0;
+=======
 		this.id = hash(netID, startTime, endTime);
+>>>>>>> .r468
 	}
 
 //	public Absence(String dbAbsence)
@@ -110,6 +126,46 @@ public class Absence{
 		return id;
 	}
 
+<<<<<<< .mine
+	public List<Message> getMessages() {
+		return DatabaseUtil.getMessages(messageIDs);
+	}
+
+	
+	/**
+	 * Adds a new message associated with this Absence.
+	 * 
+	 * @author Curtis Ullerich
+	 * @param m the message to be added
+	 */
+	public void addMessage(Message m) {
+		DatabaseUtil.addMessage(m);
+		if (currentIndex >= messageIDs.length) {
+			messageIDs = Arrays.copyOf(messageIDs, messageIDs.length * 2);
+		}
+		messageIDs[currentIndex] = new Long(m.getID()).toString();
+		currentIndex++;
+	}
+	
+	/**
+	 * 
+	 * Checks to see if this Tardy has a new message for a person.
+	 * 
+	 * @author Curtis Ullerich
+	 * @param netId the user in question
+	 * @return true if this tardy has a new message for this user. False otherwise.
+	 */
+	public boolean hasNewMessageFor(String netId) {
+		for (Message m : this.getMessages()) {
+			if (!m.readBy(netId)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+
+=======
 	@Override
 	public boolean equals(Object o)
 	{
@@ -135,4 +191,5 @@ public class Absence{
 		}
 	}
 
+>>>>>>> .r468
 }

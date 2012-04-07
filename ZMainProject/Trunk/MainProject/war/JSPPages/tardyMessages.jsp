@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ page import="people.*" %>
 <%@ page import="attendance.*" %>
+<%@ page import="time.*" %>
 <%@ page import="comment.*" %>
 <%@ page import="serverLogic.DatabaseUtil" %>
 <%@ page import="java.util.*" %>
@@ -24,17 +25,18 @@
 			<a href="/JSPPages/tardyMessages.jsp" title="PageTrail_tardyMessages">Tardy Messages</a>
 			
 	<%
-	String netID = (String) session.getAttribute("user"); 
-	
+	String netID = (String) session.getAttribute("user");
+	String table = "";
 	if (netID == null || netID.equals("")) 
 	{
 		response.sendRedirect("/JSPPages/logout.jsp");
 	}
 
+	boolean hasMessage = true;
 	User user = DatabaseUtil.getUser(netID);
-	
-	long id = Long.parseLong((String) request.getParameter("id"));
-	Tardy t = DatabaseUtil.getTardyByID(id);
+	if ((request.getParameter("id") == null || request.getParameter("id").isEmpty())) {
+		hasMessage = false;
+	}
 	%>
 			
 		You are logged in as <%= user.getFirstName() + " " + user.getLastName() %>
@@ -43,47 +45,63 @@
 		<!--HELP BUTTON-->	
 		<a href="">Help</a>
 
-
-
-
 		<%
-		String table = 
-		"<table>\n"	;
 		
 		
-		table+=
-				"	<tr>"
-				+"		<td>"
-				+"			"
-				+"		</td>"
-				+"		<td>"
-				+"			<input type= 'text' name='New Message' id='New Message'/>"
-				+"		</td>"
-				+"	</tr>";
-		
-		PriorityQueue<Message> p = new PriorityQueue<Message>(t.getMessages());
-		
-		while (!p.isEmpty()) {
-			Message m = p.poll();
-			if (m != null) {
-				table+= 
-				"	<tr>"
-				+"		<td>"
-				+"			<b>" + (m.readBy(netID) ? "" : "(new) ") + m.getTime() + " " + m.getSenderNetID() + "</b>"
-				+"		</td>"
-				+"		<td>"
-				+"			" + m.getContents()
-				+"		</td>"
-				+"	</tr>";
+		if (hasMessage) {
+			
+			long id = Long.parseLong((String) request.getParameter("id"));
+			Tardy t = DatabaseUtil.getTardyByID(id);
+			PriorityQueue<Message> p = new PriorityQueue<Message>(t.getMessages());
+
+			if (p.isEmpty()) {
+				table = "<br/><br/><b>There are currently no messages on this tardy.</b>";
 			}
+			table += 
+					"<table>\n"	
+							+ "<tr>"
+							+"<td>"	
+								+""
+							+"</td>"
+							+"<td>"
+
+							+"</td>"
+						+"</tr>"
+						
+						+ "<tr>"
+						+"<td>"	
+						+"			Write a new message:"
+						+"</td>"
+						+"<td>"
+						+"			<input type= 'text' name='New Message' id='New Message'/>"
+
+						+"</td>"
+					+"</tr></table>";
+			
+			
+			while (!p.isEmpty()) {
+				Message m = p.poll();
+				if (m != null) {
+					table+= 
+					"	<tr>"
+					+"		<td>"
+					+"			<b>" + (m.readBy(netID) ? "" : "(new) ") + m.getTime() + " " + m.getSenderNetID() + "</b>"
+					+"		</td>"
+					+"		<td>"
+					+"			" + m.getContents()
+					+"		</td>"
+					+"	</tr>";
+				}
+			}
+			table+="</table>";
+		} else {
+			table = "<br/><br/><b>No tardy selected.</b>";
 		}
-		
-		table+="</table>";
-		
+
 		%>
 	
 	
-	
+	<%= table %>
 	
 	
 	<h3>
