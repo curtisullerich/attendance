@@ -14,9 +14,6 @@ import attendance.Event;
 import attendance.Tardy;
 import forms.Form;
 
-//addAttendanceReport(AttendanceReport report);
-//getAttendanceReport(String netID);
-
 /**
  * This is a class used to add stuff to the database
  * 
@@ -97,114 +94,84 @@ public class DatabaseUtil
 	}
 
 	public static void addAbsence(Absence newAbsence) {
-		// TODO Auto-generated method stub
-		
+		EntityManager em = EMFService.get().createEntityManager();
+		em.persist(newAbsence);
+		em.close();	
 	}
 
 	public static void addTardy(Tardy newTardy) {
-		// TODO Auto-generated method stub
-		
+		EntityManager em = EMFService.get().createEntityManager();
+		em.persist(newTardy);
+		em.close();	
 	}
 
 	public static List<Absence> getAbsences(String netID) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	public static void setAbsences(String netID) {
-		// TODO Auto-generated method stub
-		
+		EntityManager em = EMFService.get().createEntityManager();
+		Query q = em.createQuery("select a from Absence a");
+		q.setParameter("netID", netID);
+		List<Absence> absences;
+		try
+		{
+			absences = (List<Absence>) q.getResultList();
+		}
+		catch (NoResultException e)
+		{
+			absences = null;
+		}
+		em.close();
+		return absences;
 	}
 
 	public static List<Tardy> getTardies(String netID) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public static void setTardies(String netID) {
-		// TODO Auto-generated method stub
-		
+		EntityManager em = EMFService.get().createEntityManager();
+		Query q = em.createQuery("select t from Tardy t");
+		q.setParameter("netID", netID);
+		List<Tardy> tardies;
+		try
+		{
+			tardies = (List<Tardy>) q.getResultList();
+		}
+		catch (NoResultException e)
+		{
+			tardies = null;
+		}
+		em.close();
+		return tardies;
 	}
 
 	public static List<Form> getForms(String netID) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public static void setForms(String netID) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public static File getFile(String attachedFile) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public static String addFile(File attachedFile) {
-		// TODO Auto-generated method stub
-		return null;
+		EntityManager em = EMFService.get().createEntityManager();
+		Query q = em.createQuery("select a from AttendanceReport a where a.netID = :netID");
+		q.setParameter("netID", netID);
+		List<Form> result;
+		try
+		{
+			result = (List<Form>) q.getResultList();
+		}
+		catch (NoResultException e)
+		{
+			result = null;
+		}
+		em.close();
+		return result;
 	}
 	
-//	
-//	/**
-//	 * A Method to add a person type to the database
-//	 * @param p the Person to add
-//	 */
-//	public static void addPerson(Person p) {
-//		EntityManager em = EMFService.get().createEntityManager();
-//		em.persist(p);
-//		em.close();
-//	}
-//	
-//	/**
-//	 * A Method to add a Student type to the database
-//	 * @param s the Student to add
-//	 */
-//	public static void addStudent(Student s)
-//	{
-//		EntityManager em = EMFService.get().createEntityManager();
-//		em.persist(s);
-//		em.close();
-//	}
-//
-//	
-//	/**
-//	 * A method that gets a person based off the given netID
-//	 * 
-//	 * @param netID
-//	 *            the netID registered with a student
-//	 * @return either the person with that netID or null if not found
-//	 */
-//	public static Person getPerson(String netID) {
-//
-//		EntityManager em = EMFService.get().createEntityManager();
-//		Query q = em.createQuery("select p from Person p where p.netID = :netID");
-//		q.setParameter("netID", netID);
-//
-//		Person p;
-//		// See if that person actually exists
-//		try {
-//			p = (Person) q.getSingleResult();
-//		} catch (NoResultException e) {
-//			p = null;
-//		}
-//		em.close();
-//		return p;
-//	}
+	public static void addForm(Form form)
+	{
+		EntityManager em = EMFService.get().createEntityManager();
+		em.persist(form);
+		em.close();	
+	}
 
-//	public static String[] listAll() 
-//	{
-//		EntityManager em = EMFService.get().createEntityManager();
-//		Query q = em.createQuery("select m from Person m");
-//		List<Person> people = q.getResultList();
-//		String[] toRet = new String[people.size()];
-//		for (int i = 0; i < people.size(); i++) {
-//			Person p = people.get(i);
-//			toRet[i] = p.toString();
-//		}
-//		em.close();
-//		return toRet;
+//	public static File getFile(String attachedFile) {
+//		// TODO Auto-generated method stub
+//		return null;
 //	}
-
+//
+//	public static String addFile(File attachedFile) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
+	
 }
