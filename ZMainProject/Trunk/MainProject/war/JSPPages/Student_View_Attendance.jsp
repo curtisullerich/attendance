@@ -29,7 +29,7 @@
 			<a href="/JSPPages/Student_View_Attendance.jsp" title="PageTrail_ViewAttendance">View Attendance</a>
 	<%
 	System.out.println("Student_View_Attendance: inside header");
-	String netID = (String) session.getAttribute("user"); 
+	String netID = (String) session.getAttribute("user"); //TODO remove debugging prints in here
 	
 	if (netID == null || netID.equals("")) 
 	{

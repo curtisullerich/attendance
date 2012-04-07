@@ -50,6 +50,17 @@
 		String table = 
 		"<table>\n"	;
 		
+		
+		table+=
+				"	<tr>"
+				+"		<td>"
+				+"			"
+				+"		</td>"
+				+"		<td>"
+				+"			<input type= 'text' name='New Message' id='New Message'/>"
+				+"		</td>"
+				+"	</tr>";
+		
 		PriorityQueue<Message> p = new PriorityQueue<Message>(t.getMessages());
 		
 		while (!p.isEmpty()) {

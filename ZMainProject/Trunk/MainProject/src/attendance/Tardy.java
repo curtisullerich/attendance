@@ -1,5 +1,6 @@
 package attendance;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -14,7 +15,7 @@ import comment.Message;
 
 /**
  * 
- * @author Todd Wegter, Yifei Zhu
+ * @author Todd Wegter, Yifei Zhu, Curtis Ullerich
  * 
  */
 
@@ -34,13 +35,15 @@ public class Tardy {
 	private boolean approved;
 	// Either rehearsal or performance or unknown if there was no Event
 	private String type;
-	private String[] messageIDs = {"",""};
-
+	private String[] messageIDs = {"","","","","","","","",""};
+	private int currentIndex;
+	
 	public Tardy(String netID, Time time, String type) {
 		this.netID = netID;
 		this.checkInTime = time.toString(24);
 		approved = false;
 		this.type = type;
+		this.currentIndex = 0;
 	}
 
 	// public Tardy(String dbTardy)
@@ -104,6 +107,31 @@ public class Tardy {
 		return DatabaseUtil.getMessages(messageIDs);
 	}
 	
+	/**
+	 * 
+	 * Adds a new message associated with this Tardy.
+	 * 
+	 * 
+	 * @author Curtis Ullerich
+	 * @param m the message to be added
+	 */
+	public void addMessage(Message m) {
+		DatabaseUtil.addMessage(m);
+		if (currentIndex >= messageIDs.length) {
+			messageIDs = Arrays.copyOf(messageIDs, messageIDs.length * 2);
+		}
+		messageIDs[currentIndex] = new Long(m.getID()).toString();
+		currentIndex++;
+	}
+	
+	/**
+	 * 
+	 * Checks to see if this Tardy has a new message for a person.
+	 * 
+	 * @author Curtis Ullerich
+	 * @param netId the user in question
+	 * @return true if this tardy has a new message for this user. False otherwise.
+	 */
 	public boolean hasNewMessageFor(String netId) {
 		for (Message m : this.getMessages()) {
 			if (!m.readBy(netId)) {

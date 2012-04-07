@@ -5,7 +5,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import time.Date;
 import time.Time;
 
 /**
@@ -36,6 +35,11 @@ public class Message implements Comparable<Message> {
 		this.time = new Time().toString(24);
 	}
 
+	public long getID() {
+		
+		return this.id;
+	}
+	
 	public String getSender() {
 		return senderNetID;
 	}
@@ -71,12 +75,7 @@ public class Message implements Comparable<Message> {
 	public boolean readBy(String netID) {
 		return (readers[0].equals(netID) || readers[1].equals("netID"));
 	}
-	
-	public Long getID()
-	{
-		return id;
-	}
-	
+		
 	@Override
 	public int compareTo(Message o) {
 		if(o==null)

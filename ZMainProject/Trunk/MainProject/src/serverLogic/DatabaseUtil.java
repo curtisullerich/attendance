@@ -103,6 +103,13 @@ public class DatabaseUtil
 		return toRet;
 	}
 
+	public static void addMessage(Message m) {
+		EntityManager em = EMFService.get().createEntityManager();
+		em.persist(m);
+		em.close();	
+	}
+
+	
 	public static void addAbsence(Absence newAbsence) {
 		EntityManager em = EMFService.get().createEntityManager();
 		em.persist(newAbsence);
@@ -216,19 +223,21 @@ public class DatabaseUtil
 		List<Message> result = new LinkedList<Message>();
 		for (int i = 0; i < messageIDs.length; i++)
 		{
-			Long id = Long.parseLong(messageIDs[i]);
-			Query q = em.createQuery("select m from Message m where m.id := id");
-			q.setParameter("id", id);
-	
-			try
-			{
-				result.addAll((List<Message>) q.getResultList());
+			if (messageIDs[i] != null && !messageIDs[i].equals("")) {
+				Long id = Long.parseLong(messageIDs[i]);
+				Query q = em.createQuery("select m from Message m where m.id := id");
+				q.setParameter("id", id);
+		
+				try
+				{
+					result.addAll((List<Message>) q.getResultList());
+				}
+				catch (NoResultException e)
+				{
+					result = null;
+				}
+				//em.close; <- always leave this open!
 			}
-			catch (NoResultException e)
-			{
-				result = null;
-			}
-			//em.close; <- always leave this open!
 		}
 		return result;
 	}
