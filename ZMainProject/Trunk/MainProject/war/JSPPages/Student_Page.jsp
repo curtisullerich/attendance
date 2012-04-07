@@ -35,7 +35,6 @@
 	<body>
 <!--*********************Page Trail*****************************-->
 	
-	<!--TODO: need to connected to specific page-->
 			<a href="/" title="PageTrail_Home">Home</a> 
 			>
 			<a href="/JSPPages/Student_Page.jsp" title="PageTrail_Student">Student</a>
@@ -49,15 +48,13 @@
 <!--*********************info*****************************-->
 
 	<!--*********************Student Info*****************************-->	
-		</br>
+		<br/><br/>
 		<div>
 		<table>
-			<tr><td>Name:</td> <td><%= user.getFirstName() + " " + user.getLastName()%></td></tr>
 			<tr><td>NetID:</td> <td><%= user.getNetID() %></td></tr>
-			<tr><td>Rank:</td> <td><%= user.getRank().equals("|") ? "none" : user.getRank() %></td></tr>
 		</table>
 		</div>
-	<h2>----------------------------------</h2>
+----------------------------------
 <p>
 		<!--********************* Button *****************************-->
 		<input type ="submit" onClick="viewForms();"  value = "Forms">
@@ -65,9 +62,9 @@
 				<p><a href="/JSPPages/Student_Form_A_Performance_Absence_Request.jsp">Form A - Performance Absence Request</a></p>
 				<p><a href="/JSPPages/Student_Form_B_Class_Conflict_Request.jsp">Form B - Class Conflict Request</a></p>
 				<p><a href="/JSPPages/Student_Form_C_Rehearsal_Excuse.jsp">Form C - Request for Excuse from Rehearsal</a></p>
-				<p><a href="/JSPPages/Student_Form_C_Time_Worked.jsp">Form D - Time Worked</a></p>
+				<p><a href="/JSPPages/Student_Form_D_Time_Worked.jsp">Form D - Time Worked</a></p>
 			</div>
-		<input type ="submit" onClick="window.location = '/JSPPages/Student_View_Attendance_List.jsp';"  value = "View Attendance">
+		<input type ="submit" onClick="window.location = '/JSPPages/Student_View_Attendance.jsp';"  value = "View Attendance">
 		<br/>
 		<input type ="submit" onClick="window.location = '/JSPPages/Student_Edit_Info.jsp';"  value = "Edit my information">
 	</body>

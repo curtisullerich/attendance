@@ -231,12 +231,4 @@ public class User {
 		}
 	}
 
-	public String getAttendanceHtml() {
-		// TODO
-
-		// loop through all events and print the information in the format below
-		return "<tr><td>8/21</td><td>  </td><td>  </td><td>  </td><td>  </td><td><button onClick=\"sendMeToMyMessages();\">Messages</button></tr>";
-
-	}
-
 }
