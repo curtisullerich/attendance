@@ -98,7 +98,7 @@ public class DatabaseUtil
 		em.persist(newAbsence);
 		em.close();	
 	}
-
+	//TODO get by ID for absence and tardy
 	public static void addTardy(Tardy newTardy) {
 		EntityManager em = EMFService.get().createEntityManager();
 		em.persist(newTardy);
@@ -108,7 +108,7 @@ public class DatabaseUtil
 	public static List<Absence> getAbsences(String netID) {
 
 		EntityManager em = EMFService.get().createEntityManager();
-		Query q = em.createQuery("select a from Absence a");
+		Query q = em.createQuery("select a from Absence a where a.netID = :netID");
 		q.setParameter("netID", netID);
 		List<Absence> absences;
 		try
@@ -122,10 +122,46 @@ public class DatabaseUtil
 		em.close();
 		return absences;
 	}
+	
+	public static Absence getAbsenceByID(Long id)
+	{
+		EntityManager em = EMFService.get().createEntityManager();
+		Query q = em.createQuery("select a from Absence a where a.id = :id");
+		q.setParameter("id", id);
+		Absence absence;
+		try
+		{
+			absence = (Absence) q.getSingleResult();
+		}
+		catch (NoResultException e)
+		{
+			absence = null;
+		}
+		em.close();
+		return absence;
+	}
+	
+	public static Tardy getTardyByID(Long id)
+	{
+		EntityManager em = EMFService.get().createEntityManager();
+		Query q = em.createQuery("select t from Tardy t where t.id = :id");
+		q.setParameter("id", id);
+		Tardy tardy;
+		try
+		{
+			tardy = (Tardy) q.getSingleResult();
+		}
+		catch (NoResultException e)
+		{
+			tardy = null;
+		}
+		em.close();
+		return tardy;
+	}
 
 	public static List<Tardy> getTardies(String netID) {
 		EntityManager em = EMFService.get().createEntityManager();
-		Query q = em.createQuery("select t from Tardy t");
+		Query q = em.createQuery("select t from Tardy t where t.netID = :netID");
 		q.setParameter("netID", netID);
 		List<Tardy> tardies;
 		try
@@ -142,7 +178,7 @@ public class DatabaseUtil
 
 	public static List<Form> getForms(String netID) {
 		EntityManager em = EMFService.get().createEntityManager();
-		Query q = em.createQuery("select a from AttendanceReport a where a.netID = :netID");
+		Query q = em.createQuery("select a from From a where a.netID = :netID");
 		q.setParameter("netID", netID);
 		List<Form> result;
 		try
@@ -165,12 +201,10 @@ public class DatabaseUtil
 	}
 
 //	public static File getFile(String attachedFile) {
-//		// TODO Auto-generated method stub
 //		return null;
 //	}
 //
 //	public static String addFile(File attachedFile) {
-//		// TODO Auto-generated method stub
 //		return null;
 //	}
 	
