@@ -64,7 +64,7 @@
 				<td>Date:</td>
 				<td><div id='startDate'>
 						<input id='startMonth' size='5' type='number' name='Month' min='01' max='12' value='9'>(MM)</input>
-						<input id='startDay' size='5' type='number' name='tDay' min='01' max='31' step='1' value='1'>(DD)</input>
+						<input id='startDay' size='5' type='number' name='Day' min='01' max='31' step='1' value='1'>(DD)</input>
 						<input id='startYear' size='5' type='number' name='Year' min='2000' max='2999' step='1' value='2012'/>(YYYY)<!-- TODO make this work with current date instead of hard coding -->
 					</div>
 				</td>
@@ -72,7 +72,7 @@
 			
 			<tr>
 				<td>Work Detail :</td>
-				<td><textarea rows="6" cols="18" name="Detail" wrap="physical"></textarea></td>
+				<td><textarea rows="6" cols="18" name="Details" wrap="physical"></textarea></td>
 			</tr>
 
 			<tr>
