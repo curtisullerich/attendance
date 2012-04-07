@@ -1,13 +1,10 @@
 package attendance;
-<<<<<<< .mine
 import java.util.Arrays;
 import java.util.List;
 
-=======
 import java.math.BigInteger;
 import java.security.MessageDigest;
 
->>>>>>> .r468
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -48,11 +45,8 @@ public class Absence{
 		this.endTime = endTime.toString(24);
 		this.isApproved = false;
 		setType(type);
-<<<<<<< .mine
 		this.currentIndex = 0;
-=======
 		this.id = hash(netID, startTime, endTime);
->>>>>>> .r468
 	}
 
 //	public Absence(String dbAbsence)
@@ -126,7 +120,6 @@ public class Absence{
 		return id;
 	}
 
-<<<<<<< .mine
 	public List<Message> getMessages() {
 		return DatabaseUtil.getMessages(messageIDs);
 	}
@@ -165,7 +158,6 @@ public class Absence{
 	}
 
 
-=======
 	@Override
 	public boolean equals(Object o)
 	{
@@ -191,5 +183,4 @@ public class Absence{
 		}
 	}
 
->>>>>>> .r468
 }
