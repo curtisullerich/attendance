@@ -54,8 +54,8 @@ public class AttendanceReportTest {
 
 	@Test
 	public void test() {
-		//report.sortFormsDescending(new FormIsApprovedComp());
-		System.out.println("hh");
+		report.sortFormsDescending(new FormIsApprovedComp());
+		System.out.println(report.sortFormsDescending(new FormIsApprovedComp()));
 		assertTrue(1==1);
 		
 	}
