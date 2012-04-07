@@ -18,7 +18,7 @@ public class Parser {
 	private static final String studentPrepend = "studentRecord";
 
 	//Remember the people absent and if they were tardy then just remove the absence.
-	public static void splat(String add) {
+	public static boolean splat(String add) {
 		// Splats the massive string into an array of strings for each person
 		String[] people = add.split(",");
 		
@@ -27,45 +27,55 @@ public class Parser {
 		List<Event> events = new LinkedList<Event>();
 
 		//Puts everything into HashMaps!
-		for (String e : people) {
-			// The person splat is in the form
-			// prepend, firstName, lastName, netID, date, startTime, endTime,
-			// rank
-			String[] personalInfo = e.split(" ");
-			String prepend = personalInfo[0];
-			if (prepend.equalsIgnoreCase(studentPrepend))
-				continue;
-			else if (prepend.equalsIgnoreCase(rehearsalPrepend) || prepend.equalsIgnoreCase(performancePrepend))
-			{
-				//Store the Event
-				String date = personalInfo[4];
-				String startTime = personalInfo[5];
-				String endTime = personalInfo[6];
-				Date useDate = parseDate(date);
-				Time start = parseTime(startTime, useDate);
-				Time end = parseTime(endTime, useDate);
-				Event newEvent = new Event(start, end, prepend.substring(0, 6));
-				events.add(newEvent);
-				DatabaseUtil.addEvent(newEvent);
-			}
-			else if (prepend.equalsIgnoreCase(absentPrependPerformance) || prepend.equalsIgnoreCase(absentPrependRehearsal)
-					|| prepend.equalsIgnoreCase(tardyPrepend))
-			{
-				String netID = personalInfo[3];
-				String date = personalInfo[4];
-				String startTime = personalInfo[5];
-				String endTime = personalInfo[6];
+		try
+		{
+			for (String e : people) {				
 				
-				User person = DatabaseUtil.getUser(netID);
-				Date useDate = parseDate(date);
-				Time start = parseTime(startTime, useDate);
-				Time end = parseTime(endTime, useDate);
-				updateMaps(person, prepend, useDate, start, end, absences, tardies);
+				// The person splat is in the form
+				// prepend, firstName, lastName, netID, date, startTime, endTime,
+				// rank
+				String[] personalInfo = e.split(" ");
+				String prepend = personalInfo[0];
+				if (prepend.equalsIgnoreCase(studentPrepend))
+					continue;
+				else if (prepend.equalsIgnoreCase(rehearsalPrepend) || prepend.equalsIgnoreCase(performancePrepend))
+				{
+					//Store the Event
+					String date = personalInfo[4];
+					String startTime = personalInfo[5];
+					String endTime = personalInfo[6];
+					Date useDate = parseDate(date);
+					Time start = parseTime(startTime, useDate);
+					Time end = parseTime(endTime, useDate);
+					Event newEvent = new Event(start, end, prepend.substring(0, 6));
+					events.add(newEvent);
+					DatabaseUtil.addEvent(newEvent);
+				}
+				else if (prepend.equalsIgnoreCase(absentPrependPerformance) || prepend.equalsIgnoreCase(absentPrependRehearsal)
+						|| prepend.equalsIgnoreCase(tardyPrepend))
+				{
+					String netID = personalInfo[3];
+					String date = personalInfo[4];
+					String startTime = personalInfo[5];
+					String endTime = personalInfo[6];
+					
+					User person = DatabaseUtil.getUser(netID);
+					Date useDate = parseDate(date);
+					Time start = parseTime(startTime, useDate);
+					Time end = parseTime(endTime, useDate);
+					updateMaps(person, prepend, useDate, start, end, absences, tardies);
+				}
 			}
+			//TODO add all the stuff in the hashmaps
+			updateALLTheThings(absences, tardies, events);
+			return true;
 		}
-		//TODO add all the stuff in the hashmaps
-		updateALLTheThings(absences, tardies, events);	
+		catch (Exception e)
+		{
+			return false;
+		}
 	}
+		
 
 	private static Date parseDate(String date) {
 		// Dates in the form year-month-day
