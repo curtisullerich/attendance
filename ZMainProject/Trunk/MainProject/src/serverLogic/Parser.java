@@ -162,11 +162,28 @@ public class Parser {
 		
 		for (User u: absences.keySet())
 		{
+			List<Absence> myAbsences = DatabaseUtil.getAbsences(u.getNetID());
+			//Remove the old ones
+			for (int i = 0; i < myAbsences.size(); i++)
+			{
+				if (myAbsences.get(i).equals(absences.get(u)));
+				{
+					DatabaseUtil.removeAbsence(myAbsences.get(i));
+				}
+			}
 			DatabaseUtil.addAbsence(absences.get(u));
 		}
 		
 		for (User u: tardies.keySet())
 		{
+			List<Tardy> myTardies = DatabaseUtil.getTardies(u.getNetID());
+			for (int i = 0; i < myTardies.size(); i++)
+			{
+				if (myTardies.get(i).equals(tardies.get(u)))
+				{
+					DatabaseUtil.removeTardy(myTardies.get(i));
+				}
+			}
 			DatabaseUtil.addTardy(tardies.get(u));
 		}
 		

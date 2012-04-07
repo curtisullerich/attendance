@@ -25,15 +25,23 @@ import forms.Form;
  */
 public class DatabaseUtil 
 {
-	//private static EntityManager em = EMFService.get().createEntityManager();
 	/**
 	 * A Method to remove an object from the database
 	 * @param o the object to remove
 	 */
-	public static void remove(Object o)
+	public static void removeAbsence(Absence o)
 	{
 		EntityManager em = EMFService.get().createEntityManager();
-		em.remove(o);
+		Absence toRem = em.find(Absence.class, o.getID());
+		em.remove(toRem);
+		em.close();
+	}
+	
+	public static void removeTardy(Tardy o)
+	{
+		EntityManager em = EMFService.get().createEntityManager();
+		Tardy toRem = em.find(Tardy.class, o.getID());
+		em.remove(toRem);
 		em.close();
 	}
 	
