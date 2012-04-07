@@ -43,7 +43,7 @@ public class FormD extends HttpServlet
 				try
 				{
 					Message msg = new MimeMessage(session);
-					//msg.setFrom(new InternetAddress(Email));
+					msg.setFrom(new InternetAddress("bmaxwell921@gmail.com"));
 					msg.addRecipient(Message.RecipientType.TO, new InternetAddress(Email));
 					msg.setSubject(guy.getFirstName() + " " + guy.getLastName() + " requests approval of work time.");
 					msg.setText((msgBody));
@@ -52,12 +52,14 @@ public class FormD extends HttpServlet
 				}
 				catch (AddressException e)
 				{
-					
+					e.printStackTrace();					
 				}
 				catch (MessagingException e)
 				{
-					
+					e.printStackTrace();
 				}
+				
+				resp.sendRedirect("/JSPPages/Student_Page.jsp");
 				
 			}
 			else
