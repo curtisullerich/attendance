@@ -43,7 +43,7 @@ public class Tardy {
 	public Tardy(String netID, Time time, String type) {
 		this.netID = netID;
 		this.checkInTime = time.toString(24);
-		approved = false;
+		this.status = "pending";
 		setType(type);
 		this.id = hash(netID, time);
 		this.currentIndex = 0;
@@ -65,7 +65,7 @@ public class Tardy {
 		// Should be in the form
 		// "year-month-day hour:minute:second type isApproved"
 		return getTime().getDate().toString() + " " + getTime().get24Format()
-				+ " " + type + " " + approved;
+				+ " " + type + " " + status;
 	}
 
 	public Time getTime() {
@@ -76,14 +76,13 @@ public class Tardy {
 		this.checkInTime = time.toString(24);
 	}
 
-	public boolean isApproved() {
-		return approved;
+	public String getStatus() {
+		return this.status;
 	}
 
-	public void setApproved(boolean approved) {
-		this.approved = approved;
+	public void setStatus(String status) {
+		this.status = status;
 	}
-
 	public String getType() {
 		return type;
 	}
