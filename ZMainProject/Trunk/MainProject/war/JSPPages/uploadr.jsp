@@ -11,16 +11,17 @@
 <script>
 	window.onload = function(){
 		<%String info = request.getParameter("tempForUpload");
+			boolean worked = false;
 			//out.println("value="+info);
 			//System.out.println("We got here");
 		%>
 		<%if (info != null && !info.equalsIgnoreCase(""))
 		{%>
-			<%Parser.splat(info);%>
+			<%worked = Parser.splat(info);%>
 			localStorage.setItem("success", true);
 		<%}%>
 		
-		<%if (info == null)
+		<%if (info == null || !worked)
 		{%>
 			localStorage.setItem("success", false);
 		<%}%>
