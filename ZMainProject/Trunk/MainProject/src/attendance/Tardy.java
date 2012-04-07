@@ -91,8 +91,10 @@ public class Tardy {
 	public void setType(String type) {
 		if (type.equalsIgnoreCase("performance"))
 			this.type = "performance";
-		else
+		else if (type.equalsIgnoreCase("rehearsal"))
 			this.type = "rehearsal";
+		else
+			this.type = "unknown";
 	}
 
 	public boolean isRehearsal() {
