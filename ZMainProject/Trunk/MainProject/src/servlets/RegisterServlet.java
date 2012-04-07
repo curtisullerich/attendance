@@ -19,7 +19,7 @@ public class RegisterServlet extends HttpServlet
 			throws IOException {
 		//Reads in the stuff from NetID, Password, and Re-Enter Password then makes a person from there
 		String buttonPressed = req.getParameter("Register");
-		String netID, password, reEnter, firstName, lastName, univID, major, section;
+		String netID, password, firstName, lastName, univID, major, section;
 		int year;
 		if (buttonPressed != null)
 		{

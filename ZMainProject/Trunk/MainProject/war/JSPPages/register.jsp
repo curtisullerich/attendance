@@ -4,26 +4,56 @@
 
 <html>
 <head>
-<script src="sha.js"/></script>
+<script src="sha.js" /></script>
 <script>
 	
 	/**
  	 *
  	 * Hashes the password for sending to the server.
-	 * @author Curtis
+	 * @author Curtis Ullerich, Todd Wegter
 	 *
 	 */
 	function confirmAndHashData() {
- 		 if(document.getElementById("Password").value != document.getElementById("Re-Enter Password").value){
- 			 alert("Passwords do not match. Please ensure passwords match.");
- 			 return false;
- 		 }
  		 
- 		 if(document.getElementById("UniversityID").value != document.getElementById("Re-Enter UniversityID").value){
- 			 alert("University IDs do not match. Please ensure University IDs match.");
- 			 return false;
- 		 }
- 		 
+ 		 var universityID = document.getElementById("UniversityID").value; 
+		 //check that universityID is 9 digit number
+ 		 if((parseInt(universityID,10) < 0) || (parseInt(universityID,10) > 999999999)){
+			 alert("This is not a valid University ID. Please re-enter your University ID.")
+			 return false;
+	 	 }
+		 
+ 		 //check if years is 10...
+ 		 if(parseInt(document.getElementById("Year").value,10) == 10){
+			 alert("Congratulations. You need to graduate.")
+	 	 }
+		 
+		 var password = document.getElementById("Password").value
+		 //check that password is appropriate length
+		 if(password.length < 6 || password.length > 20){
+			 alert("Password must be between 5 and 21 characters long.")
+			 return false;
+		 }
+		 //check that password contains legal characters
+		 var badChars = new Array();
+		 for(var i = 0; i < password.length; i++){
+	 		//between the brackets are all valid password characters
+ 		     if(!/[abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*()_+=.,<>?-]/.test(password[i]))
+		 	 	 badChars.push(password[i]);
+		 }
+		 if(badChars.length > 0){
+		 	  var badCharsStr = "";
+		      for(i = 0; i < badChars.length; i++)
+		 	       badCharsStr += (badChars[i] + " ");
+		      alert("Please do not use the following characters: " + badCharsStr);
+		      return false;
+		 }
+		 //check that passwords match
+		 if(password != document.getElementById("Re-Enter Password").value){
+			 alert("Passwords do not match. Please ensure passwords match.");
+			 return false;
+		 }
+		 
+		 //hash password into hidden field
 		 var str = Sha1.hash(document.getElementById("Password").value);
 		 str = str.toUpperCase();
 		 document.getElementById("Hashed Password").value = str;
@@ -39,7 +69,8 @@
 <body>
 	<h1>ISU Varsity Marching Band / Spring 2012</h1>
 	<h2>Registration</h2>
-	<form action="/register" method="post" onSubmit="return confirmAndHashData();" accept-charset="utf-8">
+	<form action="/register" method="post"
+		onSubmit="return confirmAndHashData();" accept-charset="utf-8">
 		<table>
 			<tr>
 				<td><label for="FirstName">First Name</label></td>
@@ -50,53 +81,58 @@
 				<td><label for="LastName">Last Name</label></td>
 				<td><input type="text" name="LastName" id="LastName" /></td>
 			</tr>
-			
+
 			<tr>
 				<td><label for="NetID">NetID</label></td>
 				<td><input type="text" name="NetID" id="NetID" /></td>
 			</tr>
-			
+
 			<tr>
 				<td><label for="UniversityID">UniversityID</label></td>
 				<td><input type="text" name="UniversityID" id="UniversityID" /></td>
 			</tr>
-			
+
 			<tr>
-				<td><label for="Re-Enter UniversityID">Re-Enter UniversityID</label></td>
-				<td><input type="text" name="Re-Enter UniversityID" id="Re-Enter UniversityID" /></td>
+				<td><label for="Section">Section</label></td>
+				<td><select name="Section" id="Section">
+						<option>Piccolo</option>
+						<option>Clarinet</option>
+						<option>Alto Sax</option>
+						<option>Tenor Sax</option>
+						<option>Trumpet</option>
+						<option>Trombone</option>
+						<option>Mellophone</option>
+						<option>Baritone</option>
+						<option>Sousaphone</option>
+						<option>Guard</option>
+						<option>Drum Major</option>
+						<option>Staff</option>
+						<option>Drumline: Cymbals</option>
+						<option>Drumline: Tenors</option>
+						<option>Drumline: Snare</option>
+						<option>Drumline: Bass</option>
+						<option>Twirler</option>
+				</select></td>
+			</tr>
+
+			<tr>
+				<td><label for="Year">Years in band</label></td>
+				<td><select name="Year" id="Year">
+						<option>1</option>
+						<option>2</option>
+						<option>3</option>
+						<option>5</option>
+						<option>6</option>
+						<option>7</option>
+						<option>8</option>
+						<option>9</option>
+						<option>10</option>
+				</select>years</td>
 			</tr>
 
 			<tr>
 				<td><label for="Major">Major</label></td>
-						<td><select name="Major">
-							<option>Piccolo</option>
-							<option>Clarinet</option>
-							<option>Alto Sax</option>
-							<option>Tenor Sax</option>
-							<option>Trumpet</option>
-							<option>Trombone</option>
-							<option>Mellophone</option>
-							<option>Baritone</option>
-							<option>Sousaphone</option>
-							<option>Guard</option>
-							<option>Drum Major</option>
-							<option>Staff</option>
-							<option>Drumline: Cymbals</option>
-							<option>Drumline: Tenors</option>
-							<option>Drumline: Snare</option>
-							<option>Drumline: Bass</option>
-							<option>Twirler</option>						
-						</select></td>
-			</tr>
-			
-			<tr>
-				<td><label for="Year">Years in band</label></td>
-				<td><input type="text" name="Year" id="Year" /></td>
-			</tr>
-
-			<tr>
-				<td><label for="Section">Section</label></td>
-				<td><input type="text" name="Section" id="Section" /></td>
+				<td><input type="text" name="Major" id="Major" /></td>
 			</tr>
 
 			<tr>
@@ -106,18 +142,19 @@
 
 			<tr>
 				<td><label for="Re-Enter Password">Re-Enter Password</label></td>
-				<td><input type="password" name="Re-Enter Password" 
+				<td><input type="password" name="Re-Enter Password"
 					id="Re-Enter Password" /></td>
 			</tr>
-			
+
 			<tr>
-				<td><input type="password" name="Hashed Password" id="Hashed Password" hidden=true/></td>
+				<td><input type="password" name="Hashed Password"
+					id="Hashed Password" hidden=true /></td>
 			</tr>
-			
+
 		</table>
-		<input type="submit" value="Register" name="Register"/>
+		<input type="submit" value="Register" name="Register" />
 	</form>
-	
+
 </body>
 
 </html>
