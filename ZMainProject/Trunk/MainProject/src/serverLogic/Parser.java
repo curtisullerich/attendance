@@ -45,6 +45,7 @@ public class Parser {
 				Time start = parseTime(startTime, useDate);
 				Time end = parseTime(endTime, useDate);
 				Event newEvent = new Event(start, end, prepend.substring(0, 6));
+				events.add(newEvent);
 				DatabaseUtil.addEvent(newEvent);
 			}
 			else if (prepend.equalsIgnoreCase(absentPrependPerformance) || prepend.equalsIgnoreCase(absentPrependRehearsal)
