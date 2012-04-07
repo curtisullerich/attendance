@@ -72,6 +72,11 @@ public class Message implements Comparable<Message> {
 		return (readers[0].equals(netID) || readers[1].equals("netID"));
 	}
 	
+	public Long getID()
+	{
+		return id;
+	}
+	
 	@Override
 	public int compareTo(Message o) {
 		if(o==null)
