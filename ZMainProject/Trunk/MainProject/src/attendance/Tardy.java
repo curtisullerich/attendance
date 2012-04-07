@@ -23,6 +23,7 @@ public class Tardy {
 
 	private String checkInTime;
 	private boolean approved;
+	//Either rehearsal or performance or unknown if there was no Event
 	private String type;
 	
 	public Tardy(Time time, String type)

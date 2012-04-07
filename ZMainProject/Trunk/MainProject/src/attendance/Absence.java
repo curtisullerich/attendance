@@ -23,6 +23,7 @@ public class Absence{
 	private String startTime;
 	private String endTime;
 	private boolean isApproved;
+	//Either Rehearsal or Performance
 	private String type;
 	
 	public Absence(Time startTime, Time endTime, String type) {
