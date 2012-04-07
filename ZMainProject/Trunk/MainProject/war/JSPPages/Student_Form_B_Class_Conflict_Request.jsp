@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ page import="people.*" %>
+<%@ page import="java.util.Calendar" %>
 <%@ page import="serverLogic.DatabaseUtil" %>
 
 <html>
@@ -49,7 +50,10 @@
 			<p>  </p><br>
 
 <% int year = user.getYear();
-
+	int month = Calendar.getInstance().get(Calendar.MONTH) + 1;
+	int curYear = Calendar.getInstance().get(Calendar.YEAR);
+	int day = Calendar.getInstance().get(Calendar.DATE);
+	
 int max = 1;
 if (year > 1) max++;
 String formHtml = "";
@@ -80,9 +84,9 @@ for (int i = 1; i <= max; i++) {
 			+"	<tr>"
 			+"		<td>Starting Date:</td>"
 			+"		<td><div id='startDate" + i + "'>"
-			+"				<input id='startMonth" + i + "' size='5' type='number' name='startMonth" + i + "' min='01' max='31' value='9'/>"
-			+"				<input id='startDay" + i + "' size='5' type='number' name='startDay" + i + "' min='00' max='59' step='1' value='1'/>"
-			+"				<input id='startYear" + i + "' size='5' type='number' name='startYear" + i + "' min='2012' max='2013' step='1' value='2012'/><!-- TODO make this work with current date instead of hard coding -->"
+			+"				<input id='startMonth" + i + "' size='5' type='number' name='startMonth" + i + "' min='01' max='31' value='" + month+ "'/>"
+			+"				<input id='startDay" + i + "' size='5' type='number' name='startDay" + i + "' min='1' max='31' step='1' value='" + day + "'/>"
+			+"				<input id='startYear" + i + "' size='5' type='number' name='startYear" + i + "' min='2012' max='2013' step='1' value='" + curYear + "'/><!-- TODO make this work with current date instead of hard coding -->"
 			+"			</div>"
 			+"		</td>"
 			+"	</tr>"
@@ -90,9 +94,9 @@ for (int i = 1; i <= max; i++) {
 			+"	<tr>"
 			+"		<td>Ending Date:</td>"
 			+"		<td><div id='endDate" + i + "'>"
-			+"				<input id='endMonth" + i + "' size='5' type='number' name='endMonth" + i + "' min='01' max='31' value='9'/>"
-			+"				<input id='endDay" + i + "' size='5' type='number' name='endDay" + i + "' min='00' max='59' step='1' value='1'/>"
-			+"				<input id='endYear" + i + "' size='5' type='number' name='endYear" + i + "' min='2012' max='2013' step='1' value='2012'/><!-- TODO make this work with current date instead of hard coding -->"
+			+"				<input id='endMonth" + i + "' size='5' type='number' name='endMonth" + i + "' min='01' max='31' value='" + month + "'/>"
+			+"				<input id='endDay" + i + "' size='5' type='number' name='endDay" + i + "' min='00' max='59' step='1' value='" + day + "'/>"
+			+"				<input id='endYear" + i + "' size='5' type='number' name='endYear" + i + "' min='2012' max='2013' step='1' value='" + curYear + "'/><!-- TODO make this work with current date instead of hard coding -->"
 			+"			</div>"
 			+"		</td>"
 			+"	</tr>"
