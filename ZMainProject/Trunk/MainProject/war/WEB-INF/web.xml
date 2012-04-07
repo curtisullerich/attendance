@@ -20,8 +20,18 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	</servlet>
 	
 	<servlet>
+		<servlet-name>FormB</servlet-name>
+		<servlet-class>servlets.FormB</servlet-class>
+	</servlet>
+	
+	<servlet>
 		<servlet-name>FormC</servlet-name>
 		<servlet-class>servlets.FormC</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>FormD</servlet-name>
+		<servlet-class>servlets.FormD</servlet-class>
 	</servlet>
 	
 	<servlet>
@@ -45,8 +55,18 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	</servlet-mapping>
 	
 	<servlet-mapping>
+		<servlet-name>FormD</servlet-name>
+		<url-pattern>/formD</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
 		<servlet-name>FormC</servlet-name>
 		<url-pattern>/formC</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>FormD</servlet-name>
+		<url-pattern>/formD</url-pattern>
 	</servlet-mapping>
 	
 	<servlet-mapping>
