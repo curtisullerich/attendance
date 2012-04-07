@@ -109,17 +109,6 @@ public class Absence{
 	public long getID(){
 		return id;
 	}
-<<<<<<< .mine
-	
-	public long hash(String netID, Time startTime, Time endTime) {
-		try {
-			String id = netID + startTime.toString(24) + endTime.toString(24);
-			MessageDigest cript = MessageDigest.getInstance("SHA-1");
-			cript.reset();
-			cript.update(id.getBytes("utf8"));
-			BigInteger bigot = new BigInteger(cript.digest());
-			// Something about things
-			return bigot.longValue();
 
 	@Override
 	public boolean equals(Object o)
