@@ -38,7 +38,7 @@ System.out.println("tardyMessage.jsp: 2");
 	User user = DatabaseUtil.getUser(netID);
 	if ((request.getParameter("id") == null || request.getParameter("id").isEmpty())) {
 		hasMessage = false;
-System.out.println("tardyMessage.jsp: 4");
+System.out.println("tardyMessage.jsp: 4");//TODO remove debugging SOPs
 	}
 System.out.println("tardyMessage.jsp: 5");
 	%>
@@ -62,9 +62,6 @@ System.out.println("tardyMessage.jsp: 5");
 			System.out.println("tardyMessage.jsp: 7.5");
 
 			Tardy t = DatabaseUtil.getTardyByID(id);
-			if (t == null) {
-				System.out.println("YUP NULL");
-			}
 			
 			System.out.println("tardyMessage.jsp: 7.6");
 			PriorityQueue<Message> p = new PriorityQueue<Message>();
@@ -92,10 +89,10 @@ System.out.println("tardyMessage.jsp: 5");
 						+"			Write a new message:"
 						+"</td>"
 						+"<td>"
-						+"			<input type= 'text' name='New Message' id='New Message'/>"
+						+"			<input type= 'text' name='New Message' id='New Message'/>	<button action='/newMessage?tardyid=" + id +"' type='Submit'>Send</button>"
 
 						+"</td>"
-					+"</tr></table>";
+					+"</tr>";
 					System.out.println("tardyMessage.jsp: 9");
 
 			
