@@ -49,22 +49,6 @@
 		<form method="post" action="/formD">
 			<p><h1>Time Work Form | FORM D</h1></p>
 
-			<tr>
-				<td></td>
-				<td>
-					<b>Time Work Details</b>
-				</td>
-			</tr>
-
-			<tr>
-				<td>Status (by Director)</td>
-				<td><input name="Detail"></input></td>
-			</tr>
-			
-			<tr>
-				<td>Validate(by the person he send)</td>
-				<td><input name="Detail"></input></td>
-			</tr>
 
 			<tr>
 				<td>Email Address:</td>
@@ -87,7 +71,7 @@
 			</tr>
 			
 			<tr>
-				<td>Detail of Work:</td>
+				<td>Work Detail :</td>
 				<td><textarea rows="6" cols="18" name="Detail" wrap="physical"></textarea></td>
 			</tr>
 

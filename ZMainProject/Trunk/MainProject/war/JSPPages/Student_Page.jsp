@@ -66,7 +66,7 @@
 				<p><a href="/JSPPages/Student_Form_A_Performance_Absence_Request.jsp">Form A - Performance Absence Request</a></p>
 				<p><a href="/JSPPages/Student_Form_B_Class_Conflict_Request.jsp">Form B - Class Conflict Request</a></p>
 				<p><a href="/JSPPages/Student_Form_C_Rehearsal_Excuse.jsp">Form C - Request for Excuse from Rehearsal</a></p>
-				<p><a href="/JSPPages/Student_Form_D_Time_Worked.jsp">Form D - Time Worked</a></p>
+				<p><a href="/JSPPages/Student_Form_D_TimeWorked.jsp">Form D - Time Worked</a></p>
 			</div>
 		<input type ="submit" onClick="window.location = '/JSPPages/Student_View_Attendance.jsp';"  value = "View Attendance">
 		<br/>
