@@ -35,8 +35,8 @@ public class RegisterServlet extends HttpServlet
 			major = req.getParameter("Major");
 			section = req.getParameter("Section");
 			
-			if (netID != null && password != null && firstName != null && lastName != null && univID != null && year > 0 && major != null && section != null)
-			{
+//			if (netID != null && password != null && firstName != null && lastName != null && univID != null && year > 0 && major != null && section != null)
+//			{
 				//Need to do various other checks and stuff. Like whether this account already exists
 				
 				//check for already registered users
@@ -56,12 +56,12 @@ public class RegisterServlet extends HttpServlet
 				{
 					resp.sendRedirect("/JSPPages/register.jsp?userExists=true&user=" + netID);
 				}
-			}
-			else
-			{
-				//Throw an alert that they didn't add a field
-				System.out.println("some fields were invalid");
-			}
+//			}
+//			else
+//			{
+//				//Throw an alert that they didn't add a field
+//				System.out.println("some fields were invalid");
+//			}
 		}
 	}
 }

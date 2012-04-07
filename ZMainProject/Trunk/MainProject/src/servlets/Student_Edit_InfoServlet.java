@@ -32,7 +32,6 @@ public class Student_Edit_InfoServlet extends HttpServlet
 		{
 		
 			//Grab all the data from the fields
-
 			password = req.getParameter("Hashed Password");
 			firstName = req.getParameter("FirstName");
 			lastName = req.getParameter("LastName");
@@ -41,13 +40,10 @@ public class Student_Edit_InfoServlet extends HttpServlet
 			major = req.getParameter("Major");
 			section = req.getParameter("Section");
 			
-			if ( password != null && firstName != null && lastName != null && univID != null && year > 0 && major != null && section != null)
-			{
+//			if ( password != null && firstName != null && lastName != null && univID != null && year > 0 && major != null && section != null)
+//			{
 				User guy = DatabaseUtil.getUser(""+req.getSession().getAttribute("user"));
-				
-				//this is the netID
-				//req.getSession().getAttribute("user");
-				
+
 				guy.setFirstName(firstName);
 				guy.setLastName(lastName);
 				guy.setUnivID(univID);
@@ -56,21 +52,21 @@ public class Student_Edit_InfoServlet extends HttpServlet
 				guy.setSection(section);
 				guy.setHashedPassword(password);
 				
-				
-//				guy = new User(""+req.getSession().getAttribute("user"), password, firstName,
-//						lastName, univID, "Student", major,
-//						section, year);	
 				//overwrite the old user
 				DatabaseUtil.addUser(guy);
 				
 				//Send them back to the login page?
+				System.out.println("some fields were invalid");
 				resp.sendRedirect("/JSPPages/Student_Page.jsp");
 			}
-			else
-			{
-				//Throw an alert that they didn't add a field
-				System.out.println("some fields were invalid");
-			}	
+//		}
+		else
+		{
+			//Throw an alert that they didn't add a field
+			System.out.println("some fields were invalid");
 		}
-	}
+		
+		
+			}
+
 }
