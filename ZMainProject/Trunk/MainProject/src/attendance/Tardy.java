@@ -31,7 +31,7 @@ public class Tardy {
 	public Tardy(String netID, Time time, String type)
 	{
 		this.netID = netID;
-		this.checkInTime = time.toString();
+		this.checkInTime = time.toString(24);
 		approved = false;
 	}
 	
