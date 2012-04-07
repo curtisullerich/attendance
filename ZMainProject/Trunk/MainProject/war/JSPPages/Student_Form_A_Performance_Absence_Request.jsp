@@ -61,21 +61,22 @@ ending January 9, 2013, and it must be submitted by 4:30 p.m. on Monday, August<
 			<tr>
 				<td>Date:</td>
 				<td><div id='startDate'>
-						<input id='startMonth' size='5' type='number' name='startMonth' min='01' max='31' value='9'/>
-						<input id='startDay' size='5' type='number' name='startDay' min='00' max='59' step='1' value='1'/>
-						<input id='startYear' size='5' type='number' name='startYear' min='2012' max='2013' step='1' value='2012'/><!-- TODO make this work with current date instead of hard coding -->
+						<input id='startMonth' size='5' type='number' name='StartMonth' min='01' max='12' value='9'>(MM)</input>
+						<input id='startDay' size='5' type='number' name='StartDay' min='01' max='31' step='1' value='1'>(DD)</input>
+						<input id='startYear' size='5' type='number' name='StartYear' min='2000' max='2999' step='1' value='2012'/>(YYYY)<!-- TODO make this work with current date instead of hard coding -->
 					</div>
 				</td>
 			</tr>
 			
 			<tr>
 				<td>Reasons:</td>
-				<td><textarea rows="6" cols="18" name="comments" wrap="physical"></textarea></td>
+				<td><textarea rows="6" cols="18" name="Reason" wrap="physical"></textarea></td>
 			</tr>
 
 			<tr>
-				<td></td>
-				<td><input type="submit" value="Submit"></td>
+				<td>
+					<button type="Submit" name = "Submit" type ="Submit">Submit</button>
+				</td>
 			</tr>
 		</form>
 	</table>
@@ -83,7 +84,7 @@ ending January 9, 2013, and it must be submitted by 4:30 p.m. on Monday, August<
 <!--==================================================================================================================-->		
 
 <br/>
-		<button type="Back">Back</button>
+		<button type="Back" name = "Back" type ="Back">Back</button>
 	</body>
 
 </html>
