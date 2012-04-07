@@ -32,7 +32,7 @@ public class Absence{
 	private String netID;
 	private String startTime;
 	private String endTime;
-	private boolean isApproved;
+	private String status;
 	//Either Rehearsal or Performance
 	private String type;
 	private String[] messageIDs = {"","","","","","","","",""};
@@ -43,7 +43,7 @@ public class Absence{
 		this.netID = netID;
 		this.startTime = startTime.toString(24);
 		this.endTime = endTime.toString(24);
-		this.isApproved = false;
+		this.status = "pending";
 		setType(type);
 		this.currentIndex = 0;
 		this.id = hash(netID, startTime, endTime);
@@ -66,7 +66,7 @@ public class Absence{
 		//                                             |                      |        
 		//Should be in the form "year-month-day hour:minute:second hour:minute:second type isApproved"
 		return getStartTime().getDate().toString() + " " + getStartTime().get24Format() 
-				+ " " + getEndTime().get24Format() + " " + type + " " + isApproved;
+				+ " " + getEndTime().get24Format() + " " + type + " " + status;
 	}
 	
 	public Time getStartTime() {
@@ -85,14 +85,14 @@ public class Absence{
 		this.endTime = endTime.toString(24);
 	}
 
-	public boolean isApproved() {
-		return isApproved;
+	public String getStatus() {
+		return this.status;
 	}
 
-	public void setApproved(boolean isApproved) {
-		this.isApproved = isApproved;
+	public void setStatus(String status) {
+		this.status = status;
 	}
-	
+		
 	public String getType(){
 		return type;
 	}
