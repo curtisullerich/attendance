@@ -116,9 +116,7 @@
 								+tardyHtml + absenceHtml
 								
 					+"		</table>"
-					+"	</div>"
-					+"<!--********************* Button *****************************-->"
-					+"	<button type='Save'>Save Changes</button>";
+					+"	</div>";
 			} else {
 				
 				insert= "You don't have any tardies or absences! Hooray!";
