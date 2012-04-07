@@ -157,6 +157,7 @@
 					<tr>
 						<td><label for="Password2">Re-Enter Password:</label></td>
 						<td><input type= "password" name="Password2" id="Password2"/></td>	
+
 					</tr>
 					
 					<tr>

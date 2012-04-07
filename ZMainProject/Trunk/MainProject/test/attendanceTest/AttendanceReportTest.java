@@ -39,6 +39,7 @@ public class AttendanceReportTest {
 		list.add(f1);
 		list.add(f2);
 		report=new AttendanceReport("abc");
+		report
 		
 	
 	}
