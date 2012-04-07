@@ -19,6 +19,7 @@
 			 */
 			window.onload = function() {
 				//determine date of latest class list
+				document.getElementById("login").hidden = true;
 				var array = storeToArray(studentPrepend," ","date");
 				var str;
 				if (array.length < 1) {
@@ -79,24 +80,33 @@
 			 * @author Curtis Ullerich
 			 * @date 3-10-2012
 			 */
-	        function uploadAll() {
+	        function getLogin() {
 				//check online status
 				if (!navigator.onLine) {
 				   alert("You're not online. Upload not performed.");
 				   return false;
 				}
-				//create list of data to upload to the server
-				var str = "";
-				var key;
-				for (var i = 0; i < localStorage.length; i++) {
-					key = localStorage.key(i);
-					if(!stringContains(studentPrepend,key) && !stringContains(loginPrepend,key)){
-						str += key + ",";
-					}
-				}
-				document.getElementById("tempForUpload").value = str;
-				return true;			 
+				document.getElementById("main").hidden = true;
+				document.getElementById("login").hidden = false;
+				return false;			 
 	        }
+	        
+	        function loginAndUpload(){
+		        if(confirmTAForUpload()){					
+					//create list of data to upload to the server
+					var str = "";
+					var key;
+					for (var i = 0; i < localStorage.length; i++) {
+						key = localStorage.key(i);
+						if(!stringContains(studentPrepend,key) && !stringContains(loginPrepend,key)){
+							str += key + ",";
+						}
+					}
+					document.getElementById("tempForUpload").value = str;
+					return true;
+		        }
+		        return false;
+			}
 	        
 	        /**
 	         * Removes all student records currently stored in localStorage
@@ -165,19 +175,18 @@
 		</script>
 	</head>
 	<body>
-		<div class="box">
+		<div class="box" id="main">
 			<h1>@10dance</h1>
 			</br>
 			<input class="help" type="button" id="help" value="Help" onclick="javascript: help();"/>
-			<form method="POST" action="/JSPPages/uploadr.jsp" class="centeralign">
+			<form onsubmit="return getLogin();" class="centeralign">
 				<input class="button" type="button" id="tardy" value="Tardy Check-In" onclick="window.location='FieldAppTardy.html'"/> 
 				<input class="button" type="button" id="absent" value="Report Absences" onclick="window.location = 'FieldAppAbsent.html'"/>
 				<div>
 					</br>
 				</div>
 				<input class="button" type="button" id="update" value="Update Class List" onclick="javascript: updateList();"/>
-				<input class="button" type="submit" id="submit" value="Upload Attendance Data" onclick="uploadAll();"/> 
-				<input type="hidden" id="tempForUpload" name="tempForUpload" value=""/>
+				<input class="button" type="submit" id="submit" value="Upload Attendance Data"/> 
 				<div>
 					</br>
 				</div>
@@ -188,5 +197,20 @@
 				<input class="button" type="button" id="clear" value="Clear ALL THE THINGS!!!" onClick="clearAll();" hidden=true/>
 			</div>
 		</div>
-	</body>
+		<div class="box" id="login">
+			<h1>Data Upload Login</h1>
+			</br>
+			<form class="centeralign" id="TACredentials" method="POST" action="/JSPPages/uploadr.jsp" onsubmit=" return loginAndUpload();">
+				<input type="text" id="TA" placeholder="TA netID"/>
+				</br>
+				<input type="password" id="password" placeholder="password"/>
+				</br>
+				</br>
+				<input type="submit" id="submitLogin" value="Submit"/>
+				<input type="button" id="cancel" value="Cancel" onclick="window.location='/MobileApp/FieldAppMain.html'"/>
+				<input type="hidden" id="tempForUpload" name="tempForUpload" value=""/>
+			</form>
+		</div>
+    </body>
 </html>
+

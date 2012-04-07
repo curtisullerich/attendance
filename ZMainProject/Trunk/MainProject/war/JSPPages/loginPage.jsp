@@ -10,6 +10,10 @@
 		<script src="/MobileApp/sha.js"/></script>
 		<script>
 		
+		window.onload = function() {
+			
+		}
+		
 		/**
 		 *
 		 * Hashes the password for sending to the server.
@@ -31,7 +35,7 @@
 				<table>
 					<tr>
 					
-						<td><label for="User Name">Username</label></td>
+						<td><label for="User Name">NetID</label></td>
 						<td><input type= "text" name="User Name" id="User Name"/></td>
 					</tr>
 					

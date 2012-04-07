@@ -9,7 +9,7 @@
 <script src = "sha.js"></script>
 <link rel="stylesheet" type="text/css" href="/MobileApp/FieldAppCSS.css" />
 <script>
-	function uploadData(){
+	window.onload = function(){
 		<%String info = request.getParameter("tempForUpload");
 			//out.println("value="+info);
 			//System.out.println("We got here");
@@ -32,26 +32,9 @@
 		window.location = "/MobileApp/FieldAppMain.html";
 	}
 	
-	function loginAndUpload(){
-		if(confirmTAForUpload())
-			uploadData();
-		return false;
-	}
 </script>
 <html>
 	<body>
-		<div class="box" id="login">
-			<h1>Data Upload Login</h1>
-			</br>
-			<form class="centeralign" id="TACredentials" onsubmit="return loginAndUpload();">
-				<input type="text" id="TA" placeholder="TA netID"/>
-				</br>
-				<input type="password" id="password" placeholder="password"/>
-				</br>
-				</br>
-				<input type="submit" id="submit" value="Submit"/>
-				<input type="button" id="cancel" value="Cancel" onclick="window.location='/MobileApp/FieldAppMain.html'"/>
-			</form>
-		</div>
+		<h1><br/>Uploading...</h1>
     </body>
 </html>
