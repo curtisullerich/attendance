@@ -52,7 +52,7 @@ public class Form {
 		this.endTime = endTime.toString(24);
 		this.reason = reason;
 		this.type = type;
-		setFile(attachedFile);
+		//setFile(attachedFile);
 		this.additionalInfo = additionalInfo;
 		approved = false;
 	}
@@ -105,13 +105,13 @@ public class Form {
 		this.type = type;
 	}
 
-	public File getFile() {
-		return DatabaseUtil.getFile(attachedFile); // get file with this key
-													// from database
-	}
-
-	public void setFile(File attachedFile) {
-		this.attachedFile = DatabaseUtil.addFile(attachedFile); // return key
-																// for file
-	}
+//	public File getFile() {
+//		return DatabaseUtil.getFile(attachedFile); // get file with this key
+//													// from database
+//	}
+//
+//	public void setFile(File attachedFile) {
+//		this.attachedFile = DatabaseUtil.addFile(attachedFile); // return key
+//																// for file
+//	}
 }
