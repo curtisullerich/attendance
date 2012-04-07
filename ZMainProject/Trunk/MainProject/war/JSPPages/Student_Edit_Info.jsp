@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ page import="people.*" %>
 <%@ page import="serverLogic.DatabaseUtil" %>
+
 <html>
 	<head>
 		<title>@10Dance</title>
@@ -24,18 +25,53 @@
 		 * @author Curtis
 		 *
 		 */
-		function hashPassword() {
-			var str = Sha1.hash(document.getElementById("Password").value);
-			var str2 = Sha1.hash(document.getElementById("Password2").value);
-    		alert("Passwords do not match. Please ensure passwords match.");
-
-			if (str != str2) {
-				return false;
-			}
-			str = str.toUpperCase();
-			document.getElementById("Hashed Password").value = str;
-			return true;
-		}
+	function confirmAndHashData() {
+ 		 
+ 		 var universityID = document.getElementById("UniversityID").value; 
+		 //check that universityID is 9 digit number
+ 		 if((parseInt(universityID,10) < 0) || (parseInt(universityID,10) > 999999999)){
+			 alert("This is not a valid University ID. Please re-enter your University ID.")
+			 return false;
+	 	 }
+		 
+ 		 //check if years is 10...
+ 		 if(parseInt(document.getElementById("Year").value,10) == 10){
+			 alert("Congratulations. You need to graduate.")
+	 	 }
+		 
+		 var password = document.getElementById("Password").value
+		 //check that password is appropriate length
+		 if(password.length < 6 || password.length > 20){
+			 alert("Password must be between 5 and 21 characters long.")
+			 return false;
+		 }
+		 //check that password contains legal characters
+		 var badChars = new Array();
+		 for(var i = 0; i < password.length; i++){
+	 		//between the brackets are all valid password characters
+ 		     if(!/[abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*()_+=.,<>?-]/.test(password[i]))
+		 	 	 badChars.push(password[i]);
+		 }
+		 if(badChars.length > 0){
+		 	  var badCharsStr = "";
+		      for(i = 0; i < badChars.length; i++)
+		 	       badCharsStr += (badChars[i] + " ");
+		      alert("Please do not use the following characters: " + badCharsStr);
+		      return false;
+		 }
+		 //check that passwords match
+		 if(password != document.getElementById("Re-Enter Password").value){
+			 alert("Passwords do not match. Please ensure passwords match.");
+			 return false;
+		 }
+		 
+		 //hash password into hidden field
+		 var str = Sha1.hash(document.getElementById("Password").value);
+		 str = str.toUpperCase();
+		 document.getElementById("Hashed Password").value = str;
+		
+		 return true;
+	}
 
 		</script>
 
@@ -54,7 +90,7 @@
 	<!--*********************info*****************************-->
 	
 		<h1><%= user.getNetID() %></h1>
-		<form action="/StudentEditInfo" method="post" onSubmit="return hashPassword();" accept-charset="utf-8">
+		<form action="/studentEditInfo" method="post" onSubmit="return confirmAndHashData();" accept-charset="utf-8">
 		
 				<table>
 					<tr>					
@@ -118,8 +154,13 @@
 					
 					<tr>
 						<td><label for="Password2">Re-Enter Password:</label></td>
-						<td><input type= "password2" name="Password2" id="Password2"/></td>	
+						<td><input type= "password" name="Password2" id="Password2"/></td>	
 					</tr>
+					
+					<tr>
+						<td><input type="password" name="Hashed Password"
+								id="Hashed Password" hidden=true /></td>
+					</tr>	
 
 
 				</table>
