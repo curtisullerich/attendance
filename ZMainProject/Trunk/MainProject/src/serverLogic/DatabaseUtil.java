@@ -25,28 +25,28 @@ import forms.Form;
  */
 public class DatabaseUtil 
 {
-	private static EntityManager em = EMFService.get().createEntityManager();
+	//private static EntityManager em = EMFService.get().createEntityManager();
 	/**
 	 * A Method to remove an object from the database
 	 * @param o the object to remove
 	 */
 	public static void remove(Object o)
 	{
-		//EntityManager em = EMFService.get().createEntityManager();
+		EntityManager em = EMFService.get().createEntityManager();
 		em.remove(o);
-		//em.close();
+		em.close();
 	}
 	
 	public static void addAttendanceReport(AttendanceReport report)
 	{
-		//EntityManager em = EMFService.get().createEntityManager();
+		EntityManager em = EMFService.get().createEntityManager();
 		em.persist(report);
-		//em.close();
+		em.close();
 	}
 	
 	public static AttendanceReport getAttendanceReport(String netID)
 	{
-		//EntityManager em = EMFService.get().createEntityManager();
+		EntityManager em = EMFService.get().createEntityManager();
 		Query q = em.createQuery("select a from AttendanceReport a where a.netID = :netID");
 		q.setParameter("netID", netID);
 		AttendanceReport result;
@@ -58,27 +58,27 @@ public class DatabaseUtil
 		{
 			result = null;
 		}
-		//em.close();
+		em.close();
 		return result;
 	}
 	
 	public static void addEvent(Event toAdd)
 	{
-		//EntityManager em = EMFService.get().createEntityManager();
+		EntityManager em = EMFService.get().createEntityManager();
 		em.persist(toAdd);
-		//em.close();
+		em.close();
 	}
 	
 	public static void addUser(User guy)
 	{
-		//EntityManager em = EMFService.get().createEntityManager();
+		EntityManager em = EMFService.get().createEntityManager();
 		em.persist(guy);
-		//em.close();
+		em.close();
 	}
 	
 	public static User getUser(String netID)
 	{
-		//EntityManager em = EMFService.get().createEntityManager();
+		EntityManager em = EMFService.get().createEntityManager();
 		Query q = em.createQuery("select p from User p where p.netID = :netID");
 		q.setParameter("netID", netID);
 		
@@ -89,7 +89,7 @@ public class DatabaseUtil
 		} catch (NoResultException e) {
 			result = null;
 		}
-		//em.close();
+		em.close();
 		return result;
 	}
 	
@@ -102,7 +102,7 @@ public class DatabaseUtil
 	
 	public static String[] listAllUsers() 
 	{
-		//EntityManager em = EMFService.get().createEntityManager();
+		EntityManager em = EMFService.get().createEntityManager();
 		Query q = em.createQuery("select m from User m");
 		List<User> people = (List<User>) q.getResultList();
 		String[] toRet = new String[people.size()];
@@ -111,7 +111,6 @@ public class DatabaseUtil
 			if (!p.getType().equalsIgnoreCase("Director"))
 				toRet[i] = p.toString();
 		}
-		//em.close();
 		return toRet;
 	}
 
@@ -123,20 +122,20 @@ public class DatabaseUtil
 
 	
 	public static void addAbsence(Absence newAbsence) {
-		//EntityManager em = EMFService.get().createEntityManager();
+		EntityManager em = EMFService.get().createEntityManager();
 		em.persist(newAbsence);
-		//em.close();	
+		em.close();	
 	}
-	//TODO get by ID for absence and tardy
+
 	public static void addTardy(Tardy newTardy) {
-		//EntityManager em = EMFService.get().createEntityManager();
+		EntityManager em = EMFService.get().createEntityManager();
 		em.persist(newTardy);
-		//em.close();	
+		em.close();	
 	}
 
 	public static List<Absence> getAbsences(String netID) {
 
-		//EntityManager em = EMFService.get().createEntityManager();
+		EntityManager em = EMFService.get().createEntityManager();
 		Query q = em.createQuery("select a from Absence a where a.netID = :netID");
 		q.setParameter("netID", netID);
 		List<Absence> absences;
@@ -148,13 +147,12 @@ public class DatabaseUtil
 		{
 			absences = null;
 		}
-		//em.close();
 		return absences;
 	}
 	
 	public static Absence getAbsenceByID(Long id)
 	{
-		//EntityManager em = EMFService.get().createEntityManager();
+		EntityManager em = EMFService.get().createEntityManager();
 		Query q = em.createQuery("select a from Absence a where a.id = :id");
 		q.setParameter("id", id);
 		Absence absence;
@@ -166,13 +164,13 @@ public class DatabaseUtil
 		{
 			absence = null;
 		}
-		//em.close();
+		em.close();
 		return absence;
 	}
 	
 	public static Tardy getTardyByID(Long id)
 	{
-		//EntityManager em = EMFService.get().createEntityManager();
+		EntityManager em = EMFService.get().createEntityManager();
 		Query q = em.createQuery("select t from Tardy t where t.id = :id");
 		q.setParameter("id", id);
 		Tardy tardy;
@@ -184,12 +182,12 @@ public class DatabaseUtil
 		{
 			tardy = null;
 		}
-		//em.close();
+		em.close();
 		return tardy;
 	}
 
 	public static List<Tardy> getTardies(String netID) {
-		//EntityManager em = EMFService.get().createEntityManager();
+		EntityManager em = EMFService.get().createEntityManager();
 		Query q = em.createQuery("select t from Tardy t where t.netID = :netID");
 		q.setParameter("netID", netID);
 		List<Tardy> tardies;
@@ -201,13 +199,11 @@ public class DatabaseUtil
 		{
 			tardies = null;
 		}
-		//em.close();
-
 		return tardies;
 	}
 
 	public static List<Form> getForms(String netID) {
-		//EntityManager em = EMFService.get().createEntityManager();
+		EntityManager em = EMFService.get().createEntityManager();
 		Query q = em.createQuery("select a from Form a where a.netID = :netID");
 		q.setParameter("netID", netID);
 		List<Form> result;
@@ -219,19 +215,18 @@ public class DatabaseUtil
 		{
 			result = null;
 		}
-		//em.close();
 		return result;
 	}
 	
 	public static void addForm(Form form)
 	{
-		//EntityManager em = EMFService.get().createEntityManager();
+		EntityManager em = EMFService.get().createEntityManager();
 		em.persist(form);
-		//em.close();	
+		em.close();	
 	}
 	
 	public static List<Message> getMessages(String[] messageIDs) {
-		//EntityManager em = EMFService.get().createEntityManager();
+		EntityManager em = EMFService.get().createEntityManager();
 		List<Message> result = new LinkedList<Message>();
 		for (int i = 0; i < messageIDs.length; i++)
 		{
