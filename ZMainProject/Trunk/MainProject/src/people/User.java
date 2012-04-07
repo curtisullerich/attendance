@@ -230,5 +230,26 @@ public class User {
 			return 0;
 		}
 	}
+	@Override
+	public boolean equals(Object other)
+	{
+		if (other == null) return false;
+		if (other.getClass() != this.getClass()) return false;
+		User o = (User) other;
+		return o.getNetID().equalsIgnoreCase(this.netID);
+	}
+	
+	@Override 
+	public int hashCode()
+	{
+		return netID.hashCode();
+	}
+	
+	public String getAttendanceHtml() {
+		// TODO
 
+		// loop through all events and print the information in the format below
+		return "<tr><td>8/21</td><td>  </td><td>  </td><td>  </td><td>  </td><td><button onClick=\"sendMeToMyMessages();\">Messages</button></tr>";
+
+	}
 }
