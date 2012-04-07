@@ -1,7 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java"%>
 
-
-
 <!DOCTYPE html>
 
 <html>
@@ -41,15 +39,15 @@
 <body>
 	<h1>ISU Varsity Marching Band / Spring 2012</h1>
 	<h2>Registration</h2>
-	<form action="/register" method="post" onSubmit="return confirmAndHashData();" accept-charset="uft-8">
+	<form action="/register" method="post" onSubmit="return confirmAndHashData();" accept-charset="utf-8">
 		<table>
 			<tr>
-				<td><label for="FirstName">FirstName</label></td>
+				<td><label for="FirstName">First Name</label></td>
 				<td><input type="text" name="FirstName" id="FirstName" /></td>
 			</tr>
 
 			<tr>
-				<td><label for="LastName">LastName</label></td>
+				<td><label for="LastName">Last Name</label></td>
 				<td><input type="text" name="LastName" id="LastName" /></td>
 			</tr>
 			
@@ -69,6 +67,39 @@
 			</tr>
 
 			<tr>
+				<td><label for="Major">Major</label></td>
+						<td><select name="Major">
+							<option>Piccolo</option>
+							<option>Clarinet</option>
+							<option>Alto Sax</option>
+							<option>Tenor Sax</option>
+							<option>Trumpet</option>
+							<option>Trombone</option>
+							<option>Mellophone</option>
+							<option>Baritone</option>
+							<option>Sousaphone</option>
+							<option>Guard</option>
+							<option>Drum Major</option>
+							<option>Staff</option>
+							<option>Drumline: Cymbals</option>
+							<option>Drumline: Tenors</option>
+							<option>Drumline: Snare</option>
+							<option>Drumline: Bass</option>
+							<option>Twirler</option>						
+						</select></td>
+			</tr>
+			
+			<tr>
+				<td><label for="Year">Years in band</label></td>
+				<td><input type="text" name="Year" id="Year" /></td>
+			</tr>
+
+			<tr>
+				<td><label for="Section">Section</label></td>
+				<td><input type="text" name="Section" id="Section" /></td>
+			</tr>
+
+			<tr>
 				<td><label for="Password">Password</label></td>
 				<td><input type="password" name="Password" id="Password" /></td>
 			</tr>
@@ -84,7 +115,7 @@
 			</tr>
 			
 		</table>
-		<input type="submit" value="Register" name="Register" />
+		<input type="submit" value="Register" name="Register"/>
 	</form>
 	
 </body>

@@ -62,8 +62,10 @@
 		<!--********************* Button *****************************-->
 		<input type ="submit" onClick="viewForms();"  value = "Forms">
 			<div id="formsDiv" style="display: none">
-				<p><a href="/JSPPages/Student_Absence_Approval_Form.jsp">-Absence Approval Form</a></p>
-				<p><a href="/JSPPages/Student_Class_Conflict_Form.jsp">-Class Conflict Form</a></p>
+				<p><a href="/JSPPages/Student_Form_A_Performance_Absence_Request.jsp">Form A - Performance Absence Request</a></p>
+				<p><a href="/JSPPages/Student_Form_B_Class_Conflict_Request.jsp">Form B - Class Conflict Request</a></p>
+				<p><a href="/JSPPages/Student_Form_C_Rehearsal_Excuse.jsp">Form C - Request for Excuse from Rehearsal</a></p>
+				<p><a href="/JSPPages/Student_Form_C_Time_Worked.jsp">Form D - Time Worked</a></p>
 			</div>
 		<input type ="submit" onClick="window.location = '/JSPPages/Student_View_Attendance_List.jsp';"  value = "View Attendance">
 		<br/>

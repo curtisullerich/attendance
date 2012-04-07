@@ -68,28 +68,27 @@
 					</tr>
 					
 					<tr>
-						<td><label for="Password">Password:</label></td>
-						<td><input type= "password" name="Password" id="Password" /></td>	
-					</tr>
-					
-					<tr>
-						<td><label for="Password2">Re-Enter Password:</label></td>
-						<td><input type= "password2" name="Password2" id="Password2"/></td>	
-					</tr>
-					
-					<!--major-->
-					<tr>
 						<td><label for="Major">Major</label></td>
 						<td><input type= "major" name="Major" id="Major" value="<%=user.getMajor() == null ? "" : user.getMajor() %>"/></td>	
 					</tr>
-					
+
+					<tr>
+						<td><label for="UniversityID">UniversityID</label></td>
+						<td><input type="text" name="UniversityID" id="UniversityID" value="<%=user.getUnivID() %>"/></td>
+					</tr>
+
+					<tr>
+						<td><label for="Year">Years in band</label></td>
+						<td><input type="text" name="Year" id="Year" value="<%=user.getYear()%>"/></td>
+					</tr>
+							
 					<!--Instrument-->
 					<tr>
-						<td><label for="Instrument">Instrument</label></td>
+						<td><label for="Section">Section</label></td>
 						
 						<td>
 						<select>
-							<option><%= user.getInstrument() == null ? "" : user.getInstrument() %></option>
+							<option><%= user.getSection() == null ? "" : user.getSection() %></option>
 							<option>Drums</option>
 							<option>Piccolo</option>
 							<option>Clarinet</option>
@@ -111,6 +110,18 @@
 						</select>
 						</td>
 					</tr>
+
+					<tr>
+						<td><label for="Password">Password:</label></td>
+						<td><input type= "password" name="Password" id="Password" /></td>	
+					</tr>
+					
+					<tr>
+						<td><label for="Password2">Re-Enter Password:</label></td>
+						<td><input type= "password2" name="Password2" id="Password2"/></td>	
+					</tr>
+
+
 				</table>
 			
 				<h2>
