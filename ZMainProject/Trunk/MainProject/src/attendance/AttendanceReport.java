@@ -43,24 +43,12 @@ public class AttendanceReport {
 		return DatabaseUtil.getAbsences(netID);
 	}
 
-	public void setAbsences(List<Absence> absences) {
-		DatabaseUtil.setAbsences(netID);
-	}
-
 	public List<Tardy> getTardies() {
 		return DatabaseUtil.getTardies(netID);
 	}
 
-	public void setTardies(List<Tardy> tardies) {
-		DatabaseUtil.setTardies(netID);
-	}
-
 	public List<Form> getForms() {
 		return DatabaseUtil.getForms(netID);
-	}
-
-	public void setForms(List<Form> forms) {
-		DatabaseUtil.setForms(netID);
 	}
 
 	/**
