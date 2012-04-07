@@ -10,16 +10,16 @@
 	</head>
 	<script>
 		function sendMeToMyTardyMessages(id) {
-			window.location = "/JSPPages/message.jsp?id=" + id;
+			window.location = "/JSPPages/tardyMessages.jsp?id=" + id;
 		}
 		function sendMeToMyAbsenceMessages(id) {
-			window.location = "/JSPPages/message.jsp?id=" + id;
+			window.location = "/JSPPages/absenceMessages.jsp?id=" + id;
 		}
 	</script>
 
 	<body>
 <!--*********************Page Trail*****************************-->
-
+	
 	
 	<!--TODO: need to connected to specific page-->
 			<a href="/" title="PageTrail_Home">Home</a> 
@@ -58,7 +58,7 @@
 			if (tardies != null) {
 				for (Tardy t : tardies) {
 					tardyHtml +=
-						"<tr><td>"+t.getTime().getDate()+"</td> <td>"+t.getType()+"</td><td></td><td>x</td><td>" +(t.isApproved() ? "x" : "") + "</td><td><button onClick='sendMeToMyTardyMessages("+t.getID() +");'>Messages</button></tr>";
+						"<tr><td>"+t.getTime().getDate()+"</td> <td>"+t.getType()+"</td><td></td><td>x</td><td>" +(t.isApproved() ? "x" : "") + "</td><td><button onClick='sendMeToMyTardyMessages("+t.getID() +");'>Messages</button></tr><tr>" + (t.hasNewMessageFor(netID) ? "x" : "") + "</tr>";
 				}
 			}
 			
@@ -67,7 +67,7 @@
 			if (absences != null) {
 				for (Absence a : absences) {
 					absenceHtml += 
-						"<tr><td>" + a.getStartTime().getDate()+"</td> <td>"+a.getType()+"</td><td>x</td><td></td><td>" +(a.isApproved() ? "x" : "") + "</td><td><button onClick='sendMeToMyAbsenceMessages("+a.getID() +");'>Messages</button></tr>";
+						"<tr><td>" + a.getStartTime().getDate()+"</td> <td>"+a.getType()+"</td><td>x</td><td></td><td>" +(a.isApproved() ? "x" : "") + "</td><td><button onClick='sendMeToMyAbsenceMessages("+a.getID() +");'>Messages</button></tr><tr>" + ("") + "</tr>";
 				}
 			}			
 			%>
@@ -79,7 +79,7 @@
 					insert = 
 					"		<div>"
 					+"		<table border='1'>"
-					+"			<tr><th>Date</th><th>Type</th><th>Absent</th><th>Tardy</th><th>Excused</th><th></th></tr>"
+					+"			<tr><th>Date</th><th>Type</th><th>Absent</th><th>Tardy</th><th>Excused</th><th></th></tr><tr>New message?</tr>"
 								
 								+tardyHtml + absenceHtml
 								

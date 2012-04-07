@@ -5,72 +5,80 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import people.User;
+import time.Date;
 import time.Time;
 
 /**
  * 
  * @author Yifei Zhu, Todd Wegter
- *
+ * 
  */
-
 @Entity
-public class Message {
-	
+public class Message implements Comparable<Message> {
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)  //creates id for entry
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	// creates id for entry
 	private Long id;
-	
+
 	private String senderNetID;
 	private String recipientNetID;
-	private boolean read;
-	private String content;
+	private String contents;
 	private String time;
-	
-	//search for messages by this string
-	private String correspondingAttendanceItem;
-	
-	public Message(String from, String to, String content, String correspondingAttendanceItem)
-	{
+	private String[] readers;
+
+	public Message(String from, String to, String contents) {
 		this.senderNetID = from;
 		this.recipientNetID = to;
-		this.content= content;
-		this.read = false;
-		this.correspondingAttendanceItem = correspondingAttendanceItem;
+		this.contents = contents;
+		this.readers = new String[2];
+		readers[0] = senderNetID;
 		this.time = new Time().toString(24);
 	}
-	
+
 	public String getSender() {
 		return senderNetID;
 	}
+
 	public void setSender(String netID) {
 		this.senderNetID = netID;
 	}
-	public boolean isRead() {
-		return read;
+
+	public String getContents() {
+		return contents;
 	}
-	public void setRead(boolean read) {
-		this.read = read;
+
+	public void setContents(String contents) {
+		this.contents = contents;
 	}
-	public String getContent() {
-		return content;
-	}
-	public void setContent(String content) {
-		this.content = content;
-	}
+
 	public Time getTime() {
 		return new Time(time);
 	}
+
 	public void setTime(Time time) {
 		this.time = time.toString(24);
 	}
-	
-	public String getCorrespondingItem(){
-		return correspondingAttendanceItem;
+
+	public String getRecipientNetID() {
+		return recipientNetID;
+	}
+
+	public String getSenderNetID() {
+		return senderNetID;
 	}
 	
-	public void setCorrespondingItem(String correspondingItem){
-		correspondingAttendanceItem = correspondingItem;
+	public boolean readBy(String netID) {
+		return (readers[0].equals(netID) || readers[1].equals("netID"));
+	}
+	
+	@Override
+	public int compareTo(Message o) {
+		if(o==null)
+		{
+			throw new NullPointerException("date is null");
+		}
+		return this.getTime().compareTo(o.getTime());
 	}
 
 }

@@ -1,6 +1,5 @@
 package serverLogic;
 
-import java.io.File;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -12,6 +11,9 @@ import attendance.Absence;
 import attendance.AttendanceReport;
 import attendance.Event;
 import attendance.Tardy;
+
+import comment.Message;
+
 import forms.Form;
 
 /**
@@ -198,6 +200,10 @@ public class DatabaseUtil
 		EntityManager em = EMFService.get().createEntityManager();
 		em.persist(form);
 		em.close();	
+	}
+	
+	public static List<Message> getMessages(String[] messageIDs) {
+		return null; //TODO
 	}
 
 //	public static File getFile(String attachedFile) {
