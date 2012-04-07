@@ -25,7 +25,7 @@ public class Form {
 	private Long id;
 
 	private String netID;
-	private boolean approved;
+	private String status;
 	private String reason;
 	private String startTime;
 	private String endTime;
@@ -42,7 +42,7 @@ public class Form {
 		this.endTime = endTime.toString(24);
 		this.reason = reason;
 		this.type = type;
-		approved = false;
+		this.status = "pending";
 	}
 
 	public Form(String netID, String reason, Time startTime, Time endTime,
@@ -54,7 +54,7 @@ public class Form {
 		this.type = type;
 		//setFile(attachedFile);
 		this.additionalInfo = additionalInfo;
-		approved = false;
+		this.status="pending";
 	}
 
 	public String getNetID() {
@@ -89,14 +89,14 @@ public class Form {
 		this.reason = reason;
 	}
 
-	public boolean isApproved() {
-		return approved;
+	public String getStatus() {
+		return this.status;
 	}
 
-	public void setApproved(boolean approved) {
-		this.approved = approved;
+	public void setStatus(String status) {
+		this.status = status;
 	}
-
+	
 	public String getType() {
 		return type;
 	}
@@ -108,7 +108,7 @@ public class Form {
 	public String toString()
 	{
 		return "ID:"+this.netID+" start time:"+this.startTime+" end time:"+this.endTime
-				+" approved?:"+this.approved;
+				+" approved?:"+this.status;
 	}
 
 	
