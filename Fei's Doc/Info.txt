@@ -1,12 +1,25 @@
-
+*****INFO**************************************
 java: name
 js:id
 
+*****DONE**************************************a
+
+all web html outline
+java code(all basic java class)
+junit (time, date)
+form A servlet
+form C servlet 
+
+
+*****TODO**************************************
+
+form D servlet, jsp
+login page, change to director page || student page
 
 TODO:
 FORMS:
 
-form 1: 
+FORM A & C: 
 can enter the time my itself,
 
 --feb shoudlent >28 || >29
