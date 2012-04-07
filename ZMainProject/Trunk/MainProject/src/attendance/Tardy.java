@@ -32,7 +32,7 @@ public class Tardy {
 	// The netID of the student that this Tardy belongs to
 	private String netID;
 	private String checkInTime;
-	private boolean approved;
+	private String status;
 	// Either rehearsal or performance or unknown if there was no Event
 	private String type;
 

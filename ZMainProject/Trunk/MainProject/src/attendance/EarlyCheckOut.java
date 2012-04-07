@@ -22,18 +22,18 @@ public class EarlyCheckOut{
 	private Long id;
 	
 	private String checkOutTime;
-	private boolean approved;
+	private String status;
 	private String type;
 	
 	public EarlyCheckOut(Time checkOutTime){
 		this.checkOutTime = checkOutTime.toString(24);
-		this.approved = false;
+		this.status = "pending";
 	}
 
 	public String toString()
 	{      
 		//Should be in the form "year-month-day hour:minute:second type isApproved"
-		return getTime().getDate().toString() + " " + getTime().get24Format() + " " + type + " " + approved;
+		return getTime().getDate().toString() + " " + getTime().get24Format() + " " + type + " " + status;
 	}
 	
 	public Time getTime() {
@@ -44,12 +44,12 @@ public class EarlyCheckOut{
 		this.checkOutTime = time.toString(24);
 	}
 
-	public boolean isApproved() {
-		return approved;
+	public String getStatus() {
+		return this.status;
 	}
 
-	public void setApproved(boolean approved) {
-		this.approved = approved;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	
 	public String getType(){
