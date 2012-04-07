@@ -7,11 +7,19 @@
 <html>
 	<head>
 		<title>@10Dance</title>
-		<script src="/MobileApp/sha.js"/></script>
+		<script src="/JSPPages/sha.js"/></script>
 		<script>
 		
+		/**
+		 * Creates the appropriate header on page load
+		 * @author Todd Wegter
+		 */
 		window.onload = function() {
-			
+			var d = new Date();
+			var year = d.getFullYear();
+			if(d.getMonth == 0)
+				year -= 1;
+			document.getElementsByTagName("h1")[0].innerHTML = "ISU Varsity Marching Band / Fall " + year;
 		}
 		
 		/**
@@ -30,7 +38,7 @@
 		</script>
 	</head>
 	<body>
-		<h1>ISU Varsity Marching Band / Spring 2012</h1>
+		<h1></h1>
 		<form action ="/login" method ="post" onSubmit="hashPassword();" accept-charset="utf-8">
 				<table>
 					<tr>
