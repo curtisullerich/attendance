@@ -68,7 +68,7 @@
 					+"</td> <td>"
 					+t.getType()
 					+"</td><td></td><td>x</td><td>" 
-					+(t.isApproved() ? "x" : "") 
+					+(t.getStatus()) 
 					+ "</td><td><button onClick=\"sendMeToMyTardyMessages('"
 					+t.getID()
 					+"');\">Messages</button></td><td>" 
@@ -85,14 +85,14 @@
 			if (absences != null) {
 				for (Absence a : absences) {
 					absenceHtml += 
-						"<tr><td>" + a.getStartTime().getDate()+"</td> <td>"+a.getType()+"</td><td>x</td><td></td><td>" +(a.isApproved() ? "x" : "") + "</td><td><button onClick='sendMeToMyAbsenceMessages("+a.getID() +");'>Messages</button></td><td>" + ("") + "</td></tr>";
+						"<tr><td>" + a.getStartTime().getDate()+"</td> <td>"+a.getType()+"</td><td>x</td><td></td><td>" +(a.getStatus()) + "</td><td><button onClick='sendMeToMyAbsenceMessages("+a.getID() +");'>Messages</button></td><td>" + ("") + "</td></tr>";
 					absenceHtml +=
 					"<tr><td>"
 					+a.getStartTime().getDate()
 					+"</td> <td>"
 					+a.getType()
 					+"</td><td></td><td>x</td><td>" 
-					+(a.isApproved() ? "x" : "") 
+					+(a.getStatus()) 
 					+ "</td><td><button onClick='sendMeToMyTardyMessages("
 					+a.getID() 
 					+");'>Messages</button></td><td>" 

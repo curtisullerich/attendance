@@ -74,6 +74,10 @@
 		<input type ="submit" onClick="window.location = '/JSPPages/Student_View_Attendance.jsp';"  value = "View Attendance">
 		<br/>
 		<input type ="submit" onClick="window.location = '/JSPPages/Student_Edit_Info.jsp';"  value = "Edit my information">
+		
+<!--*****************************************the powerful stuff*************************************************-->		
+		
+		
 	</body>
 
 </html>
