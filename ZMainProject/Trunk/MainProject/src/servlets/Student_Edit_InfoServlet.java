@@ -41,8 +41,8 @@ public class Student_Edit_InfoServlet extends HttpServlet
 			major = req.getParameter("Major");
 			section = req.getParameter("Section");
 			
-			if ( password != null && firstName != null && lastName != null && univID != null && year > 0 && major != null && section != null)
-			{
+//			if ( password != null && firstName != null && lastName != null && univID != null && year > 0 && major != null && section != null)
+//			{
 				User guy = DatabaseUtil.getUser(""+req.getSession().getAttribute("user"));
 				
 				//this is the netID
@@ -59,7 +59,7 @@ public class Student_Edit_InfoServlet extends HttpServlet
 				System.out.println("some fields were invalid");
 				resp.sendRedirect("/JSPPages/Student_Page.jsp");
 			}
-		}
+//		}
 		else
 		{
 			//Throw an alert that they didn't add a field
