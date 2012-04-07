@@ -19,14 +19,17 @@ public class Absence{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)  //creates id for entry
 	private Long id;
-
+	
+	//The netID for the student this Absence belongs to
+	private String netID;
 	private String startTime;
 	private String endTime;
 	private boolean isApproved;
 	//Either Rehearsal or Performance
 	private String type;
 	
-	public Absence(Time startTime, Time endTime, String type) {
+	public Absence(String netID, Time startTime, Time endTime, String type) {
+		this.netID = netID;
 		this.startTime = startTime.toString(24);
 		this.endTime = endTime.toString(24);
 		this.isApproved = false;

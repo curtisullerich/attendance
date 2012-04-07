@@ -21,13 +21,16 @@ public class Tardy {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)  //creates id for entry
 	private Long id;
 
+	//The netID of the student that this Tardy belongs to
+	private String netID;
 	private String checkInTime;
 	private boolean approved;
 	//Either rehearsal or performance or unknown if there was no Event
 	private String type;
 	
-	public Tardy(Time time, String type)
+	public Tardy(String netID, Time time, String type)
 	{
+		this.netID = netID;
 		this.checkInTime = time.toString();
 		approved = false;
 	}
