@@ -9,16 +9,16 @@ import forms.Form;
 import serverLogic.DatabaseUtil;
 import time.Date;
 import time.Time;
-import people.User;
+
 /**
  * 
  * @author Yifei Zhu
  * 
- * This is Form A - Performance Absence Request 
+ * This is Request for Excuse from Rehearsal | FORM C
  *
  */
 @SuppressWarnings("serial")
-public class FormA extends HttpServlet
+public class FormC extends HttpServlet
 {
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException
 	{
@@ -38,7 +38,7 @@ public class FormA extends HttpServlet
 			directTo= "/JSPPages/Student_Page.jsp";
 			
 			//Form( netID,  reason,  startTime,  endTime, type)		
-			Form myform= new Form(""+req.getSession().getAttribute("user"),reason,startTime,endTime, "A" );
+			Form myform= new Form(""+req.getSession().getAttribute("user"),reason,startTime,endTime, "C" );
 
 			DatabaseUtil.addForm(myform);
 			

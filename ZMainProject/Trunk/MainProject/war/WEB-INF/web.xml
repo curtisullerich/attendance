@@ -20,6 +20,11 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	</servlet>
 	
 	<servlet>
+		<servlet-name>FormC</servlet-name>
+		<servlet-class>servlets.FormC</servlet-class>
+	</servlet>
+	
+	<servlet>
 		<servlet-name>StudentEditInfo</servlet-name>
 		<servlet-class>servlets.Student_Edit_InfoServlet</servlet-class>
 	</servlet>
@@ -37,6 +42,11 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<servlet-mapping>
 		<servlet-name>FormA</servlet-name>
 		<url-pattern>/formA</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>FormC</servlet-name>
+		<url-pattern>/formC</url-pattern>
 	</servlet-mapping>
 	
 	<servlet-mapping>

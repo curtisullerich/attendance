@@ -1,0 +1,15 @@
+
+java: name
+js:id
+
+
+TODO:
+FORMS:
+
+form 1: 
+can enter the time my itself,
+
+--feb shoudlent >28 || >29
+
+--day month year
+--date cant ealier than today
