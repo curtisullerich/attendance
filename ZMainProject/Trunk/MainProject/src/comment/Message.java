@@ -1,5 +1,6 @@
 package comment;
 
+import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,6 +25,8 @@ public class Message implements Comparable<Message> {
 	private String recipientNetID;
 	private String contents;
 	private String time;
+	
+	@Basic
 	private String[] readers;
 
 	public Message(String from, String to, String contents) {
