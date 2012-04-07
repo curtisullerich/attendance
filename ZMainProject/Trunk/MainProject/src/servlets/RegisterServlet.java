@@ -49,7 +49,7 @@ public class RegisterServlet extends HttpServlet
 					DatabaseUtil.addUser(guy);
 					DatabaseUtil.addAttendanceReport(new AttendanceReport(netID));
 					//Send them back to the login page?
-					resp.sendRedirect("/JSPPages/loginPage.jsp");
+					resp.sendRedirect("/JSPPages/loginPage.jsp?successfulAdd=true&user=" + netID);
 				}
 				
 				else

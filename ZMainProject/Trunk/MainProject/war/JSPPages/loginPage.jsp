@@ -20,8 +20,12 @@
 			if(d.getMonth == 0)
 				year -= 1;
 			document.getElementsByTagName("h1")[0].innerHTML = "ISU Varsity Marching Band / Fall " + year;
+			if(<%= request.getParameter("successfulAdd")%>){
+				var user = "<%= request.getParameter("user")%>";
+				alert(user + " successfully added to the system.");
+			}
 		}
-		
+				
 		/**
 		 *
 		 * Hashes the password for sending to the server.
