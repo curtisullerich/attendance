@@ -5,9 +5,8 @@ import java.security.MessageDigest;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.persistence.Basic;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import serverLogic.DatabaseUtil;
@@ -27,7 +26,6 @@ import comment.Message;
 public class Tardy {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	// creates id for entry
 	private Long id;
 
@@ -37,9 +35,11 @@ public class Tardy {
 	private boolean approved;
 	// Either rehearsal or performance or unknown if there was no Event
 	private String type;
-	private String[] messageIDs = {"","","","","","","","",""};
+
+	@Basic
+	private String[] messageIDs;
 	private int currentIndex;
-	
+
 	public Tardy(String netID, Time time, String type) {
 		this.netID = netID;
 		this.checkInTime = time.toString(24);
@@ -47,6 +47,11 @@ public class Tardy {
 		setType(type);
 		this.id = hash(netID, time);
 		this.currentIndex = 0;
+		messageIDs = new String[10];
+		for (int i = 0; i < messageIDs.length; i++) {
+
+			messageIDs[i] = "";
+		}
 	}
 
 	// public Tardy(String dbTardy)
@@ -98,26 +103,28 @@ public class Tardy {
 		return type.equalsIgnoreCase("performance");
 	}
 
-	public void setID(long id) {
-		this.id = id;
-	}
+	// public void setID(long id) {
+	// this.id = id;
+	// }
 
-	public long getID() {
+	public Long getID() {
 		return id;
 	}
 
 	public List<Message> getMessages() {
+		System.out.println("MESSAGEIDS is " + messageIDs);
 		return DatabaseUtil.getMessages(messageIDs);
 	}
-	
 
 	@Override
-	public boolean equals(Object o)
-	{
-		if (o == null) return false;
-		if (o.getClass() != this.getClass()) return false;
+	public boolean equals(Object o) {
+		if (o == null)
+			return false;
+		if (o.getClass() != this.getClass())
+			return false;
 		Tardy t = (Tardy) o;
-		return t.netID.equals(netID) && t.getTime().compareTo(getTime()) == 0 && t.type.equalsIgnoreCase(type);
+		return t.netID.equals(netID) && t.getTime().compareTo(getTime()) == 0
+				&& t.type.equalsIgnoreCase(type);
 	}
 
 	/**
@@ -126,7 +133,8 @@ public class Tardy {
 	 * 
 	 * 
 	 * @author Curtis Ullerich
-	 * @param m the message to be added
+	 * @param m
+	 *            the message to be added
 	 */
 	public void addMessage(Message m) {
 		DatabaseUtil.addMessage(m);
@@ -136,14 +144,16 @@ public class Tardy {
 		messageIDs[currentIndex] = new Long(m.getID()).toString();
 		currentIndex++;
 	}
-	
+
 	/**
 	 * 
 	 * Checks to see if this Tardy has a new message for a person.
 	 * 
 	 * @author Curtis Ullerich
-	 * @param netId the user in question
-	 * @return true if this tardy has a new message for this user. False otherwise.
+	 * @param netId
+	 *            the user in question
+	 * @return true if this tardy has a new message for this user. False
+	 *         otherwise.
 	 */
 
 	public boolean hasNewMessageFor(String netId) {
@@ -154,7 +164,7 @@ public class Tardy {
 		}
 		return false;
 	}
-	
+
 	public long hash(String netID, Time time) {
 		try {
 			String id = netID + time.toString(24);

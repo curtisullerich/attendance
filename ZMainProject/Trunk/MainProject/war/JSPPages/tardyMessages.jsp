@@ -26,17 +26,21 @@
 			
 	<%
 	String netID = (String) session.getAttribute("user");
+System.out.println("tardyMessage.jsp: 1");
 	String table = "";
 	if (netID == null || netID.equals("")) 
 	{
 		response.sendRedirect("/JSPPages/logout.jsp");
 	}
+System.out.println("tardyMessage.jsp: 2");
 
 	boolean hasMessage = true;
 	User user = DatabaseUtil.getUser(netID);
 	if ((request.getParameter("id") == null || request.getParameter("id").isEmpty())) {
 		hasMessage = false;
+System.out.println("tardyMessage.jsp: 4");
 	}
+System.out.println("tardyMessage.jsp: 5");
 	%>
 			
 		You are logged in as <%= user.getFirstName() + " " + user.getLastName() %>
@@ -47,12 +51,27 @@
 
 		<%
 		
+		System.out.println("tardyMessage.jsp: 6");
 		
 		if (hasMessage) {
-			
+			System.out.println("tardyMessage.jsp: 7");
+
+			System.out.println("the long string is " + request.getParameter("id"));
 			long id = Long.parseLong((String) request.getParameter("id"));
+			System.out.println("the long long is   " + id);
+			System.out.println("tardyMessage.jsp: 7.5");
+
 			Tardy t = DatabaseUtil.getTardyByID(id);
-			PriorityQueue<Message> p = new PriorityQueue<Message>(t.getMessages());
+			if (t == null) {
+				System.out.println("YUP NULL");
+			}
+			
+			System.out.println("tardyMessage.jsp: 7.6");
+			PriorityQueue<Message> p = new PriorityQueue<Message>();
+			System.out.println("tardyMessage.jsp: 7.7");
+
+			t.getMessages();
+			System.out.println("tardyMessage.jsp: 8");
 
 			if (p.isEmpty()) {
 				table = "<br/><br/><b>There are currently no messages on this tardy.</b>";
@@ -77,9 +96,11 @@
 
 						+"</td>"
 					+"</tr></table>";
-			
+					System.out.println("tardyMessage.jsp: 9");
+
 			
 			while (!p.isEmpty()) {
+				System.out.println("tardyMessage.jsp: 10");
 				Message m = p.poll();
 				if (m != null) {
 					table+= 
@@ -95,6 +116,7 @@
 			}
 			table+="</table>";
 		} else {
+			System.out.println("tardyMessage.jsp: 11");
 			table = "<br/><br/><b>No tardy selected.</b>";
 		}
 

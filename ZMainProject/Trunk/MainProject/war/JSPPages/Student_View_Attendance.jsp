@@ -69,11 +69,12 @@
 					+t.getType()
 					+"</td><td></td><td>x</td><td>" 
 					+(t.isApproved() ? "x" : "") 
-					+ "</td><td><button onClick='sendMeToMyTardyMessages("
-					+t.getID() 
-					+");'>Messages</button></td><td>" 
+					+ "</td><td><button onClick=\"sendMeToMyTardyMessages('"
+					+t.getID()
+					+"');\">Messages</button></td><td>" 
 					+ (t.hasNewMessageFor(netID) ? "x" : "") 
 					+"</td></tr>";
+					System.out.println("The id that is sent as the param is" + t.getID());
 				}
 			}
 			
