@@ -104,28 +104,19 @@
 						<td><label for="LastName">Last Name:</label></td>
 						<td><input type= "LastName" name="LastName" id="LastName" value="<%=user.getLastName()%>"/></td>	
 					</tr>
-					
-					<tr>
-						<td><label for="Major">Major</label></td>
-						<td><input type= "major" name="Major" id="Major" value="<%=user.getMajor() == null ? "" : user.getMajor() %>"/></td>	
-					</tr>
 
 					<tr>
 						<td><label for="UniversityID">UniversityID</label></td>
 						<td><input type="text" name="UniversityID" id="UniversityID" value="<%=user.getUnivID() %>"/></td>
 					</tr>
 
-					<tr>
-						<td><label for="Year">Years in band</label></td>
-						<td><input type="text" name="Year" id="Year" value="<%=user.getYear()%>"/></td>
-					</tr>
 							
 					<!--Instrument-->
 					<tr>
 						<td><label for="Section">Section</label></td>
 						
 						<td>
-						<select>
+						<select name="Section" id="Section">
 							<option><%= user.getSection() == null ? "" : user.getSection() %></option>
 							<option>Drums</option>
 							<option>Piccolo</option>
@@ -149,6 +140,25 @@
 						</td>
 					</tr>
 
+					<td><label for="Year">Years in band</label></td>
+					<td><select name="Year" id="Year">
+							<option>1</option>
+							<option>2</option>
+							<option>3</option>
+							<option>4</option>
+							<option>5</option>
+							<option>6</option>
+							<option>7</option>
+							<option>8</option>
+							<option>9</option>
+							<option>10</option>
+					</select>years</td>
+					
+					<tr>
+						<td><label for="Major">Major</label></td>
+						<td><input type= "major" name="Major" id="Major" value="<%=user.getMajor() == null ? "" : user.getMajor() %>"/></td>	
+					</tr>
+
 					<tr>
 						<td><label for="Password">Password:</label></td>
 						<td><input type= "password" name="Password" id="Password" /></td>	
@@ -167,10 +177,9 @@
 
 
 				</table>
-			
-				<h2>
-					<input type="submit" value="Save Info" name="SaveInfo"/>
-				</h2>
+				
+				<input type="submit" value="Save Info" name="SaveInfo"/>
+				<input type="button" value="Back" name="Back" onclick="window.location = '/JSPPages/Student_Page.jsp'"/>
 		</form>		
 	</body>
 

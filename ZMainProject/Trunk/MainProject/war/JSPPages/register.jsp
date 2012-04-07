@@ -162,6 +162,7 @@
 
 		</table>
 		<input type="submit" value="Register" name="Register" />
+		<input type="button" value="Back" name="Back" onclick="window.location='/'"/>
 	</form>
 
 </body>

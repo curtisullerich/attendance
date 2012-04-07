@@ -1,5 +1,7 @@
 package attendance;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
 import java.util.Arrays;
 import java.util.List;
 
@@ -42,7 +44,8 @@ public class Tardy {
 		this.netID = netID;
 		this.checkInTime = time.toString(24);
 		approved = false;
-		this.type = type;
+		setType(type);
+		this.id = hash(netID, time);
 		this.currentIndex = 0;
 	}
 
@@ -150,6 +153,22 @@ public class Tardy {
 			}
 		}
 		return false;
+	}
+	
+	public long hash(String netID, Time time) {
+		try {
+			String id = netID + time.toString(24);
+			MessageDigest cript = MessageDigest.getInstance("SHA-1");
+			cript.reset();
+			cript.update(id.getBytes("utf8"));
+			BigInteger bigot = new BigInteger(cript.digest());
+			// Something about things
+			return bigot.longValue();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
 	}
 
 }

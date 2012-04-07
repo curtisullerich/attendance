@@ -63,8 +63,5 @@ public class RegisterServlet extends HttpServlet
 				System.out.println("some fields were invalid");
 			}
 		}
-		
-		//Will need to check if they pressed the back button
-		
 	}
 }

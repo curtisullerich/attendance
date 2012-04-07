@@ -1,4 +1,7 @@
 package attendance;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,7 +20,6 @@ import time.*;
 public class Absence{
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)  //creates id for entry
 	private Long id;
 	
 	//The netID for the student this Absence belongs to
@@ -34,6 +36,7 @@ public class Absence{
 		this.endTime = endTime.toString(24);
 		this.isApproved = false;
 		setType(type);
+		this.id = hash(netID, startTime, endTime);
 	}
 
 //	public Absence(String dbAbsence)
@@ -106,7 +109,18 @@ public class Absence{
 	public long getID(){
 		return id;
 	}
+<<<<<<< .mine
 	
+	public long hash(String netID, Time startTime, Time endTime) {
+		try {
+			String id = netID + startTime.toString(24) + endTime.toString(24);
+			MessageDigest cript = MessageDigest.getInstance("SHA-1");
+			cript.reset();
+			cript.update(id.getBytes("utf8"));
+			BigInteger bigot = new BigInteger(cript.digest());
+			// Something about things
+			return bigot.longValue();
+
 	@Override
 	public boolean equals(Object o)
 	{
@@ -115,6 +129,21 @@ public class Absence{
 		Absence a = (Absence) o;
 		return a.netID.equals(netID) && a.getStartTime().compareTo(getStartTime()) == 0 
 				&& a.getEndTime().compareTo(getEndTime()) == 0 && a.type.equalsIgnoreCase(type);
+	}
+
+	public long hash(String netID, Time startTime, Time endTime) {
+		try {
+			String id = netID + startTime.toString(24) + endTime.toString(24);
+			MessageDigest cript = MessageDigest.getInstance("SHA-1");
+			cript.reset();
+			cript.update(id.getBytes("utf8"));
+			BigInteger bigot = new BigInteger(cript.digest());
+			// Something about things
+			return bigot.longValue();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
 	}
 
 }
