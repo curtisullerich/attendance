@@ -1,11 +1,19 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java"%>
 
+
 <!DOCTYPE html>
 
 <html>
 <head>
 <script src="sha.js" /></script>
 <script>
+	
+	window.onload = function(){
+		if(<%= request.getParameter("userExists")%>){
+			var user = "<%= request.getParameter("user")%>";
+			alert(user + " is already registered in the system. You can try resetting your password from the login page.");
+		}
+	}
 	
 	/**
  	 *
@@ -121,6 +129,7 @@
 						<option>1</option>
 						<option>2</option>
 						<option>3</option>
+						<option>4</option>
 						<option>5</option>
 						<option>6</option>
 						<option>7</option>

@@ -61,7 +61,6 @@ public class User {
 		if (type.equalsIgnoreCase("Student")) {
 			rank = "|";
 			grade = 100.00;
-			DatabaseUtil.addAttendanceReport(new AttendanceReport(netID));
 		} else {
 			rank = null;
 			major = null;
@@ -230,6 +229,7 @@ public class User {
 			return 0;
 		}
 	}
+	
 	@Override
 	public boolean equals(Object other)
 	{

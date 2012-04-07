@@ -8,7 +8,7 @@
 	<%
 	session.removeAttribute("user");
 	%>
-	<script>window.location = "http://localhost:8888";</script>
+	<script>window.location = "/";</script>
 	</head>
 	<p>Logging out...</p>
 </html>

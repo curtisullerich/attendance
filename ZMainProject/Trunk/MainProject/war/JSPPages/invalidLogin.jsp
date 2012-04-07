@@ -2,5 +2,5 @@
 
 <script>
 	alert("Invalid username or password");
-	window.location = "http://localhost:8888/JSPPages/loginPage.jsp";
+	window.location = "/JSPPages/loginPage.jsp";
 </script>

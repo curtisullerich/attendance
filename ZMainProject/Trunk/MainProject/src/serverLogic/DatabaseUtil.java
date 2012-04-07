@@ -81,6 +81,13 @@ public class DatabaseUtil
 		return result;
 	}
 	
+	public static boolean userExists(String netID)
+	{
+		if(getUser(netID) == null)
+			return false;
+		return true;
+	}
+	
 	public static String[] listAllUsers() 
 	{
 		EntityManager em = EMFService.get().createEntityManager();

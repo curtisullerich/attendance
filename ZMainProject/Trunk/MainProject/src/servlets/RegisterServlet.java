@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import attendance.AttendanceReport;
+
 import people.User;
 
 import serverLogic.DatabaseUtil;
@@ -36,15 +38,24 @@ public class RegisterServlet extends HttpServlet
 			if (netID != null && password != null && firstName != null && lastName != null && univID != null && year > 0 && major != null && section != null)
 			{
 				//Need to do various other checks and stuff. Like whether this account already exists
-				//Create a new person with this partial information and put it in the datastore
-				User guy = new User(netID, password, firstName,
-						lastName, univID, "Student", major,
-						section, year);				
 				
+				//check for already registered users
+				if(!DatabaseUtil.userExists(netID))
+				{	
+					//Create a new person with this partial information and put it in the datastore
+					User guy = new User(netID, password, firstName,
+							lastName, univID, "Student", major,
+							section, year);	
+					DatabaseUtil.addUser(guy);
+					DatabaseUtil.addAttendanceReport(new AttendanceReport(netID));
+					//Send them back to the login page?
+					resp.sendRedirect("/JSPPages/loginPage.jsp");
+				}
 				
-				DatabaseUtil.addUser(guy);
-				//Send them back to the login page?
-				resp.sendRedirect("/JSPPages/loginPage.jsp");
+				else
+				{
+					resp.sendRedirect("/JSPPages/register.jsp?userExists=true&user=" + netID);
+				}
 			}
 			else
 			{

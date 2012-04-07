@@ -1,5 +1,7 @@
 package attendance;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
 import java.util.Comparator;
 import java.util.List;
 
@@ -21,7 +23,6 @@ import forms.Form;
 public class AttendanceReport {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	// creates id for entry
 	private Long id;
 
@@ -29,6 +30,7 @@ public class AttendanceReport {
 
 	public AttendanceReport(String netID) {
 		this.netID = netID;
+		this.id = hash(netID);
 	}
 
 	public void addAbsence(Absence newAbsence) {
@@ -89,6 +91,21 @@ public class AttendanceReport {
 			}
 
 		});
+	}
+	
+	public long hash(String netID) {
+		try {
+			MessageDigest cript = MessageDigest.getInstance("SHA-1");
+			cript.reset();
+			cript.update(netID.getBytes("utf8"));
+			BigInteger bigot = new BigInteger(cript.digest());
+			// Something about things
+			return bigot.longValue();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 0;
+		}
 	}
 
 }
