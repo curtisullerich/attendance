@@ -28,6 +28,8 @@ public class AttendanceReportTest {
 	AttendanceReport report;
 	FormIsApprovedComp comp;
 	
+	List newList;
+	
 	@Before
 	public void setUp() throws Exception {
 		date = new Date(2000,10,11);
@@ -44,20 +46,42 @@ public class AttendanceReportTest {
 		report=new AttendanceReport("abc");
 		comp=new FormIsApprovedComp();
 		comp.compare(f1, f2);
+		report.setList(list);
 		report.sortFormsAscending(comp);
-
+		
+		//
+		newList = new ArrayList();
+		newList.add(f1);
+		newList.add(f2);
 	}
 
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() throws Exception 
+	{
 	}
 
+	/**
+	 * Test two form, one is approved, the other is not, sort by: unapprove, approve
+	 */
 	@Test
-	public void test() {
+	public void isApproveComTest() {
 		report.sortFormsDescending(new FormIsApprovedComp());
-		System.out.println(report.sortFormsDescending(new FormIsApprovedComp()));
-		assertTrue(1==1);
-		
+		System.out.println(report.sortFormsDescending(new FormIsApprovedComp()).toString());
+		assertEquals("output",newList,report.sortFormsDescending(new FormIsApprovedComp()));
 	}
+	
+	/**
+	 * test random time
+	 */
+	@Test
+	public void testTimeComp()
+	{
+		for(int i=0; i<5; i++)
+		{
+			Time start = new Time();
+			list.add(new Form("abc","reason",start,end,"a"));
+		}
+	}
+	
 
 }

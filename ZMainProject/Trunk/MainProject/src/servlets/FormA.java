@@ -4,15 +4,54 @@ import java.io.IOException;
 
 import javax.servlet.http.*;
 
+import forms.Form;
+
+import serverLogic.DatabaseUtil;
+import time.Date;
+import time.Time;
+import people.User;
+/**
+ * 
+ * @author Yifei Zhu
+ * 
+ * This is Form A - Performance Absence Request 
+ *
+ */
+@SuppressWarnings("serial")
 public class FormA extends HttpServlet
 {
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException
 	{
-		if (req.getParameter("Back") != null) resp.sendRedirect("/Student_Page.jsp");
-		if (req.getParameter("Submit") != null)
+		
+		String buttonPressed = req.getParameter("Submit");
+		String directTo="/JSPPages/Student_Page.jsp";
+		
+		if (buttonPressed != null)
 		{
-			System.out.println("Hello");
+			String reason = req.getParameter("Reason"); 
+			
+			//	public Date(int year, int month, int day)
+			Date date = new Date(Integer.parseInt(req.getParameter("StartYear")),Integer.parseInt(req.getParameter("StartMonth")),Integer.parseInt(req.getParameter("StartDay")));
+			//			(int hour, int minute, Date date)
+			Time startTime = new Time(0,0,date);
+			Time endTime= new Time(23,59,date);
+			directTo= "/JSPPages/Student_Page.jsp";
+			
+			//Form( netID,  reason,  startTime,  endTime, type)			
+			Form myform= new Form(""+req.getSession().getAttribute("user"),reason,startTime,endTime, "A" );
+
+			DatabaseUtil.addForm(myform);
+			
+			resp.sendRedirect(directTo);
+		
 		}
+		else
+		{
+			//Throw an alert that they didn't add a field
+			System.out.println("some fields were invalid");
+		}
+		
+		
 	}
 
 }
