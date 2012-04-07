@@ -49,7 +49,7 @@
 		 var badChars = new Array();
 		 for(var i = 0; i < password.length; i++){
 	 		//between the brackets are all valid password characters
- 		     if(!/[abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*()_+=.,<>?-]/.test(password[i]))
+ 		     if(!/[a-zA-Z0-9!@#$%&*()_+=.,<>?-]/.test(password[i]))
 		 	 	 badChars.push(password[i]);
 		 }
 		 if(badChars.length > 0){
@@ -60,8 +60,10 @@
 		      return false;
 		 }
 		 //check that passwords match
-		 if(password != document.getElementById("Re-Enter Password").value){
+		 if(password != document.getElementById("Password2").value){
+			 var va = 1+1;
 			 alert("Passwords do not match. Please ensure passwords match.");
+			 var va1 = 1+1;
 			 return false;
 		 }
 		 
