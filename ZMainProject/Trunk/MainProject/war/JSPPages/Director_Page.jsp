@@ -1,69 +1,79 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ page import="people.*" %>
+<%@ page import="serverLogic.DatabaseUtil" %>
+
 <html>
 	<head>
 		<title>@10Dance</title>
 	</head>
-
+	<%
+	String netID = (String) session.getAttribute("user");
+	User user = null;
+	
+	if (netID == null || netID.equals("")) 
+	{
+		response.sendRedirect("/JSPPages/logout.jsp");
+		return;
+	}
+	else
+	{
+		user = DatabaseUtil.getUser(netID);
+		if (!user.getType().equalsIgnoreCase("Director")) {
+			response.sendRedirect("/JSPPages/logout.jsp");
+		}
+	}
+	%>
+	<script>
+		function viewForms() {
+			var div = document.getElementById("formsDiv")
+			if (div.style.display == "none") {
+				div.style.display = "block";
+			} else {
+				div.style.display = "none";
+			}
+		}
+		function pullAttendance() {
+			
+		}
+		function editInformation() {
+			
+		}
+	</script>
 	<body>
 <!--*********************Page Trail*****************************-->
-
 	
-	<!--TODO: need to connected to specific page-->
-	<!--<h1>-->
-		<li>
-			<a href="http://www.iastate.edu" title="PageTrail_Home">Home</a> 
+			<a href="/" title="PageTrail_Home">Home</a> 
 			>
-			<a href="http://www.iastate.edu" title="PageTrail_Director">Director</a>
+			<a href="/JSPPages/Student_Page.jsp" title="PageTrail_director">Director</a>
 			
-		<!--HELP BUTTON-->	
-		<a class="addthis_button"><img
-        src="http://icons.iconarchive.com/icons/deleket/button/24/Button-Help-icon.png"
-        width="16" height="16" border="0" alt="Share" /></a>
-		</li>
+		You are logged in as <%= user.getFirstName() + " " + user.getLastName() %>
+		<a href="/JSPPages/logout.jsp">logout</a>		
 
-	<!--</h1>-->
+		<!--HELP BUTTON-->	
+		<a href="">Help</a>
+
 <!--*********************info*****************************-->
-	
-	
-	<!--*********************Director Info*****************************-->	
-		</br>
+
+	<!--*********************User Info*****************************-->	
+		<br/><br/>
 		<div>
 		<table>
-			<tr><td>Name:</td> <td>FirstName, LastName</td></tr>
-			<tr><td>NetID:</td> <td>aaaa</td></tr>
-			<tr><td>Position:</td> <td>xxxxx</td></tr>
-			<tr><td>Email:</td> <td>helloworld@iastate.edu</td></tr>		
+			<tr><td>NetID:</td> <td><%= user.getNetID() %></td></tr>
 		</table>
 		</div>
-	<h2>----------------------------------<h2>
-		<!--*********************Director MailBox*****************************-->	
-	<div>
-		<table>
-			<tr><td>(new) 9/12 Todd Wegter <a target="reply" href="TODO" >reply</a></td></tr>
-			<!--MAIL BOX INFO-->
-			
-				<td>Can I have be excused for my birtheday?</td>
-				<td>	-9/12 -NO.</td>
-						
-				
-				
-			<tr><td> 8/31 Brandon Mxwell <a target="reply" href="TODO" >reply</a></td></tr>
-			<tr><td>8/24 Draco Malfoy <a target="reply" href="TODO" >reply</a></td></tr>
-			<tr><td> <a target="reply" href="TODO" >Post New Message</a></td></tr>		
-		</table>
-		</div>
-		
-		<!--********************* Button *****************************-->	
-
-	<h3>
-		<input type="submit" value="PersonalMessage" name="Personal Message"/> 
-		<input type="submit" value="ViewNEditStudentList" name="View and Edit Student List"/> </br>
-		<input type="submit" value="ViewClassReprtsNAbsenceForms" name="View ClassReprts and Absence Forms"/>
-		
-		</br></br>
-		<input type="submit" value="Logout" name="Logout"/>
-		
-	</h3>		
+----------------------------------
+<p>
+		<!--********************* Button *****************************-->
+		<input type ="submit" onClick="viewForms();"  value = "Forms">
+			<div id="formsDiv" style="display: none">
+				<p><a href="/JSPPages/Student_Form_A_Performance_Absence_Request.jsp">Form A - Performance Absence Request</a></p>
+				<p><a href="/JSPPages/Student_Form_B_Class_Conflict_Request.jsp">Form B - Class Conflict Request</a></p>
+				<p><a href="/JSPPages/Student_Form_C_Rehearsal_Excuse.jsp">Form C - Request for Excuse from Rehearsal</a></p>
+				<p><a href="/JSPPages/Student_Form_D_Time_Worked.jsp">Form D - Time Worked</a></p>
+			</div>
+		<input type ="submit" onClick="window.location = '/JSPPages/Student_View_Attendance.jsp';"  value = "View Attendance">
+		<br/>
+		<input type ="submit" onClick="window.location = '/JSPPages/Student_Edit_Info.jsp';"  value = "Edit my information">
 	</body>
-	
+
 </html>
