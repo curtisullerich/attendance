@@ -182,4 +182,20 @@ public class Tardy {
 		}
 	}
 
+	/**
+	 * 
+	 * Returns true if this Tardy was during the given event.
+	 * 
+	 * @author Curtis Ullerich
+	 * @date 4.9.12
+	 * @param event
+	 * @return
+	 */
+	public boolean isDuringEvent(Event event) {
+		//TODO we should probably test this.
+		return (this.getTime().compareTo(event.getStartTime()) >= 0 
+				&& this.getTime().compareTo(event.getEndTime())<=0);
+		
+	}
+
 }

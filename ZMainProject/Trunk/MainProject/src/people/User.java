@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import serverLogic.DatabaseUtil;
 import attendance.Absence;
 import attendance.AttendanceReport;
+import attendance.EarlyCheckOut;
+import attendance.Event;
 import attendance.Tardy;
 
 @Entity
@@ -99,6 +101,10 @@ public class User {
 
 	public List<Tardy> getTardies() {
 		return getAttendanceReport().getTardies();
+	}
+
+	public List<EarlyCheckOut> getEarlyCheckOuts() {
+		return getAttendanceReport().getEarlyCheckOuts();
 	}
 
 	public String getMajor() {
@@ -215,6 +221,42 @@ public class User {
 		// and excuses.
 	}
 
+	/**
+	 * Returns a string with the status of this user for the given event
+	 * 
+	 * @author Curtis Ullerich
+	 * @date 4/9/12
+	 * @return
+	 */
+	public String eventStatus(Event event) {
+		List<Tardy> tardies = this.getTardies();
+		List<EarlyCheckOut> ecos = this.getEarlyCheckOuts();
+		List<Absence> absences = this.getAbsences();
+
+		String status = "present";
+		for (Absence a : absences) {
+			if (a.isDuringEvent(event)) {
+				status = a.getStatus() + " " + "absent";
+				break;
+			}
+		}
+
+		for (EarlyCheckOut e : ecos) {
+			if (e.isDuringEvent(event)) {
+				status = e.getStatus() + " " + "early checkout";
+				break;
+			}
+		}
+
+		for (Tardy t : tardies) {
+			if (t.isDuringEvent(event)) {
+				status = t.getStatus() + " " + "tardy";
+				break;
+			}
+		}
+		return status;
+	}
+
 	public long hash(String netID) {
 		try {
 			MessageDigest cript = MessageDigest.getInstance("SHA-1");
@@ -229,22 +271,22 @@ public class User {
 			return 0;
 		}
 	}
-	
+
 	@Override
-	public boolean equals(Object other)
-	{
-		if (other == null) return false;
-		if (other.getClass() != this.getClass()) return false;
+	public boolean equals(Object other) {
+		if (other == null)
+			return false;
+		if (other.getClass() != this.getClass())
+			return false;
 		User o = (User) other;
 		return o.getNetID().equalsIgnoreCase(this.netID);
 	}
-	
-	@Override 
-	public int hashCode()
-	{
+
+	@Override
+	public int hashCode() {
 		return netID.hashCode();
 	}
-	
+
 	public String getAttendanceHtml() {
 		// TODO
 

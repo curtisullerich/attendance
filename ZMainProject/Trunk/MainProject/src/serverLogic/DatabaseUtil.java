@@ -1,5 +1,6 @@
 package serverLogic;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import javax.persistence.Query;
 import people.User;
 import attendance.Absence;
 import attendance.AttendanceReport;
+import attendance.EarlyCheckOut;
 import attendance.Event;
 import attendance.Tardy;
 
@@ -122,6 +124,49 @@ public class DatabaseUtil
 		return toRet;
 	}
 
+	/**
+	 * Returns a list of all students' netIDs.
+	 * @author Curtis Ullerich
+	 * @date 4/9/12
+	 * @return
+	 */
+	public static String[] listAllStudents() //TODO sort this alphabetically
+	{
+		EntityManager em = EMFService.get().createEntityManager();
+		Query q = em.createQuery("select m from User m");
+		List<User> people = (List<User>) q.getResultList();
+		String[] toRet = new String[people.size()];
+		for (int i = 0; i < people.size(); i++) {
+			User p = people.get(i);
+			if (p.getType().equalsIgnoreCase("Student"))
+				toRet[i] = p.getNetID();
+		}
+		return toRet;
+	}
+
+	public static List<User> getStudents() {
+		EntityManager em = EMFService.get().createEntityManager();
+		Query q = em.createQuery("select t from User t");
+		List<User> users;
+		List<User> ret = new ArrayList<User>();
+		try
+		{
+			users = (List<User>) q.getResultList();
+			for (User u : users) {
+				if (u.getType().equals("Student")) {
+					ret.add(u);
+				}
+			}
+		}
+		catch (NoResultException e)
+		{
+			users = null;//TODO shouldn't we just make this an empty list then?
+		}
+		return ret;
+	}
+
+	
+	
 	public static void addMessage(Message m) {
 		EntityManager em = EMFService.get().createEntityManager();
 		em.persist(m);
@@ -212,6 +257,33 @@ public class DatabaseUtil
 		return tardies;
 	}
 
+
+	
+	/**
+	 * Returns a list of early check outs for the given user.
+	 * 
+	 * @author Curtis Ullerich
+	 * @date 4/10/12
+	 * @param netID
+	 * @return
+	 */
+	public static List<EarlyCheckOut> getEarlyCheckOuts(String netID) {
+		EntityManager em = EMFService.get().createEntityManager();
+		Query q = em.createQuery("select t from EarlyCheckOut t where t.netID = :netID");
+		q.setParameter("netID", netID);
+		List<EarlyCheckOut> ecos;
+		try
+		{
+			ecos = (List<EarlyCheckOut>) q.getResultList();
+		}
+		catch (NoResultException e)
+		{
+			ecos = null;
+		}
+		return ecos;
+	}
+
+	
 	public static List<Form> getForms(String netID) {
 		EntityManager em = EMFService.get().createEntityManager();
 		Query q = em.createQuery("select a from Form a where a.netID = :netID");
@@ -259,6 +331,35 @@ public class DatabaseUtil
 		return result;
 	}
 
+	
+	/**
+	 * Returns a List of all Events in the database.
+	 * @author Curtis Ullerich
+	 * @return
+	 */
+	public static List<Event> getAllEvents() {
+		EntityManager em = EMFService.get().createEntityManager();
+		Query q = em.createQuery("select m from Event m");
+		List<Event> events = (List<Event>) q.getResultList();
+			
+		return events;
+	}
+
+	/**
+	 * Returns a List of all Events in the database.
+	 * @author Curtis Ullerich
+	 * @return
+	 */
+	public static List<Event> getAllEvents(String netID) {
+		EntityManager em = EMFService.get().createEntityManager();
+		Query q = em.createQuery("select m from Event m");
+		List<Event> events = (List<Event>) q.getResultList();
+			
+		return events;
+	}
+
+	
+	
 //	public static File getFile(String attachedFile) {
 //		return null;
 //	}

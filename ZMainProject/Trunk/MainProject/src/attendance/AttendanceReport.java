@@ -48,6 +48,10 @@ public class AttendanceReport {
 	public List<Tardy> getTardies() {
 		return DatabaseUtil.getTardies(netID);
 	}
+	
+	public List<EarlyCheckOut> getEarlyCheckOuts() {
+		return DatabaseUtil.getEarlyCheckOuts(netID);
+	}
 
 	public List<Form> getForms() {
 		return DatabaseUtil.getForms(netID);

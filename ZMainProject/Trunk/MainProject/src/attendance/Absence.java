@@ -59,6 +59,19 @@ public class Absence{
 //		this.type = info[3];
 //		this.isApproved = Boolean.parseBoolean(info[4]);
 //	}
+
+	/**
+	 * Returns true if this Absence was during the given event.
+	 * @author Curtis Ullerich
+	 * @date 4/9/12
+	 * @param event
+	 * @return
+	 */
+	public boolean isDuringEvent(Event event) {
+		//TODO we should probably test this
+		return (this.getStartTime().compareTo(event.getStartTime()) == 0 
+				&& this.getEndTime().compareTo(event.getEndTime()) == 0);
+	}
 	
 	public String toString()
 	{
