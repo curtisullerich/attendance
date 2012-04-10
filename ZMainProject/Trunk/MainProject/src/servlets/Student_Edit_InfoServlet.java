@@ -55,17 +55,15 @@ public class Student_Edit_InfoServlet extends HttpServlet
 				DatabaseUtil.addUser(guy);
 				
 				//Send them back to the login page?
+				resp.sendRedirect("/JSPPages/Student_Page.jsp?successfulSave='true'");
+			}
+			else
+			{
+				//Throw an alert that they didn't add a field
 				System.out.println("some fields were invalid");
-				resp.sendRedirect("/JSPPages/Student_Page.jsp");
+				resp.sendRedirect("/JSPPages/Student_Page.jsp?successfulSave='false'");
+	
 			}
 		}
-		else
-		{
-			//Throw an alert that they didn't add a field
-			System.out.println("some fields were invalid");
-		}
-		
-		
-			}
-
+	}
 }

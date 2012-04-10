@@ -27,7 +27,7 @@
 			>
 			<a href="/JSPPages/Student_Page.jsp" title="PageTrail_Student">Student</a>
 			>
-			<a href="/JSPPages/TimeWork.jsp" title="TimeWork">Student_Form_D_TimeWorked.jsp</a>
+			<a href="/JSPPages/Student_Form_D_TimeWorked.jsp" title="TimeWork">Time Worked</a>
 
 		You are logged in as <%= user.getFirstName() + " " + user.getLastName() %>
 		<a href="/JSPPages/logout.jsp">logout</a>		

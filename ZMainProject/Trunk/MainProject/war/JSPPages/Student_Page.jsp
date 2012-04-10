@@ -21,6 +21,15 @@
 	}
 	%>
 	<script>
+		window.onload = function(){
+			if(<%= request.getParameter("successfulSave")%> == "true"){
+				alert("User info successfully edited.");
+			}
+			else if(<%= request.getParameter("successfulSave")%> == "false"){
+				alert("Info update error. User info not changed.");	
+			}
+		}
+	
 		function viewForms() {
 			var div = document.getElementById("formsDiv")
 			if (div.style.display == "none") {
@@ -39,9 +48,9 @@
 	<body>
 <!--*********************Page Trail*****************************-->
 	
-			<a href="/" title="PageTrail_Home">Home</a> 
-			>
-			<a href="/JSPPages/Student_Page.jsp" title="PageTrail_Student">Student</a>
+		<a href="/" title="PageTrail_Home">Home</a> 
+		>
+		<a href="/JSPPages/Student_Page.jsp" title="PageTrail_Student">Student</a>
 			
 		You are logged in as <%= user.getFirstName() + " " + user.getLastName() %>
 		<a href="/JSPPages/logout.jsp">logout</a>		
@@ -70,7 +79,7 @@
 			</div>
 		<input type ="submit" onClick="window.location = '/JSPPages/Student_View_Attendance.jsp';"  value = "View Attendance">
 		<br/>
-		<input type ="submit" onClick="window.location = '/JSPPages/Student_Edit_Info.jsp';"  value = "Edit my information">
+		<input type ="submit" onClick="window.location = '/JSPPages/Student_Edit_Info.jsp';"  value = "Edit My Information">
 	</body>
 
 </html>

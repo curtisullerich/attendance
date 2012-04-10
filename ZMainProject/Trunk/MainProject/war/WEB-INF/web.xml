@@ -44,6 +44,11 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<servlet-class>servlets.RegisterStaffServlet</servlet-class>
 	</servlet>
 		
+	<servlet>
+		<servlet-name>TAEditInfo</servlet-name>
+		<servlet-class>servlets.TA_Edit_InfoServlet</servlet-class>
+	</servlet>	
+		
 	<servlet-mapping>
 		<servlet-name>Login</servlet-name>
 		<url-pattern>/login</url-pattern>
@@ -82,6 +87,11 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<servlet-mapping>
 		<servlet-name>RegisterStaff</servlet-name>
 		<url-pattern>/registerStaff</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>TAEditInfo</servlet-name>	
+		<url-pattern>/taEditInfo</url-pattern>
 	</servlet-mapping>
 	
 		

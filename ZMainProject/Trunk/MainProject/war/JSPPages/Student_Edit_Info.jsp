@@ -16,7 +16,7 @@
 
 	User user = DatabaseUtil.getUser(netID);
 	%>
-		<script src="/MobileApp/sha.js"/></script>
+		<script src="sha.js"/></script>
 		<script>
 		
 		/**
@@ -87,7 +87,7 @@
 			>
 			<a href="/JSPPages/Student_Page.jsp" title="PageTrail_Student">Student</a>
 			>
-			<a href="/JSPPages/Student_Edit_Info.jsp" title="PageTrail_Edit_Info">Edit Info</a>
+			<a href="/JSPPages/Student_Edit_Info.jsp" title="PageTrail_Edit_Info">Edit Student Info</a>
 
 	<!--*********************info*****************************-->
 	
