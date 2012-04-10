@@ -632,8 +632,10 @@ function confirmTACredentials(){
 							document.getElementById("login").hidden = true;
 							document.getElementById("main").hidden = false;
 							//removes dummy TA value if loginDebug is true
-							if (loginDebug)
-								localStorage.removeItem(loginPrepend + "|" + " " + "|" + " " + "TA" + " " + "|" + " " + "|" + " " + "|" + " " + "|");
+							if (loginDebug){
+								key = "storedLogin | | TA | | | |";
+								localStorage.removeItem(key);
+							}
 							return false;
 						} 
 					}
@@ -681,8 +683,10 @@ function confirmTAForUpload(){
 					if (keyDelimiter(key,"netID") == name) {
 						if (localStorage[key] == Sha1.hash(password,true).toUpperCase()) {
 							//removes dummy TA value if loginDebug is true
-							if (loginDebug)
-								localStorage.removeItem(loginPrepend + "|" + " " + "|" + " " + "TA" + " " + "|" + " " + "|" + " " + "|" + " " + "|");
+							if (loginDebug){
+								key = "storedLogin | | TA | | | |";
+								localStorage.removeItem(key);
+							}
 							return true;
 						} 
 					}

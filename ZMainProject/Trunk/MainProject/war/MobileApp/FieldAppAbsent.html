@@ -35,6 +35,8 @@
 				//clear radio buttons
 				document.getElementById("rehearsalRadio").checked = 0;
 				document.getElementById("performanceRadio").checked = 0;
+				//move cursor to login
+				netIDSelectTA();
 				//enable clear button if debug is true
 				if(debug){
 					document.getElementById("clear").hidden = false;
@@ -59,6 +61,18 @@
 					   }
 				}
 				return;
+			}
+			
+			/**
+			 * This function selects the netID input box by default when called
+			 *
+			 * @author Todd Wegter
+			 * @date 2-10-212
+			 */
+			function netIDSelectTA(){
+				var text_input = document.getElementById ("TA");
+				text_input.focus ();
+				text_input.select ();
 			}
 			
 			/**

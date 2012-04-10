@@ -18,6 +18,11 @@
 			 * @date 2-17-2012
 			 */
 			window.onload = function() {
+				 
+				//enable clear button if debug mode is enabled
+				if(debug){
+					document.getElementById("clear").hidden = false;
+				}
 				//determine date of latest class list
 				document.getElementById("login").hidden = true;
 				var array = storeToArray(studentPrepend," ","date");
@@ -40,7 +45,7 @@
 					localStorage.removeItem("success");
 				}
 				//if upload unsuccessful, do not clear localStorage
-				else if(!localStorage.getItem("success") == "false"){
+				else if(localStorage.getItem("success") == "false"){
 					alert("Absence Data Upload Unsuccessful - Local Data Was Not Changed");
 					localStorage.removeItem("success");
 				}
@@ -50,12 +55,21 @@
 					alert("Nothing was uploaded to the server")
 					localStorage.removeItem("success");
 				}
-			    //enable clear button if debug mode is enabled
-				if(debug){
-					document.getElementById("clear").hidden = false;
-				}
 			}
-						
+			
+
+			/**
+			 * This function selects the netID input box by default when called
+			 *
+			 * @author Todd Wegter
+			 * @date 2-10-212
+			 */
+			function netIDSelectTA(){
+				var text_input = document.getElementById ("TA");
+				text_input.focus ();
+				text_input.select ();
+			}
+		
 	        /**
 			 * Pulls the latest student list from the server by redirecting to the updateList.jsp
 			 * If the user is not connected to the internet (browser in offline mode), update is not performed.
@@ -88,6 +102,7 @@
 				}
 				document.getElementById("main").hidden = true;
 				document.getElementById("login").hidden = false;
+				netIDSelectTA();
 				return false;			 
 	        }
 	        

@@ -18,12 +18,12 @@
 		<%if (info != null && !info.equalsIgnoreCase(""))
 		{%>
 			<%worked = Parser.splat(info);%>
-			localStorage.setItem("success", true);
+			localStorage.setItem("success", "true");
 		<%}%>
 		
 		<%if (info == null || !worked)
 		{%>
-			localStorage.setItem("success", false);
+			localStorage.setItem("success", "false");
 		<%}%>
 		
 		<%if (info.equalsIgnoreCase(""))
