@@ -110,16 +110,70 @@ public class DatabaseUtil
 		return true;
 	}
 	
-	public static String[] listAllUsers() 
+	public static User getDirector()
+	{	
+		EntityManager em = EMFService.get().createEntityManager();
+		String type = "Director";
+		Query q = em.createQuery("select p from User p where p.type = :type");
+		q.setParameter("type", type);
+		
+		User result;
+		// See if that person actually exists
+		try {
+			result = (User) q.getSingleResult();
+		} catch (NoResultException e) {
+			result = null;
+		}
+		em.close();
+		return result;
+	}
+	
+	public static boolean directorExists()
+	{
+		if(getDirector() == null)
+			return false;
+		return true;
+	}
+	
+	public static User getStudentStaff()
+	{	
+		EntityManager em = EMFService.get().createEntityManager();
+		String type = "TA";
+		Query q = em.createQuery("select p from User p where p.type = :type");
+		q.setParameter("type", type);
+		
+		User result;
+		// See if that person actually exists
+		try {
+			result = (User) q.getSingleResult();
+		} catch (NoResultException e) {
+			result = null;
+		}
+		em.close();
+		return result;
+	}
+	
+	public static boolean studentStaffExists()
+	{
+		if(getStudentStaff() == null)
+			return false;
+		return true;
+	}
+	
+	public static ArrayList<String> listAllUsers() 
 	{
 		EntityManager em = EMFService.get().createEntityManager();
 		Query q = em.createQuery("select m from User m");
 		List<User> people = (List<User>) q.getResultList();
-		String[] toRet = new String[people.size()];
+		ArrayList<String> toRet = new ArrayList<String>();
 		for (int i = 0; i < people.size(); i++) {
 			User p = people.get(i);
-			if (!p.getType().equalsIgnoreCase("Director"))
-				toRet[i] = p.toString();
+			if (!p.getType().equalsIgnoreCase("Director")){
+				if(p.getType().equalsIgnoreCase("TA"))
+					toRet.add(p.toStringTA());
+				else
+					toRet.add(p.toString());
+			}
 		}
 		return toRet;
 	}

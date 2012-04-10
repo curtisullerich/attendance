@@ -38,6 +38,11 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<servlet-name>StudentEditInfo</servlet-name>
 		<servlet-class>servlets.Student_Edit_InfoServlet</servlet-class>
 	</servlet>
+	
+	<servlet>
+		<servlet-name>RegisterStaff</servlet-name>
+		<servlet-class>servlets.RegisterStaffServlet</servlet-class>
+	</servlet>
 		
 	<servlet-mapping>
 		<servlet-name>Login</servlet-name>
@@ -72,6 +77,11 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	<servlet-mapping>
 		<servlet-name>StudentEditInfo</servlet-name>	
 		<url-pattern>/studentEditInfo</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>RegisterStaff</servlet-name>
+		<url-pattern>/registerStaff</url-pattern>
 	</servlet-mapping>
 	
 		

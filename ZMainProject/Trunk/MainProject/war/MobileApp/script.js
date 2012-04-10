@@ -633,7 +633,7 @@ function confirmTACredentials(){
 							document.getElementById("main").hidden = false;
 							//removes dummy TA value if loginDebug is true
 							if (loginDebug)
-								localStorage.removeItem(key);
+								localStorage.removeItem(loginPrepend + "|" + " " + "|" + " " + "TA" + " " + "|" + " " + "|" + " " + "|" + " " + "|");
 							return false;
 						} 
 					}
@@ -682,7 +682,7 @@ function confirmTAForUpload(){
 						if (localStorage[key] == Sha1.hash(password,true).toUpperCase()) {
 							//removes dummy TA value if loginDebug is true
 							if (loginDebug)
-								localStorage.removeItem(key);
+								localStorage.removeItem(loginPrepend + "|" + " " + "|" + " " + "TA" + " " + "|" + " " + "|" + " " + "|" + " " + "|");
 							return true;
 						} 
 					}

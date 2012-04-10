@@ -62,7 +62,7 @@
 		 }
 		 
 		 //hash password into hidden field
-		 var str = Sha1.hash(document.getElementById("Password").value);
+		 var str = Sha1.hash(password);
 		 str = str.toUpperCase();
 		 document.getElementById("Hashed Password").value = str;
 		

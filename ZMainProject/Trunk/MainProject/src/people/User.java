@@ -56,23 +56,17 @@ public class User {
 		this.major = major;
 		this.section = section;
 		this.year = year;
-
-		// each student has a corresponding attendance report with field "netID"
-		// = the student's netID
-
-		if (type.equalsIgnoreCase("Student")) {
-			rank = "|";
-			grade = 100.00;
-		} else {
-			rank = null;
-			major = null;
-			section = null;
-		}
+		this.rank = "|";
+		this.grade = 100.00;
 	}
 
 	public String toString() {
 		return netID + " " + firstName + " " + lastName + " " + univID + " "
 				+ major + " " + section + " " + year + " " + rank + " " + grade;
+	}
+	
+	public String toStringTA() {
+		return "TA" + " " + netID + " " + firstName + " " + lastName + " " + hashedPassword + " " + rank;
 	}
 
 	public void addTardy(Tardy newTardy) {
