@@ -14,7 +14,7 @@ import time.Time;
 //create message key format and creator method
 
 @Entity
-public class Event 
+public class Event
 {
 	//Id: take the date and start and end times and smash them together
 	@Id

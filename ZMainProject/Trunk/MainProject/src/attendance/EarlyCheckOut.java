@@ -20,7 +20,8 @@ public class EarlyCheckOut{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)  //creates id for entry
 	private Long id;
-	
+
+	private String netID;
 	private String checkOutTime;
 	private String status;
 	private String type;
@@ -94,5 +95,13 @@ public class EarlyCheckOut{
 	
 	public long getID(){
 		return id;
+	}
+
+	public String getNetID() {
+		return netID;
+	}
+
+	public void setNetID(String netID) {
+		this.netID = netID;
 	}
 }

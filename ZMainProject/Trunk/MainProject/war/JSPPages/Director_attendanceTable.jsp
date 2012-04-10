@@ -19,41 +19,46 @@
 	else
 	{
 		user = DatabaseUtil.getUser(netID);
-		if (!user.getType().equalsIgnoreCase("Director")) {
-			response.sendRedirect("/JSPPages/logout.jsp");
-		}
+//		if (!user.getType().equalsIgnoreCase("Director")) {
+//			response.sendRedirect("/JSPPages/logout.jsp");
+//		}
 	}
 	%>
 
-	<%
-		PriorityQueue<Event> pq = new PriorityQueue<Event>();
+	<%//for table
+//		PriorityQueue<Event> pq = new PriorityQueue<Event>();
 		List<Event> events = DatabaseUtil.getAllEvents();
-		pq.addAll(events);
+//		pq.addAll(events);
 		
-		String filters = "";
-		String table = "<table>";
+		String table = "<table border='100'>";
 		
-		String headers = "<b><tr>";
+		String headers = "<tr><td>netID</td>";
 		
-		for (Event event : pq) {
+		for (Event event : events) {
 			String date = event.getDate().toString();
-			String color = event.isPerformance() ? "green" : "white";
-			headers += "<td bgcolor=\""+color+"\"" + date +"</td>";
-			
+			String color = event.isPerformance() ? "blue" : "#009900";
+			headers += "<td bgcolor='"+color+"' >" + date +"</td>";
 		}
 		
-		headers+="</tr></b>";
+		headers+="</tr>";
 		table+=headers;
 		
 		List<User> students = DatabaseUtil.getStudents();
 		//TODO does they want to see absences, etc, here if they are excused? Probably not
 		for (User student : students) {
 			String row = "<tr>";
-			for (Event event : pq) {
+			row += "<td><b>"+student.getNetID()+"</b></td>";
+			for (Event event : events) {
 				row += "<td>"+ student.eventStatus(event) +"</td>";
 			}
 			row +="</tr>";
+			table+=row;
 		}
+		table+="</table>";
+	%>
+	<%//for filters
+		String filters = "";
+		
 	%>
 	
 </head>
