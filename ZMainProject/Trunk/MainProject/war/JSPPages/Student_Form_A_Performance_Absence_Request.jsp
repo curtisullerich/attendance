@@ -43,7 +43,7 @@
 
 <div id="right">
 	
-	<table style="text-align:right">
+	<table style="text-align:left">
 		<form method="post" action="/formA">
 			<p><h1>Performance Absence Request Form | FORM A</h1></p>
 
