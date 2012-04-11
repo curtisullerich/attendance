@@ -32,7 +32,7 @@ public class TA_Edit_InfoServlet extends HttpServlet
 			//Grab all the data from the fields
 			password = req.getParameter("Hashed Password");
 			
-			if ( password != null)
+			if ( password != null && password != "")
 			{
 				User guy = DatabaseUtil.getUser(""+req.getSession().getAttribute("user"));
 				

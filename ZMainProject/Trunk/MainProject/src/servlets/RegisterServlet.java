@@ -35,7 +35,8 @@ public class RegisterServlet extends HttpServlet
 			major = req.getParameter("Major");
 			section = req.getParameter("Section");
 			
-			if (netID != null && password != null && firstName != null && lastName != null && univID != null && year > 0 && major != null && section != null)
+			if (netID != null && password != null && firstName != null && lastName != null && univID != null && year > 0 && major != null &&
+					section != null && netID != "" && password != "" && firstName != "" && lastName != "" && univID != "" && major != "" && section != "")
 			{
 				//Need to do various other checks and stuff. Like whether this account already exists
 				

@@ -24,6 +24,16 @@
 	}
 	%>
 	<script>
+	
+		window.onload = function(){
+			if(<%= request.getParameter("successfulSave")%> == "true"){
+				alert("User info successfully edited.");
+			}
+			else if(<%= request.getParameter("successfulSave")%> == "false"){
+				alert("Info update error. User info not changed.");	
+			}
+		}
+		
 		function viewForms() {
 			var div = document.getElementById("formsDiv")
 			if (div.style.display == "none") {
@@ -44,10 +54,10 @@
 	
 			<a href="/" title="PageTrail_Home">Home</a> 
 			>
-			<a href="/JSPPages/Student_Page.jsp" title="PageTrail_director">Director</a>
+			<a href="/JSPPages/Director_Page.jsp" title="PageTrail_director">Director</a>
 			
-		You are logged in as <%= user.getFirstName() + " " + user.getLastName() %>
-		<a href="/JSPPages/logout.jsp">logout</a>		
+		You are logged in as the Director (<%= user.getFirstName() + " " + user.getLastName()%>)
+		<a href="/JSPPages/logout.jsp">Logout</a>		
 
 		<!--HELP BUTTON-->	
 		<a href="">Help</a>
@@ -63,17 +73,10 @@
 		</div>
 ----------------------------------
 <p>
-		<!--********************* Button *****************************-->
-		<input type ="submit" onClick="viewForms();"  value = "Forms">
-			<div id="formsDiv" style="display: none">
-				<p><a href="/JSPPages/Student_Form_A_Performance_Absence_Request.jsp">Form A - Performance Absence Request</a></p>
-				<p><a href="/JSPPages/Student_Form_B_Class_Conflict_Request.jsp">Form B - Class Conflict Request</a></p>
-				<p><a href="/JSPPages/Student_Form_C_Rehearsal_Excuse.jsp">Form C - Request for Excuse from Rehearsal</a></p>
-				<p><a href="/JSPPages/Student_Form_D_Time_Worked.jsp">Form D - Time Worked</a></p>
-			</div>
-		<input type ="submit" onClick="window.location = '/JSPPages/Student_View_Attendance.jsp';"  value = "View Attendance">
+		<!--********************* Buttons *****************************-->
+		<input type ="submit" onClick="window.location = '/JSPPages/Director_attendanceTable.jsp';"  value = "View Attendance">
 		<br/>
-		<input type ="submit" onClick="window.location = '/JSPPages/Student_Edit_Info.jsp';"  value = "Edit my information">
+		<input type ="submit" onClick="window.location = '/JSPPages/Director_Edit_Info.jsp';"  value = "Edit my information">
 		
 <!--*****************************************the powerful stuff*************************************************-->		
 		

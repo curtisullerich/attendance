@@ -31,7 +31,8 @@ public class RegisterStaffServlet extends HttpServlet
 			studentStaffNetID = req.getParameter("Student Staff NetID");
 			studentStaffPassword = req.getParameter("Hashed Student Staff Password");			
 			
-			if (directorNetID != null && directorPassword != null && studentStaffNetID != null && studentStaffPassword != null)
+			if (directorNetID != null && directorPassword != null && studentStaffNetID != null && studentStaffPassword != null &&
+					directorNetID != "" && directorPassword != "" && studentStaffNetID != "" && studentStaffPassword != "")
 			{
 				//Need to do various other checks and stuff. Like whether this account already exists
 				
