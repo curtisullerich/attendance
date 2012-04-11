@@ -5,32 +5,34 @@
 <html>
 	<head>
 		<title>@10Dance</title>
-		<%
-		String netID = (String) session.getAttribute("user");
-		User user = null;
-		
-		if (netID == null || netID.equals("")) 
-		{
-			response.sendRedirect("/JSPPages/logout.jsp");
-			return;
-		}
-		else
-		{
-			user = DatabaseUtil.getUser(netID);
-		}
-		%>
-		
-		<script>
-			window.onload = function(){
-				if(<%= request.getParameter("successfulSave")%> == "true"){
-					alert("TA password successfully changed.");
-				}
-				else if(<%= request.getParameter("successfulSave")%> == "false"){
-					alert("Password update error. TA password not changed.");	
-			}
-		}
-		</script>
 	</head>
+	<%
+	String netID = (String) session.getAttribute("user");
+	User user = null;
+	
+	if (netID == null || netID.equals("")) 
+	{
+		response.sendRedirect("/JSPPages/logout.jsp");
+		return;
+	}
+	else
+	{
+		user = DatabaseUtil.getUser(netID);
+		if (!user.getType().equalsIgnoreCase("TA")) {
+			response.sendRedirect("/JSPPages/logout.jsp");
+		}
+	}
+	%>	
+	<script>
+		window.onload = function(){
+			if(<%= request.getParameter("successfulSave")%> == "true"){
+				alert("TA password successfully changed.");
+			}
+			else if(<%= request.getParameter("successfulSave")%> == "false"){
+				alert("Password update error. TA password not changed.");	
+		}
+	}
+	</script>
 	<body>
 	<!--*********************Page Trail*****************************-->
 	

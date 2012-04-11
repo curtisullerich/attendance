@@ -8,16 +8,22 @@
 		<title>@10Dance</title>
 	</head>
 	<%
-	String netID = (String) session.getAttribute("user"); 
+	String netID = (String) session.getAttribute("user");
+	User user = null;
 	
 	if (netID == null || netID.equals("")) 
 	{
 		response.sendRedirect("/JSPPages/logout.jsp");
+		return;
 	}
-
-	User user = DatabaseUtil.getUser(netID);
+	else
+	{
+		user = DatabaseUtil.getUser(netID);
+		if (!user.getType().equalsIgnoreCase("Student")) {
+			response.sendRedirect("/JSPPages/logout.jsp");
+		}
+	}
 	%>
-
 	<body>
 	
 	<!--*********************Page Trail*****************************-->

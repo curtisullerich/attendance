@@ -5,10 +5,17 @@
 <html>
 	<head>
 		<title>@10Dance</title>
+	</head>
 	<%
 	session.removeAttribute("user");
 	%>
-	<script>window.location = "/";</script>
-	</head>
+	<script>
+	
+		window.onload = function(){
+			window.location = "/";
+		}
+	</script>
+	<body>
 	<p>Logging out...</p>
+	</body>
 </html>

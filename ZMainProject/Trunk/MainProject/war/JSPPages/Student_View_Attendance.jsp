@@ -8,6 +8,23 @@
 	<head>
 		<title>@10Dance</title>
 	</head>
+	<%
+	String netID = (String) session.getAttribute("user");
+	User user = null;
+	
+	if (netID == null || netID.equals("")) 
+	{
+		response.sendRedirect("/JSPPages/logout.jsp");
+		return;
+	}
+	else
+	{
+		user = DatabaseUtil.getUser(netID);
+		if (!user.getType().equalsIgnoreCase("Student")) {
+			response.sendRedirect("/JSPPages/logout.jsp");
+		}
+	}
+	%>
 	<script>
 		function sendMeToMyTardyMessages(id) {
 			window.location = "/JSPPages/tardyMessages.jsp?id=" + id;
@@ -27,20 +44,7 @@
 			<a href="/JSPPages/Student_Page.jsp" title="PageTrail_Student">Student</a>
 			>
 			<a href="/JSPPages/Student_View_Attendance.jsp" title="PageTrail_ViewAttendance">View Attendance</a>
-	<%
-	System.out.println("Student_View_Attendance: inside header");
-	String netID = (String) session.getAttribute("user"); //TODO remove debugging prints in here
 	
-	if (netID == null || netID.equals("")) 
-	{
-		response.sendRedirect("/JSPPages/logout.jsp");
-	}
-
-	User user = DatabaseUtil.getUser(netID);
-	System.out.println("Student_View_Attendance: netID= " +netID );
-
-	%>
-
 		You are logged in as <%= user.getFirstName() + " " + user.getLastName() %>
 		<a href="/JSPPages/logout.jsp">logout</a>		
 

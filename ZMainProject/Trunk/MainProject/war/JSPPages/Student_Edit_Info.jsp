@@ -7,14 +7,21 @@
 		<title>@10Dance</title>
 	</head>
 	<%
-	String netID = (String) session.getAttribute("user"); 
+	String netID = (String) session.getAttribute("user");
+	User user = null;
 	
 	if (netID == null || netID.equals("")) 
 	{
 		response.sendRedirect("/JSPPages/logout.jsp");
+		return;
 	}
-
-	User user = DatabaseUtil.getUser(netID);
+	else
+	{
+		user = DatabaseUtil.getUser(netID);
+		if (!user.getType().equalsIgnoreCase("Student")) {
+			response.sendRedirect("/JSPPages/logout.jsp");
+		}
+	}
 	%>
 		<script src="sha.js"/></script>
 		<script>
@@ -38,8 +45,15 @@
  		 if(parseInt(document.getElementById("Year").value,10) == 10){
 			 alert("Congratulations. You need to graduate.")
 	 	 }
-		 
-		 var password = document.getElementById("Password").value
+ 		 
+ 		 //validate current password
+ 		 if(Sha1.hash(document.getElementById("Current Password").value).toUpperCase() != 
+ 			 ("<%= DatabaseUtil.getUser(netID).getHashedPassword()%>")){
+ 			 alert("Please enter the correct current password.");
+ 			 return false;
+ 		 }
+ 			 
+		 var password = document.getElementById("Password").value;
 		 //check that password is appropriate length
 		 if(password.length < 6 || password.length > 20){
 			 alert("Password must be between 5 and 21 characters long.")
@@ -61,9 +75,7 @@
 		 }
 		 //check that passwords match
 		 if(password != document.getElementById("Password2").value){
-			 var va = 1+1;
 			 alert("Passwords do not match. Please ensure passwords match.");
-			 var va1 = 1+1;
 			 return false;
 		 }
 		 
@@ -96,12 +108,12 @@
 		
 				<table>
 					<tr>					
-						<td><label for="FirstName">First Name:</label></td>
+						<td><label for="FirstName">First Name</label></td>
 						<td><input type="FirstName" name="FirstName" id="FirstName" value="<%=user.getFirstName() %>"/></td>
 					</tr>
 					
 					<tr>
-						<td><label for="LastName">Last Name:</label></td>
+						<td><label for="LastName">Last Name</label></td>
 						<td><input type= "LastName" name="LastName" id="LastName" value="<%=user.getLastName()%>"/></td>	
 					</tr>
 
@@ -158,14 +170,19 @@
 						<td><label for="Major">Major</label></td>
 						<td><input type= "major" name="Major" id="Major" value="<%=user.getMajor() == null ? "" : user.getMajor() %>"/></td>	
 					</tr>
+					
+					<tr>
+						<td><label for="Current Password">Current Password</label></td>
+						<td><input type= "password" name="Current Password" id="Current Password" /></td>	
+					</tr>
 
 					<tr>
-						<td><label for="Password">Password:</label></td>
+						<td><label for="Password">New Password</label></td>
 						<td><input type= "password" name="Password" id="Password" /></td>	
 					</tr>
 					
 					<tr>
-						<td><label for="Password2">Re-Enter Password:</label></td>
+						<td><label for="Password2">Re-Enter New Password</label></td>
 						<td><input type= "password" name="Password2" id="Password2"/></td>	
 
 					</tr>

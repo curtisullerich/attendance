@@ -19,9 +19,9 @@
 	else
 	{
 		user = DatabaseUtil.getUser(netID);
-//		if (!user.getType().equalsIgnoreCase("Director")) {
-//			response.sendRedirect("/JSPPages/logout.jsp");
-//		}
+		if (!user.getType().equalsIgnoreCase("Director")) {
+			response.sendRedirect("/JSPPages/logout.jsp");
+		}
 	}
 	%>
 

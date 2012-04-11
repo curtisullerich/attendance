@@ -18,6 +18,9 @@
 	else
 	{
 		user = DatabaseUtil.getUser(netID);
+		if (!user.getType().equalsIgnoreCase("Student")) {
+			response.sendRedirect("/JSPPages/logout.jsp");
+		}
 	}
 	%>
 	<script>

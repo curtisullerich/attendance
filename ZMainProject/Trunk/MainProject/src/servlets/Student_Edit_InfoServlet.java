@@ -39,7 +39,8 @@ public class Student_Edit_InfoServlet extends HttpServlet
 			major = req.getParameter("Major");
 			section = req.getParameter("Section");
 			
-			if ( password != null && firstName != null && lastName != null && univID != null && year > 0 && major != null && section != null)
+			if ( password != null && firstName != null && lastName != null && univID != null && year > 0 && major != null &&
+					section != null && password != "" && firstName != "" && lastName != "" && univID != "" && major != "" && section != "")
 			{
 				User guy = DatabaseUtil.getUser(""+req.getSession().getAttribute("user"));
 
