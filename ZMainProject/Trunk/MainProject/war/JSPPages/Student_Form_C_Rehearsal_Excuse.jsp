@@ -42,11 +42,11 @@
 
 <div id="right">
 	
-	<table style="text-align:right">
+	<table style="text-align:left">
 		<form method="post" action="/formC">
 			<p><h1>Request for Excuse from Rehearsal | FORM C</p></h1><br>
 			<tr>
-			<p>Note: This form must be turned in no later than three weekdays following the rehearsal absence or tardy.  Documentation is required for all absences (doctor's note, obituary, wedding program, etc.).</p>
+			<p>Note: This form must be turned in no later than three weekdays following the rehearsal absence or tardy. <br/> Documentation is required for all absences (doctor's note, obituary, wedding program, etc.).</p>
 			<p> </p><br>
 
 			<tr>
@@ -56,11 +56,11 @@
 			</tr>
 
 			<tr>
-				<td>Date:</td>
+				<td>Date (MM/DD/YYYY):</td>
 				<td><div id='startDate'>
-						<input id='startMonth' size='5' type='number' name='StartMonth' min='01' max='12' value='9'>(MM)</input>
-						<input id='startDay' size='5' type='number' name='StartDay' min='01' max='31' step='1' value='1'>(DD)</input>
-						<input id='startYear' size='5' type='number' name='StartYear' min='2000' max='2999' step='1' value='2012'/>(YYYY)<!-- TODO make this work with current date instead of hard coding -->
+						<input id='startMonth' size='5' type='number' name='StartMonth' min='01' max='12' value='9'></input>
+						<input id='startDay' size='5' type='number' name='StartDay' min='01' max='31' step='1' value='1'></input>
+						<input id='startYear' size='5' type='number' name='StartYear' min='2000' max='2999' step='1' value='2012'/><!-- TODO make this work with current date instead of hard coding -->
 					</div>
 				</td>
 			</tr>
