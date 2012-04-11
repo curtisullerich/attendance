@@ -42,7 +42,7 @@
 <!--==================================================================================================================-->		
 <div id="right">
 	
-	<table style="text-align:right">
+	<table style="text-align:left">
 		<form method="post" action="/formB">
 			<p><h1>Class Conflict Request Form | FORM B</p></h1><br>
 			<tr>
@@ -103,7 +103,7 @@ for (int i = 1; i <= max; i++) {
 			+""
 			+"	<tr>"
 			+"		<td>"
-			+"			<div id='timeSelect" + i + "'>"
+			+"			<div style='text-align:right' id='timeSelect" + i + "'>"
 			+"				Until<input type='radio' value='Until' name='until'><br/>"
 			+"				Starting At<input type='radio' value='Starting At' name='until'><br/>"
 			+"				Completely Miss<input type='radio' value='Completely' name='until'><br/>"
