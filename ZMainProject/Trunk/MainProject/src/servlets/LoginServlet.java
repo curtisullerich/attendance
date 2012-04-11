@@ -28,7 +28,7 @@ public class LoginServlet extends HttpServlet
 			//Hash the password
 			if(!validateLogin(user, hashedPassword))
 			{
-				directTo = "/JSPPages/invalidLogin.jsp";
+				directTo = "/JSPPages/loginPage.jsp?validLogin='false'";
 			}
 			//Will go somewhere else once we have more stuff implemented
 			//directTo = "somewhere else";

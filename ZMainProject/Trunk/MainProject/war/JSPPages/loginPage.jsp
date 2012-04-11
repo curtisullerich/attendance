@@ -24,6 +24,9 @@
 				var user = "<%= request.getParameter("user")%>";
 				alert(user + " successfully added to the system.");
 			}
+			if(<%= request.getParameter("validLogin")%> == 'false'){
+				alert("Invalid username or password");
+			}
 		}
 				
 		/**
