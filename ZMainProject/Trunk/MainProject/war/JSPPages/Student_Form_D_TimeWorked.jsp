@@ -27,7 +27,7 @@
 			>
 			<a href="/JSPPages/Student_Page.jsp" title="PageTrail_Student">Student</a>
 			>
-			<a href="/JSPPages/Student_Form_D_TimeWorked.jsp" title="TimeWork">Time Worked</a>
+			<a href="/JSPPages/Student_Form_D_TimeWorked.jsp" title="TimeWork">Form D</a>
 
 		You are logged in as <%= user.getFirstName() + " " + user.getLastName() %>
 		<a href="/JSPPages/logout.jsp">logout</a>		
@@ -45,37 +45,45 @@
 
 <div id="right">
 	
-	<table style="text-align:right">
+	<table style="text-align:left">
 		<form method="post" action="/formD">
-			<p><h1>Time Work Form | FORM D</h1></p>
+			<p><h1>Time Worked Form | FORM D</h1></p>
 
 
 			<tr>
-				<td>Email Address:</td>
-				<td><input name="Email"></input></td>
+				<td>Who needs to verify?:</td>
+				<td><select name="Email" id="Email">
+						<option>wstaub@iastate.edu</option>
+						<option>smyth@iastate.edu</option>
+						<option>tkrock@iastate.edu</option>
+						<option>lgarrett@iastate.edu</option>
+						<option>mmasteller@iastate.edu</option>
+						<option>ebliven@iastate.edu</option>
+						
+				</select></td>
+			</tr>
+			<tr>
+				<td>Total amount of work:</td>
+				<td ><input name="AmountWorked"></input></td>
 			</tr>
 
 			<tr>
-				<td>Total Amount of Work:</td>
-				<td><input name="AmountWorked"></input></td>
-			</tr>
-
-			<tr>
-				<td>Date:</td>
-				<td><div id='startDate'>
-						<input id='startMonth' size='5' type='number' name='Month' min='01' max='12' value='9'>(MM)</input>
-						<input id='startDay' size='5' type='number' name='Day' min='01' max='31' step='1' value='1'>(DD)</input>
-						<input id='startYear' size='5' type='number' name='Year' min='2000' max='2999' step='1' value='2012'/>(YYYY)<!-- TODO make this work with current date instead of hard coding -->
+				<td>Date (MM/DD/YYYY):</td>
+				<td ><div id='startDate'>
+						<input id='startMonth' size='5' type='number' name='Month' min='01' max='12' value='9'></input>
+						<input id='startDay' size='5' type='number' name='Day' min='01' max='31' step='1' value='1'></input>
+						<input id='startYear' size='5' type='number' name='Year' min='2000' max='2999' step='1' value='2012'/><!-- TODO make this work with current date instead of hard coding -->
 					</div>
 				</td>
 			</tr>
 			
 			<tr>
-				<td>Work Detail :</td>
-				<td><textarea rows="6" cols="18" name="Details" wrap="physical"></textarea></td>
+				<td>Work details :</td>
+				<td ><textarea rows="6" cols="18" name="Details" wrap="physical"></textarea></td>
 			</tr>
 
 			<tr>
+			<td></td>
 				<td>
 					<button type="Submit" name = "Submit" type ="Submit">Submit</button>
 				</td>

@@ -167,19 +167,26 @@ public class Tardy {
 	}
 
 	public long hash(String netID, Time time) {
-		try {
-			String id = netID + time.toString(24);
-			MessageDigest cript = MessageDigest.getInstance("SHA-1");
-			cript.reset();
-			cript.update(id.getBytes("utf8"));
-			BigInteger bigot = new BigInteger(cript.digest());
-			// Something about things
-			return bigot.longValue();
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			return 0;
-		}
+		//TODO is this really good? Where else is the hash potentially used?
+		return this.toString().hashCode();
+		//		try {
+//			String id = netID + time.toString(24);
+//			MessageDigest cript = MessageDigest.getInstance("SHA-1");
+//			cript.reset();
+//			cript.update(id.getBytes("utf8"));
+//			BigInteger bigot = new BigInteger(cript.digest());
+//
+//			//TODO
+//			if (bigot.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) >=1) {
+//				throw new NullPointerException("YOUR BIGINT WAS BIGGER THAN YOUR LONG.");
+//			}
+//			return bigot.longValue();
+//
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return 0;
+//		}
 	}
 
 	/**
