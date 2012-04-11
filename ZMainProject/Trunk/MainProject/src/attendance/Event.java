@@ -32,7 +32,7 @@ public class Event
 	{
 		startTime = start.toString(24);
 		endTime = end.toString(24);
-		id = toId(start, end);
+		id = hash(start, end);
 		setType(type);
 	}
 
@@ -95,16 +95,21 @@ public class Event
 		return id;
 	}
 	
-	public Long toId(Time start, Time end)
+	public long hash(Time start, Time end)
 	{
 		//All the numbers will be "date StartTime EndTime" with no spaces and just numbers
-		String allTheNumbers = "";
-		allTheNumbers += new Time(startTime).getDate().toString();
-		allTheNumbers += getStartTime().get24Format();
-		allTheNumbers += getEndTime().get24Format();;
-		allTheNumbers = allTheNumbers.replaceAll(":","");
-		allTheNumbers = allTheNumbers.replaceAll("-","");
-		return new Long(allTheNumbers);
+//		String allTheNumbers = "";
+//		allTheNumbers += new Time(startTime).getDate().toString();
+//		allTheNumbers += getStartTime().get24Format();
+//		allTheNumbers += getEndTime().get24Format();;
+//		allTheNumbers = allTheNumbers.replaceAll(":","");
+//		allTheNumbers = allTheNumbers.replaceAll("-","");
+//		return new Long(allTheNumbers);
+		int retVal = 17;
+		retVal += start.toString(24).hashCode() * 7;
+		retVal += end.toString(24).hashCode() * 23;
+		return retVal;
+		
 	}
 	
 	

@@ -167,25 +167,42 @@ public class Tardy {
 	}
 
 	public long hash(String netID, Time time) {
-
-		//TODO is this really good? Where else is the hash potentially used?
-		return this.toString().hashCode();
-		//		try {
+//		try {
 //			String id = netID + time.toString(24);
 //			MessageDigest cript = MessageDigest.getInstance("SHA-1");
 //			cript.reset();
 //			cript.update(id.getBytes("utf8"));
 //			BigInteger bigot = new BigInteger(cript.digest());
-//
-//			//TODO
-//			if (bigot.compareTo(BigInteger.valueOf(Long.MAX_VALUE)) >=1) {
-//				throw new NullPointerException("YOUR BIGINT WAS BIGGER THAN YOUR LONG.");
-//			}
+//			// Something about things
 //			return bigot.longValue();
 //
 //		} catch (Exception e) {
 //			e.printStackTrace();
 //			return 0;
+//		}
+		int retVal = 17;
+		retVal += netID.toString().hashCode() * 23;
+		retVal += time.toString(24).hashCode() * 7;
+		return retVal;
+	}
+
+	/**
+	 * 
+	 * Returns true if this Tardy was during the given event.
+	 * 
+	 * @author Curtis Ullerich
+	 * @date 4.9.12
+	 * @param event
+	 * @return
+	 */
+	public boolean isDuringEvent(Event event) {
+		//TODO we should probably test this.
+		return (this.getTime().compareTo(event.getStartTime()) >= 0 
+				&& this.getTime().compareTo(event.getEndTime())<=0);
+		
+	}
+
+}
 //		}
 	}
 

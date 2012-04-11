@@ -30,7 +30,7 @@ public class AttendanceReport {
 
 	public AttendanceReport(String netID) {
 		this.netID = netID;
-		this.id = hash(netID);
+		this.id = (long) netID.hashCode();
 	}
 
 	public void addAbsence(Absence newAbsence) {
@@ -96,20 +96,4 @@ public class AttendanceReport {
 
 		});
 	}
-	
-	public long hash(String netID) {
-		try {
-			MessageDigest cript = MessageDigest.getInstance("SHA-1");
-			cript.reset();
-			cript.update(netID.getBytes("utf8"));
-			BigInteger bigot = new BigInteger(cript.digest());
-			// Something about things
-			return bigot.longValue();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			return 0;
-		}
-	}
-
 }

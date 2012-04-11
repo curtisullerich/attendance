@@ -182,18 +182,22 @@ public class Absence{
 	}
 
 	public long hash(String netID, Time startTime, Time endTime) {
-		try {
-			String id = netID + startTime.toString(24) + endTime.toString(24);
-			MessageDigest cript = MessageDigest.getInstance("SHA-1");
-			cript.reset();
-			cript.update(id.getBytes("utf8"));
-			BigInteger bigot = new BigInteger(cript.digest());
-			// Something about things
-			return bigot.longValue();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return 0;
-		}
+//		try {
+//			String id = netID + startTime.toString(24) + endTime.toString(24);
+//			MessageDigest cript = MessageDigest.getInstance("SHA-1");
+//			cript.reset();
+//			cript.update(id.getBytes("utf8"));
+//			BigInteger bigot = new BigInteger(cript.digest());
+//			// Something about things
+//			return bigot.longValue();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return 0;
+		int retVal = 17;
+		retVal += netID.hashCode() * 13;
+		retVal += startTime.toString(24).hashCode() * 7;
+		retVal += endTime.toString(24).hashCode() * 23;
+		return (long) retVal;
 	}
 
 }
