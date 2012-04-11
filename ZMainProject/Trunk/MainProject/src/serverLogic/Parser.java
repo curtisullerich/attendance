@@ -153,6 +153,7 @@ public class Parser {
 	{
 		//If they are in the TardyMap then take them out of the AbsentMap
 		//Update the tardies to what type of event they are: rehearsal, performance
+		List<User> toRemove = new LinkedList<User>();
 		for (User u: tardies.keySet())
 		{
 			if (absences.containsKey(u))
@@ -167,9 +168,28 @@ public class Parser {
 				{
 					tardies.get(u).setType(e.getType());
 				}
+				if (e.getStartTime().getDate().compareTo(tardies.get(u).getTime().getDate()) == 0)
+				{
+					if (tardies.get(u).getTime().getHour() - e.getStartTime().getHour() >= 1)
+					{
+						//Remove the tardy and add it as an absence
+						Absence abs = new Absence(u.getNetID(), e.getStartTime(), e.getEndTime(), tardies.get(u).getType());
+						toRemove.add(u);
+						absences.put(u, abs);
+					}
+					else if (tardies.get(u).getTime().getMinute() - e.getStartTime().getMinute() >= 30)
+					{
+						//Remove the tardy and add it as an absence
+						Absence abs = new Absence(u.getNetID(), e.getStartTime(), e.getEndTime(), tardies.get(u).getType());
+						tardies.remove(u);
+						absences.put(u, abs);
+					}
+					
+				}
 			}
 		}
-		
+		for (int i = 0; i < toRemove.size(); i++)
+			tardies.remove(toRemove.get(i));
 		for (User u: absences.keySet())
 		{
 			List<Absence> myAbsences = DatabaseUtil.getAbsences(u.getNetID());
