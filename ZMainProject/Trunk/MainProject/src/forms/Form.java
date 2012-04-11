@@ -12,7 +12,8 @@ import time.Time;
 
 /**
  * 
- * @author Yifei Zhu, Todd Wegter
+ * @author Yifei Zhu
+ * @Fixed it Todd Wegter
  * 
  */
 
@@ -32,8 +33,9 @@ public class Form {
 	private String attachedFile; // key for attached file
 	private String additionalInfo;
 
-	private String type; // rehearsal absence, performance absence, class
-							// conflict
+	//What are my options chief?
+	//FormA, FormB, FormC, FormD
+	private String type; 
 
 	public Form(String netID, String reason, Time startTime, Time endTime,
 			String type) {
