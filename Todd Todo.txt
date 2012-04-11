@@ -7,3 +7,4 @@ Todd Todo
 *logout -> Logout
 
 *info on student, etc. page
+*bug report button
