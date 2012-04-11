@@ -72,20 +72,20 @@ for (int i = 1; i <= max; i++) {
 			+""
 			+"	<tr>"
 			+"		<td>Department:</td>"
-			+"		<td><input name='dept' type='text'></td>"
+			+"		<td><input name='dept" + i + "' type='text'></td>"
 			+"	</tr>"
 			+""
 			+"	<tr>"
 			+"		<td>Course:</td>"
-			+"		<td><input name='course' type='text'></td>"
+			+"		<td><input name='course" + i + "' type='text'></td>"
 			+"	</tr>"
 			+"	<tr>"
 			+"		<td>Section:</td>"
-			+"		<td><input name='sect' type='text'></td>"
+			+"		<td><input name='sect" + i + "' type='text'></td>"
 			+"	</tr>"
 			+"	<tr>"
 			+"		<td>Building:</td>"
-			+"		<td><input name='building' type='text'></td>"
+			+"		<td><input name='building" + i + "' type='text'></td>"
 			+"	</tr>"
 			+"	<tr>"
 			+"		<td>Starting Date:</td>"
@@ -110,24 +110,24 @@ for (int i = 1; i <= max; i++) {
 			+"	<tr>"
 			+"		<td>"
 			+"			<div style='text-align:right' id='timeSelect" + i + "'>"
-			+"				Until<input type='radio' value='Until' name='until'><br/>"
-			+"				Starting At<input type='radio' value='Starting At' name='until'><br/>"
-			+"				Completely Miss<input type='radio' value='Completely' name='until'><br/>"
+			+"				Until<input type='radio' value='Until' name='until" + i + "'><br/>"
+			+"				Starting At<input type='radio' value='Starting At' name='until" + i + "'><br/>"
+			+"				Completely Miss<input type='radio' value='Completely' name='until" + i + "'><br/>"
 			+"			</div>"
 			+"		</td>"
 			+"		<td>"
 			+"			<div id='time" + i + "'>"
-			+"				<input id='startHour' size='5' type='number' name='startHour' min='01' max='12' value='4'/>"
-			+"				<input id='startMinute' size='5' type='number' name='startMinute' min='00' max='59' step='1' value='30'/>"
-			+"				<input id='startAM' type='radio' name='startrdio' value='AM'>AM</input>"
-			+"				<input id='startPM' type='radio' name='startrdio' value='PM' checked='1'>PM</input>"
+			+"				<input id='startHour" + i + "' size='5' type='number' name='startHour" + i + "' min='01' max='12' value='4'/>"
+			+"				<input id='startMinute" + i + "' size='5' type='number' name='startMinute" + i + "' min='00' max='59' step='1' value='30'/>"
+			+"				<input id='startAM" + i + "' type='radio' name='startrdio" + i + "' value='AM'>AM</input>"
+			+"				<input id='startPM" + i + "' type='radio' name='startrdio" + i + "' value='PM' checked='1'>PM</input>"
 			+"			</div>"
 			+"		</td>"
 			+"	</tr>"
 			+""
 			+"	<tr>"
 			+"		<td>Comments:</td>"
-			+"		<td><textarea rows='6' cols='18' name='comments' wrap='physical'></textarea></td>"
+			+"		<td><textarea rows='6' cols='18' name='comments" + i + "' wrap='physical'></textarea></td>"
 			+"	</tr>"
 			+"<!-- /form -->";
 		
@@ -139,7 +139,7 @@ for (int i = 1; i <= max; i++) {
 
 			<tr>
 				<td></td>
-				<td><input type="submit" value="Submit"></td>
+				<td><input type="submit" name="Submit" value="Submit"></td>
 			</tr>
 		</form>
 	</table>
