@@ -52,7 +52,7 @@ public class User {
 		this.lastName = lastName;
 		this.univID = univID;
 		this.type = type;
-		this.id = hash(netID);
+		this.id = (long) netID.hashCode();
 		this.major = major;
 		this.section = section;
 		this.year = year;
@@ -250,21 +250,21 @@ public class User {
 		}
 		return status;
 	}
-
-	public long hash(String netID) {
-		try {
-			MessageDigest cript = MessageDigest.getInstance("SHA-1");
-			cript.reset();
-			cript.update(netID.getBytes("utf8"));
-			BigInteger bigot = new BigInteger(cript.digest());
-			// Something about things
-			return bigot.longValue();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			return 0;
-		}
-	}
+//
+//	public long hash(String netID) {
+//		try {
+//			MessageDigest cript = MessageDigest.getInstance("SHA-1");
+//			cript.reset();
+//			cript.update(netID.getBytes("utf8"));
+//			BigInteger bigot = new BigInteger(cript.digest());
+//			// Something about things
+//			return bigot.longValue();
+//
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			return 0;
+//		}
+//	}
 
 	@Override
 	public boolean equals(Object other) {
