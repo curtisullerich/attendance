@@ -36,7 +36,7 @@
 		>
 		<a href="/JSPPages/Student_Page.jsp" title="Student Page">Student</a>
 		>
-		<a href="/JSPPages/Student_Form_A_Performance_Absence_Request.jsp" title="Class Conflict Form A">Class Conflict Form A</a>
+		<a href="/JSPPages/Student_Form_A_Performance_Absence_Request.jsp" title="Performance Absence Form A">Performance Absence Form A</a>
 
 		You are logged in as <%= user.getFirstName() + " " + user.getLastName() %>
 		<!--LOGOUT BUTTON-->
@@ -86,12 +86,8 @@ ending January 9, 2013, and it must be submitted by 4:30 p.m. on Monday, August<
 			</tr>
 
 			<tr>
-				<td>
-					<button type="Submit" name = "Submit" type ="Submit">Submit</button>
-				</td>
-				<td>
-					<input type="button" value="Back" name="Back" onclick="window.location = '/JSPPages/Student_Page.jsp'"/>
-				</td>
+				<td><button type="Submit" name = "Submit" type ="Submit">Submit</button></td>
+				<td><input type="button" value="Back" name="Back" onclick="window.location = '/JSPPages/Student_Page.jsp'"/></td>
 			</tr>
 		</form>
 	</table>

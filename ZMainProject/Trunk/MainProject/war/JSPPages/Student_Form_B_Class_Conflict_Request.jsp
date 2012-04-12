@@ -24,22 +24,27 @@
 		}
 	}
 	%>
+	<script>
+		function help(){
+			alert("Helpful information about student page.")
+		}
+	</script>
 	<body>
 	
 	<!--*********************Page Trail*****************************-->
 
-			<a href="/" title="PageTrail_Home">Home</a> 
-			>
-			<a href="/JSPPages/Student_Page.jsp" title="PageTrail_Student">Student</a>
-			>
-			<a href="/JSPPages/Student_Class_Conflict_Form.jsp" title="PageTrail_AbsenceApprovalForm_Class_Conflict">Class Conflict Form</a>
+		<a href="/JSPPages/logout.jsp" title="Logout and Return to Login Screen">Home</a> 
+		>
+		<a href="/JSPPages/Student_Page.jsp" title="Student Page">Student</a>
+		>
+		<a href="/JSPPages/Student_Class_Conflict_Form.jsp" title="Class Conflict Form B">Class Conflict Form B</a>
 
 		You are logged in as <%= user.getFirstName() + " " + user.getLastName() %>
-		<a href="/JSPPages/logout.jsp">logout</a>		
+		<!--LOGOUT BUTTON-->
+		<input type="button" onclick="window.location = '/JSPPages/logout.jsp'" id="Logout" value="Logout"/>		
 
 		<!--HELP BUTTON-->	
-		<a href="">Help</a>
-
+		<input type="button" onclick="javascript: help();" id="Help" value="Help"/>	
 	<!--*********************info*****************************-->
 	
 		<h1><%=user.getNetID() + ", " + user.getFirstName() + " " + user.getLastName() %></h1>
@@ -50,10 +55,10 @@
 	
 	<table style="text-align:left">
 		<form method="post" action="/formB">
-			<p><h1>Class Conflict Request Form | FORM B</p></h1><br>
+			<p><h1>Class Conflict Request Form | FORM B</p></h1>
 			<tr>
 			<p>First Year Members are only allowed one conflict.</p>
-			<p>  </p><br>
+			
 
 <% int year = user.getYear();
 	int month = Calendar.getInstance().get(Calendar.MONTH) + 1;
@@ -138,8 +143,10 @@ for (int i = 1; i <= max; i++) {
 <%= formHtml %>
 
 			<tr>
-				<td></td>
-				<td><input type="submit" name="Submit" value="Submit"></td>
+				<td>
+					<input type="submit" name="Submit" value="Submit">
+					<input type="button" value="Back" name="Back" onclick="window.location = '/JSPPages/Student_Page.jsp'"/>
+				</td>
 			</tr>
 		</form>
 	</table>
@@ -147,8 +154,6 @@ for (int i = 1; i <= max; i++) {
 </div>
 <!--==================================================================================================================-->		
 		
-<br/>
-		<button type="Back">Back</button>
 	</body>
 
 </html>

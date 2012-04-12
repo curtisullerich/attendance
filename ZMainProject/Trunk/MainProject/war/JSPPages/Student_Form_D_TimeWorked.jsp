@@ -25,22 +25,28 @@
 		}
 	}
 	%>
+	<script>
+		function help(){
+			alert("Helpful information about student page.")
+		}
+	</script>
 	<body>
 	
 	<!--*********************Page Trail*****************************-->
 
-			<a href="/" title="PageTrail_Home">Home</a> 
-			>
-			<a href="/JSPPages/Student_Page.jsp" title="PageTrail_Student">Student</a>
-			>
-			<a href="/JSPPages/Student_Form_D_TimeWorked.jsp" title="TimeWork">Form D</a>
+		<a href="/JSPPages/logout.jsp" title="Logout and Return to Login Screen">Home</a> 
+		>
+		<a href="/JSPPages/Student_Page.jsp" title="Student Page">Student</a>
+		>
+		<a href="/JSPPages/Student_Form_D_TimeWorked.jsp" title="Time Worked Form D">Time Worked Form D</a>
 
 		You are logged in as <%= user.getFirstName() + " " + user.getLastName() %>
-		<a href="/JSPPages/logout.jsp">logout</a>		
+		<!--LOGOUT BUTTON-->
+		<input type="button" onclick="window.location = '/JSPPages/logout.jsp'" id="Logout" value="Logout"/>		
 
 		<!--HELP BUTTON-->	
-		<a href="">Help</a>
-
+		<input type="button" onclick="javascript: help();" id="Help" value="Help"/>
+		
 	<!--*********************info*****************************-->
 	
 		<h1><%=user.getNetID() + ", " + user.getFirstName() + " " + user.getLastName() %></h1>
@@ -70,15 +76,15 @@
 			</tr>
 			<tr>
 				<td>Total amount of work:</td>
-				<td ><input name="AmountWorked"></input></td>
+				<td ><input name="AmountWorked"></input>Hours</td>
 			</tr>
 
 			<tr>
-				<td>Date (MM/DD/YYYY):</td>
-				<td ><div id='startDate'>
-						<input id='startMonth' size='5' type='number' name='Month' min='01' max='12' value='9'></input>
-						<input id='startDay' size='5' type='number' name='Day' min='01' max='31' step='1' value='1'></input>
-						<input id='startYear' size='5' type='number' name='Year' min='2000' max='2999' step='1' value='2012'/><!-- TODO make this work with current date instead of hard coding -->
+				<td>Date:</td>
+				<td><div id='startDate'>
+						<input id='startMonth' size='5' type='number' name='StartMonth' min='01' max='12' value='9'>(MM)</input>
+						<input id='startDay' size='5' type='number' name='StartDay' min='01' max='31' step='1' value='1'>(DD)</input>
+						<input id='startYear' size='5' type='number' name='StartYear' min='2000' max='2999' step='1' value='2012'/>(YYYY)<!-- TODO make this work with current date instead of hard coding -->
 					</div>
 				</td>
 			</tr>
@@ -89,9 +95,9 @@
 			</tr>
 
 			<tr>
-			<td></td>
 				<td>
 					<button type="Submit" name = "Submit" type ="Submit">Submit</button>
+					<input type="button" value="Back" name="Back" onclick="window.location = '/JSPPages/Student_Page.jsp'"/>
 				</td>
 			</tr>
 		</form>
@@ -99,8 +105,6 @@
 
 <!--==================================================================================================================-->		
 
-<br/>
-		<button type="Back" name = "Back" type ="Back">Back</button>
 	</body>
 
 </html>

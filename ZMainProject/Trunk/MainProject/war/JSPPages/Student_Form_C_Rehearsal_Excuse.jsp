@@ -23,21 +23,28 @@
 		}
 	}
 	%>
+	<script>
+		function help(){
+			alert("Helpful information about student page.")
+		}
+	</script>
 	<body>
 	
 	<!--*********************Page Trail*****************************-->
 
-			<a href="/" title="PageTrail_Home">Home</a> 
-			>
-			<a href="/JSPPages/Student_Page.jsp" title="PageTrail_Student">Student</a>
-			>
-			<a href="/JSPPages/Student_Form_C_Rehearsal_Excuse.jsp" >Rehearsal Excuse Form</a>
+		<a href="/JSPPages/logout.jsp" title="Logout and Return to Login Screen">Home</a> 
+		>
+		<a href="/JSPPages/Student_Page.jsp" title="Student Page">Student</a>
+		>
+		<a href="/JSPPages/Student_Form_C_Rehearsal_Excuse.jsp" title="Rehearsal Excuse Form C">Rehearsal Excuse Form C</a>
 
 		You are logged in as <%= user.getFirstName() + " " + user.getLastName() %>
-		<a href="/JSPPages/logout.jsp">logout</a>		
+		<!--LOGOUT BUTTON-->
+		<input type="button" onclick="window.location = '/JSPPages/logout.jsp'" id="Logout" value="Logout"/>		
 
 		<!--HELP BUTTON-->	
-		<a href="">Help</a>
+		<input type="button" onclick="javascript: help();" id="Help" value="Help"/>
+		
 
 	<!--*********************info*****************************-->
 	
@@ -50,23 +57,22 @@
 	
 	<table style="text-align:left">
 		<form method="post" action="/formC">
-			<p><h1>Request for Excuse from Rehearsal | FORM C</p></h1><br>
+			<p><h1>Request for Excuse from Rehearsal | FORM C</p></h1>
 			<tr>
 			<p>Note: This form must be turned in no later than three weekdays following the rehearsal absence or tardy. <br/> Documentation is required for all absences (doctor's note, obituary, wedding program, etc.).</p>
-			<p> </p><br>
+			<p> </p>
 
 			<tr>
-				<td><b>Absence Details</b></p>
-
-			</td>
+				<td></td>
+				<td><b>Absence Details</b></td>
 			</tr>
 
 			<tr>
-				<td>Date (MM/DD/YYYY):</td>
+				<td>Date:</td>
 				<td><div id='startDate'>
-						<input id='startMonth' size='5' type='number' name='StartMonth' min='01' max='12' value='9'></input>
-						<input id='startDay' size='5' type='number' name='StartDay' min='01' max='31' step='1' value='1'></input>
-						<input id='startYear' size='5' type='number' name='StartYear' min='2000' max='2999' step='1' value='2012'/><!-- TODO make this work with current date instead of hard coding -->
+						<input id='startMonth' size='5' type='number' name='StartMonth' min='01' max='12' value='9'>(MM)</input>
+						<input id='startDay' size='5' type='number' name='StartDay' min='01' max='31' step='1' value='1'>(DD)</input>
+						<input id='startYear' size='5' type='number' name='StartYear' min='2000' max='2999' step='1' value='2012'/>(YYYY)<!-- TODO make this work with current date instead of hard coding -->
 					</div>
 				</td>
 			</tr>
@@ -77,9 +83,8 @@
 			</tr>
 
 			<tr>
-				<td>
-					<button type="Submit" name = "Submit" type ="Submit">Submit</button>
-				</td>
+				<td><button type="Submit" name = "Submit" type ="Submit">Submit</button></td>
+				<td><input type="button" value="Back" name="Back" onclick="window.location = '/JSPPages/Student_Page.jsp'"/></td>
 			</tr>
 		</form>
 	</table>
@@ -88,9 +93,7 @@
 </div>
 
 <!--==================================================================================================================-->		
-		
-<br/>
-		<button type="Back">Back</button>
+
 	</body>
 
 </html>
