@@ -42,12 +42,12 @@
 				div.style.display = "none";
 			}
 		}
-		function pullAttendance() {
+		
+		function expandMessages() {
+			
 			
 		}
-		function editInformation() {
-			
-		}
+		
 	</script>
 	<body>
 <!--*********************Page Trail*****************************-->
@@ -74,9 +74,12 @@
 ----------------------------------
 <p>
 		<!--********************* Buttons *****************************-->
-		<input type ="submit" onClick="window.location = '/JSPPages/Director_attendanceTable.jsp';"  value = "View Attendance">
+		<input type ="submit" onClick="window.location = '/JSPPages/Director_attendanceTable.jsp';"  value = "View All Attendance">
 		<br/>
-		<input type ="submit" onClick="window.location = '/JSPPages/Director_Edit_Info.jsp';"  value = "Edit my information">
+		<input type ="submit" onClick="window.location = '/JSPPages/Director_Edit_Info.jsp';"  value = "Edit My Information">
+		<br/>
+		<input type ="submit" onClick="expandMessages();"  value = "New Messages(<%=""/* TODO get the number of new messages*/ %>) ">
+		
 		
 <!--*****************************************the powerful stuff*************************************************-->		
 		
