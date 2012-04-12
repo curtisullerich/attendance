@@ -23,73 +23,110 @@
 		}
 	}
 	%>
+	<%
+	String studentNetID = request.getParameter("student");//TODO send this parameter
+	if (studentNetID == null || studentNetID.equals("")) {
+		System.err.println("There was a null or empty student param sent to the director view student page.");
+		response.sendRedirect("/JSPPages/Director_Page.jsp");
+	}
+	User student = DatabaseUtil.getUser(studentNetID);
+	if (student == null) {
+		System.err.println("The director tried to view a null student");
+		response.sendRedirect("/JSPPages/Director_Page.jsp");
+	}
+	
+	%>
+	
+	<script>
+		window.onload = function(){
+			if(<%= request.getParameter("successfulSave")%> == "true"){
+				alert("User info successfully edited.");
+			}
+			else if(<%= request.getParameter("successfulSave")%> == "false"){
+				alert("Info update error. User info not changed.");	
+			}
+		}
+	
+		function listForms() {
+			var div = document.getElementById("formsDiv")
+			if (div.style.display == "none") {
+				div.style.display = "block";
+				document.getElementById("listForms").value = "Select a Form Below";
+			} else {
+				div.style.display = "none";
+				document.getElementById("listForms").value = "Submit a Form";
+			}
+		}
+		
+		function help(){
+			alert("Helpful information about student page.")
+		}
+	</script>
 	<body>
 <!--*********************Page Trail*****************************-->
-
 	
-	<!--TODO: need to connected to specific page-->
-	<!--<h1>-->
-		<li>
-			<a href="http://www.iastate.edu" title="PageTrail_Home">Home</a> 
-			>
-			<a href="http://www.iastate.edu" title="PageTrail_Director">Director</a>
-			>
-			<a href="http://www.iastate.edu" title="PageTrail_ViewAndEditStudentList">View and Edit Student List</a>
-			>
-			<a href="http://www.iastate.edu" title="PageTrail_ViewStudent">View Student</a>
+		<a href="/JSPPages/logout.jsp" title="Logout and Return to Login Screen">Home</a> 
+		>
+		<a href="/JSPPages/Student_Page.jsp" title="Student Page">Student</a>
 			
+		You are logged in as <%= user.getFirstName() + " " + user.getLastName() %>
+		<!--LOGOUT BUTTON-->
+		<input type="button" onclick="window.location = '/JSPPages/logout.jsp'" id="Logout" value="Logout"/>		
+
 		<!--HELP BUTTON-->	
-		<a class="addthis_button"><img
-        src="http://icons.iconarchive.com/icons/deleket/button/24/Button-Help-icon.png"
-        width="16" height="16" border="0" alt="Share" /></a>
-		</li>
+		<input type="button" onclick="javascript: help();" id="Help" value="Help"/>		
 
-	<!--</h1>-->
+
 <!--*********************info*****************************-->
-	
-	
-	<!--*********************Student Info*****************************-->	
-		</br>
-		<div>
-		<table>
-			<tr><td>Name:</td> <td>FirstName, LastName</td></tr>
-			<tr><td>NetID:</td> <td>aaaa</td></tr>
-			<tr><td>Position:</td> <td>xxxxx</td></tr>
-			<tr><td>Major:</td> <td>CPR E</td></tr>
-			<tr><td>Email:</td> <td>helloworld@iastate.edu</td></tr>
-			<tr><td>Attendance:</td> <td>100/100</td></tr>
-			<tr><td>Grade:</td> <td>A</td></tr>
-		
-			<tr><td> </td> </tr>
-			<tr><td> </td> </tr>
-			<tr><td> </td> </tr>
-		
-			<tr><td>Advisor:</td> <td>FIRSTn LASTn</td></tr>
-			<tr><td>Advisor Email:</td> <td>advisor@iastate.edu</td></tr>		
-		</table>
-		</div>
-	<h2>----------------------------------<h2>
-		<!--*********************Student MailBox*****************************-->	
-	<div>
-		<table>
-			<td><label for="Search">Search:</label></td>
-			<td><input type= "Search" name="Search" id="Search"/></td>	
-		</table>
-		</div>
-		
-		<!--********************* Button *****************************-->	
 
-	<h3>
-		<button type="PersonalMessage">Personal Message</button> </br>
-		<button type="ViewIndividualReportAndAbsenceForms">View Individual Report and Absence Forms</button></br>
-		<button type="EditStudentInfo">Edit Student Info</button></br>
-		<button type="EditStudentAttendance">Edit Student Attendance</button></br>
-		<button type="button">Prev</button>
-		<button type="button">Next</button>
-		
-		
-	</h3>
+	<!--*********************Student Info*****************************-->	
+		<br/>
+		<br/>
+		<table>
+			<tr>					
+				<td>First Name:</td>
+				<td><%=student.getFirstName() %></td>
+			</tr>
+			<tr>
+				<td>Last Name:</td>
+				<td><%=student.getLastName()%></td>	
+			</tr>
+
+			<tr>
+				<td>University ID:</td>
+				<td><%=student.getUnivID() %></td>
+			</tr>
 					
+			<!--Instrument-->
+			<tr>
+				<td>Section:</td>
+				
+				<td>
+					<%= student.getSection() %>
+				</td>
+			</tr>
+			<tr>
+				<td>Years in band:</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>Major:</td>
+				<td><%=student.getMajor() %></td>	
+			</tr>
+
+
+		</table>
+				
+----------------------------------
+		<p>
+		<!--********************* Button *****************************-->
+		<input type="submit" onClick="window.location= '/JSPPages/Director_View_Student_Submitted_Forms.jsp';"  value="View Submitted Forms"/>
+		<br/>
+		<input type="submit" onClick="window.location = '/JSPPages/Director_View_Student_Attendance.jsp';"  value="View Attendance">
+		<br/>
+		<input type="submit" onClick="window.location = '/JSPPages/Director_Edit_Student_Info.jsp';"  value="Edit Student's Information">
+		<br/>
+		<input type="button" value="Back" name="Back" onclick="window.location = '/JSPPages/Student_Page.jsp'"/>
 	</body>
 
 </html>
