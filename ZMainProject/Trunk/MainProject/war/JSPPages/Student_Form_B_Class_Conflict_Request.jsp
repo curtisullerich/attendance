@@ -6,6 +6,16 @@
 <html>
 	<head>
 		<title>@10Dance</title>
+		
+		<script>
+		window.onload = function() {
+			if (<%= request.getParameter("error") != null%>)
+			{
+				alert("An error occurred in the fields");	
+			}
+		}
+		</script>
+		
 	</head>
 	<%
 	String netID = (String) session.getAttribute("user");
@@ -29,6 +39,138 @@
 			alert("Helpful information about student page.")
 		}
 	</script>
+	
+<script>
+	function confirmData()
+	{
+
+		//document.getElementById("UniversityID").value;
+		if (document.getElementById("dept1").value == "")
+		{
+			//error and return false
+			alert("Please enter something for the department field");
+			return false;
+		}
+		if (document.getElementById("course1").value == "")
+		{
+			//error and return false
+			alert("Please enter something for the course field");
+			return false;
+		}
+		if (document.getElementById("sect1").value == "")
+		{
+			//error and return false
+			alert("Please enter something for the section field");
+			return false;
+		}
+		if (document.getElementById("building1").value == "")
+		{
+			//error and return false
+			alert("Please enter something for the building field");
+			return false;
+		}
+		if (document.getElementById("until1").checked == 0)
+		{
+			if (document.getElementById("startingat1").checked == 0)
+			{
+				//error and return false
+				if (document.getElementById("completely1").checked == 0)
+				{
+					//error and return false
+					alert("Please check either the until, starting at, or completely miss field");
+					return false;
+				}
+
+			}
+		}
+		if (document.getElementById("comments1").value == "")
+		{
+			//error and return false
+			alert("Please enter something for the comments field");
+			return false;
+		}
+		if (<%= user.getYear() > 1%>)
+		{
+			if (document.getElementById("dept2").value == "")
+			{
+				//error and return false
+				alert("Please enter something for the department field");
+				return false;
+			}
+			if (document.getElementById("course2").value == "")
+			{
+				//error and return false
+				alert("Please enter something for the course field");
+				return false;
+			}
+			if (document.getElementById("sect2").value == "")
+			{
+				//error and return false
+				alert("Please enter something for the section field");
+				return false;
+			}
+			if (document.getElementById("building2").value == "")
+			{
+				//error and return false
+				alert("Please enter something for the building field");
+				return false;
+			}
+			if (document.getElementById("until2").checked == 0)
+			{
+				if (document.getElementById("startingat2").checked == 0)
+				{
+					//error and return false
+					if (document.getElementById("completely2").checked == 0)
+					{
+						//error and return false
+						alert("Please check either the until, starting at, or completely miss field");
+						return false;
+					}
+
+				}
+			}
+			if (document.getElementById("comments2").value == "")
+			{
+				//error and return false
+				alert("Please enter something for the comments field");
+				return false;
+			}
+			var monthDays = [0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+			var d = new Date();
+			var year = d.getFullYear();
+			if (monthDays[document.getElementById("startMonth2").value] != document.getElementById("startDay2"));
+			{
+				alert("Invalid day for the current starting month");
+				return false;
+			}
+
+			if (monthDays[document.getElementById("endMonth2").value] != document.getElementById("endDay2"));
+			{
+				alert("Invalid day for the current end month");
+				return false;
+			}
+			
+		}
+		
+		var monthDays = [0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+		var d = new Date();
+		var year = d.getFullYear();
+		if (monthDays[document.getElementById("startMonth1").value] != document.getElementById("startDay1"));
+		{
+			alert("Invalid day for the current starting month");
+			return false;
+		}
+
+		if (monthDays[document.getElementById("endMonth1").value] != document.getElementById("endDay1"));
+		{
+			alert("Invalid day for the current end month");
+			return false;
+		}
+
+		return true;
+	}
+
+</script>
 	<body>
 	
 	<!--*********************Page Trail*****************************-->
