@@ -48,35 +48,30 @@ public class FormB extends HttpServlet {
 					&& req.getParameter("startMinute1") != null
 					&& startrdio1 != null
 					&& type1 != null) {
-				try {
-					startMonth1 = Integer.parseInt(req
-							.getParameter("startMonth1"));
-					startDay1 = Integer.parseInt(req.getParameter("startDay1"));
-					startYear1 = Integer.parseInt(req
-							.getParameter("startYear1"));
-
-					endMonth1 = Integer.parseInt(req.getParameter("endMonth1"));
-					endDay1 = Integer.parseInt(req.getParameter("endDay1"));
-					endYear1 = Integer.parseInt(req.getParameter("endYear1"));
-
-					startHour1 = Integer.parseInt(req
-							.getParameter("startHour1"));
-					startMinute1 = Integer.parseInt(req
-							.getParameter("startMinute1"));
-				}
-
-				catch (NumberFormatException e) {
-					resp.sendRedirect("/JSPPages/invalidInputs");
-				}
+				
+						startMonth1 = Integer.parseInt(req
+								.getParameter("startMonth1"));
+						startDay1 = Integer.parseInt(req.getParameter("startDay1"));
+						startYear1 = Integer.parseInt(req
+								.getParameter("startYear1"));
+	
+						endMonth1 = Integer.parseInt(req.getParameter("endMonth1"));
+						endDay1 = Integer.parseInt(req.getParameter("endDay1"));
+						endYear1 = Integer.parseInt(req.getParameter("endYear1"));
+	
+						startHour1 = Integer.parseInt(req
+								.getParameter("startHour1"));
+						startMinute1 = Integer.parseInt(req
+								.getParameter("startMinute1"));
 
 				if (!isValidateDate(startMonth1, startDay1, startYear1)) {
-					resp.sendRedirect("/JSPPages/invalidInputs");
+					resp.sendRedirect("/JSPPages/Student_Form_B_Class_Conflict_Request.jsp?error='true'");
 				}
 				if (!isValidateDate(endMonth1, endDay1, endYear1)) {
-					resp.sendRedirect("/JSPPages/invalidInputs");
+					resp.sendRedirect("/JSPPages/Student_Form_B_Class_Conflict_Request.jsp?error='true'");
 				}
 				if (!isValidateTime(startHour1, startMinute1)) {
-					resp.sendRedirect("/JSPPages/invalidInputs");
+					resp.sendRedirect("/JSPPages/Student_Form_B_Class_Conflict_Request.jsp?error='true'");
 				}
 				if (startHour1 < 12 && startrdio1.equalsIgnoreCase("PM"))
 					startHour1+=12;
@@ -102,7 +97,7 @@ public class FormB extends HttpServlet {
 					end = new Time(23, 59, new Date(endYear1, endMonth1,
 							endDay1));
 				} else {
-					resp.sendRedirect("/JSPPages/invalidInputs");
+					resp.sendRedirect("/JSPPages/Student_Form_B_Class_Conflict_Request.jsp?error='true'");
 				}
 
 				Form form = new Form(current.getNetID(), comment1, start, end,
@@ -156,17 +151,17 @@ public class FormB extends HttpServlet {
 						}
 
 						catch (NumberFormatException e) {
-							resp.sendRedirect("/JSPPages/invalidInputs");
+							resp.sendRedirect("/JSPPages/Student_Form_B_Class_Conflict_Request.jsp?error='true'");
 						}
 
 						if (!isValidateDate(startMonth2, startDay2, startYear2)) {
-							resp.sendRedirect("/JSPPages/invalidInputs");
+							resp.sendRedirect("/JSPPages/Student_Form_B_Class_Conflict_Request.jsp?error='true'");
 						}
 						if (!isValidateDate(endMonth2, endDay2, endYear2)) {
-							resp.sendRedirect("/JSPPages/invalidInputs");
+							resp.sendRedirect("/JSPPages/Student_Form_B_Class_Conflict_Request.jsp?error='true'");
 						}
 						if (!isValidateTime(startHour2, startMinute2)) {
-							resp.sendRedirect("/JSPPages/invalidInputs");
+							resp.sendRedirect("/JSPPages/Student_Form_B_Class_Conflict_Request.jsp?error='true'");
 						}
 						if (startHour2 < 12 && startrdio2.equalsIgnoreCase("PM"))
 							startHour2+=12;
@@ -193,7 +188,7 @@ public class FormB extends HttpServlet {
 							end2 = new Time(23, 59, new Date(endYear2,
 									endMonth2, endDay2));
 						} else {
-							resp.sendRedirect("/JSPPages/invalidInputs");
+							resp.sendRedirect("/JSPPages/Student_Form_B_Class_Conflict_Request.jsp?error='true'");
 						}
 
 						Form form2 = new Form(current.getNetID(), comment2,
@@ -205,6 +200,8 @@ public class FormB extends HttpServlet {
 
 				resp.sendRedirect("/JSPPages/Student_Page.jsp");
 			}
+			//Outside the big if that checks if all the fields had stuff in them
+			resp.sendRedirect("/JSPPages/Student_Form_B_Class_Conflict_Request.jsp?error='true'");
 		}
 	}
 
