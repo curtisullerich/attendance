@@ -174,7 +174,7 @@
 							<option>8</option>
 							<option>9</option>
 							<option>10</option>
-					</select>years</td>
+					</select></td>
 					
 					<tr>
 						<td><label for="Major">Major</label></td>

@@ -361,6 +361,26 @@ public class DatabaseUtil
 		em.close();	
 	}
 	
+	/**
+	 * 
+	 * Returns a list of all new Messages.
+	 * 
+	 * @author Curtis Ullerich
+	 * @date 4/12/12
+	 * @param netID
+	 * @return
+	 */
+	public static List<Message> getNewMessages(String netID) {
+		EntityManager em = EMFService.get().createEntityManager();
+		List<Message> result = new LinkedList<Message>();
+		List<Tardy> tardies = DatabaseUtil.getAllTardies();
+		List<Absence> absences = DatabaseUtil.getAllAbsences();
+		List<EarlyCheckOut> eocs = DatabaseUtil.getAllEarlyCheckOuts();
+		return null;//TODO also get forms, then return all new messages
+		
+		
+	}
+	
 	public static List<Message> getMessages(String[] messageIDs) {
 		EntityManager em = EMFService.get().createEntityManager();
 		List<Message> result = new LinkedList<Message>();
@@ -398,6 +418,46 @@ public class DatabaseUtil
 			
 		return events;
 	}
+	
+	/**
+	 * Returns a List of all Tardies in the database.
+	 * @author Curtis Ullerich
+	 * @return
+	 */
+	public static List<Tardy> getAllTardies() {
+		EntityManager em = EMFService.get().createEntityManager();
+		Query q = em.createQuery("select m from Tardy m");
+		List<Tardy> tardies = (List<Tardy>) q.getResultList();
+			
+		return tardies;
+	}
+	
+	/**
+	 * Returns a List of all Absences in the database.
+	 * @author Curtis Ullerich
+	 * @return
+	 */
+	public static List<Absence> getAllAbsences() {
+		EntityManager em = EMFService.get().createEntityManager();
+		Query q = em.createQuery("select m from Absence m");
+		List<Absence> absences = (List<Absence>) q.getResultList();
+			
+		return absences;
+	}
+
+	/**
+	 * Returns a List of all EarlyCheckOuts in the database.
+	 * @author Curtis Ullerich
+	 * @return
+	 */
+	public static List<EarlyCheckOut> getAllEarlyCheckOuts() {
+		EntityManager em = EMFService.get().createEntityManager();
+		Query q = em.createQuery("select m from EarlyCheckOut m");
+		List<EarlyCheckOut> eocs = (List<EarlyCheckOut>) q.getResultList();
+			
+		return eocs;
+	}
+	
 
 	/**
 	 * Returns a List of all Events in the database.
@@ -411,7 +471,9 @@ public class DatabaseUtil
 			
 		return events;
 	}
-
+	//TODO same for all Forms
+	
+	
 //	public static File getFile(String attachedFile) {
 //		return null;
 //	}

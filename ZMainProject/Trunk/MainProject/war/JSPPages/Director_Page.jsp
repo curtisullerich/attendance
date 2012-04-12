@@ -78,10 +78,15 @@
 		<br/>
 		<input type ="submit" onClick="window.location = '/JSPPages/Director_Edit_Info.jsp';"  value = "Edit My Information">
 		<br/>
-		<input type ="submit" onClick="expandMessages();"  value = "New Messages(<%=""/* TODO get the number of new messages*/ %>) ">
-		
-		
-<!--*****************************************the powerful stuff*************************************************-->		
+		<input type ="submit" onClick="expandMessages();"  value = "New Messages(<%="somenumber"/* TODO get the number of new messages*/ %>) ">
+
+		<div id="messages">
+			<%
+			
+			
+			
+			%>
+		</div>		
 		
 		
 	</body>
