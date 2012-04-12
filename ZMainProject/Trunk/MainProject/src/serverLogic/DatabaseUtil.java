@@ -368,7 +368,7 @@ public class DatabaseUtil
 		{
 			if (messageIDs[i] != null && !messageIDs[i].equals("")) {
 				Long id = Long.parseLong(messageIDs[i]);
-				Query q = em.createQuery("select m from Message m where m.id := id");
+				Query q = em.createQuery("select m from Message m where m.id = :id");
 				q.setParameter("id", id);
 		
 				try
@@ -412,8 +412,6 @@ public class DatabaseUtil
 		return events;
 	}
 
-	
-	
 //	public static File getFile(String attachedFile) {
 //		return null;
 //	}

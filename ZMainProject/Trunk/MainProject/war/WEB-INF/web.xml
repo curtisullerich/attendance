@@ -13,6 +13,11 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<servlet-name>Register</servlet-name>
 		<servlet-class>servlets.RegisterServlet</servlet-class>
 	</servlet>
+
+	<servlet>
+		<servlet-name>NewMessage</servlet-name>
+		<servlet-class>servlets.NewMessage</servlet-class>
+	</servlet>
 	
 	<servlet>
 		<servlet-name>FormA</servlet-name>
@@ -104,6 +109,10 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<url-pattern>/taEditInfo</url-pattern>
 	</servlet-mapping>
 	
+	<servlet-mapping>
+		<servlet-name>NewMessage</servlet-name>	
+		<url-pattern>/newMessage</url-pattern>
+	</servlet-mapping>
 		
 	<welcome-file-list>
 		<welcome-file>JSPPages/loginPage.jsp</welcome-file>

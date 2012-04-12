@@ -69,7 +69,7 @@ System.out.println("tardyMessage.jsp: 5");
 
 			t.getMessages();
 			System.out.println("tardyMessage.jsp: 8");
-
+			p.addAll(t.getMessages());
 			if (p.isEmpty()) {
 				table = "<br/><br/><b>There are currently no messages on this tardy.</b>";
 			}
@@ -89,7 +89,7 @@ System.out.println("tardyMessage.jsp: 5");
 						+"			Write a new message:"
 						+"</td>"
 						+"<td>"
-						+"			<input type= 'text' name='New Message' id='New Message'/>	<button action='/newMessage?tardyid=" + id +"' type='Submit'>Send</button>"
+						+"			<form action='/newMessage' method='post'><input name='tardyid' type='text' hidden='true' value='" + id +"'></input> <input type= 'text' name='New Message' id='New Message'/>	<button name='Submit' type='Submit'>Send</button></form>"
 
 						+"</td>"
 					+"</tr>";
@@ -103,7 +103,7 @@ System.out.println("tardyMessage.jsp: 5");
 					table+= 
 					"	<tr>"
 					+"		<td>"
-					+"			<b>" + (m.readBy(netID) ? "" : "(new) ") + m.getTime() + " " + m.getSenderNetID() + "</b>"
+					+"			<b>" + (m.readBy(netID) ? "" : "(new) ") + m.getTime().toString(12) + " " + m.getSenderNetID() + "</b>"
 					+"		</td>"
 					+"		<td>"
 					+"			" + m.getContents()

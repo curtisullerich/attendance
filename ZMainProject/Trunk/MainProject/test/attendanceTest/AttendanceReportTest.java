@@ -38,15 +38,15 @@ public class AttendanceReportTest {
 		f1 = new Form("abc","reason",start,end,"a");
 		
 		f2 = new Form("abc","reason",start,end,"a");
-		f2.setApproved(true);
-		System.out.println(f2.isApproved());
+//		f2.setApproved(true);
+//		System.out.println(f2.isApproved());
 		list = new ArrayList<Form>();
 		list.add(f1);
 		list.add(f2);
 		report=new AttendanceReport("abc");
 		comp=new FormIsApprovedComp();
 		comp.compare(f1, f2);
-		report.setList(list);
+//		report.setList(list);
 		report.sortFormsAscending(comp);
 		
 		//
