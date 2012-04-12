@@ -32,60 +32,64 @@
 		 * @author Curtis
 		 *
 		 */
-	function confirmAndHashData() {
- 		 
- 		 var universityID = document.getElementById("UniversityID").value; 
-		 //check that universityID is 9 digit number
- 		 if((parseInt(universityID,10) < 0) || (parseInt(universityID,10) > 999999999)){
-			 alert("This is not a valid University ID. Please re-enter your University ID.")
-			 return false;
-	 	 }
-		 
- 		 //check if years is 10...
- 		 if(parseInt(document.getElementById("Year").value,10) == 10){
-			 alert("Congratulations. You need to graduate.")
-	 	 }
- 		 
- 		 //validate current password
- 		 if(Sha1.hash(document.getElementById("Current Password").value).toUpperCase() != 
- 			 ("<%= DatabaseUtil.getUser(netID).getHashedPassword()%>")){
- 			 alert("Please enter the correct current password.");
- 			 return false;
- 		 }
- 			 
-		 var password = document.getElementById("Password").value;
-		 //check that password is appropriate length
-		 if(password.length < 6 || password.length > 20){
-			 alert("Password must be between 5 and 21 characters long.")
-			 return false;
-		 }
-		 //check that password contains legal characters
-		 var badChars = new Array();
-		 for(var i = 0; i < password.length; i++){
-	 		//between the brackets are all valid password characters
- 		     if(!/[a-zA-Z0-9!@#$%&*()_+=.,<>?-]/.test(password[i]))
-		 	 	 badChars.push(password[i]);
-		 }
-		 if(badChars.length > 0){
-		 	  var badCharsStr = "";
-		      for(i = 0; i < badChars.length; i++)
-		 	       badCharsStr += (badChars[i] + " ");
-		      alert("Please do not use the following characters: " + badCharsStr);
-		      return false;
-		 }
-		 //check that passwords match
-		 if(password != document.getElementById("Password2").value){
-			 alert("Passwords do not match. Please ensure passwords match.");
-			 return false;
-		 }
-		 
-		 //hash password into hidden field
-		 var str = Sha1.hash(document.getElementById("Password").value);
-		 str = str.toUpperCase();
-		 document.getElementById("Hashed Password").value = str;
-		
-		 return true;
-	}
+		function confirmAndHashData() {
+	 		 
+	 		 var universityID = document.getElementById("UniversityID").value; 
+			 //check that universityID is 9 digit number
+	 		 if((parseInt(universityID,10) < 0) || (parseInt(universityID,10) > 999999999)){
+				 alert("This is not a valid University ID. Please re-enter your University ID.")
+				 return false;
+		 	 }
+			 
+	 		 //check if years is 10...
+	 		 if(parseInt(document.getElementById("Year").value,10) == 10){
+				 alert("Congratulations. You need to graduate.")
+		 	 }
+	 		 
+	 		 //validate current password
+	 		 if(Sha1.hash(document.getElementById("Current Password").value).toUpperCase() != 
+	 			 ("<%= DatabaseUtil.getUser(netID).getHashedPassword()%>")){
+	 			 alert("Please enter the correct current password.");
+	 			 return false;
+	 		 }
+	 			 
+			 var password = document.getElementById("Password").value;
+			 //check that password is appropriate length
+			 if(password.length < 6 || password.length > 20){
+				 alert("Password must be between 5 and 21 characters long.")
+				 return false;
+			 }
+			 //check that password contains legal characters
+			 var badChars = new Array();
+			 for(var i = 0; i < password.length; i++){
+		 		//between the brackets are all valid password characters
+	 		     if(!/[a-zA-Z0-9!@#$%&*()_+=.,<>?-]/.test(password[i]))
+			 	 	 badChars.push(password[i]);
+			 }
+			 if(badChars.length > 0){
+			 	  var badCharsStr = "";
+			      for(i = 0; i < badChars.length; i++)
+			 	       badCharsStr += (badChars[i] + " ");
+			      alert("Please do not use the following characters: " + badCharsStr);
+			      return false;
+			 }
+			 //check that passwords match
+			 if(password != document.getElementById("Password2").value){
+				 alert("Passwords do not match. Please ensure passwords match.");
+				 return false;
+			 }
+			 
+			 //hash password into hidden field
+			 var str = Sha1.hash(document.getElementById("Password").value);
+			 str = str.toUpperCase();
+			 document.getElementById("Hashed Password").value = str;
+			
+			 return true;
+		}
+			
+		function help(){
+			alert("Helpful information about student page.")
+		}
 
 		</script>
 
@@ -94,13 +98,19 @@
 	
 	<!--*********************Page Trail*****************************-->
 
-	<!--TODO: need to connected to specific page-->
-			<a href="/" title="PageTrail_Home">Home</a> 
-			>
-			<a href="/JSPPages/Student_Page.jsp" title="PageTrail_Student">Student</a>
-			>
-			<a href="/JSPPages/Student_Edit_Info.jsp" title="PageTrail_Edit_Info">Edit Student Info</a>
+	
+		<a href="/JSPPages/logout.jsp" title="Logout and Return to Login Screen">Home</a> 
+		>
+		<a href="/JSPPages/Student_Page.jsp" title="Student Page">Student</a>
+		>
+		<a href="/JSPPages/Student_Edit_Info.jsp" title="Edit Student Info Page">Edit Student Info</a>
 
+		You are logged in as <%= user.getFirstName() + " " + user.getLastName() %>
+		<!--LOGOUT BUTTON-->
+		<input type="button" onclick="window.location = '/JSPPages/logout.jsp'" id="Logout" value="Logout"/>		
+
+		<!--HELP BUTTON-->	
+		<input type="button" onclick="javascript: help();" id="Help" value="Help"/>	
 	<!--*********************info*****************************-->
 	
 		<h1><%= user.getNetID() %></h1>

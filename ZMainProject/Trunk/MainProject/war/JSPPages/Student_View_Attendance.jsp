@@ -29,8 +29,13 @@
 		function sendMeToMyTardyMessages(id) {
 			window.location = "/JSPPages/tardyMessages.jsp?id=" + id;
 		}
+		
 		function sendMeToMyAbsenceMessages(id) {
 			window.location = "/JSPPages/absenceMessages.jsp?id=" + id;
+		}
+		
+		function help(){
+			alert("Helpful information about student page.")
 		}
 	</script>
 
@@ -38,18 +43,19 @@
 <!--*********************Page Trail*****************************-->
 	
 	
-	<!--TODO: need to connected to specific page-->
-			<a href="/" title="PageTrail_Home">Home</a> 
-			>
-			<a href="/JSPPages/Student_Page.jsp" title="PageTrail_Student">Student</a>
-			>
-			<a href="/JSPPages/Student_View_Attendance.jsp" title="PageTrail_ViewAttendance">View Attendance</a>
+	
+		<a href="/JSPPages/logout.jsp" title="Logout and Return to Login Screen">Home</a> 
+		>
+		<a href="/JSPPages/Student_Page.jsp" title="Student Page">Student</a>
+		>
+		<a href="/JSPPages/Student_View_Attendance.jsp" title="View Student Attendance">View Student Attendance</a>
 	
 		You are logged in as <%= user.getFirstName() + " " + user.getLastName() %>
-		<a href="/JSPPages/logout.jsp">logout</a>		
+		<!--LOGOUT BUTTON-->
+		<input type="button" onclick="window.location = '/JSPPages/logout.jsp'" id="Logout" value="Logout"/>		
 
 		<!--HELP BUTTON-->	
-		<a href="">Help</a>
+		<input type="button" onclick="javascript: help();" id="Help" value="Help"/>
 
 	<!--*********************info*****************************-->
 	<br/>
@@ -132,7 +138,7 @@
 	
 	<h3>
 		<!--button-->
-		<button type="Back">Back</button>
+		<input type="button" value="Back" name="Back" onclick="window.location = '/JSPPages/Student_Page.jsp'"/>
 	</h3>		
 	</body>
 	

@@ -41,25 +41,25 @@
 				div.style.display = "none";
 			}
 		}
-		function pullAttendance() {
-			
-		}
-		function editInformation() {
-			
+		
+		function help(){
+			alert("Helpful information about student page.")
 		}
 	</script>
 	<body>
 <!--*********************Page Trail*****************************-->
 	
-		<a href="/" title="PageTrail_Home">Home</a> 
+		<a href="/JSPPages/logout.jsp" title="Logout and Return to Login Screen">Home</a> 
 		>
-		<a href="/JSPPages/Student_Page.jsp" title="PageTrail_Student">Student</a>
+		<a href="/JSPPages/Student_Page.jsp" title="Student Page">Student</a>
 			
 		You are logged in as <%= user.getFirstName() + " " + user.getLastName() %>
-		<a href="/JSPPages/logout.jsp">logout</a>		
+		<!--LOGOUT BUTTON-->
+		<input type="button" onclick="window.location = '/JSPPages/logout.jsp'" id="Logout" value="Logout"/>		
 
 		<!--HELP BUTTON-->	
-		<a href="">Help</a>
+		<input type="button" onclick="javascript: help();" id="Help" value="Help"/>		
+
 
 <!--*********************info*****************************-->
 
