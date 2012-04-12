@@ -19,7 +19,12 @@
 	{
 		user = DatabaseUtil.getUser(netID);
 		if (!user.getType().equalsIgnoreCase("Student")) {
-			response.sendRedirect("/JSPPages/logout.jsp");
+			if(user.getType().equalsIgnoreCase("TA"))
+				response.sendRedirect("/JSPPages/TA_Page.jsp");
+			else if(user.getType().equalsIgnoreCase("Director"))
+				response.sendRedirect("/JSPPages/Director_Page.jsp");
+			else
+				response.sendRedirect("/JSPPages/logout.jsp");
 		}
 	}
 	%>
