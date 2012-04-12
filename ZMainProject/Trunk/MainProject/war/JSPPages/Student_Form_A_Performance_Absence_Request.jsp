@@ -23,21 +23,27 @@
 		}
 	}
 	%>
+	<script>
+		function help(){
+			alert("Helpful information about student page.")
+		}
+	</script>
 	<body>
 	
 	<!--*********************Page Trail*****************************-->
 
-			<a href="/" title="PageTrail_Home">Home</a> 
-			>
-			<a href="/JSPPages/Student_Page.jsp" title="PageTrail_Student">Student</a>
-			>
-			<a href="/JSPPages/Student_Form_A_Performance_Absence_Request.jsp" title="PageTrail_AbsenceApprovalForm_Class_Conflict">Performance Absence Request</a>
+		<a href="/JSPPages/logout.jsp" title="Logout and Return to Login Screen">Home</a> 
+		>
+		<a href="/JSPPages/Student_Page.jsp" title="Student Page">Student</a>
+		>
+		<a href="/JSPPages/Student_Form_A_Performance_Absence_Request.jsp" title="Class Conflict Form A">Class Conflict Form A</a>
 
 		You are logged in as <%= user.getFirstName() + " " + user.getLastName() %>
-		<a href="/JSPPages/logout.jsp">logout</a>		
+		<!--LOGOUT BUTTON-->
+		<input type="button" onclick="window.location = '/JSPPages/logout.jsp'" id="Logout" value="Logout"/>		
 
 		<!--HELP BUTTON-->	
-		<a href="">Help</a>
+		<input type="button" onclick="javascript: help();" id="Help" value="Help"/>	
 
 	<!--*********************info*****************************-->
 	
@@ -55,7 +61,7 @@
 
 <p>Note: This form includes all performances through any post-season activity <br/>
 ending January 9, 2013, and it must be submitted by 4:30 p.m. on Monday, August<br/>
-23, 2012.  Documentation is required for all absences (doctor's note, obituary, wedding program, etc.).<br/></p>
+23, 2012.  Documentation must be submitted to the director for all absences (doctor's note, obituary, wedding program, etc.).<br/></p>
 
 			<tr>
 				<td></td>
@@ -83,14 +89,15 @@ ending January 9, 2013, and it must be submitted by 4:30 p.m. on Monday, August<
 				<td>
 					<button type="Submit" name = "Submit" type ="Submit">Submit</button>
 				</td>
+				<td>
+					<input type="button" value="Back" name="Back" onclick="window.location = '/JSPPages/Student_Page.jsp'"/>
+				</td>
 			</tr>
 		</form>
 	</table>
 
 <!--==================================================================================================================-->		
 
-<br/>
-		<button type="Back" name = "Back" type ="Back">Back</button>
 	</body>
 
 </html>

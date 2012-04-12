@@ -30,7 +30,6 @@ public class Form {
 	private String reason;
 	private String startTime;
 	private String endTime;
-	private String attachedFile; // key for attached file
 	private String additionalInfo;
 
 	//What are my options chief?
@@ -105,6 +104,14 @@ public class Form {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+	
+	public String getAdditionalInfo() {
+		return additionalInfo;
+	}
+
+	public void setAdditionalInfo(String additionalInfo) {
+		this.additionalInfo = additionalInfo;
 	}
 	
 	public String toString()

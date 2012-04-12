@@ -33,12 +33,14 @@
 			}
 		}
 	
-		function viewForms() {
+		function listForms() {
 			var div = document.getElementById("formsDiv")
 			if (div.style.display == "none") {
 				div.style.display = "block";
+				document.getElementById("listForms").value = "Select a Form Below";
 			} else {
 				div.style.display = "none";
+				document.getElementById("listForms").value = "Submit a Form";
 			}
 		}
 		
@@ -73,7 +75,8 @@
 ----------------------------------
 <p>
 		<!--********************* Button *****************************-->
-		<input type ="submit" onClick="viewForms();"  value = "Forms">
+		<input type="submit" id="listForms" onClick="listForms();"  value="Submit a Form"/>
+		<input type="submit" onClick="viewForms();"  value="View Submitted Forms"/>
 			<div id="formsDiv" style="display: none">
 				<p><a href="/JSPPages/Student_Form_A_Performance_Absence_Request.jsp">Form A - Performance Absence Request</a></p>
 				<p><a href="/JSPPages/Student_Form_B_Class_Conflict_Request.jsp">Form B - Class Conflict Request</a></p>
