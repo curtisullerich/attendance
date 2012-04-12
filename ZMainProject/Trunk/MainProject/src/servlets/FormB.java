@@ -23,7 +23,7 @@ public class FormB extends HttpServlet {
 			String netID = (String) req.getSession().getAttribute("user");
 			User current = DatabaseUtil.getUser(netID);
 
-			String dept1, course1, sect1, building1, comment1;
+			String dept1, course1, sect1, building1, comment1, startrdio1;
 			int startMonth1, startDay1, startYear1, endMonth1, endDay1, endYear1, startHour1, startMinute1;
 			startMonth1 = startDay1 = startYear1 = endMonth1 = endDay1 = endYear1 = startHour1 = startMinute1 = 0;
 			String type1;
@@ -33,6 +33,7 @@ public class FormB extends HttpServlet {
 			sect1 = req.getParameter("sect1");
 			building1 = req.getParameter("building1");
 			type1 = req.getParameter("until1");
+			startrdio1 = req.getParameter("startrdio1");
 			// Doesn't have to be there
 			comment1 = req.getParameter("comments1");
 			if (dept1 != null && course1 != null && sect1 != null
@@ -45,6 +46,7 @@ public class FormB extends HttpServlet {
 					&& req.getParameter("endYear1") != null
 					&& req.getParameter("startHour1") != null
 					&& req.getParameter("startMinute1") != null
+					&& startrdio1 != null
 					&& type1 != null) {
 				try {
 					startMonth1 = Integer.parseInt(req
@@ -76,8 +78,13 @@ public class FormB extends HttpServlet {
 				if (!isValidateTime(startHour1, startMinute1)) {
 					resp.sendRedirect("/JSPPages/invalidInputs");
 				}
+				if (startHour1 < 12 && startrdio1.equalsIgnoreCase("PM"))
+					startHour1+=12;
+				if (startHour1 == 12 && startrdio1.equalsIgnoreCase("AM"))
+					startHour1=0;
 				Time start = null;
 				Time end = null;
+				
 				if (type1.equalsIgnoreCase("Until")) {
 					// 12:01 AM
 					start = new Time(0, 1, new Date(startYear1, startMonth1,
@@ -104,7 +111,7 @@ public class FormB extends HttpServlet {
 
 				if (current.getYear() > 1) {
 					// Do it all again for the second one
-					String dept2, course2, sect2, building2, comment2, type2;
+					String dept2, course2, sect2, building2, comment2, type2, startrdio2;
 					int startMonth2, startDay2, startYear2, endMonth2, endDay2, endYear2, startHour2, startMinute2;
 					startMonth2 = startDay2 = startYear2 = endMonth2 = endDay2 = endYear2 = startHour2 = startMinute2 = 0;
 					dept2 = req.getParameter("dept2");
@@ -112,6 +119,7 @@ public class FormB extends HttpServlet {
 					sect2 = req.getParameter("sect2");
 					building2 = req.getParameter("building2");
 					type2 = req.getParameter("until2");
+					startrdio2 = req.getParameter("startrdio2");
 					// Doesn't have to be there
 					comment2 = req.getParameter("comments2");
 					if (dept2 != null && course2 != null && sect2 != null
@@ -124,6 +132,7 @@ public class FormB extends HttpServlet {
 							&& req.getParameter("endYear2") != null
 							&& req.getParameter("startHour2") != null
 							&& req.getParameter("startMinute2") != null
+							&& startrdio2 != null
 							&& type2 != null) {
 						try {
 							startMonth2 = Integer.parseInt(req
@@ -159,6 +168,10 @@ public class FormB extends HttpServlet {
 						if (!isValidateTime(startHour2, startMinute2)) {
 							resp.sendRedirect("/JSPPages/invalidInputs");
 						}
+						if (startHour2 < 12 && startrdio2.equalsIgnoreCase("PM"))
+							startHour2+=12;
+						if (startHour2 == 12 && startrdio2.equalsIgnoreCase("AM"))
+							startHour2=0;
 						Time start2 = null;
 						Time end2 = null;
 						if (type2.equalsIgnoreCase("Until")) {
@@ -188,8 +201,9 @@ public class FormB extends HttpServlet {
 						DatabaseUtil.addForm(form2);
 					}
 
-					resp.sendRedirect("/JSPPages/Student_Page.jsp");
 				}
+
+				resp.sendRedirect("/JSPPages/Student_Page.jsp");
 			}
 		}
 	}
