@@ -1,10 +1,16 @@
 Todd Todo
 
 
-*Working back buttons
-*working help buttons
+*Working back buttons - student done
+*working help buttons - student done
 
-*logout -> Logout
+*logout -> Logout & button - student done
 
 *info on student, etc. page
 *bug report button
+
+*add page to view submitted forms - student
+
+*form validation
+
+*front page message box
