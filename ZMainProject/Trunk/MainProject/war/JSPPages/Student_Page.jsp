@@ -31,6 +31,11 @@
 			else if(<%= request.getParameter("successfulSave")%> == "false"){
 				alert("Info update error. User info not changed.");	
 			}
+			if("<%= user.getRank() %>" == "|"){
+				var Row = document.getElementById("rankRow");
+				var Cells = Row.getElementsByTagName("td");
+				Cells[1].innerText = "None";
+			}
 		}
 	
 		function listForms() {
@@ -69,7 +74,15 @@
 		<br/><br/>
 		<div>
 		<table>
-			<tr><td>NetID:</td> <td><%= user.getNetID() %></td></tr>
+			<tr><td>NetID: </td> <td><%= user.getNetID() %></td></tr>
+			<tr><td>First Name: </td> <td><%= user.getFirstName() %> </td></tr>
+			<tr><td>Last Name: </td> <td><%= user.getLastName() %> </td></tr>
+			<tr><td>University ID: </td> <td><%= user.getUnivID() %> </td></tr>
+			<tr><td>Major: </td> <td><%= user.getMajor() %> </td></tr>
+			<tr><td><p/></td><td><p/></td></tr>
+			<tr><td>Section: </td> <td><%= user.getSection() %> </td></tr>
+			<tr><td>Year in Band: </td> <td><%= user.getYear() %> </td></tr>
+			<tr id="rankRow"><td>Rank: </td> <td></td></tr>
 		</table>
 		</div>
 ----------------------------------

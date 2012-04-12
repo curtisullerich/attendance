@@ -1,4 +1,4 @@
-Todd Todo
+@10dance Todo
 
 
 *Working back buttons - student done
@@ -6,11 +6,16 @@ Todd Todo
 
 *logout -> Logout & button - student done
 
-*info on student, etc. page
-*bug report button
-
 *add page to view submitted forms - student
 
 *form validation
 
 *front page message box
+
+*event viewer
+
+*director constructor and destructor control
+
+*director student set rank
+
+*form D yes/no parser

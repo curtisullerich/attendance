@@ -68,6 +68,8 @@
 				<input type="submit" value="Login" name ="Login"/>
 				<input type="button" value="Register" name="Register" onClick='window.location="/JSPPages/register.jsp"'/>
 				<input type="button" value="Reset Password" name="PassReset"/>
-		</form>		
+		</form>	
+		<br/>
+		<input type="button" id="bugReport" onClick="location.href='mailto:a10dance@iastate.edu?Subject=@10dance%20Bug%20Report'" value="Report a Bug"/>
 	</body>
 </html>
