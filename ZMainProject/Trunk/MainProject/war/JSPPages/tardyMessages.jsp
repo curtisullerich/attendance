@@ -15,14 +15,14 @@
 <!--*********************Page Trail*****************************-->
 	
 	
-	<!--TODO: need to connected to specific page-->
-			<a href="/" title="PageTrail_Home">Home</a> 
-			>
-			<a href="/JSPPages/Student_Page.jsp" title="PageTrail_Student">Student</a>
-			>
-			<a href="/JSPPages/Student_View_Attendance.jsp" title="PageTrail_ViewAttendance">View Attendance</a>
-			>
-			<a href="/JSPPages/tardyMessages.jsp" title="PageTrail_tardyMessages">Tardy Messages</a>
+	
+		<a href="/JSPPages/logout.jsp" title="Logout and Return to Login Screen">Home</a> 
+		>
+		<a href="/JSPPages/Student_Page.jsp" title="Student Page">Student</a>
+		>
+		<a href="/JSPPages/Student_View_Attendance.jsp" title="View Student Attendance">View Student Attendance</a>
+		>
+		<a href="/JSPPages/tardyMessages.jsp" title="View Tardy Messages">View Tardy Messages</a>
 			
 	<%
 	String netID = (String) session.getAttribute("user");

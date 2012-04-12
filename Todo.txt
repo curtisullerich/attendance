@@ -15,7 +15,8 @@
 *event viewer
 
 *director constructor and destructor control
-
 *director student set rank
 
 *form D yes/no parser
+
+*add every event to view attendance
