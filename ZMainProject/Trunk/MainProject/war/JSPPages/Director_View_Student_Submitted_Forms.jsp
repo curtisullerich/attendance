@@ -1,6 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ page import="people.*" %>
+<%@ page import="forms.*" %>
 <%@ page import="serverLogic.DatabaseUtil" %>
+<%@ page import="java.util.*" %>
 
 <html>
 	<head>
@@ -23,112 +25,172 @@
 		}
 	}
 	%>
-	<body>
+	<%
+	String studentNetID = request.getParameter("student");//TODO send this parameter
+	if (studentNetID == null || studentNetID.equals("")) {
+		System.err.println("There was a null or empty student param sent to the director view student page.");
+		response.sendRedirect("/JSPPages/Director_Page.jsp");
+	}
+	User student = DatabaseUtil.getUser(studentNetID);
+	if (student == null) {
+		System.err.println("The director tried to view a null student");
+		response.sendRedirect("/JSPPages/Director_Page.jsp");
+	}
 	
-	<!--*********************Page Trail*****************************-->
-
-	<!--TODO: need to connected to specific page-->
-	<h3>
-		<li>
-			<a href="http://www.iastate.edu" title="PageTrail_Home">Home</a> 
-			>
-			<a href="http://www.iastate.edu" title="PageTrail_Director">Director</a>
-			>
-			<a href="http://www.iastate.edu" title="PageTrail_ViewAndEditStudentList">View and Edit Student List</a>
-			>
-			<a href="http://www.iastate.edu" title="PageTrail_AbsenceForm">Absence Form</a>
+	%>
+	
+	<script>
+		window.onload = function(){
+			if(<%= request.getParameter("successfulSave")%> == "true"){
+				alert("User info successfully edited.");
+			}
+			else if(<%= request.getParameter("successfulSave")%> == "false"){
+				alert("Info update error. User info not changed.");	
+			}
+		}
+	
+		function listForms() {
+			var div = document.getElementById("formsDiv")
+			if (div.style.display == "none") {
+				div.style.display = "block";
+				document.getElementById("listForms").value = "Select a Form Below";
+			} else {
+				div.style.display = "none";
+				document.getElementById("listForms").value = "Submit a Form";
+			}
+		}
+		
+		function help(){
+			alert("Helpful information about student page.")
+		}
+	</script>
+	<body>
+<!--*********************Page Trail*****************************-->
+	
+		<a href="/JSPPages/logout.jsp" title="Logout and Return to Login Screen">Home</a> 
+		>
+		<a href="/JSPPages/Student_Page.jsp" title="Student Page">Student</a>
+			
+		You are logged in as <%= user.getFirstName() + " " + user.getLastName() %>
+		<!--LOGOUT BUTTON-->
+		<input type="button" onclick="window.location = '/JSPPages/logout.jsp'" id="Logout" value="Logout"/>		
 
 		<!--HELP BUTTON-->	
-		<a class="addthis_button"><img
-        src="http://icons.iconarchive.com/icons/deleket/button/24/Button-Help-icon.png"
-        width="16" height="16" border="0" alt="Share" /></a>
-		</li>
-	</h3>	
+		<input type="button" onclick="javascript: help();" id="Help" value="Help"/>		
 
-	<!--*********************info*****************************-->
-	
-		<h1>NetID, Student Name-Absence 1</h1>
-		
-		<input type="checkbox" name="Monday" checked >Monday</input></br>
-		<input type="checkbox" name="Tuesday"  >Tuesday</input></br>
-		<input type="checkbox" name="Wednesday"  >Wednesday</input></br>
-		<input type="checkbox" name="Thursday"  >Thursday</input></br>
-		<input type="checkbox" name="Friday"  >Friday</input></br>
 
-		
-		
-		<!--*********************calander div*****************************-->
-		<div>
-			<table>
-				<tr><td>Date Requested:</td> </tr>
-				
-				<tr><td>
-					<img src="Calendar.jpg" alt="Calendar" width="100" height="100" />	
-				</td></tr>							
-			</table>
-		</div>
+<!--*********************info*****************************-->
 
-		<!--*********************calander div*****************************-->
-		</br></br>
-		
-		<div>
-		<table>
-			<tr><td> Will this be a Recurring Absence or Tardy?</td></tr>
-		
-		<!--drop down button-->
-			<tr><td>
-				<select>
-					<option>Yes</option>
-					<option>No</option>
-				</select>
-			</td></tr>
-			
-			<tr><td>How ofen?</td></tr>
-			
-		<!--drop down button-->
-			<tr>
-				<td>
-					<select>
-						<option>Daily</option>
-						<option>Weekly</option>
-						<option>Monthly</option>
-					</select>
-				</td>
-			</tr>
-		</table>
-		</div>
-	
-	<!--*********************drop down bar div*****************************-->
-
+	<!--*********************Student Info*****************************-->	
+		<br/>
+		<br/>
 		<table>
 			<tr>					
-				<td><label for="Reason">Reason:</label></td>
-				<td><input type= "Reason" name="Reason" id="Reason"/></td>
+				<td>First Name:</td>
+				<td><%=student.getFirstName() %></td>
 			</tr>
-			
 			<tr>
-				<td><label for="Additional_Option">Additional Info:</label></td>
-				<td><input type= "Additional" name="Additional" id="Additional"/></td>	
-			</tr>
-			
-			<tr>
-				<td><button type="Upload">View Uploaded Document</button></td>				
+				<td>Last Name:</td>
+				<td><%=student.getLastName()%></td>	
 			</tr>
 
+			<tr>
+				<td>University ID:</td>
+				<td><%=student.getUnivID() %></td>
+			</tr>
+					
+			<!--Instrument-->
+			<tr>
+				<td>Section:</td>
+				<td>
+					<%= student.getSection() %>
+				</td>
+			</tr>
+			<tr>
+				<td>Years in band:</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td>Major:</td>
+				<td><%=student.getMajor() %></td>	
+			</tr>
 		</table>
-	<!--*********************End Button*****************************-->
+		
+		
+		
+	<%
+	
+	String formHtml = "";
+	List<Form> forms = DatabaseUtil.getAllForms(student.getNetID());
 
-				<h2>
-					<button type="Back">Back</button>
-					<button type="Pre">Pre</button>
-					<button type="Approve">Approve</button>
-					<button type="Deny">Deny and Message</button>
-					<button type="Next">Next</button>
-				<h2>
-		</form>		
+	if (forms.isEmpty()) {
+		formHtml = "There have been no submitted forms.";
+	}
+	
+	for (Form f : forms) {
+		
+		String type = f.getType();
+		String reason = f.getReason();
+		String status = f.getStatus();
+		String startTime = f.getStartTime().get12Format();
+		String endTime = f.getEndTime().get12Format();
+		String additionalInfo = f.getAdditionalInfo();
+		
+
+		formHtml += "<table>";
+		formHtml += "<tr>";
+		formHtml += "	<th>" +"Type"+ "</th>";
+		formHtml += "	<th>" +type+ "</th>";
+		formHtml += "</tr>";
+
+		formHtml += "<tr>";
+		formHtml += "	<td>" +"Start time"+ "</td>";
+		formHtml += "	<td>" +startTime+ "</td>";
+		formHtml += "</tr>";
+
+		formHtml += "<tr>";
+		formHtml += "	<td>" +"End time"+ "</td>";
+		formHtml += "	<td>" +endTime+ "</td>";
+		formHtml += "</tr>";
+
+		formHtml += "<tr>";
+		formHtml += "	<td>" +"Status"+ "</td>";
+		formHtml += "	<td>" +status+ "</td>";
+		formHtml += "</tr>";
+
+		formHtml += "<tr>";
+		formHtml += "	<td>" +"Reason"+ "</td>";
+		formHtml += "	<td>" +reason+ "</td>";
+		formHtml += "</tr>";
+		
+		formHtml += "<tr>";
+		formHtml += "	<td>" +"Additional info"+ "</td>";
+		formHtml += "	<td>" +additionalInfo+ "</td>";
+		formHtml += "</tr>";
+		
+		formHtml += "</table>";
+		formHtml += "<br/>";
+	}
+	
+	%>
+		
+		
+					
+----------------------------------
+		<p>
+		<!--********************* Button *****************************-->
+		<input type="submit" onClick="window.location= '/JSPPages/Director_View_Student_Submitted_Forms.jsp';"  value="View Submitted Forms"/>
+		<br/>
+		<input type="submit" onClick="window.location = '/JSPPages/Director_View_Student_Attendance.jsp';"  value="View Attendance">
+		<br/>
+		<input type="submit" onClick="window.location = '/JSPPages/Director_Edit_Student_Info.jsp';"  value="Edit Student's Information">
+		<br/>
+		<input type="button" value="Back" name="Back" onclick="window.location = '/JSPPages/Student_Page.jsp'"/>
+		<br/>
+		<br/>
+		<%= formHtml %>
+	
 	</body>
 	
-
-
 
 </html>

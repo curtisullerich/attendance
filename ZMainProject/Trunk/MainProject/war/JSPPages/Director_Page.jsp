@@ -83,7 +83,8 @@
 		<div id="messages">
 			<%
 			
-			
+				DatabaseUtil.getNewMessages(user.getNetID());
+				
 			
 			%>
 		</div>		

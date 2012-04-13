@@ -120,11 +120,11 @@
 ----------------------------------
 		<p>
 		<!--********************* Button *****************************-->
-		<input type="submit" onClick="window.location= '/JSPPages/Director_View_Student_Submitted_Forms.jsp';"  value="View Submitted Forms"/>
+		<input type="submit" onClick="window.location='/JSPPages/Director_View_Student_Submitted_Forms.jsp?student=<%= student.getNetID()%>';"  value="View Submitted Forms"/>
 		<br/>
-		<input type="submit" onClick="window.location = '/JSPPages/Director_View_Student_Attendance.jsp';"  value="View Attendance">
+		<input type="submit" onClick="window.location='/JSPPages/Director_View_Student_Attendance.jsp?student=<%= student.getNetID()%>';"  value="View Attendance">
 		<br/>
-		<input type="submit" onClick="window.location = '/JSPPages/Director_Edit_Student_Info.jsp';"  value="Edit Student's Information">
+		<input type="submit" onClick="window.location='/JSPPages/Director_Edit_Student_Info.jsp?student=<%= student.getNetID()%>';"  value="Edit Student's Information">
 		<br/>
 		<input type="button" value="Back" name="Back" onclick="window.location = '/JSPPages/Student_Page.jsp'"/>
 	</body>

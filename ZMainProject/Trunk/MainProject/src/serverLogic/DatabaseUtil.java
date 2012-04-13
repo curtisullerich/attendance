@@ -373,12 +373,10 @@ public class DatabaseUtil
 	public static List<Message> getNewMessages(String netID) {
 		EntityManager em = EMFService.get().createEntityManager();
 		List<Message> result = new LinkedList<Message>();
-		List<Tardy> tardies = DatabaseUtil.getAllTardies();
-		List<Absence> absences = DatabaseUtil.getAllAbsences();
-		List<EarlyCheckOut> eocs = DatabaseUtil.getAllEarlyCheckOuts();
-		return null;//TODO also get forms, then return all new messages
-		
-		
+		Query q = em.createQuery("select m from Message m where m.recipientNetID = :netID");
+		List<Message> messages = (List<Message>) q.getResultList();
+
+		return messages;
 	}
 	
 	public static List<Message> getMessages(String[] messageIDs) {
@@ -470,6 +468,18 @@ public class DatabaseUtil
 		List<Event> events = (List<Event>) q.getResultList();
 			
 		return events;
+	}
+	/**
+	 * Returns a List of all Forms in the database for this user.
+	 * @author Curtis Ullerich
+	 * @return
+	 */
+	public static List<Form> getAllForms(String netID) {
+		EntityManager em = EMFService.get().createEntityManager();
+		Query q = em.createQuery("select m from Form m where m.netID = :netID");
+		List<Form> forms = (List<Form>) q.getResultList();
+			
+		return forms;
 	}
 	//TODO same for all Forms
 	
