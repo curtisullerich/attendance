@@ -142,6 +142,47 @@ public class Form {
 		return "ID:"+this.netID+" start time:"+this.startTime+" end time:"+this.endTime
 				+" approved?:"+this.status;
 	}
+	
+	public String durationToString()
+	{
+		String[] start = startTime.split(" ");
+		String[] end = endTime.split(" ");
+		if (start[1].equals("00:01") && !end[1].equals("23:59"))
+		{
+			String hour = end[1].substring(0, 2);
+			String[] hourMin = end[1].split(":");
+			int hourNum = Integer.parseInt(hourMin[0]);
+			if (hourNum > 12)
+			{
+				hourMin[0] = "" + (hourNum - 12);
+				return "Until " + hourMin[0] + ":" + hourMin[1] + "PM"; 
+			}
+			else
+			{
+				return "Until " + ((hourMin[0].length() == 1) ? hourMin[0] : hourMin[0].charAt(1)) + ":" + hourMin[1]+ "AM";
+			}
+		}
+		else if (!start[1].equals("00:01") && end[1].equals("23:59"))
+		{
+			String hour = start[1].substring(0, 2);
+			String[] hourMin = start[1].split(":");
+			int hourNum = Integer.parseInt(hour);
+			if (hourNum > 12)
+			{
+				hourMin[0] = "" + (hourNum - 12);
+				return "Starting At " + hourMin[0] + ":" + hourMin[1] + "PM"; 
+			}
+			else
+			{
+				return "Starting At " + ((start[1].length() == 1) ? start[1] : start[1].charAt(1)) +":" + hourMin[1] + "AM";
+			}
+			//return "Starting At " + start[1];
+		}
+		else
+		{
+			return "Completely Miss";
+		}	
+	}
 
 	public String getDeptartment() {return dept;}
 	public String getCourse() {return course;}
