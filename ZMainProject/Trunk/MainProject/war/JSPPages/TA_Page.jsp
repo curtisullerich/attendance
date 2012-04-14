@@ -19,10 +19,15 @@
 	{
 		user = DatabaseUtil.getUser(netID);
 		if (!user.getType().equalsIgnoreCase("TA")) {
-			response.sendRedirect("/JSPPages/logout.jsp");
+			if(user.getType().equalsIgnoreCase("Student"))
+				response.sendRedirect("/JSPPages/Student_Page.jsp");
+			else if(user.getType().equalsIgnoreCase("Director"))
+				response.sendRedirect("/JSPPages/Director_Page.jsp");
+			else
+				response.sendRedirect("/JSPPages/logout.jsp");
 		}
 	}
-	%>	
+	%>
 	<script>
 		window.onload = function(){
 			if(<%= request.getParameter("successfulSave")%> == "true"){
@@ -36,15 +41,16 @@
 	<body>
 	<!--*********************Page Trail*****************************-->
 	
-		<a href="/" title="PageTrail_Home">Home</a> 
+		<a href="/JSPPages/logout.jsp" title="Logout and Return to Login Screen">Home</a> 
 		>
-		<a href="/JSPPages/TA_Page.jsp" title="PageTrail_TA">TA</a>
+		<a href="/JSPPages/TA_Page.jsp" title="TA Page">TA</a>
 			
 		You are logged in as <%= user.getFirstName() + " " + user.getLastName() %>
-		<a href="/JSPPages/logout.jsp">logout</a>		
+		<!--LOGOUT BUTTON-->
+		<input type="button" onclick="window.location = '/JSPPages/logout.jsp'" id="Logout" value="Logout"/>		
 
 		<!--HELP BUTTON-->	
-		<a href="">Help</a>
+		<input type="button" onclick="javascript: help();" id="Help" value="Help"/>		
 
 		<!--*********************info*****************************-->
 
@@ -58,7 +64,9 @@
 		----------------------------------
 		<p>
 			<!--********************* Button *****************************-->
-			<input type ="submit" onClick="window.location = '/JSPPages/TA_Edit_Info.jsp';"  value = "Edit TA Password">
+			<input type="submit" onClick="window.location = '/JSPPages/TA_Edit_Info.jsp';"  value = "Edit TA Password"/>
+			<br/>
+			<input type="submit" onClick="window.location = '/JSPPages/TA_Set_Rank.jsp';" value = "Set Ranks"/>
 		</p>
 	</body>
 </html>

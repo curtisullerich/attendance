@@ -13,13 +13,21 @@
 	String netID = (String) session.getAttribute("user");
 	User user = null;
 	
-	if (netID == null || netID.equals("")) {
+	if (netID == null || netID.equals("")) 
+	{
 		response.sendRedirect("/JSPPages/logout.jsp");
 		return;
-	} else {
+	}
+	else
+	{
 		user = DatabaseUtil.getUser(netID);
 		if (!user.getType().equalsIgnoreCase("Director")) {
-			response.sendRedirect("/JSPPages/logout.jsp");
+			if(user.getType().equalsIgnoreCase("TA"))
+				response.sendRedirect("/JSPPages/TA_Page.jsp");
+			else if(user.getType().equalsIgnoreCase("Student"))
+				response.sendRedirect("/JSPPages/Student_Page.jsp");
+			else
+				response.sendRedirect("/JSPPages/logout.jsp");
 		}
 	}
 	%>
@@ -86,15 +94,16 @@
 	<body>
 <!--*********************Page Trail*****************************-->
 	
-			<a href="/" title="PageTrail_Home">Home</a> 
-			>
-			<a href="/JSPPages/Director_Page.jsp" title="PageTrail_director">Director</a>
+		<a href="/JSPPages/logout.jsp" title="Logout and Return to Login Screen">Home</a> 
+		>
+		<a href="/JSPPages/Director_Page.jsp" title="Director Page">Director</a>
 			
-		You are logged in as the Director (<%= user.getFirstName() + " " + user.getLastName()%>)
-		<a href="/JSPPages/logout.jsp">Logout</a>		
+		You are logged in as the Director (<%= user.getFirstName() + " " + user.getLastName() %>)
+		<!--LOGOUT BUTTON-->
+		<input type="button" onclick="window.location = '/JSPPages/logout.jsp'" id="Logout" value="Logout"/>		
 
 		<!--HELP BUTTON-->	
-		<a href="">Help</a>
+		<input type="button" onclick="javascript: help();" id="Help" value="Help"/>		
 
 <!--*********************info*****************************-->
 		<br/><br/>

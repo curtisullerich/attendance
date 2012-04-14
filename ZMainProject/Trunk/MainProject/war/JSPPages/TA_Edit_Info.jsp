@@ -19,7 +19,12 @@
 	{
 		user = DatabaseUtil.getUser(netID);
 		if (!user.getType().equalsIgnoreCase("TA")) {
-			response.sendRedirect("/JSPPages/logout.jsp");
+			if(user.getType().equalsIgnoreCase("Student"))
+				response.sendRedirect("/JSPPages/Student_Page.jsp");
+			else if(user.getType().equalsIgnoreCase("Director"))
+				response.sendRedirect("/JSPPages/Director_Page.jsp");
+			else
+				response.sendRedirect("/JSPPages/logout.jsp");
 		}
 	}
 	%>
@@ -84,13 +89,19 @@
 	
 	
 	<!--*********************Page Trail*****************************-->
+			
+		<a href="/JSPPages/logout.jsp" title="Logout and Return to Login Screen">Home</a> 
+		>
+		<a href="/JSPPages/TA_Page.jsp" title="TA Page">TA</a>
+		>
+		<a href="/JSPPages/TA_Edit_Info.jsp" title="Edit TA Info Page">Edit TA Info</a>
+			
+		You are logged in as <%= user.getFirstName() + " " + user.getLastName() %>
+		<!--LOGOUT BUTTON-->
+		<input type="button" onclick="window.location = '/JSPPages/logout.jsp'" id="Logout" value="Logout"/>		
 
-	<!--TODO: need to connected to specific page-->
-			<a href="/" title="PageTrail_Home">Home</a> 
-			>
-			<a href="/JSPPages/TA_Page.jsp" title="PageTrail_TA">TA</a>
-			>
-			<a href="/JSPPages/TA_Edit_Info.jsp" title="PageTrail_Edit_Info">Edit TA Info</a>
+		<!--HELP BUTTON-->	
+		<input type="button" onclick="javascript: help();" id="Help" value="Help"/>	
 
 	<!--*********************info*****************************-->
 	
