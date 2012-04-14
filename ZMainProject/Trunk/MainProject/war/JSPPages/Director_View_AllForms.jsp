@@ -45,7 +45,7 @@
 				
 		for(Form f : forms)
 		{
-			if(f.getType().equals("A"))
+			if(f.getType().equals("FormA"))
 			{
 				String row="<tr>";
 				//row+="<td>"+ f.getNetID()+"</td>";
@@ -69,14 +69,14 @@
 	String headers1 ="<tr><h2>"+"form B";
 	headers1+="</h2>";
 	headers1+="</tr>";
-	headers1+= "<tr><td>netID</td><td>Name</td><td>Type of Form</td><td>Department</td><td>Course</td><td>Section</td><td>Building</td><td>Start Date</td><td>End Date</td><td>Until</td><td>Time...??</td><td>Comment</td>";
+	headers1+= "<tr><td>netID</td><td>Name</td><td>Type of Form</td><td>Department</td><td>Course</td><td>Section</td><td>Building</td><td>Start Date</td><td>End Date</td><td>Until</td><td>Comment</td><td>View</td>";
 
 	headers1+="</tr>";
 	table1+=headers1;
 			
 	for(Form f : forms)
 	{
-		if(f.getType().equals("B"))
+		if(f.getType().equals("FormB"))
 		{
 			String row="<tr>";
 			//row+="<td>"+ f.getNetID()+"</td>";
@@ -91,9 +91,11 @@
 			row+="<td>"+f.getBuilding()+"</td>";//building
 			row+="<td>"+f.getStartTime().toString(12)+"</td>";//start time
 			row+="<td>"+f.getEndTime().toString(12)+"</td>";//end time
-		//	row+="<td>"+f.durationToString()+"</td>";//until + time							//TODO
-			row+="<td>"+f.getAdditionalInfo()+"</td>";//comment
-			row+="<td>"+f.getReason()+"</td>";
+			row+="<td>"+f.durationToString()+"</td>";//until + time							//TODO
+			row+="<td>"+f.getReason()+"</td>";//comment
+			row += "<td><b><a href='/JSPPages/View_Student_Form.jsp?viewForm="+f.getID()+"'>"+"View"+"</a></b></td>";
+
+			
 			row +="</tr>";
 			table1+=row;
 		}
@@ -117,7 +119,7 @@
 				
 		for(Form f : forms)
 		{
-			if(f.getType().equals("C"))
+			if(f.getType().equals("FormC"))
 			{
 				
 			String row="<tr>";
