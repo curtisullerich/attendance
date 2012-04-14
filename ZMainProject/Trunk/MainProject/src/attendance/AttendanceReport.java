@@ -3,6 +3,7 @@ package attendance;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -54,7 +55,13 @@ public class AttendanceReport {
 	}
 
 	public List<Form> getForms() {
-		return DatabaseUtil.getForms(netID);
+		List<Form> newList = new LinkedList<Form>();
+		for (Form e: DatabaseUtil.getForms(netID))
+		{
+			newList.add(e);
+		}
+		return newList;
+		
 	}
 
 	/**
