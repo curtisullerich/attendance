@@ -115,6 +115,10 @@
 		<br/>
 		<input type ="submit" onClick="window.location = '/JSPPages/Director_View_AllForms.jsp';"  value = "View All Forms">
 		
+		<br/>
+		<input type ="submit" onClick="window.location = '/JSPPages/Director_Set_Rank.jsp';"  value = "Set Rank">
+		
+		
 		<div id="messages" style="display: none" style="border: 3px solid black; height: 200px; overflow: auto; background-color:#FFFDE0;">
 			<%= table %>
 		</div>		
