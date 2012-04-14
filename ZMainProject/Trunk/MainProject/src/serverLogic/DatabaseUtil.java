@@ -458,23 +458,11 @@ public class DatabaseUtil
 	
 
 	/**
-	 * Returns a List of all Events in the database.
-	 * @author Curtis Ullerich
-	 * @return
-	 */
-	public static List<Event> getAllEvents(String netID) {
-		EntityManager em = EMFService.get().createEntityManager();
-		Query q = em.createQuery("select m from Event m");
-		List<Event> events = (List<Event>) q.getResultList();
-			
-		return events;
-	}
-	/**
 	 * Returns a List of all Forms in the database for this user.
 	 * @author Curtis Ullerich
 	 * @return
 	 */
-	public static List<Form> getAllForms(String netID) {
+	public static List<Form> getAllForms() {
 		EntityManager em = EMFService.get().createEntityManager();
 		Query q = em.createQuery("select m from Form m where m.netID = :netID");
 		List<Form> forms = (List<Form>) q.getResultList();

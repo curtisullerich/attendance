@@ -1,6 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ page import="people.*" %>
 <%@ page import="serverLogic.DatabaseUtil" %>
+<%@ page import="java.util.*" %>
+<%@ page import="forms.*" %>
+
 
 <html>
 	<head>
@@ -65,6 +68,10 @@
 				<th>Reason</th>
 			</tr>
 		<!-- get ppl from database ::-->	
+	
+	<%//for table
+		List<Form> forms = DatabaseUtil.getAllForms(netID);
+	%>
 			<tr><td>Tppd Wegter</td></td><td>Class Conflict</td> <td>8/31</td><td>Unknown</td><td>Yes</td></tr>
 			<tr></td><td>Brandon Maxwell</td><td>Rehearsal</td> <td>8/31</td><td>Unknown</td><td>NO</td></tr>
 		</table>
