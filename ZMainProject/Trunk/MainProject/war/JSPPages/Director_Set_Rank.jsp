@@ -31,39 +31,30 @@
 	%>
 
 
-<!-- FORM A -->
+<!-- Set Rank Table -->
 	<%//for table
-	//FROM A *********************************************************************
-		List <Form> forms = DatabaseUtil.getAllForms();
-		
+		List<User> students = DatabaseUtil.getStudents();
 		String table = "<table border='1'>";
 		
 		String headers ="<tr><h2>"+"Set Students Rank:";
 		headers+="</h2>";
 		headers+="</tr>";
-		headers+= "<tr><td>Name</td><td> Section </td><td>Ranks</td>";
+		headers+= "<tr><td>Name</td><td>NetID</td><td> Section </td><td>Ranks</td>";
 
 		headers+="</tr>";
 		table+=headers;
-				
-		for(Form f : forms)
+		
+		for(User s : students)
 		{
-			if(f.getType().equals("FormA"))
-			{
-				String row="<tr>";
-				//row+="<td>"+ f.getNetID()+"</td>";
-				row += "<td><b><a href='/JSPPages/Director_Student_View.jsp?student="+f.getNetID()+"'>"+f.getNetID()+"</a></b></td>";
-				row+="<td>"+DatabaseUtil.getUser(f.getNetID()).getFirstName()+" "+DatabaseUtil.getUser(f.getNetID()).getLastName()+"</td>";
-				row+="<td>"+ f.getType()+"</td>";
-				row+="<td>"+ f.getStartTime().toString(12)+"</td>";
-				row+="<td>"+f.getReason()+"</td>";
-				row+="<td>"+f.getStatus()+"</td>";
-				row += "<td><b><a href='/JSPPages/View_Student_FormAC.jsp?viewForm="+f.getID()+"'>"+"View"+"</a></b></td>";
-
-				row +="</tr>";
-				table+=row;
-			}
+			String row="<tr>";
+			row+="<td>"+ s.getLastName() + " "+s.getFirstName()+"</td>";
+			row+="<td>"+ s.getNetID()+"</td>";
+			row+="<td>"+ s.getSection()+"</td>";
+			
+			row+="<td>"+ "<input name='Rank' id ='Rank'>"+"</input>"+"</td>";
+			table+=row;
 		}
+		
 		table+="</table>";
 	%>
 
@@ -77,7 +68,8 @@
 
 </head>
 <body>
-		<div style='height: 100%; width: 100%; float: left; overflow:auto'><%= table %></div>
+		
+	<div style='height: 100%; width: 100%; float: left; overflow:auto'><%= table %></div>
 
 </body>
 </html>
