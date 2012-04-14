@@ -31,11 +31,17 @@ public class Form {
 	private String startTime;
 	private String endTime;
 	private String additionalInfo;
-
+	
+	//Strings to be used by Form B
+	private String dept;
+	private String course;
+	private String section;
+	private String building;
 	//What are my options chief?
 	//FormA, FormB, FormC, FormD
 	private String type; 
 
+	//This constructor is called by Form A, C, and D
 	public Form(String netID, String reason, Time startTime, Time endTime,
 			String type) {
 		this.netID = netID;
@@ -44,8 +50,25 @@ public class Form {
 		this.reason = reason;
 		this.type = type;
 		this.status = "pending";
+		dept = "";
+		course = "";
+		section = "";
+		building = "";
 	}
-
+	//This constructor is only for Form B
+	public Form(String netID, String reason, Time startTime, Time endTime,
+			String dept, String course, String section, String building, String type) {
+		this.netID = netID;
+		this.startTime = startTime.toString(24);
+		this.endTime = endTime.toString(24);
+		this.reason = reason;
+		this.type = type;
+		this.status = "pending";
+		this.dept = dept;
+		this.course = course;
+		this.section = section;
+		this.building = building;
+	}
 	public Form(String netID, String reason, Time startTime, Time endTime,
 			String type, File attachedFile, String additionalInfo) {
 		this.netID = netID;
@@ -120,7 +143,10 @@ public class Form {
 				+" approved?:"+this.status;
 	}
 
-	
+	public String getDeptartment() {return dept;}
+	public String getCourse() {return course;}
+	public String getSection() {return section;}
+	public String getBuilding() {return building;}
 //	public File getFile() {
 //		return DatabaseUtil.getFile(attachedFile); // get file with this key
 //													// from database
