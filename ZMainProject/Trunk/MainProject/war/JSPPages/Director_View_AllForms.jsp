@@ -146,7 +146,7 @@
 		
 		String table3 = "<table border='1'>";
 		
-		String headers3 ="<tr><h2>"+"form C";
+		String headers3 ="<tr><h2>"+"form D";
 		headers3+="</h2>";
 		headers3+="</tr>";
 		headers3+= "<tr><td>netID</td><td>Name</td><td>Type of Form</td><td>Email To</td><td>Total Hours</td><td>Start Date</td><td>Reason</td>";

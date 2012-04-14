@@ -26,6 +26,8 @@ all the forms director need to view page jsp
 -implement grading method
 
 *****TODO**************************************
+-add delete button in: Director_View_AllForms.
+*************
 delete a form: window.reload(true);
 *************
 
