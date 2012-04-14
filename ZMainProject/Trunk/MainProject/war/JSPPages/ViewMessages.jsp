@@ -122,10 +122,10 @@
 			table += 
 
 					"<table >"	
-					+"Write a new message: "
+					+"<br/><br/>Write a new message: "
 					+""
-					+"			<form action='/newMessage' method='post'><input name='parentID' type='text' hidden='true' value='" + parentID +"'></input> <input type= 'text' name='New Message' id='New Message'/><input hidden='true' type= 'text' name='parentType' id='parentType' value='"+ parentType+"'/>	<button name='Submit' type='Submit'>Send</button></form>";
-
+					+"<form action='/newMessage' method='post'><input name='parentID' type='text' hidden='true' value='" + parentID +"'></input> <input type= 'text' name='New Message' id='New Message'/><input hidden='true' type= 'text' name='parentType' id='parentType' value='"+ parentType+"'/>	<button name='Submit' type='Submit'>Send</button></form>"
+					+"<p>";
 // 						+ "<tr>"
 // 							+"<td>Write a new message:</td>"
 // 							+"<td>"
@@ -154,19 +154,17 @@
 			}
 			table+="</table>";
 		} else {
-			table = "<br/><br/><b>No item selected.</b>";
+			table = "<br/><b>No item selected.</b><br/>";
 		}
 		System.err.println("ViewMessages: 8");
 
 		%>
-	<br/>
-	<br/>
-	<br/>
 	
 	<%= table %>
 	
 	
 		<!--button-->
+		<br/>
 		<input type="button" value="Back" name="Back" onclick="window.location = '/JSPPages/Student_View_Attendance.jsp'"/>
 	</body>
 	
