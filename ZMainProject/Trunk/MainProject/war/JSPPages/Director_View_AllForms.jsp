@@ -38,7 +38,7 @@
 		String headers ="<tr><h2>"+"form A";
 		headers+="</h2>";
 		headers+="</tr>";
-		headers+= "<tr><td>netID</td><td>Name</td><td>Type of Form</td><td>Start Date</td><td>Reason</td><td>Status</td><td>View</td>";
+		headers+= "<tr><td>netID</td><td>Name</td><td>Type of Form</td><td>Start Date</td><td>Reason</td><td>Status</td><td>Delete</td>";
 
 		headers+="</tr>";
 		table+=headers;
@@ -55,7 +55,6 @@
 				row+="<td>"+ f.getStartTime().toString(12)+"</td>";
 				row+="<td>"+f.getReason()+"</td>";
 				row+="<td>"+f.getStatus()+"</td>";
-				row += "<td><b><a href='/JSPPages/View_Student_Form.jsp?currentForm="+f+"'>"+"view"+"</a></b></td>";
 				row +="</tr>";
 				table+=row;
 			}

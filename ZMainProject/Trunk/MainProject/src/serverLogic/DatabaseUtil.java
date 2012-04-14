@@ -27,6 +27,24 @@ import forms.Form;
  */
 public class DatabaseUtil 
 {
+	
+	public static Form getFormByID(Long id)
+	{
+		EntityManager em = EMFService.get().createEntityManager();
+		Query q = em.createQuery("select a from Form a where a.id = :id");
+		q.setParameter("id", id);
+		Form result;
+		try
+		{
+			result = (Form) q.getSingleResult();
+		}
+		catch (NoResultException e)
+		{
+			result = null;
+		}
+		return result;
+	}
+	
 	/**
 	 * A Method to remove an object from the database
 	 * @param o the object to remove
@@ -563,11 +581,9 @@ public class DatabaseUtil
 	 */
 	public static List<Form> getAllForms() {
 		EntityManager em = EMFService.get().createEntityManager();
-<<<<<<< .mine
-		Query q = em.createQuery("select m from Form m where m.netID := netID");
-=======
+
 		Query q = em.createQuery("select m from Form m");
->>>>>>> .r564
+
 		List<Form> forms = (List<Form>) q.getResultList();
 			
 		return forms;

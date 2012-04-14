@@ -103,9 +103,9 @@ public class Form {
 	}
 
 	
-	public String getID()
+	public Long getID()
 	{
-		return ""+this.id;
+		return this.id;
 	}
 	public String getNetID() {
 		return netID;
