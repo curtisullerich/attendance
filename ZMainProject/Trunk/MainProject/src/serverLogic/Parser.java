@@ -47,7 +47,7 @@ public class Parser {
 					Date useDate = parseDate(date);
 					Time start = parseTime(startTime, useDate);
 					Time end = parseTime(endTime, useDate);
-					Event newEvent = new Event(start, end, prepend.substring(0, 6));
+					Event newEvent = new Event(start, end, prepend);
 					events.add(newEvent);
 					DatabaseUtil.addEvent(newEvent);
 				}
