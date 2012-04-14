@@ -1,14 +1,10 @@
 package attendance;
 
-import java.math.BigInteger;
-import java.security.MessageDigest;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 import serverLogic.DatabaseUtil;

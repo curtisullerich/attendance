@@ -32,11 +32,11 @@
 	%>
 	<script>
 		function sendMeToMyTardyMessages(id) {
-			window.location = "/JSPPages/tardyMessages.jsp?id=" + id;
+			window.location = "/JSPPages/ViewMessages.jsp?parentType=Tardy&parentID=" + id;
 		}
 		
 		function sendMeToMyAbsenceMessages(id) {
-			window.location = "/JSPPages/absenceMessages.jsp?id=" + id;
+			window.location = "/JSPPages/ViewMessages.jsp?parentType=Absence&parentID=" + id;
 		}
 		
 		function help(){
@@ -46,9 +46,9 @@
 
 	<body>
 <!--*********************Page Trail*****************************-->
-	
-	
-	
+
+
+
 		<a href="/JSPPages/logout.jsp" title="Logout and Return to Login Screen">Home</a> 
 		>
 		<a href="/JSPPages/Student_Page.jsp" title="Student Page">Student</a>

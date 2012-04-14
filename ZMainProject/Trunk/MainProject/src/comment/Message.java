@@ -79,7 +79,6 @@ public class Message implements Comparable<Message> {
 	public void setRecipientNetID(String netID) {
 		this.recipientNetID = netID;
 	}
-
 	
 	public String getSenderNetID() {
 		return senderNetID;
@@ -90,6 +89,17 @@ public class Message implements Comparable<Message> {
 		if (readers [0] == null) readers[0] = "";
 		
 		return (readers[0].equals(netID) || readers[1].equals("netID"));
+	}
+
+	/**
+	 * @author Curtis Ullerich
+	 * @date 4/14/12
+	 * @param netID
+	 */
+	public void setReadBy(String netID) {
+		if (!readBy(netID)) {
+			this.readers[1] = netID;
+		}
 	}
 		
 	@Override

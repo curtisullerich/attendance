@@ -37,7 +37,7 @@
 		Event event = DatabaseUtil.getEventByID(id);
 		tardy = event.getTardies().size();
 		absent = event.getAbsences().size();
-		present = users.size() - tardy - absent;
+		present = users.size() - tardy - absent -2;//-2 is to account for the director and TA
 		
 		information = "<p><b>Event Statistics</b><br/>";
 		information += "Date: " +event.getStartTime().getDate().toString()+ "<br/>"; 

@@ -54,7 +54,7 @@
 				butt.value = "Show New Messages";
 			}
 		}
-		
+
 	</script>
 			<%
 		String table = "<table>";
@@ -73,7 +73,7 @@
 					table+= 
 					"	<tr>"
 					+"		<td>"
-					+"			<b><a href='/JSPPages/" + m.getParentType() +"Messages.jsp?parentID=" + m.getParentID() + "'>" + (m.readBy(netID) ? "" : "(new) " ) + m.getTime().toString(12) + "</a></b> from <b>" + m.getSenderNetID() + ":</b>"
+					+"			<b><a href='/JSPPages/ViewMessages.jsp?parentType=" + m.getParentType() + "&parentID=" + m.getParentID() + "'>" + (m.readBy(netID) ? "" : "(new) " ) + m.getTime().toString(12) + "</a></b> from <b>" + m.getSenderNetID() + ":</b>"
 					+"		</td>"
 					+"		<td >"
 					+"			" + m.getContents()

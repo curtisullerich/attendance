@@ -309,6 +309,29 @@ public class DatabaseUtil
 		
 	}
 	
+	/**
+	 * @author Curtis Ullerich
+	 * @date 4/14/12
+	 * @param id
+	 * @return
+	 */
+	public static Message getMessageByID(Long id) {
+		EntityManager em = EMFService.get().createEntityManager();
+		Query q = em.createQuery("select a from Message a where a.id = :id");
+		q.setParameter("id", id);
+		Message message;
+		try
+		{
+			message = (Message) q.getSingleResult();
+		}
+		catch (NoResultException e)
+		{
+			message = null;
+		}
+		em.close();
+		return message;
+	}
+	
 	
 	/**
 	 * 
@@ -494,6 +517,9 @@ public class DatabaseUtil
 	public static List<Message> getMessages(String[] messageIDs) {
 		EntityManager em = EMFService.get().createEntityManager();
 		List<Message> result = new LinkedList<Message>();
+		if(messageIDs == null) {
+			System.out.println("messageIDs was null");
+		}
 		for (int i = 0; i < messageIDs.length; i++)
 		{
 			if (messageIDs[i] != null && !messageIDs[i].equals("")) {

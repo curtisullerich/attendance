@@ -33,16 +33,6 @@ public class NewMessage extends HttpServlet {
 			myNetID = (String) req.getSession().getAttribute("user");
 			User user = DatabaseUtil.getUser(myNetID);
 			long id = Long.parseLong(parentID);
-			if (user.getType().equals("Student")) {
-				recipient = DatabaseUtil.getDirector().getNetID();
-			} else if (user.getType().equals("Director")) {
-				//we'll be getting it below then. recipient = tardy.getNetID();
-			} else {
-				System.err.println("Some, a TA sent a message");
-			}
-			if (recipient.equals("")) {
-				System.err.println("Recipient was empty");
-			}
 			Message theMessage = new Message(myNetID, recipient, message, parentID, parentType);
 			if (parentType.equals("Tardy")) {
 				Tardy tardy = DatabaseUtil.getTardyByID(id);
@@ -70,12 +60,23 @@ public class NewMessage extends HttpServlet {
 			} else {
 				System.err.println("And, we have a type of message that we didn't account for.");
 			}
+			
+			if (user.getType().equals("Student")) {
+				recipient = DatabaseUtil.getDirector().getNetID();
+			} else if (user.getType().equals("Director")) {
+				//we'll be getting it below then. recipient = tardy.getNetID();
+			} else {
+				System.err.println("Some, a TA sent a message");
+			}
+			if (recipient.equals("")) {
+				System.err.println("Recipient was empty");
+			}
+
+			theMessage=DatabaseUtil.getMessageByID(theMessage.getID());
 			theMessage.setRecipientNetID(recipient);
 			DatabaseUtil.addMessage(theMessage);//because we modified it after adding to the database
-			resp.sendRedirect("/JSPPages/" + parentType + "Messages.jsp?id=" + parentID);
+			resp.sendRedirect("/JSPPages/ViewMessages.jsp?parentType="+parentType+"&parentID=" + parentID);
 		}
-		
-
 		
 	}
 }

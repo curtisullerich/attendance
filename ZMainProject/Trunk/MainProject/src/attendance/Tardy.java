@@ -1,7 +1,5 @@
 package attendance;
 
-import java.math.BigInteger;
-import java.security.MessageDigest;
 import java.util.Arrays;
 import java.util.List;
 
@@ -49,7 +47,6 @@ public class Tardy {
 		this.currentIndex = 0;
 		messageIDs = new String[10];
 		for (int i = 0; i < messageIDs.length; i++) {
-
 			messageIDs[i] = "";
 		}
 	}
