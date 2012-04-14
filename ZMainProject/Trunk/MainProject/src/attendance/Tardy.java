@@ -114,7 +114,6 @@ public class Tardy {
 	}
 
 	public List<Message> getMessages() {
-		System.out.println("MESSAGEIDS is " + messageIDs);
 		return DatabaseUtil.getMessages(messageIDs);
 	}
 

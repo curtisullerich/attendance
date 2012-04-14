@@ -1,6 +1,7 @@
 package time;
 
 import java.util.Calendar;
+import java.util.TimeZone;
 
 /**
  * 
@@ -15,10 +16,10 @@ public class Date implements Comparable<Date>
 	
 	public Date(){
 		//default construct creates current date   
-		Calendar date = Calendar.getInstance();
+		Calendar date = Calendar.getInstance(TimeZone.getTimeZone("America/Chicago"));
 		this.month = date.get(Calendar.MONTH)+1;
 		this.year = date.get(Calendar.YEAR);
-		this.day = date.get(Calendar.DATE)-1; 
+		this.day = date.get(Calendar.DATE); 
 	}
 	
 	public Date(int year, int month, int day)

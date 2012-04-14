@@ -3,6 +3,7 @@ package servlets;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 import javax.servlet.http.*;
 
@@ -120,8 +121,7 @@ public class FormB extends HttpServlet {
 					return;
 				}
 
-				Form form = new Form(current.getNetID(), comment1, start, end, dept1,
-						course1, sect1, building1, "FormB");
+				Form form = new Form(current.getNetID(), comment1, start, end, dept1,course1, sect1, building1, "FormB");
 				DatabaseUtil.addForm(form);
 
 				resp.sendRedirect("/JSPPages/Student_Page.jsp?formSubmitted='true'");
@@ -137,7 +137,7 @@ public class FormB extends HttpServlet {
 		int monthDays[] = { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 		if (month <= 0 || month > 12)
 			return false;
-		int thisYear = Calendar.getInstance().get(Calendar.YEAR);
+		int thisYear = Calendar.getInstance(TimeZone.getTimeZone("America/Chicago")).get(Calendar.YEAR);
 		if (year > thisYear + 1 || year < thisYear)
 			return false;
 		if (day > monthDays[month])

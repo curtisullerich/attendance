@@ -2,74 +2,76 @@
 <%@ page import="people.*" %>
 <%@ page import="serverLogic.DatabaseUtil" %>
 <%@ page import="java.util.Calendar" %>
+<%@ page import="java.util.TimeZone" %>
 
 <html>
 	<head>
 		<title>@10Dance</title>
-	</head>
-	<%
-	String netID = (String) session.getAttribute("user");
-	User user = null;
 	
-	if (netID == null || netID.equals("")) 
-	{
-		response.sendRedirect("/JSPPages/logout.jsp");
-		return;
-	}
-	else
-	{
-		user = DatabaseUtil.getUser(netID);
-		if (!user.getType().equalsIgnoreCase("Student")) {
-			if(user.getType().equalsIgnoreCase("TA")) {
-				response.sendRedirect("/JSPPages/TA_Page.jsp");
-				return;
-			}
-			else if(user.getType().equalsIgnoreCase("Director")) {
-				response.sendRedirect("/JSPPages/Director_Page.jsp");
-				return;
-			}
-			else
-				response.sendRedirect("/JSPPages/logout.jsp");
-				return;
-			}
-		}
-	}
-	%>
-	<script>
-	window.onload = function() {
-		if (<%= request.getParameter("error") != null%>)
+		<%
+		String netID = (String) session.getAttribute("user");
+		User user = null;
+		
+		if (netID == null || netID.equals("")) 
 		{
-			if(<%= request.getParameter("error")%> == "invalidDate")
-				alert("The start date was invalid. Form not Submitted");
-			else if(<%= request.getParameter("error")%> == "noReason")
-				alert("You must submit a reason. Form not submitted.");
+			response.sendRedirect("/JSPPages/logout.jsp");
+			return;
 		}
-		
-		function help(){
-			alert("Helpful information about student page.")
-		}
-		
-		function confirmData(){
-
-			if (document.getElementById("reason").value == "")
-			{
-				alert("You need to supply a reason for this absence request.");
-				return false;
+		else
+		{
+			user = DatabaseUtil.getUser(netID);
+			if (!user.getType().equalsIgnoreCase("Student")) {
+				if(user.getType().equalsIgnoreCase("TA")) {
+					response.sendRedirect("/JSPPages/TA_Page.jsp");
+				}
+				else if(user.getType().equalsIgnoreCase("Director")) {
+					response.sendRedirect("/JSPPages/Director_Page.jsp");
+				}
+				else {
+					response.sendRedirect("/JSPPages/logout.jsp");
+				}
 			}
-
-			var monthDays = [0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-			var d = new Date();
-			var year = d.getFullYear();
+		}
+		%>
+	
+	<script>
+			window.onload = function() {
+				if (<%= request.getParameter("error") != null%>)
+				{
+					if(<%= request.getParameter("error")%> == "invalidDate")
+						alert("The start date was invalid. Form not Submitted");
+					else if(<%= request.getParameter("error")%> == "noReason")
+						alert("You must submit a reason. Form not submitted.");
+					else if(<%= request.getParameter("error")%> == "nullFields")
+						alert("Missing field. Form not submitted.");
+			}
 			
-			if (monthDays[document.getElementById("startMonth").value] < document.getElementById("startDay").value)
-			{
-				alert("Invalid day for the current starting month");
-				return false;
+			function help(){
+				alert("Helpful information about student page.")
 			}
-			return true;
-		}
-		
-	</script>
+			
+			function confirmData(){
+	
+				if (document.getElementById("reason").value == "")
+				{
+					alert("You need to supply a reason for this absence request.");
+					return false;
+				}
+	
+				var monthDays = [0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+				var d = new Date();
+				var year = d.getFullYear();
+				
+				if (monthDays[document.getElementById("startMonth").value] < document.getElementById("startDay").value)
+				{
+					alert("Invalid day for the current starting month");
+					return false;
+				}
+				return true;
+			}
+			
+		</script>
+	</head>
 	<body>
 	
 	<!--*********************Page Trail*****************************-->
@@ -95,10 +97,10 @@
 <!--==================================================================================================================-->		
 
 <%
-int month = Calendar.getInstance().get(Calendar.MONTH) + 1;
+int month = Calendar.getInstance(TimeZone.getTimeZone("America/Chicago")).get(Calendar.MONTH) + 1;
 //No idea why the day is one too many
-int day = Calendar.getInstance().get(Calendar.DATE) - 1;
-int year = Calendar.getInstance().get(Calendar.YEAR);
+int day = Calendar.getInstance(TimeZone.getTimeZone("America/Chicago")).get(Calendar.DATE);
+int year = Calendar.getInstance(TimeZone.getTimeZone("America/Chicago")).get(Calendar.YEAR);
 %>
 <div id="right">
 	

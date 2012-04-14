@@ -1,5 +1,9 @@
 package time;
 
+import java.util.Calendar;
+import java.util.Locale;
+import java.util.TimeZone;
+
 /**
  * 
  * @author Yifei Zhu
@@ -19,12 +23,10 @@ public class Time implements Comparable<Time> {
 
 	public Time() {
 		//gets current 24hr time and date
-		java.text.DateFormat curHour = new java.text.SimpleDateFormat("HH");
-        java.text.DateFormat curMinute = new java.text.SimpleDateFormat("mm");
-        java.util.Date date = new java.util.Date();
-        this.hour = Integer.parseInt(curHour.format(date));
-        this.minute = Integer.parseInt(curMinute.format(date));
-        this.date = new Date();   
+		Calendar date = Calendar.getInstance(TimeZone.getTimeZone("America/Chicago"));
+		this.hour = date.get(Calendar.HOUR_OF_DAY);
+		this.minute = date.get(Calendar.MINUTE);
+        this.date = new Date();
 	}
 
 	
@@ -105,7 +107,12 @@ public class Time implements Comparable<Time> {
 		if (this.hour > 12) {
 			return  addZero(this.getHour()-12)+":"+addZero(this.minute)/*+":"+addZero(this.getSecond())*/
 					+ "PM";
-		} else {
+		} 
+		else if(this.hour == 0){
+			return  "12:"+addZero(this.minute)/*+":"+addZero(this.getSecond())*/
+					+ "AM";
+		}
+		else {
 			return this.get24Format() + "AM";
 		}
 

@@ -1,7 +1,9 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Properties;
+import java.util.TimeZone;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -28,11 +30,23 @@ public class FormD extends HttpServlet
 			String AmountWorked = req.getParameter("AmountWorked");
 			String Details = req.getParameter("Details");
 			
-			if (Email != null && AmountWorked != null && Details != null && Email != "" && AmountWorked != "" && Details != "")
+			if (Email != null && AmountWorked != null && Details != null && Email != "" && AmountWorked != "" && Details != "" 
+					&& req.getParameter("startDay") != null && req.getParameter("startMonth") != null && req.getParameter("startYear") != null   
+					&& req.getParameter("startDay") != "" && req.getParameter("startMonth") != "" && req.getParameter("startYear") != "" )
 			{
-				Date date = new Date(Integer.parseInt(req.getParameter("StartYear")), Integer.parseInt(req.getParameter("StartMonth")),
-						Integer.parseInt(req.getParameter("StartDay")));
+				int year = Integer.parseInt(req.getParameter("StartYear"));
+				int month = Integer.parseInt(req.getParameter("StartMonth"));
+				int day = Integer.parseInt(req.getParameter("StartDay"));
+				if(!isValidateDate(year, month, day)) {
+					resp.sendRedirect("/JSPPages/Student_Form_A_Performance_Absence_Request.jsp?error='invalidDate'");
+					return;
+				}
+				//public Date(int year, int month, int day)
+				Date date = new Date(year, month, day);
+				
+				//(int hour, int minute, Date date)
 				Time time = new Time(0, 0, date);
+				
 				User guy = DatabaseUtil.getUser(""+req.getSession().getAttribute("user"));
 				Form form = new Form(guy.getNetID(), Details, time, time, Email, Integer.parseInt(AmountWorked), "FormD");
 				DatabaseUtil.addForm(form);
@@ -68,6 +82,18 @@ public class FormD extends HttpServlet
 				return;
 			}
 		}
-		
 	}
+	
+	private boolean isValidateDate(int month, int day, int year) {
+		int monthDays[] = { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+		if (month <= 0 || month > 12)
+			return false;
+		int thisYear = Calendar.getInstance(TimeZone.getTimeZone("America/Chicago")).get(Calendar.YEAR);
+		if (year > thisYear + 1 || year < thisYear)
+			return false;
+		if (day > monthDays[month])
+			return false;
+		return true;
+	}
+	
 }

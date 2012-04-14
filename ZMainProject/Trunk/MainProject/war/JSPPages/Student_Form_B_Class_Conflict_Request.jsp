@@ -2,6 +2,7 @@
 <%@ page import="people.*" %>
 <%@ page import="java.util.Calendar" %>
 <%@ page import="serverLogic.DatabaseUtil" %>
+<%@ page import="java.util.TimeZone" %>
 
 <html>
 	<head>
@@ -159,10 +160,10 @@
 
 			<% 	
 			int year = user.getYear();
-			Calendar date = Calendar.getInstance();
-			int month = date.get(Calendar.MONTH)+1;
+			Calendar date = Calendar.getInstance(TimeZone.getTimeZone("America/Chicago"));
+			int month = date.get(Calendar.MONTH);
 			int curYear = date.get(Calendar.YEAR);
-			int day = date.get(Calendar.DATE)-1;
+			int day = date.get(Calendar.DATE);
 			%>
 				
 			

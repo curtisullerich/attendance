@@ -362,7 +362,6 @@ public class DatabaseUtil
 			tardy = null;
 		}
 		
-		System.out.println("Tardy is    " + tardy);
 		em.close();
 		return tardy;
 	}

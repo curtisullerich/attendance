@@ -55,10 +55,10 @@ public class Form {
 		this.reason = reason;
 		this.type = type;
 		this.status = "pending";
-		dept = "";
-		course = "";
-		section = "";
-		building = "";
+		this.dept = "";
+		this.course = "";
+		this.section = "";
+		this.building = "";
 	}
 	//This constructor is called by Form D
 	public Form(String netID, String reason, Time startTime, Time endTime, String emailTo, int hoursWorked,
@@ -69,10 +69,10 @@ public class Form {
 		this.reason = reason;
 		this.type = type;
 		this.status = "pending";
-		dept = "";
-		course = "";
-		section = "";
-		building = "";
+		this.dept = "";
+		this.course = "";
+		this.section = "";
+		this.building = "";
 		this.emailTo = emailTo;
 		this.hoursWorked = hoursWorked;
 	}

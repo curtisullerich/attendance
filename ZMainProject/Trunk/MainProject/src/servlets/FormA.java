@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 import javax.servlet.http.*;
 
@@ -30,7 +31,6 @@ public class FormA extends HttpServlet
 		if (buttonPressed != null)
 		{
 			String reason = req.getParameter("Reason"); 
-			//	public Date(int year, int month, int day)
 			if(reason == null || reason == "") {
 				resp.sendRedirect("/JSPPages/Student_Form_A_Performance_Absence_Request.jsp?error='noReason'");
 				return;
@@ -46,20 +46,20 @@ public class FormA extends HttpServlet
 					resp.sendRedirect("/JSPPages/Student_Form_A_Performance_Absence_Request.jsp?error='invalidDate'");
 					return;
 				}
+				//public Date(int year, int month, int day)
 				Date date = new Date(year, month, day);
-				
 				
 				//(int hour, int minute, Date date)
 				Time startTime = new Time(0,0,date);
 				Time endTime= new Time(23,59,date);
-				directTo= "/JSPPages/Student_Page.jsp";
 				
 				//Form( netID,  reason,  startTime,  endTime, type)		
-				Form myform= new Form(""+req.getSession().getAttribute("user"),reason,startTime,endTime, "A" );
+				Form myform= new Form(""+req.getSession().getAttribute("user"),reason,startTime,endTime, "FormA" );
 	
 				DatabaseUtil.addForm(myform);
 				
 				resp.sendRedirect("/JSPPages/Student_Page.jsp?formSubmitted='true'");
+				return;
 	
 			
 			}
@@ -76,11 +76,12 @@ public class FormA extends HttpServlet
 		int monthDays[] = { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 		if (month <= 0 || month > 12)
 			return false;
-		int thisYear = Calendar.getInstance().get(Calendar.YEAR);
+		int thisYear = Calendar.getInstance(TimeZone.getTimeZone("America/Chicago")).get(Calendar.YEAR);
 		if (year > thisYear + 1 || year < thisYear)
 			return false;
 		if (day > monthDays[month])
 			return false;
 		return true;
 	}
+	
 }

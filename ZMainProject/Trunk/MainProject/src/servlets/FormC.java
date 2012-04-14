@@ -1,6 +1,8 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 import javax.servlet.http.*;
 
@@ -28,30 +30,59 @@ public class FormC extends HttpServlet
 		
 		if (buttonPressed != null)
 		{
-			String reason = req.getParameter("Reason"); 
+			String reason = req.getParameter("Reason");
+			if(reason == null || reason == "") {
+				resp.sendRedirect("/JSPPages/Student_Form_C_Rehearsal_Excuse.jsp?error='noReason'");
+				return;
+			}
 			
-			//	public Date(int year, int month, int day)
-			Date date = new Date(Integer.parseInt(req.getParameter("StartYear")),Integer.parseInt(req.getParameter("StartMonth")),Integer.parseInt(req.getParameter("StartDay")));
-			//			(int hour, int minute, Date date)
-			Time startTime = new Time(0,0,date);
-			Time endTime= new Time(23,59,date);
-			directTo= "/JSPPages/Student_Page.jsp";
+			else if ( req.getParameter("startDay") != null && req.getParameter("startMonth") != null && req.getParameter("startYear") != null   
+					&& req.getParameter("startDay") != "" && req.getParameter("startMonth") != "" && req.getParameter("startYear") != "" ) {
 			
-			//Form( netID,  reason,  startTime,  endTime, type)		
-			Form myform= new Form(""+req.getSession().getAttribute("user"),reason,startTime,endTime, "C" );
-
-			DatabaseUtil.addForm(myform);
-			
-			resp.sendRedirect(directTo);
-		
+				
+				int year = Integer.parseInt(req.getParameter("StartYear"));
+				int month = Integer.parseInt(req.getParameter("StartMonth"));
+				int day = Integer.parseInt(req.getParameter("StartDay"));
+				if(!isValidateDate(year, month, day)) {
+					resp.sendRedirect("/JSPPages/Student_Form_C_Rehearsal_Excuse.jsp?error='invalidDate'");
+					return;
+				}
+				//public Date(int year, int month, int day)
+				Date date = new Date(year, month, day);
+				
+				//(int hour, int minute, Date date)
+				Time startTime = new Time(0,0,date);
+				Time endTime= new Time(23,59,date);
+				
+				//Form( netID,  reason,  startTime,  endTime, type)		
+				Form myform= new Form(""+req.getSession().getAttribute("user"),reason,startTime,endTime, "FormC" );
+	
+				DatabaseUtil.addForm(myform);
+				
+				resp.sendRedirect("/JSPPages/Student_Page.jsp?formSubmitted='true'");
+				return;
+			}
 		}
 		else
 		{
-			//Throw an alert that they didn't add a field
-			System.out.println("some fields were invalid");
+			resp.sendRedirect("/JSPPages/Student_Form_C_Rehearsal_Excuse.jsp?error='nullFields'");
+			return;
 		}
 		
 		
 	}
 
+
+	private boolean isValidateDate(int month, int day, int year) {
+		int monthDays[] = { 0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+		if (month <= 0 || month > 12)
+			return false;
+		int thisYear = Calendar.getInstance(TimeZone.getTimeZone("America/Chicago")).get(Calendar.YEAR);
+		if (year > thisYear + 1 || year < thisYear)
+			return false;
+		if (day > monthDays[month])
+			return false;
+		return true;
+	}
+	
 }

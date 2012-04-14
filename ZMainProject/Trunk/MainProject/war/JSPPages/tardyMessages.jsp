@@ -12,10 +12,9 @@
 	</head>
 
 	<body>
-<!--*********************Page Trail*****************************-->
-	
-	
-	
+		
+		
+		<!--*********************Page Trail*****************************-->
 		<a href="/JSPPages/logout.jsp" title="Logout and Return to Login Screen">Home</a> 
 		>
 		<a href="/JSPPages/Student_Page.jsp" title="Student Page">Student</a>
@@ -24,51 +23,56 @@
 		>
 		<a href="/JSPPages/tardyMessages.jsp" title="View Tardy Messages">View Tardy Messages</a>
 			
-	<%
-	String netID = (String) session.getAttribute("user");
-System.out.println("tardyMessage.jsp: 1");
-	String table = "";
-	if (netID == null || netID.equals("")) 
-	{
-		response.sendRedirect("/JSPPages/logout.jsp");
-	}
-System.out.println("tardyMessage.jsp: 2");
+		<%
+		String netID = (String) session.getAttribute("user");
+		User user = null;
 
-	boolean hasMessage = true;
-	User user = DatabaseUtil.getUser(netID);
-	if ((request.getParameter("id") == null || request.getParameter("id").isEmpty())) {
-		hasMessage = false;
-System.out.println("tardyMessage.jsp: 4");//TODO remove debugging SOPs
-	}
-System.out.println("tardyMessage.jsp: 5");
-	%>
+		String table = "";
+		if (netID == null || netID.equals("")) 
+		{
+			response.sendRedirect("/JSPPages/logout.jsp");
+			return;
+		}
+		else
+		{
+			user = DatabaseUtil.getUser(netID);
+			if (!user.getType().equalsIgnoreCase("Student")) {
+				if(user.getType().equalsIgnoreCase("TA"))
+					response.sendRedirect("/JSPPages/TA_Page.jsp");
+				else if(user.getType().equalsIgnoreCase("Director"))
+					response.sendRedirect("/JSPPages/Director_Page.jsp");
+				else
+					response.sendRedirect("/JSPPages/logout.jsp");
+			}
+		}
+		
+		boolean hasMessage = true;
+		
+		user = DatabaseUtil.getUser(netID);
+		if ((request.getParameter("id") == null || request.getParameter("id").isEmpty())) {
+			hasMessage = false;
+		}
+		%>
 			
 		You are logged in as <%= user.getFirstName() + " " + user.getLastName() %>
-		<a href="/JSPPages/logout.jsp">logout</a>		
+		<!--LOGOUT BUTTON-->
+		<input type="button" onclick="window.location = '/JSPPages/logout.jsp'" id="Logout" value="Logout"/>		
 
 		<!--HELP BUTTON-->	
-		<a href="">Help</a>
+		<input type="button" onclick="javascript: help();" id="Help" value="Help"/>	
 
 		<%
 		
-		System.out.println("tardyMessage.jsp: 6");
 		
 		if (hasMessage) {
-			System.out.println("tardyMessage.jsp: 7");
 
-			System.out.println("the long string is " + request.getParameter("id"));
 			long id = Long.parseLong((String) request.getParameter("id"));
-			System.out.println("the long long is   " + id);
-			System.out.println("tardyMessage.jsp: 7.5");
 
 			Tardy t = DatabaseUtil.getTardyByID(id);
 			
-			System.out.println("tardyMessage.jsp: 7.6");
 			PriorityQueue<Message> p = new PriorityQueue<Message>();
-			System.out.println("tardyMessage.jsp: 7.7");
 
 			t.getMessages();
-			System.out.println("tardyMessage.jsp: 8");
 			p.addAll(t.getMessages());
 			if (p.isEmpty()) {
 				table = "<br/><br/><b>There are currently no messages on this tardy.</b>";
@@ -93,11 +97,9 @@ System.out.println("tardyMessage.jsp: 5");
 
 						+"</td>"
 					+"</tr>";
-					System.out.println("tardyMessage.jsp: 9");
 
 			
 			while (!p.isEmpty()) {
-				System.out.println("tardyMessage.jsp: 10");
 				Message m = p.poll();
 				if (m != null) {
 					table+= 
@@ -113,7 +115,6 @@ System.out.println("tardyMessage.jsp: 5");
 			}
 			table+="</table>";
 		} else {
-			System.out.println("tardyMessage.jsp: 11");
 			table = "<br/><br/><b>No tardy selected.</b>";
 		}
 
@@ -125,7 +126,7 @@ System.out.println("tardyMessage.jsp: 5");
 	
 	<h3>
 		<!--button-->
-		<button type="Back">Back</button>
+		<input type="button" value="Back" name="Back" onclick="window.location = '/JSPPages//Student_View_Attendance.jsp'"/>
 	</h3>		
 	</body>
 	
