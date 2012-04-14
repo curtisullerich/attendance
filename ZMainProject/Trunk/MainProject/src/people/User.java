@@ -210,10 +210,6 @@ public class User {
 		return letterGrade;
 	}
 
-	public void calculateGrade() {
-		// big crazy function to calculate grade based off absences, tardies,
-		// and excuses.
-	}
 
 	/**
 	 * Returns a string with the status of this user for the given event
@@ -287,5 +283,16 @@ public class User {
 		// loop through all events and print the information in the format below
 		return "<tr><td>8/21</td><td>  </td><td>  </td><td>  </td><td>  </td><td><button onClick=\"sendMeToMyMessages();\">Messages</button></tr>";
 
+	}
+	
+	/**
+	 * if is sucessful --true.
+	 * else --false
+	 * @return
+	 */
+	boolean calculateGrade()
+	{
+		//TODO
+		return false;
 	}
 }
