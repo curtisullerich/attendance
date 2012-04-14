@@ -1,4 +1,7 @@
 package time;
+
+import java.util.Calendar;
+
 /**
  * 
  * @author Yifei Zhu
@@ -12,13 +15,10 @@ public class Date implements Comparable<Date>
 	
 	public Date(){
 		//default construct creates current date   
-        java.text.DateFormat curYear = new java.text.SimpleDateFormat("yyyy");
-        java.text.DateFormat curMonth = new java.text.SimpleDateFormat("MM");
-        java.text.DateFormat curDay = new java.text.SimpleDateFormat("dd");
-        java.util.Date date = new java.util.Date();
-        this.year = Integer.parseInt(curYear.format(date));
-        this.month = Integer.parseInt(curMonth.format(date));
-        this.day = Integer.parseInt(curDay.format(date));   
+		Calendar date = Calendar.getInstance();
+		this.month = date.get(Calendar.MONTH)+1;
+		this.year = date.get(Calendar.YEAR);
+		this.day = date.get(Calendar.DATE)-1; 
 	}
 	
 	public Date(int year, int month, int day)

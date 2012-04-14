@@ -30,16 +30,23 @@
 	%>
 	<script>
 		window.onload = function(){
+			if("<%= user.getRank() %>" == "|"){
+				var Row = document.getElementById("rankRow");
+				var Cells = Row.getElementsByTagName("td");
+				Cells[1].innerText = "None";
+			}
 			if(<%= request.getParameter("successfulSave")%> == "true"){
 				alert("User info successfully edited.");
 			}
 			else if(<%= request.getParameter("successfulSave")%> == "false"){
 				alert("Info update error. User info not changed.");	
 			}
-			if("<%= user.getRank() %>" == "|"){
-				var Row = document.getElementById("rankRow");
-				var Cells = Row.getElementsByTagName("td");
-				Cells[1].innerText = "None";
+			if(<%= request.getParameter("formSubmitted")%> == "true"){
+				alert("Form successfully submitted.")
+			}
+			else if(<%= request.getParameter("formSubmitted")%> == "false"){
+				alert("You have already submitted your maximum number of forms.\n\n"
+						+ "You can delete one on your \"View Submitted Forms\" page and add a new one in its place.");
 			}
 		}
 	

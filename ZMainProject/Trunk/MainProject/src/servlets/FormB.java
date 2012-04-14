@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.servlet.http.*;
 
@@ -22,56 +23,76 @@ public class FormB extends HttpServlet {
 
 			String netID = (String) req.getSession().getAttribute("user");
 			User current = DatabaseUtil.getUser(netID);
+			
+			int maxForms = 1;
+			if(current.getYear() > 1)
+				maxForms = 2;
+			
+			List<Form> existingForms = DatabaseUtil.getForms(netID);
+			if (existingForms.size() >= maxForms) {
+				resp.sendRedirect("/JSPPages/Student_Page.jsp?formSubmitted='false'");
+				return;
+			}
 
+			
 			String dept1, course1, sect1, building1, comment1, startrdio1;
 			int startMonth1, startDay1, startYear1, endMonth1, endDay1, endYear1, startHour1, startMinute1;
 			startMonth1 = startDay1 = startYear1 = endMonth1 = endDay1 = endYear1 = startHour1 = startMinute1 = 0;
 			String type1;
+			
 			// netID = req.getParameter("NetID");
-			dept1 = req.getParameter("dept1");
-			course1 = req.getParameter("course1");
-			sect1 = req.getParameter("sect1");
-			building1 = req.getParameter("building1");
-			type1 = req.getParameter("until1");
-			startrdio1 = req.getParameter("startrdio1");
+			dept1 = req.getParameter("dept");
+			course1 = req.getParameter("course");
+			sect1 = req.getParameter("sect");
+			building1 = req.getParameter("building");
+			type1 = req.getParameter("until");
+			startrdio1 = req.getParameter("startrdio");
+			
+			if (type1 == null) {
+				resp.sendRedirect("/JSPPages/Student_Form_B_Class_Conflict_Request.jsp?error='noRadioButton'");
+				return;
+			}
+			
 			// Doesn't have to be there
-			comment1 = req.getParameter("comments1");
-			if (dept1 != null && course1 != null && sect1 != null
-					&& building1 != null
-					&& req.getParameter("startDay1") != null
-					&& req.getParameter("startMonth1") != null
-					&& req.getParameter("startYear1") != null
-					&& req.getParameter("endDay1") != null
-					&& req.getParameter("endMonth1") != null
-					&& req.getParameter("endYear1") != null
-					&& req.getParameter("startHour1") != null
-					&& req.getParameter("startMinute1") != null
-					&& startrdio1 != null
-					&& type1 != null) {
+			comment1 = req.getParameter("comments");
+			
+			
+			if (dept1 != null && course1 != null && sect1 != null && building1 != null && req.getParameter("startDay") != null
+					&& req.getParameter("startMonth") != null && req.getParameter("startYear") != null && req.getParameter("endDay") != null
+					&& req.getParameter("endMonth") != null && req.getParameter("endYear") != null && req.getParameter("startHour") != null
+					&& req.getParameter("startMinute") != null && startrdio1 != null && type1 != null && dept1 != "" && course1 != "" && sect1 != "" && building1 != "" && req.getParameter("startDay") != ""
+					&& req.getParameter("startMonth") != "" && req.getParameter("startYear") != "" && req.getParameter("endDay") != ""
+					&& req.getParameter("endMonth") != "" && req.getParameter("endYear") != "" && req.getParameter("startHour") != "" 
+					&& req.getParameter("startMinute") != "" && startrdio1 != "" && type1 != "") {
 				
-						startMonth1 = Integer.parseInt(req
-								.getParameter("startMonth1"));
-						startDay1 = Integer.parseInt(req.getParameter("startDay1"));
-						startYear1 = Integer.parseInt(req
-								.getParameter("startYear1"));
+						startMonth1 = Integer.parseInt(req.getParameter("startMonth"));
+						startDay1 = Integer.parseInt(req.getParameter("startDay"));
+						startYear1 = Integer.parseInt(req.getParameter("startYear"));
 	
-						endMonth1 = Integer.parseInt(req.getParameter("endMonth1"));
-						endDay1 = Integer.parseInt(req.getParameter("endDay1"));
-						endYear1 = Integer.parseInt(req.getParameter("endYear1"));
+						endMonth1 = Integer.parseInt(req.getParameter("endMonth"));
+						endDay1 = Integer.parseInt(req.getParameter("endDay"));
+						endYear1 = Integer.parseInt(req.getParameter("endYear"));
 	
-						startHour1 = Integer.parseInt(req
-								.getParameter("startHour1"));
-						startMinute1 = Integer.parseInt(req
-								.getParameter("startMinute1"));
+						startHour1 = Integer.parseInt(req.getParameter("startHour"));
+						startMinute1 = Integer.parseInt(req.getParameter("startMinute"));
 
 				if (!isValidateDate(startMonth1, startDay1, startYear1)) {
-					resp.sendRedirect("/JSPPages/Student_Form_B_Class_Conflict_Request.jsp?error='true'");
+					resp.sendRedirect("/JSPPages/Student_Form_B_Class_Conflict_Request.jsp?error='invalidStartDate'");
+					return;
 				}
 				if (!isValidateDate(endMonth1, endDay1, endYear1)) {
-					resp.sendRedirect("/JSPPages/Student_Form_B_Class_Conflict_Request.jsp?error='true'");
+					resp.sendRedirect("/JSPPages/Student_Form_B_Class_Conflict_Request.jsp?error='invalidEndDate'");
+					return;
 				}
+				
+				if ((startYear1 > endYear1) || (startYear1 == endYear1 && ((startMonth1 > endMonth1) || (startMonth1 == endMonth1 && startDay1 > endDay1)))) {
+					resp.sendRedirect("/JSPPages/Student_Form_B_Class_Conflict_Request.jsp?error='endBeforeStart'");
+					return;
+				}
+				
 				if (!isValidateTime(startHour1, startMinute1)) {
-					resp.sendRedirect("/JSPPages/Student_Form_B_Class_Conflict_Request.jsp?error='true'");
+					resp.sendRedirect("/JSPPages/Student_Form_B_Class_Conflict_Request.jsp?error='invalidStartTime '");
+					return;
 				}
 				if (startHour1 < 12 && startrdio1.equalsIgnoreCase("PM"))
 					startHour1+=12;
@@ -97,112 +118,19 @@ public class FormB extends HttpServlet {
 					end = new Time(23, 59, new Date(endYear1, endMonth1,
 							endDay1));
 				} else {
-					resp.sendRedirect("/JSPPages/Student_Form_B_Class_Conflict_Request.jsp?error='true'");
+					resp.sendRedirect("/JSPPages/Student_Form_B_Class_Conflict_Request.jsp?error='noRadioButton'");
+					return;
 				}
 
 				Form form = new Form(current.getNetID(), comment1, start, end, dept1,
 						course1, sect1, building1, "FormB");
 				DatabaseUtil.addForm(form);
 
-				if (current.getYear() > 1) {
-					// Do it all again for the second one
-					String dept2, course2, sect2, building2, comment2, type2, startrdio2;
-					int startMonth2, startDay2, startYear2, endMonth2, endDay2, endYear2, startHour2, startMinute2;
-					startMonth2 = startDay2 = startYear2 = endMonth2 = endDay2 = endYear2 = startHour2 = startMinute2 = 0;
-					dept2 = req.getParameter("dept2");
-					course2 = req.getParameter("course2");
-					sect2 = req.getParameter("sect2");
-					building2 = req.getParameter("building2");
-					type2 = req.getParameter("until2");
-					startrdio2 = req.getParameter("startrdio2");
-					// Doesn't have to be there
-					comment2 = req.getParameter("comments2");
-					if (dept2 != null && course2 != null && sect2 != null
-							&& building2 != null
-							&& req.getParameter("startDay2") != null
-							&& req.getParameter("startMonth2") != null
-							&& req.getParameter("startYear2") != null
-							&& req.getParameter("endDay2") != null
-							&& req.getParameter("endMonth2") != null
-							&& req.getParameter("endYear2") != null
-							&& req.getParameter("startHour2") != null
-							&& req.getParameter("startMinute2") != null
-							&& startrdio2 != null
-							&& type2 != null) {
-						try {
-							startMonth2 = Integer.parseInt(req
-									.getParameter("startMonth2"));
-							startDay2 = Integer.parseInt(req
-									.getParameter("startDay2"));
-							startYear2 = Integer.parseInt(req
-									.getParameter("startYear2"));
-
-							endMonth2 = Integer.parseInt(req
-									.getParameter("endMonth2"));
-							endDay2 = Integer.parseInt(req
-									.getParameter("endDay2"));
-							endYear2 = Integer.parseInt(req
-									.getParameter("endYear2"));
-
-							startHour2 = Integer.parseInt(req
-									.getParameter("startHour2"));
-							startMinute2 = Integer.parseInt(req
-									.getParameter("startMinute2"));
-						}
-
-						catch (NumberFormatException e) {
-							resp.sendRedirect("/JSPPages/Student_Form_B_Class_Conflict_Request.jsp?error='true'");
-						}
-
-						if (!isValidateDate(startMonth2, startDay2, startYear2)) {
-							resp.sendRedirect("/JSPPages/Student_Form_B_Class_Conflict_Request.jsp?error='true'");
-						}
-						if (!isValidateDate(endMonth2, endDay2, endYear2)) {
-							resp.sendRedirect("/JSPPages/Student_Form_B_Class_Conflict_Request.jsp?error='true'");
-						}
-						if (!isValidateTime(startHour2, startMinute2)) {
-							resp.sendRedirect("/JSPPages/Student_Form_B_Class_Conflict_Request.jsp?error='true'");
-						}
-						if (startHour2 < 12 && startrdio2.equalsIgnoreCase("PM"))
-							startHour2+=12;
-						if (startHour2 == 12 && startrdio2.equalsIgnoreCase("AM"))
-							startHour2=0;
-						Time start2 = null;
-						Time end2 = null;
-						if (type2.equalsIgnoreCase("Until")) {
-							// 12:01 AM
-							start2 = new Time(0, 1, new Date(startYear2,
-									startMonth2, startDay2));
-							end2 = new Time(startHour2, startMinute2, new Date(
-									endYear2, endMonth2, endDay2));
-						} else if (type2.equalsIgnoreCase("Starting At")) {
-							start2 = new Time(
-									startHour2,
-									startMinute2,
-									new Date(startYear2, startMonth2, startDay2));
-							end2 = new Time(23, 59, new Date(endYear2,
-									endMonth2, endDay2));
-						} else if (type2.equalsIgnoreCase("Completely")) {
-							start2 = new Time(0, 1, new Date(endYear2,
-									endMonth2, endDay2));
-							end2 = new Time(23, 59, new Date(endYear2,
-									endMonth2, endDay2));
-						} else {
-							resp.sendRedirect("/JSPPages/Student_Form_B_Class_Conflict_Request.jsp?error='true'");
-						}
-
-						Form form2 = new Form(current.getNetID(), comment2,
-								start2, end2, dept2, course2, sect2, building2, "FormB");
-						DatabaseUtil.addForm(form2);
-					}
-
-				}
-
-				resp.sendRedirect("/JSPPages/Student_Page.jsp");
+				resp.sendRedirect("/JSPPages/Student_Page.jsp?formSubmitted='true'");
 				return;
 			}
 			//Outside the big if that checks if all the fields had stuff in them
-			resp.sendRedirect("/JSPPages/Student_Form_B_Class_Conflict_Request.jsp?error='true'");
+			resp.sendRedirect("/JSPPages/Student_Form_B_Class_Conflict_Request.jsp?error='nullFields'");
 		}
 	}
 
