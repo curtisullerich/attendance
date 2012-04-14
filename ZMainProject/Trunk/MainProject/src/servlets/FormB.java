@@ -47,23 +47,21 @@ public class FormB extends HttpServlet {
 			building1 = req.getParameter("building");
 			type1 = req.getParameter("until");
 			startrdio1 = req.getParameter("startrdio");
+			// Doesn't have to be there
+			comment1 = req.getParameter("comments");
 			
 			if (type1 == null) {
 				resp.sendRedirect("/JSPPages/Student_Form_B_Class_Conflict_Request.jsp?error='noRadioButton'");
 				return;
 			}
-			
-			// Doesn't have to be there
-			comment1 = req.getParameter("comments");
-			
-			
-			if (dept1 != null && course1 != null && sect1 != null && building1 != null && req.getParameter("startDay") != null
+	
+			else if (dept1 != null && course1 != null && sect1 != null && building1 != null && req.getParameter("startDay") != null
 					&& req.getParameter("startMonth") != null && req.getParameter("startYear") != null && req.getParameter("endDay") != null
 					&& req.getParameter("endMonth") != null && req.getParameter("endYear") != null && req.getParameter("startHour") != null
-					&& req.getParameter("startMinute") != null && startrdio1 != null && type1 != null && dept1 != "" && course1 != "" && sect1 != "" && building1 != "" && req.getParameter("startDay") != ""
+					&& req.getParameter("startMinute") != null && startrdio1 != null && dept1 != "" && course1 != "" && sect1 != "" && building1 != "" && req.getParameter("startDay") != ""
 					&& req.getParameter("startMonth") != "" && req.getParameter("startYear") != "" && req.getParameter("endDay") != ""
 					&& req.getParameter("endMonth") != "" && req.getParameter("endYear") != "" && req.getParameter("startHour") != "" 
-					&& req.getParameter("startMinute") != "" && startrdio1 != "" && type1 != "") {
+					&& req.getParameter("startMinute") != "" && startrdio1 != "") {
 				
 						startMonth1 = Integer.parseInt(req.getParameter("startMonth"));
 						startDay1 = Integer.parseInt(req.getParameter("startDay"));
