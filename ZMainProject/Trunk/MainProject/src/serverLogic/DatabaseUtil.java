@@ -45,6 +45,14 @@ public class DatabaseUtil
 		return result;
 	}
 	
+	public static void removeForm(Form f)
+	{
+		EntityManager em = EMFService.get().createEntityManager();
+		Form toRem = em.find(Form.class, f.getID());
+		em.remove(toRem);
+		em.close();
+	}
+	
 	/**
 	 * A Method to remove an object from the database
 	 * @param o the object to remove
