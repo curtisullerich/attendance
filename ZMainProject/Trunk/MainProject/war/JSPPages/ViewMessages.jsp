@@ -12,8 +12,6 @@
 	</head>
 
 	<body>
-		
-		
 		<!--*********************Page Trail*****************************-->
 		<a href="/JSPPages/logout.jsp" title="Logout and Return to Login Screen">Home</a> 
 		>
@@ -139,10 +137,16 @@
 				Message m = p.poll();
 				if (m != null) {
 					table+= 
-					"	<tr>"
-					+"		<td>"
-					+"			<b>" + (m.readBy(netID) ? "" : "(new) ") + m.getTime().toString(12) + "</b> from <b>" + m.getSenderNetID() + ":</b>"
-					+"		</td>"
+					"	<tr>";
+					
+					if (!m.readBy(netID)) {
+						table += "			<td bgcolor='#F5F5DC'><b>" + m.getTime().toString(12) + "</b> from <b>" + m.getSenderNetID() + ":</b>";
+					} else {
+						table += "			<td><b>" + m.getTime().toString(12) + "</b> from <b>" + m.getSenderNetID() + ":</b>";
+					}
+					
+					table+=
+					"		</td>"
 					+"		<td >"
 					+"			" + m.getContents()
 					+"		</td>"
@@ -159,7 +163,15 @@
 		System.err.println("ViewMessages: 8");
 
 		%>
-	
+		
+	<%
+		String itemInfo = "";
+		
+		itemInfo += "<p>Messages for " + parentType + "</p>";
+		itemInfo += HTMLUtil.messagePageHeader(parentType, parentID);
+		
+	%>	
+	<%= itemInfo %>
 	<%= table %>
 	
 	

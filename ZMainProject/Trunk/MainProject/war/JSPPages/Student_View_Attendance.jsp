@@ -64,7 +64,7 @@
 
 	<!--*********************info*****************************-->
 	<br/>
-	Current grade: <%= user.getLetterGrade() %>
+	Current grade: <%= user.getGrade() %>
 	
 	<!--*********************Student Table*****************************-->	
 	<br/>

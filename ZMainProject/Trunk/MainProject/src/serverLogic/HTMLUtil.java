@@ -18,5 +18,8 @@ public class HTMLUtil {
 		return ret;
 	}
 	
-	
+	public static String messagePageHeader(String parentType, String parentID) {
+		
+		
+	}
 }

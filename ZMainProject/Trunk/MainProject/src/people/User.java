@@ -175,6 +175,10 @@ public class User {
 		return year;
 	}
 
+	public void setYear(int year) {
+		this.year = year;
+	}
+
 	/**
 	 * Returns a string with the status of this user for the given event
 	 * 
