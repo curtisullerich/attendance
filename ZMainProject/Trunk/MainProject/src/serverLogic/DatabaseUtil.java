@@ -354,6 +354,23 @@ public class DatabaseUtil
 		return result;
 	}
 	
+	public static List<Form> getForms(String type, String netID) {
+		EntityManager em = EMFService.get().createEntityManager();
+		Query q = em.createQuery("select a from Form a where a.netID = :netID and a.type = :type");
+		q.setParameter("netID", netID);
+		q.setParameter("type", type);
+		List<Form> result;
+		try
+		{
+			result = (List<Form>) q.getResultList();
+		}
+		catch (NoResultException e)
+		{
+			result = null;
+		}
+		return result;
+	}
+	
 	public static void addForm(Form form)
 	{
 		EntityManager em = EMFService.get().createEntityManager();

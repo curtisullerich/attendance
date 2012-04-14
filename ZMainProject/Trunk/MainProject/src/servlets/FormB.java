@@ -28,7 +28,7 @@ public class FormB extends HttpServlet {
 			if(current.getYear() > 1)
 				maxForms = 2;
 			
-			List<Form> existingForms = DatabaseUtil.getForms(netID);
+			List<Form> existingForms = DatabaseUtil.getForms("FormB", netID);
 			if (existingForms.size() >= maxForms) {
 				resp.sendRedirect("/JSPPages/Student_Page.jsp?formSubmitted='false'");
 				return;
