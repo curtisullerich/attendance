@@ -75,8 +75,8 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	</servlet-mapping>
 	
 	<servlet-mapping>
-		<servlet-name>FormD</servlet-name>
-		<url-pattern>/formD</url-pattern>
+		<servlet-name>FormB</servlet-name>
+		<url-pattern>/formB</url-pattern>
 	</servlet-mapping>
 	
 	<servlet-mapping>
