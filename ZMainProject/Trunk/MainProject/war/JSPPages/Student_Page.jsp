@@ -61,6 +61,10 @@
 			}
 		}
 		
+		function viewForms()
+		{
+			window.location = "/JSPPages/Student_View_Submitted_Forms.jsp";
+		}
 		function help(){
 			alert("Helpful information about student page.")
 		}
