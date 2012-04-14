@@ -100,8 +100,8 @@ public class FormB extends HttpServlet {
 					resp.sendRedirect("/JSPPages/Student_Form_B_Class_Conflict_Request.jsp?error='true'");
 				}
 
-				Form form = new Form(current.getNetID(), comment1, start, end,
-						"FormB");
+				Form form = new Form(current.getNetID(), comment1, start, end, dept1,
+						course1, sect1, building1, "FormB");
 				DatabaseUtil.addForm(form);
 
 				if (current.getYear() > 1) {
@@ -192,13 +192,14 @@ public class FormB extends HttpServlet {
 						}
 
 						Form form2 = new Form(current.getNetID(), comment2,
-								start2, end2, "FormB");
+								start2, end2, dept2, course2, sect2, building2, "FormB");
 						DatabaseUtil.addForm(form2);
 					}
 
 				}
 
 				resp.sendRedirect("/JSPPages/Student_Page.jsp");
+				return;
 			}
 			//Outside the big if that checks if all the fields had stuff in them
 			resp.sendRedirect("/JSPPages/Student_Form_B_Class_Conflict_Request.jsp?error='true'");
