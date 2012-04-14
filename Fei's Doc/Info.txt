@@ -19,6 +19,7 @@ all the forms director need to view page jsp
 	-director view all student forms
 - Veiw_Student_Form
 - Veiw_Student_FormAC
+- Veiw_Student_FormD
 	-new student' specific form
 ---
 4/14
@@ -28,16 +29,6 @@ all the forms director need to view page jsp
 delete a form: window.reload(true);
 *************
 
+
 form D servlet, jsp
 login page, change to director page || student page
-
-TODO:
-FORMS:
-
-FORM A & C: 
-can enter the time my itself,
-
---feb shoudlent >28 || >29
-
---day month year
---date cant ealier than today

@@ -141,6 +141,43 @@
 		table2+="</table>";
 	%>
 
+	<%//for table
+	//FROM D *********************************************************************
+		
+		String table3 = "<table border='1'>";
+		
+		String headers3 ="<tr><h2>"+"form C";
+		headers3+="</h2>";
+		headers3+="</tr>";
+		headers3+= "<tr><td>netID</td><td>Name</td><td>Type of Form</td><td>Email To</td><td>Total Hours</td><td>Start Date</td><td>Reason</td>";
+
+		headers3+="</tr>";
+		table3+=headers3;
+				
+		for(Form f : forms)
+		{
+			if(f.getType().equals("FormD"))
+			{
+				
+			String row="<tr>";
+			//row+="<td>"+ f.getNetID()+"</td>";
+			row += "<td><b><a href='/JSPPages/Director_Student_View.jsp?student="+f.getNetID()+"'>"+f.getNetID()+"</a></b></td>";
+			row+="<td>"+DatabaseUtil.getUser(f.getNetID()).getFirstName()+" "+DatabaseUtil.getUser(f.getNetID()).getLastName()+"</td>";
+			row+="<td>"+ f.getType()+"</td>";
+			row+="<td>"+ f.getEmail()+"</td>";
+			row+="<td>"+ f.getHours()+"</td>";
+			
+			row+="<td>"+ f.getStartTime().toString(12)+"</td>";
+			row+="<td>"+f.getReason()+"</td>";
+			row += "<td><b><a href='/JSPPages/View_Student_FormD.jsp?viewForm="+f.getID()+"'>"+"View"+"</a></b></td>";
+
+			row +="</tr>";
+			table3+=row;
+			}
+		}
+		table3+="</table>";
+	%>
+
 	
 	<%//for filters
 		String filters = "";
@@ -148,7 +185,7 @@
 	
 </head>
 	<body>
-		<div style='height: 100%; width: 85%; border: 3px solid black; float: left; overflow:auto'><%= table %><%= table1 %><%= table2 %></div>
+		<div style='height: 100%; width: 100%; float: left; overflow:auto'><%= table %><%= table1 %><%= table2 %><%= table3 %></div>
 	</body>
 </html>
 
