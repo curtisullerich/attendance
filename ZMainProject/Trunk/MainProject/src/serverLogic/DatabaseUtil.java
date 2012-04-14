@@ -464,7 +464,7 @@ public class DatabaseUtil
 	 */
 	public static List<Form> getAllForms() {
 		EntityManager em = EMFService.get().createEntityManager();
-		Query q = em.createQuery("select m from Form m where m.netID = :netID");
+		Query q = em.createQuery("select m from Form m");
 		List<Form> forms = (List<Form>) q.getResultList();
 			
 		return forms;

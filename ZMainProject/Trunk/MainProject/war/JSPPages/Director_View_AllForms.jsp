@@ -2,13 +2,15 @@
 <%@ page import="people.*" %>
 <%@ page import="serverLogic.DatabaseUtil" %>
 <%@ page import="java.util.*" %>
+<%@ page import = "attendance.*" %>
+
 <%@ page import="forms.*" %>
 
 
+
 <html>
-	<head>
-		<title>@10Dance</title>
-	</head>
+
+<head>
 	<%
 	String netID = (String) session.getAttribute("user");
 	User user = null;
@@ -26,63 +28,70 @@
 		}
 	}
 	%>
-	<body>
-<!--*********************Page Trail*****************************-->
 
-	
-	<!--TODO: need to connected to specific page-->
-	<!--<h1>-->
-		<li>
-			<a href="http://www.iastate.edu" title="PageTrail_Home">Home</a> 
-			>
-			<a href="http://www.iastate.edu" title="PageTrail_Director">Director</a>
-			>
-			<a href="http://www.iastate.edu" title="AllForms">All Forms</a>
-		<!--HELP BUTTON-->	
-		<a class="addthis_button"><img
-        src="http://icons.iconarchive.com/icons/deleket/button/24/Button-Help-icon.png"
-        width="16" height="16" border="0" alt="Share" /></a>
-		</li>
-
-	</br>
-	<!--</h1>-->
-<!--*********************info*****************************-->
-
-	<h3>ALL THE FORMS</h3>
-	<!--*********************Student Table*****************************-->	
-
-	<div>
-		<table border="1">
-			<tr>
-				<th>Name</th>
-				<th>Type of Form</th>
-				<th>Start Date</th>
-		<!-- Course Info ::-->
-					<th>Department</th>
-					<th>Course</th>
-					<th>Section</th>
-					<th>Building</th>
-					<th>Start Date</th>
-					<th>End Date</th>
-					<th>Until..</th>
-				<th>Reason</th>
-			</tr>
-		<!-- get ppl from database ::-->	
-	
 	<%//for table
-		List<Form> forms = DatabaseUtil.getAllForms(netID);
-	%>
-			<tr><td>Tppd Wegter</td></td><td>Class Conflict</td> <td>8/31</td><td>Unknown</td><td>Yes</td></tr>
-			<tr></td><td>Brandon Maxwell</td><td>Rehearsal</td> <td>8/31</td><td>Unknown</td><td>NO</td></tr>
-		</table>
-	</div>
-
-		<!--********************* Button *****************************-->	
-
-	<h3>
-		<!--button-->
-		<button type="Back">Back</button>
-	</h3>		
-	</body>
+		List<Event> events = DatabaseUtil.getAllEvents();
+		List <Form> forms = DatabaseUtil.getAllForms();
+		
+		String table = "<table border='1'>";
+		
+		String headers = "<tr><td>netID</td><td>Name</td><td>Type of Form</td><td>Start Date</td><td>Department</td><td>Course</td><td>Section</td><td>Building</td><td>End Date</td><td>Until</td><td>Reason</td>";
 	
+	
+	//	for (Event event : events) {
+		//for(Form f: forms){
+	//		String date = event.getDate().toString();
+	//		String color = event.isPerformance() ? "blue" : "#009900";
+	//		headers += "<td bgcolor='"+color+"' nowrap><a href='/JSPPages/Director_View_Event.jsp?eventID='" +event.getId() +">" + date +"</a></td>";//TODOO this actually gets me the id, right?
+	//	}
+		
+		headers+="</tr>";
+		table+=headers;
+				
+		for(Form f : forms)
+		{
+			String row="<tr>";
+			//row+="<td>"+ f.getNetID()+"</td>";
+			row += "<td><b><a href='/JSPPages/Director_Student_View.jsp?student="+f.getNetID()+"'>"+f.getNetID()+"</a></b></td>";
+			
+			row+="<td>"+DatabaseUtil.getUser(f.getNetID()).getFirstName()+" "+DatabaseUtil.getUser(f.getNetID()).getLastName()+"</td>";
+			row+="<td>"+ f.getType()+"</td>";
+			row+="<td>"+ f.getStartTime().toString(12)+"</td>";
+			if(f.getType().equals("B"))
+			{
+				//TODO:
+			}
+			else
+			{
+			
+				row+="<td>"+"-"+"</td>";
+				row+="<td>"+"-"+"</td>";
+				row+="<td>"+"-"+"</td>";
+				row+="<td>"+"-"+"</td>";
+				row+="<td>"+"-"+"</td>";
+				row+="<td>"+"-"+"</td>";
+				row+="<td>"+"-"+"</td>";
+				
+			}
+			row+="<td>"+f.getReason()+"</td>";
+			row +="</tr>";
+			table+=row;
+		}
+		
+		table+="</table>";
+	%>
+	<%//for filters
+		String filters = "";
+		
+	%>
+	
+</head>
+	<body>
+
+		<div style='height: 100%; width: 10%; border: 3px solid black; float: left; overflow:auto'><%= filters %></div>
+		<div style='height: 100%; width: 85%; border: 3px solid black; float: left; overflow:auto'><%= table %></div>
+
+	</body>
 </html>
+
+
