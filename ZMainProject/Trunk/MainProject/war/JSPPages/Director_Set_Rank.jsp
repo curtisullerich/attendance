@@ -12,6 +12,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Direcor:Set Rank</title>
 
+<form method="post" action="/setRank" onsubmit=""
 	<%
 	String netID = (String) session.getAttribute("user");
 	User user = null;
@@ -57,6 +58,9 @@
 		
 		table+="</table>";
 	%>
+	
+	<button type="Submit" name = "Submit" type ="Submit">Submit</button>
+	
 
 	<%//for filters
 		String filters = "";
