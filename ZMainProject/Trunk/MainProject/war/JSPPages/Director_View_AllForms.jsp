@@ -55,6 +55,8 @@
 				row+="<td>"+ f.getStartTime().toString(12)+"</td>";
 				row+="<td>"+f.getReason()+"</td>";
 				row+="<td>"+f.getStatus()+"</td>";
+				row += "<td><b><a href='/JSPPages/View_Student_FormAC.jsp?viewForm="+f.getID()+"'>"+"View"+"</a></b></td>";
+
 				row +="</tr>";
 				table+=row;
 			}
@@ -130,6 +132,8 @@
 			row+="<td>"+ f.getStartTime().toString(12)+"</td>";
 		
 			row+="<td>"+f.getReason()+"</td>";
+			row += "<td><b><a href='/JSPPages/View_Student_FormAC.jsp?viewForm="+f.getID()+"'>"+"View"+"</a></b></td>";
+
 			row +="</tr>";
 			table2+=row;
 			}
@@ -144,8 +148,6 @@
 	
 </head>
 	<body>
-
-		<div style='height: 100%; width: 10%; border: 3px solid black; float: left; overflow:auto'><%= filters %></div>
 		<div style='height: 100%; width: 85%; border: 3px solid black; float: left; overflow:auto'><%= table %><%= table1 %><%= table2 %></div>
 	</body>
 </html>
