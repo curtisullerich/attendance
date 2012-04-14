@@ -80,6 +80,9 @@
 		<br/>
 		<input type ="submit" onClick="expandMessages();"  value = "New Messages(<%="somenumber"/* TODO get the number of new messages*/ %>) ">
 
+		<br/>
+		<input type ="submit" onClick="window.location = '/JSPPages/Director_View_AllForms.jsp';"  value = "View All Forms">
+		
 		<div id="messages">
 			<%
 			

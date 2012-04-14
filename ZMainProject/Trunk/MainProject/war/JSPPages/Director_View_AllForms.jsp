@@ -64,7 +64,7 @@
 					<th>Until..</th>
 				<th>Reason</th>
 			</tr>
-			
+		<!-- get ppl from database ::-->	
 			<tr><td>Tppd Wegter</td></td><td>Class Conflict</td> <td>8/31</td><td>Unknown</td><td>Yes</td></tr>
 			<tr></td><td>Brandon Maxwell</td><td>Rehearsal</td> <td>8/31</td><td>Unknown</td><td>NO</td></tr>
 		</table>
