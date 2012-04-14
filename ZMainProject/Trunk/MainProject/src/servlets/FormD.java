@@ -59,12 +59,13 @@ public class FormD extends HttpServlet
 					e.printStackTrace();
 				}
 				
-				resp.sendRedirect("/JSPPages/Student_Page.jsp");
-				
+				resp.sendRedirect("/JSPPages/Student_Page.jsp?formSubmitted='true'");
+				return;
 			}
 			else
 			{
-				//TODO now you fucked up
+				resp.sendRedirect("/JSPPages/Student_Form_D_TimeWorked.jsp?error='nullFields'");
+				return;
 			}
 		}
 		

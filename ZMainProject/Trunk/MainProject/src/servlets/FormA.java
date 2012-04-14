@@ -24,7 +24,7 @@ public class FormA extends HttpServlet
 	{
 		
 		String buttonPressed = req.getParameter("Submit");
-		String directTo="/JSPPages/Student_Page.jsp";
+		String directTo="/JSPPages/Student_Page.jsp?formSubmitted='true'";
 		
 		if (buttonPressed != null)
 		{
