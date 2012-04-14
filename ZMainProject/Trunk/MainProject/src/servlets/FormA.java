@@ -29,8 +29,15 @@ public class FormA extends HttpServlet
 		if (buttonPressed != null)
 		{
 			String reason = req.getParameter("Reason"); 
-			
 			//	public Date(int year, int month, int day)
+			
+			if ( req.getParameter("startDay") != null && req.getParameter("startMonth") != null && req.getParameter("startYear") != null && reason != null 
+					&& req.getParameter("startDay") != ""
+					&& req.getParameter("startMonth") != "" && req.getParameter("startYear") != "" && req.getParameter("endDay") != ""
+					&& req.getParameter("endMonth") != "" && req.getParameter("endYear") != "" && req.getParameter("startHour") != "" 
+					&& req.getParameter("startMinute") != "" && startrdio1 != "" && type1 != "") {
+				
+			
 			Date date = new Date(Integer.parseInt(req.getParameter("StartYear")),Integer.parseInt(req.getParameter("StartMonth")),Integer.parseInt(req.getParameter("StartDay")));
 			//			(int hour, int minute, Date date)
 			Time startTime = new Time(0,0,date);
@@ -42,13 +49,14 @@ public class FormA extends HttpServlet
 
 			DatabaseUtil.addForm(myform);
 			
-			resp.sendRedirect(directTo);
+			resp.sendRedirect("/JSPPages/Student_Page.jsp?formSubmitted='true'");
+
 		
 		}
 		else
 		{
-			//Throw an alert that they didn't add a field
-			System.out.println("some fields were invalid");
+			resp.sendRedirect("/JSPPages/Student_Form_A_Performance_Absence_Request.jsp?error='nullFields'");
+			return;
 		}
 		
 		

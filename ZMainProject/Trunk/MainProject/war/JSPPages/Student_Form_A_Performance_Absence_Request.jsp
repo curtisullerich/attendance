@@ -6,8 +6,49 @@
 <html>
 	<head>
 		<title>@10Dance</title>
+	</head>
+	<%
+	String netID = (String) session.getAttribute("user");
+	User user = null;
+	
+	if (netID == null || netID.equals("")) 
+	{
+		response.sendRedirect("/JSPPages/logout.jsp");
+		return;
+	}
+	else
+	{
+		user = DatabaseUtil.getUser(netID);
+		if (!user.getType().equalsIgnoreCase("Student")) {
+			if(user.getType().equalsIgnoreCase("TA")) {
+				response.sendRedirect("/JSPPages/TA_Page.jsp");
+				return;
+			}
+			else if(user.getType().equalsIgnoreCase("Director")) {
+				response.sendRedirect("/JSPPages/Director_Page.jsp");
+				return;
+			}
+			else
+				response.sendRedirect("/JSPPages/logout.jsp");
+				return;
+			}
+		}
+	}
+	%>
+	<script>
+	window.onload = function() {
+		if (<%= request.getParameter("error") != null%>)
+		{
+			if(<%= request.getParameter("error")%> == "invalidDate")
+				alert("The start date was invalid. Form not Submitted");
+			else if(<%= request.getParameter("error")%> == "noReason")
+				alert("You must submit a reason. Form not submitted.");
+		}
 		
-		<script>
+		function help(){
+			alert("Helpful information about student page.")
+		}
+		
 		function confirmData(){
 
 			if (document.getElementById("reason").value == "")
@@ -28,34 +69,6 @@
 			return true;
 		}
 		
-		</script>
-	</head>
-	<%
-	String netID = (String) session.getAttribute("user");
-	User user = null;
-	
-	if (netID == null || netID.equals("")) 
-	{
-		response.sendRedirect("/JSPPages/logout.jsp");
-		return;
-	}
-	else
-	{
-		user = DatabaseUtil.getUser(netID);
-		if (!user.getType().equalsIgnoreCase("Student")) {
-			if(user.getType().equalsIgnoreCase("TA"))
-				response.sendRedirect("/JSPPages/TA_Page.jsp");
-			else if(user.getType().equalsIgnoreCase("Director"))
-				response.sendRedirect("/JSPPages/Director_Page.jsp");
-			else
-				response.sendRedirect("/JSPPages/logout.jsp");
-		}
-	}
-	%>
-	<script>
-		function help(){
-			alert("Helpful information about student page.")
-		}
 	</script>
 	<body>
 	

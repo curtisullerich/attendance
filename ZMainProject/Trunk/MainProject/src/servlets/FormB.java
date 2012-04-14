@@ -131,6 +131,7 @@ public class FormB extends HttpServlet {
 			}
 			//Outside the big if that checks if all the fields had stuff in them
 			resp.sendRedirect("/JSPPages/Student_Form_B_Class_Conflict_Request.jsp?error='nullFields'");
+			return;
 		}
 	}
 
