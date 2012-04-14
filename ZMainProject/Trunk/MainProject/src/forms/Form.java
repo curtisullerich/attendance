@@ -102,6 +102,11 @@ public class Form {
 		this.status="pending";
 	}
 
+	
+	public String getID()
+	{
+		return ""+this.id;
+	}
 	public String getNetID() {
 		return netID;
 	}

@@ -2,8 +2,6 @@
 <%@ page import="people.*" %>
 <%@ page import="serverLogic.DatabaseUtil" %>
 <%@ page import="java.util.*" %>
-<%@ page import = "attendance.*" %>
-
 <%@ page import="forms.*" %>
 
 
@@ -40,25 +38,26 @@
 		String headers ="<tr><h2>"+"form A";
 		headers+="</h2>";
 		headers+="</tr>";
-		headers+= "<tr><td>netID</td><td>Name</td><td>Type of Form</td><td>Start Date</td><td>Reason</td>";
+		headers+= "<tr><td>netID</td><td>Name</td><td>Type of Form</td><td>Start Date</td><td>Reason</td><td>Status</td><td>View</td>";
 
 		headers+="</tr>";
 		table+=headers;
 				
 		for(Form f : forms)
 		{
-			String row="<tr>";
-			//row+="<td>"+ f.getNetID()+"</td>";
-			row += "<td><b><a href='/JSPPages/Director_Student_View.jsp?student="+f.getNetID()+"'>"+f.getNetID()+"</a></b></td>";
-			
-			row+="<td>"+DatabaseUtil.getUser(f.getNetID()).getFirstName()+" "+DatabaseUtil.getUser(f.getNetID()).getLastName()+"</td>";
-			row+="<td>"+ f.getType()+"</td>";
-			row+="<td>"+ f.getStartTime().toString(12)+"</td>";
 			if(f.getType().equals("A"))
 			{
-			row+="<td>"+f.getReason()+"</td>";
-			row +="</tr>";
-			table+=row;
+				String row="<tr>";
+				//row+="<td>"+ f.getNetID()+"</td>";
+				row += "<td><b><a href='/JSPPages/Director_Student_View.jsp?student="+f.getNetID()+"'>"+f.getNetID()+"</a></b></td>";
+				row+="<td>"+DatabaseUtil.getUser(f.getNetID()).getFirstName()+" "+DatabaseUtil.getUser(f.getNetID()).getLastName()+"</td>";
+				row+="<td>"+ f.getType()+"</td>";
+				row+="<td>"+ f.getStartTime().toString(12)+"</td>";
+				row+="<td>"+f.getReason()+"</td>";
+				row+="<td>"+f.getStatus()+"</td>";
+				row += "<td><b><a href='/JSPPages/View_Student_Form.jsp?currentForm="+f+"'>"+"view"+"</a></b></td>";
+				row +="</tr>";
+				table+=row;
 			}
 		}
 		table+="</table>";
@@ -78,18 +77,14 @@
 			
 	for(Form f : forms)
 	{
-		String row="<tr>";
-		//row+="<td>"+ f.getNetID()+"</td>";
-		row += "<td><b><a href='/JSPPages/Director_Student_View.jsp?student="+f.getNetID()+"'>"+f.getNetID()+"</a></b></td>";
-		
-		row+="<td>"+DatabaseUtil.getUser(f.getNetID()).getFirstName()+" "+DatabaseUtil.getUser(f.getNetID()).getLastName()+"</td>";
-		row+="<td>"+ f.getType()+"</td>";
 		if(f.getType().equals("B"))
 		{
-			//TODO:
-		}
-		else
-		{
+			String row="<tr>";
+			//row+="<td>"+ f.getNetID()+"</td>";
+			row += "<td><b><a href='/JSPPages/Director_Student_View.jsp?student="+f.getNetID()+"'>"+f.getNetID()+"</a></b></td>";
+			
+			row+="<td>"+DatabaseUtil.getUser(f.getNetID()).getFirstName()+" "+DatabaseUtil.getUser(f.getNetID()).getLastName()+"</td>";
+			row+="<td>"+ f.getType()+"</td>";
 			
 			row+="<td>"+f.getDeptartment()+"</td>";//department
 			row+="<td>"+f.getCourse()+"</td>";//course
@@ -99,10 +94,10 @@
 			row+="<td>"+f.getEndTime().toString(12)+"</td>";//end time
 		//	row+="<td>"+f.durationToString()+"</td>";//until + time							//TODO
 			row+="<td>"+f.getAdditionalInfo()+"</td>";//comment
+			row+="<td>"+f.getReason()+"</td>";
+			row +="</tr>";
+			table1+=row;
 		}
-		row+="<td>"+f.getReason()+"</td>";
-		row +="</tr>";
-		table1+=row;
 	}
 	
 	table1+="</table>";
@@ -123,15 +118,16 @@
 				
 		for(Form f : forms)
 		{
+			if(f.getType().equals("C"))
+			{
+				
 			String row="<tr>";
 			//row+="<td>"+ f.getNetID()+"</td>";
 			row += "<td><b><a href='/JSPPages/Director_Student_View.jsp?student="+f.getNetID()+"'>"+f.getNetID()+"</a></b></td>";
-			
 			row+="<td>"+DatabaseUtil.getUser(f.getNetID()).getFirstName()+" "+DatabaseUtil.getUser(f.getNetID()).getLastName()+"</td>";
 			row+="<td>"+ f.getType()+"</td>";
 			row+="<td>"+ f.getStartTime().toString(12)+"</td>";
-			if(f.getType().equals("C"))
-			{
+		
 			row+="<td>"+f.getReason()+"</td>";
 			row +="</tr>";
 			table2+=row;
