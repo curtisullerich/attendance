@@ -3,6 +3,7 @@
 <%@ page import="serverLogic.DatabaseUtil" %>
 <%@ page import="java.util.*" %>
 <%@ page import="attendance.*" %>
+<%@ page import="comparators.*" %>
 
 <html>
 
@@ -32,49 +33,47 @@
 		
 		String table = "<table border='1'>";
 		
-		String headers = "<tr><td>netID</td><td>Name</td><td>grade</td><td>Section</td><td>Year</td><td>Major</td><td>Rank</td><td nowrap>University ID</td>";
+		String headers = "<tr><td>Last Name</td><td>First Name</td><td>Section</td><td nowrap>University ID</td>";
 		
 		for (Event event : events) {
 			String date = event.getDate().toString();
 			String color = event.isPerformance() ? "blue" : "#009900";
-			headers += "<td bgcolor='"+color+"' nowrap><a href='/JSPPages/Director_View_Event.jsp?eventID='" +event.getId() +">" + date +"</a></td>";//TODOO this actually gets me the id, right?
+			headers += "<td bgcolor='"+color+"' nowrap><a href='/JSPPages/statusDistributionGraph.jsp?id=" +event.getId() +"&type=Event'>" + date +"</a></td>";//TODOO this actually gets me the id, right?
 		}
-		
+		headers+="<td>Grade</td>";		
 		headers+="</tr>";
 		table+=headers;
 		
 		List<User> students = DatabaseUtil.getStudents();
+		
+		PriorityQueue<User> pq = new PriorityQueue<User>(350, new UserComparator());
+		pq.addAll(students);
 		//TODO does they want to see absences, etc, here if they are excused? Probably not
-		for (User student : students) {
+
+		while (!pq.isEmpty()) {
+			User student = pq.poll();
 			String row = "<tr>";
-			row += "<td><b><a href='/JSPPages/Director_Student_View.jsp?student="+student.getNetID()+"'>"+student.getNetID()+"</a></b></td>";
-			row+= "<td>"+student.getFirstName() + " " + student.getLastName()+"</td>";
-			row+= "<td>"+student.getGrade()+"</td>";
+			row += "<td><b><a href='/JSPPages/Director_Student_View.jsp?student="+student.getNetID()+"'>"+student.getLastName()+"</a></b></td>";
+			row += "<td><b><a href='/JSPPages/Director_Student_View.jsp?student="+student.getNetID()+"'>"+student.getFirstName()+"</a></b></td>";
 			row+= "<td>"+student.getSection()+"</td>";
-			row+= "<td>"+student.getYear()+"</td>";
-			row+= "<td>"+student.getMajor()+"</td>";
-			row+= "<td>"+student.getRank()+"</td>";
 			row+= "<td>"+student.getUnivID()+"</td>";
-			
+
 			for (Event event : events) {
 				String status = student.eventStatus(event);
 				row += "<td nowrap>"+ (status.equals("present") ? "" : status) +"</td>";
 			}
+			row+= "<td>"+student.getGrade()+"</td>";
 			row +="</tr>";
 			table+=row;
 		}
 		table+="</table>";
 	%>
-	<%//for filters
-		String filters = "";
-		
-	%>
 	
 </head>
 	<body>
-
-		<div style='height: 100%; width: 10%; border: 3px solid black; float: left; overflow:auto'><%= filters %></div>
-		<div style='height: 100%; width: 85%; border: 3px solid black; float: left; overflow:auto'><%= table %></div>
+<%= table %>
+		<!-- div style='height: 100%; width: 10%; border: 3px solid black; float: left; overflow:auto'></div>
+		<div style='height: 100%; width: 85%; border: 3px solid black; float: left; overflow:auto'></div-->
 
 	</body>
 </html>

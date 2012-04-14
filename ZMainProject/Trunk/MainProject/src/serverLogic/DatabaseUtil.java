@@ -256,6 +256,60 @@ public class DatabaseUtil
 		}
 		return absences;
 	}
+
+	/**
+	 * 
+	 * 
+	 * @author Curtis Ullerich
+	 * @date 4/13/12
+	 * @param id
+	 * @return
+	 */
+	public static Event getEventByID(Long id) {
+		EntityManager em = EMFService.get().createEntityManager();
+		Query q = em.createQuery("select a from Event a where a.id = :id");
+		q.setParameter("id", id);
+		Event event;
+		try
+		{
+			event = (Event) q.getSingleResult();
+		}
+		catch (NoResultException e)
+		{
+			event = null;
+		}
+		em.close();
+		return event;
+		
+	}
+	
+	
+	/**
+	 * 
+	 * 
+	 * @author Curtis Ullerich
+	 * @date 4/13/12
+	 * @param id
+	 * @return
+	 */
+	public static User getUserByID(Long id) {
+		EntityManager em = EMFService.get().createEntityManager();
+		Query q = em.createQuery("select a from User a where a.id = :id");
+		q.setParameter("id", id);
+		User user;
+		try
+		{
+			user = (User) q.getSingleResult();
+		}
+		catch (NoResultException e)
+		{
+			user = null;
+		}
+		em.close();
+		return user;
+		
+	}
+	
 	
 	public static Absence getAbsenceByID(Long id)
 	{
@@ -420,6 +474,18 @@ public class DatabaseUtil
 		return result;
 	}
 
+	/**
+	 * Returns a List of all Users in the database.
+	 * @author Curtis Ullerich
+	 * @return
+	 */
+	public static List<User> getAllUsers() {
+		EntityManager em = EMFService.get().createEntityManager();
+		Query q = em.createQuery("select m from User m");
+		List<User> users = (List<User>) q.getResultList();
+		return users;
+	}
+
 	
 	/**
 	 * Returns a List of all Events in the database.
@@ -475,13 +541,33 @@ public class DatabaseUtil
 	
 
 	/**
+<<<<<<< .mine
+	 * Returns a List of all Events in the database.
+	 * @author Curtis Ullerich
+	 * @return
+	 */
+	public static List<Event> getAllEvents(String netID) {
+		EntityManager em = EMFService.get().createEntityManager();
+		Query q = em.createQuery("select m from Event m");
+		List<Event> events = (List<Event>) q.getResultList();
+			
+		return events;
+	}
+	
+	/**
+=======
+>>>>>>> .r549
 	 * Returns a List of all Forms in the database for this user.
 	 * @author Curtis Ullerich
 	 * @return
 	 */
 	public static List<Form> getAllForms() {
 		EntityManager em = EMFService.get().createEntityManager();
+<<<<<<< .mine
+		Query q = em.createQuery("select m from Form m where m.netID := netID");
+=======
 		Query q = em.createQuery("select m from Form m");
+>>>>>>> .r564
 		List<Form> forms = (List<Form>) q.getResultList();
 			
 		return forms;
