@@ -559,7 +559,6 @@ public class DatabaseUtil
 	
 
 	/**
-<<<<<<< .mine
 	 * Returns a List of all Events in the database.
 	 * @author Curtis Ullerich
 	 * @return
@@ -573,8 +572,6 @@ public class DatabaseUtil
 	}
 	
 	/**
-=======
->>>>>>> .r549
 	 * Returns a List of all Forms in the database for this user.
 	 * @author Curtis Ullerich
 	 * @return
