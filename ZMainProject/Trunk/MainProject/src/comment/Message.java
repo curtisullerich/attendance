@@ -25,17 +25,22 @@ public class Message implements Comparable<Message> {
 	private String recipientNetID;
 	private String contents;
 	private String time;
+	private String parentID;
+	private String parentType;
 	
 	@Basic
 	private String[] readers;
 
-	public Message(String from, String to, String contents) {
+	public Message(String from, String to, String contents, String parentID, String parentType) {
 		this.senderNetID = from;
 		this.recipientNetID = to;
 		this.contents = contents;
 		this.readers = new String[2];
 		readers[0] = senderNetID;
+		readers[1] = "";
 		this.time = new Time().toString(24);
+		this.setParentID(parentID);
+		this.setParentType(parentType);
 	}
 
 	public long getID() {
@@ -71,11 +76,19 @@ public class Message implements Comparable<Message> {
 		return recipientNetID;
 	}
 
+	public void setRecipientNetID(String netID) {
+		this.recipientNetID = netID;
+	}
+
+	
 	public String getSenderNetID() {
 		return senderNetID;
 	}
 	
 	public boolean readBy(String netID) {
+		if (readers [1] == null) readers[1] = "";//TODO probably remove
+		if (readers [0] == null) readers[0] = "";
+		
 		return (readers[0].equals(netID) || readers[1].equals("netID"));
 	}
 		
@@ -85,7 +98,24 @@ public class Message implements Comparable<Message> {
 		{
 			throw new NullPointerException("date is null");
 		}
-		return this.getTime().compareTo(o.getTime());
+		//Note. I reversed this on purpose, because messages should be sorted reverse-chronologically.
+		return o.time.compareTo(this.time);
+	}
+
+	public String getParentID() {
+		return parentID;
+	}
+
+	public void setParentID(String parentID) {
+		this.parentID = parentID;
+	}
+
+	public String getParentType() {
+		return parentType;
+	}
+
+	public void setParentType(String parentType) {
+		this.parentType = parentType;
 	}
 
 }

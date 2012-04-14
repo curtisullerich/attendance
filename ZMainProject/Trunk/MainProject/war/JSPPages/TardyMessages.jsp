@@ -78,25 +78,18 @@
 				table = "<br/><br/><b>There are currently no messages on this tardy.</b>";
 			}
 			table += 
-					"<table>\n"	
-							+ "<tr>"
-							+"<td>"	
-								+""
-							+"</td>"
-							+"<td>"
 
-							+"</td>"
-						+"</tr>"
-						
-						+ "<tr>"
-						+"<td>"	
-						+"			Write a new message:"
-						+"</td>"
-						+"<td>"
-						+"			<form action='/newMessage' method='post'><input name='tardyid' type='text' hidden='true' value='" + id +"'></input> <input type= 'text' name='New Message' id='New Message'/>	<button name='Submit' type='Submit'>Send</button></form>"
+					"<table >"	
+					+"Write a new message: "
+					+""
+					+"			<form action='/newMessage' method='post'><input name='parentID' type='text' hidden='true' value='" + id +"'></input> <input type= 'text' name='New Message' id='New Message'/><input hidden='true' type= 'text' name='parentType' id='parentType' value='Tardy'/>	<button name='Submit' type='Submit'>Send</button></form>";
 
-						+"</td>"
-					+"</tr>";
+// 						+ "<tr>"
+// 							+"<td>Write a new message:</td>"
+// 							+"<td>"
+// 							+"			<form action='/newMessage' method='post'><input name='tardyid' type='text' hidden='true' value='" + id +"'></input> <input type= 'text' name='New Message' id='New Message'/>	<button name='Submit' type='Submit'>Send</button></form>"
+// 							+"</td>"
+// 						+"</tr>";
 
 			
 			while (!p.isEmpty()) {
@@ -105,9 +98,9 @@
 					table+= 
 					"	<tr>"
 					+"		<td>"
-					+"			<b>" + (m.readBy(netID) ? "" : "(new) ") + m.getTime().toString(12) + " " + m.getSenderNetID() + "</b>"
+					+"			<b>" + (m.readBy(netID) ? "" : "(new) ") + m.getTime().toString(12) + "</b> from <b>" + m.getSenderNetID() + ":</b>"
 					+"		</td>"
-					+"		<td>"
+					+"		<td >"
 					+"			" + m.getContents()
 					+"		</td>"
 					+"	</tr>";
@@ -119,15 +112,15 @@
 		}
 
 		%>
-	
+	<br/>
+	<br/>
+	<br/>
 	
 	<%= table %>
 	
 	
-	<h3>
 		<!--button-->
 		<input type="button" value="Back" name="Back" onclick="window.location = '/JSPPages//Student_View_Attendance.jsp'"/>
-	</h3>		
 	</body>
 	
 </html>

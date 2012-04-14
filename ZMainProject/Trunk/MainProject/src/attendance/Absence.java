@@ -30,6 +30,8 @@ public class Absence{
 	
 	//The netID for the student this Absence belongs to
 	private String netID;
+
+
 	private String startTime;
 	private String endTime;
 	private String status;
@@ -108,6 +110,14 @@ public class Absence{
 		
 	public String getType(){
 		return type;
+	}
+	
+	public String getNetID() {
+		return netID;
+	}
+
+	public void setNetID(String netID) {
+		this.netID = netID;
 	}
 	
 	public void setType(String type){

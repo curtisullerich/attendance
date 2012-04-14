@@ -451,7 +451,7 @@ public class DatabaseUtil
 	
 	/**
 	 * 
-	 * Returns a list of all new Messages.
+	 * Returns a list of all new (unread) Messages for this user.
 	 * 
 	 * @author Curtis Ullerich
 	 * @date 4/12/12
@@ -462,10 +462,26 @@ public class DatabaseUtil
 		EntityManager em = EMFService.get().createEntityManager();
 		List<Message> result = new LinkedList<Message>();
 		Query q = em.createQuery("select m from Message m where m.recipientNetID = :netID");
+		q.setParameter("netID", netID);
 		List<Message> messages = (List<Message>) q.getResultList();
+		if (messages == null) System.err.println("MESSAGES WAS NULL");
+		ArrayList<Message> toRemove = new ArrayList<Message>();
+		for (Message m : messages) {
+			if (m== null) {
+				System.err.println("a message was null, bro");
+			} else {
+			if (m.readBy(netID)) {
+				toRemove.add(m);
+			}
+			}
+		}
+		messages.removeAll(toRemove);
 
 		return messages;
 	}
+	
+	
+	
 	
 	public static List<Message> getMessages(String[] messageIDs) {
 		EntityManager em = EMFService.get().createEntityManager();
@@ -555,21 +571,7 @@ public class DatabaseUtil
 			
 		return eocs;
 	}
-	
-
-	/**
-	 * Returns a List of all Events in the database.
-	 * @author Curtis Ullerich
-	 * @return
-	 */
-	public static List<Event> getAllEvents(String netID) {
-		EntityManager em = EMFService.get().createEntityManager();
-		Query q = em.createQuery("select m from Event m");
-		List<Event> events = (List<Event>) q.getResultList();
-			
-		return events;
-	}
-	
+		
 	/**
 	 * Returns a List of all Forms in the database for this user.
 	 * @author Curtis Ullerich
@@ -577,9 +579,7 @@ public class DatabaseUtil
 	 */
 	public static List<Form> getAllForms() {
 		EntityManager em = EMFService.get().createEntityManager();
-
 		Query q = em.createQuery("select m from Form m");
-
 		List<Form> forms = (List<Form>) q.getResultList();
 			
 		return forms;

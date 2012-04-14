@@ -1,6 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ page import="people.*" %>
 <%@ page import="serverLogic.DatabaseUtil" %>
+<%@ page import="attendance.*" %>
+<%@ page import="java.util.*" %>
+<%@ page import="comment.*" %>
 
 <html>
 	<head>
@@ -10,13 +13,10 @@
 	String netID = (String) session.getAttribute("user");
 	User user = null;
 	
-	if (netID == null || netID.equals("")) 
-	{
+	if (netID == null || netID.equals("")) {
 		response.sendRedirect("/JSPPages/logout.jsp");
 		return;
-	}
-	else
-	{
+	} else {
 		user = DatabaseUtil.getUser(netID);
 		if (!user.getType().equalsIgnoreCase("Director")) {
 			response.sendRedirect("/JSPPages/logout.jsp");
@@ -25,7 +25,7 @@
 	%>
 	<script>
 	
-		window.onload = function(){
+		window.onload = function() {
 			if(<%= request.getParameter("successfulSave")%> == "true"){
 				alert("User info successfully edited.");
 			}
@@ -44,11 +44,45 @@
 		}
 		
 		function expandMessages() {
-			
-			
+			var mess = document.getElementById("messages");
+			var butt = document.getElementById("messagesButton");
+			if (mess.hidden == true) {
+				mess.hidden = false;
+				butt.value = "Hide Messages";
+			} else {
+				mess.hidden = true;
+				butt.value = "Show New Messages";
+			}
 		}
 		
 	</script>
+			<%
+		String table = "<table>";
+			PriorityQueue<Message> p = new PriorityQueue<Message>();
+			p.addAll(DatabaseUtil.getNewMessages(netID));
+
+			if (p.isEmpty()) {
+				table = "<br/><br/><b>You have no new messages.</b>";
+			}
+			int numNew = p.size();
+			
+			while (!p.isEmpty()) {
+				Message m = p.poll();
+				if (m != null) {
+					
+					table+= 
+					"	<tr>"
+					+"		<td>"
+					+"			<b><a href='/JSPPages/" + m.getParentType() +"Messages.jsp?parentID=" + m.getParentID() + "'>" + (m.readBy(netID) ? "" : "(new) " ) + m.getTime().toString(12) + "</a></b> from <b>" + m.getSenderNetID() + ":</b>"
+					+"		</td>"
+					+"		<td >"
+					+"			" + m.getContents()
+					+"		</td>"
+					+"	</tr>";
+				}
+			}
+			table+="</table>";
+		%>
 	<body>
 <!--*********************Page Trail*****************************-->
 	
@@ -63,8 +97,6 @@
 		<a href="">Help</a>
 
 <!--*********************info*****************************-->
-
-	<!--*********************User Info*****************************-->	
 		<br/><br/>
 		<div>
 		<table>
@@ -78,21 +110,13 @@
 		<br/>
 		<input type ="submit" onClick="window.location = '/JSPPages/Director_Edit_Info.jsp';"  value = "Edit My Information">
 		<br/>
-		<input type ="submit" onClick="expandMessages();"  value = "New Messages(<%="somenumber"/* TODO get the number of new messages*/ %>) ">
+		<input type ="submit" id="messagesButton" onClick="expandMessages();"  value = "New Messages(<%=numNew%>) ">
 
 		<br/>
 		<input type ="submit" onClick="window.location = '/JSPPages/Director_View_AllForms.jsp';"  value = "View All Forms">
 		
-		<div id="messages">
-			<%
-			
-				DatabaseUtil.getNewMessages(user.getNetID());
-				
-			
-			%>
+		<div id="messages" hidden="true" style="border: 3px solid black; height: 200px; overflow: auto; background-color:#FFFDE0;">
+			<%= table %>
 		</div>		
-		
-		
 	</body>
-
 </html>

@@ -153,8 +153,6 @@ function makeGraph()
 		left = new String(i * 50 + 58) + "px";
 		
 		labels.innerHTML = labels.innerHTML + "<span style='position:absolute;top:-16px;left:"+ left+";background:"+ color+"'>" + label + "</span>";
-
-	
 	}	
 }
 
