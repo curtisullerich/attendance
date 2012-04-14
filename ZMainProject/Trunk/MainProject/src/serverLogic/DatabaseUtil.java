@@ -455,7 +455,22 @@ public class DatabaseUtil
 			
 		return eocs;
 	}
+	
 
+	/**
+	 * Returns a List of all Forms in the database for this user.
+	 * @author Curtis Ullerich
+	 * @return
+	 */
+	public static List<Form> getAllForms() {
+		EntityManager em = EMFService.get().createEntityManager();
+		Query q = em.createQuery("select m from Form m");
+		List<Form> forms = (List<Form>) q.getResultList();
+			
+		return forms;
+	}
+	//TODO same for all Forms
+	
 	
 //	public static File getFile(String attachedFile) {
 //		return null;
