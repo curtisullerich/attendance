@@ -29,22 +29,19 @@
 	}
 	%>
 
+
+<!-- FORM A -->
 	<%//for table
-		List<Event> events = DatabaseUtil.getAllEvents();
+	//FROM A *********************************************************************
 		List <Form> forms = DatabaseUtil.getAllForms();
 		
 		String table = "<table border='1'>";
 		
-		String headers = "<tr><td>netID</td><td>Name</td><td>Type of Form</td><td>Start Date</td><td>Department</td><td>Course</td><td>Section</td><td>Building</td><td>End Date</td><td>Until</td><td>Reason</td>";
-	
-	
-	//	for (Event event : events) {
-		//for(Form f: forms){
-	//		String date = event.getDate().toString();
-	//		String color = event.isPerformance() ? "blue" : "#009900";
-	//		headers += "<td bgcolor='"+color+"' nowrap><a href='/JSPPages/Director_View_Event.jsp?eventID='" +event.getId() +">" + date +"</a></td>";//TODOO this actually gets me the id, right?
-	//	}
-		
+		String headers ="<tr><h2>"+"form A";
+		headers+="</h2>";
+		headers+="</tr>";
+		headers+= "<tr><td>netID</td><td>Name</td><td>Type of Form</td><td>Start Date</td><td>Reason</td>";
+
 		headers+="</tr>";
 		table+=headers;
 				
@@ -57,40 +54,102 @@
 			row+="<td>"+DatabaseUtil.getUser(f.getNetID()).getFirstName()+" "+DatabaseUtil.getUser(f.getNetID()).getLastName()+"</td>";
 			row+="<td>"+ f.getType()+"</td>";
 			row+="<td>"+ f.getStartTime().toString(12)+"</td>";
-			if(f.getType().equals("B"))
+			if(f.getType().equals("A"))
 			{
-				//TODO:
-			}
-			else
-			{
-			
-				row+="<td>"+"-"+"</td>";
-				row+="<td>"+"-"+"</td>";
-				row+="<td>"+"-"+"</td>";
-				row+="<td>"+"-"+"</td>";
-				row+="<td>"+"-"+"</td>";
-				row+="<td>"+"-"+"</td>";
-				row+="<td>"+"-"+"</td>";
-				
-			}
 			row+="<td>"+f.getReason()+"</td>";
 			row +="</tr>";
 			table+=row;
+			}
 		}
-		
 		table+="</table>";
 	%>
+	
+	<%
+	//FROM B *********************************************************************
+	String table1 = "<table border='1'>";
+	forms = DatabaseUtil.getAllForms();
+	String headers1 ="<tr><h2>"+"form B";
+	headers1+="</h2>";
+	headers1+="</tr>";
+	headers1+= "<tr><td>netID</td><td>Name</td><td>Type of Form</td><td>Department</td><td>Course</td><td>Section</td><td>Building</td><td>Start Date</td><td>End Date</td><td>Until</td><td>Time...??</td><td>Comment</td>";
+
+	headers1+="</tr>";
+	table1+=headers1;
+			
+	for(Form f : forms)
+	{
+		String row="<tr>";
+		//row+="<td>"+ f.getNetID()+"</td>";
+		row += "<td><b><a href='/JSPPages/Director_Student_View.jsp?student="+f.getNetID()+"'>"+f.getNetID()+"</a></b></td>";
+		
+		row+="<td>"+DatabaseUtil.getUser(f.getNetID()).getFirstName()+" "+DatabaseUtil.getUser(f.getNetID()).getLastName()+"</td>";
+		row+="<td>"+ f.getType()+"</td>";
+		if(f.getType().equals("B"))
+		{
+			//TODO:
+		}
+		else
+		{
+			
+			row+="<td>"+f.getDeptartment()+"</td>";//department
+			row+="<td>"+f.getCourse()+"</td>";//course
+			row+="<td>"+f.getSection()+"</td>";//section
+			row+="<td>"+f.getBuilding()+"</td>";//building
+			row+="<td>"+f.getStartTime().toString(12)+"</td>";//start time
+			row+="<td>"+f.getEndTime().toString(12)+"</td>";//end time
+		//	row+="<td>"+f.durationToString()+"</td>";//until + time							//TODO
+			row+="<td>"+f.getAdditionalInfo()+"</td>";//comment
+		}
+		row+="<td>"+f.getReason()+"</td>";
+		row +="</tr>";
+		table1+=row;
+	}
+	
+	table1+="</table>";
+	%>
+	
+		<%//for table
+	//FROM C *********************************************************************
+		
+		String table2 = "<table border='1'>";
+		
+		String headers2 ="<tr><h2>"+"form C";
+		headers2+="</h2>";
+		headers2+="</tr>";
+		headers2+= "<tr><td>netID</td><td>Name</td><td>Type of Form</td><td>Start Date</td><td>Reason</td>";
+
+		headers2+="</tr>";
+		table2+=headers2;
+				
+		for(Form f : forms)
+		{
+			String row="<tr>";
+			//row+="<td>"+ f.getNetID()+"</td>";
+			row += "<td><b><a href='/JSPPages/Director_Student_View.jsp?student="+f.getNetID()+"'>"+f.getNetID()+"</a></b></td>";
+			
+			row+="<td>"+DatabaseUtil.getUser(f.getNetID()).getFirstName()+" "+DatabaseUtil.getUser(f.getNetID()).getLastName()+"</td>";
+			row+="<td>"+ f.getType()+"</td>";
+			row+="<td>"+ f.getStartTime().toString(12)+"</td>";
+			if(f.getType().equals("C"))
+			{
+			row+="<td>"+f.getReason()+"</td>";
+			row +="</tr>";
+			table2+=row;
+			}
+		}
+		table2+="</table>";
+	%>
+
+	
 	<%//for filters
 		String filters = "";
-		
 	%>
 	
 </head>
 	<body>
 
 		<div style='height: 100%; width: 10%; border: 3px solid black; float: left; overflow:auto'><%= filters %></div>
-		<div style='height: 100%; width: 85%; border: 3px solid black; float: left; overflow:auto'><%= table %></div>
-
+		<div style='height: 100%; width: 85%; border: 3px solid black; float: left; overflow:auto'><%= table %><%= table1 %><%= table2 %></div>
 	</body>
 </html>
 
