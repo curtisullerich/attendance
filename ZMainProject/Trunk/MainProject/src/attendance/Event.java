@@ -84,7 +84,7 @@ public class Event implements Comparable<Event> {
 	}
 
 	public void setType(String type) {
-		if (type.equalsIgnoreCase("performance"))
+		if (type.equalsIgnoreCase("storedperformance"))
 			this.type = "performance";
 		else
 			this.type = "rehearsal";
