@@ -8,10 +8,6 @@
 
 *add page to view submitted forms - student
 
-*form validation
-
-*front page message box
-
 *event viewer
 
 *director constructor and destructor control
@@ -21,4 +17,4 @@
 
 *graph links
 
-*add every event to view attendance
+*add every event to view attendance??
