@@ -68,6 +68,7 @@
 			AttendanceReport myReport = user.getAttendanceReport();
 			List<Form> forms = myReport.sortFormsDescending(new FormTimeComp());
 		%>
+		<br/>
 		Number of Forms Submitted: <%=forms.size()%>
 		<br/>
 		<br/>
@@ -100,8 +101,9 @@
 		
 		<%= insert %>
 		
-		
-		
+		<br/>
+		<input type="button" value="Back" name="Back" onclick="window.location = '/JSPPages/Student_Page.jsp'"/>
+
 	</body>
 
 </html>

@@ -31,13 +31,13 @@ public class FormD extends HttpServlet
 			String Details = req.getParameter("Details");
 			
 			if (Email != null && AmountWorked != null && Details != null && Email != "" && AmountWorked != "" && Details != "" 
-					&& req.getParameter("startDay") != null && req.getParameter("startMonth") != null && req.getParameter("startYear") != null   
-					&& req.getParameter("startDay") != "" && req.getParameter("startMonth") != "" && req.getParameter("startYear") != "" )
+					&& req.getParameter("StartDay") != null && req.getParameter("StartMonth") != null && req.getParameter("StartYear") != null   
+					&& req.getParameter("StartDay") != "" && req.getParameter("StartMonth") != "" && req.getParameter("StartYear") != "" )
 			{
 				int year = Integer.parseInt(req.getParameter("StartYear"));
 				int month = Integer.parseInt(req.getParameter("StartMonth"));
 				int day = Integer.parseInt(req.getParameter("StartDay"));
-				if(!isValidateDate(year, month, day)) {
+				if(!isValidateDate(month, day, year)) {
 					resp.sendRedirect("/JSPPages/Student_Form_A_Performance_Absence_Request.jsp?error='invalidDate'");
 					return;
 				}
