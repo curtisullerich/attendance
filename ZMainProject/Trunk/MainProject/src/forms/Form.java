@@ -30,7 +30,7 @@ public class Form {
 	private String reason;
 	private String startTime;
 	private String endTime;
-	private String additionalInfo;
+	//private String additionalInfo;
 	
 	//Strings to be used by Form B
 	private String dept;
@@ -91,14 +91,13 @@ public class Form {
 		this.building = building;
 	}
 	public Form(String netID, String reason, Time startTime, Time endTime,
-			String type, File attachedFile, String additionalInfo) {
+			String type, File attachedFile) {
 		this.netID = netID;
 		this.startTime = startTime.toString(24);
 		this.endTime = endTime.toString(24);
 		this.reason = reason;
 		this.type = type;
 		//setFile(attachedFile);
-		this.additionalInfo = additionalInfo;
 		this.status="pending";
 	}
 
@@ -153,14 +152,6 @@ public class Form {
 
 	public void setType(String type) {
 		this.type = type;
-	}
-	
-	public String getAdditionalInfo() {
-		return additionalInfo;
-	}
-
-	public void setAdditionalInfo(String additionalInfo) {
-		this.additionalInfo = additionalInfo;
 	}
 	
 	public String toString()
