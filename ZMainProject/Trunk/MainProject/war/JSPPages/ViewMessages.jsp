@@ -3,7 +3,7 @@
 <%@ page import="attendance.*" %>
 <%@ page import="time.*" %>
 <%@ page import="comment.*" %>
-<%@ page import="serverLogic.DatabaseUtil" %>
+<%@ page import="serverLogic.*" %>
 <%@ page import="java.util.*" %>
 
 <html>
@@ -13,19 +13,13 @@
 
 	<body>
 		<!--*********************Page Trail*****************************-->
-		<a href="/JSPPages/logout.jsp" title="Logout and Return to Login Screen">Home</a> 
-		>
-		<a href="/JSPPages/Student_Page.jsp" title="Student Page">Student</a>
-		>
-		<a href="/JSPPages/Student_View_Attendance.jsp" title="View Student Attendance">View Student Attendance</a>
-		>
-		<a href="/JSPPages/ViewMessages.jsp" title="View Messages">View Messages</a>
 			
 		<%
 		String netID = (String) session.getAttribute("user");
 		User user = null;
 		System.err.println("ViewMessages: 1");
 		String table = "";
+		String pagetrail = "";
 		if (netID == null || netID.equals("")) 
 		{
 			response.sendRedirect("/JSPPages/logout.jsp");
@@ -35,17 +29,38 @@
 		else
 		{
 			user = DatabaseUtil.getUser(netID);
-// 			if (!user.getType().equalsIgnoreCase("Student")) {
-// 				if(user.getType().equalsIgnoreCase("TA"))
-// 					response.sendRedirect("/JSPPages/TA_Page.jsp");
-// 				else if(user.getType().equalsIgnoreCase("Director"))
-// 					response.sendRedirect("/JSPPages/Director_Page.jsp");
-// 				else
-// 					response.sendRedirect("/JSPPages/logout.jsp");
-// 			}
-			System.err.println("ViewMessages: 3");
-			//TODO if this is a Student, check that the ID matches an item that belongs to him or her. If this is a director, allow anything.
+			if(user.getType().equalsIgnoreCase("TA")) {
+				response.sendRedirect("/JSPPages/TA_Page.jsp");
+			} else if (user.getType().equalsIgnoreCase("Director")){
+				pagetrail = "<a href='/JSPPages/logout.jsp' title='Logout and Return to Login Screen'>Home</a> "
+						+"				>"
+						+"				<a href='/JSPPages/Director_Page.jsp' title='Director Page'>Director</a>"
+						+"				>"
+						+"				<a href='/JSPPages/Director_View_Student_Attendance.jsp' title='View a Student's Attendance'>View a Student's Attendance</a>"
+						+"				>"
+						+"				<a href='/JSPPages/ViewMessages.jsp' title='View Messages'>View Messages</a>";
+			} else if (user.getType().equalsIgnoreCase("Student")){
+				
+				pagetrail = "<a href='/JSPPages/logout.jsp' title='Logout and Return to Login Screen'>Home</a> "
+						+"				>"
+						+"				<a href='/JSPPages/Student_Page.jsp' title='Student Page'>Student</a>"
+						+"				>"
+						+"				<a href='/JSPPages/Student_View_Attendance.jsp' title='View Student Attendance'>View Student Attendance</a>"
+						+"				>"
+						+"				<a href='/JSPPages/ViewMessages.jsp' title='View Messages'>View Messages</a>";
+
+			} else {
+				response.sendRedirect("/JSPPages/logout.jsp");
+				
+			}
+				System.err.println("ViewMessages: 3");
+						//TODO if this is a Student, check that the ID matches an item that belongs to him or her. If this is a director, allow anything.
 		}
+		
+		%>
+		<%= pagetrail %>
+		<%
+		
 		
 		boolean hasMessage = true;
 		
@@ -166,8 +181,6 @@
 		
 	<%
 		String itemInfo = "";
-		
-		itemInfo += "<p>Messages for " + parentType + "</p>";
 		itemInfo += HTMLUtil.messagePageHeader(parentType, parentID);
 		
 	%>	
