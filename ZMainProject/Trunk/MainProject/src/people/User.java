@@ -34,7 +34,6 @@ public class User {
 	private String section;
 	private int year;
 	private String rank;
-	private double grade;
 
 	public String toHTML() {
 		String ret = "";
@@ -57,12 +56,11 @@ public class User {
 		this.section = section;
 		this.year = year;
 		this.rank = "|";
-		this.grade = 100.00;
 	}
 
 	public String toString() {
 		return netID + " " + firstName + " " + lastName + " " + univID + " "
-				+ major + " " + section + " " + year + " " + rank + " " + grade;
+				+ major + " " + section + " " + year + " " + rank + " " ;
 	}
 	
 	public String toStringTA() {
@@ -173,43 +171,9 @@ public class User {
 		this.hashedPassword = hashedPassword;
 	}
 
-	public void setGrade(double grade) {
-		this.grade = grade;
-	}
-
-	public double getGrade() {
-		return grade;
-	}
-
 	public int getYear() {
 		return year;
 	}
-
-	public void setYear(int year) {
-		this.year = year;
-	}
-
-	public String getLetterGrade() {
-		String letterGrade;
-		if (grade >= 90.00)
-			letterGrade = "A";
-		else if (grade >= 80.00)
-			letterGrade = "B";
-		else if (grade >= 70.00)
-			letterGrade = "C";
-		else if (grade >= 60.00)
-			letterGrade = "D";
-		else
-			letterGrade = "F";
-
-		if (grade % 10 > (20.0 / 3.0) && grade < 90.00)
-			letterGrade += "+";
-		else if (grade % 10 < (10.0 / 3.0) && grade < 100.00)
-			letterGrade += "-";
-
-		return letterGrade;
-	}
-
 
 	/**
 	 * Returns a string with the status of this user for the given event
@@ -286,13 +250,88 @@ public class User {
 	}
 	
 	/**
-	 * if is sucessful --true.
-	 * else --false
-	 * @return
+	 * @author Yifei Zhu
+	 * reh.tardy=1
+	 * per.tardy=2
+	 * reh.absence =3
+	 * per.absence = 6
+	 * per.reh.absence`	=3
+	 * 
+	 * @return return the letter grade
 	 */
-	boolean calculateGrade()
+	public String getGrade()
 	{
-		//TODO
-		return false;
+		int count=0;
+		List<Tardy> tardys=this.getTardies();
+		for(Tardy t : tardys)
+		{
+			//rehearsal
+			if(!t.getStatus().equals("excuse"))
+			{
+				if(t.getType().equals("rehearsal"))
+				{
+					count+=1;
+				}
+				else if(t.getType().equals("performance"))
+				{
+					count+=2;
+				}
+			}
+		}
+		List<Absence> absences = this.getAbsences();
+		//absences
+		for(Absence a : absences)
+		{
+			if(!a.getStatus().equals("excuse"))
+			{
+				if(a.getType().equals("rehearsal"))
+				{
+					count+=3;
+				}
+				if(a.getType().equals("performance"))
+				{
+					count+=6;
+				}
+			}
+		}
+		return getLetterGrade(count);
+	}
+	
+	/**
+	 * A  : 0
+	 * A- : 1
+	 * 
+	 * 
+	 * @author Yifei Zhu
+	 * Base on the count, return letter grade 
+	 * @param count  
+	 * @return -- return letter grade
+	 */
+	String getLetterGrade(int count)
+	{
+		if(count==0)
+			return "A";
+		else if(count ==1)
+			return "A-";
+		else if(count==2)
+			return "B+";
+		else if(count==3)
+			return "B";
+		else if(count==4)
+			return "B-";
+		else if(count==5)
+			return "C+";
+		else if(count==6)
+			return "C";
+		else if(count==7)
+			return "C-";
+		else if(count==8)
+			return "D+";
+		else if(count==9)
+			return "D";
+		else if(count==10)
+			return "D-";
+		else 
+			return "F";
 	}
 }
