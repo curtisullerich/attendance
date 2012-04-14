@@ -47,6 +47,18 @@ public class Message implements Comparable<Message> {
 		
 		return this.id;
 	}
+
+	/**
+	 * @author Curtis Ullerich
+	 * @date 4/14/12
+	 */
+	public void copyAllFrom(Message other) {//TODO is everything copied?
+		this.senderNetID = other.senderNetID;
+		this.recipientNetID = other.recipientNetID;
+		this.contents = other.contents;
+		this.readers = other.readers;
+		this.time = other.time;
+	}
 	
 	public String getSender() {
 		return senderNetID;
@@ -88,7 +100,7 @@ public class Message implements Comparable<Message> {
 		if (readers [1] == null) readers[1] = "";//TODO probably remove
 		if (readers [0] == null) readers[0] = "";
 		
-		return (readers[0].equals(netID) || readers[1].equals("netID"));
+		return (readers[0].equals(netID) || readers[1].equals(netID));
 	}
 
 	/**

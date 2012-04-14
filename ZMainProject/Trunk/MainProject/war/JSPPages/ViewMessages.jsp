@@ -147,8 +147,10 @@
 					+"			" + m.getContents()
 					+"		</td>"
 					+"	</tr>";
+					m.setReadBy(netID);
+					DatabaseUtil.refreshMessage(m);
+					
 				}
-				m.setReadBy(netID);
 			}
 			table+="</table>";
 		} else {

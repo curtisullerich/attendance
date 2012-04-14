@@ -540,6 +540,14 @@ public class DatabaseUtil
 		}
 		return result;
 	}
+	
+	public static void refreshMessage(Message m) {
+		EntityManager em = EMFService.get().createEntityManager();
+		Message databaseMessage = em.find(Message.class, m.getID());
+		databaseMessage.copyAllFrom(m);
+		em.persist(databaseMessage);
+		em.close();
+	}
 
 	/**
 	 * Returns a List of all Users in the database.
