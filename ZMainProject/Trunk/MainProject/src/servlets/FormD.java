@@ -30,8 +30,8 @@ public class FormD extends HttpServlet
 			
 			if (Email != null && AmountWorked != null && Details != null)
 			{
-				Date date = new Date(Integer.parseInt(req.getParameter("Year")), Integer.parseInt(req.getParameter("Month")),
-						Integer.parseInt(req.getParameter("Day")));
+				Date date = new Date(Integer.parseInt(req.getParameter("StartYear")), Integer.parseInt(req.getParameter("StartMonth")),
+						Integer.parseInt(req.getParameter("StartDay")));
 				Time time = new Time(0, 0, date);
 				User guy = DatabaseUtil.getUser(""+req.getSession().getAttribute("user"));
 				Form form = new Form(guy.getNetID(), Details, time, time, "FormD");
