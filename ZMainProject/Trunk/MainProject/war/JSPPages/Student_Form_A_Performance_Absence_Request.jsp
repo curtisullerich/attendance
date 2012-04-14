@@ -1,10 +1,34 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ page import="people.*" %>
 <%@ page import="serverLogic.DatabaseUtil" %>
+<%@ page import="java.util.Calendar" %>
 
 <html>
 	<head>
 		<title>@10Dance</title>
+		
+		<script>
+		function confirmData(){
+
+			if (document.getElementById("reason").value == "")
+			{
+				alert("You need to supply a reason for this absence request.");
+				return false;
+			}
+
+			var monthDays = [0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+			var d = new Date();
+			var year = d.getFullYear();
+			
+			if (monthDays[document.getElementById("startMonth").value] < document.getElementById("startDay").value)
+			{
+				alert("Invalid day for the current starting month");
+				return false;
+			}
+			return true;
+		}
+		
+		</script>
 	</head>
 	<%
 	String netID = (String) session.getAttribute("user");
@@ -57,11 +81,16 @@
 
 <!--==================================================================================================================-->		
 
-
+<%
+int month = Calendar.getInstance().get(Calendar.MONTH) + 1;
+//No idea why the day is one too many
+int day = Calendar.getInstance().get(Calendar.DATE) - 1;
+int year = Calendar.getInstance().get(Calendar.YEAR);
+%>
 <div id="right">
 	
 	<table style="text-align:left">
-		<form method="post" action="/formA">
+		<form method="post" action="/formA" onsubmit="return confirmData();">
 			<p><h1>Performance Absence Request Form | FORM A</h1></p>
 
 <p>Note: This form includes all performances through any post-season activity <br/>
@@ -78,16 +107,16 @@ ending January 9, 2013, and it must be submitted by 4:30 p.m. on Monday, August<
 			<tr>
 				<td>Date:</td>
 				<td><div id='startDate'>
-						<input id='startMonth' size='5' type='number' name='StartMonth' min='01' max='12' value='9'>(MM)</input>
-						<input id='startDay' size='5' type='number' name='StartDay' min='01' max='31' step='1' value='1'>(DD)</input>
-						<input id='startYear' size='5' type='number' name='StartYear' min='2000' max='2999' step='1' value='2012'/>(YYYY)<!-- TODO make this work with current date instead of hard coding -->
+						<input id='startMonth' size='5' type='number' name='StartMonth' min='01' max='12' value='<%=month%>'>(MM)</input>
+						<input id='startDay' size='5' type='number' name='StartDay' min='01' max='31' step='1' value='<%=day%>'>(DD)</input>
+						<input id='startYear' size='5' type='number' name='StartYear' min='<%=year%>' max='<%=year + 1 %>' step='1' value='<%=year%>'/>(YYYY)<!-- TODO make this work with current date instead of hard coding -->
 					</div>
 				</td>
 			</tr>
 			
 			<tr>
 				<td>Reasons:</td>
-				<td><textarea rows="6" cols="18" name="Reason" wrap="physical"></textarea></td>
+				<td><textarea rows="6" cols="18" id="reason" name="Reason" wrap="physical"></textarea></td>
 			</tr>
 
 			<tr>
