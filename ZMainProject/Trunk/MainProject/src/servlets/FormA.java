@@ -36,13 +36,13 @@ public class FormA extends HttpServlet
 				return;
 			}
 			
-			else if ( req.getParameter("startDay") != null && req.getParameter("startMonth") != null && req.getParameter("startYear") != null   
-					&& req.getParameter("startDay") != "" && req.getParameter("startMonth") != "" && req.getParameter("startYear") != "" ) {
+			else if (req.getParameter("StartDay") != null && req.getParameter("StartMonth") != null && req.getParameter("StartYear") != null   
+				  && req.getParameter("StartDay") != ""   && req.getParameter("StartMonth") != ""   && req.getParameter("StartYear") != "" ) {
 				
 				int year = Integer.parseInt(req.getParameter("StartYear"));
 				int month = Integer.parseInt(req.getParameter("StartMonth"));
 				int day = Integer.parseInt(req.getParameter("StartDay"));
-				if(!isValidateDate(year, month, day)) {
+				if(!isValidateDate(month, day, year)) {
 					resp.sendRedirect("/JSPPages/Student_Form_A_Performance_Absence_Request.jsp?error='invalidDate'");
 					return;
 				}
@@ -60,8 +60,6 @@ public class FormA extends HttpServlet
 				
 				resp.sendRedirect("/JSPPages/Student_Page.jsp?formSubmitted='true'");
 				return;
-	
-			
 			}
 			else
 			{

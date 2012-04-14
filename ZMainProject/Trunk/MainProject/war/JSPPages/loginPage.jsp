@@ -50,17 +50,17 @@
 				<table>
 					<tr>
 					
-						<td><label for="User Name">NetID</label></td>
+						<td><label for="User Name">NetID:</label></td>
 						<td><input type= "text" name="User Name" id="User Name"/></td>
 					</tr>
 					
 					<tr>
-						<td><label for="Password">Password</label></td>
+						<td><label for="Password">Password:</label></td>
 						<td><input type= "password" name="Password" id="Password"/></td>	
 					</tr>
 					
 					<tr>
-						<td><input type= "password" name="Hashed Password" id="Hashed Password" hidden=true/></td>	
+						<td><input type= "password" name="Hashed Password" id="Hashed Password" style="display: none"/></td>	
 					</tr>
 					
 				</table>

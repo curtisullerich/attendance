@@ -50,7 +50,7 @@
 		function listForms() {
 			var div = document.getElementById("formsDiv")
 			if (div.style.display == "none") {
-				div.style.display = "block";
+				div.style.display = "inline";
 				document.getElementById("listForms").value = "Select a Form Below";
 			} else {
 				div.style.display = "none";

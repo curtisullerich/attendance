@@ -629,8 +629,8 @@ function confirmTACredentials(){
 				if(stringContains(loginPrepend, key)){
 					if (keyDelimiter(key,"netID") == name) {
 						if (localStorage[key] == Sha1.hash(password,true).toUpperCase()) {
-							document.getElementById("login").hidden = true;
-							document.getElementById("main").hidden = false;
+							document.getElementById("login").style.display="none";
+							document.getElementById("main").style.display="inline";
 							//removes dummy TA value if loginDebug is true
 							if (loginDebug){
 								key = "storedLogin | | TA | | | |";

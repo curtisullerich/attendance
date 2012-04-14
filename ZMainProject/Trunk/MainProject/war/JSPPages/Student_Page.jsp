@@ -53,7 +53,7 @@
 		function listForms() {
 			var div = document.getElementById("formsDiv")
 			if (div.style.display == "none") {
-				div.style.display = "block";
+				div.style.display = "inline";
 				document.getElementById("listForms").value = "Select a Form Below";
 			} else {
 				div.style.display = "none";
@@ -106,12 +106,14 @@
 		<!--********************* Button *****************************-->
 		<input type="submit" id="listForms" onClick="listForms();"  value="Submit a Form"/>
 		<input type="submit" onClick="viewForms();"  value="View Submitted Forms"/>
+		<p>
 			<div id="formsDiv" style="display: none">
 				<p><a href="/JSPPages/Student_Form_A_Performance_Absence_Request.jsp">Form A - Performance Absence Request</a></p>
 				<p><a href="/JSPPages/Student_Form_B_Class_Conflict_Request.jsp">Form B - Class Conflict Request</a></p>
 				<p><a href="/JSPPages/Student_Form_C_Rehearsal_Excuse.jsp">Form C - Request for Excuse from Rehearsal</a></p>
 				<p><a href="/JSPPages/Student_Form_D_TimeWorked.jsp">Form D - Time Worked</a></p>
 			</div>
+		</p>
 		<input type ="submit" onClick="window.location = '/JSPPages/Student_View_Attendance.jsp';"  value = "View Attendance">
 		<br/>
 		<input type ="submit" onClick="window.location = '/JSPPages/Student_Edit_Info.jsp';"  value = "Edit My Information">

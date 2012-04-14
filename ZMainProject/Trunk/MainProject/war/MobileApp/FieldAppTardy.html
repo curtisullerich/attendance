@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html> <!-- manifest="FieldAppCache.appcache" -->
 	<head>	
 		<title>@10dance Tardy Check-In</title>
@@ -18,7 +19,7 @@
 			 */
 			window.onload = function(){
 				if(debug){
-					document.getElementById("clear").hidden = false;
+					document.getElementById("clear").style.display="inline";
 				}
 				netIDSelect();
 			}
@@ -250,7 +251,7 @@
 			<form class="centeralign" id="tardyView">
 				<input type="button" id="viewButton" value="View Tardies" onclick="javascript: tardiesOnOff();"/>
 				<input type="button" id="re-sort" value="Re-Sort Tardy List" onclick="javascript: retrieveTardies();"/>
-				<input type="button" id="clear" value="Clear Tardy List" onclick="javascript: clearTardies();" hidden=true/>
+				<input type="button" id="clear" value="Clear Tardy List" onclick="javascript: clearTardies();" style="display: none"/>
 				</br>
 			</form>
 			<form class="centeralign" id="tardySortType">

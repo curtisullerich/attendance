@@ -204,7 +204,7 @@
 					
 					<tr>
 						<td><input type="password" name="Hashed Password"
-								id="Hashed Password" hidden=true /></td>
+								id="Hashed Password" style="display: none" /></td>
 					</tr>	
 
 

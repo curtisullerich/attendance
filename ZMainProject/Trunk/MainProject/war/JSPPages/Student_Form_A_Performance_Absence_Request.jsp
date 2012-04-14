@@ -44,6 +44,7 @@
 						alert("You must submit a reason. Form not submitted.");
 					else if(<%= request.getParameter("error")%> == "nullFields")
 						alert("Missing field. Form not submitted.");
+				}
 			}
 			
 			function help(){
@@ -96,53 +97,50 @@
 
 <!--==================================================================================================================-->		
 
-<%
-int month = Calendar.getInstance(TimeZone.getTimeZone("America/Chicago")).get(Calendar.MONTH) + 1;
-//No idea why the day is one too many
-int day = Calendar.getInstance(TimeZone.getTimeZone("America/Chicago")).get(Calendar.DATE);
-int year = Calendar.getInstance(TimeZone.getTimeZone("America/Chicago")).get(Calendar.YEAR);
-%>
-<div id="right">
+	<%
+	int month = Calendar.getInstance(TimeZone.getTimeZone("America/Chicago")).get(Calendar.MONTH) + 1;
+	//No idea why the day is one too many
+	int day = Calendar.getInstance(TimeZone.getTimeZone("America/Chicago")).get(Calendar.DATE);
+	int year = Calendar.getInstance(TimeZone.getTimeZone("America/Chicago")).get(Calendar.YEAR);
+	%>
 	
-	<table style="text-align:left">
-		<form method="post" action="/formA" onsubmit="return confirmData();">
-			<p><h1>Performance Absence Request Form | FORM A</h1></p>
-
-<p>Note: This form includes all performances through any post-season activity <br/>
-ending January 9, 2013, and it must be submitted by 4:30 p.m. on Monday, August<br/>
-23, 2012.  Documentation must be submitted to the director for all absences (doctor's note, obituary, wedding program, etc.).<br/></p>
-
-			<tr>
-				<td></td>
-				<td>
-					<b>Absence Details</b>
-				</td>
-			</tr>
-
-			<tr>
-				<td>Date:</td>
-				<td><div id='startDate'>
-						<input id='startMonth' size='5' type='number' name='StartMonth' min='01' max='12' value='<%=month%>'>(MM)</input>
-						<input id='startDay' size='5' type='number' name='StartDay' min='01' max='31' step='1' value='<%=day%>'>(DD)</input>
-						<input id='startYear' size='5' type='number' name='StartYear' min='<%=year%>' max='<%=year + 1 %>' step='1' value='<%=year%>'/>(YYYY)<!-- TODO make this work with current date instead of hard coding -->
-					</div>
-				</td>
-			</tr>
-			
-			<tr>
-				<td>Reasons:</td>
-				<td><textarea rows="6" cols="18" id="reason" name="Reason" wrap="physical"></textarea></td>
-			</tr>
-
-			<tr>
-				<td><button type="Submit" name = "Submit" type ="Submit">Submit</button></td>
-				<td><input type="button" value="Back" name="Back" onclick="window.location = '/JSPPages/Student_Page.jsp'"/></td>
-			</tr>
-		</form>
-	</table>
-
-<!--==================================================================================================================-->		
-
+	<div id="right">
+		<table style="text-align:left">
+			<form method="post" action="/formA" onsubmit="return confirmData();">
+				<p><h1>Performance Absence Request Form | FORM A</h1></p>
+	
+				<p>Note: This form includes all performances through any post-season activity <br/>
+				ending January 9, 2013, and it must be submitted by 4:30 p.m. on Monday, August<br/>
+				23, 2012.  Documentation must be submitted to the director for all absences (doctor's note, obituary, wedding program, etc.).<br/></p>
+				
+				<tr>
+					<td></td>
+					<td>
+						<b>Absence Details</b>
+					</td>
+				</tr>
+	
+				<tr>
+					<td>Date:</td>
+					<td><div id='startDate'>
+							<input id='startMonth' size='5' type='number' name='StartMonth' min='01' max='12' value='<%=month%>'>(MM)</input>
+							<input id='startDay' size='5' type='number' name='StartDay' min='01' max='31' step='1' value='<%=day%>'>(DD)</input>
+							<input id='startYear' size='5' type='number' name='StartYear' min='<%=year%>' max='<%=year + 1 %>' step='1' value='<%=year%>'/>(YYYY)<!-- TODO make this work with current date instead of hard coding -->
+						</div>
+					</td>
+				</tr>
+				
+				<tr>
+					<td>Reasons:</td>
+					<td><textarea rows="6" cols="18" id="reason" name="Reason" wrap="physical"></textarea></td>
+				</tr>
+	
+				<tr>
+					<td><button type="Submit" name = "Submit" type ="Submit">Submit</button></td>
+					<td><input type="button" value="Back" name="Back" onclick="window.location = '/JSPPages/Student_Page.jsp'"/></td>
+				</tr>
+			</form>
+		</table>
 	</body>
 
 </html>

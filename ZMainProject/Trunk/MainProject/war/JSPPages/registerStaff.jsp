@@ -117,7 +117,7 @@
 
 			<tr>
 				<td><input type="password" name="Hashed Director Password"
-					id="Hashed Director Password" hidden=true /></td>
+					id="Hashed Director Password" style="display: none" /></td>
 			</tr>
 			
 			<tr>
@@ -138,7 +138,7 @@
 
 			<tr>
 				<td><input type="password" name="Hashed Student Staff Password"
-					id="Hashed Student Staff Password" hidden=true /></td>
+					id="Hashed Student Staff Password" style="display: none" /></td>
 			</tr>
 
 		</table>

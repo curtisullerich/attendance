@@ -37,7 +37,7 @@
 		function viewForms() {
 			var div = document.getElementById("formsDiv")
 			if (div.style.display == "none") {
-				div.style.display = "block";
+				div.style.display = "inline";
 			} else {
 				div.style.display = "none";
 			}
@@ -46,11 +46,11 @@
 		function expandMessages() {
 			var mess = document.getElementById("messages");
 			var butt = document.getElementById("messagesButton");
-			if (mess.hidden == true) {
-				mess.hidden = false;
+			if (mess.style.display == "none") {
+				mess.style.display = "inline";
 				butt.value = "Hide Messages";
 			} else {
-				mess.hidden = true;
+				mess.style.display = "none"
 				butt.value = "Show New Messages";
 			}
 		}
@@ -115,7 +115,7 @@
 		<br/>
 		<input type ="submit" onClick="window.location = '/JSPPages/Director_View_AllForms.jsp';"  value = "View All Forms">
 		
-		<div id="messages" hidden="true" style="border: 3px solid black; height: 200px; overflow: auto; background-color:#FFFDE0;">
+		<div id="messages" style="display: none" style="border: 3px solid black; height: 200px; overflow: auto; background-color:#FFFDE0;">
 			<%= table %>
 		</div>		
 	</body>

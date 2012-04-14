@@ -82,12 +82,12 @@
 					"<table >"	
 					+"Write a new message: "
 					+""
-					+"			<form action='/newMessage' method='post'><input name='parentID' type='text' hidden='true' value='" + id +"'></input> <input type= 'text' name='New Message' id='New Message'/><input hidden='true' type= 'text' name='parentType' id='parentType' value='Tardy'/>	<button name='Submit' type='Submit'>Send</button></form>";
+					+"			<form action='/newMessage' method='post'><input name='parentID' type='text' style='display: none' value='" + id +"'></input> <input type= 'text' name='New Message' id='New Message'/><input style='display: none' type= 'text' name='parentType' id='parentType' value='Tardy'/>	<button name='Submit' type='Submit'>Send</button></form>";
 
 // 						+ "<tr>"
 // 							+"<td>Write a new message:</td>"
 // 							+"<td>"
-// 							+"			<form action='/newMessage' method='post'><input name='tardyid' type='text' hidden='true' value='" + id +"'></input> <input type= 'text' name='New Message' id='New Message'/>	<button name='Submit' type='Submit'>Send</button></form>"
+// 							+"			<form action='/newMessage' method='post'><input name='tardyid' type='text' style='display: none' value='" + id +"'></input> <input type= 'text' name='New Message' id='New Message'/>	<button name='Submit' type='Submit'>Send</button></form>"
 // 							+"</td>"
 // 						+"</tr>";
 
