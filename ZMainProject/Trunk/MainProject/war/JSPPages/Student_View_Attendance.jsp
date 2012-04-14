@@ -84,9 +84,9 @@
 					+t.getType()
 					+"</td><td></td><td>x</td><td>" 
 					+(t.getStatus()) 
-					+ "</td><td><button onClick=\"sendMeToMyTardyMessages('"
+					+ "</td><td><button onClick='sendMeToMyTardyMessages("
 					+t.getID()
-					+"');\">Messages</button></td><td>" 
+					+");'>Messages</button></td><td>" 
 					+ (t.hasNewMessageFor(netID) ? "x" : "") 
 					+"</td></tr>";
 					System.out.println("The id that is sent as the param is" + t.getID());
@@ -100,19 +100,18 @@
 			if (absences != null) {
 				for (Absence a : absences) {
 					absenceHtml += 
-						"<tr><td>" + a.getStartTime().getDate()+"</td> <td>"+a.getType()+"</td><td>x</td><td></td><td>" +(a.getStatus()) + "</td><td><button onClick='sendMeToMyAbsenceMessages("+a.getID() +");'>Messages</button></td><td>" + ("") + "</td></tr>";
-					absenceHtml +=
-					"<tr><td>"
-					+a.getStartTime().getDate()
-					+"</td> <td>"
-					+a.getType()
-					+"</td><td></td><td>x</td><td>" 
-					+(a.getStatus()) 
-					+ "</td><td><button onClick='sendMeToMyTardyMessages("
-					+a.getID() 
-					+");'>Messages</button></td><td>" 
-					+ (a.hasNewMessageFor(netID) ? "x" : "") 
-					+"</td></tr>";
+						"<tr><td>" 
+						+ a.getStartTime().getDate()+ " " + a.getStartTime().get12Format()
+						+"</td> <td>"
+						+a.getType()
+						+"</td><td>x</td><td></td><td>"
+						+(a.getStatus()) 
+						+ "</td><td><button onClick='sendMeToMyAbsenceMessages("
+						+a.getID() 
+						+");'>Messages</button></td><td>"
+						+ ("") + 
+						"</td></tr>";
+					
 				}
 			}			
 			%>
