@@ -53,7 +53,7 @@
 		//SORT THIS
 		
 			List<User> students = DatabaseUtil.getStudents();
-			User.sortUsersDescending(new StudentSectionComp(), students);
+			User.sortUsersDescending(new UserSectionComparator(), students);
 			String table = "<table id=table1 border='1'>";
 			
 			String headers ="<tr><h2>"+"Set Students Rank:";
