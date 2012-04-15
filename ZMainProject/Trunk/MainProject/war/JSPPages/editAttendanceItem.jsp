@@ -91,6 +91,8 @@ function showDivs() {
 	String oldEndYear = "";
 	String oldEndHour = "";
 	String oldEndMinute = "";
+	String idToKill = "";
+	String typeToKill= "";
 	boolean isStartAM = false;
 	boolean isEndAM = false;
 	String oldMessageIDs = "";
@@ -119,6 +121,8 @@ function showDivs() {
 		oldEndHour = "";
 		oldEndMinute = "";
 		isStartAM = t.getTime().get12Format().substring(5).equals("AM");
+		idToKill = ""+t.getID();
+		typeToKill="Tardy";
 	} else if (itemType.equalsIgnoreCase("Absence") && !present) {
 		Absence a = DatabaseUtil.getAbsenceByID(itemID);
 		
@@ -144,6 +148,8 @@ function showDivs() {
 		oldEndMinute = a.getEndTime().getMinute() + "";		
 		isStartAM = a.getStartTime().get12Format().substring(5).equals("AM");
 		isEndAM = a.getEndTime().get12Format().substring(5).equals("AM");
+		idToKill = ""+a.getID();
+		typeToKill="Absene";
 	} else if (present) {
 		//well, we won't do anything
 	} else {
@@ -170,10 +176,16 @@ function showDivs() {
 <br/>
 	<div id='tardyForm'>
 	<b>Submit a Tardy</b>
-	<form action="/makeTardy" method="post" accept-charset="utf-8">
+	<form action="/AddTardy" method="post" accept-charset="utf-8">
 		<table>
 			<tr>
 				<td><input type="hidden" name="NetID" id="NetID" value="<%= oldNetID %>"/></td>
+			</tr>
+			<tr>
+				<td><input type="hidden" name="IDtoKill" id="IDtoKill" value="<%= idToKill %>"/></td>
+			</tr>
+			<tr>
+				<td><input type="hidden" name="TypeToKill" id="TypeToKill" value="<%= idToKill %>"/></td>
 			</tr>
 			<tr>
 				<td><label for="Status">Status</label></td>
