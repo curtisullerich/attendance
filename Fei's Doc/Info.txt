@@ -24,6 +24,8 @@ all the forms director need to view page jsp
 ---
 4/14
 -implement grading method
+-TA_Set_Rank.jsp, Set_Rank.java
+-FormDParser.jsp
 
 *****TODO**************************************
 -add delete button in: Director_View_AllForms.
