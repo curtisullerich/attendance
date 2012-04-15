@@ -224,6 +224,13 @@ public class Date implements Comparable<Date>
 		int result=addAll%7;
 		return getMyDayOfWeek(result);
 	}
+	
+	public boolean equals(Object o)
+	{
+		if (o == null || o.getClass() != this.getClass()) return false;
+		Date d = (Date) o;
+		return this.compareTo(d) == 0;
+	}
 
 	
 	
