@@ -232,6 +232,31 @@ public class Parser {
 		
 	}
 	
+	private static boolean canGetToStartBySeven(Date currentDate, Date startDate)
+	{
+		int monthDays[][] = {{0}, {31}, {28, 29}, {31}, {30}, {31}, {30}, {31}, {31}, {30}, {31}, {30}, {31}};
+		int febDays = (currentDate.isLeapYear()) ? 1 : 0;
+		int curMonth = currentDate.getMonth();
+		int curDay = currentDate.getDay();
+		Date temp = new Date(currentDate.getYear(), curMonth, curDay);
+		while (temp.compareTo(startDate) > 0)
+		{
+			curDay -= 7;
+			//If we need to go back a month
+			if (curDay <= 0)
+			{
+				curDay = monthDays[curMonth - 1][(curMonth == 2) ? febDays : 0] + curDay;
+				curMonth--;
+				temp.setMonth(curMonth);
+			}
+			temp.setDay(curDay);
+		}
+		if (temp.compareTo(startDate) == 0)
+			return true;
+		return false;
+		
+	}
+	
 	public static class AbsenceEntry
 	{
 		public Absence value;
@@ -290,7 +315,7 @@ public class Parser {
 			{
 				if (f.getStatus().equalsIgnoreCase("Approved"))
 				{
-					if (timeLaterThan(value.getStartTime(), f.getStartTime()) && timeLaterThan(f.getEndTime(), value.getEndTime()))
+					if (timeLaterThan(f.getStartTime(), value.getStartTime()) && timeLaterThan(value.getEndTime(), f.getEndTime()))
 					{
 						String duration = f.durationToString();
 						//dur[0] is either until, Starting, or Completely
@@ -324,8 +349,9 @@ public class Parser {
 						}
 						else if (dur[0].equalsIgnoreCase("Completely"))
 						{
-							//If we've made it to this point they're good
-							return true;
+							if (canGetToStartBySeven(value.getStartTime().getDate(), f.getStartTime().getDate()))
+								return true;
+							return false;
 						}
 						else
 						{
@@ -485,8 +511,10 @@ public class Parser {
 						}
 						else if (dur[0].equalsIgnoreCase("Completely"))
 						{
-							//If we've made it to this point they're good
-							return true;
+							//TODO
+							if (canGetToStartBySeven(value.getTime().getDate(), f.getStartTime().getDate()))
+								return true;
+							return false;
 						}
 						else
 						{
