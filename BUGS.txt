@@ -1,0 +1,10 @@
+error:
+BIG:
+*Home > Director > View All Forms  
+	--cant send forms
+
+SMALL:
+*universityID: should be #
+*years in band:
+*FormD: error when num of hr is not an int
+*director delete a form in "Director_view_AllForms", should let the student know?
