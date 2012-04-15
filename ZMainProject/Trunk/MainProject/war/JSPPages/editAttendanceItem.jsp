@@ -37,6 +37,21 @@ function confirmData()
 	
 	return true;
 }
+function showDivs() {
+	if (document.getElementById("replaceWithTardy").checked) {
+		document.getElementById("tardyForm").style.display="block";
+		document.getElementById("absenceForm").style.display="none";
+		document.getElementById("deleteForm").style.display="none";
+	} else if (document.getElementById("replaceWithAbsence").checked) {
+		document.getElementById("tardyForm").style.display="none";
+		document.getElementById("absenceForm").style.display="block";
+		document.getElementById("deleteForm").style.display="none";		
+	} else if (document.getElementById("delete").checked) {
+		document.getElementById("tardyForm").style.display="none";
+		document.getElementById("absenceForm").style.display="none";
+		document.getElementById("deleteForm").style.display="block";
+	}
+}
 </script>
 <head>
 	<%
@@ -55,12 +70,15 @@ function confirmData()
 			response.sendRedirect("/JSPPages/logout.jsp");
 		}
 	}
-	
+	boolean present = false;
 	String itemType = request.getParameter("itemType");
 	String itemIDstring = request.getParameter("itemID");
-	
-	long itemID = Long.parseLong(itemIDstring);
-	
+	long itemID = 0;
+	if (itemType.equals("present")) {
+		present = true;
+	} else {	
+		itemID = Long.parseLong(itemIDstring);
+	}
 	String oldNetID = "";
 	String oldStatus = "";
 	String oldType = "";
@@ -77,7 +95,7 @@ function confirmData()
 	boolean isEndAM = false;
 	String oldMessageIDs = "";
 	int oldCurrentIndex = 0;
-	if (itemType.equalsIgnoreCase("Tardy")) {
+	if (itemType.equalsIgnoreCase("Tardy") && !present) {
 		Tardy t = DatabaseUtil.getTardyByID(itemID);
 		
 		oldNetID = t.getNetID();
@@ -101,7 +119,7 @@ function confirmData()
 		oldEndHour = "";
 		oldEndMinute = "";
 		isStartAM = t.getTime().get12Format().substring(5).equals("AM");
-	} else if (itemType.equalsIgnoreCase("Absence")) {
+	} else if (itemType.equalsIgnoreCase("Absence") && !present) {
 		Absence a = DatabaseUtil.getAbsenceByID(itemID);
 		
 		oldNetID = a.getNetID();
@@ -126,6 +144,8 @@ function confirmData()
 		oldEndMinute = a.getEndTime().getMinute() + "";		
 		isStartAM = a.getStartTime().get12Format().substring(5).equals("AM");
 		isEndAM = a.getEndTime().get12Format().substring(5).equals("AM");
+	} else if (present) {
+		//well, we won't do anything
 	} else {
 		System.err.println("We have an invalid item type in editAttendanceItem.jsp");
 	}
@@ -140,14 +160,20 @@ function confirmData()
 	</head>
 
 	<body>
-
+<br/>
+<br/>
+	<input id='replaceWithTardy' name='action' type='radio' value='tardy' checked />Replace with Tardy
+	<input id='replaceWithAbsence' name='action' type='radio' value='absence' />Replace with Absence
+	<%= (present ? "" : "<input id='delete' type='radio' name='action' value='delete' />Delete the item")%>
+	<input type="button" value="Go" name='action' onClick="showDivs();" />
+<br/>
+<br/>
 	<div id='tardyForm'>
-	<h2>Submit a Tardy</h2>
+	<b>Submit a Tardy</b>
 	<form action="/makeTardy" method="post" accept-charset="utf-8">
 		<table>
 			<tr>
-				<td><label for="NetID">NetID</label></td>
-				<td><input type="text" name="NetID" id="NetID" value="<%= oldNetID %>"/></td>
+				<td><input type="hidden" name="NetID" id="NetID" value="<%= oldNetID %>"/></td>
 			</tr>
 			<tr>
 				<td><label for="Status">Status</label></td>
@@ -165,12 +191,10 @@ function confirmData()
 				</select></td>
 			</tr>
 			<tr>
-				<td><label for="currentIndex">currentIndex</label></td>
-				<td><input type="text" name="currentIndex" id="currentIndex" value="<%= oldCurrentIndex %>"/></td>
+				<td><input type="hidden" name="currentIndex" id="currentIndex" value="<%= oldCurrentIndex %>"/></td>
 			</tr>
 			<tr>
-				<td><label for="messageIDs">messageIDs</label></td>
-				<td><input type="text" name="messageIDs" id="messageIDs" value="<%=oldMessageIDs.trim() %>"/></td>
+				<td><input type="hidden" name="messageIDs" id="messageIDs" value="<%=oldMessageIDs.trim() %>"/></td>
 			</tr>
 			<tr>
 				<td>Date</td>
@@ -188,8 +212,8 @@ function confirmData()
 					<div id='time'>
 						<input id='tardyHour' size='5' type='number' name='tardyHour' min='01' max='12' value='<%= oldStartHour %>'/>
 						<input id='tardyMinute' size='5' type='number' name='tardyMinute' min='00' max='59' step='1' value='<%= oldStartMinute %>'/>
-						<input id='tardyAM' type='radio' name='startrdio' value='AM' <%=isStartAM ? "checked" : "" %>>AM</input>
-						<input id='tardyPM' type='radio' name='startrdio' value='PM' <%=isStartAM ? "" : "checked" %>>PM</input><!--  -->
+						<input id='tardyAM' type='radio' name='startrdio' value='AM' <%=isStartAM ? "checked" : "" %>/>AM
+						<input id='tardyPM' type='radio' name='startrdio' value='PM' <%=isStartAM ? "" : "checked" %>/>PM
 					</div>
 				</td>
 			</tr>
@@ -199,9 +223,14 @@ function confirmData()
 	</div>
 
 	<div id='absenceForm'>
-	<h2>Submit an Absence</h2>
+	<b>Submit an Absence</b>
 	
 	
 	</div>
+	<div id='deleteForm'>
+	<b>Delete the Item</b>
+	</div>
+<script>window.onload = showDivs();
+</script>
 	</body>
 	</html>

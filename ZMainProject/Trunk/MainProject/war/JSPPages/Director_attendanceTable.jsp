@@ -69,6 +69,9 @@
 				String info = student.eventAttendanceItem(event);
 				String itemType=info.split(",")[0];
 				String itemID = info.split(",")[1];
+				if (status.equals("present")) {
+					itemType=status;
+				}
 				
 				row += "<td nowrap onClick=\"window.location='/JSPPages/editAttendanceItem.jsp?itemType="+itemType+"&itemID="+itemID+"'\">"+ (status.equals("present") ? "" : status) +"</td>";
 			}
