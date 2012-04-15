@@ -1,10 +1,19 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java"%>
+<%@ page import="serverLogic.*" %>
+<%@ page import="people.*" %>
 
 
 <!DOCTYPE html>
 
 <html>
 <head>
+
+<%
+	if (!DatabaseUtil.directorExists()) {
+		response.sendRedirect("/JSPPages/loginPage.jsp?fail=true");
+	}
+%>
+
 <script src="sha.js" /></script>
 <script>
 	

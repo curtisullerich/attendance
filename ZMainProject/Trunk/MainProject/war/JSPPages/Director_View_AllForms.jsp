@@ -26,19 +26,34 @@
 		}
 	}
 	%>
+<!--*********************Page Trail*****************************-->
+	
+			<a href="/" title="PageTrail_Home">Home</a> 
+			>
+			<a href="/JSPPages/Director_Page.jsp" title="PageTrail_director">Director</a>
+			>
+			<a href="/JSPPages/Director_View_AllForms">View All Forms</a>
+			
+		You are logged in as the Director (<%= user.getFirstName() + " " + user.getLastName()%>)
+		<a href="/JSPPages/logout.jsp">Logout</a>		
 
+		<!--HELP BUTTON-->	
+		<a href="">Help</a>
+</head>
+	<body>
 
+<h1>View All Submitted Forms</h1>
 <!-- FORM A -->
 	<%//for table
-	//FROM A *********************************************************************
+	//FORM A *********************************************************************
 		List <Form> forms = DatabaseUtil.getAllForms();
 		
 		String table = "<table border='1'>";
 		
-		String headers ="<tr><h2>"+"form A";
+		String headers ="<tr><h2>"+"Form A";
 		headers+="</h2>";
 		headers+="</tr>";
-		headers+= "<tr><td>netID</td><td>Name</td><td>Type of Form</td><td>Start Date</td><td>Reason</td><td>Status</td><td>Delete</td>";
+		headers+= "<tr><th>netID</th><th>Name</th><th>Type of Form</th><th>Start Date</th><th>Reason</th><th>Status</th>";
 
 		headers+="</tr>";
 		table+=headers;
@@ -55,8 +70,10 @@
 				row+="<td>"+ f.getStartTime().toString(12)+"</td>";
 				row+="<td>"+f.getReason()+"</td>";
 				row+="<td>"+f.getStatus()+"</td>";
-				row += "<td><b><a href='/JSPPages/View_Student_FormAC.jsp?viewForm="+f.getID()+"'>"+"View"+"</a></b></td>";
-
+				row+="<td><button onClick=\"window.location='/JSPPages/removeForm.jsp?id="+f.getID()+"'\">delete</button></td>";//delete
+				row+="<td><button onClick=\"window.location='/JSPPages/approveForm.jsp?id="+f.getID()+"'\">approve</button></td>";//approve
+				row+="<td><button onClick=\"window.location='/JSPPages/denyForm.jsp?id="+f.getID()+"'\">deny</button></td>";//deny
+				row += "<td><button onClick=\"window.location='/JSPPages/ViewMessages.jsp?parentType=Form&parentID="+f.getID()+"'\" value='messages(number)'>messages</button></td>";//messages
 				row +="</tr>";
 				table+=row;
 			}
@@ -65,13 +82,13 @@
 	%>
 	
 	<%
-	//FROM B *********************************************************************
+	//FORM B *********************************************************************
 	String table1 = "<table border='1'>";
 	forms = DatabaseUtil.getAllForms();
-	String headers1 ="<tr><h2>"+"form B";
+	String headers1 ="<tr><h2>"+"Form B";
 	headers1+="</h2>";
 	headers1+="</tr>";
-	headers1+= "<tr><td>netID</td><td>Name</td><td>Type of Form</td><td>Department</td><td>Course</td><td>Section</td><td>Building</td><td>Start Date</td><td>End Date</td><td>Until</td><td>Comment</td><td>View</td>";
+	headers1+= "<tr><th>netID</th><th>Name</th><th>Type of Form</th><th>Department</th><th>Course</th><th>Section</th><th>Building</th><th>Start Date</th><th>End Date</th><th>Until</th><th>Status</th><th>Comment</th>";
 
 	headers1+="</tr>";
 	table1+=headers1;
@@ -94,8 +111,12 @@
 			row+="<td>"+f.getStartTime().toString(12)+"</td>";//start time
 			row+="<td>"+f.getEndTime().toString(12)+"</td>";//end time
 			row+="<td>"+f.durationToString()+"</td>";//until + time							//TODO
+			row+="<td>"+f.getStatus()+"</td>";
 			row+="<td>"+f.getReason()+"</td>";//comment
-			row += "<td><b><a href='/JSPPages/View_Student_Form.jsp?viewForm="+f.getID()+"'>"+"View"+"</a></b></td>";
+			row+="<td><button onClick=\"window.location='/JSPPages/removeForm.jsp?id="+f.getID()+"'\">delete</button></td>";//delete
+			row+="<td><button onClick=\"window.location='/JSPPages/approveForm.jsp?id="+f.getID()+"'\">approve</button></td>";//approve
+			row+="<td><button onClick=\"window.location='/JSPPages/denyForm.jsp?id="+f.getID()+"'\">deny</button></td>";//deny
+			row += "<td><button onClick=\"window.location='/JSPPages/ViewMessages.jsp?parentType=Form&parentID="+f.getID()+"'\" value='messages(number)'>messages</button></td>";//messages
 
 			
 			row +="</tr>";
@@ -107,14 +128,14 @@
 	%>
 	
 		<%//for table
-	//FROM C *********************************************************************
+	//FORM C *********************************************************************
 		
 		String table2 = "<table border='1'>";
 		
-		String headers2 ="<tr><h2>"+"form C";
+		String headers2 ="<tr><h2>"+"Form C";
 		headers2+="</h2>";
 		headers2+="</tr>";
-		headers2+= "<tr><td>netID</td><td>Name</td><td>Type of Form</td><td>Start Date</td><td>Reason</td>";
+		headers2+= "<tr><th>netID</th><th>Name</th><th>Type of Form</th><th>Start Date</th><th>Status</th><th>Reason</th>";
 
 		headers2+="</tr>";
 		table2+=headers2;
@@ -131,8 +152,12 @@
 			row+="<td>"+ f.getType()+"</td>";
 			row+="<td>"+ f.getStartTime().toString(12)+"</td>";
 		
+			row+="<td>"+f.getStatus()+"</td>";
 			row+="<td>"+f.getReason()+"</td>";
-			row += "<td><b><a href='/JSPPages/View_Student_FormAC.jsp?viewForm="+f.getID()+"'>"+"View"+"</a></b></td>";
+			row+="<td><button onClick=\"window.location='/JSPPages/removeForm.jsp?id="+f.getID()+"'\">delete</button></td>";//delete
+			row+="<td><button onClick=\"window.location='/JSPPages/approveForm.jsp?id="+f.getID()+"'\">approve</button></td>";//approve
+			row+="<td><button onClick=\"window.location='/JSPPages/denyForm.jsp?id="+f.getID()+"'\">deny</button></td>";//deny
+			row += "<td><button onClick=\"window.location='/JSPPages/ViewMessages.jsp?parentType=Form&parentID="+f.getID()+"'\" value='messages(number)'>messages</button></td>";//messages
 
 			row +="</tr>";
 			table2+=row;
@@ -142,14 +167,14 @@
 	%>
 
 	<%//for table
-	//FROM D *********************************************************************
+	//FORM D *********************************************************************
 		
 		String table3 = "<table border='1'>";
 		
-		String headers3 ="<tr><h2>"+"form D";
+		String headers3 ="<tr><h2>"+"Form D";
 		headers3+="</h2>";
 		headers3+="</tr>";
-		headers3+= "<tr><td>netID</td><td>Name</td><td>Type of Form</td><td>Email To</td><td>Total Hours</td><td>Start Date</td><td>Reason</td>";
+		headers3+= "<tr><th>netID</th><th>Name</th><th>Type of Form</th><th>Email To</th><th>Total Hours</th><th>Start Date</th><th>Status</th><th>Comment</th>";
 
 		headers3+="</tr>";
 		table3+=headers3;
@@ -168,8 +193,12 @@
 			row+="<td>"+ f.getHours()+"</td>";
 			
 			row+="<td>"+ f.getStartTime().toString(12)+"</td>";
+			row+="<td>"+f.getStatus()+"</td>";
 			row+="<td>"+f.getReason()+"</td>";
-			row += "<td><b><a href='/JSPPages/View_Student_FormD.jsp?viewForm="+f.getID()+"'>"+"View"+"</a></b></td>";
+			row+="<td><button onClick=\"window.location='/JSPPages/removeForm.jsp?id="+f.getID()+"'\">delete</button></td>";//delete
+			row+="<td><button onClick=\"window.location='/JSPPages/approveForm.jsp?id="+f.getID()+"'\">approve</button></td>";//approve
+			row+="<td><button onClick=\"window.location='/JSPPages/denyForm.jsp?id="+f.getID()+"'\">deny</button></td>";//deny
+			row += "<td><button onClick=\"window.location='/JSPPages/ViewMessages.jsp?parentType=Form&parentID="+f.getID()+"'\" value='messages(number)'>messages</button></td>";//messages
 
 			row +="</tr>";
 			table3+=row;
@@ -183,8 +212,6 @@
 		String filters = "";
 	%>
 	
-</head>
-	<body>
 		<div style='height: 100%; width: 100%; float: left; overflow:auto'><%= table %><%= table1 %><%= table2 %><%= table3 %></div>
 	</body>
 </html>

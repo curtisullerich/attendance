@@ -64,7 +64,36 @@ function confirmData(){}
 		
 		table+="</table>";
 	%>
-	
+<%
+
+<form action="/register" method="post"
+onSubmit="return confirmAndHashData();" accept-charset="utf-8">
+<table>
+	<tr>
+		<td><label for="FirstName">First Name</label></td>
+		<td><input type="text" name="FirstName" id="FirstName" /></td>
+	</tr>
+
+	<tr>
+		<td><label for="LastName">Last Name</label></td>
+		<td><input type="text" name="LastName" id="LastName" /></td>
+	</tr>
+
+	<tr>
+		<td><label for="NetID">NetID</label></td>
+		<td><input type="text" name="NetID" id="NetID" /></td>
+	</tr>
+
+	<tr>
+		<td><label for="UniversityID">UniversityID</label></td>
+		<td><input type="text" name="UniversityID" id="UniversityID" /></td>
+	</tr>
+
+
+</table>
+<input type="submit" value="Submit" name="Submit" />
+</form>
+%>	
 	
 
 	<%//for filters

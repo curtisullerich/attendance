@@ -15,6 +15,18 @@
 		 * @author Todd Wegter
 		 */
 		window.onload = function() {
+
+			<%
+			boolean fail = false;
+			if (!(request.getParameter("fail") == null) && request.getParameter("fail").equals("true")) {
+				fail = true;
+			} 
+			%>
+			
+			if (<%= fail %>) {
+				alert("There is no director registered. You cannot register for an account yet.");
+			}
+			
 			var d = new Date();
 			var year = d.getFullYear();
 			if(d.getMonth == 0)

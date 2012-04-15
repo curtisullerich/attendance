@@ -548,7 +548,16 @@ public class DatabaseUtil
 		em.persist(databaseMessage);
 		em.close();
 	}
+	
+	public static void refreshForm(Form f) {
+		EntityManager em = EMFService.get().createEntityManager();
+		Form databaseMessage = em.find(Form.class, f.getID());
+		databaseMessage.copyAllFrom(f);
+		em.persist(databaseMessage);
+		em.close();
+	}
 
+	
 	/**
 	 * Returns a List of all Users in the database.
 	 * @author Curtis Ullerich

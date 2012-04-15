@@ -37,10 +37,10 @@
 		
 		for (Event event : events) {
 			String date = event.getDate().toString();
-			String color = event.isPerformance() ? "blue" : "#009900";
+			String color = event.isPerformance() ? "#FFFFAA" : "#FFAAFF";
 			headers += "<td bgcolor='"+color+"' nowrap><a href='/JSPPages/statusDistributionGraph.jsp?id=" +event.getId() +"&type=Event'>" + date +"</a></td>";//TODOO this actually gets me the id, right?
 		}
-		headers+="<td>Grade</td>";		
+		headers+="<td>Grade</td>";
 		headers+="</tr>";
 		table+=headers;
 		
