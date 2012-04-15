@@ -205,6 +205,8 @@
 			}
 		}
 		table3+="</table>";
+		
+
 	%>
 
 	
@@ -213,6 +215,8 @@
 	%>
 	
 		<div style='height: 100%; width: 100%; float: left; overflow:auto'><%= table %><%= table1 %><%= table2 %><%= table3 %></div>
+		<input type="button" value="Back" name="Back" onclick="window.location = '/JSPPages/Director_Page.jsp'"/>
+		
 	</body>
 </html>
 
