@@ -56,11 +56,17 @@
 			row += "<td><b><a href='/JSPPages/Director_Student_View.jsp?student="+student.getNetID()+"'>"+student.getLastName()+"</a></b></td>";
 			row += "<td><b><a href='/JSPPages/Director_Student_View.jsp?student="+student.getNetID()+"'>"+student.getFirstName()+"</a></b></td>";
 			row+= "<td>"+student.getSection()+"</td>";
-			row+= "<td>"+student.getUnivID()+"</td>";
+			row+= "<td>"+student.getUnivID()+"</td>"; 
 
 			for (Event event : events) {
 				String status = student.eventStatus(event);
-				row += "<td nowrap>"+ (status.equals("present") ? "" : status) +"</td>";
+				
+				String attendanceID = student.eventAttendanceItem(event);
+				String itemType = attendanceID.split(",")[0];
+				String itemID = attendanceID.split(",")[1];				
+				
+				row += "<td nowrap onClick=\"window.open('/JSPPages/editAttendanceItem.jsp?type="+itemType+"&id="+itemID+"','Edit Item','width=500,height=800,titlebar=no')\">"+ (status.equals("present") ? "" : status) +"</td>";
+
 			}
 			row+= "<td>"+student.getGrade()+"</td>";
 			row +="</tr>";
@@ -71,9 +77,11 @@
 	
 </head>
 	<body>
-<%= table %>
-		<!-- div style='height: 100%; width: 10%; border: 3px solid black; float: left; overflow:auto'></div>
+	
+	<%= table %>
+		<!--div style='height: 100%; width: 10%; border: 3px solid black; float: left; overflow:auto'></div>
 		<div style='height: 100%; width: 85%; border: 3px solid black; float: left; overflow:auto'></div-->
+
 
 	</body>
 </html>

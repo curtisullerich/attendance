@@ -214,6 +214,51 @@ public class User {
 		}
 		return status;
 	}
+	
+	
+	/**
+	 * Returns a string of the format "type,id" for this user's
+	 * attendance item during the given event
+	 * 
+	 * @author Curtis Ullerich
+	 * @date 4/9/12
+	 * @return
+	 */
+	public String eventAttendanceItem(Event event) {
+		List<Tardy> tardies = this.getTardies();
+		List<EarlyCheckOut> ecos = this.getEarlyCheckOuts();
+		List<Absence> absences = this.getAbsences();
+
+		String type = "none";
+		String id = "none";
+		for (Absence a : absences) {
+			if (a.isDuringEvent(event)) {
+				type = "Absence";
+				id = a.getID() + "";
+				break;
+			}
+		}
+
+		for (EarlyCheckOut e : ecos) {
+			if (e.isDuringEvent(event)) {
+				type = "EarlyCheckOut";
+				id = e.getID() + "";
+				break;
+			}
+		}
+
+		for (Tardy t : tardies) {
+			if (t.isDuringEvent(event)) {
+				type = "Tardy";
+				id = t.getID() + "";
+				break;
+			}
+		}
+		return type + "," + id;
+	}
+	
+	
+	
 //
 //	public long hash(String netID) {
 //		try {
