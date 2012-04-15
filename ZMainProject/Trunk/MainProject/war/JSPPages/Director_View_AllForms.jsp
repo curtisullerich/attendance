@@ -32,7 +32,7 @@
 			>
 			<a href="/JSPPages/Director_Page.jsp" title="PageTrail_director">Director</a>
 			>
-			<a href="/JSPPages/Director_View_AllForms">View All Forms</a>
+			<a href="/JSPPages/Director_View_AllForms.jsp">View All Forms</a>
 			
 		You are logged in as the Director (<%= user.getFirstName() + " " + user.getLastName()%>)
 		<a href="/JSPPages/logout.jsp">Logout</a>		
