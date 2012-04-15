@@ -112,8 +112,8 @@ public class FormB extends HttpServlet {
 					end = new Time(23, 59, new Date(endYear1, endMonth1,
 							endDay1));
 				} else if (type1.equalsIgnoreCase("Completely")) {
-					start = new Time(0, 1, new Date(endYear1, endMonth1,
-							endDay1));
+					start = new Time(0, 1, new Date(startYear1, startMonth1,
+							startDay1));
 					end = new Time(23, 59, new Date(endYear1, endMonth1,
 							endDay1));
 				} else {
