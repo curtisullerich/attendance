@@ -190,7 +190,7 @@
 	
 		<!--button-->
 		<br/>
-		<input type="button" value="Back" name="Back" onclick="window.location = '/JSPPages/Student_View_Attendance.jsp'"/>
+		<input type="button" value="Back" name="Back" onclick="window.location = document.referrer"/>
 	</body>
 	
 </html>

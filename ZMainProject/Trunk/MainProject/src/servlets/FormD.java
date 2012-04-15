@@ -30,6 +30,14 @@ public class FormD extends HttpServlet
 			String AmountWorked = req.getParameter("AmountWorked");
 			String Details = req.getParameter("Details");
 			
+			try{
+				Integer.parseInt(AmountWorked);
+			}
+			catch(NumberFormatException e){
+				resp.sendRedirect("/JSPPages/Student_Form_D_TimeWorked.jsp?error='invalidAmountWorked'");
+				return;
+			}
+			
 			if (Email != null && AmountWorked != null && Details != null && Email != "" && AmountWorked != "" && Details != "" 
 					&& req.getParameter("StartDay") != null && req.getParameter("StartMonth") != null && req.getParameter("StartYear") != null   
 					&& req.getParameter("StartDay") != "" && req.getParameter("StartMonth") != "" && req.getParameter("StartYear") != "" )
@@ -38,7 +46,7 @@ public class FormD extends HttpServlet
 				int month = Integer.parseInt(req.getParameter("StartMonth"));
 				int day = Integer.parseInt(req.getParameter("StartDay"));
 				if(!isValidateDate(month, day, year)) {
-					resp.sendRedirect("/JSPPages/Student_Form_A_Performance_Absence_Request.jsp?error='invalidDate'");
+					resp.sendRedirect("/JSPPages/Student_Form_D_TimeWorked.jsp?error='invalidDate'");
 					return;
 				}
 				//public Date(int year, int month, int day)

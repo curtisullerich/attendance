@@ -19,7 +19,12 @@
 	{
 		user = DatabaseUtil.getUser(netID);
 		if (!user.getType().equalsIgnoreCase("Director")) {
-			response.sendRedirect("/JSPPages/logout.jsp");
+			if(user.getType().equalsIgnoreCase("TA"))
+				response.sendRedirect("/JSPPages/TA_Page.jsp");
+			else if(user.getType().equalsIgnoreCase("Student"))
+				response.sendRedirect("/JSPPages/Student_Page.jsp");
+			else
+				response.sendRedirect("/JSPPages/logout.jsp");
 		}
 	}
 	%>
@@ -74,6 +79,10 @@
 			
 			 return true;
 		}
+		
+		function help(){
+			 alert("Helpful information on director page.");
+		 }
 
 		</script>
 
@@ -83,11 +92,18 @@
 	<!--*********************Page Trail*****************************-->
 
 	<!--TODO: need to connected to specific page-->
-			<a href="/" title="PageTrail_Home">Home</a> 
-			>
-			<a href="/JSPPages/Director_Page.jsp" title="PageTrail_Director">Director</a>
-			>
-			<a href="/JSPPages/Director_Edit_Info.jsp" title="PageTrail_Edit_Info">Edit Director Info</a>
+		<a href="/" title="PageTrail_Home">Home</a> 
+		>
+		<a href="/JSPPages/Director_Page.jsp" title="PageTrail_Director">Director</a>
+		>
+		<a href="/JSPPages/Director_Edit_Info.jsp" title="PageTrail_Edit_Info">Edit Director Info</a>
+		
+		You are logged in as the Director (<%= user.getFirstName() + " " + user.getLastName() %>)
+		<!--LOGOUT BUTTON-->
+		<input type="button" onclick="window.location = '/JSPPages/logout.jsp'" id="Logout" value="Logout"/>		
+
+		<!--HELP BUTTON-->	
+		<input type="button" onclick="javascript: help();" id="Help" value="Help"/>		
 
 	<!--*********************info*****************************-->
 	

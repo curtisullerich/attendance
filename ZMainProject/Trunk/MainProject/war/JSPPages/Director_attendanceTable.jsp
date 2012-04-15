@@ -84,7 +84,7 @@
 	
 </head>
 	<body>
-	<a href="/JSPPages/logout.jsp" title="Logout and Return to Login Screen">Home</a> 
+		<a href="/JSPPages/logout.jsp" title="Logout and Return to Login Screen">Home</a> 
 		>
 		<a href="/JSPPages/Director_Page.jsp" title="Director Page">Director</a>
 		>

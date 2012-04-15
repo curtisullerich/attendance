@@ -38,14 +38,10 @@
 				{
 					if(<%= request.getParameter("error")%> == "invalidDate")
 						alert("The start date was invalid. Form not Submitted");
-					else if(<%= request.getParameter("error")%> == "invalidEndDate")
-						alert("The end date was invalid. Form not submitted.");
-					else if(<%= request.getParameter("error")%> == "endBeforeStart")
-						alert("The start date was after the end date. Form not submitted.");
-					else if(<%= request.getParameter("error")%> == "invalidStartTime")
-						alert("The time was invalid. Form not submitted.");
-					else if(<%= request.getParameter("error")%> == "noRadioButton")
-						alert("No radio button was selected. Form not submitted.");
+					else if(<%= request.getParameter("error")%> == "invalidDetails")
+						alert("No details were supplied. Form not submitted.")
+					else if(<%= request.getParameter("error")%> == "invalidAmountWorked")
+						alert("The amount worked was invalid. Form not submitted.");
 					else if(<%= request.getParameter("error")%> == "nullFields")
 						alert("Missing field. Form not submitted.");
 				}
@@ -57,9 +53,10 @@
 			
 			function confirmData()
 			{
-				if (document.getElementById("AmountWorked").value == "" || document.getElementById("Details").value == "")
+				
+				if (isNaN(parseInt(document.getElementById("AmountWorked").value)) || document.getElementById("Details").value == "")
 				{	
-					alert((document.getElementById("AmountWorked").value == "") ? "You must provide an amount of time worked." : "You must provide details for your time worked.");
+					alert(isNaN(parseInt(document.getElementById("AmountWorked").value)) ? "You must provide an amount of time worked as a number." : "You must provide details for your time worked.");
 					return false;
 				}
 				var monthDays = [0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];

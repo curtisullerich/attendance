@@ -35,10 +35,12 @@
 			<a href="/JSPPages/Director_View_AllForms.jsp">View All Forms</a>
 			
 		You are logged in as the Director (<%= user.getFirstName() + " " + user.getLastName()%>)
-		<a href="/JSPPages/logout.jsp">Logout</a>		
+		<!--LOGOUT BUTTON-->
+		<input type="button" onclick="window.location = '/JSPPages/logout.jsp'" id="Logout" value="Logout"/>
 
 		<!--HELP BUTTON-->	
-		<a href="">Help</a>
+		<input type="button" onclick="javascript: help();" id="Help" value="Help"/>	
+
 </head>
 	<body>
 
@@ -213,10 +215,10 @@
 	<%//for filters
 		String filters = "";
 	%>
+		<input type="button" value="Back" name="Back" onclick="window.location = '/JSPPages/Director_Page.jsp'"/>
 	
 		<div style='height: 100%; width: 100%; float: left; overflow:auto'><%= table %><%= table1 %><%= table2 %><%= table3 %></div>
-		<input type="button" value="Back" name="Back" onclick="window.location = '/JSPPages/Director_Page.jsp'"/>
-		
+
 	</body>
 </html>
 

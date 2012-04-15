@@ -35,16 +35,30 @@
 	
 	<script>
 	
+	window.onload = function(){
+		if(<%= request.getParameter("RanksSet")%>){
+			alert("Ranks successfully added to the users.");
+		}
+	}
+	
 	function help(){
 		alert("Helpful information about TA page.")
 	}
 	
 	function confirmData()
 	{
-		
-		
-		
-		
+		var i = 0;
+		while(document.getElementById("netID"+i).value != null)
+		{
+			var rank = document.getElementById("Rank"+i).value;
+			
+			if(rank == null || rank == ""){
+				alert("Please fill in every rank.");
+				return false;
+			}
+			i++;
+		}
+		return true;
 	} 
 	</script>
 	
@@ -53,7 +67,7 @@
 		//SORT THIS
 		
 			List<User> students = DatabaseUtil.getStudents();
-			User.sortUsersDescending(new UserSectionComparator(), students);
+			User.sortUsersAscending(new UserSectionComparator(), students);
 			String table = "<table id=table1 border='1'>";
 			
 			String headers ="<tr><h2>"+"Set Students Rank:";

@@ -38,10 +38,8 @@ public class Set_Rank extends HttpServlet
 				{
 					if(s.getNetID().equals(netID))
 					{
-						
 						s.setRank( req.getParameter("Rank"+i));
 						DatabaseUtil.refreshUser(s);
-						System.out.println(s.getRank());
 					}
 				}
 				
@@ -49,12 +47,12 @@ public class Set_Rank extends HttpServlet
 			}
 			
 			
-			resp.sendRedirect("/JSPPages/TA_Page.jsp");
+			resp.sendRedirect("/JSPPages/TA_Page.jsp?RanksSet=true");
 
 		}
 		else
 		{
-			resp.sendRedirect("/JSPPages/TA_Set_Page.jsp");
+			resp.sendRedirect("/JSPPages/TA_Set_Page.jsp?RanksSet=false");
 		}
 		
 		

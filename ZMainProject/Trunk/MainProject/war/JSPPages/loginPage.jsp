@@ -16,7 +16,14 @@
 		 */
 		window.onload = function() {
 			
+			var d = new Date();
+			var year = d.getFullYear();
+			if(d.getMonth == 0)
+				year -= 1;
 			document.getElementsByTagName("h1")[0].innerHTML = "ISU Varsity Marching Band / Fall " + year;
+
+			
+			
 			if(<%= request.getParameter("successfulAdd")%>){
 				var user = "<%= request.getParameter("user")%>";
 				alert(user + " successfully added to the system.");
@@ -33,10 +40,6 @@
 				alert("There is no director registered. You cannot register for an account yet.");
 			}
 			
-			var d = new Date();
-			var year = d.getFullYear();
-			if(d.getMonth == 0)
-				year -= 1;
 			
 			if(<%= request.getParameter("validLogin")%> == 'false'){
 				alert("Invalid username or password");

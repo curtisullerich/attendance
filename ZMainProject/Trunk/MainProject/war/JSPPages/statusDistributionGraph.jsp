@@ -10,18 +10,26 @@
 
 <head>
 <%
-	String netID = (String) session.getAttribute("user");
-	User user = null;
+String netID = (String) session.getAttribute("user");
+User user = null;
 
-	if (netID == null || netID.equals("")) {
-		response.sendRedirect("/JSPPages/logout.jsp");
-		return;
-	} else {
-		user = DatabaseUtil.getUser(netID);
-		if (!user.getType().equalsIgnoreCase("Director")) {
+if (netID == null || netID.equals("")) 
+{
+	response.sendRedirect("/JSPPages/logout.jsp");
+	return;
+}
+else
+{
+	user = DatabaseUtil.getUser(netID);
+	if (!user.getType().equalsIgnoreCase("Director")) {
+		if(user.getType().equalsIgnoreCase("TA"))
+			response.sendRedirect("/JSPPages/TA_Page.jsp");
+		else if(user.getType().equalsIgnoreCase("Student"))
+			response.sendRedirect("/JSPPages/Student_Page.jsp");
+		else
 			response.sendRedirect("/JSPPages/logout.jsp");
-		}
 	}
+}
 %>
 
 <%
@@ -41,8 +49,8 @@
 		
 		information = "<p><b>Event Statistics</b><br/>";
 		information += "Date: " +event.getStartTime().getDate().toString()+ "<br/>"; 
-		information += "Start time: "+ event.getStartTime().get24Format() + "<br/>";
-		information += "End time: " + event.getEndTime().get24Format() + "<br/>";
+		information += "Start time: "+ event.getStartTime().get12Format() + "<br/>";
+		information += "End time: " + event.getEndTime().get12Format() + "<br/>";
 		information += "Type: " + (event.isPerformance() ? "Performance" : "Rehearshal" )+ "<br/></p>";
 		
 	} else if (type.equals("User")) {
@@ -165,6 +173,22 @@ window.onload=makeGraph;
 
 <body>
 
+<a href="/JSPPages/logout.jsp" title="Logout and Return to Login Screen">Home</a> 
+>
+<a href="/JSPPages/Director_Page.jsp" title="Director Page">Director</a>
+>
+<a href="/JSPPages/Director_attendanceTable.jsp" title="View Class Attendance">View Class Attendance</a>
+>
+<a href="/JSPPages/statusDistributionGraph.jsp?id=<%= id %>&type=<%= type %>" title="View Event Graph">View Event Graph</a>
+
+	
+You are logged in as the Director (<%= user.getFirstName() + " " + user.getLastName() %>)
+<!--LOGOUT BUTTON-->
+<input type="button" onclick="window.location = '/JSPPages/logout.jsp'" id="Logout" value="Logout"/>		
+
+<!--HELP BUTTON-->	
+<input type="button" onclick="javascript: help();" id="Help" value="Help"/>	
+
 <div id = 'info'>
 	<%= information %>
 </div>
@@ -177,6 +201,9 @@ window.onload=makeGraph;
 </ul>
 </div>
 <p><div id="labels"></div>
+
+		<input type="button" value="Back" name="Back" onclick="window.location = '/JSPPages/Director_attendanceTable.jsp'"/>
+
 
 </body>
 </html>
