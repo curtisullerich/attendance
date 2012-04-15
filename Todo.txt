@@ -1,16 +1,11 @@
 @10dance Todo
 
+*director edit individual rank
 
-*Working back buttons - student done
-*working help buttons - student done
-*change user validation to return to proper main page
-*logout -> Logout & button - student done
+*student attendance new message
 
-director edit individual rank
+*director create message on tardy/absence
 
-*director constructor and destructor control
-*director student set rank
+*utilize form D yes/no parser
 
-*form D yes/no parser
-
-*graph links
+*mobile app links
