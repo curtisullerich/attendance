@@ -24,19 +24,10 @@ public class Set_Rank extends HttpServlet
 			throws IOException
 	{
 		String buttonPressed = req.getParameter("Submit");
-		String directTo = "/JSPPages/Director_Page.jsp";
 		//System.out.println("HELLO");
 
 		if(buttonPressed !=null)
 		{
-//			System.out.println("START");
-//			String netID0 = req.getParameter("netID0");
-//			String netID1 = req.getParameter("netID1");
-////			String netID1 = req.getParameter("Rank");
-//			System.out.println(netID0);
-//			System.out.println(netID1);
-////			System.out.println("HELLO");
-
 			int i=0;
 			List<User> students = DatabaseUtil.getStudents();
 			
@@ -58,7 +49,12 @@ public class Set_Rank extends HttpServlet
 			}
 			
 			
-		
+			resp.sendRedirect("/JSPPages/TA_Page.jsp");
+
+		}
+		else
+		{
+			resp.sendRedirect("/JSPPages/TA_Set_Page.jsp");
 		}
 		
 		

@@ -69,7 +69,7 @@ public class User {
 		this.type=other.type;
 		this.netID=other.netID;
 		this.firstName=other.firstName;
-		this.firstName=other.lastName;
+		this.lastName=other.lastName;
 		this.univID=other.univID;
 		this.hashedPassword=other.hashedPassword;
 		this.major=other.major;

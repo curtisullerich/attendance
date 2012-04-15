@@ -50,7 +50,7 @@ function confirmData()
 		String headers ="<tr><h2>"+"Set Students Rank:";
 		headers+="</h2>";
 		headers+="</tr>";
-		headers+= "<tr><td>Name</td><td>NetID</td><td> Section </td><td>Ranks</td>";
+		headers+= "<tr><td>Last Name</td><td>First Name</td><td>NetID</td><td> Section </td><td>Ranks</td>";
 
 		headers+="</tr>";
 		table+=headers;
@@ -60,7 +60,8 @@ function confirmData()
 		{
 			
 			String row="<tr>";
-			row+="<td>"+ s.getLastName() + " "+s.getFirstName()+"</td>";
+			row+="<td>"+ s.getLastName()+"</td>";
+			row+= "<td>"+s.getFirstName()+"</td>";
 			row+="<td>"+s.getNetID()+"</td>";
 			row+="<td>"+ s.getSection()+"</td>";
 			
