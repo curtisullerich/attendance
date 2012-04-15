@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Scanner;
 
+import forms.Form;
+
 import people.*;
 import time.*;
 import attendance.*;
@@ -22,11 +24,10 @@ public class Parser {
 		// Splats the massive string into an array of strings for each person
 		String[] people = add.split(",");
 		
-		HashMap<User, Absence> absences = new HashMap<User, Absence>();
-		HashMap<User, Tardy> tardies = new HashMap<User, Tardy>();
+		List<AbsenceEntry> absences = new LinkedList<AbsenceEntry>();
+		List<TardyEntry> tardies = new LinkedList<TardyEntry>();
 		List<Event> events = new LinkedList<Event>();
 
-		//Puts everything into HashMaps!
 		try
 		{
 			for (String e : people) {				
@@ -54,6 +55,7 @@ public class Parser {
 				else if (prepend.equalsIgnoreCase(absentPrependPerformance) || prepend.equalsIgnoreCase(absentPrependRehearsal)
 						|| prepend.equalsIgnoreCase(tardyPrepend))
 				{
+					//Store the absence or tardy
 					String netID = personalInfo[3];
 					String date = personalInfo[4];
 					String startTime = personalInfo[5];
@@ -63,15 +65,15 @@ public class Parser {
 					Date useDate = parseDate(date);
 					Time start = parseTime(startTime, useDate);
 					Time end = parseTime(endTime, useDate);
-					updateMaps(person, prepend, useDate, start, end, absences, tardies);
+					updateLists(person, prepend, useDate, start, end, absences, tardies);
 				}
 			}
-			//TODO add all the stuff in the hashmaps
 			updateALLTheThings(absences, tardies, events);
 			return true;
 		}
 		catch (Exception e)
 		{
+			e.printStackTrace();
 			return false;
 		}
 	}
@@ -96,49 +98,28 @@ public class Parser {
 			return new Time(0,0, date);
 	}
 
-	private static void updateMaps(User guy, String prepend, Date eventDate, Time start, Time end, HashMap<User, Absence> absences, HashMap<User, Tardy> tardies) {
+	private static void updateLists(User guy, String prepend, Date eventDate, Time start, Time end, List<AbsenceEntry> absences, List<TardyEntry> tardies) {
 		if ( guy!= null && (guy.getType().equalsIgnoreCase("Student")))
 		{
+			//Adding performance absences
 			if (prepend.equalsIgnoreCase(absentPrependPerformance)) 
 			{
 				Absence toAdd = new Absence(guy.getNetID(), start, end, "Performance");
-				//guy.addAbsence(new Absence(start, end, "Performance"));
-				if (!absences.containsKey(guy))
-					absences.put(guy, toAdd);
-				else
-				{
-					if (timeLaterThan(absences.get(guy).getStartTime(), toAdd.getStartTime()))
-					{
-						absences.put(guy, toAdd);
-					}
-				}
-			} else if (prepend.equalsIgnoreCase(absentPrependRehearsal)) 
+				absences.add(new AbsenceEntry(toAdd, guy));
+			} 
+			//Adding rehearsal absences
+			else if (prepend.equalsIgnoreCase(absentPrependRehearsal)) 
 			{
-				//guy.addAbsence(new Absence(start, end, "Rehearsal"));
+				
 				Absence toAdd = new Absence(guy.getNetID(), start, end, "Rehearsal");
-				if (!absences.containsKey(guy))
-					absences.put(guy, toAdd);
-				else
-				{
-					if (timeLaterThan(absences.get(guy).getStartTime(), toAdd.getStartTime()))
-					{
-						absences.put(guy, toAdd);
-					}
-				}
+				absences.add(new AbsenceEntry(toAdd, guy));
 			}
+			//Adding tardies -at this point we don't know what type it is-
 			else if (prepend.equalsIgnoreCase(tardyPrepend)) 
 			{
 				//guy.addTardy(new Tardy(start, "unknown"));
 				Tardy toAdd = new Tardy(guy.getNetID(), start, "unknown");
-				if (!tardies.containsKey(guy))
-					tardies.put(guy, toAdd);
-				else
-				{
-					if (timeLaterThan(tardies.get(guy).getTime(), toAdd.getTime()));
-					{
-						tardies.put(guy, toAdd);
-					}
-				}
+				tardies.add(new TardyEntry(toAdd, guy));
 			}
 		}
 	}
@@ -149,74 +130,397 @@ public class Parser {
 		return secondTime.compareTo(firstTime) > 0;
 	}
 	
-	private static void updateALLTheThings(HashMap<User, Absence> absences, HashMap<User, Tardy> tardies, List<Event> events)
+	private static void updateALLTheThings(List<AbsenceEntry> absences, List<TardyEntry> tardies, List<Event> events)
 	{
-		//If they are in the TardyMap then take them out of the AbsentMap
 		//Update the tardies to what type of event they are: rehearsal, performance
-		List<User> toRemove = new LinkedList<User>();
-		for (User u: tardies.keySet())
+		List<TardyEntry> tardsToRemove = new LinkedList<TardyEntry>();
+		List<AbsenceEntry> absToRemove = new LinkedList<AbsenceEntry>();
+
+		//Go thru all the tardies and try to add the type
+		for (TardyEntry te: tardies)
 		{
-			if (absences.containsKey(u))
-			{
-				absences.remove(u);
-			}
 			for (int i = 0; i < events.size(); i++)
 			{
 				Event e = events.get(i);
-				if (e.getStartTime().compareTo(tardies.get(u).getTime()) <= 0 
-						&& e.getEndTime().compareTo(tardies.get(u).getTime()) >= 0)
+				if (te.isDuringEvent(e))
 				{
-					tardies.get(u).setType(e.getType());
-				}
-				if (e.getStartTime().getDate().compareTo(tardies.get(u).getTime().getDate()) == 0)
-				{
-					if (tardies.get(u).getTime().getHour() - e.getStartTime().getHour() >= 1)
-					{
-						//Remove the tardy and add it as an absence
-						Absence abs = new Absence(u.getNetID(), e.getStartTime(), e.getEndTime(), tardies.get(u).getType());
-						toRemove.add(u);
-						absences.put(u, abs);
-					}
-					else if (tardies.get(u).getTime().getMinute() - e.getStartTime().getMinute() >= 30)
-					{
-						//Remove the tardy and add it as an absence
-						Absence abs = new Absence(u.getNetID(), e.getStartTime(), e.getEndTime(), tardies.get(u).getType());
-						tardies.remove(u);
-						absences.put(u, abs);
-					}
-					
+					te.value.setType(e.getType());
+					te.setMyEvent(e);
 				}
 			}
 		}
-		for (int i = 0; i < toRemove.size(); i++)
-			tardies.remove(toRemove.get(i));
-		for (User u: absences.keySet())
+		
+		//Remove the absences that correspond to the same event and student as a tardy
+		for (TardyEntry te: tardies)
 		{
-			List<Absence> myAbsences = DatabaseUtil.getAbsences(u.getNetID());
+			for (AbsenceEntry ae: absences)
+			{
+				if (te.isDuringAbsence(ae))
+				{
+					absToRemove.add(ae);
+				}
+			}
+		}
+		
+		//Go thru all the tardies and change it to an absence if it is later than half an hour from the start of the event.
+		for (TardyEntry te: tardies)
+		{
+			if (te.isLaterThanHalfHourForMyEvent())
+			{
+				//Remove the tardy and add it as an absence
+				Absence abs = new Absence(te.key.getNetID(), te.myEvent.getStartTime(), te.myEvent.getEndTime(), te.value.getType());
+				absences.add(new AbsenceEntry(abs, te.key));
+				tardsToRemove.add(te);
+			}	
+		}
+		
+		//Check forms
+		for (TardyEntry te: tardies)
+		{
+			List<Form> forms = DatabaseUtil.getForms(te.key.getNetID());
+			for (int i = 0; i < forms.size(); i++)
+			{
+				if (te.checkFormSatisfies(forms.get(i)))
+				{
+					tardsToRemove.add(te);
+				}
+			}
+		}
+		for (AbsenceEntry ae: absences)
+		{
+			List<Form> forms = DatabaseUtil.getForms(ae.key.getNetID());
+			for (int i = 0; i < forms.size(); i++)
+			{
+				if (ae.checkFormSatisfies(forms.get(i)))
+				{
+					absToRemove.add(ae);
+				}
+			}
+		}
+		
+		for (int i = 0; i < tardsToRemove.size(); i++)
+			tardies.remove(tardsToRemove.get(i));
+		for (int i = 0; i < absToRemove.size(); i++)
+			absences.remove(absToRemove.get(i));
+		
+		for (AbsenceEntry ae: absences)
+		{
+			List<Absence> myAbsences = DatabaseUtil.getAbsences(ae.key.getNetID());
 			//Remove the old ones
 			for (int i = 0; i < myAbsences.size(); i++)
 			{
-				if (myAbsences.get(i).equals(absences.get(u)));
+				if (myAbsences.get(i).equals(ae.value))
 				{
 					DatabaseUtil.removeAbsence(myAbsences.get(i));
 				}
 			}
-			DatabaseUtil.addAbsence(absences.get(u));
+			DatabaseUtil.addAbsence(ae.value);
 		}
 		
-		for (User u: tardies.keySet())
+		for (TardyEntry te: tardies)
 		{
-			List<Tardy> myTardies = DatabaseUtil.getTardies(u.getNetID());
+			List<Tardy> myTardies = DatabaseUtil.getTardies(te.key.getNetID());
 			for (int i = 0; i < myTardies.size(); i++)
 			{
-				if (myTardies.get(i).equals(tardies.get(u)))
+				if (myTardies.get(i).equals(te.value))
 				{
 					DatabaseUtil.removeTardy(myTardies.get(i));
 				}
 			}
-			DatabaseUtil.addTardy(tardies.get(u));
+			DatabaseUtil.addTardy(te.value);
 		}
 		
+	}
+	
+	public static class AbsenceEntry
+	{
+		public Absence value;
+		public User key;
+		public Event myEvent;
+		
+		public AbsenceEntry(Absence v, User k)
+		{
+			value = v;
+			key = k;
+		}
+		
+		public boolean equals(Object o)
+		{
+			if (o == null || o.getClass() != this.getClass()) return false;
+			AbsenceEntry ae = (AbsenceEntry) o;
+			return ae.value.equals(value) && ae.key.equals(key);
+		}
+		
+//		public void setMyEvent(Event e)
+//		{
+//			myEvent = e;
+//		}
+		
+		public String toString()
+		{
+			return key.getNetID() + " "+ value.toString();
+		}
+		
+		public boolean isDuringEvent(Event e)
+		{
+			return e.getStartTime().compareTo(value.getStartTime()) <= 0 
+					&& e.getEndTime().compareTo(value.getStartTime()) >= 0;
+		}
+		
+		public boolean checkFormSatisfies(Form f)
+		{
+			if (f.getType().equalsIgnoreCase("formA"))
+			{
+				//Form A only works for performances
+				if (value.getType().equalsIgnoreCase("Performance"))
+				{
+					//If it is an approved form
+					if (f.getStatus().equalsIgnoreCase("Approved"))
+					{
+						//If it is the same day
+						if (value.getStartTime().getDate().equals(f.getStartTime().getDate()))
+						{
+							return true;
+						}
+					}
+				}
+				return false;
+			}
+			else if (f.getType().equalsIgnoreCase("formB"))
+			{
+				if (f.getStatus().equalsIgnoreCase("Approved"))
+				{
+					if (timeLaterThan(value.getStartTime(), f.getStartTime()) && timeLaterThan(f.getEndTime(), value.getEndTime()))
+					{
+						String duration = f.durationToString();
+						//dur[0] is either until, Starting, or Completely
+						String[] dur = duration.split(" ");
+						if (dur[0].equalsIgnoreCase("until"))
+						{
+							//If the hours aren't the same
+							if (f.getEndTime().getHour() - value.getStartTime().getHour() == 0)
+							{
+								//TODO make this not just 15 minutes
+								if (f.getEndTime().getMinute() + 15 > value.getStartTime().getMinute())
+								{
+									return true;
+								}
+							}
+							//We are looking at a time when where endTime is like 7:45 and check in at 8
+							//When this is the case the endtime minute should be less than the check in minute
+							if (f.getEndTime().getHour() - value.getStartTime().getHour() == -1)
+							{
+								if (f.getEndTime().getMinute() + 15 > value.getStartTime().getMinute())
+								{
+									return false;
+								}
+								return true;
+							}
+						}
+						else if (dur[0].equalsIgnoreCase("Starting"))
+						{
+							//TODO Early check out don't need to handle
+							
+						}
+						else if (dur[0].equalsIgnoreCase("Completely"))
+						{
+							//If we've made it to this point they're good
+							return true;
+						}
+						else
+						{
+							System.err.println("Bad things happened, couldn't figure out what type of form B it was");
+						}
+					}
+				}
+				return false;
+			}
+			
+			else if (f.getType().equalsIgnoreCase("formC"))
+			{
+				//Form C only works for performances
+				if (value.getType().equalsIgnoreCase("Rehearsal"))
+				{
+					//If it is an approved form
+					if (f.getStatus().equalsIgnoreCase("Approved"))
+					{
+						//If it is the same day
+						if (value.getStartTime().getDate().equals(f.getStartTime().getDate()))
+						{
+							return true;
+						}
+					}
+				}
+				return false;
+			}
+			else
+			{
+				System.err.println("Error occurred.. didn't know when what type of Form B it was");
+				return false;
+			}
+		}
+			
+	
+	}
+	public static class TardyEntry
+	{
+		public Tardy value;
+		public User key;
+		public Event myEvent;
+		
+		public TardyEntry(Tardy v, User k)
+		{
+			value = v;
+			key = k;
+		}
+		
+		public boolean equals(Object o)
+		{
+			if (o == null || o.getClass() != this.getClass()) return false;
+			TardyEntry ae = (TardyEntry) o;
+			return ae.value.equals(value) && ae.key.equals(key);
+		}
+		
+		public String toString()
+		{
+			return key.getNetID() + " " + value.toString();
+		}
+		
+		public boolean isDuringEvent(Event e)
+		{
+			return e.getStartTime().compareTo(value.getTime()) <= 0 
+					&& e.getEndTime().compareTo(value.getTime()) >= 0;
+		}
+		
+		public void setMyEvent(Event e)
+		{
+			myEvent = e;
+		}
+		
+		public boolean isLaterThanHalfHourForMyEvent()
+		{
+			if (myEvent == null)
+				return false;
+			Time myTime = value.getTime();
+			if (myTime.getDate().compareTo(myEvent.getDate()) >= 1)
+			{
+				return true;
+			}
+			else if (myTime.getHour() - myEvent.getStartTime().getHour() >= 1)
+			{
+				return true;
+			}
+			else if (myTime.getMinute() - myEvent.getStartTime().getMinute() >= 30)
+			{
+				return true;
+			}
+			return false;
+		}
+		
+		//Method used to check when we need to remove an Absence because a Tardy corresponds to the same event
+		public boolean isDuringAbsence(AbsenceEntry a)
+		{
+			//Check that the absence is during this event
+			if (myEvent == null)
+				return false;
+			if (a.isDuringEvent(myEvent))
+				return key.getNetID().equals(a.key.getNetID());
+			return false;
+		}
+		
+		public boolean checkFormSatisfies(Form f)
+		{
+			if (f.getType().equalsIgnoreCase("formA"))
+			{
+				//Form A only works for performances
+				if (value.getType().equalsIgnoreCase("Performance"))
+				{
+					//If it is an approved form
+					if (f.getStatus().equalsIgnoreCase("Approved"))
+					{
+						//If it is the same day
+						if (value.getTime().getDate().equals(f.getStartTime().getDate()))
+						{
+							return true;
+						}
+					}
+				}
+				return false;
+			}
+			else if (f.getType().equalsIgnoreCase("formB"))
+			{
+				if (f.getStatus().equalsIgnoreCase("Approved"))
+				{
+					if (timeLaterThan(value.getTime(), f.getStartTime()) && timeLaterThan(f.getEndTime(), value.getTime()))
+					{
+						String duration = f.durationToString();
+						//dur[0] is either until, Starting, or Completely
+						String[] dur = duration.split(" ");
+						if (dur[0].equalsIgnoreCase("until"))
+						{
+							//If the hours aren't the same
+							if (f.getEndTime().getHour() - value.getTime().getHour() == 0)
+							{
+								//TODO make this not just 15 minutes
+								if (f.getEndTime().getMinute() + 15 > value.getTime().getMinute())
+								{
+									return true;
+								}
+							}
+							//We are looking at a time when where endTime is like 7:45 and check in at 8
+							//When this is the case the endtime minute should be less than the check in minute
+							if (f.getEndTime().getHour() - value.getTime().getHour() == -1)
+							{
+								if (f.getEndTime().getMinute() + 15 > value.getTime().getMinute())
+								{
+									return false;
+								}
+								return true;
+							}
+						}
+						else if (dur[0].equalsIgnoreCase("Starting"))
+						{
+							//TODO Early check out don't need to handle
+							
+						}
+						else if (dur[0].equalsIgnoreCase("Completely"))
+						{
+							//If we've made it to this point they're good
+							return true;
+						}
+						else
+						{
+							System.err.println("Bad things happened, couldn't figure out what type of form B it was");
+						}
+					}
+				}
+				return false;
+			}
+			
+			else if (f.getType().equalsIgnoreCase("formC"))
+			{
+				//Form C only works for performances
+				if (value.getType().equalsIgnoreCase("Rehearsal"))
+				{
+					//If it is an approved form
+					if (f.getStatus().equalsIgnoreCase("Approved"))
+					{
+						//If it is the same day
+						if (value.getTime().getDate().equals(f.getStartTime().getDate()))
+						{
+							return true;
+						}
+					}
+				}
+				return false;
+			}
+			else
+			{
+				System.err.println("Error occurred.. didn't know when what type of Form B it was");
+				return false;
+			}
+		}
+			
 	}
 
 }
