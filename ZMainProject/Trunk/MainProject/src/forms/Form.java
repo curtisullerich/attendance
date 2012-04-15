@@ -26,6 +26,7 @@ public class Form {
 	private Long id;
 
 	private String netID;
+	//pending, approved, denied
 	private String status;
 	private String reason;
 	private String startTime;
