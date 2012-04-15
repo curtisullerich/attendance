@@ -1,10 +1,14 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import serverLogic.DatabaseUtil;
+import people.User;
 
 /**
  * 
@@ -25,12 +29,36 @@ public class Set_Rank extends HttpServlet
 
 		if(buttonPressed !=null)
 		{
-			String netID0 = req.getParameter("NetID0");
-			String netID1 = req.getParameter("NetID1");
-			System.out.println(netID0);
-			System.out.println(netID1);
-			System.out.println("HELLO");
+//			System.out.println("START");
+//			String netID0 = req.getParameter("netID0");
+//			String netID1 = req.getParameter("netID1");
+////			String netID1 = req.getParameter("Rank");
+//			System.out.println(netID0);
+//			System.out.println(netID1);
+////			System.out.println("HELLO");
+
+			int i=0;
+			List<User> students = DatabaseUtil.getStudents();
 			
+			while(req.getParameter("netID"+i)!=null)
+			{
+				String netID = req.getParameter("netID"+i);
+				for(User s :students)
+				{
+					if(s.getNetID().equals(netID))
+					{
+						
+						s.setRank( req.getParameter("Rank"+i));
+						DatabaseUtil.addUser(s);
+						System.out.println(s.getRank());
+					}
+				}
+				
+				i++;
+			}
+			
+			
+		
 		}
 		
 		

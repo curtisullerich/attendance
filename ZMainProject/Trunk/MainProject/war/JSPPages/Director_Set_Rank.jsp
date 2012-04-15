@@ -13,7 +13,13 @@
 <title>Direcor:Set Rank</title>
 
 <script>
-function confirmData(){} 
+function confirmData()
+{
+	
+	
+	
+	
+} 
 
 </script>
 
@@ -39,7 +45,7 @@ function confirmData(){}
 <!-- Set Rank Table -->
 	<%//for table
 		List<User> students = DatabaseUtil.getStudents();
-		String table = "<table border='1'>";
+		String table = "<table id=table1 border='1'>";
 		
 		String headers ="<tr><h2>"+"Set Students Rank:";
 		headers+="</h2>";
@@ -52,12 +58,15 @@ function confirmData(){}
 		int i=0;
 		for(User s : students)
 		{
+			
 			String row="<tr>";
 			row+="<td>"+ s.getLastName() + " "+s.getFirstName()+"</td>";
-			row+="<td><input disabled='true' name='NetID" + i +"' value='"+s.getNetID()+"'></input></td>";
+			row+="<td>"+s.getNetID()+"</td>";
 			row+="<td>"+ s.getSection()+"</td>";
 			
-			row+="<td>"+ "<input name='Rank' id ='Rank'>"+"</input>"+"</td>";
+			row+="<td>"+ "<input name ='Rank"+i+"' id ='Rank"+i+"'>"+"</input>"+"</td>";
+			row+="<td style='display: none'> <input id ='netID"+i+"'  name = 'netID"+i+"' value='"+s.getNetID()+"'></input></td>";
+
 			table+=row;
 			i++;
 		}
@@ -108,14 +117,11 @@ onSubmit="return confirmAndHashData();" accept-charset="utf-8">
 <body>
 		
 	<div style='height: 100%; width: 100%; float: left; overflow:auto'>
-	<form action="/setRank" onsubmit="return confirmData();">
-
+	<form method ="post"  action="/setRank" onsubmit="return confirmData();">
 		<%= table %>
-		<input type="submit" name = "Submit" >Submit</input>
-		
+		<button type="submit" name = "Submit" >Submit</button>		
 	</form>
-		
-	
+
 	</div>
 	
 </body>
