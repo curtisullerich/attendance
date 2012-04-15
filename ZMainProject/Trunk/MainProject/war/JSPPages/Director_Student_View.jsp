@@ -45,11 +45,14 @@
 	<script>
 		window.onload = function(){
 
-			if("<%= student.getRank() %>" == "|"){
-				var Row = document.getElementById("rankRow");
-				var Cells = Row.getElementsByTagName("td");
+			var Row = document.getElementById("rankRow");
+			var Cells = Row.getElementsByTagName("td");
+			if("<%= user.getRank() %>" == "|"){
 				Cells[1].innerText = "None";
 			}
+			else
+				Cells[1].innerText = "<%= user.getRank() %>";
+				
 			
 			if(<%= request.getParameter("successfulSave")%> == "true"){
 				alert("Student info successfully edited.");

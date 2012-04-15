@@ -2,12 +2,14 @@ package people;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 import comment.Message;
+import forms.Form;
 
 import serverLogic.DatabaseUtil;
 import attendance.Absence;
@@ -402,5 +404,47 @@ public class User {
 			return "D-";
 		else 
 			return "F";
+	}
+	/**
+	 * Sort the given list of Users by the given Comparator (Section, LastName, etc.) in descending
+	 * order
+	 * 
+	 * @param comp
+	 *            - Comparator for comparing the forms
+	 * @param users           
+	 * 			  - list of users to be sorted
+	 */
+	public static void sortUsersDescending(Comparator<User> comp, List<User> users) {
+		for (int i = 0; i < users.size() - 1; i++) {
+			for (int j = i + 1; j < users.size(); j++) {
+				if (comp.compare(users.get(i), users.get(j)) < 0) { // larger
+																	// first
+					User temp = users.get(i);
+					users.set(i, users.get(j));
+					users.set(j, temp);
+				}
+			}
+		}
+		return;
+	}
+
+	/**
+	 * Sort the given list of Users by the given Comparator (Section, LastName, etc.) in ascending
+	 * order
+	 * 
+	 * @param comp
+	 *            - Comparator for comparing the forms
+	 * @param users           
+	 * 			  - list of users to be sorted
+	 */
+	public static void sortUsersAscending(final Comparator<User> comp, List<User> users) {
+		sortUsersDescending(new Comparator<User>() {
+
+			@Override
+			public int compare(User o1, User o2) {
+				return -comp.compare(o1, o2);
+			}
+			
+		}, users);
 	}
 }

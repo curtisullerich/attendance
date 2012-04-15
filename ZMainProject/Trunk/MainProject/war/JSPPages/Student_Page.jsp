@@ -30,11 +30,14 @@
 	%>
 	<script>
 		window.onload = function(){
+			var Row = document.getElementById("rankRow");
+			var Cells = Row.getElementsByTagName("td");
 			if("<%= user.getRank() %>" == "|"){
-				var Row = document.getElementById("rankRow");
-				var Cells = Row.getElementsByTagName("td");
 				Cells[1].innerText = "None";
 			}
+			else
+				Cells[1].innerText = "<%= user.getRank() %>";
+				
 			if(<%= request.getParameter("successfulSave")%> == "true"){
 				alert("User info successfully edited.");
 			}
