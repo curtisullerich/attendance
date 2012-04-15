@@ -161,7 +161,7 @@
 			<% 	
 			int year = user.getYear();
 			Calendar date = Calendar.getInstance(TimeZone.getTimeZone("America/Chicago"));
-			int month = date.get(Calendar.MONTH);
+			int month = date.get(Calendar.MONTH) + 1;
 			int curYear = date.get(Calendar.YEAR);
 			int day = date.get(Calendar.DATE);
 			%>
