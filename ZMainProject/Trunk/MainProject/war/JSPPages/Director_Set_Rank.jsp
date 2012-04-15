@@ -12,7 +12,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Direcor:Set Rank</title>
 
-<form method="post" action="/setRank" onsubmit=""
+<script>
+function confirmData(){} 
+
+</script>
+
 	<%
 	String netID = (String) session.getAttribute("user");
 	User user = null;
@@ -45,21 +49,22 @@
 		headers+="</tr>";
 		table+=headers;
 		
+		int i=0;
 		for(User s : students)
 		{
 			String row="<tr>";
 			row+="<td>"+ s.getLastName() + " "+s.getFirstName()+"</td>";
-			row+="<td>"+ s.getNetID()+"</td>";
+			row+="<td><input disabled='true' name='NetID" + i +"' value='"+s.getNetID()+"'/></td>";
 			row+="<td>"+ s.getSection()+"</td>";
 			
 			row+="<td>"+ "<input name='Rank' id ='Rank'>"+"</input>"+"</td>";
 			table+=row;
+			i++;
 		}
 		
 		table+="</table>";
 	%>
 	
-	<button type="Submit" name = "Submit" type ="Submit">Submit</button>
 	
 
 	<%//for filters
@@ -73,7 +78,16 @@
 </head>
 <body>
 		
-	<div style='height: 100%; width: 100%; float: left; overflow:auto'><%= table %></div>
+	<div style='height: 100%; width: 100%; float: left; overflow:auto'>
+	<form action="/setRank" onsubmit="return confirmData();">
 
+		<%= table %>
+		<button type="Submit" name = "Submit" >Submit</button>
+		
+	</form>
+		
+	
+	</div>
+	
 </body>
 </html>

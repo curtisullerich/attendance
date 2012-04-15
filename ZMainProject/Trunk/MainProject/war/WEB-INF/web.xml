@@ -20,7 +20,7 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	</servlet>
 	
 	<servlet>
-		<servlet-name>SetRank</servlet-name>
+		<servlet-name>Set_Rank</servlet-name>
 		<servlet-class>servlets.Set_Rank</servlet-class>
 	</servlet>
 	
