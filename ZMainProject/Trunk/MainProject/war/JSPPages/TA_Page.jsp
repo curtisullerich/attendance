@@ -35,8 +35,13 @@
 			}
 			else if(<%= request.getParameter("successfulSave")%> == "false"){
 				alert("Password update error. TA password not changed.");	
+			}
 		}
-	}
+		
+		function help(){
+			alert("Helpful information about TA page.")
+		}
+	
 	</script>
 	<body>
 	<!--*********************Page Trail*****************************-->

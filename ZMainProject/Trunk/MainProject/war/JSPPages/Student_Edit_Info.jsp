@@ -38,57 +38,91 @@
 	 *
 	 */
 	function confirmAndHashData() {
- 		 
- 		 var universityID = document.getElementById("UniversityID").value; 
-		 //check that universityID is 9 digit number
- 		 if((parseInt(universityID,10) < 0) || (parseInt(universityID,10) > 999999999)){
-			 alert("This is not a valid University ID. Please re-enter your University ID.")
-			 return false;
-	 	 }
 		 
+		var firstName = document.getElementById("FirstName").value;
+		 if(firstName == null || firstName == ""){
+			 alert("Please enter a first name.")
+			 return false;
+		 }
+		 
+		 var LastName = document.getElementById("LastName").value;
+		 if(LastName == null || LastName == ""){
+			 alert("Please enter a last name.")
+			 return false;
+		 }
+		 
+		 var major = document.getElementById("Major").value;
+		 if(major == null || major == ""){
+			 alert("Please enter a major.")
+			 return false;
+		 }
+		 
+		 var section = document.getElementById("Section").value;
+		 if(section == null || section == ""){
+			 alert("Please enter a section.")
+			 return false;
+		 }
+ 		 
  		 //check if years is 10...
  		 if(parseInt(document.getElementById("Year").value,10) == 10){
 			 alert("Congratulations. You need to graduate.")
 	 	 }
- 		 
- 		 //validate current password
- 		 if(Sha1.hash(document.getElementById("Current Password").value).toUpperCase() != 
- 			 ("<%= DatabaseUtil.getUser(netID).getHashedPassword()%>")){
- 			 alert("Please enter the correct current password.");
- 			 return false;
- 		 }
- 			 
-		 var password = document.getElementById("Password").value;
-		 //check that password is appropriate length
-		 if(password.length < 6 || password.length > 20){
-			 alert("Password must be between 5 and 21 characters long.")
-			 return false;
-		 }
-		 //check that password contains legal characters
-		 var badChars = new Array();
-		 for(var i = 0; i < password.length; i++){
-	 		//between the brackets are all valid password characters
- 		     if(!/[a-zA-Z0-9!@#$%&*()_+=.,<>?-]/.test(password[i]))
-		 	 	 badChars.push(password[i]);
-		 }
-		 if(badChars.length > 0){
-		 	  var badCharsStr = "";
-		      for(i = 0; i < badChars.length; i++)
-		 	       badCharsStr += (badChars[i] + " ");
-		      alert("Please do not use the following characters: " + badCharsStr);
-		      return false;
-		 }
-		 //check that passwords match
-		 if(password != document.getElementById("Password2").value){
-			 alert("Passwords do not match. Please ensure passwords match.");
+ 		 		 
+		 var years = document.getElementById("Year").value;
+		 if(years == null || years == ""){
+			 alert("Please enter the number of years in the band.")
 			 return false;
 		 }
 		 
-		 //hash password into hidden field
-		 var str = Sha1.hash(document.getElementById("Password").value);
-		 str = str.toUpperCase();
-		 document.getElementById("Hashed Password").value = str;
+		 var universityID = document.getElementById("UniversityID").value; 
+		 //check that universityID is 9 digit number
+		 if((parseInt(universityID,10) < 0) || (parseInt(universityID,10) > 999999999) || universityID == "" || universityID == null){
+			 alert("This is not a valid University ID. Please re-enter your University ID.")
+			 return false;
+	 	 }
+		 
+		 //validate student password
+		 if(Sha1.hash(document.getElementById("Current Password").value).toUpperCase() != 
+			 ("<%=user.getHashedPassword()%>")){
+			 alert("Please enter the correct Director password.");
+			 return false;
+		 }
 		
+		 //new passwords are optional
+		 var password = document.getElementById("Password").value;
+		 if(password.length != "" && password.length != null)
+			 {
+			 //check that password is appropriate length
+			 if(password.length < 6 || password.length > 20){
+				 alert("Password must be between 5 and 21 characters long.")
+				 return false;
+			 }
+			 //check that password contains legal characters
+			 var badChars = new Array();
+			 for(var i = 0; i < password.length; i++){
+		 		//between the brackets are all valid password characters
+	 		     if(!/[a-zA-Z0-9!@#$%&*()_+=.,<>?-]/.test(password[i]))
+			 	 	 badChars.push(password[i]);
+			 }
+			 if(badChars.length > 0){
+			 	  var badCharsStr = "";
+			      for(i = 0; i < badChars.length; i++)
+			 	       badCharsStr += (badChars[i] + " ");
+			      alert("Please do not use the following characters: " + badCharsStr);
+			      return false;
+			 }
+			 //check that passwords match
+			 if(password != document.getElementById("Password2").value){
+				 alert("Passwords do not match. Please ensure passwords match.");
+				 return false;
+			 }
+			 
+			 //hash password into hidden field
+			 var str = Sha1.hash(document.getElementById("Password").value);
+			 str = str.toUpperCase();
+			 document.getElementById("Hashed Password").value = str;
+		 }
+ 		 
 		 return true;
 	}
 		
@@ -169,6 +203,7 @@
 
 					<td><label for="Year">Years in band</label></td>
 					<td><select name="Year" id="Year">
+							<option><%= user.getYear()%></option>
 							<option>1</option>
 							<option>2</option>
 							<option>3</option>
@@ -209,6 +244,8 @@
 
 
 				</table>
+				
+				<p>New Passwords are Optional</p>
 				
 				<input type="submit" value="Save Info" name="SaveInfo"/>
 				<input type="button" value="Back" name="Back" onclick="window.location = '/JSPPages/Student_Page.jsp'"/>

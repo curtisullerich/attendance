@@ -39,8 +39,8 @@ public class Student_Edit_InfoServlet extends HttpServlet
 			major = req.getParameter("Major");
 			section = req.getParameter("Section");
 			
-			if ( password != null && firstName != null && lastName != null && univID != null && year > 0 && major != null &&
-					section != null && password != "" && firstName != "" && lastName != "" && univID != "" && major != "" && section != "")
+			if ( firstName != null && lastName != null && univID != null && year > 0 && major != null &&
+					section != null && firstName != "" && lastName != "" && univID != "" && major != "" && section != "")
 			{
 				User guy = DatabaseUtil.getUser(""+req.getSession().getAttribute("user"));
 
@@ -50,7 +50,10 @@ public class Student_Edit_InfoServlet extends HttpServlet
 				guy.setYear(year);
 				guy.setMajor(major);
 				guy.setSection(section);
-				guy.setHashedPassword(password);
+				if(password != null && password != "")
+				{
+					guy.setHashedPassword(password);
+				}
 				
 				//overwrite the old user
 				DatabaseUtil.addUser(guy);

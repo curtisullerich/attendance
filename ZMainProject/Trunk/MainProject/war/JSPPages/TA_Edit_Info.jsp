@@ -30,7 +30,11 @@
 	%>
 		<script src="sha.js"/></script>
 		<script>
-		
+
+		function help(){
+			alert("Helpful information about TA page.")
+		}
+	
 		/**
 		 *
 		 * Hashes the password for sending to the server.

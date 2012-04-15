@@ -63,6 +63,16 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<servlet-name>TAEditInfo</servlet-name>
 		<servlet-class>servlets.TA_Edit_InfoServlet</servlet-class>
 	</servlet>	
+	
+	<servlet>
+		<servlet-name>DirectorEditStudentInfo</servlet-name>
+		<servlet-class>servlets.Director_Edit_Student_InfoServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>DirectorEditStudentInfo</servlet-name>
+		<url-pattern>/directorEditStudentInfo</url-pattern>
+	</servlet-mapping>
 		
 	<servlet-mapping>
 		<servlet-name>Login</servlet-name>

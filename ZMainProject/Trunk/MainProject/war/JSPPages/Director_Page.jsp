@@ -122,11 +122,7 @@
 		<input type ="submit" id="messagesButton" onClick="expandMessages();"  value = "New Messages(<%=numNew%>) ">
 
 		<br/>
-		<input type ="submit" onClick="window.location = '/JSPPages/Director_View_AllForms.jsp';"  value = "View All Forms">
-		
-		<br/>
-		<input type ="submit" onClick="window.location = '/JSPPages/Director_Set_Rank.jsp';"  value = "Set Rank">
-		
+		<input type ="submit" onClick="window.location = '/JSPPages/Director_View_AllForms.jsp';"  value = "View All Forms">		
 		
 		<div id="messages" style="display: none" style="border: 3px solid black; height: 200px; overflow: auto; background-color:#FFFDE0;">
 			<%= table %>

@@ -32,12 +32,49 @@
 	 */
 	function confirmAndHashData() {
  		 
- 		 var universityID = document.getElementById("UniversityID").value; 
+		var firstName = document.getElementById("FirstName").value;
+		 if(firstName == null || firstName == ""){
+			 alert("Please enter a first name.")
+			 return false;
+		 }
+		 
+		 var LastName = document.getElementById("LastName").value;
+		 if(LastName == null || LastName == ""){
+			 alert("Please enter a last name.")
+			 return false;
+		 }
+		 
+		 var netID = document.getElementById("NetID").value;
+		 if(netID == null || netID == ""){
+			 alert("Please enter your netID.")
+			 return false;
+		 }
+		 
+		 var universityID = document.getElementById("UniversityID").value; 
 		 //check that universityID is 9 digit number
- 		 if((parseInt(universityID,10) < 0) || (parseInt(universityID,10) > 999999999)){
+		 if((parseInt(universityID,10) < 0) || (parseInt(universityID,10) > 999999999) || universityID == "" || universityID == null){
 			 alert("This is not a valid University ID. Please re-enter your University ID.")
 			 return false;
 	 	 }
+		 
+		 var section = document.getElementById("Section").value;
+		 if(section == null || section == ""){
+			 alert("Please enter a section.")
+			 return false;
+		 }
+		 
+		 var years = document.getElementById("Year").value;
+		 if(years == null || years == ""){
+			 alert("Please enter the number of years in the band.")
+			 return false;
+		 }
+		 
+		 var major = document.getElementById("Major").value;
+		 if(major == null || major == ""){
+			 alert("Please enter a major.")
+			 return false;
+		 }
+		 
 		 
  		 //check if years is 10...
  		 if(parseInt(document.getElementById("Year").value,10) == 10){
