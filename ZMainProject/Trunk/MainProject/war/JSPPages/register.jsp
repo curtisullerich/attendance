@@ -18,6 +18,10 @@
 <script>
 	
 	window.onload = function(){
+		
+		if(<%= request.getParameter("error")%>)
+			alert("There was an error with the user creation. No account was added.");
+		
 		if(<%= request.getParameter("userExists")%>){
 			var user = "<%= request.getParameter("user")%>";
 			alert(user + " is already registered in the system. You can try resetting your password from the login page.");

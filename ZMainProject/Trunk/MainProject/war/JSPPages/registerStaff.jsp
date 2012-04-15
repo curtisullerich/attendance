@@ -9,6 +9,15 @@
 <script>
 	
 	window.onload = function(){
+		var d = new Date();
+		var year = d.getFullYear();
+		if(d.getMonth == 0)
+			year -= 1;
+		document.getElementsByTagName("h1")[0].innerHTML = "ISU Varsity Marching Band / Fall " + year;
+
+		if(<%= request.getParameter("error")%>)
+			alert("There was an error with the staff creation. No accounts were added.");
+		
 		if(<%= request.getParameter("userExists")%>)
 			alert("Both staff accounts are already registered in the system. You can try resetting your password from the login page.");
 	}

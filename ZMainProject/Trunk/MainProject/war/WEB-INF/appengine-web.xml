@@ -17,7 +17,9 @@
 	
 	<static-files>
 		<include path = "/MobileApp/FieldAppCSS.css" />
-	
+		<include path = "/JSPPages/sha.js" />
+		<include path = "/JSPPages/script.js" />
+		<include path = "/JSPPages/404.css" />
 	</static-files>
 	
 	<sessions-enabled>true</sessions-enabled>

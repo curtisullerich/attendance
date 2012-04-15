@@ -72,6 +72,7 @@ public class RegisterStaffServlet extends HttpServlet
 			{
 				//Throw an alert that they didn't add a field
 				System.out.println("some fields were invalid");
+				resp.sendRedirect("/JSPPages/registerStaff.jsp?error='true'");
 			}
 			
 			
