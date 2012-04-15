@@ -21,7 +21,12 @@
 	{
 		user = DatabaseUtil.getUser(netID);
 		if (!user.getType().equalsIgnoreCase("Director")) {
-			response.sendRedirect("/JSPPages/logout.jsp");
+			if(user.getType().equalsIgnoreCase("TA"))
+				response.sendRedirect("/JSPPages/TA_Page.jsp");
+			else if(user.getType().equalsIgnoreCase("Student"))
+				response.sendRedirect("/JSPPages/Student_Page.jsp");
+			else
+				response.sendRedirect("/JSPPages/logout.jsp");
 		}
 	}
 	%>
@@ -37,10 +42,10 @@
 		
 		for (Event event : events) {
 			String date = event.getDate().toString();
-			String color = event.isPerformance() ? "#FFFFAA" : "#FFAAFF";
+			String color = event.isPerformance() ? "blue" : "#009900";
 			headers += "<td bgcolor='"+color+"' nowrap><a href='/JSPPages/statusDistributionGraph.jsp?id=" +event.getId() +"&type=Event'>" + date +"</a></td>";//TODOO this actually gets me the id, right?
 		}
-		headers+="<td>Grade</td>";
+		headers+="<td>Grade</td>";		
 		headers+="</tr>";
 		table+=headers;
 		
@@ -56,17 +61,11 @@
 			row += "<td><b><a href='/JSPPages/Director_Student_View.jsp?student="+student.getNetID()+"'>"+student.getLastName()+"</a></b></td>";
 			row += "<td><b><a href='/JSPPages/Director_Student_View.jsp?student="+student.getNetID()+"'>"+student.getFirstName()+"</a></b></td>";
 			row+= "<td>"+student.getSection()+"</td>";
-			row+= "<td>"+student.getUnivID()+"</td>"; 
+			row+= "<td>"+student.getUnivID()+"</td>";
 
 			for (Event event : events) {
 				String status = student.eventStatus(event);
-				
-				String attendanceID = student.eventAttendanceItem(event);
-				String itemType = attendanceID.split(",")[0];
-				String itemID = attendanceID.split(",")[1];				
-				
-				row += "<td nowrap onClick=\"window.open('/JSPPages/editAttendanceItem.jsp?type="+itemType+"&id="+itemID+"','Edit Item','width=500,height=800,titlebar=no')\">"+ (status.equals("present") ? "" : status) +"</td>";
-
+				row += "<td nowrap>"+ (status.equals("present") ? "" : status) +"</td>";
 			}
 			row+= "<td>"+student.getGrade()+"</td>";
 			row +="</tr>";
@@ -76,12 +75,27 @@
 	%>
 	
 </head>
-	<body>
-	
-	<%= table %>
-		<!--div style='height: 100%; width: 10%; border: 3px solid black; float: left; overflow:auto'></div>
-		<div style='height: 100%; width: 85%; border: 3px solid black; float: left; overflow:auto'></div-->
+	<body>a href="/JSPPages/logout.jsp" title="Logout and Return to Login Screen">Home</a> 
+		>
+		<a href="/JSPPages/Director_Page.jsp" title="Director Page">Director</a>
+		>
+		<a href="/JSPPages/Director_attendanceTable.jsp" title="View Class Attendance">View Class Attendance</a>
+			
+		You are logged in as the Director (<%= user.getFirstName() + " " + user.getLastName() %>)
+		<!--LOGOUT BUTTON-->
+		<input type="button" onclick="window.location = '/JSPPages/logout.jsp'" id="Logout" value="Logout"/>		
 
+		<!--HELP BUTTON-->	
+		<input type="button" onclick="javascript: help();" id="Help" value="Help"/>	
+	
+		<br/>
+		<br/>
+<%= table %>
+		<!-- div style='height: 100%; width: 10%; border: 3px solid black; float: left; overflow:auto'></div>
+		<div style='height: 100%; width: 85%; border: 3px solid black; float: left; overflow:auto'></div-->
+		
+		<br/>
+		<input type="button" value="Back" name="Back" onclick="window.location = '/JSPPages/Director_Page.jsp'"/>
 
 	</body>
 </html>
