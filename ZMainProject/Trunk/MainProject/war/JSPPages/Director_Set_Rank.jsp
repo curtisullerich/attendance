@@ -54,7 +54,7 @@ function confirmData(){}
 		{
 			String row="<tr>";
 			row+="<td>"+ s.getLastName() + " "+s.getFirstName()+"</td>";
-			row+="<td><input disabled='true' name='NetID" + i +"' value='"+s.getNetID()+"'/></td>";
+			row+="<td><input disabled='true' name='NetID" + i +"' value='"+s.getNetID()+"'></input></td>";
 			row+="<td>"+ s.getSection()+"</td>";
 			
 			row+="<td>"+ "<input name='Rank' id ='Rank'>"+"</input>"+"</td>";
@@ -82,7 +82,7 @@ function confirmData(){}
 	<form action="/setRank" onsubmit="return confirmData();">
 
 		<%= table %>
-		<button type="Submit" name = "Submit" >Submit</button>
+		<input type="submit" name = "Submit" >Submit</input>
 		
 	</form>
 		
