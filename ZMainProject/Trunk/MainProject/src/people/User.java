@@ -7,6 +7,8 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import comment.Message;
+
 import serverLogic.DatabaseUtil;
 import attendance.Absence;
 import attendance.AttendanceReport;
@@ -58,6 +60,24 @@ public class User {
 		this.rank = "|";
 	}
 
+	public long getID() {
+		
+		return this.id;
+	}
+	
+	public void copyAllFrom(User other) {
+		this.type=other.type;
+		this.netID=other.netID;
+		this.firstName=other.firstName;
+		this.firstName=other.lastName;
+		this.univID=other.univID;
+		this.hashedPassword=other.hashedPassword;
+		this.major=other.major;
+		this.section=other.section;
+		this.year=other.year;
+		this.rank=other.rank;
+	}
+	
 	public String toString() {
 		return netID + " " + firstName + " " + lastName + " " + univID + " "
 				+ major + " " + section + " " + year + " " + rank + " " ;

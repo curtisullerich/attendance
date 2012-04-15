@@ -49,7 +49,7 @@ public class Set_Rank extends HttpServlet
 					{
 						
 						s.setRank( req.getParameter("Rank"+i));
-						DatabaseUtil.addUser(s);
+						DatabaseUtil.refreshUser(s);
 						System.out.println(s.getRank());
 					}
 				}

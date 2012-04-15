@@ -548,6 +548,13 @@ public class DatabaseUtil
 		em.persist(databaseMessage);
 		em.close();
 	}
+	public static void refreshUser(User u) {
+		EntityManager em = EMFService.get().createEntityManager();
+		User databaseUser = em.find(User.class, u.getID());
+		databaseUser.copyAllFrom(u);
+		em.persist(databaseUser);
+		em.close();
+	}
 	
 	public static void refreshForm(Form f) {
 		EntityManager em = EMFService.get().createEntityManager();
