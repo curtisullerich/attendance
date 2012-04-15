@@ -10,10 +10,8 @@ import javax.persistence.Id;
 import time.Time;
 
 /**
- * 
  * @author Yifei Zhu
  * @Fixed it Todd Wegter
- * 
  */
 
 @Entity
@@ -27,6 +25,9 @@ public class Form {
 	private String netID;
 	// pending, approved, denied
 	private String status;
+	
+	//pending, approved, denied,
+	private String emailStatus;
 	private String reason;
 	private String startTime;
 	private String endTime;
@@ -50,6 +51,7 @@ public class Form {
 		this.netID = other.netID;
 		// pending, approved, denied
 		this.status = other.status;
+		this.emailStatus = other.emailStatus;
 		this.reason = other.reason;
 		this.startTime = other.startTime;
 		this.endTime = other.endTime;
@@ -81,6 +83,7 @@ public class Form {
 		this.reason = reason;
 		this.type = type;
 		this.status = "pending";
+		this.emailStatus="pending";
 		this.dept = "";
 		this.course = "";
 		this.section = "";
@@ -96,6 +99,7 @@ public class Form {
 		this.reason = reason;
 		this.type = type;
 		this.status = "pending";
+		this.emailStatus="pending";
 		this.dept = "";
 		this.course = "";
 		this.section = "";
@@ -114,6 +118,7 @@ public class Form {
 		this.reason = reason;
 		this.type = type;
 		this.status = "pending";
+		this.emailStatus="pending";
 		this.dept = dept;
 		this.course = course;
 		this.section = section;
@@ -129,6 +134,7 @@ public class Form {
 		this.type = type;
 		// setFile(attachedFile);
 		this.status = "pending";
+		this.emailStatus="pending";
 	}
 
 	public Long getID() {
@@ -170,9 +176,19 @@ public class Form {
 	public String getStatus() {
 		return this.status;
 	}
+	
+	public String getEmailStatus()
+	{
+		return this.emailStatus;
+	}
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	
+	public void setEmailStatus(String s)
+	{
+		this.emailStatus=s;
 	}
 
 	public String getType() {
