@@ -51,6 +51,22 @@ public class Tardy {
 		}
 	}
 
+	public String[] getMessageIDs() {
+		return messageIDs;
+	}
+
+	public void setMessageIDs(String[] messageIDs) {
+		this.messageIDs = messageIDs;
+	}
+
+	public int getCurrentIndex() {
+		return currentIndex;
+	}
+
+	public void setCurrentIndex(int currentIndex) {
+		this.currentIndex = currentIndex;
+	}
+
 	// public Tardy(String dbTardy)
 	// {
 	// String[] tardy = dbTardy.split(" ");

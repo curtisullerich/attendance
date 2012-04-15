@@ -209,6 +209,10 @@ public class User {
 	 * @return
 	 */
 	public String eventStatus(Event event) {
+		
+		if (this.type.equalsIgnoreCase("director")){
+			return "present";
+		}
 		List<Tardy> tardies = this.getTardies();
 		List<EarlyCheckOut> ecos = this.getEarlyCheckOuts();
 		List<Absence> absences = this.getAbsences();
@@ -247,6 +251,10 @@ public class User {
 	 * @return
 	 */
 	public String eventAttendanceItem(Event event) {
+		
+		if (this.type.equalsIgnoreCase("director")) {
+			return "none,none";
+		}
 		List<Tardy> tardies = this.getTardies();
 		List<EarlyCheckOut> ecos = this.getEarlyCheckOuts();
 		List<Absence> absences = this.getAbsences();

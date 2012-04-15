@@ -7,6 +7,7 @@
 
 <html>
 
+
 <head>
 	<%
 	String netID = (String) session.getAttribute("user");
@@ -42,7 +43,7 @@
 		
 		for (Event event : events) {
 			String date = event.getDate().toString();
-			String color = event.isPerformance() ? "blue" : "#009900";
+			String color = event.isPerformance() ? "#FFDDFF" : "#FFFFDD";
 			headers += "<td bgcolor='"+color+"' nowrap><a href='/JSPPages/statusDistributionGraph.jsp?id=" +event.getId() +"&type=Event'>" + date +"</a></td>";//TODOO this actually gets me the id, right?
 		}
 		headers+="<td>Grade</td>";		
@@ -65,7 +66,11 @@
 
 			for (Event event : events) {
 				String status = student.eventStatus(event);
-				row += "<td nowrap>"+ (status.equals("present") ? "" : status) +"</td>";
+				String info = student.eventAttendanceItem(event);
+				String itemType=info.split(",")[0];
+				String itemID = info.split(",")[1];
+				
+				row += "<td nowrap onClick=\"window.location='/JSPPages/editAttendanceItem.jsp?itemType="+itemType+"&itemID="+itemID+"'\">"+ (status.equals("present") ? "" : status) +"</td>";
 			}
 			row+= "<td>"+student.getGrade()+"</td>";
 			row +="</tr>";
@@ -75,7 +80,8 @@
 	%>
 	
 </head>
-	<body>a href="/JSPPages/logout.jsp" title="Logout and Return to Login Screen">Home</a> 
+	<body>
+	<a href="/JSPPages/logout.jsp" title="Logout and Return to Login Screen">Home</a> 
 		>
 		<a href="/JSPPages/Director_Page.jsp" title="Director Page">Director</a>
 		>

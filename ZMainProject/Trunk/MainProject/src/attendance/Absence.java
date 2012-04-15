@@ -40,6 +40,22 @@ public class Absence {
 
 	private int currentIndex;
 
+	public String[] getMessageIDs() {
+		return messageIDs;
+	}
+
+	public void setMessageIDs(String[] messageIDs) {
+		this.messageIDs = messageIDs;
+	}
+
+	public int getCurrentIndex() {
+		return currentIndex;
+	}
+
+	public void setCurrentIndex(int currentIndex) {
+		this.currentIndex = currentIndex;
+	}
+
 	public Absence(String netID, Time startTime, Time endTime, String type) {
 		this.netID = netID;
 		this.startTime = startTime.toString(24);
