@@ -5,7 +5,7 @@
 
 <!-- This should be changed to reflect successful processing when we can -->
 <!-- Parser.splat(info) should return true if successful -->
-<html>
+
 <head>
 <title>@10Dance</title>
 <link rel="stylesheet" type="text/css" href="/JSPPages/MainCSS.css">
@@ -15,7 +15,7 @@
 <script>
 	window.onload = function(){
 		<%String info = request.getParameter("tempForUpload");
-			boolean worked = false;
+			String worked = "success";
 			//out.println("value="+info);
 			//System.out.println("We got here");
 		%>
@@ -25,9 +25,10 @@
 			localStorage.setItem("success", "true");
 		<%}%>
 		
-		<%if (info == null || !worked)
+		<%if (info == null || worked.contains("fail"))
 		{%>
 			localStorage.setItem("success", "false");
+			localStorage.setItem("uploadError", "<%= worked %>");
 		<%}%>
 		
 		<%if (info.equalsIgnoreCase(""))
@@ -41,5 +42,4 @@
 </head>
 <body>
 		<h1><br/>Uploading...</h1>
-    </body>
-</html>
+</body>

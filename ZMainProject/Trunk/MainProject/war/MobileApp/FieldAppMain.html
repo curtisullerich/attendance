@@ -56,6 +56,12 @@
 					alert("Nothing was uploaded to the server")
 					localStorage.removeItem("success");
 				}
+				
+				var error = localStorage.getItem("uploadError");
+				if(error != null){
+					alert("Upload error: " + error);
+					localStorage.removeItem("uploadError");
+				}
 			}
 			
 

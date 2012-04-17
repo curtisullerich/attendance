@@ -135,6 +135,8 @@ public class Form {
 		// FormA, FormB, FormC, FormD
 		this.type = other.type;
 		
+		this.currentIndex = other.currentIndex;
+		
 	}
 	
 	

@@ -20,13 +20,15 @@ public class Parser {
 	private static final String studentPrepend = "studentRecord";
 
 	//Remember the people absent and if they were tardy then just remove the absence.
-	public static boolean splat(String add) {
+	public static String splat(String add) {
 		// Splats the massive string into an array of strings for each person
 		String[] people = add.split(",");
 		
 		List<AbsenceEntry> absences = new LinkedList<AbsenceEntry>();
 		List<TardyEntry> tardies = new LinkedList<TardyEntry>();
 		List<Event> events = new LinkedList<Event>();
+		
+		int breakspot = 0;
 
 		try
 		{
@@ -36,45 +38,66 @@ public class Parser {
 				// prepend, firstName, lastName, netID, date, startTime, endTime,
 				// rank
 				String[] personalInfo = e.split("&split&");
+				breakspot=1;
 				String prepend = personalInfo[0];
+				breakspot=2;
 				if (prepend.equalsIgnoreCase(studentPrepend))
 					continue;
 				else if (prepend.equalsIgnoreCase(rehearsalPrepend) || prepend.equalsIgnoreCase(performancePrepend))
 				{
 					//Store the Event
 					String date = personalInfo[4];
+					breakspot=3;
 					String startTime = personalInfo[5];
+					breakspot=4;
 					String endTime = personalInfo[6];
+					breakspot=5;
 					Date useDate = parseDate(date);
+					breakspot=6;
 					Time start = parseTime(startTime, useDate);
+					breakspot=7;
 					Time end = parseTime(endTime, useDate);
+					breakspot=8;
 					Event newEvent = new Event(start, end, prepend);
+					breakspot=9;
 					events.add(newEvent);
+					breakspot=10;
 					DatabaseUtil.addEvent(newEvent);
+					breakspot=11;
 				}
 				else if (prepend.equalsIgnoreCase(absentPrependPerformance) || prepend.equalsIgnoreCase(absentPrependRehearsal)
 						|| prepend.equalsIgnoreCase(tardyPrepend))
 				{
 					//Store the absence or tardy
 					String netID = personalInfo[3];
+					breakspot=12;
 					String date = personalInfo[4];
+					breakspot=13;
 					String startTime = personalInfo[5];
+					breakspot=14;
 					String endTime = personalInfo[6];
+					breakspot=15;
 					
 					User person = DatabaseUtil.getUser(netID);
+					breakspot=16;
 					Date useDate = parseDate(date);
+					breakspot=17;
 					Time start = parseTime(startTime, useDate);
+					breakspot=18;
 					Time end = parseTime(endTime, useDate);
+					breakspot=19;
 					updateLists(person, prepend, useDate, start, end, absences, tardies);
+					breakspot=20;
 				}
 			}
 			updateALLTheThings(absences, tardies, events);
-			return true;
+			breakspot=21;
+			return "success";
 		}
-		catch (Exception e)
+		catch (Exception exception)
 		{
-			e.printStackTrace();
-			return false;
+			//exception.printStackTrace();
+			return "fail " + breakspot + " " + exception;
 		}
 	}
 		
