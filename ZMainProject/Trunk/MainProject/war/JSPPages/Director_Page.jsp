@@ -64,7 +64,7 @@
 		}
 		
 		function confirmDeleteAll() {
-			var ret = confirm("Are you sure you want to delete all the information in the database?");
+			var ret = confirm("Are you sure you want to delete all the information in the database? This cannot be undone!");
 			if (ret == true)
 			{
 				window.location = "/JSPPages/RemoveEverything.jsp";	
@@ -128,10 +128,12 @@
 		<input type ="submit" onClick="window.location = '/JSPPages/Director_Edit_Info.jsp';"  value = "Edit My Information">
 		<br/>
 		<input type ="submit" id="messagesButton" onClick="expandMessages();"  value = "New Messages(<%=numNew%>) ">
-
-		<br/>
-		<input type ="submit" onClick="window.location = '/JSPPages/Director_View_AllForms.jsp';"  value = "View All Forms">		
 		
+		<br/>
+		<input type ="submit" onClick="confirmDeleteAll();"  value = "Delete Everything">		
+		
+		<br/>
+		<input type ="submit" onClick="window.location = '/JSPPages/Director_View_AllForms.jsp';"  value = "View All Forms">
 		<div id="messages" style="display: none" style="border: 3px solid black; height: 200px; overflow: auto; background-color:#FFFDE0;">
 			<%= table %>
 		</div>		

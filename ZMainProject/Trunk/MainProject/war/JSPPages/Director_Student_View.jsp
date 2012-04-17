@@ -77,6 +77,15 @@
 		function help(){
 			alert("Helpful information about student page.")
 		}
+		
+		function confirmDeleteOne() {
+			var ret = confirm("Are you sure you want to delete this student?");
+			if (ret == true)
+			{
+				var loc = "/JSPPages/removeStudent.jsp?student=<%=studentNetID%>";
+				window.location = "" + loc;	
+			}
+		}
 	</script>
 	<body>
 <!--*********************Page Trail*****************************-->
@@ -123,6 +132,8 @@
 		<input type="submit" onClick="window.location='/JSPPages/Director_View_Student_Attendance.jsp?student=<%= student.getNetID()%>';"  value="View Attendance">
 		<br/>
 		<input type="submit" onClick="window.location='/JSPPages/Director_Edit_Student_Info.jsp?student=<%= student.getNetID()%>';"  value="Edit Student's Information">
+		<br/>
+		<input type="submit" onClick="confirmDeleteOne();"  value="Remove This Student">
 		<br/>
 		<input type="button" value="Back" name="Back" onclick="window.location = '/JSPPages/Director_attendanceTable.jsp'"/>
 	</body>
