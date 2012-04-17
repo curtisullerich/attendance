@@ -82,7 +82,14 @@
 		}
 		table+="</table>";
 	%>
+	<script>
+		function exportCSV()
+		{
+			
+		}
 	
+	
+	</script>
 </head>
 	<body>
 		<a href="/JSPPages/logout.jsp" title="Logout and Return to Login Screen">Home</a> 
@@ -97,7 +104,7 @@
 
 		<!--HELP BUTTON-->	
 		<input type="button" onclick="javascript: help();" id="Help" value="Help"/>	
-	
+		
 		<br/>
 		<br/>
 <%= table %>
@@ -105,7 +112,11 @@
 		<div style='height: 100%; width: 85%; border: 3px solid black; float: left; overflow:auto'></div-->
 		
 		<br/>
-		<input type="button" value="Back" name="Back" onclick="window.location = '/JSPPages/Director_Page.jsp'"/>
-
+		<form action="/readCSV" method="post" onsubmit="exportCSV();">
+			<input type="button" value="Back" name="Back" onclick="window.location = '/JSPPages/Director_Page.jsp'"/>
+			<input type="Submit" name ="export"id="export" value="Export Grades" >
+			<td><input type="password" name="CSV"
+					id="CSV" style="display: none" /></td>
+		</form>
 	</body>
 </html>
