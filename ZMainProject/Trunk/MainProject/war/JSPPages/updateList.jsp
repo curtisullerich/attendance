@@ -27,7 +27,7 @@
 	
 				var splat = new Array();
 				var mystring = str[i];
-				splat = mystring.split("{split}");
+				splat = mystring.split("&split&");
 	
 				if(splat[0] == "TA")
 				{

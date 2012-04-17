@@ -273,7 +273,7 @@ function getNetID(univID){
  * @date 2-10-2012
  */
 function storeEntry(prepend, firstname, lastname, netID, date, startTime, endTime, rank, entry){
-	var key = prepend+"{split}"+firstname+"{split}"+lastname+"{split}"+netID+"{split}"+date+"{split}"+startTime+"{split}"+endTime+"{split}"+rank;
+	var key = prepend+"&split&"+firstname+"&split&"+lastname+"&split&"+netID+"&split&"+date+"&split&"+startTime+"&split&"+endTime+"&split&"+rank;
 	localStorage.setItem(key,entry);
 }
 
@@ -301,7 +301,7 @@ function storeEntry(prepend, firstname, lastname, netID, date, startTime, endTim
  * @date 2-10-2012
  */
 function removeEntry(prepend, firstname, lastname, netID, date, startTime, endTime, rank){
-	var key = prepend+"{split}"+firstname+"{split}"+lastname+"{split}"+netID+"{split}"+date+"{split}"+startTime+"{split}"+endTime+"{split}"+rank;
+	var key = prepend+"&split&"+firstname+"&split&"+lastname+"&split&"+netID+"&split&"+date+"&split&"+startTime+"&split&"+endTime+"&split&"+rank;
     if (localStorage.getItem(key) == null) {
         return false;
     }   
@@ -360,7 +360,7 @@ function valueDelimiter(value, delimitee){
 	var valueArray = new Array();
 	
 	//splits the value into multiple strings, delimited by spaces, and stores them into an array
-	valueArray = value.split("{split}");
+	valueArray = value.split("&split&");
 	
 	if(delimitee==0){
 		return valueArray[0];
@@ -403,7 +403,7 @@ function keyDelimiter(key,delimitee){
 	var keyArray = new Array();
 	
 	//splits the key into multiple strings, delimited by spaces, and stores them into an array
-	keyArray = key.split("{split}");
+	keyArray = key.split("&split&");
 	
 	if (delimitee=="key") {
 	  return key;		// so we can access a subsection of the full localStorage as key-value pairs, in tact

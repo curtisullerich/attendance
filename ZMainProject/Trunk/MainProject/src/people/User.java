@@ -81,11 +81,11 @@ public class User {
 	}
 
 	public String toStringMobileTA() {
-		return "TA" + "{split}" + netID + "{split}" + firstName + "{split}" + lastName + "{split}" + hashedPassword + "{split}" + rank;
+		return "TA" + "&split&" + netID + "&split&" + firstName + "&split&" + lastName + "&split&" + hashedPassword + "&split&" + rank;
 	}
 	
 	public String toStringMobileStudent() {
-		return "Student" + "{split}" + netID + "{split}" + firstName + "{split}" + lastName + "{split}" + univID + "{split}" + rank;
+		return "Student" + "&split&" + netID + "&split&" + firstName + "&split&" + lastName + "&split&" + univID + "&split&" + rank;
 	}
 
 	public void addTardy(Tardy newTardy) {

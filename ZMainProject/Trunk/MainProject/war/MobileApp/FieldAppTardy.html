@@ -69,7 +69,7 @@
 					}
 				}
 				//format of tardy (24 hour time): "netID YYYY-MM-DD HH:MMam/pm
-				var tardyEntry = getFirstName(netID) + "{split}" + getLastName(netID) + "{split}" + dateToday() + "{split}" + twelveHourTimeNow();
+				var tardyEntry = getFirstName(netID) + "&split&" + getLastName(netID) + "&split&" + dateToday() + "&split&" + twelveHourTimeNow();
 				//store tardy with appropriate key
 				storeEntry(tardyPrepend, getFirstName(netID), getLastName(netID), netID, dateToday(), timeNow(), "|", getRank(netID), tardyEntry);
 				document.getElementById("student").value = "";

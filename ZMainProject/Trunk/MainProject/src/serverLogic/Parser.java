@@ -35,7 +35,7 @@ public class Parser {
 				// The person splat is in the form
 				// prepend, firstName, lastName, netID, date, startTime, endTime,
 				// rank
-				String[] personalInfo = e.split("\\{split\\}");
+				String[] personalInfo = e.split("&split&");
 				String prepend = personalInfo[0];
 				if (prepend.equalsIgnoreCase(studentPrepend))
 					continue;

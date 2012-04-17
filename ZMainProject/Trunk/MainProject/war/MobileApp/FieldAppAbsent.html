@@ -310,7 +310,7 @@
 				var startTime12 = getCurrentEventStartTime(12);
 				var endTime12 = getCurrentEventEndTime(12);
 				//create event entry
-				var entry = type + "{split}" + dateToday() + "{split}" + startTime12 + "{split}" + endTime12;
+				var entry = type + "&split&" + dateToday() + "&split&" + startTime12 + "&split&" + endTime12;
 				var eventPrepend;
 				//select prepend
 				if (type == "rehearsal") {
@@ -364,7 +364,7 @@
 						var lastname = getLastName(netID);
 						var rank = getRank(netID);
 						//create entry for absent student
-						var value = firstname + "{split}" + lastname + "{split}" + dateToday() + "{split}" + getCurrentEventStartTime(12)+"{split}"+getCurrentEventEndTime(12);
+						var value = firstname + "&split&" + lastname + "&split&" + dateToday() + "&split&" + getCurrentEventStartTime(12)+"&split&"+getCurrentEventEndTime(12);
 						//set prepend
 						var absentPrepend = absentPrependPerformance;
 						var type = getCurrentEventType();
@@ -483,8 +483,8 @@
 			 */
 			function printAbsences() {
 				//create array of all absence records
-				var array = storeToArray(absentPrependPerformance,"", "lastname");
-				var array2 = storeToArray(absentPrependRehearsal,"", "lastname");
+				var array = storeToArray(absentPrependPerformance,"&", "lastname");
+				var array2 = storeToArray(absentPrependRehearsal,"&", "lastname");
 				var array3 = array.concat(array2);
 				//if there were absence records, sort them and add them to the table
 				if(array3.length > 0){
@@ -510,8 +510,8 @@
 			 */
 			function printEvent() {			
 				//create array of all event records
-				var array = storeToArray(performancePrepend, "", "firstname");
-				var array2 = storeToArray(rehearsalPrepend, "", "firstname");
+				var array = storeToArray(performancePrepend, "&", "firstname");
+				var array2 = storeToArray(rehearsalPrepend, "&", "firstname");
 				var array3 = array.concat(array2);
 				//if there were event records, sort them and add them to the table
 				if(array3.length > 0){
