@@ -139,5 +139,7 @@ public class Message implements Comparable<Message> {
 	public void setParentType(String parentType) {
 		this.parentType = parentType;
 	}
+	
+	public String[] getReaders() {return readers;}
 
 }
