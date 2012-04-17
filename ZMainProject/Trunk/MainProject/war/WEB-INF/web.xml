@@ -44,6 +44,15 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<servlet-class>servlets.AddTardy</servlet-class>
 	</servlet>
 
+	<servlet>
+		<servlet-name>DeleteItem</servlet-name>
+		<servlet-class>servlets.DeleteItem</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>AddAbsence</servlet-name>
+		<servlet-class>servlets.AddAbsence</servlet-class>
+	</servlet>
 	
 	<servlet>
 		<servlet-name>FormD</servlet-name>
@@ -146,6 +155,15 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<url-pattern>/AddTardy</url-pattern>
 	</servlet-mapping>
 
+	<servlet-mapping>
+		<servlet-name>DeleteItem</servlet-name>	
+		<url-pattern>/DeleteItem</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>AddAbsence</servlet-name>	
+		<url-pattern>/AddAbsence</url-pattern>
+	</servlet-mapping>
 		
 	<welcome-file-list>
 		<welcome-file>JSPPages/loginPage.jsp</welcome-file>

@@ -72,9 +72,8 @@ public class AddTardy extends HttpServlet {
 				
 			} else {
 				//lolidk
+				System.err.println("wrong type to kill\"" + typeToKill + "\"ended up in AddTardy");
 			}
-			
-			
 			
 			resp.sendRedirect("/JSPPages/Director_attendanceTable.jsp");
 		}

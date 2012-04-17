@@ -70,10 +70,11 @@
 				String itemType=info.split(",")[0];
 				String itemID = info.split(",")[1];
 				if (status.equals("present")) {
-					itemType=status;
+					itemType="Event";
+					itemID = event.getId() + "";
 				}
 				
-				row += "<td nowrap onClick=\"window.location='/JSPPages/editAttendanceItem.jsp?itemType="+itemType+"&itemID="+itemID+"'\">"+ (status.equals("present") ? "" : status) +"</td>";
+				row += "<td nowrap onClick=\"window.location='/JSPPages/editAttendanceItem.jsp?itemType="+itemType+"&itemID="+itemID+(status.equals("present") ? ("&theNetID=" + student.getNetID()) : "")+"'\">"+ (status.equals("present") ? "" : status) +"</td>";
 			}
 			row+= "<td>"+student.getGrade()+"</td>";
 			row +="</tr>";
