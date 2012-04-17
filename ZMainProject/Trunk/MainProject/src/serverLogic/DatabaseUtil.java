@@ -88,6 +88,7 @@ public class DatabaseUtil
 		{
 			result = null;
 		}
+		em.close();
 		return result;
 	}
 	

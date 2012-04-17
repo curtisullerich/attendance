@@ -109,8 +109,8 @@
 						+ "</td><td><button onClick='sendMeToMyAbsenceMessages("
 						+a.getID() 
 						+");'>Messages</button></td><td>"
-						+ ("") + 
-						"</td></tr>";
+						+ ("") 
+						+ "</td></tr>";
 					
 				}
 			}			

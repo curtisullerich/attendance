@@ -44,9 +44,16 @@
 	
 	%>
 	<script>
+		function sendMeToMyTardyMessages(id) {
+			window.location = "/JSPPages/ViewMessages.jsp?parentType=Tardy&parentID=" + id;
+		}
+		
+		function sendMeToMyAbsenceMessages(id) {
+			window.location = "/JSPPages/ViewMessages.jsp?parentType=Absence&parentID=" + id;
+		}
 		
 		function help(){
-			alert("Helpful information about director page.")
+			alert("Helpful information about student page.")
 		}
 	</script>
 
@@ -94,7 +101,10 @@
 					+t.getType()
 					+"</td><td></td><td>x</td><td>" 
 					+(t.getStatus())  
-					+"</td></tr>";
+					+"</td>"
+					+"<td><button onClick='sendMeToMyTardyMessages("
+					+t.getID()
+					+");'>Messages</button></td></tr>";
 					System.out.println("The id that is sent as the param is" + t.getID());
 				}
 			}
@@ -112,8 +122,10 @@
 						+a.getType()
 						+"</td><td>x</td><td></td><td>"
 						+(a.getStatus())  
-						+"</td></tr>";
-					
+						+"</td>"
+						+"<td><button onClick='sendMeToMyAbsenceMessages("
+						+a.getID() 
+						+");'>Messages</button></td></tr>";
 				}
 			}			
 			%>

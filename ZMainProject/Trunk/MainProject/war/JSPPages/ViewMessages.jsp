@@ -3,6 +3,7 @@
 <%@ page import="attendance.*" %>
 <%@ page import="time.*" %>
 <%@ page import="comment.*" %>
+<%@ page import="forms.*" %>
 <%@ page import="serverLogic.*" %>
 <%@ page import="java.util.*" %>
 
@@ -99,12 +100,43 @@
 		} else if (parentType.equals("EarlyCheckOut")) {
 //			EarlyCheckOut eoc = DatabaseUtil.getEarlyCheckOutByID(id);
 		} else if (parentType.equals("FormA")) {
-			//TODO
+			System.err.println("ViewMessages: 6.1");
+			System.out.println(parentID);
+			Form form  = DatabaseUtil.getFormByID(parentID);
+			if (form == null) {
+				System.out.println("form was null");
+			}
+			messages.addAll(form.getMessages());
+			System.err.println("ViewMessages: 6.2");
 		} else if (parentType.equals("FormB")) {
+			System.err.println("ViewMessages: 6.1");
+			System.out.println(parentID);
+			Form form  = DatabaseUtil.getFormByID(parentID);
+			if (form == null) {
+				System.out.println("form was null");
+			}
+			messages.addAll(form.getMessages());
+			System.err.println("ViewMessages: 6.2");
 			
 		} else if (parentType.equals("FormC")) {
+			System.err.println("ViewMessages: 6.1");
+			System.out.println(parentID);
+			Form form  = DatabaseUtil.getFormByID(parentID);
+			if (form == null) {
+				System.out.println("form was null");
+			}
+			messages.addAll(form.getMessages());
+			System.err.println("ViewMessages: 6.2");
 			
 		} else if (parentType.equals("FormD")) {
+			System.err.println("ViewMessages: 6.1");
+			System.out.println(parentID);
+			Form form  = DatabaseUtil.getFormByID(parentID);
+			if (form == null) {
+				System.out.println("form was null");
+			}
+			messages.addAll(form.getMessages());
+			System.err.println("ViewMessages: 6.2");
 			
 		} else {
 			System.err.println("And, we have a type of message that we didn't account for.");

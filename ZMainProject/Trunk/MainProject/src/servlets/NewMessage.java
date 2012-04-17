@@ -13,6 +13,8 @@ import attendance.Tardy;
 
 import comment.Message;
 
+import forms.Form;
+
 @SuppressWarnings("serial")
 public class NewMessage extends HttpServlet {
 
@@ -50,13 +52,25 @@ public class NewMessage extends HttpServlet {
 //				DatabaseUtil.addEarlyCheckOut(eoc);
 //				eoc.getNetID();
 			} else if (parentType.equals("FormA")) {
-				//TODO
+				Form form = DatabaseUtil.getFormByID(id);
+				form.addMessage(theMessage);
+				DatabaseUtil.addForm(form);
+				recipient = form.getNetID();
 			} else if (parentType.equals("FormB")) {
-				
+				Form form = DatabaseUtil.getFormByID(id);
+				form.addMessage(theMessage);
+				DatabaseUtil.addForm(form);
+				recipient = form.getNetID();
 			} else if (parentType.equals("FormC")) {
-				
+				Form form = DatabaseUtil.getFormByID(id);
+				form.addMessage(theMessage);
+				DatabaseUtil.addForm(form);
+				recipient = form.getNetID();
 			} else if (parentType.equals("FormD")) {
-				
+				Form form = DatabaseUtil.getFormByID(id);
+				form.addMessage(theMessage);
+				DatabaseUtil.addForm(form);
+				recipient = form.getNetID();
 			} else {
 				System.err.println("And, we have a type of message that we didn't account for.");
 			}

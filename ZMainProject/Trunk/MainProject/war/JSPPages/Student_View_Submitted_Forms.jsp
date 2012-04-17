@@ -11,6 +11,7 @@
 		<title>@10Dance</title>
 	</head>
 	<%
+	System.err.println("StudentViewSubmittedForms: 1");
 	String netID = (String) session.getAttribute("user");
 	User user = null;
 	
@@ -21,6 +22,7 @@
 	}
 	else
 	{
+		System.err.println("StudentViewSubmittedForms: 2");
 		user = DatabaseUtil.getUser(netID);
 		if (!user.getType().equalsIgnoreCase("Student")) {
 			if(user.getType().equalsIgnoreCase("TA"))
@@ -65,29 +67,37 @@
 		
 		<br/>
 		<%
+		System.err.println("StudentViewSubmittedForms: 3");
 			AttendanceReport myReport = user.getAttendanceReport();
+			System.err.println("StudentViewSubmittedForms: 4");
 			List<Form> forms = myReport.sortFormsDescending(new FormTimeComp());
+			System.err.println("StudentViewSubmittedForms: 5");
 		%>
 		<br/>
 		Number of Forms Submitted: <%=forms.size()%>
 		<br/>
 		<br/>
 		<%
+		System.err.println("StudentViewSubmittedForms: 6");
 		String formHtml = "";
 		if (forms.size() != 0)
 		{
 			for (Form f : forms)
 			{
+				System.err.println("StudentViewSubmittedForms: 7");
 				formHtml += "<tr><td>" + f.getStartTime().getDate() + "</td> <td>" + f.getEndTime().getDate() + "</td> <td>"+ f.getType() 
 						+ "</td> <td>" + f.getStatus() + "</td> <td> <button onClick=\"remove('" + f.getID() + "');\">Delete</button</td>";
+						System.err.println("StudentViewSubmittedForms: 8");
+				formHtml += "<td><button onClick=\"window.location='/JSPPages/ViewMessages.jsp?parentType="+f.getType()+"&parentID="+f.getID()+"'\" value='messages(number)'>messages</button></td>";//messages
 			}
 		}
+		System.err.println("StudentViewSubmittedForms: 9");
 		
 		String insert = "";
 		if (!formHtml.equals("")){
 			insert =	" 		<div>"
 					+"		<table border='1'>"
-					+"			<tr><th>Start Date</th><th>End Date</th><th>Type</th><th>Status</th><th> </th>"
+					+"			<tr><th>Start Date</th><th>End Date</th><th>Type</th><th>Status</th>"
 					+ formHtml
 					+"		</table>"
 					+"	</div>";
@@ -96,6 +106,7 @@
 		{
 			insert = "You haven't submitted any forms yet!";
 		}
+		System.err.println("StudentViewSubmittedForms: 10");
 		
 		%>
 		

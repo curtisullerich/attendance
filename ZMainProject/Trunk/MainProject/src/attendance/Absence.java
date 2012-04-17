@@ -62,8 +62,8 @@ public class Absence {
 		this.endTime = endTime.toString(24);
 		this.status = "pending";
 		setType(type);
-		this.currentIndex = 0;
 		this.id = hash(netID, startTime, endTime);
+		this.currentIndex = 0;
 		messageIDs = new String[10];
 		for (int i = 0; i < messageIDs.length; i++) {
 			messageIDs[i] = "";

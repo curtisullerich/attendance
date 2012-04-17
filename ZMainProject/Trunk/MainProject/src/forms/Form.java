@@ -1,12 +1,18 @@
 package forms;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 
+import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import comment.Message;
+
+import serverLogic.DatabaseUtil;
 import time.Time;
 
 /**
@@ -47,6 +53,64 @@ public class Form {
 	// FormA, FormB, FormC, FormD
 	private String type;
 
+	private int currentIndex;
+	@Basic
+	private String[] messageIDs;
+	public String[] getMessageIDs() {
+		return messageIDs;
+	}
+
+	public void setMessageIDs(String[] messageIDs) {
+		this.messageIDs = messageIDs;
+	}
+
+	public int getCurrentIndex() {
+		return currentIndex;
+	}
+
+	public void setCurrentIndex(int currentIndex) {
+		this.currentIndex = currentIndex;
+	}
+
+	public List<Message> getMessages() {
+		return DatabaseUtil.getMessages(messageIDs);
+	}
+
+	/**
+	 * Adds a new message associated with this Absence.
+	 * 
+	 * @author Curtis Ullerich
+	 * @param m
+	 *            the message to be added
+	 */
+	public void addMessage(Message m) {
+		DatabaseUtil.addMessage(m);
+		if (currentIndex >= messageIDs.length) {
+			messageIDs = Arrays.copyOf(messageIDs, messageIDs.length * 2);
+		}
+		messageIDs[currentIndex] = new Long(m.getID()).toString();
+		currentIndex++;
+	}
+
+	/**
+	 * 
+	 * Checks to see if this Tardy has a new message for a person.
+	 * 
+	 * @author Curtis Ullerich
+	 * @param netId
+	 *            the user in question
+	 * @return true if this tardy has a new message for this user. False
+	 *         otherwise.
+	 */
+	public boolean hasNewMessageFor(String netId) {
+		for (Message m : this.getMessages()) {
+			if (!m.readBy(netId)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public void copyAllFrom(Form other) {
 		this.netID = other.netID;
 		// pending, approved, denied
@@ -88,6 +152,11 @@ public class Form {
 		this.course = "";
 		this.section = "";
 		this.building = "";
+		this.currentIndex = 0;
+		messageIDs = new String[10];
+		for (int i = 0; i < messageIDs.length; i++) {
+			messageIDs[i] = "";
+		}
 	}
 
 	// This constructor is called by Form D
@@ -106,6 +175,11 @@ public class Form {
 		this.building = "";
 		this.emailTo = emailTo;
 		this.hoursWorked = hoursWorked;
+		this.currentIndex = 0;
+		messageIDs = new String[10];
+		for (int i = 0; i < messageIDs.length; i++) {
+			messageIDs[i] = "";
+		}
 	}
 
 	// This constructor is only for Form B
@@ -123,6 +197,11 @@ public class Form {
 		this.course = course;
 		this.section = section;
 		this.building = building;
+		this.currentIndex = 0;
+		messageIDs = new String[10];
+		for (int i = 0; i < messageIDs.length; i++) {
+			messageIDs[i] = "";
+		}
 	}
 
 	public Form(String netID, String reason, Time startTime, Time endTime,
@@ -135,6 +214,11 @@ public class Form {
 		// setFile(attachedFile);
 		this.status = "pending";
 		this.emailStatus="pending";
+		this.currentIndex = 0;
+		messageIDs = new String[10];
+		for (int i = 0; i < messageIDs.length; i++) {
+			messageIDs[i] = "";
+		}
 	}
 
 	public Long getID() {

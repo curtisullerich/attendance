@@ -75,7 +75,7 @@
 				row+="<td><button onClick=\"window.location='/JSPPages/removeForm.jsp?id="+f.getID()+"'\">delete</button></td>";//delete
 				row+="<td><button onClick=\"window.location='/JSPPages/approveForm.jsp?id="+f.getID()+"'\">approve</button></td>";//approve
 				row+="<td><button onClick=\"window.location='/JSPPages/denyForm.jsp?id="+f.getID()+"'\">deny</button></td>";//deny
-				row += "<td><button onClick=\"window.location='/JSPPages/ViewMessages.jsp?parentType=Form&parentID="+f.getID()+"'\" value='messages(number)'>messages</button></td>";//messages
+				row += "<td><button onClick=\"window.location='/JSPPages/ViewMessages.jsp?parentType="+f.getType()+"&parentID="+f.getID()+"'\" value='messages(number)'>messages</button></td>";//messages
 				row +="</tr>";
 				table+=row;
 			}
