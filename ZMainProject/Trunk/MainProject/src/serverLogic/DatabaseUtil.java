@@ -74,6 +74,34 @@ public class DatabaseUtil
 		}
 		
 	}
+	
+	public static void removeAllFormsFor(String netID)
+	{
+		List<Form> forms = getForms(netID);
+		for (Form e: forms)
+		{
+			removeForm(e);
+		}
+	}
+	
+	public static void removeAllAbsencesFor(String netID)
+	{
+		List<Absence> absences = getAbsences(netID);
+		for (Absence e: absences)
+		{
+			removeAbsence(e);
+		}
+	}
+	
+	public static void removeAllTardiesFor(String netID)
+	{
+		List<Tardy> tardies = getTardies(netID);
+		for (Tardy e: tardies)
+		{
+			removeTardy(e);
+		}
+	}
+	
 	public static Form getFormByID(Long id)
 	{
 		EntityManager em = EMFService.get().createEntityManager();
@@ -144,8 +172,18 @@ public class DatabaseUtil
 		em.close();
 	}
 	
+	public static void removeMyMessages(String netID)
+	{
+		List<Message> toRemove = getMyMessages(netID);
+		for (Message m: toRemove)
+		{
+			removeMessage(m);
+		}
+	}
+	
 	public static void removeUser(User o)
 	{
+		//TODO make this remove all absences tardies and stuff for the student
 		EntityManager em = EMFService.get().createEntityManager();
 		User toRem = em.find(User.class, o.getID());
 		em.remove(toRem);
@@ -598,7 +636,34 @@ public class DatabaseUtil
 		return messages;
 	}
 	
-	
+	public static List<Message> getMyMessages(String netID)
+	{
+		EntityManager em = EMFService.get().createEntityManager();
+		List<Message> result = new LinkedList<Message>();
+		List<Message> toRet = new LinkedList<Message>();
+		Query q = em.createQuery("select m from Message m");
+		result = (List<Message>)q.getResultList();
+		for (Message m : result)
+		{
+			if (m.getSenderNetID().equalsIgnoreCase(netID) || m.getRecipientNetID().equalsIgnoreCase(netID))
+			{
+				if (!toRet.contains(m))
+					toRet.add(m);
+			}
+			for (String reader: m.getReaders())
+			{
+				if (reader.equalsIgnoreCase(netID))
+				{
+					if (!toRet.contains(m))
+					{
+						toRet.add(m);
+						break;
+					}
+				}
+			}
+		}
+		return toRet;
+	}
 	
 	
 	public static List<Message> getMessages(String[] messageIDs) {
