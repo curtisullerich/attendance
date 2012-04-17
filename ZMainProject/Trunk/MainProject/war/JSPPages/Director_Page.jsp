@@ -62,6 +62,14 @@
 				butt.value = "Show New Messages";
 			}
 		}
+		
+		function confirmDeleteAll() {
+			var ret = confirm("Are you sure you want to delete all the information in the database?");
+			if (ret == true)
+			{
+				window.location = "/JSPPages/RemoveEverything.jsp";	
+			}
+		}
 
 	</script>
 			<%
