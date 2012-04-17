@@ -47,6 +47,9 @@ else
 		tardy = event.getTardies().size();
 		absent = event.getAbsences().size();
 		present = users.size() - tardy - absent -2;//-2 is to account for the director and TA
+		if (present < 0) {
+			present = 0;
+		}
 		
 		information = "<p><b>Event Statistics</b><br/>";
 		information += "Date: " +event.getStartTime().getDate().toString()+ "<br/>"; 
@@ -113,7 +116,6 @@ else
 {
 	height: 15px;
 	font-size:80%;
-	background: white;
 }
 
 </style>

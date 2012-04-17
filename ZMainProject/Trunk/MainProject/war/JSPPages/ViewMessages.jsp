@@ -188,7 +188,7 @@
 					"	<tr>";
 					
 					if (!m.readBy(netID)) {
-						table += "			<td bgcolor='#F5F5DC'><b>" + m.getTime().toString(12) + "</b> from <b>" + m.getSenderNetID() + ":</b>";
+						table += "			<td bgcolor='010101'><b>" + m.getTime().toString(12) + "</b> from <b>" + m.getSenderNetID() + ":</b>";
 					} else {
 						table += "			<td><b>" + m.getTime().toString(12) + "</b> from <b>" + m.getSenderNetID() + ":</b>";
 					}
