@@ -5,8 +5,8 @@
 
 <!-- This should be changed to reflect successful processing when we can -->
 <!-- Parser.splat(info) should return true if successful -->
-<script src = "script.js"></script>
-<script src = "sha.js"></script>
+<script src = "/JSPPages/script.js"></script>
+<script src = "/JSPPages/sha.js"></script>
 <link rel="stylesheet" type="text/css" href="/MobileApp/FieldAppCSS.css" />
 <script>
 	window.onload = function(){

@@ -311,7 +311,7 @@ public class DatabaseUtil
 		return true;
 	}
 	
-	public static ArrayList<String> listAllUsers() 
+	public static ArrayList<String> listMobileStudentsAndTAs() 
 	{
 		EntityManager em = EMFService.get().createEntityManager();
 		Query q = em.createQuery("select m from User m");
@@ -321,9 +321,9 @@ public class DatabaseUtil
 			User p = people.get(i);
 			if (!p.getType().equalsIgnoreCase("Director")){
 				if(p.getType().equalsIgnoreCase("TA"))
-					toRet.add(p.toStringTA());
+					toRet.add(p.toStringMobileTA());
 				else
-					toRet.add(p.toString());
+					toRet.add(p.toStringMobileStudent());
 			}
 		}
 		return toRet;

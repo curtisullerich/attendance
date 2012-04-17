@@ -80,9 +80,12 @@ public class User {
 				+ major + " " + section + " " + year + " " + rank + " ";
 	}
 
-	public String toStringTA() {
-		return "TA" + " " + netID + " " + firstName + " " + lastName + " "
-				+ hashedPassword + " " + rank;
+	public String toStringMobileTA() {
+		return "TA" + "{split}" + netID + "{split}" + firstName + "{split}" + lastName + "{split}" + hashedPassword + "{split}" + rank;
+	}
+	
+	public String toStringMobileStudent() {
+		return "Student" + "{split}" + netID + "{split}" + firstName + "{split}" + lastName + "{split}" + univID + "{split}" + rank;
 	}
 
 	public void addTardy(Tardy newTardy) {

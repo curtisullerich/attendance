@@ -26,7 +26,7 @@
 				}
 				
 				//determine date of latest class list
-				var array = storeToArray(studentPrepend," ","date");
+				var array = storeToArray(studentPrepend,"","date");
 				var str;
 				if (array.length < 1) {
 					str="No class list is currently present.";
@@ -194,7 +194,7 @@
 		<div class="box" id="main">
 			<h1>@10dance</h1>
 			<br/>
-			<input class="help" type="button" id="help" value="Help" onclick="javascript: help();"/>
+			<input class="help button" type="button" id="help" value="Help" onclick="javascript: help();"/>
 			<form onsubmit="return getLogin();" class="centeralign">
 				<input class="button" type="button" id="tardy" value="Tardy Check-In" onclick="window.location='/MobileApp/FieldAppTardy.html'"/> 
 				<input class="button" type="button" id="absent" value="Report Absences" onclick="window.location = '/MobileApp/FieldAppAbsent.html'"/>
@@ -228,8 +228,8 @@
 					</tr>
 				</table>
 				<br/>
-				<input type="submit" id="submitLogin" value="Submit"/>
-				<input type="button" id="cancel" value="Cancel" onclick="window.location='/MobileApp/FieldAppMain.html'"/>
+				<input class="button" type="submit" id="submitLogin" value="Submit"/>
+				<input class="button" type="button" id="cancel" value="Cancel" onclick="window.location='/MobileApp/FieldAppMain.html'"/>
 				<input type="hidden" id="tempForUpload" name="tempForUpload" value=""/>
 			</form>
 		</div>

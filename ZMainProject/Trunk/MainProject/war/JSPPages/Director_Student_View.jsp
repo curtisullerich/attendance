@@ -47,11 +47,11 @@
 
 			var Row = document.getElementById("rankRow");
 			var Cells = Row.getElementsByTagName("td");
-			if("<%= user.getRank() %>" == "|"){
+			if("<%= student.getRank() %>" == "|"){
 				Cells[1].innerText = "None";
 			}
 			else
-				Cells[1].innerText = "<%= user.getRank() %>";
+				Cells[1].innerText = "<%= student.getRank() %>";
 				
 			
 			if(<%= request.getParameter("successfulSave")%> == "true"){

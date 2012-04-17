@@ -9,6 +9,8 @@ h1 {
     text-align: center;
 }
 
+
+
 .help {
 	position: absolute;
 	top: 7px;
@@ -39,9 +41,14 @@ h1 {
 }
 
 .table{
-	margin: 0px 65px;
-	text-align: left;
-	width: 400;
+	margin: auto;
+	text-align: center;
+	width: 100%;
+}
+
+.cell {
+	width: 125px;
+	text-align: center;
 }
 
 .centeralign{

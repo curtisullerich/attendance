@@ -8,7 +8,6 @@
  * Latest Rev: 3-24-12
  * 
  * standard key for localStorage: prepend firstname lastname netID date startTime endTime rank
- * rank is a 6 digit number with leading 0s
  * 
  * for students, the entry or value is their hashed 
  */
@@ -23,8 +22,8 @@ var studentPrepend = "studentRecord";
 var loginPrepend = "storedLogin";
 
 //debug enable thingy
-var loginDebug = true;
-var debug = true;
+var loginDebug = false;
+var debug = false;
 
 
 /**
@@ -274,7 +273,7 @@ function getNetID(univID){
  * @date 2-10-2012
  */
 function storeEntry(prepend, firstname, lastname, netID, date, startTime, endTime, rank, entry){
-	var key = prepend+" "+firstname+" "+lastname+" "+netID+" "+date+" "+startTime+" "+endTime+" "+rank;
+	var key = prepend+"{split}"+firstname+"{split}"+lastname+"{split}"+netID+"{split}"+date+"{split}"+startTime+"{split}"+endTime+"{split}"+rank;
 	localStorage.setItem(key,entry);
 }
 
@@ -302,7 +301,7 @@ function storeEntry(prepend, firstname, lastname, netID, date, startTime, endTim
  * @date 2-10-2012
  */
 function removeEntry(prepend, firstname, lastname, netID, date, startTime, endTime, rank){
-	var key = prepend+" "+firstname+" "+lastname+" "+netID+" "+date+" "+startTime+" "+endTime+" "+rank;
+	var key = prepend+"{split}"+firstname+"{split}"+lastname+"{split}"+netID+"{split}"+date+"{split}"+startTime+"{split}"+endTime+"{split}"+rank;
     if (localStorage.getItem(key) == null) {
         return false;
     }   
@@ -361,7 +360,7 @@ function valueDelimiter(value, delimitee){
 	var valueArray = new Array();
 	
 	//splits the value into multiple strings, delimited by spaces, and stores them into an array
-	valueArray = value.split(" ");
+	valueArray = value.split("{split}");
 	
 	if(delimitee==0){
 		return valueArray[0];
@@ -404,7 +403,7 @@ function keyDelimiter(key,delimitee){
 	var keyArray = new Array();
 	
 	//splits the key into multiple strings, delimited by spaces, and stores them into an array
-	keyArray = key.split(" ");
+	keyArray = key.split("{split}");
 	
 	if (delimitee=="key") {
 	  return key;		// so we can access a subsection of the full localStorage as key-value pairs, in tact
@@ -565,8 +564,8 @@ function storageArrayToString(array){
  *
  * @param table 
  * 				- table to be added to
- * @param key 
- * 				- key to be added to table
+ * @param value 
+ * 				- value to be added to table
  * @param col1
 				- (string) the segment of the key to be stored in column 1
  * @param col2 
@@ -585,10 +584,16 @@ function addRowToTable(table,value)
 	tabBody=document.getElementsByTagName("TBODY").item(table);
 	row=document.createElement("TR");
 	cell1 = document.createElement("TD");
+	cell1.className = "cell";
 	cell2 = document.createElement("TD");
+	cell2.className = "cell";
 	cell3 = document.createElement("TD");
+	cell3.className = "cell";
 	cell4 = document.createElement("TD");
+	cell4.className = "cell";
+	var this1 = valueDelimiter(value,0);
 	textnode1=document.createTextNode(valueDelimiter(value,0));
+	var this2 = valueDelimiter(value,1);
 	textnode2=document.createTextNode(valueDelimiter(value,1));
 	textnode3=document.createTextNode(valueDelimiter(value,2));
 	textnode4=document.createTextNode(valueDelimiter(value,3));

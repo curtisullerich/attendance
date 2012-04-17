@@ -69,7 +69,7 @@
 					}
 				}
 				//format of tardy (24 hour time): "netID YYYY-MM-DD HH:MMam/pm
-				var tardyEntry = getFirstName(netID) + " " + getLastName(netID) + " " + dateToday() + " " + twelveHourTimeNow();
+				var tardyEntry = getFirstName(netID) + "{split}" + getLastName(netID) + "{split}" + dateToday() + "{split}" + twelveHourTimeNow();
 				//store tardy with appropriate key
 				storeEntry(tardyPrepend, getFirstName(netID), getLastName(netID), netID, dateToday(), timeNow(), "|", getRank(netID), tardyEntry);
 				document.getElementById("student").value = "";
@@ -113,8 +113,10 @@
 					//sort chronologically or by netID based on radio buttons
 					if (sortRadio[0].checked == 1) {
 						sortType = "starttime";
+					} else if (sortRadio[1].checked == 1){
+						sortType = "lastname";
 					} else {
-						sortType = "netID";
+						sortType = "firstname";
 					}
 					//fills table in desired order
 					printTardies(sortType);
@@ -249,23 +251,25 @@
 			<hr>
 			</br>
 			<form class="centeralign" id="tardyView">
-				<input type="button" id="viewButton" value="View Tardies" onclick="javascript: tardiesOnOff();"/>
-				<input type="button" id="re-sort" value="Re-Sort Tardy List" onclick="javascript: retrieveTardies();"/>
-				<input type="button" id="clear" value="Clear Tardy List" onclick="javascript: clearTardies();" style="display: none"/>
+				<input class="button" type="button" id="viewButton" value="View Tardies" onclick="javascript: tardiesOnOff();"/>
+				<input class="button" type="button" id="re-sort" value="Re-Sort Tardy List" onclick="javascript: retrieveTardies();"/>
+				<input class="button" type="button" id="clear" value="Clear Tardy List" onclick="javascript: clearTardies();" style="display: none"/>
 				</br>
 			</form>
+			<br/>
 			<form class="centeralign" id="tardySortType">
 				<b>Sort Style</b>
 				<input type="radio" name="sortType" value="Time" checked="">time</input>
-				<input type="radio" name="sortType" value="netID">netID</input>
+				<input type="radio" name="sortType" value="LastName">last name</input>
+				<input type="radio" name="sortType" value="FirstName">first name</input>
 				</br>
 			</form>
-			<div class="" id="tardies"></div>
-			<Table id="tardyTable" class="table" style="width: 100%; margin: auto; padding: auto"> <!-- table 0 -->
+			<div id="tardies"></div>
+			<Table id="tardyTable" class="table"> <!-- table 0 -->
 				<tbody></tbody>
 			</Table>
-			<input class="back" type="button" id="back" value="Back" onclick="window.location='/MobileApp/FieldAppMain.html'"/>
-			<input class="help" type="button" id="help" value="Help" onclick="javascript: help();"/>
+			<input class="back button" type="button" id="back" value="Back" onclick="window.location='/MobileApp/FieldAppMain.html'"/>
+			<input class="help button" type="button" id="help" value="Help" onclick="javascript: help();"/>
 		</div>
 	</body>
 </html>

@@ -69,7 +69,7 @@
 	 	 }
  		 		 
 		 var years = document.getElementById("Year").value;
- 		 if(isNaN(parseInt(years,10)) || (parseInt(universityID,10) < 0) || universityID == "" || universityID == null){
+ 		 if(isNaN(parseInt(years,10)) || (parseInt(years,10) < 0) || years == "" || years == null){
 			 alert("Please enter the number of years in the band.")
 			 return false;
 		 }

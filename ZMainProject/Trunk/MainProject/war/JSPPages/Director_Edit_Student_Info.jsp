@@ -54,38 +54,49 @@
 		 
 		 var firstName = document.getElementById("FirstName").value;
 		 if(firstName == null || firstName == ""){
-			 alert("Please enter a first name.")
+			 alert("Please enter a first name.");
 			 return false;
 		 }
 		 
 		 var LastName = document.getElementById("LastName").value;
 		 if(LastName == null || LastName == ""){
-			 alert("Please enter a last name.")
+			 alert("Please enter a last name.");
 			 return false;
 		 }
 		 
 		 var major = document.getElementById("Major").value;
 		 if(major == null || major == ""){
-			 alert("Please enter a major.")
+			 alert("Please enter a major.");
 			 return false;
 		 }
 		 
 		 var section = document.getElementById("Section").value;
 		 if(section == null || section == ""){
-			 alert("Please enter a section.")
+			 alert("Please enter a section.");
 			 return false;
 		 }
 		 
+		 var rank = document.getElementById("Rank").value;
+		 if(rank == null || rank == ""){
+			 alert("Please enter a rank.");
+			 return false;
+		 }
+		 if(rank == "None" || rank == "none")
+		 	document.getElementById("Hidden Rank").value = "|";
+		 else
+			 document.getElementById("Hidden Rank").value = rank;
+		 
+		 
 		 var years = document.getElementById("Year").value;
- 		 if(isNaN(parseInt(years,10)) || (parseInt(universityID,10) < 0) || universityID == "" || universityID == null){
-			 alert("Please enter the number of years in the band.")
+ 		 if(isNaN(parseInt(years,10)) || (parseInt(years,10) < 0) || years == "" || years == null){
+			 alert("Please enter the number of years in the band.");
 			 return false;
 		 }
  		 
  		 var universityID = document.getElementById("UniversityID").value; 
 		 //check that universityID is 9 digit number
  		 if(isNaN(parseInt(universityID,10)) || universityID.length != 9 || (parseInt(universityID,10) < 0) || (parseInt(universityID,10) > 999999999) || universityID == "" || universityID == null){
-			 alert("This is not a valid University ID. Please re-enter your University ID.")
+			 alert("This is not a valid University ID. Please re-enter your University ID.");
 			 return false;
 	 	 }
  		 
@@ -171,12 +182,12 @@
 				<table>
 					<tr>					
 						<td><label for="FirstName">First Name</label></td>
-						<td><input type="FirstName" name="FirstName" id="FirstName" value="<%=student.getFirstName() %>"/></td>
+						<td><input type="text" name="FirstName" id="FirstName" value="<%=student.getFirstName() %>"/></td>
 					</tr>
 					
 					<tr>
 						<td><label for="LastName">Last Name</label></td>
-						<td><input type= "LastName" name="LastName" id="LastName" value="<%=student.getLastName()%>"/></td>	
+						<td><input type= "text" name="LastName" id="LastName" value="<%=student.getLastName()%>"/></td>	
 					</tr>
 
 					<tr>
@@ -230,8 +241,18 @@
 					</select></td>
 					
 					<tr>
+						<td><label for="Rank">Rank</label></td>
+						<td><input type= "text" name="Rank" id="Rank" value="<%=student.getRank() == null ? "None" : (student.getRank().equals("|") ? "None" : student.getRank())%>"/></td>	
+					</tr>
+					
+					<tr>
+						<td><input type="text" name="Hidden Rank"
+								id="Hidden Rank" style="display: none" /></td>
+					</tr>	
+					
+					<tr>
 						<td><label for="Major">Major</label></td>
-						<td><input type= "major" name="Major" id="Major" value="<%=student.getMajor() == null ? "" : student.getMajor() %>"/></td>	
+						<td><input type= "text" name="Major" id="Major" value="<%=student.getMajor() == null ? "" : student.getMajor() %>"/></td>	
 					</tr>
 					
 					<tr>

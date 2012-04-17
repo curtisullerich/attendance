@@ -25,7 +25,7 @@ public class Director_Edit_Student_InfoServlet extends HttpServlet
 			{
 		//Reads in the stuff from NetID, Password, and Re-Enter Password then makes a person from there
 		String buttonPressed = req.getParameter("SaveInfo");
-		String  password, firstName, lastName, univID, major, section, netID;
+		String  password, firstName, lastName, univID, major, section, netID, rank;
 		int year;
 		
 		if(buttonPressed!= null)
@@ -35,13 +35,14 @@ public class Director_Edit_Student_InfoServlet extends HttpServlet
 			password = req.getParameter("Hashed Password");
 			firstName = req.getParameter("FirstName");
 			lastName = req.getParameter("LastName");
+			rank = req.getParameter("Hidden Rank");
 			univID = req.getParameter("UniversityID");
 			year = Integer.parseInt(req.getParameter("Year"));
 			major = req.getParameter("Major");
 			section = req.getParameter("Section");
 			
-			if (firstName != null && lastName != null && univID != null && year > 0 && major != null &&
-					section != null && firstName != "" && lastName != "" && univID != "" && major != "" && section != "")
+			if (firstName != null && lastName != null && univID != null && year > 0 && major != null && rank != null &&
+					section != null && firstName != "" && lastName != "" && univID != "" && major != "" && rank != "" && section != "")
 			{
 				User guy = DatabaseUtil.getUser(netID);
 
@@ -51,6 +52,7 @@ public class Director_Edit_Student_InfoServlet extends HttpServlet
 				guy.setYear(year);
 				guy.setMajor(major);
 				guy.setSection(section);
+				guy.setRank(rank);
 				if(password != null && password != "")
 				{
 					guy.setHashedPassword(password);
