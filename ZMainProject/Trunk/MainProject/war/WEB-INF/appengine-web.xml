@@ -16,10 +16,18 @@
 	</system-properties>
 	
 	<static-files>
-		<include path = "/MobileApp/FieldAppCSS.css" />
+		<include path = "/JSPPages/*.png" />
+		<include path = "/JSPPages/*.jsp" />
 		<include path = "/JSPPages/sha.js" />
 		<include path = "/JSPPages/script.js" />
 		<include path = "/JSPPages/404.css" />
+		
+		<include path = "/MobileApp/FieldAppCSS.css" />
+		<include path = "/MobileApp/*.html" />
+		<include path = "/MobileApp/*.js" />
+		<include path = "/MobileApp/*.jpg" />
+		<include path = "/favicon.ico" />
+		
 	</static-files>
 	
 	<sessions-enabled>true</sessions-enabled>
