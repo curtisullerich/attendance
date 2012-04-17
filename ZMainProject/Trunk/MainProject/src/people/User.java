@@ -1,15 +1,10 @@
 package people;
 
-import java.math.BigInteger;
-import java.security.MessageDigest;
 import java.util.Comparator;
 import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-
-import comment.Message;
-import forms.Form;
 
 import serverLogic.DatabaseUtil;
 import attendance.Absence;
@@ -63,30 +58,31 @@ public class User {
 	}
 
 	public long getID() {
-		
+
 		return this.id;
 	}
-	
+
 	public void copyAllFrom(User other) {
-		this.type=other.type;
-		this.netID=other.netID;
-		this.firstName=other.firstName;
-		this.lastName=other.lastName;
-		this.univID=other.univID;
-		this.hashedPassword=other.hashedPassword;
-		this.major=other.major;
-		this.section=other.section;
-		this.year=other.year;
-		this.rank=other.rank;
+		this.type = other.type;
+		this.netID = other.netID;
+		this.firstName = other.firstName;
+		this.lastName = other.lastName;
+		this.univID = other.univID;
+		this.hashedPassword = other.hashedPassword;
+		this.major = other.major;
+		this.section = other.section;
+		this.year = other.year;
+		this.rank = other.rank;
 	}
-	
+
 	public String toString() {
 		return netID + " " + firstName + " " + lastName + " " + univID + " "
-				+ major + " " + section + " " + year + " " + rank + " " ;
+				+ major + " " + section + " " + year + " " + rank + " ";
 	}
-	
+
 	public String toStringTA() {
-		return "TA" + " " + netID + " " + firstName + " " + lastName + " " + hashedPassword + " " + rank;
+		return "TA" + " " + netID + " " + firstName + " " + lastName + " "
+				+ hashedPassword + " " + rank;
 	}
 
 	public void addTardy(Tardy newTardy) {
@@ -209,8 +205,8 @@ public class User {
 	 * @return
 	 */
 	public String eventStatus(Event event) {
-		
-		if (this.type.equalsIgnoreCase("director")){
+
+		if (this.type.equalsIgnoreCase("director")) {
 			return "present";
 		}
 		List<Tardy> tardies = this.getTardies();
@@ -240,18 +236,17 @@ public class User {
 		}
 		return status;
 	}
-	
-	
+
 	/**
-	 * Returns a string of the format "type,id" for this user's
-	 * attendance item during the given event
+	 * Returns a string of the format "type,id" for this user's attendance item
+	 * during the given event
 	 * 
 	 * @author Curtis Ullerich
 	 * @date 4/9/12
 	 * @return
 	 */
 	public String eventAttendanceItem(Event event) {
-		
+
 		if (this.type.equalsIgnoreCase("director")) {
 			return "none,none";
 		}
@@ -286,24 +281,22 @@ public class User {
 		}
 		return type + "," + id;
 	}
-	
-	
-	
-//
-//	public long hash(String netID) {
-//		try {
-//			MessageDigest cript = MessageDigest.getInstance("SHA-1");
-//			cript.reset();
-//			cript.update(netID.getBytes("utf8"));
-//			BigInteger bigot = new BigInteger(cript.digest());
-//			// Something about things
-//			return bigot.longValue();
-//
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			return 0;
-//		}
-//	}
+
+	//
+	// public long hash(String netID) {
+	// try {
+	// MessageDigest cript = MessageDigest.getInstance("SHA-1");
+	// cript.reset();
+	// cript.update(netID.getBytes("utf8"));
+	// BigInteger bigot = new BigInteger(cript.digest());
+	// // Something about things
+	// return bigot.longValue();
+	//
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// return 0;
+	// }
+	// }
 
 	@Override
 	public boolean equals(Object other) {
@@ -327,102 +320,88 @@ public class User {
 		return "<tr><td>8/21</td><td>  </td><td>  </td><td>  </td><td>  </td><td><button onClick=\"sendMeToMyMessages();\">Messages</button></tr>";
 
 	}
-	
+
 	/**
-	 * @author Yifei Zhu
-	 * reh.tardy=1
-	 * per.tardy=2
-	 * reh.absence =3
-	 * per.absence = 6
-	 * per.reh.absence`	=3
 	 * 
+	 * reh.tardy=1 per.tardy=2 reh.absence=3 per.absence=6 per.reh.absence=3
+	 * 
+	 * @author Yifei Zhu
 	 * @return return the letter grade
 	 */
-	public String getGrade()
-	{
-		int count=0;
-		List<Tardy> tardys=this.getTardies();
-		for(Tardy t : tardys)
-		{
-			//rehearsal
-			if(!t.getStatus().equals("excuse"))
-			{
-				if(t.getType().equals("rehearsal"))
-				{
-					count+=1;
-				}
-				else if(t.getType().equals("performance"))
-				{
-					count+=2;
+	public String getGrade() {
+		int count = 0;
+		List<Tardy> tardies = this.getTardies();
+		for (Tardy t : tardies) {
+			// rehearsal
+			if (!t.getStatus().equals("excused")) {
+				if (t.getType().equals("rehearsal")) {
+					count += 1;
+				} else if (t.getType().equals("performance")) {
+					count += 2;
 				}
 			}
 		}
 		List<Absence> absences = this.getAbsences();
-		//absences
-		for(Absence a : absences)
-		{
-			if(!a.getStatus().equals("excuse"))
-			{
-				if(a.getType().equals("rehearsal"))
-				{
-					count+=3;
+		// absences
+		for (Absence a : absences) {
+			if (!a.getStatus().equals("excused")) {
+				if (a.getType().equals("rehearsal")) {
+					count += 3;
 				}
-				if(a.getType().equals("performance"))
-				{
-					count+=6;
+				if (a.getType().equals("performance")) {
+					count += 6;
 				}
 			}
 		}
 		return getLetterGrade(count);
 	}
-	
+
 	/**
-	 * A  : 0
-	 * A- : 1
+	 * A : 0 A- : 1
 	 * 
 	 * 
-	 * @author Yifei Zhu
-	 * Base on the count, return letter grade 
-	 * @param count  
+	 * @author Yifei Zhu Base on the count, return letter grade
+	 * @param count
 	 * @return -- return letter grade
 	 */
-	String getLetterGrade(int count)
-	{
-		if(count==0)
+	String getLetterGrade(int count) {
+		if (count == 0)
 			return "A";
-		else if(count ==1)
+		else if (count == 1)
 			return "A-";
-		else if(count==2)
+		else if (count == 2)
 			return "B+";
-		else if(count==3)
+		else if (count == 3)
 			return "B";
-		else if(count==4)
+		else if (count == 4)
 			return "B-";
-		else if(count==5)
+		else if (count == 5)
 			return "C+";
-		else if(count==6)
+		else if (count == 6)
 			return "C";
-		else if(count==7)
+		else if (count == 7)
 			return "C-";
-		else if(count==8)
+		else if (count == 8)
 			return "D+";
-		else if(count==9)
+		else if (count == 9)
 			return "D";
-		else if(count==10)
+		else if (count == 10)
 			return "D-";
-		else 
+		else
 			return "F";
 	}
+
 	/**
-	 * Sort the given list of Users by the given Comparator (Section, LastName, etc.) in descending
-	 * order
+	 * Sort the given list of Users by the given Comparator (Section, LastName,
+	 * etc.) in descending order
 	 * 
 	 * @param comp
 	 *            - Comparator for comparing the forms
-	 * @param users           
-	 * 			  - list of users to be sorted
+	 * @param users
+	 *            - list of users to be sorted
 	 */
-	public static void sortUsersDescending(Comparator<User> comp, List<User> users) {
+	public static void sortUsersDescending(Comparator<User> comp,
+			List<User> users) {
 		for (int i = 0; i < users.size() - 1; i++) {
 			for (int j = i + 1; j < users.size(); j++) {
 				if (comp.compare(users.get(i), users.get(j)) < 0) { // larger
@@ -437,22 +416,23 @@ public class User {
 	}
 
 	/**
-	 * Sort the given list of Users by the given Comparator (Section, LastName, etc.) in ascending
-	 * order
+	 * Sort the given list of Users by the given Comparator (Section, LastName,
+	 * etc.) in ascending order
 	 * 
 	 * @param comp
 	 *            - Comparator for comparing the forms
-	 * @param users           
-	 * 			  - list of users to be sorted
+	 * @param users
+	 *            - list of users to be sorted
 	 */
-	public static void sortUsersAscending(final Comparator<User> comp, List<User> users) {
+	public static void sortUsersAscending(final Comparator<User> comp,
+			List<User> users) {
 		sortUsersDescending(new Comparator<User>() {
 
 			@Override
 			public int compare(User o1, User o2) {
 				return -comp.compare(o1, o2);
 			}
-			
+
 		}, users);
 	}
 }
