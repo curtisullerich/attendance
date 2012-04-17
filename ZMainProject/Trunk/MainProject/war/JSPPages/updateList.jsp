@@ -5,10 +5,12 @@
 
 <%ArrayList<String> peeps = DatabaseUtil.listMobileStudentsAndTAs();%>
 <html>
+	<head>
 	<script src = "/JSPPages/script.js"></script>
 	<script src = "/JSPPages/sha.js"></script>
 	<link rel="stylesheet" type="text/css" href="/MobileApp/FieldAppCSS.css" />
-	
+	<title>@10Dance</title>
+	<link rel="stylesheet" type="text/css" href="/JSPPages/MainCSS.css">
 	<script>
 	
 		window.onload = function() {
@@ -54,6 +56,7 @@
 			window.location = "/MobileApp/FieldAppMain.html";
 		}
 	</script>
+	</head>
 	<body>
 	<p>Updating Class List...</p>
 	</body>

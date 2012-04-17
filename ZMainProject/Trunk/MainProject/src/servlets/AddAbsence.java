@@ -91,7 +91,7 @@ public class AddAbsence extends HttpServlet {
 				
 			} else {
 				//lolidk
-				System.err.println("wrong type to kill\"" + typeToKill + "\"ended up in AddTardy");
+				System.err.println("wrong type to kill\"" + typeToKill + "\"ended up in Addabsence");
 			}
 			
 			resp.sendRedirect("/JSPPages/Director_attendanceTable.jsp");

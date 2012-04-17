@@ -17,8 +17,10 @@
 	
 	<static-files>
 		<include path = "/JSPPages/*.png" />
+		<include path = "/JSPPages/*.jpg" />
 		<include path = "/JSPPages/*.jsp" />
 		<include path = "/JSPPages/*.js" />
+		<include path = "/JSPPages/MainCSS.css" />
 		<include path = "/JSPPages/404.css" />
 		<include path = "/MobileApp/FieldAppCache.appcache" />
 		<include path = "/MobileApp/FieldAppCSS.css" />

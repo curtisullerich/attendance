@@ -5,6 +5,10 @@
 
 <!-- This should be changed to reflect successful processing when we can -->
 <!-- Parser.splat(info) should return true if successful -->
+<html>
+<head>
+<title>@10Dance</title>
+<link rel="stylesheet" type="text/css" href="/JSPPages/MainCSS.css">
 <script src = "/JSPPages/script.js"></script>
 <script src = "/JSPPages/sha.js"></script>
 <link rel="stylesheet" type="text/css" href="/MobileApp/FieldAppCSS.css" />
@@ -34,8 +38,8 @@
 	}
 	
 </script>
-<html>
-	<body>
+</head>
+<body>
 		<h1><br/>Uploading...</h1>
     </body>
 </html>

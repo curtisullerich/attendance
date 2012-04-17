@@ -7,7 +7,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Parser Form D</title>
+<title>@10Dance</title>
+<link rel="stylesheet" type="text/css" href="/JSPPages/MainCSS.css">
 
 <!--tried:  http://localhost:8888/JSPPages/FormDParser.jsp?id=1&response=yes -->
 <%
@@ -38,7 +39,7 @@
 
 
 </head>
-<body>
- hello
-</body>
+	<body>
+	<p>Parsing Response...</p>
+	</body>
 </html>

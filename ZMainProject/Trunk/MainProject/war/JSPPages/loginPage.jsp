@@ -7,6 +7,7 @@
 <html>
 	<head>
 		<title>@10Dance</title>
+		<link rel="stylesheet" type="text/css" href="/JSPPages/MainCSS.css">
 		<script src="/JSPPages/sha.js"/></script>
 		<script>
 		

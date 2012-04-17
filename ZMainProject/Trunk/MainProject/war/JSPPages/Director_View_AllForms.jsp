@@ -7,7 +7,8 @@
 
 
 <html>
-
+	<title>@10Dance</title>
+	<link rel="stylesheet" type="text/css" href="/JSPPages/MainCSS.css">
 <head>
 	<%
 	String netID = (String) session.getAttribute("user");
@@ -22,7 +23,12 @@
 	{
 		user = DatabaseUtil.getUser(netID);
 		if (!user.getType().equalsIgnoreCase("Director")) {
-			response.sendRedirect("/JSPPages/logout.jsp");
+			if(user.getType().equalsIgnoreCase("TA"))
+				response.sendRedirect("/JSPPages/TA_Page.jsp");
+			else if(user.getType().equalsIgnoreCase("Student"))
+				response.sendRedirect("/JSPPages/Student_Page.jsp");
+			else
+				response.sendRedirect("/JSPPages/logout.jsp");
 		}
 	}
 	%>

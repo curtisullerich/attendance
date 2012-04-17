@@ -5,6 +5,7 @@
 <html>
 	<head>
 		<title>@10Dance</title>
+		<link rel="stylesheet" type="text/css" href="/JSPPages/MainCSS.css">
 	</head>
 	<%
 	Form f = DatabaseUtil.getFormByID(new Long(request.getParameter("id")));

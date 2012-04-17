@@ -8,6 +8,7 @@
 <html>
 	<head>
 		<title>@10Dance</title>
+		<link rel="stylesheet" type="text/css" href="/JSPPages/MainCSS.css">
 	</head>
 	
 	<%

@@ -1,11 +1,5 @@
 @10dance Todo
 
-*director edit individual rank
+---------------------------------------
 
-*student attendance new message
-
-*director create message on tardy/absence
-
-*utilize form D yes/no parser
-
-*mobile app links
+*work on main css

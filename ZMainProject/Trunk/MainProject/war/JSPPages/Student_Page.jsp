@@ -5,6 +5,7 @@
 <html>
 	<head>
 		<title>@10Dance</title>
+		<link rel="stylesheet" type="text/css" href="/JSPPages/MainCSS.css">
 	</head>
 	<%
 	String netID = (String) session.getAttribute("user");
@@ -74,20 +75,24 @@
 	</script>
 	<body>
 <!--*********************Page Trail*****************************-->
-	
+		<div class="trail">
 		<a href="/JSPPages/logout.jsp" title="Logout and Return to Login Screen">Home</a> 
 		>
 		<a href="/JSPPages/Student_Page.jsp" title="Student Page">Student</a>
-			
+		</div>
+		<div class="status">	
 		You are logged in as <%= user.getFirstName() + " " + user.getLastName() %>
 		<!--LOGOUT BUTTON-->
 		<input type="button" onclick="window.location = '/JSPPages/logout.jsp'" id="Logout" value="Logout"/>		
 
 		<!--HELP BUTTON-->	
-		<input type="button" onclick="javascript: help();" id="Help" value="Help"/>		
+		<input type="button" onclick="javascript: help();" id="Help" value="Help"/>	
+		</div>	
 
 
 <!--*********************info*****************************-->
+
+		<h1>Student Page</h1>
 
 	<!--*********************Student Info*****************************-->	
 		<br/><br/>

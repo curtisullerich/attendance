@@ -41,7 +41,7 @@ public class DeleteItem extends HttpServlet {
 				
 			} else {
 				//lolidk
-				System.err.println("wrong type to kill\"" + typeToKill + "\"ended up in AddTardy");
+				System.err.println("wrong type to kill\"" + typeToKill + "\"ended up in DeleteItem");
 			}
 			
 			resp.sendRedirect("/JSPPages/Director_attendanceTable.jsp");
