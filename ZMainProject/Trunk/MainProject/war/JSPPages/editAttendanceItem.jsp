@@ -152,7 +152,7 @@ function showDivs() {
 		isEndAM = a.getEndTime().get12Format().substring(5).equals("AM");
 		idToKill = ""+a.getID();
 		typeToKill="Absence";
-	} else if (itemType.equalsIgnoreCase("present")) {
+	} else if (itemType.equalsIgnoreCase("Event")) {
 		//well, we won't do anything
 		Event e = DatabaseUtil.getEventByID(itemID);
 		
@@ -168,6 +168,7 @@ function showDivs() {
 // 			oldMessageIDs += tmp[i] + " ";
 // 		} 
 		oldNetID = request.getParameter("theNetID");
+
 		oldStartMonth = e.getStartTime().getDate().getMonth() +"";
 		oldStartDay = e.getStartTime().getDate().getDay() +"";
 		oldStartYear = e.getStartTime().getDate().getYear() +"";

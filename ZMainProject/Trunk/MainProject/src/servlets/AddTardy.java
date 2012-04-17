@@ -51,15 +51,20 @@ public class AddTardy extends HttpServlet {
 			Time time = new Time((startrdio.equals("AM") ? hour%12 : (hour + 12) % 24), minute, date);//TODO right?
 			Tardy t = new Tardy(netID, time, type);
 			
-			t.setStatus(status);
-			t.setCurrentIndex(Integer.parseInt(currentIndex));
-			String[] ids = messageIDs.split(" ");
-			t.setMessageIDs(ids);
+			if (!status.equals("")) {
+				t.setStatus(status);
+			}
+			if (!currentIndex.equals("")) {
+				t.setCurrentIndex(Integer.parseInt(currentIndex));
+				String[] ids = messageIDs.split(" ");
+				t.setMessageIDs(ids);
+			}
 			
 			user.addTardy(t);
-			Long theId = Long.parseLong(idToKill);
 
 			if (typeToKill.equals("Tardy")) {
+				Long theId = Long.parseLong(idToKill);
+
 				Tardy toKill = DatabaseUtil.getTardyByID(theId);
 				if (toKill == null) {
 					System.err.println("TOKILL WAS NULL.");
@@ -67,6 +72,8 @@ public class AddTardy extends HttpServlet {
 				DatabaseUtil.removeTardy(toKill);
 				
 			} else if (typeToKill.equals("Absence")) {
+				Long theId = Long.parseLong(idToKill);
+
 				Absence toKill = DatabaseUtil.getAbsenceByID(theId);
 				DatabaseUtil.removeAbsence(toKill);
 				

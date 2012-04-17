@@ -60,24 +60,24 @@ public class AddAbsence extends HttpServlet {
 			int iendDay = Integer.parseInt(endDay);
 			
 			Date startDate = new Date(istartYear, istartMonth, istartDay);
-			Time startTime = new Time((startrdio.equals("AM") ? istartHour%12 : (istartHour + 12) % 24), istartMinute, startDate);//TODO right?
+			Time startTime = new Time(istartHour, istartMinute, startDate);//TODO right?
 
 			Date endDate = new Date(iendYear, iendMonth, iendDay);
-			Time endTime = new Time((endrdio.equals("AM") ? iendHour%12 : (iendHour + 12) % 24), iendMinute, endDate);//TODO right?
+			Time endTime = new Time(iendHour, iendMinute, endDate);//TODO right?
 
 			Absence a = new Absence(netID, startTime, endTime, type);
 			
-			
-			
-			a.setStatus(status);
-			a.setCurrentIndex(Integer.parseInt(currentIndex));
-			String[] ids = messageIDs.split(" ");
-			a.setMessageIDs(ids);
+			if (!status.equals("")) {
+				a.setStatus(status);
+				a.setCurrentIndex(Integer.parseInt(currentIndex));
+				String[] ids = messageIDs.split(" ");
+				a.setMessageIDs(ids);				
+			}
 			
 			user.addAbsence(a);
-			Long theId = Long.parseLong(idToKill);
 
 			if (typeToKill.equals("Tardy")) {
+				Long theId = Long.parseLong(idToKill);
 				Tardy toKill = DatabaseUtil.getTardyByID(theId);
 				if (toKill == null) {
 					System.err.println("TOKILL WAS NULL.");
@@ -85,6 +85,7 @@ public class AddAbsence extends HttpServlet {
 				DatabaseUtil.removeTardy(toKill);
 				
 			} else if (typeToKill.equals("Absence")) {
+				Long theId = Long.parseLong(idToKill);
 				Absence toKill = DatabaseUtil.getAbsenceByID(theId);
 				DatabaseUtil.removeAbsence(toKill);
 				
