@@ -27,7 +27,53 @@ import forms.Form;
  */
 public class DatabaseUtil 
 {
-	
+	public static void dropATrainOnEm()
+	{
+		List<Form> forms = getAllForms();
+		List<User> users = getStudents();
+		List<Absence> absences = getAllAbsences();
+		List<Tardy> tardies = getAllTardies();
+		List<Event> events = getAllEvents();
+		List<AttendanceReport> reports = getAllReports();
+		List<Message> messages = getAllMessages();
+		
+		for (int i = 0; i < reports.size(); i++)
+		{
+			removeReport(reports.get(i));
+		}
+		
+		for (int i = 0; i < events.size(); i++)
+		{
+			removeEvent(events.get(i));
+		}
+		
+		for (int i = 0; i < tardies.size(); i++)
+		{
+			removeTardy(tardies.get(i));
+		}
+		
+		for (int i = 0; i < absences.size(); i++)
+		{
+			removeAbsence(absences.get(i));
+		}
+		
+		for (int i = 0; i < forms.size(); i++)
+		{
+			removeForm(forms.get(i));
+		}
+		
+		for (int i = 0; i < messages.size(); i++)
+		{
+			removeMessage(messages.get(i));
+		}
+		
+		for (int i = 0; i < users.size(); i++)
+		{
+			if (users.get(i).getType().equalsIgnoreCase("Student"))
+				removeUser(users.get(i));
+		}
+		
+	}
 	public static Form getFormByID(Long id)
 	{
 		EntityManager em = EMFService.get().createEntityManager();
@@ -73,11 +119,51 @@ public class DatabaseUtil
 		em.close();
 	}
 	
+	public static void removeReport(AttendanceReport o)
+	{
+		EntityManager em = EMFService.get().createEntityManager();
+		AttendanceReport toRem = em.find(AttendanceReport.class, o.getID());
+		em.remove(toRem);
+		em.close();
+	}
+	
+	public static void removeEvent(Event o)
+	{
+		EntityManager em = EMFService.get().createEntityManager();
+		Event toRem = em.find(Event.class, o.getId());
+		em.remove(toRem);
+		em.close();
+	}
+	
+	public static void removeMessage(Message o)
+	{
+		EntityManager em = EMFService.get().createEntityManager();
+		Message toRem = em.find(Message.class, o.getID());
+		em.remove(toRem);
+		em.close();
+	}
+	
+	public static void removeUser(User o)
+	{
+		EntityManager em = EMFService.get().createEntityManager();
+		User toRem = em.find(User.class, o.getID());
+		em.remove(toRem);
+		em.close();
+	}
+	
 	public static void addAttendanceReport(AttendanceReport report)
 	{
 		EntityManager em = EMFService.get().createEntityManager();
 		em.persist(report);
 		em.close();
+	}
+	
+	public static List<AttendanceReport> getAllReports()
+	{
+		EntityManager em = EMFService.get().createEntityManager();
+		Query q = em.createQuery("select a from AttendanceReport a");
+		List<AttendanceReport> results = (List<AttendanceReport>) q.getResultList();
+		return results;
 	}
 	
 	public static AttendanceReport getAttendanceReport(String netID)
@@ -641,6 +727,11 @@ public class DatabaseUtil
 		List<Form> forms = (List<Form>) q.getResultList();
 			
 		return forms;
+	}
+	
+	public static List<Message> getAllMessages()
+	{
+		EntityManager em = EMFService.get().createEntityManager(); Query q = em.createQuery("select m from Message m"); List<Message> messages = (List<Message>) q.getResultList(); return messages;
 	}
 	//TODO same for all Forms
 	
