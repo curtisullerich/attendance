@@ -25,6 +25,11 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 	</servlet>
 	
 	<servlet>
+		<servlet-name>ReadCSV</servlet-name>
+		<servlet-class>servlets.ReadCSV</servlet-class>
+	</servlet>
+	
+	<servlet>
 		<servlet-name>FormA</servlet-name>
 		<servlet-class>servlets.FormA</servlet-class>
 	</servlet>
@@ -104,6 +109,10 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
 		<url-pattern>/setRank</url-pattern>
 	</servlet-mapping>
 	
+	<servlet-mapping>
+		<servlet-name>ReadCSV</servlet-name>
+		<url-pattern>/readCSV</url-pattern>
+	</servlet-mapping>
 	
 	<servlet-mapping>
 		<servlet-name>FormA</servlet-name>
