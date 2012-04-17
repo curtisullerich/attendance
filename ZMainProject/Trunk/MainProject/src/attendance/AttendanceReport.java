@@ -99,4 +99,9 @@ public class AttendanceReport {
 
 		});
 	}
+
+	public Long getID() {
+		// TODO Auto-generated method stub
+		return id;
+	}
 }
