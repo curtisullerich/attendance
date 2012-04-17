@@ -113,6 +113,7 @@
 		<%= insert %>
 		
 		<br/>
+		<br/>
 		<input type="button" value="Back" name="Back" onclick="window.location = '/JSPPages/Student_Page.jsp'"/>
 
 	</body>

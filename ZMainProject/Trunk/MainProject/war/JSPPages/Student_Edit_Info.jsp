@@ -69,14 +69,14 @@
 	 	 }
  		 		 
 		 var years = document.getElementById("Year").value;
-		 if(years == null || years == ""){
+ 		 if(isNaN(parseInt(years,10)) || (parseInt(universityID,10) < 0) || universityID == "" || universityID == null){
 			 alert("Please enter the number of years in the band.")
 			 return false;
 		 }
 		 
 		 var universityID = document.getElementById("UniversityID").value; 
 		 //check that universityID is 9 digit number
-		 if((parseInt(universityID,10) < 0) || (parseInt(universityID,10) > 999999999) || universityID == "" || universityID == null){
+ 		 if(isNaN(parseInt(universityID,10)) || universityID.length != 9 || (parseInt(universityID,10) < 0) || (parseInt(universityID,10) > 999999999) || universityID == "" || universityID == null){
 			 alert("This is not a valid University ID. Please re-enter your University ID.")
 			 return false;
 	 	 }
@@ -84,7 +84,7 @@
 		 //validate student password
 		 if(Sha1.hash(document.getElementById("Current Password").value).toUpperCase() != 
 			 ("<%=user.getHashedPassword()%>")){
-			 alert("Please enter the correct Director password.");
+			 alert("Please enter the correct current password.");
 			 return false;
 		 }
 		
