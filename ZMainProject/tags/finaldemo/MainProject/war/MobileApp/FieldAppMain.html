@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html manifest="FieldAppCache.appcache">
+
+<!-- UPDATE THE APPCACHE WHENEVER CHANGES ARE MADE!!! -->
+
+	<head>
+		<title>@10dance Mobile App</title>
+		<link rel="stylesheet" type="text/css" href="FieldAppCSS.css"></link>
+		<script src="script.js"></script>
+		<script src="sha.js"></script>
+		<script>
+			
+			/**
+			 * Runs when the page loads: determines if a class list is present, clears
+			 * attendance data if the page just uploaded the data, and alerts the user if the upload was
+			 * unsuccessful. Also enables the clearAll button if debug is true.
+			 *
+			 * @author Todd Wegter
+			 * @date 2-17-2012
+			 */
+			window.onload = function() {
+				 
+				//enable clear button if debug mode is enabled
+				if(debug){
+					document.getElementById("clear").style.display="inline";
+				}
+				
+				//determine date of latest class list
+				var array = storeToArray(studentPrepend,"&","date");
+				var str;
+				if (array.length < 1) {
+					str="No class list is currently present.";
+				} else {
+					str="Current class list: " + array[0][0];
+				}
+				document.getElementById("classList").innerHTML = str;
+				//check for successful data upload	
+				if(localStorage.getItem("success") == "true"){
+					//clear all absence and tardy data
+					clearLocalStoragewithPrepend(absentPrependPerformance);
+					clearLocalStoragewithPrepend(absentPrependRehearsal);
+					clearLocalStoragewithPrepend(rehearsalPrepend);
+					clearLocalStoragewithPrepend(performancePrepend);
+					clearLocalStoragewithPrepend(tardyPrepend);
+					alert("Absence Data Successfully Uploaded and Locally Removed");
+					localStorage.removeItem("success");
+				}
+				//if upload unsuccessful, do not clear localStorage
+				else if(localStorage.getItem("success") == "false"){
+					alert("Absence Data Upload Unsuccessful - Local Data Was Not Changed");
+					localStorage.removeItem("success");
+				}
+				//alert user if a blank string was uploaded
+				else if(localStorage.getItem("success") == "emptyString")
+				{
+					alert("Nothing was uploaded to the server")
+					localStorage.removeItem("success");
+				}
+				
+				var error = localStorage.getItem("uploadError");
+				if(error != null){
+					alert("Upload error: " + error);
+					localStorage.removeItem("uploadError");
+				}
+			}
+			
+
+			/**
+			 * This function selects the netID input box by default when called
+			 *
+			 * @author Todd Wegter
+			 * @date 2-10-212
+			 */
+			function netIDSelectTA(){
+				var text_input = document.getElementById ("TA");
+				text_input.focus ();
+				text_input.select ();
+			}
+		
+	        /**
+			 * Pulls the latest student list from the server by redirecting to the updateList.jsp
+			 * If the user is not connected to the internet (browser in offline mode), update is not performed.
+			 *
+			 * @author Curtis Ullerich
+			 * @date 3-15-2012
+			 */
+	        function updateList() {
+				//check online status
+	            if (!navigator.onLine) {
+	               alert("You're not online. Update not performed.");
+	               return false;
+	            }
+	               uncacheClassList();
+	               window.location = "/JSPPages/updateList.jsp";
+	        }
+	
+	        /**
+			 * Prepares attendance data for upload to the server if the user is online.
+			 *
+			 * @returns False if offline, True if online
+			 * @author Curtis Ullerich
+			 * @date 3-10-2012
+			 */
+	        function getLogin() {
+				//check online status
+				if (!navigator.onLine) {
+				   alert("You're not online. Upload not performed.");
+				   return false;
+				}
+				document.getElementById("main").style.display="none";
+				document.getElementById("login").style.display="inline";
+				netIDSelectTA();
+				return false;			 
+	        }
+	        
+	        function loginAndUpload(){
+		        if(confirmTAForUpload()){					
+					//create list of data to upload to the server
+					var str = "";
+					var key;
+					for (var i = 0; i < localStorage.length; i++) {
+						key = localStorage.key(i);
+						if(!stringContains(studentPrepend,key) && !stringContains(loginPrepend,key)){
+							str += key + ",";
+						}
+					}
+					document.getElementById("tempForUpload").value = str;
+					return true;
+		        }
+		        return false;
+			}
+	        
+	        /**
+	         * Removes all student records currently stored in localStorage
+	         *
+	         * @returns True if successful
+	         * @author Curtis Ullerich
+	         * @date 3-3-2012
+	         */
+	        function uncacheClassList() {
+	            clearLocalStoragewithPrepend(studentPrepend);
+	            return true;
+	        }
+			
+	        /**
+			 * Clears all localStorage, disabling the buttons in the meantime, if debug is true.
+			 *
+			 * @returns True if successful
+			 * @author Todd Wegter
+			 * @date 3-23-2012
+			 */
+			function clearAll(){
+	        	if(debug){
+	        		//disable buttons
+					document.getElementById("clear").disabled = true;
+					document.getElementById("tardy").disabled = true;
+					document.getElementById("absent").disabled = true;
+					document.getElementById("update").disabled = true;
+					document.getElementById("submit").disabled = true;
+					document.getElementById("clear").value = "Clearing...";
+					//clear localStorage
+					localStorage.clear();
+					//wait to renable buttons - clearing can be too fast
+					setTimeout(function(){
+						//re-enable buttons
+						document.getElementById("clear").disabled = false;
+						document.getElementById("tardy").disabled = false;
+						document.getElementById("absent").disabled = false;
+						document.getElementById("update").disabled = false;
+						document.getElementById("submit").disabled = false;
+						document.getElementById("clear").value = "Clear ALL THE THINGS!!!";
+						//reloads page
+						window.location.reload();
+					},1000);
+	        	}
+	        	return true;
+			}
+	        
+			/**
+			 * Displays the page's help screen
+			 *
+			 * @returns False to prevent page reload
+			 * @author Todd Wegter
+			 * @date 2-28-2012
+			 */
+	        function help(){
+	            alert("This page is the start page for the @10dance Mobile App.\n"+
+	            "\nClicking the Update Class List button updates the class list from the server."+
+	            "\n\nThe Tardy Check-In button navigates to the tardy check-in page."+
+	            "\n\nThe Report Absences button navigates to the absence reporting page."+
+	            "\n\nThe Upload Attendance Data button uploads the attendance data to the server."+
+	            "Upon successful upload, the local attendance data is cleared."+
+	            "\n\nBoth reporting absences and uploading attendance data require valid TA login info.");
+	            return false;
+	        }
+			
+		</script>
+	</head>
+	<body>
+		<div class="box" id="main">
+			<h1>@10dance</h1>
+			<br/>
+			<input class="help button" type="button" id="help" value="Help" onclick="javascript: help();"/>
+			<form onsubmit="return getLogin();" class="centeralign">
+				<input class="button" type="button" id="tardy" value="Tardy Check-In" onclick="window.location='/MobileApp/FieldAppTardy.html'"/> 
+				<input class="button" type="button" id="absent" value="Report Absences" onclick="window.location = '/MobileApp/FieldAppAbsent.html'"/>
+				<div>
+					<br/>
+				</div>
+				<input class="button" type="button" id="update" value="Update Class List" onclick="javascript: updateList();"/>
+				<input class="button" type="submit" id="submit" value="Upload Attendance Data"/> 
+				<div>
+					<br/>
+				</div>
+			</form>
+			<div id="classList" class="centeralign">Latest Class List: None</div>
+			<br/>
+			<div class="centeralign">
+				<input class="button" type="button" id="clear" value="Clear ALL THE THINGS!!!" onClick="clearAll();" style="display: none"/>
+			</div>
+		</div>
+		<div class="box" id="login" style="display: none">
+			<h1>Data Upload Login</h1>
+			<br/>
+			<form class="centeralign" id="TACredentials" method="POST" action="/JSPPages/uploadr.jsp" onsubmit=" return loginAndUpload();">
+				<table  style="margin: auto">
+					<tr>
+						<td>TA netID:</td>
+						<td><input type="text" id="TA" placeholder="TA netID"/></td>
+					</tr>
+					<tr>
+						<td>Password:</td>
+						<td><input type="password" id="password" placeholder="password"/></td>
+					</tr>
+				</table>
+				<br/>
+				<input class="button" type="submit" id="submitLogin" value="Submit"/>
+				<input class="button" type="button" id="cancel" value="Cancel" onclick="window.location='/MobileApp/FieldAppMain.html'"/>
+				<input type="hidden" id="tempForUpload" name="tempForUpload" value=""/>
+			</form>
+		</div>
+    </body>
+</html>
+

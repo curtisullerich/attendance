@@ -1,0 +1,130 @@
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
+<%@ page import="people.*" %>
+<%@ page import="serverLogic.DatabaseUtil" %>
+
+<html>
+	<head>
+		<title>@10Dance</title>
+		<link rel="stylesheet" type="text/css" href="/JSPPages/MainCSS.css">
+	</head>
+	<%
+	String netID = (String) session.getAttribute("user");
+	User user = null;
+	
+	if (netID == null || netID.equals("")) 
+	{
+		response.sendRedirect("/JSPPages/logout.jsp");
+		return;
+	}
+	else
+	{
+		user = DatabaseUtil.getUser(netID);
+		if (!user.getType().equalsIgnoreCase("Student")) {
+			if(user.getType().equalsIgnoreCase("TA"))
+				response.sendRedirect("/JSPPages/TA_Page.jsp");
+			else if(user.getType().equalsIgnoreCase("Director"))
+				response.sendRedirect("/JSPPages/Director_Page.jsp");
+			else
+				response.sendRedirect("/JSPPages/logout.jsp");
+		}
+	}
+	%>
+	<script>
+		window.onload = function(){
+			var Row = document.getElementById("rankRow");
+			var Cells = Row.getElementsByTagName("td");
+			if("<%= user.getRank() %>" == "|"){
+				Cells[1].innerText = "None";
+			}
+			else
+				Cells[1].innerText = "<%= user.getRank() %>";
+				
+			if(<%= request.getParameter("successfulSave")%> == "true"){
+				alert("User info successfully edited.");
+			}
+			else if(<%= request.getParameter("successfulSave")%> == "false"){
+				alert("Info update error. User info not changed.");	
+			}
+			if(<%= request.getParameter("formSubmitted")%> == "true"){
+				alert("Form successfully submitted.")
+			}
+			else if(<%= request.getParameter("formSubmitted")%> == "false"){
+				alert("You have already submitted your maximum number of forms.\n\n"
+						+ "You can delete one on your \"View Submitted Forms\" page and add a new one in its place.");
+			}
+		}
+	
+		function listForms() {
+			var div = document.getElementById("formsDiv")
+			if (div.style.display == "none") {
+				div.style.display = "inline";
+				document.getElementById("listForms").value = "Select a Form Below";
+			} else {
+				div.style.display = "none";
+				document.getElementById("listForms").value = "Submit a Form";
+			}
+		}
+		
+		function viewForms()
+		{
+			window.location = "/JSPPages/Student_View_Submitted_Forms.jsp";
+		}
+		function help(){
+			alert("Helpful information about student page.")
+		}
+	</script>
+	<body>
+<!--*********************Page Trail*****************************-->
+		<div class="trail">
+		<a href="/JSPPages/logout.jsp" title="Logout and Return to Login Screen">Home</a> 
+		>
+		<a href="/JSPPages/Student_Page.jsp" title="Student Page">Student</a>
+		</div>
+		<div class="status">	
+		You are logged in as <%= user.getFirstName() + " " + user.getLastName() %>
+		<!--LOGOUT BUTTON-->
+		<input type="button" onclick="window.location = '/JSPPages/logout.jsp'" id="Logout" value="Logout"/>		
+
+		<!--HELP BUTTON-->	
+		<input type="button" onclick="javascript: help();" id="Help" value="Help"/>	
+		</div>	
+
+
+<!--*********************info*****************************-->
+
+		<h1>Student Page</h1>
+
+	<!--*********************Student Info*****************************-->	
+		<br/><br/>
+		<div>
+		<table>
+			<tr><td>NetID: </td> <td><%= user.getNetID() %></td></tr>
+			<tr><td>First Name: </td> <td><%= user.getFirstName() %> </td></tr>
+			<tr><td>Last Name: </td> <td><%= user.getLastName() %> </td></tr>
+			<tr><td>University ID: </td> <td><%= user.getUnivID() %> </td></tr>
+			<tr><td>Major: </td> <td><%= user.getMajor() %> </td></tr>
+			<tr><td><p/></td><td><p/></td></tr>
+			<tr><td>Section: </td> <td><%= user.getSection() %> </td></tr>
+			<tr><td>Year in Band: </td> <td><%= user.getYear() %> </td></tr>
+			<tr id="rankRow"><td>Rank: </td> <td></td></tr>
+		</table>
+		</div>
+----------------------------------
+<p>
+		<!--********************* Button *****************************-->
+		<input type="submit" id="listForms" onClick="listForms();"  value="Submit a Form"/>
+		<input type="submit" onClick="viewForms();"  value="View Submitted Forms"/>
+		<p>
+			<div id="formsDiv" style="display: none">
+				<p><a href="/JSPPages/Student_Form_A_Performance_Absence_Request.jsp">Form A - Performance Absence Request</a></p>
+				<p><a href="/JSPPages/Student_Form_B_Class_Conflict_Request.jsp">Form B - Class Conflict Request</a></p>
+				<p><a href="/JSPPages/Student_Form_C_Rehearsal_Excuse.jsp">Form C - Request for Excuse from Rehearsal</a></p>
+				<p><a href="/JSPPages/Student_Form_D_TimeWorked.jsp">Form D - Time Worked</a></p>
+			</div>
+		</p>
+		<input type ="submit" onClick="window.location = '/JSPPages/Student_View_Attendance.jsp';"  value = "View Attendance">
+		<br/>
+		<input type ="submit" onClick="window.location = '/JSPPages/Student_Edit_Info.jsp';"  value = "Edit My Information">
+	</body>
+
+</html>

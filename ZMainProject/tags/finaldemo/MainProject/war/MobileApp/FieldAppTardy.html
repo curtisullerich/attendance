@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html manifest="FieldAppCache.appcache">
+	<head>	
+		<title>@10dance Tardy Check-In</title>
+		<link rel="stylesheet" type="text/css" href="FieldAppCSS.css">
+		<script src="script.js"></script>
+		<script src="sha.js"></script>
+		<script>
+			
+			//global variable to determine if tardy list is shown
+			var viewTardiesOn = false;
+		
+			/**
+			 * This function selects the netID input box by default and 
+			 * makes the clear butten visible if debug is true on pageload
+			 *
+			 * @author Todd Wegter
+			 * @date 3-23-2012
+			 */
+			window.onload = function(){
+				if(debug){
+					document.getElementById("clear").style.display="inline";
+				}
+				netIDSelect();
+			}
+			
+			/**
+			 * This function selects the netID input box by default when called
+			 *
+			 * @author Todd Wegter
+			 * @date 2-10-212
+			 */
+			function netIDSelect(){
+				var text_input = document.getElementById ("student");
+				text_input.focus ();
+				text_input.select ();
+			}
+			
+			/**
+			 * This function submits a tardy to the local storage based on the netID entered in the input box
+			 *
+			 * @returns False (otherwise onsubmit calls to this function refresh the page, which is not desired)
+			 * @author Todd Wegter
+			 * @date 3-30-2012
+			 */
+			function submitTardy() {
+				//converts input (universityID card or netID) to netID
+				var input = document.getElementById("student").value;
+				document.getElementById("student").value = "";
+				var netID;
+				if(input.charAt(0) == ";"){
+					//univID is char 7-15 of card string
+					var univID = input.substr(7,9);
+					netID = getNetID(univID);
+					if(netID == null){
+						alert("Please enter a valid netID.");
+						document.getElementById("student").placeholder = "netID";
+						netIDSelect();
+						return false;
+					}
+				}
+				else{
+					netID = input;
+					//checks for valid ID
+					if(!validate(netID))
+					{
+						netIDSelect();
+						return false;
+					}
+				}
+				//format of tardy (24 hour time): "netID YYYY-MM-DD HH:MMam/pm
+				var tardyEntry = getFirstName(netID) + "&split&" + getLastName(netID) + "&split&" + dateToday() + "&split&" + twelveHourTimeNow();
+				//store tardy with appropriate key
+				storeEntry(tardyPrepend, getFirstName(netID), getLastName(netID), netID, dateToday(), timeNow(), "|", getRank(netID), tardyEntry);
+				document.getElementById("student").value = "";
+				//updates onscreen tardy list if necessary
+				retrieveTardies();
+				//autoplace cursor in netID box
+				netIDSelect();
+				alert(netID+" has successfully signed in.")
+				return false;
+			}
+			
+			/**
+			 * This function shows and hides the tardy list, viewTardiesOn keeps track of whether the tardy list
+			 * is being shown
+			 *
+			 * @author Todd Wegter
+			 * @date 2-27-2012
+			 */
+			function tardiesOnOff(){
+				viewTardiesOn = !viewTardiesOn;
+				retrieveTardies();
+			}
+		
+			/**
+			 * If viewTardiesOn is true, calls printTardies and determines the order for the printed tardies (selected with radio buttons).
+			 * Otherwise it clears the table
+			 *
+			 * @author Todd Wegter
+			 * @date 3-23-2012
+			 */
+			function retrieveTardies(){
+				 //clear existing table
+					var table = document.getElementById("tardyTable");
+					for(var i = table.rows.length - 1; i >= 0; i--)
+					{
+						table.deleteRow(i);
+					}
+				 if(viewTardiesOn){
+					var sortType;
+					var sortRadio = document.getElementById("tardySortType").elements;
+					//sort chronologically or by netID based on radio buttons
+					if (sortRadio[0].checked == 1) {
+						sortType = "starttime";
+					} else if (sortRadio[1].checked == 1){
+						sortType = "lastname";
+					} else {
+						sortType = "firstname";
+					}
+					//fills table in desired order
+					printTardies(sortType);
+					document.getElementById("viewButton").value = "Hide Tardies";
+				}
+				else{
+					document.getElementById("tardies").innerHTML = "";
+					//changes button text
+					document.getElementById("viewButton").value = "View Tardies";
+				}
+			}
+			
+			
+			/**
+			 * Inserts the tardies currently stored into localStorage into
+			 * tardyTable.
+			 *
+			 * @param sortType
+			 *			- denotes how the tardies are sorted (any valid delimitee for keyDelimiter())
+			 * 
+			 * @author Todd Wegter
+			 * @date 3-23-2012
+			 */
+			function printTardies(sortType) {
+				//create array of tardy records from today
+				var array = storeToArray(tardyPrepend, dateToday(), sortType);
+				if(array.length > 0){
+					//sort array - first column takes precedence, sorted by ascii
+					array.sort();
+					document.getElementById("tardies").innerHTML = "<br>The Following Students Reported Being Tardy:</br></br>";
+					//add a new row for each record
+					for (var i = 0; i < array.length; i++) {
+						addRowToTable("0",array[i][1]);
+					}
+				}
+				else{
+					document.getElementById("tardies").innerHTML = "<br>No students were tardy.</br>";
+				}
+			}
+			
+			/**
+			* This function checks the locally stored copy of the list of students to ensure that the
+			* entered netID is valid
+			*
+			* @param netID
+			*			- the netID to be found in the localStorage
+			*
+			* @returns True if the netID is found; False if netID is an empty string, null, or not found in the localStorage
+			* @author Todd Wegter
+			* @date 3-23-2012
+			*/
+			function validate(netID){
+				//check if the student field is blank
+				if(netID != "" || netID != null){
+					//check if netID is in localStorage as student
+					if(localStorageContainsStudent(netID))
+					{
+						netIDSelect();
+						return true;
+					}
+				}
+				alert("Please enter a valid netID.");
+				document.getElementById("student").placeholder = "netID";
+				netIDSelect();
+				return false;
+			}
+			
+			/**
+			* This function clears all tardy entries in the localStorage; only enabled if the web app is in debug mode
+			*
+			* @author Todd Wegter
+			* @date 2-27-2012
+			*/
+			function clearTardies()
+			{
+				if(debug)
+				{
+					//disable buttons while clearing
+					document.getElementById("clear").disabled = true;
+					document.getElementById("student").disabled = true;
+					document.getElementById("submit").disabled = true;
+					document.getElementById("viewButton").disabled = true;
+					document.getElementById("back").disabled = true;
+					document.getElementById("re-sort").disabled = true;
+					document.getElementById("clear").value = "Clearing...";
+					//clear all tardy records
+					clearLocalStoragewithPrepend(tardyPrepend);
+					//turn off printed tardy list
+					viewTardiesOn = false;
+					retrieveTardies();
+					//wait 1 second to show disabled buttons in case operation takes very little time
+					setTimeout(function(){
+						//re-enable buttons
+						document.getElementById("clear").disabled = false;
+						document.getElementById("submit").disabled = false;
+						document.getElementById("viewButton").disabled = false;
+						document.getElementById("back").disabled = false;
+						document.getElementById("re-sort").disabled = false;
+						document.getElementById("student").disabled = false;
+						document.getElementById("clear").value = "Clear Tardy List";
+					},1000);
+					netIDSelect();
+				}
+			}
+			
+			/**
+			 * Prints the help screen for the FieldAppTardy page
+			 *
+			 * @returns False (otherwise onsubmit calls to this function refresh the page, which is not desired)
+			 * @author Todd Wegter
+			 * @date 3-30-2012
+			 */
+			function help(){
+				alert("This page is the tardy check-in page for the @10dance Mobile App.\n"+
+				"\nValid netIDs may be entered to mark a student as tardy. UniversityIDs may also be scanned when the netID input box is selected."+
+				"\n\nClicking View Tardies will show the recorded tardies."+
+				"\n\nThe Re-Sort Tardy List button allows the user to resort the tardy entries by either time or netID.");
+				return false;
+			}	
+			
+		</script>
+	</head>
+	<body>
+		<div class="box">
+			<h1>Tardy Check-In</h1>
+			</br>
+			<form class="centeralign" id="tardyReport" onsubmit="return submitTardy();">
+				netID <input type="text" id="student" autocomplete="off"/>
+				<input type="submit" id="submit" value="Submit Tardy"/>
+			</form>
+			</br>
+			<hr>
+			</br>
+			<form class="centeralign" id="tardyView">
+				<input class="button" type="button" id="viewButton" value="View Tardies" onclick="javascript: tardiesOnOff();"/>
+				<input class="button" type="button" id="re-sort" value="Re-Sort Tardy List" onclick="javascript: retrieveTardies();"/>
+				<input class="button" type="button" id="clear" value="Clear Tardy List" onclick="javascript: clearTardies();" style="display: none"/>
+				</br>
+			</form>
+			<br/>
+			<form class="centeralign" id="tardySortType">
+				<b>Sort Style</b>
+				<input type="radio" name="sortType" value="Time" checked="">time</input>
+				<input type="radio" name="sortType" value="LastName">last name</input>
+				<input type="radio" name="sortType" value="FirstName">first name</input>
+				</br>
+			</form>
+			<div id="tardies"></div>
+			<Table id="tardyTable" class="table"> <!-- table 0 -->
+				<tbody></tbody>
+			</Table>
+			<input class="back button" type="button" id="back" value="Back" onclick="window.location='/MobileApp/FieldAppMain.html'"/>
+			<input class="help button" type="button" id="help" value="Help" onclick="javascript: help();"/>
+		</div>
+	</body>
+</html>
