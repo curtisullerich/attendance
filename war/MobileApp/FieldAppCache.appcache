@@ -8,7 +8,7 @@ CACHE:
 FieldAppMain.html
 FieldAppTardy.html
 FieldAppAbsent.html
-script.js
-sha.js
-FieldAppCSS.css
-gradient6.jpg
+js/script.js
+js/sha.js
+css/FieldAppCSS.css
+images/gradient6.jpg
