@@ -10,14 +10,16 @@ import java.util.List;
 import javax.jdo.PersistenceManager;
 import javax.servlet.http.HttpSession;
 
-import edu.iastate.music.marching.attendance.model.DataModel;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
+
 import edu.iastate.music.marching.attendance.model.ModelException;
+import edu.iastate.music.marching.attendance.model.ModelFactory;
 import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.model.User.Type;
-import edu.iastate.music.marching.attendance.model.UserController;
 import edu.iastate.music.marching.attendance.util.InputUtil;
 
-public class Auth {
+public class AuthController {
 
 	private static final String HASH_ALGRO = "SHA-512";
 	private static final Charset HASH_CHARSET = Charset.forName("UTF-8");
@@ -61,11 +63,11 @@ public class Auth {
 			return null;
 		}
 
-		PersistenceManager pm = DataModel.getPersistenceManager();
+		PersistenceManager pm = ModelFactory.getPersistenceManager();
 
 		try {
 
-			UserController uc = DataModel.users(pm);
+			UserController uc = Controllers.users(pm);
 
 			try {
 
@@ -144,7 +146,7 @@ public class Auth {
 
 	public static User login(String netid, String password, HttpSession session) {
 
-		User u = DataModel.users().get(netid);
+		User u = Controllers.users().get(netid);
 
 		if (u == null || u.getPasswordHash() == null
 				|| u.getPasswordSalt() == null)
@@ -202,6 +204,28 @@ public class Auth {
 	public static void updateCurrentUser(User user, HttpSession session) {
 		if(user.getKey().equals(getUserFromSession(session).getKey()))
 			putUserInSession(user, session);
+	}
+
+	public static boolean google_login(HttpSession session) {
+		
+		UserService userService = UserServiceFactory.getUserService();
+		
+		if(!userService.isUserLoggedIn())
+			return false;
+		
+		String email = userService.getCurrentUser().getEmail();
+		
+		// Hack
+		User u = Controllers.users().get(email.split("@")[0]);
+		
+		if(u != null && "iastate.edu".equals(email.split("@")[1]))
+		{
+			putUserInSession(u, session);
+			return true;
+		}
+		
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

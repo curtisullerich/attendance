@@ -2,6 +2,15 @@ package edu.iastate.music.marching.attendance;
 
 public class App {
 
-	public static final String TITLE = "ISUCF'V'MB Attendance";
+	private static final String TITLE = "ISUCF'V'MB Attendance";
+	
+	public static String getTitle() {
+		return TITLE;
+	}
+
+	public static boolean isDirectorRegistered() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 }

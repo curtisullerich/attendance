@@ -1,10 +1,13 @@
-package edu.iastate.music.marching.attendance.model;
+package edu.iastate.music.marching.attendance.controllers;
 
 import javax.jdo.PersistenceManager;
 
+import edu.iastate.music.marching.attendance.model.ModelFactory;
+
+
 public abstract class AbstractController {
 
-	private PersistenceManager mPersistenceManager = DataModel
+	private PersistenceManager mPersistenceManager = ModelFactory
 			.getPersistenceManager();
 
 	protected AbstractController() {
@@ -16,7 +19,7 @@ public abstract class AbstractController {
 	}
 
 	protected PersistenceManager getPersistenceManager() {
-		return (mPersistenceManager != null) ? mPersistenceManager : DataModel
+		return (mPersistenceManager != null) ? mPersistenceManager : ModelFactory
 				.getPersistenceManager();
 	}
 

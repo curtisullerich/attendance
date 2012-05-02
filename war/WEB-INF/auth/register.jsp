@@ -12,7 +12,7 @@
   </head>
   <body>
   	<jsp:include page="/WEB-INF/template/header.jsp" />
-			
+	
   	
 	<h1>ISU Varsity Marching Band / Fall <fmt:formatDate value="${date}" pattern="yyyy" /></h1>
 	<h2>Registration</h2>
@@ -35,7 +35,7 @@
 			<dt><label class="required" for="LastName">Last Name</label></dt>
 			<dd><input type="text" name="LastName" value="<c:out value="${LastName}" />" /></dd>
 			
-			<dt><label for="NetID">NetID</label></dt>
+			<dt><label class="required" for="NetID">NetID</label></dt>
 			<dd>
 				<input type="text" name="NetID" value="<c:out value="${NetID}" />" />
 				<c:if test="${not empty NetID_error}">
@@ -45,10 +45,10 @@
 				</c:if>
 			</dd>
 			
-			<dt><label for="UniversityID">University ID</label></dt>
+			<dt><label class="required" for="UniversityID">University ID</label></dt>
 			<dd><input type="text" name="UniversityID" value="<c:out value="${UniversityID>0?UniversityID:''}" />" /></dd>
 			
-			<dt><label for="Section">Section</label></dt>
+			<dt><label class="required" for="Section">Section</label></dt>
 			<dd>
 				<select name="Section" id="Section">
 					<option value="">(Select One)</option>
@@ -60,7 +60,7 @@
 				</select>
 			</dd>
 			
-			<dt><label for="Year">Years in band</label></dt>
+			<dt><label class="required" for="Year">Years in band</label></dt>
 			<dd>
 				<select name="Year" id="Year"  >
 					<option value="">(Choose)</option>
@@ -70,13 +70,13 @@
 				</select>
 			</dd>
 			
-			<dt><label for="Major">Major</label></dt>
+			<dt><label class="required" for="Major">Major</label></dt>
 			<dd><input type="text" name="Major" value="<c:out value="${Major}" />" /></dd>
 			
-			<dt><label for="Password">Password</label></dt>
+			<dt><label class="required" for="Password">Password</label></dt>
 			<dd><input type="password" name="Password" /></dd>
 			
-			<dt><label for="PasswordConfirm">Re-Enter Password</label></dt>
+			<dt><label class="required" for="PasswordConfirm">Re-Enter Password</label></dt>
 			<dd><input type="password" name="PasswordConfirm" /></dd>
 		</dl>
 

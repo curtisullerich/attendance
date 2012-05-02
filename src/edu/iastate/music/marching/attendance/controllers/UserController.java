@@ -1,4 +1,4 @@
-package edu.iastate.music.marching.attendance.model;
+package edu.iastate.music.marching.attendance.controllers;
 
 import java.util.List;
 
@@ -8,6 +8,9 @@ import javax.jdo.Query;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 
+import edu.iastate.music.marching.attendance.model.ModelException;
+import edu.iastate.music.marching.attendance.model.ModelFactory;
+import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.model.User.Type;
 
 public class UserController extends AbstractController {
@@ -36,7 +39,7 @@ public class UserController extends AbstractController {
 			}
 
 			Key key = KeyFactory.createKey(User.class.getSimpleName(), netID);
-			User u = new User();
+			User u = ModelFactory.getUser();
 			u.setKey(key);
 
 			// Add in given parameters
@@ -98,6 +101,7 @@ public class UserController extends AbstractController {
 			query.setFilter("netID == netIDParam");
 			query.declareParameters("String netIDParam");
 
+			@SuppressWarnings("unchecked")
 			List<User> users = (List<User>) query.execute(netid);
 
 			if (users.size() == 0) {

@@ -1,5 +1,6 @@
 package edu.iastate.music.marching.attendance.model;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -10,8 +11,13 @@ import javax.jdo.annotations.PrimaryKey;
 import com.google.appengine.api.datastore.Key;
 
 @PersistenceCapable(detachable="true")
-public class User {
-	
+public class User implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1421557192976557705L;
+
 	public enum Type {
 		Student, TA, Director;
 		
