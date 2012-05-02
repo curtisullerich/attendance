@@ -2,10 +2,14 @@
 <appengine-web-app xmlns='http://appengine.google.com/ns/1.0'>
   <application>isucfvmb-attendance</application>
   <version>2</version>
-  <public-root>/public</public-root>
   <static-files>
-    <include path='/public/**'/>
+    <include path='/css/**'/>
+    <include path='/img/**'/>
+    <include path='/js/**'/>
     <include path='/MobileApp/**'/>
+    <include path='/error.html'/>
+    <include path='/favicon.ico'/>
+    <include path='/index.html'/>
   </static-files>
   <resource-files>
   </resource-files>
@@ -15,7 +19,4 @@
   <code-lock>false</code-lock>
   <sessions-enabled>true</sessions-enabled>
   <warmup-requests-enabled>false</warmup-requests-enabled>
-  <static-error-handlers>
-    <handler file='/error.html'/>
-  </static-error-handlers>
 </appengine-web-app>

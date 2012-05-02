@@ -67,6 +67,8 @@
 								<b>
 								<a href="/auth/login" style="text-size:large;">Login</a>
 								&nbsp;&middot;&nbsp;
+								<a href="${auth.googleLoginURL}" style="text-size:large;">Google Login</a>
+								&nbsp;&middot;&nbsp;
 								</b>
 								<a href="/auth/register"><span style="text-size:small;">Register</span></a>
 							</c:otherwise>
