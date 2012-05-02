@@ -1,191 +1,119 @@
-<?xml version="1.0" encoding="utf-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xmlns="http://java.sun.com/xml/ns/javaee"
-xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
-http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
-	<servlet>
-		<servlet-name>Login</servlet-name>
-		<servlet-class>servlets.LoginServlet</servlet-class>
-	</servlet>
-	
-	<servlet>
-		<servlet-name>Register</servlet-name>
-		<servlet-class>servlets.RegisterServlet</servlet-class>
-	</servlet>
-
-	<servlet>
-		<servlet-name>NewMessage</servlet-name>
-		<servlet-class>servlets.NewMessage</servlet-class>
-	</servlet>
-	
-	<servlet>
-		<servlet-name>Set_Rank</servlet-name>
-		<servlet-class>servlets.Set_Rank</servlet-class>
-	</servlet>
-	
-	<servlet>
-		<servlet-name>ReadCSV</servlet-name>
-		<servlet-class>servlets.ReadCSV</servlet-class>
-	</servlet>
-	
-	<servlet>
-		<servlet-name>FormA</servlet-name>
-		<servlet-class>servlets.FormA</servlet-class>
-	</servlet>
-	
-	<servlet>
-		<servlet-name>FormB</servlet-name>
-		<servlet-class>servlets.FormB</servlet-class>
-	</servlet>
-	
-	<servlet>
-		<servlet-name>FormC</servlet-name>
-		<servlet-class>servlets.FormC</servlet-class>
-	</servlet>
-
-	<servlet>
-		<servlet-name>AddTardy</servlet-name>
-		<servlet-class>servlets.AddTardy</servlet-class>
-	</servlet>
-
-	<servlet>
-		<servlet-name>DeleteItem</servlet-name>
-		<servlet-class>servlets.DeleteItem</servlet-class>
-	</servlet>
-
-	<servlet>
-		<servlet-name>AddAbsence</servlet-name>
-		<servlet-class>servlets.AddAbsence</servlet-class>
-	</servlet>
-	
-	<servlet>
-		<servlet-name>FormD</servlet-name>
-		<servlet-class>servlets.FormD</servlet-class>
-	</servlet>
-	
-	<servlet>
-		<servlet-name>StudentEditInfo</servlet-name>
-		<servlet-class>servlets.Student_Edit_InfoServlet</servlet-class>
-	</servlet>
-	
-	<servlet>
-		<servlet-name>DirectorEditInfo</servlet-name>
-		<servlet-class>servlets.Director_Edit_InfoServlet</servlet-class>
-	</servlet>
-	
-	<servlet>
-		<servlet-name>RegisterStaff</servlet-name>
-		<servlet-class>servlets.RegisterStaffServlet</servlet-class>
-	</servlet>
-		
-	<servlet>
-		<servlet-name>TAEditInfo</servlet-name>
-		<servlet-class>servlets.TA_Edit_InfoServlet</servlet-class>
-	</servlet>	
-	
-	<servlet>
-		<servlet-name>DirectorEditStudentInfo</servlet-name>
-		<servlet-class>servlets.Director_Edit_Student_InfoServlet</servlet-class>
-	</servlet>
-	
-	<servlet-mapping>
-		<servlet-name>DirectorEditStudentInfo</servlet-name>
-		<url-pattern>/directorEditStudentInfo</url-pattern>
-	</servlet-mapping>
-		
-	<servlet-mapping>
-		<servlet-name>Login</servlet-name>
-		<url-pattern>/login</url-pattern>
-	</servlet-mapping>
-	
-	<servlet-mapping>
-		<servlet-name>Register</servlet-name>	
-		<url-pattern>/register</url-pattern>
-	</servlet-mapping>
-		
-	<servlet-mapping>
-		<servlet-name>Set_Rank</servlet-name>
-		<url-pattern>/setRank</url-pattern>
-	</servlet-mapping>
-	
-	<servlet-mapping>
-		<servlet-name>ReadCSV</servlet-name>
-		<url-pattern>/readCSV</url-pattern>
-	</servlet-mapping>
-	
-	<servlet-mapping>
-		<servlet-name>FormA</servlet-name>
-		<url-pattern>/formA</url-pattern>
-	</servlet-mapping>
-	
-	<servlet-mapping>
-		<servlet-name>FormB</servlet-name>
-		<url-pattern>/formB</url-pattern>
-	</servlet-mapping>
-	
-	<servlet-mapping>
-		<servlet-name>FormC</servlet-name>
-		<url-pattern>/formC</url-pattern>
-	</servlet-mapping>
-	
-	<servlet-mapping>
-		<servlet-name>FormD</servlet-name>
-		<url-pattern>/formD</url-pattern>
-	</servlet-mapping>
-	
-	<servlet-mapping>
-		<servlet-name>StudentEditInfo</servlet-name>	
-		<url-pattern>/studentEditInfo</url-pattern>
-	</servlet-mapping>
-	
-	<servlet-mapping>
-		<servlet-name>DirectorEditInfo</servlet-name>	
-		<url-pattern>/directorEditInfo</url-pattern>
-	</servlet-mapping>
-	
-	<servlet-mapping>
-		<servlet-name>RegisterStaff</servlet-name>
-		<url-pattern>/registerStaff</url-pattern>
-	</servlet-mapping>
-	
-	<servlet-mapping>
-		<servlet-name>TAEditInfo</servlet-name>	
-		<url-pattern>/taEditInfo</url-pattern>
-	</servlet-mapping>
-	
-	<servlet-mapping>
-		<servlet-name>NewMessage</servlet-name>	
-		<url-pattern>/newMessage</url-pattern>
-	</servlet-mapping>
-
-	<servlet-mapping>
-		<servlet-name>AddTardy</servlet-name>	
-		<url-pattern>/AddTardy</url-pattern>
-	</servlet-mapping>
-
-	<servlet-mapping>
-		<servlet-name>DeleteItem</servlet-name>	
-		<url-pattern>/DeleteItem</url-pattern>
-	</servlet-mapping>
-
-	<servlet-mapping>
-		<servlet-name>AddAbsence</servlet-name>	
-		<url-pattern>/AddAbsence</url-pattern>
-	</servlet-mapping>
-		
-	<welcome-file-list>
-		<welcome-file>JSPPages/loginPage.jsp</welcome-file>
-	</welcome-file-list>
-	
-	<error-page>
-		<error-code>404</error-code>
-		<location>/JSPPages/404.jsp</location>
-	</error-page>
-	
-	<error-page>
-		<error-code>405</error-code>
-		<location>/JSPPages/404.jsp</location>
-	</error-page>
-	
+<!-- Generated from app.yaml. Do not edit. -->
+<web-app version='2.5' xmlns='http://java.sun.com/xml/ns/javaee' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd'>
+  <servlet>
+    <servlet-name>edu.iastate.music.marching.attendance.servlets.ErrorServlet</servlet-name>
+    <servlet-class>edu.iastate.music.marching.attendance.servlets.ErrorServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>edu.iastate.music.marching.attendance.servlets.ErrorServlet</servlet-name>
+    <url-pattern>/error</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>edu.iastate.music.marching.attendance.servlets.AuthServlet</servlet-name>
+    <servlet-class>edu.iastate.music.marching.attendance.servlets.AuthServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>edu.iastate.music.marching.attendance.servlets.AuthServlet</servlet-name>
+    <url-pattern>/auth/*</url-pattern>
+  </servlet-mapping>
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>aname</web-resource-name>
+      <url-pattern>/auth/*</url-pattern>
+    </web-resource-collection>
+    <user-data-constraint>
+      <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+    </user-data-constraint>
+  </security-constraint>
+  <servlet>
+    <servlet-name>edu.iastate.music.marching.attendance.servlets.DirectorServlet</servlet-name>
+    <servlet-class>edu.iastate.music.marching.attendance.servlets.DirectorServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>edu.iastate.music.marching.attendance.servlets.DirectorServlet</servlet-name>
+    <url-pattern>/director/*</url-pattern>
+  </servlet-mapping>
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>aname</web-resource-name>
+      <url-pattern>/director/*</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>*</role-name>
+    </auth-constraint>
+    <user-data-constraint>
+      <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+    </user-data-constraint>
+  </security-constraint>
+  <servlet>
+    <servlet-name>edu.iastate.music.marching.attendance.servlets.FormsServlet</servlet-name>
+    <servlet-class>edu.iastate.music.marching.attendance.servlets.FormsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>edu.iastate.music.marching.attendance.servlets.FormsServlet</servlet-name>
+    <url-pattern>/forms/*</url-pattern>
+  </servlet-mapping>
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>aname</web-resource-name>
+      <url-pattern>/forms/*</url-pattern>
+    </web-resource-collection>
+    <user-data-constraint>
+      <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+    </user-data-constraint>
+  </security-constraint>
+  <servlet>
+    <servlet-name>edu.iastate.music.marching.attendance.servlets.MobileAppDataServlet</servlet-name>
+    <servlet-class>edu.iastate.music.marching.attendance.servlets.MobileAppDataServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>edu.iastate.music.marching.attendance.servlets.MobileAppDataServlet</servlet-name>
+    <url-pattern>/MobileApp/data/*</url-pattern>
+  </servlet-mapping>
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>aname</web-resource-name>
+      <url-pattern>/MobileApp/data/*</url-pattern>
+    </web-resource-collection>
+    <user-data-constraint>
+      <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+    </user-data-constraint>
+  </security-constraint>
+  <servlet>
+    <servlet-name>edu.iastate.music.marching.attendance.servlets.StudentServlet</servlet-name>
+    <servlet-class>edu.iastate.music.marching.attendance.servlets.StudentServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>edu.iastate.music.marching.attendance.servlets.StudentServlet</servlet-name>
+    <url-pattern>/student/*</url-pattern>
+  </servlet-mapping>
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>aname</web-resource-name>
+      <url-pattern>/student/*</url-pattern>
+    </web-resource-collection>
+    <user-data-constraint>
+      <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+    </user-data-constraint>
+  </security-constraint>
+  <servlet>
+    <servlet-name>edu.iastate.music.marching.attendance.servlets.TAServlet</servlet-name>
+    <servlet-class>edu.iastate.music.marching.attendance.servlets.TAServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>edu.iastate.music.marching.attendance.servlets.TAServlet</servlet-name>
+    <url-pattern>/ta/*</url-pattern>
+  </servlet-mapping>
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>aname</web-resource-name>
+      <url-pattern>/ta/*</url-pattern>
+    </web-resource-collection>
+    <user-data-constraint>
+      <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+    </user-data-constraint>
+  </security-constraint>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
 </web-app>

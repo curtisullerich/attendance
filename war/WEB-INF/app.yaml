@@ -1,0 +1,50 @@
+application: isucfvmb-attendance
+version: 2
+runtime: java
+
+static_files:
+  - include: /css/**
+  - include: /img/**
+  - include: /js/**
+  - include: /MobileApp/**
+  - include: /error.html
+  - include: /favicon.ico
+  - include: /index.html
+  
+
+welcome_files:
+  - index.html
+  
+sessions_enabled: true
+
+
+handlers:
+  
+- url: /error
+  servlet: edu.iastate.music.marching.attendance.servlets.ErrorServlet
+
+- url: /auth/*
+  servlet: edu.iastate.music.marching.attendance.servlets.AuthServlet
+  secure: always
+
+- url: /director/*
+  servlet: edu.iastate.music.marching.attendance.servlets.DirectorServlet
+  login: required
+  secure: always
+
+- url: /forms/*
+  servlet: edu.iastate.music.marching.attendance.servlets.FormsServlet
+  secure: always
+
+- url: /MobileApp/data/*
+  servlet: edu.iastate.music.marching.attendance.servlets.MobileAppDataServlet
+  secure: always
+
+- url: /student/*
+  servlet: edu.iastate.music.marching.attendance.servlets.StudentServlet
+  secure: always
+
+- url: /ta/*
+  servlet: edu.iastate.music.marching.attendance.servlets.TAServlet
+  secure: always
+
