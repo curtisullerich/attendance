@@ -1,0 +1,27 @@
+
+.userbox {
+	margin-top: 19px;
+	margin-bottom: 0;
+	color: white;
+	text-align: right;
+	text-shadow: 1px 1px 1px grey;
+}
+
+
+.userbox a {
+	color: white;
+}
+
+
+.userbox a:link {
+	text-decoration:none;
+}
+.userbox a:visited {
+	text-decoration:none;
+}
+
+.userbox a:hover {
+	text-decoration:underline;
+}
+
+

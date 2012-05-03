@@ -1,0 +1,8 @@
+eclipse.preferences.version=1
+filesCopiedToWebInfLib=appengine-api-1.0-sdk-1.6.4.jar|appengine-api-labs-1.6.4.jar|appengine-jsr107cache-1.6.4.jar|jsr107cache-1.1.jar
+gaeDatanucleusEnabled=false
+gaeDeployDialogSettings=
+gaeIsEclipseDefaultInstPath=true
+googleCloudSqlEnabled=false
+localDevMySqlEnabled=true
+ormEnhancementInclusions=src/main/

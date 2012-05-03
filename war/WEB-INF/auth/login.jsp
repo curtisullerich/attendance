@@ -13,7 +13,6 @@
   	<jsp:include page="/WEB-INF/template/header.jsp" />
     <h1>ISU Varsity Marching Band / Fall <fmt:formatDate value="${date}" pattern="yyyy" /></h1>
     <h2>Login</h2>
-    
     <form action="/auth/login" method="post" accept-charset="utf-8">
     	<dl class="block-layout">
     		<dt><label></label></dt>

@@ -2,21 +2,27 @@ application: isucfvmb-attendance
 version: 2
 runtime: java
 
-public_root: /public
-
 static_files:
-  - include: /public/**
+  - include: /css/**
+  - include: /img/**
+  - include: /js/**
   - include: /MobileApp/**
-  
-
-welcome_files:
-  - index.jsp
-  - index.html
+  - include: /error.html
+  - include: /favicon.ico
+  - include: /index.html
   
 sessions_enabled: true
 
+welcome_files:
+  - homepage
 
 handlers:
+  
+- url: /homepage
+  servlet: edu.iastate.music.marching.attendance.servlets.HomepageServlet
+  
+- url: /error
+  servlet: edu.iastate.music.marching.attendance.servlets.ErrorServlet
 
 - url: /auth/*
   servlet: edu.iastate.music.marching.attendance.servlets.AuthServlet
@@ -32,22 +38,10 @@ handlers:
 
 - url: /student/*
   servlet: edu.iastate.music.marching.attendance.servlets.StudentServlet
-  
+
 - url: /ta/*
   servlet: edu.iastate.music.marching.attendance.servlets.TAServlet
 
 
-
-
 error_handlers:
   - file: /error.html
-  
-web_xml: |
-  <error-page>
-    <error-code>404</error-code>
-    <location>/error.html</location>
-  </error-page>
-  <error-page>
-    <error-code>405</error-code>
-    <location>/error.html</location>
-  </error-page>

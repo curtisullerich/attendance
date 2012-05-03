@@ -4,14 +4,7 @@
 				</div>
 			</div>
 			<div class="grid-5 sidebar" id="right-sidebar">
-				<div id="news-widget" class="sidebar-item">
-					<h3 class="title">Poopy</h3>
-					<ul>
-						<li>Sample Pant 1</li>
-						<li>Sample Pile 2</li>
-						<li>Sample Feces 3</li>
-					</ul>
-				</div>
+				
 			</div>
 			<div class="clear"></div>
 		</div>
