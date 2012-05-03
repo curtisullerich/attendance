@@ -1,17 +1,33 @@
 package edu.iastate.music.marching.attendance.controllers;
 
-import java.util.Date;
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Scanner;
 
-import edu.iastate.music.marching.attendance.model.Absence;
-import edu.iastate.music.marching.attendance.model.Event;
-import edu.iastate.music.marching.attendance.model.Form;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
+import edu.iastate.music.marching.attendance.App;
 import edu.iastate.music.marching.attendance.model.User;
 
 public class MobileDataController {
-
+	
+	public String getClassList() {
+		List <User> users = new ArrayList<User>();		
+		StringBuilder sb = new StringBuilder();
+		
+		for (User next : users) {
+			if (next.getType() == User.Type.Director) {
+				//do nothing
+			} else if (next.getType() == User.Type.TA){
+				sb.append("TA" + "&split&" + next.getNetID() + "&split&" + next.getFirstName() + "&split&" + next.getLastName() + "&split&" + App.getHashedMobilePassword() + "&split&" + next.getRank());
+			} else if (next.getType() == User.Type.Student) {
+				sb.append("Student" + "&split&" + next.getNetID() + "&split&" + next.getFirstName() + "&split&" + next.getLastName() + "&split&" + next.getUniversityID() + "&split&" + next.getRank());
+			}
+		}
+		return sb.toString();
+	}
+	
 	
 //	private static class Parser {
 //		private static final String absentPrependPerformance = "absentStudentPerformance";

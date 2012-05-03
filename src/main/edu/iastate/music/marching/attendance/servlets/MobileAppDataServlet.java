@@ -16,6 +16,8 @@ public class MobileAppDataServlet extends AbstractBaseServlet {
 	private static final long serialVersionUID = -3138258973922548889L;
 
 	private static final String JSPATH = "mobiledata";
+	
+	private static final String DATA_PARAMETER = "data";
 
 	public enum Page implements IPathEnum {
 		index;
@@ -35,7 +37,17 @@ public class MobileAppDataServlet extends AbstractBaseServlet {
 			throws ServletException, IOException {
 
 		requireLogin(req, resp, User.Type.TA, User.Type.Director);
-
+		
+		//data here is delimited by "&newline&". Those values in turn are delimited by "&split&"
+		String data = req.getParameter(DATA_PARAMETER);
+		
+		String[] fullLines = data.split("&newline&");
+		
+		//for each line, we want to create an object of the appropriate type using the controllers
+		for (String s : fullLines) {
+			
+		}
+		
 	}
 
 	@Override
