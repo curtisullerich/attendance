@@ -14,6 +14,8 @@ public class User {
 	 */
 	private static final long serialVersionUID = 1421557192976557705L;
 
+	public static final String FIELD_TYPE = "type";
+
 	public enum Type {
 		Student, TA, Director;
 
