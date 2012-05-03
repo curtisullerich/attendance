@@ -19,4 +19,7 @@
   <code-lock>false</code-lock>
   <sessions-enabled>true</sessions-enabled>
   <warmup-requests-enabled>false</warmup-requests-enabled>
+  <static-error-handlers>
+    <handler file='/error.html'/>
+  </static-error-handlers>
 </appengine-web-app>

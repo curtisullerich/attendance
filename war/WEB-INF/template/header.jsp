@@ -91,8 +91,7 @@
 		<div class="grids-24">
 			<div class="grid-5 sidebar" id="left-sidebar">
 				<ul class="navigation">
-					<li><a href="/">Homepage</a></li>
-					
+
 					<c:if test="${auth.user.type.student}">
 					<li class="selected">
 						<a href="/student">Student</a>
