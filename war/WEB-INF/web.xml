@@ -1,6 +1,31 @@
 <!-- Generated from app.yaml. Do not edit. -->
 <web-app version='2.5' xmlns='http://java.sun.com/xml/ns/javaee' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd'>
   <servlet>
+    <servlet-name>edu.iastate.music.marching.attendance.servlets.HomepageServlet</servlet-name>
+    <servlet-class>edu.iastate.music.marching.attendance.servlets.HomepageServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>edu.iastate.music.marching.attendance.servlets.HomepageServlet</servlet-name>
+    <url-pattern>/homepage</url-pattern>
+  </servlet-mapping>
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>aname</web-resource-name>
+      <url-pattern>/homepage</url-pattern>
+    </web-resource-collection>
+    <user-data-constraint>
+      <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+    </user-data-constraint>
+  </security-constraint>
+  <servlet>
+    <servlet-name>edu.iastate.music.marching.attendance.servlets.ErrorServlet</servlet-name>
+    <servlet-class>edu.iastate.music.marching.attendance.servlets.ErrorServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>edu.iastate.music.marching.attendance.servlets.ErrorServlet</servlet-name>
+    <url-pattern>/error</url-pattern>
+  </servlet-mapping>
+  <servlet>
     <servlet-name>edu.iastate.music.marching.attendance.servlets.AuthServlet</servlet-name>
     <servlet-class>edu.iastate.music.marching.attendance.servlets.AuthServlet</servlet-class>
   </servlet>
@@ -8,6 +33,15 @@
     <servlet-name>edu.iastate.music.marching.attendance.servlets.AuthServlet</servlet-name>
     <url-pattern>/auth/*</url-pattern>
   </servlet-mapping>
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>aname</web-resource-name>
+      <url-pattern>/auth/*</url-pattern>
+    </web-resource-collection>
+    <user-data-constraint>
+      <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+    </user-data-constraint>
+  </security-constraint>
   <servlet>
     <servlet-name>edu.iastate.music.marching.attendance.servlets.DirectorServlet</servlet-name>
     <servlet-class>edu.iastate.music.marching.attendance.servlets.DirectorServlet</servlet-class>
@@ -49,15 +83,6 @@
     <url-pattern>/ta/*</url-pattern>
   </servlet-mapping>
   <welcome-file-list>
-    <welcome-file>index.jsp</welcome-file>
-    <welcome-file>index.html</welcome-file>
+    <welcome-file>homepage</welcome-file>
   </welcome-file-list>
-<error-page>
-  <error-code>404</error-code>
-  <location>/error.html</location>
-</error-page>
-<error-page>
-  <error-code>405</error-code>
-  <location>/error.html</location>
-</error-page>
 </web-app>
