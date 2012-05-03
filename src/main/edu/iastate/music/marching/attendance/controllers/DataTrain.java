@@ -1,23 +1,21 @@
 package edu.iastate.music.marching.attendance.controllers;
 
 import com.google.code.twig.ObjectDatastore;
+import com.google.code.twig.annotation.AnnotationObjectDatastore;
 
 
 public class DataTrain {
+	
+	private ObjectDatastore datastore;
 
 	public static DataTrain getAndStartTrain()
 	{
-		return null;
-	}
-	
-	public void endTrain()
-	{
-		
+		return new DataTrain();
 	}
 
 	/** Never need to create an instance of this, only call static methods */
 	private DataTrain() {
-		
+		datastore = new AnnotationObjectDatastore(false);
 	}
 	
 	public AbsenceController getAbscencesController() {

@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import edu.iastate.music.marching.attendance.controllers.AuthController;
-import edu.iastate.music.marching.attendance.controllers.Controllers;
+import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.util.InputUtil;
 
@@ -100,7 +100,7 @@ public class StudentServlet extends AbstractBaseServlet {
 		u.setFirstName(santizedFirstName);
 		u.setLastName(santizedLastName);
 
-		Controllers.users().update(u);
+		DataTrain.users().update(u);
 		AuthController.updateCurrentUser(u, req.getSession());
 
 		showInfo(req, resp);
