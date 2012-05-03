@@ -13,4 +13,9 @@ public class App {
 		return false;
 	}
 
+	public static String getHashedMobilePassword() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

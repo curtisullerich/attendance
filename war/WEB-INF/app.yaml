@@ -39,6 +39,9 @@ handlers:
 - url: /student/*
   servlet: edu.iastate.music.marching.attendance.servlets.StudentServlet
 
+- url: /student/forms/*
+  servlet: edu.iastate.music.marching.attendance.servlets.FormsServlet
+
 - url: /ta/*
   servlet: edu.iastate.music.marching.attendance.servlets.TAServlet
 

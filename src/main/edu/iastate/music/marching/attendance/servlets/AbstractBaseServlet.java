@@ -114,7 +114,7 @@ public abstract class AbstractBaseServlet extends HttpServlet {
 		return new PageBuilder(servlet, page, req, resp);
 	}
 
-	static boolean requireLogin(HttpServletRequest req,
+	static boolean isLoggedIn(HttpServletRequest req,
 			HttpServletResponse resp, User.Type... allowed_types)
 			throws IOException {
 		if (!AuthController.isLoggedIn(req.getSession(), allowed_types)) {

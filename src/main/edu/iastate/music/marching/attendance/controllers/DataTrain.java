@@ -39,4 +39,13 @@ public class DataTrain {
 		return null;
 	}
 
+	public MobileDataController getMobileDataController() {
+		return new MobileDataController(this);
+	}
+
 }
+
+
+
+
+
