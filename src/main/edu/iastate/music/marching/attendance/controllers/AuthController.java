@@ -28,6 +28,8 @@ public class AuthController {
 
 	public static User createUser(Type type, String netID, String password,
 			int univID, List<String> errors) {
+		
+		
 
 		// Sanitize inputs and check they are valid
 		String santizedNetID = InputUtil.sanitize(netID);

@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import edu.iastate.music.marching.attendance.App;
 import edu.iastate.music.marching.attendance.Lang;
 import edu.iastate.music.marching.attendance.controllers.AuthController;
-import edu.iastate.music.marching.attendance.controllers.Controllers;
+import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.util.InputUtil;
 
@@ -217,7 +217,7 @@ public class AuthServlet extends AbstractBaseServlet {
 			new_user.setMajor(sanitizedMajor);
 			new_user.setSection(section);
 
-			Controllers.users().update(new_user);
+			DataTrain.users().update(new_user);
 
 			PageBuilder forward = buildPage(Page.login, req, resp);
 
