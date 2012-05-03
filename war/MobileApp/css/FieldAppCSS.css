@@ -1,11 +1,11 @@
-html {background: url("gradient6.jpg") fixed;}
+html {background: url("../img/gradient6.jpg") fixed;}
 html {background-color:black;}
 body {color:white;}
 body {font-family:"Arial", Arial, sansserif;}
 
 h1 {
     color:white;
-    margin: 1 px;
+    margin: 1px;
     text-align: center;
 }
 
