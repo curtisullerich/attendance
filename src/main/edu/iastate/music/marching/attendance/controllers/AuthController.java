@@ -67,7 +67,7 @@ public class AuthController {
 
 		try {
 
-			UserController uc = Controllers.users(pm);
+			UserController uc = DataTrain.users(pm);
 
 			try {
 
@@ -196,7 +196,7 @@ public class AuthController {
 		String email = userService.getCurrentUser().getEmail();
 		
 		// Hack
-		User u = Controllers.users().get(email.split("@")[0]);
+		User u = DataTrain.users().get(email.split("@")[0]);
 		
 		if(u != null && "iastate.edu".equals(email.split("@")[1]))
 		{

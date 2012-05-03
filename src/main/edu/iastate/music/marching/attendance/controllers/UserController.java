@@ -7,6 +7,9 @@ import javax.jdo.Query;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.Query.FilterOperator;
+import com.google.code.twig.FindCommand.RootFindCommand;
+import com.google.code.twig.ObjectDatastore;
 
 import edu.iastate.music.marching.attendance.model.ModelException;
 import edu.iastate.music.marching.attendance.model.ModelFactory;
@@ -15,12 +18,24 @@ import edu.iastate.music.marching.attendance.model.User.Type;
 
 public class UserController extends AbstractController {
 
-	UserController() {
-		super();
+	DataTrain datatrain;
+
+	UserController(DataTrain dataTrain) {
+		super(dataTrain);
+		this.datatrain = dataTrain;
 	}
 
-	UserController(PersistenceManager pm) {
-		super(pm);
+	public List<User> get() {
+		return this.datatrain.getDataStore().find().type(User.class).returnAll().now();
+	}
+	
+	public List<User> get(User.Type... types) {
+		
+		RootFindCommand<User> find = this.datatrain.getDataStore().find().type(User.class);
+		
+		find.addFilter(User.FIELD_TYPE, FilterOperator.IN, types);
+		
+		return find.returnAll().now();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -40,9 +55,9 @@ public class UserController extends AbstractController {
 
 			Key key = KeyFactory.createKey(User.class.getSimpleName(), netID);
 			User u = ModelFactory.getUser();
-			
+
 			// TODO
-			//u.setKey(key);
+			// u.setKey(key);
 
 			// Add in given parameters
 			u.setType(type);
