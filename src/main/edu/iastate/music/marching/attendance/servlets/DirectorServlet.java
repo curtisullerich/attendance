@@ -28,7 +28,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		if(!requireLogin(req, resp, User.Type.Director))
+		if(!isLoggedIn(req, resp, User.Type.Director))
 			return;
 
 	}

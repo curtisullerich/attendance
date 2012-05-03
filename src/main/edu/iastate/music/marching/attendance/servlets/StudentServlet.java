@@ -20,10 +20,10 @@ public class StudentServlet extends AbstractBaseServlet {
 
 	private static final String PATH = "student";
 
-	public static final String INDEX_URL = pageToUrl(StudentServlet.Page.index,
+	public static final String INDEX_URL = pageToUrl(Page.index,
 			PATH);
 
-	private enum Page implements IPathEnum {
+	private enum Page {
 		index, attendance, forms, messages, info;
 	}
 
@@ -31,7 +31,7 @@ public class StudentServlet extends AbstractBaseServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		if (!requireLogin(req, resp, User.Type.Student))
+		if (!isLoggedIn(req, resp, User.Type.Student))
 			return;
 
 		Page page = pathInfoToPage(req, resp, Page.class);
@@ -60,7 +60,7 @@ public class StudentServlet extends AbstractBaseServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		requireLogin(req, resp, User.Type.Student);
+		isLoggedIn(req, resp, User.Type.Student);
 
 		Page page = pathInfoToPage(req, resp, Page.class);
 

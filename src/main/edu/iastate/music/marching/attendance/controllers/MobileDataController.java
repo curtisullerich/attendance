@@ -1,19 +1,27 @@
 package edu.iastate.music.marching.attendance.controllers;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Date;
 import java.util.List;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import org.datanucleus.sco.backed.LinkedList;
 
 import edu.iastate.music.marching.attendance.App;
+import edu.iastate.music.marching.attendance.model.Event;
 import edu.iastate.music.marching.attendance.model.User;
 
 public class MobileDataController {
 	
+	private DataTrain train;
+	
+	MobileDataController(DataTrain dataTrain) {
+		this.train = dataTrain;
+	}
+
 	public String getClassList() {
-		List <User> users = new ArrayList<User>();		
+		
+		List<User> users = train.getUsersController().get(User.Type.Student, User.Type.TA);
+		
 		StringBuilder sb = new StringBuilder();
 		
 		for (User next : users) {
@@ -28,6 +36,74 @@ public class MobileDataController {
 		return sb.toString();
 	}
 	
+	public boolean pushMobileData(String data) {
+
+		String[] fullLines = data.split("&newline&");
+
+		ArrayList<String> eventLines = new ArrayList<String>();
+		ArrayList<String> otherLines = new ArrayList<String>();
+		
+		//for each line, we want to create an object of the appropriate type using the controllers
+		for (String s : fullLines) {
+			if (s.contains("storedPerformance") || s.contains("storedRehearsal")) {
+				eventLines.add(s);
+			} else {
+				otherLines.add(s);
+			}
+		}
+		
+		EventController ec = this.train.getEventsController();
+		AbsenceController ac = this.train.getAbscencesController();
+		UserController uc = this.train.getUsersController();
+		
+		//List<Event> localEvents = new LinkedList<Event>();
+		
+		//TODO do we get the data in the same format as we push it? i.e., "&split&" delimited?
+		for (String s : eventLines) {
+			//TODO, this is all really bullshit to mock it up. 
+			String[] event = s.split("&split&");
+			String type = event[0];
+			String startTime = event[1];
+			String startDate = event[2];
+			String endTime = event[3];
+			String endDate = event[4];
+			Date start = new Date();
+			Date end = new Date();
+			
+			Event.Type type2 = null;
+			Event newEvent = ec.createOrUpdate(type2, start, end);
+			
+			if (newEvent == null) {
+				//do something TODO
+			}
+		}
+		
+		for (String s : otherLines) {
+			if (s.contains("tardy")) {
+				Date time;
+				ac.createOrUpdateTardy(time);
+			} else if (s.contains("absent")) {
+				
+				String netid;
+				
+				Date start;
+				Date end;
+				
+				User student = uc.get(netid);
+				
+				ac.createOrUpdateAbsence(student, start, end);
+			} else if (s.toLowerCase().contains("earlycheckout")) {
+				Date time;
+				
+				ac.createOrUpdateEarlyCheckout(time);
+			} else {
+				//WE HAVE SOMETHING INCORRECT HERE, JIM.
+			}
+		}
+		
+		
+		return true;
+	}
 	
 //	private static class Parser {
 //		private static final String absentPrependPerformance = "absentStudentPerformance";

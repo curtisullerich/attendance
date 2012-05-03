@@ -1,5 +1,7 @@
 package edu.iastate.music.marching.attendance.model;
 
+import java.util.Date;
+
 import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
@@ -24,5 +26,9 @@ public class ModelFactory {
 		public static PersistenceManagerFactory get() {
 			return pmfInstance;
 		}
+	}
+
+	public static Event newEvent(Event.Type type, Date start, Date end) {
+		return new Event(type, start, end);
 	}
 }

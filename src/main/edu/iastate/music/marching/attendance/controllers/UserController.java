@@ -25,14 +25,13 @@ public class UserController extends AbstractController {
 		this.datatrain = dataTrain;
 	}
 
-	public List<User> get() {
+	public List<User> getAll() {
 		return this.datatrain.getDataStore().find().type(User.class).returnAll().now();
 	}
 	
 	public List<User> get(User.Type... types) {
 		
 		RootFindCommand<User> find = this.datatrain.getDataStore().find().type(User.class);
-		
 		find.addFilter(User.FIELD_TYPE, FilterOperator.IN, types);
 		
 		return find.returnAll().now();

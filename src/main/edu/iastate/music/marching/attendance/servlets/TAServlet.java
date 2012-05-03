@@ -27,7 +27,7 @@ public class TAServlet extends AbstractBaseServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		if(!requireLogin(req, resp, User.Type.TA, User.Type.Director))
+		if(!isLoggedIn(req, resp, User.Type.TA, User.Type.Director))
 			return;
 
 	}
