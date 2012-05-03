@@ -88,6 +88,8 @@ public class User {
 	private int year;
 
 	private String major;
+	
+	private String rank;
 
 	public String getFirstName() {
 		return firstName;
@@ -155,6 +157,14 @@ public class User {
 
 	public int getUniversityID() {
 		return universityID;
+	}
+
+	public String getRank() {
+		return this.rank;
+	}
+
+	public void setRank(String rank) {
+		this.rank = rank;
 	}
 
 }
