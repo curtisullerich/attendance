@@ -18,6 +18,10 @@ public abstract class AbstractController {
 		mPersistenceManager = pm;
 	}
 
+	public AbstractController(DataTrain dataTrain) {
+		// TODO Auto-generated constructor stub
+	}
+
 	protected PersistenceManager getPersistenceManager() {
 		return (mPersistenceManager != null) ? mPersistenceManager : ModelFactory
 				.getPersistenceManager();
