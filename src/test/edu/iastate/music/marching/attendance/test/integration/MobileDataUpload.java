@@ -53,12 +53,10 @@ public class MobileDataUpload extends AbstractTestCase {
 
 		ObjectDatastore datastore = getObjectDataStore();
 
-		User s = ModelFactory.getUser();
-		s.setNetID("s");
+		User s = ModelFactory.newUser(User.Type.Student, "s", 1);
 		datastore.store(s);
 
-		User z = ModelFactory.getUser();
-		z.setNetID("z");
+		User z = ModelFactory.newUser(User.Type.Student, "z", 2);
 		datastore.store(z);
 
 		DataTrain train = getDataTrain();

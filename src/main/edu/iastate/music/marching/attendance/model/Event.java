@@ -14,15 +14,6 @@ public class Event {
 
 	}
 
-	/**
-	 * Create events through UserController (DataModel.events().create(...)
-	 */
-	Event(Event.Type type, Date start, Date end) {
-		this.type = type;
-		this.setStart(start);
-		this.setEnd(end);
-	}
-
 	public Date getStart() {
 		return start;
 	}
