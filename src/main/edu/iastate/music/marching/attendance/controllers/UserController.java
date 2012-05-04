@@ -41,11 +41,12 @@ public class UserController extends AbstractController {
 	}
 
 	@SuppressWarnings("unchecked")
-	public User create(Type type, String netID, int univID, String firstName, String lastName) {
+	public User create(Type type, String netID, int univID, String firstName,
+			String lastName) {
 
 		User user = ModelFactory.newUser(type, netID, univID);
-		user.setType(type);
-		user.setNetID(netID);
+		user.setFirstName(firstName);
+		user.setLastName(lastName);
 
 		this.datatrain.getDataStore().store(user);
 

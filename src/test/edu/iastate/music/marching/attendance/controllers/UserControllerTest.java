@@ -30,7 +30,7 @@ public class UserControllerTest extends AbstractTestCase {
 	}
 
 	@Test
-	public void testCreateSingleOfAllTypes() {
+	public void testCreateSingleDirector() {
 		
 		ObjectDatastore datastore = getObjectDataStore();
 		
@@ -38,21 +38,75 @@ public class UserControllerTest extends AbstractTestCase {
 		
 		UserController uc = train.getUsersController();
 		
-		uc.create(User.Type.Director, "director", 0, "I am", "The Director");
+		uc.create(User.Type.Director, "director", 123, "I am", "The Director");
 		
-		QueryResultIterator<User> director = datastore.find(User.class, User.FIELD_NETID, "director");
+		QueryResultIterator<User> directorq = datastore.find(User.class);
 		
-		fail("Not yet implemented");
+		// Grab a single user
+		assertTrue(directorq.hasNext());
+		User d = directorq.next();
+		assertFalse(directorq.hasNext());
+		
+		// Check returned object
+		assertNotNull(d);
+		assertEquals(User.Type.Director, d.getType());
+		assertEquals("director", d.getNetID());
+		assertEquals(123, d.getUniversityID());
+		assertEquals("I am", d.getFirstName());
+		assertEquals("The Director", d.getLastName());
 	}
-
+	
 	@Test
-	public void testUpdate() {
-		fail("Not yet implemented");
+	public void testCreateSingleTA() {
+		
+		ObjectDatastore datastore = getObjectDataStore();
+		
+		DataTrain train = getDataTrain();
+		
+		UserController uc = train.getUsersController();
+		
+		uc.create(User.Type.TA, "ta_netid", 124, "I am", "A TA");
+		
+		QueryResultIterator<User> taq = datastore.find(User.class);
+		
+		// Grab a single user
+		assertTrue(taq.hasNext());
+		User ta = taq.next();
+		assertFalse(taq.hasNext());
+		
+		// Check returned object
+		assertNotNull(ta);
+		assertEquals(User.Type.TA, ta.getType());
+		assertEquals("ta_netid", ta.getNetID());
+		assertEquals(124, ta.getUniversityID());
+		assertEquals("I am", ta.getFirstName());
+		assertEquals("A TA", ta.getLastName());
 	}
-
+	
 	@Test
-	public void testGet() {
-		fail("Not yet implemented");
+	public void testCreateSingleStudent() {
+		
+		ObjectDatastore datastore = getObjectDataStore();
+		
+		DataTrain train = getDataTrain();
+		
+		UserController uc = train.getUsersController();
+		
+		uc.create(User.Type.Student, "studenttt", 121, "I am", "A Student");
+		
+		QueryResultIterator<User> studentq = datastore.find(User.class);
+		
+		// Grab a single user
+		assertTrue(studentq.hasNext());
+		User s = studentq.next();
+		assertFalse(studentq.hasNext());
+		
+		// Check returned object
+		assertNotNull(s);
+		assertEquals(User.Type.Student, s.getType());
+		assertEquals("studenttt", s.getNetID());
+		assertEquals(121, s.getUniversityID());
+		assertEquals("I am", s.getFirstName());
+		assertEquals("A Student", s.getLastName());
 	}
-
 }
