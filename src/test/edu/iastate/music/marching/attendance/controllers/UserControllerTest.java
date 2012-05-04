@@ -6,10 +6,15 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.appengine.api.datastore.QueryResultIterator;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
+import com.google.code.twig.ObjectDatastore;
 
-public class UserControllerTest {
+import edu.iastate.music.marching.attendance.model.User;
+import edu.iastate.music.marching.attendance.test.integration.AbstractTestCase;
+
+public class UserControllerTest extends AbstractTestCase {
 
 	private final LocalServiceTestHelper helper = new LocalServiceTestHelper(
 			new LocalDatastoreServiceTestConfig());
@@ -25,7 +30,18 @@ public class UserControllerTest {
 	}
 
 	@Test
-	public void testCreate() {
+	public void testCreateSingleOfAllTypes() {
+		
+		ObjectDatastore datastore = getObjectDataStore();
+		
+		DataTrain train = getDataTrain();
+		
+		UserController uc = train.getUsersController();
+		
+		uc.create(User.Type.Director, "director", 0, "I am", "The Director");
+		
+		QueryResultIterator<User> director = datastore.find(User.class, User.FIELD_NETID, "director");
+		
 		fail("Not yet implemented");
 	}
 

@@ -6,6 +6,14 @@ import java.util.Set;
 import com.google.code.twig.annotation.Child;
 
 public class Event {
+
+	/**
+	 * No-args constructor for datastore
+	 */
+	Event() {
+
+	}
+
 	/**
 	 * Create events through UserController (DataModel.events().create(...)
 	 */
@@ -14,7 +22,7 @@ public class Event {
 		this.setStart(start);
 		this.setEnd(end);
 	}
-	
+
 	public Date getStart() {
 		return start;
 	}
@@ -34,21 +42,21 @@ public class Event {
 	public enum Type {
 		Rehearsal, Performance;
 	}
-	
+
 	public void setType(Event.Type type) {
 		this.type = type;
 	}
-	
+
 	public Type getType() {
 		return this.type;
 	}
-	
+
 	private Date start;
-	
+
 	private Date end;
-	
+
 	private Type type;
-	
+
 	/**
 	 * Absent students
 	 * 

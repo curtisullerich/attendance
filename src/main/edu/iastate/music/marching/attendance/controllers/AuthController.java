@@ -3,21 +3,16 @@ package edu.iastate.music.marching.attendance.controllers;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.util.Arrays;
 import java.util.List;
 
-import javax.jdo.PersistenceManager;
 import javax.servlet.http.HttpSession;
 
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
-import edu.iastate.music.marching.attendance.model.ModelException;
-import edu.iastate.music.marching.attendance.model.ModelFactory;
 import edu.iastate.music.marching.attendance.model.User;
-import edu.iastate.music.marching.attendance.model.User.Type;
 import edu.iastate.music.marching.attendance.util.InputUtil;
+import edu.iastate.music.marching.attendance.util.ValidationExceptions;
 
 public class AuthController {
 
@@ -26,86 +21,21 @@ public class AuthController {
 	private static final int SALT_SIZE = 64;
 	private static final String SESSION_USER_ATTRIBUTE = "authenticated_user";
 
-	public static User createUser(Type type, String netID, String password,
-			int univID, List<String> errors) {
-		
-		
+	public static User createStudent(String netID, int univID,
+			String firstName, String lastName, List<String> errors) {
 
 		// Sanitize inputs and check they are valid
-		String santizedNetID = InputUtil.sanitize(netID);
-		String santizedPassword = sanitizePassword(password);
+		// TODO
+		String sanitizedFirstName = InputUtil.sanitize(firstName);
+		String sanitizedLastName = InputUtil.sanitize(lastName);
 
-		if (santizedNetID == null) {
-			errors.add("Invaild netid");
-			return null;
-		}
+		UserController uc = DataTrain.getAndStartTrain().getUsersController();
 
-		if (santizedPassword == null) {
-			errors.add("Invalid password, try using less special characters");
-			return null;
-		}
+		User u = uc.create(User.Type.Student, netID, univID,
+				sanitizedFirstName, sanitizedLastName);
 
-		if (!checkPasswordStrength(santizedPassword)) {
-			errors.add("Password is not strong enough");
-			return null;
-		}
+		return u;
 
-		// Hash password
-		byte[] user_salt = generateSalt();
-
-		if (user_salt == null) {
-			errors.add("Internal error trying to hash password");
-			return null;
-		}
-
-		byte[] hashed_password = hashPassword(santizedPassword, user_salt);
-
-		if (hashed_password == null) {
-			errors.add("Internal error trying to hash password");
-			return null;
-		}
-
-		PersistenceManager pm = ModelFactory.getPersistenceManager();
-
-		try {
-
-			UserController uc = DataTrain.users(pm);
-
-			try {
-
-				User u = uc.create(type, netID, hashed_password, user_salt);
-
-				if (u == null) {
-					errors.add("Failed to create user");
-					return null;
-				}
-
-				return u;
-
-			} catch (ModelException e) {
-				errors.add("Error: " + e.getMessage());
-			}
-
-		} finally {
-			// pm.close();
-		}
-
-		return null;
-	}
-
-	private static byte[] generateSalt() {
-		// Uses a secure Random not a simple Random
-		SecureRandom random;
-		try {
-			random = SecureRandom.getInstance("SHA1PRNG");
-		} catch (NoSuchAlgorithmException e1) {
-			return null;
-		}
-		byte[] salt = new byte[SALT_SIZE];
-
-		random.nextBytes(salt);
-
-		return salt;
 	}
 
 	private static boolean checkPasswordStrength(String santizedPassword) {
@@ -184,30 +114,37 @@ public class AuthController {
 
 	public static void updateCurrentUser(User user, HttpSession session) {
 		// TODO
-//		if(user.getKey().equals(getUserFromSession(session).getKey()))
-//			putUserInSession(user, session);
+		// if(user.getKey().equals(getUserFromSession(session).getKey()))
+		// putUserInSession(user, session);
 	}
 
 	public static boolean google_login(HttpSession session) {
-		
+
 		UserService userService = UserServiceFactory.getUserService();
-		
-		if(!userService.isUserLoggedIn())
+
+		if (!userService.isUserLoggedIn())
 			return false;
-		
+
 		String email = userService.getCurrentUser().getEmail();
-		
+
 		// Hack
-		User u = DataTrain.users().get(email.split("@")[0]);
-		
-		if(u != null && "iastate.edu".equals(email.split("@")[1]))
-		{
+		User u = DataTrain.getAndStartTrain().getUsersController()
+				.get(email.split("@")[0]);
+
+		if (u != null && "iastate.edu".equals(email.split("@")[1])) {
 			putUserInSession(u, session);
 			return true;
 		}
-		
+
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	public static User createStudent(String netID, int univID,
+			String firstName, String lastName, String major, int year)
+			throws ValidationExceptions {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

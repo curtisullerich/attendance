@@ -5,7 +5,6 @@ import java.util.Set;
 import com.google.code.twig.annotation.Activate;
 import com.google.code.twig.annotation.Child;
 import com.google.code.twig.annotation.Id;
-import com.google.code.twig.annotation.Key;
 
 public class User {
 
@@ -15,6 +14,8 @@ public class User {
 	private static final long serialVersionUID = 1421557192976557705L;
 
 	public static final String FIELD_TYPE = "type";
+
+	public static final String FIELD_NETID = "netID";
 
 	public enum Type {
 		Student, TA, Director;
@@ -68,7 +69,6 @@ public class User {
 	
 	private Type type;
 
-	@Id
 	private String netID;
 
 	private int universityID;

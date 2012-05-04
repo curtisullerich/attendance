@@ -12,7 +12,7 @@ import edu.iastate.music.marching.attendance.model.ModelFactory;
 public class EventController extends AbstractController {
 
 	DataTrain train;
-	
+
 	public EventController(DataTrain dataTrain) {
 		this.train = dataTrain;
 	}

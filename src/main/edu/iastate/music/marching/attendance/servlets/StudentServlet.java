@@ -18,10 +18,9 @@ public class StudentServlet extends AbstractBaseServlet {
 	 */
 	private static final long serialVersionUID = 6636386568039228284L;
 
-	private static final String PATH = "student";
+	private static final String SERVLET_PATH = "student";
 
-	public static final String INDEX_URL = pageToUrl(Page.index,
-			PATH);
+	public static final String INDEX_URL = pageToUrl(Page.index, SERVLET_PATH);
 
 	private enum Page {
 		index, attendance, forms, messages, info;
@@ -34,25 +33,28 @@ public class StudentServlet extends AbstractBaseServlet {
 		if (!isLoggedIn(req, resp, User.Type.Student))
 			return;
 
-		Page page = pathInfoToPage(req, resp, Page.class);
+		Page page = parsePathInfo(req.getPathInfo(), Page.class);
 
-		switch (page) {
-		case index:
-			showIndex(req, resp);
-			break;
-		case attendance:
-			showIndex(req, resp);
-			break;
-		case forms:
-			// TODO
-			break;
-		case messages:
-			showIndex(req, resp);
-			break;
-		case info:
-			showInfo(req, resp);
-			break;
-		}
+		if (page == null)
+			ErrorServlet.showError(req, resp, 404);
+		else
+			switch (page) {
+			case index:
+				showIndex(req, resp);
+				break;
+			case attendance:
+				showIndex(req, resp);
+				break;
+			case forms:
+				// TODO
+				break;
+			case messages:
+				showIndex(req, resp);
+				break;
+			case info:
+				showInfo(req, resp);
+				break;
+			}
 
 	}
 
@@ -60,17 +62,21 @@ public class StudentServlet extends AbstractBaseServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		isLoggedIn(req, resp, User.Type.Student);
+		if (!isLoggedIn(req, resp, User.Type.Student))
+			return;
 
-		Page page = pathInfoToPage(req, resp, Page.class);
+		Page page = parsePathInfo(req.getPathInfo(), Page.class);
 
-		switch (page) {
-		case info:
-			postInfo(req, resp);
-			break;
-		default:
-			do404(req, resp);
-		}
+		if (page == null)
+			show404(req, resp);
+		else
+			switch (page) {
+			case info:
+				postInfo(req, resp);
+				break;
+			default:
+				show404(req, resp);
+			}
 
 	}
 
@@ -78,7 +84,7 @@ public class StudentServlet extends AbstractBaseServlet {
 			throws IOException, ServletException {
 
 		String firstName, lastName, major;
-		int univID = -1, year = -1;
+		int year = -1;
 		User.Section section = null;
 
 		// Grab all the data from the fields
@@ -100,7 +106,7 @@ public class StudentServlet extends AbstractBaseServlet {
 		u.setFirstName(santizedFirstName);
 		u.setLastName(santizedLastName);
 
-		DataTrain.users().update(u);
+		DataTrain.getAndStartTrain().getUsersController().update(u);
 		AuthController.updateCurrentUser(u, req.getSession());
 
 		showInfo(req, resp);
@@ -110,29 +116,25 @@ public class StudentServlet extends AbstractBaseServlet {
 	private void showInfo(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException, ServletException {
 
-		PageBuilder page = buildPage(Page.info, req, resp);
+		PageBuilder page = new PageBuilder(Page.info, SERVLET_PATH);
 
 		page.setAttribute("user",
 				AuthController.getCurrentUser(req.getSession()));
 
 		page.setAttribute("sections", User.Section.values());
 
-		page.show();
+		page.passOffToJsp(req, resp);
 	}
 
 	private void showIndex(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		PageBuilder page = buildPage(Page.index, req, resp);
+		PageBuilder page = new PageBuilder(Page.index, SERVLET_PATH);
 
 		page.setPageTitle("Student");
 
-		page.show();
+		page.passOffToJsp(req, resp);
 	}
 
-	@Override
-	public String getJspPath() {
-		return PATH;
-	}
 
 }

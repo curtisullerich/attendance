@@ -44,9 +44,4 @@ public class HomepageServlet extends AbstractBaseServlet {
 			}
 	}
 
-	@Override
-	protected String getJspPath() {
-		return null;
-	}
-
 }
