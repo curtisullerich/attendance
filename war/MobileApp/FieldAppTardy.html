@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html manifest="FieldAppCache.appcache">
+<html> <!-- manifest="FieldAppCache.appcache" -->
 	<head>	
 		<title>@10dance Tardy Check-In</title>
 		<link rel="stylesheet" type="text/css" href="css/FieldAppCSS.css">
@@ -21,6 +21,10 @@
 				if(debug){
 					document.getElementById("clear").style.display="inline";
 				}
+				//clear radio buttons
+				document.getElementById("Late Check-In").checked = 0;
+				document.getElementById("Early Check-Out").checked = 0;
+				
 				netIDSelect();
 			}
 			
@@ -41,9 +45,19 @@
 			 *
 			 * @returns False (otherwise onsubmit calls to this function refresh the page, which is not desired)
 			 * @author Todd Wegter
-			 * @date 3-30-2012
+			 * @date 5-4-2012
 			 */
 			function submitTardy() {
+				//checks for checked radio button for submission type
+				var r1 = document.getElementById("Late Check-In").checked;
+				var r2 = document.getElementById("Early Check-Out").checked;
+				if(r1 == r2){
+					alert("Please select the submission type.");
+					document.getElementById("Late Check-In").checked = false;
+					document.getElementById("Early Check-Out").checked = false;
+					return false;
+				}
+				var subType = r1==0 ? "tardy" : "earlyOut"; 
 				//converts input (universityID card or netID) to netID
 				var input = document.getElementById("student").value;
 				document.getElementById("student").value = "";
@@ -56,6 +70,8 @@
 						alert("Please enter a valid netID.");
 						document.getElementById("student").placeholder = "netID";
 						netIDSelect();
+						document.getElementById("Late Check-In").checked = false;
+						document.getElementById("Early Check-Out").checked = false;
 						return false;
 					}
 				}
@@ -65,19 +81,31 @@
 					if(!validate(netID))
 					{
 						netIDSelect();
+						document.getElementById("Late Check-In").checked = false;
+						document.getElementById("Early Check-Out").checked = false;
 						return false;
 					}
 				}
 				//format of tardy (24 hour time): "netID YYYY-MM-DD HH:MMam/pm
-				var tardyEntry = getFirstName(netID) + "&split&" + getLastName(netID) + "&split&" + dateToday() + "&split&" + twelveHourTimeNow();
 				//store tardy with appropriate key
-				storeEntry(tardyPrepend, getFirstName(netID), getLastName(netID), netID, dateToday(), timeNow(), "|", getRank(netID), tardyEntry);
+				if(subType == "tardy"){
+					var tardyEntry =  "Check-In&split&" + getFirstName(netID) + "&split&" + getLastName(netID) + "&split&" + dateToday() + "&split&" + twelveHourTimeNow();
+					storeEntry(tardyPrepend, getFirstName(netID), getLastName(netID), netID, dateToday(), timeNow(), "|", getRank(netID), tardyEntry);
+				}
+				else{
+					var tardyEntry =  "Check-Out&split&" + getFirstName(netID) + "&split&" + getLastName(netID) + "&split&" + dateToday() + "&split&" + twelveHourTimeNow();					
+					storeEntry(earlyCheckOutPrepend, getFirstName(netID), getLastName(netID), netID, dateToday(), timeNow(), "|", getRank(netID), tardyEntry);
+				}
 				document.getElementById("student").value = "";
 				//updates onscreen tardy list if necessary
 				retrieveTardies();
+				//confirm success
+				alert(netID+" has successfully signed in.");
+				//uncheck radio for type selection
+				document.getElementById("Late Check-In").checked = false;
+				document.getElementById("Early Check-Out").checked = false;
 				//autoplace cursor in netID box
 				netIDSelect();
-				alert(netID+" has successfully signed in.")
 				return false;
 			}
 			
@@ -149,7 +177,7 @@
 					document.getElementById("tardies").innerHTML = "<br>The Following Students Reported Being Tardy:</br></br>";
 					//add a new row for each record
 					for (var i = 0; i < array.length; i++) {
-						addRowToTable("0",array[i][1]);
+						addRowToTable("1",array[i][1]);
 					}
 				}
 				else{
@@ -244,8 +272,31 @@
 			<h1>Tardy Check-In</h1>
 			</br>
 			<form class="centeralign" id="tardyReport" onsubmit="return submitTardy();">
-				netID <input type="text" id="student" autocomplete="off"/>
-				<input type="submit" id="submit" value="Submit Tardy"/>
+				<table  style="margin: auto">
+					<tr>
+						<td>
+							netID <input class="bigText" type="text" id="student" autocomplete="off"/>
+						</td>
+						<td>
+							<input class="button" type="submit" id="submit" value="Submit (Select Type Below)"/>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<br/>
+						</td>
+					</tr>
+					<tr>
+						<td>
+						</td>
+						<td>
+							<form class="centeralign" id="submissionType">
+								<input type="radio" id="Late Check-In" name="submitType" value="Late Check-In">Late Check-In</input>
+								<input type="radio" id="Early Check-Out" name="submitType" value="Early Check-Out">Early Check-Out</input>
+							</form>
+						</td>
+					</tr>
+				</table>				
 			</form>
 			</br>
 			<hr>
