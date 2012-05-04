@@ -28,12 +28,19 @@ h1 {
 	height: 45px;
 }
 
+.bigText{
+	width: 175px;
+	height: 30px;
+}
+
 .box {
     width: 500px;
 	margin: auto;
 	border: 1px;
 	text-align: center;
 }
+
+
 
 .checkboxes{
 	margin: 20px 60px;

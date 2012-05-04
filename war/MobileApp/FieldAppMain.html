@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html manifest="FieldAppCache.appcache">
+<html> <!--  manifest="FieldAppCache.appcache"  -->
 
 <!-- UPDATE THE APPCACHE WHENEVER CHANGES ARE MADE!!! -->
 
@@ -8,6 +8,7 @@
 		<link rel="stylesheet" type="text/css" href="css/FieldAppCSS.css"></link>
 		<script src="js/script.js"></script>
 		<script src="js/sha.js"></script>
+		<script src="js/jquery.min.js"></script>
 		<script>
 			
 			/**
@@ -45,6 +46,8 @@
 					alert("Absence Data Successfully Uploaded and Locally Removed");
 					localStorage.removeItem("success");
 				}
+				
+				/* - old method for showing errors
 				//if upload unsuccessful, do not clear localStorage
 				else if(localStorage.getItem("success") == "false"){
 					alert("Absence Data Upload Unsuccessful - Local Data Was Not Changed");
@@ -53,7 +56,7 @@
 				//alert user if a blank string was uploaded
 				else if(localStorage.getItem("success") == "emptyString")
 				{
-					alert("Nothing was uploaded to the server")
+					alert("Nothing was uploaded to the server");
 					localStorage.removeItem("success");
 				}
 				
@@ -62,6 +65,7 @@
 					alert("Upload error: " + error);
 					localStorage.removeItem("uploadError");
 				}
+				*/
 			}
 			
 
@@ -81,18 +85,80 @@
 			 * Pulls the latest student list from the server by redirecting to the updateList.jsp
 			 * If the user is not connected to the internet (browser in offline mode), update is not performed.
 			 *
-			 * @author Curtis Ullerich
-			 * @date 3-15-2012
+			 * @return
+			 *			-True if update performed (refreshes page after onSubmit)
+			 *
+			 * @author Todd Wegter
+			 * @date 5-4-2012
 			 */
-	        function updateList() {
+			function updateList() {
 				//check online status
 	            if (!navigator.onLine) {
 	               alert("You're not online. Update not performed.");
 	               return false;
 	            }
-	               uncacheClassList();
-	               window.location = "/JSPPages/updateList.jsp";
+                uncacheClassList();
+                $.get("/MobileData/classlist", function(classListString, errorString){
+             	    //Handle class list and error here
+             	    if(errorString  == "none")
+             		    putClassListInLocalStorage(classListString);
+             	    else if(errorString == "noTA")
+            	   	    alert("The TA account has not been initialized. Class list not downloaded.");
+               	    else
+               		    alert("Unknown Error. Class list not downloaded.");
+                });
+                return true;
 	        }
+	        
+	        /**
+	         * Stores a string of students and TAs into localStorage as the appropriate entries
+	         *
+	         * @param String classListString
+	         *					- String of students and TAs (each seperated by "&newline&")
+	         * @return 
+	         *					- True if successful
+	         *
+	         * @author Todd Wegter
+	         * @date 5-4-2012
+	         */
+	        function putClassListInLocalStorage(classListString){
+               	var classListArray = new Array();
+               	classListArray = classListString.split("&newline&");
+       			
+               	//clear old class list
+       			clearLocalStoragewithPrepend(studentPrepend);
+       			clearLocalStoragewithPrepend(loginPrepend);
+       	
+       			for (var i = 0; i < classListArray.length; i++) 
+       			{
+       	
+       				var splat = new Array();
+       				var mystring = classListArray[i];
+       				splat = mystring.split("&split&");
+       	
+       				if(splat[0] == "TA")
+       				{
+       					//create TA entry
+       					var netID = splat[1];
+       					var firstname = splat[2];
+       					var lastname = splat[3];
+       					var rank = splat[5];
+       					var hashedPassword = splat[4];
+       					storeEntry("storedLogin", firstname, lastname, netID, dateToday(), "|","|", rank, hashedPassword);
+       				}
+       				else
+       				{
+       					//create student entries
+       			        var netID = splat[1];
+       			        var firstname = splat[2];
+       			        var lastname = splat[3];
+       					var rank = splat[5];
+       					var hashedUnivID = Sha1.hash(splat[4],true).toUpperCase();
+       			        storeEntry("studentRecord", firstname, lastname, netID, dateToday(),"|","|",rank,hashedUnivID);
+       				}
+       			} 
+       			return true;
+            }
 	
 	        /**
 			 * Prepares attendance data for upload to the server if the user is online.
@@ -202,7 +268,7 @@
 			<br/>
 			<input class="help button" type="button" id="help" value="Help" onclick="javascript: help();"/>
 			<form onsubmit="return getLogin();" class="centeralign">
-				<input class="button" type="button" id="tardy" value="Tardy Check-In" onclick="window.location='/MobileApp/FieldAppTardy.html'"/> 
+				<input class="button" type="button" id="tardy" value="Tardy Check-In/Early Check-Out" onclick="window.location='/MobileApp/FieldAppTardy.html'"/> 
 				<input class="button" type="button" id="absent" value="Report Absences" onclick="window.location = '/MobileApp/FieldAppAbsent.html'"/>
 				<div>
 					<br/>
@@ -222,7 +288,7 @@
 		<div class="box" id="login" style="display: none">
 			<h1>Data Upload Login</h1>
 			<br/>
-			<form class="centeralign" id="TACredentials" method="POST" action="/JSPPages/uploadr.jsp" onsubmit=" return loginAndUpload();">
+			<form class="centeralign" id="TACredentials" method="POST" action="/MobileData.upload" onsubmit=" return loginAndUpload();">
 				<table  style="margin: auto">
 					<tr>
 						<td>TA netID:</td>

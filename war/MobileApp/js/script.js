@@ -338,10 +338,9 @@ function clearLocalStoragewithPrepend(prepend){
 
 /**
  * This function delineates the specified value into an array
- * (index 0=prepend or netID, 1=date, 2=startTime, 3=endTime). 
  * It then returns the desired component of the value
  * 
- * The options for return subcomponent of the value are 0, 1, 2, or 3. The entire
+ * The options for return subcomponent of the value are 0, 1, 2, 3, or 4. The entire
  * value is returned if the delimitee does not match one of the specified options
  * 
  * @param value
@@ -373,6 +372,12 @@ function valueDelimiter(value, delimitee){
 	}
 	else if(delimitee==3){
 		return valueArray[3];
+	}
+	else if(delimitee==4){
+		return valueArray[4];
+	}
+	else if(delimitee=="size"){
+		return valueArray.length;
 	}
 	return value;
 }
@@ -566,14 +571,6 @@ function storageArrayToString(array){
  * 				- table to be added to
  * @param value 
  * 				- value to be added to table
- * @param col1
-				- (string) the segment of the key to be stored in column 1
- * @param col2 
- * 				- (string) the segment of the key to be stored in column 2
- * @param col3 
- * 				- (string) the segment of the key to be stored in column 3
- * @param col4 
- * 				- (string) the segment of the key to be stored in column 4
  * @returns True if successful
  * @author Todd Wegter
  * @date 3-18-12
@@ -581,30 +578,46 @@ function storageArrayToString(array){
 function addRowToTable(table,value)
 {
 	if (!document.getElementsByTagName) return;
+	//find out how many cells
+	var size = valueDelimiter(value,"size");
+	//make the table!
 	tabBody=document.getElementsByTagName("TBODY").item(table);
 	row=document.createElement("TR");
-	cell1 = document.createElement("TD");
-	cell1.className = "cell";
-	cell2 = document.createElement("TD");
-	cell2.className = "cell";
-	cell3 = document.createElement("TD");
-	cell3.className = "cell";
-	cell4 = document.createElement("TD");
-	cell4.className = "cell";
-	var this1 = valueDelimiter(value,0);
-	textnode1=document.createTextNode(valueDelimiter(value,0));
-	var this2 = valueDelimiter(value,1);
-	textnode2=document.createTextNode(valueDelimiter(value,1));
-	textnode3=document.createTextNode(valueDelimiter(value,2));
-	textnode4=document.createTextNode(valueDelimiter(value,3));
-	cell1.appendChild(textnode1);
-	cell2.appendChild(textnode2);
-	cell3.appendChild(textnode3);
-	cell4.appendChild(textnode4);
-	row.appendChild(cell1);
-	row.appendChild(cell2);
-	row.appendChild(cell3);
-	row.appendChild(cell4);
+	if(size > 0){
+		cell1 = document.createElement("TD");
+		cell1.className = "cell";
+		textnode1=document.createTextNode(valueDelimiter(value,0));
+		cell1.appendChild(textnode1);
+		row.appendChild(cell1);
+	}
+	if(size > 1){
+		cell2 = document.createElement("TD");
+		cell2.className = "cell";
+		textnode2=document.createTextNode(valueDelimiter(value,1));
+		cell2.appendChild(textnode2);
+		row.appendChild(cell2);
+	}
+	if(size > 2){	
+		cell3 = document.createElement("TD");
+		cell3.className = "cell";
+		textnode3=document.createTextNode(valueDelimiter(value,2));
+		cell3.appendChild(textnode3);
+		row.appendChild(cell3);
+	}
+	if(size > 3){
+		cell4 = document.createElement("TD");
+		cell4.className = "cell";
+		textnode4=document.createTextNode(valueDelimiter(value,3));
+		cell4.appendChild(textnode4);
+		row.appendChild(cell4);
+	}
+	if(size > 4){
+		cell5 = document.createElement("TD");
+		cell5.className = "cell";
+		textnode5=document.createTextNode(valueDelimiter(value,4));
+		cell5.appendChild(textnode5);
+		row.appendChild(cell5);
+	}
 	tabBody.appendChild(row);
 	return true;
 }
