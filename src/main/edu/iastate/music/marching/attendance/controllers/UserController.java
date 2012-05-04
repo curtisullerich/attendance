@@ -55,7 +55,7 @@ public class UserController extends AbstractController {
 	public User createDirector(String netID, int univID, String firstName,
 			String lastName) {
 
-		User user = ModelFactory.newUser(User.Type.Student, netID, univID);
+		User user = ModelFactory.newUser(User.Type.Director, netID, univID);
 		user.setFirstName(firstName);
 		user.setLastName(lastName);
 
