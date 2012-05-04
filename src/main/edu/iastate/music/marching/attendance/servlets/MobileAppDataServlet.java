@@ -19,7 +19,7 @@ public class MobileAppDataServlet extends AbstractBaseServlet {
 
 	private static final String JSPATH = "mobiledata";
 	
-	private static final String DATA_PARAMETER = "data";
+	private static final String DATA_PARAMETER = "tempForUpload";
 
 	public enum Page implements IPathEnum {
 		index;

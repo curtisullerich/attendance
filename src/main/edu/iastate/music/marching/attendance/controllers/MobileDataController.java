@@ -20,6 +20,9 @@ public class MobileDataController {
 
 	public String getClassList() {
 		
+		//TODO
+		//ensure proper delimitation
+		
 		List<User> users = train.getUsersController().get(User.Type.Student, User.Type.TA);
 		
 		StringBuilder sb = new StringBuilder();

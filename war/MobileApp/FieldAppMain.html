@@ -121,7 +121,7 @@
 					for (var i = 0; i < localStorage.length; i++) {
 						key = localStorage.key(i);
 						if(!stringContains(studentPrepend,key) && !stringContains(loginPrepend,key)){
-							str += key + ",";
+							str += key + "&newline&";
 						}
 					}
 					document.getElementById("tempForUpload").value = str;
