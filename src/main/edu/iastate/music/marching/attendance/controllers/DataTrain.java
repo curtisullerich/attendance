@@ -35,8 +35,7 @@ public class DataTrain {
 	}
 
 	ObjectDatastore getDataStore() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.datastore;
 	}
 
 	public MobileDataController getMobileDataController() {

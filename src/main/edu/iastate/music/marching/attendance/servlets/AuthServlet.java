@@ -14,6 +14,7 @@ import edu.iastate.music.marching.attendance.controllers.AuthController;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.util.InputUtil;
+import edu.iastate.music.marching.attendance.util.ValidationExceptions;
 
 public class AuthServlet extends AbstractBaseServlet {
 
@@ -22,17 +23,17 @@ public class AuthServlet extends AbstractBaseServlet {
 	 */
 	private static final long serialVersionUID = -4587683490944456397L;
 
-	private static final String PATH = "auth";
+	private static final String SERVLET_PATH = "auth";
 
 	public static final String URL_ON_GOOGLE_LOGIN = pageToUrl(
-			Page.on_google_login, PATH);
+			Page.on_google_login, SERVLET_PATH);
 
 	public static final String URL_ON_GOOGLE_LOGOUT = pageToUrl(
-			Page.on_google_logout, PATH);
+			Page.on_google_logout, SERVLET_PATH);
 
-	public static final String URL_LOGIN = pageToUrl(Page.login, PATH);
+	public static final String URL_LOGIN = pageToUrl(Page.login, SERVLET_PATH);
 
-	private enum Page implements IPathEnum {
+	private enum Page {
 		index, login, register, logout, on_google_login, on_google_logout;
 	}
 
@@ -40,26 +41,34 @@ public class AuthServlet extends AbstractBaseServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		Page page = pathInfoToPage(req, resp, Page.class);
+		Page page = parsePathInfo(req.getPathInfo(), Page.class);
 
-		switch (page) {
-		case index:
-			resp.sendRedirect(urlFromPage(Page.login));
-			break;
-		case login:
-			showLogin(req, resp, null);
-			break;
-		case logout:
-			doLogout(req, resp);
-			break;
-		case register:
-			showRegistration(req, resp);
-			break;
-		case on_google_login:
-			didGoogleLogin(req, resp);
-			break;
-		}
+		if (page == null)
+			show404(req, resp);
+		else
+			switch (page) {
+			case index:
+				resp.sendRedirect(urlFromPage(Page.login, SERVLET_PATH));
+				break;
+			case login:
+				showLogin(req, resp, null);
+				break;
+			case logout:
+				doLogout(req, resp);
+				break;
+			case register:
+				showRegistration(req, resp);
+				break;
+			case on_google_login:
+				didGoogleLogin(req, resp);
+				break;
+			}
 
+	}
+
+	private Page pathInfoToPage(String pathInfo, Class<Page> class1) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	private void didGoogleLogin(HttpServletRequest req, HttpServletResponse resp)
@@ -75,13 +84,14 @@ public class AuthServlet extends AbstractBaseServlet {
 	private void showLogin(HttpServletRequest req, HttpServletResponse resp,
 			String[] errors) throws ServletException, IOException {
 
-		buildPage(Page.login, req, resp).setAttribute("errors", errors).show();
+		new PageBuilder(Page.login, SERVLET_PATH)
+				.setAttribute("errors", errors).passOffToJsp(req, resp);
 	}
 
 	private void showRegistration(HttpServletRequest req,
 			HttpServletResponse resp) throws ServletException, IOException {
 
-		PageBuilder page = buildPage(Page.register, req, resp);
+		PageBuilder page = new PageBuilder(Page.register, SERVLET_PATH);
 
 		page.setAttribute("sections", User.Section.values());
 
@@ -91,46 +101,48 @@ public class AuthServlet extends AbstractBaseServlet {
 		if (!App.isDirectorRegistered())
 			page.setAttribute("error_message", Lang.ERROR_MESSAGE_NO_DIRECTOR);
 
-		page.show();
+		page.passOffToJsp(req, resp);
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		Page page = pathInfoToPage(req, resp, Page.class);
+		Page page = parsePathInfo(req.getPathInfo(), Page.class);
 
-		switch (page) {
-		case index:
-			resp.sendRedirect(urlFromPage(Page.login));
-			break;
-		case login:
-			doLogin(req, resp);
-			break;
-		case logout:
-			doLogout(req, resp);
-			break;
-		case register:
-			doRegistration(req, resp);
-			break;
-		default:
-			do404(req, resp);
-		}
+		if (page == null)
+			show404(req, resp);
+		else
+			switch (page) {
+			case index:
+				resp.sendRedirect(urlFromPage(Page.login, SERVLET_PATH));
+				break;
+			case login:
+				doLogin(req, resp);
+				break;
+			case logout:
+				doLogout(req, resp);
+				break;
+			case register:
+				doRegistration(req, resp);
+				break;
+			default:
+				show404(req, resp);
+			}
 
 	}
 
 	private void doRegistration(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		String netID, password, firstName, lastName, major;
+		String netID, firstName, lastName, major;
 		int univID = -1, year = -1;
 		User.Section section = null;
 		User new_user = null;
 		List<String> errors = new LinkedList<String>();
 
-		// Grab all the data from the fields
+		// Grab all the data from the form fields
 		netID = req.getParameter("NetID");
-		password = req.getParameter("Password");
 		firstName = req.getParameter("FirstName");
 		lastName = req.getParameter("LastName");
 		major = req.getParameter("Major");
@@ -154,56 +166,38 @@ public class AuthServlet extends AbstractBaseServlet {
 			errors.add("Invalid section");
 		}
 
-		// Validate data not going to be given to the Auth module (which does
-		// validation itself)
-		String sanitizedMajor = InputUtil.sanitize(major);
-		String santizedFirstName = InputUtil.sanitize(firstName);
-		String santizedLastName = InputUtil.sanitize(lastName);
-
-		if (sanitizedMajor == null) {
-			errors.add("Invalid major entered");
-		}
-		if (santizedFirstName == null) {
-			errors.add("Invalid first name");
-
-		}
-
-		if (santizedLastName == null) {
-			errors.add("Invalid last name");
-
-		}
-
-		if (year < 1 | year > 10) {
-			errors.add("Invalid number of years in band, must be in the range of 1-10 inclusive");
-		}
-
 		// Only continue creating if we have had no errors
-		if (errors.size() == 0)
-			new_user = AuthController.createUser(User.Type.Student, netID,
-					password, univID, errors);
+		try {
+			new_user = AuthController.createStudent(netID, univID, firstName,
+					lastName, major, year);
 
-		if (new_user == null) {
+		} catch (ValidationExceptions e) {
+			// TODO
+
 			// Failed to create a new user
 			errors.add(0, "Registration was unsuccessful!");
 
 			// Render registration page again
-			PageBuilder forward = buildPage(Page.register, req, resp);
+			PageBuilder page = new PageBuilder(Page.register, SERVLET_PATH);
 
-			forward.setAttribute("FirstName", santizedFirstName);
-			forward.setAttribute("LastName", santizedLastName);
-			forward.setAttribute("NetID", netID);
-			forward.setAttribute("Major", sanitizedMajor);
-			forward.setAttribute("UniversityID", univID);
-			forward.setAttribute("Year", year);
-			forward.setAttribute("Section",
+			page.setAttribute("FirstName", firstName);
+			page.setAttribute("LastName", lastName);
+			page.setAttribute("NetID", netID);
+			page.setAttribute("Major", major);
+			page.setAttribute("UniversityID", univID);
+			page.setAttribute("Year", year);
+			page.setAttribute("Section",
 					(section == null) ? null : section.getValue());
 
-			forward.setAttribute("sections", User.Section.values());
+			page.setAttribute("sections", User.Section.values());
 
-			forward.setAttribute("errors", errors);
-			forward.setPageTitle("Failed Registration");
+			page.setAttribute("errors", errors);
+			page.setPageTitle("Failed Registration");
 
-			forward.show();
+			page.passOffToJsp(req, resp);
+		}
+
+		if (new_user == null) {
 
 		} else {
 			// Did create a new user!
@@ -212,14 +206,7 @@ public class AuthServlet extends AbstractBaseServlet {
 					new_user.getName()
 							+ " successfully added to the system. Please feel free to login now.");
 
-			// Save additional info to them
-			new_user.setYear(year);
-			new_user.setMajor(sanitizedMajor);
-			new_user.setSection(section);
-
-			DataTrain.users().update(new_user);
-
-			PageBuilder forward = buildPage(Page.login, req, resp);
+			PageBuilder forward = new PageBuilder(Page.login, SERVLET_PATH);
 
 			// Auto-fill username
 			forward.setAttribute("NetID", netID);
@@ -227,7 +214,7 @@ public class AuthServlet extends AbstractBaseServlet {
 			forward.setAttribute("errors", errors);
 			forward.setPageTitle("Successful Registration");
 
-			forward.show();
+			forward.passOffToJsp(req, resp);
 
 		}
 
@@ -248,14 +235,14 @@ public class AuthServlet extends AbstractBaseServlet {
 			showRegistration(req, resp);
 		else {
 			// TODO
-//			User user = AuthController.login(req.getParameter("NetID"),
-//					req.getParameter("Password"), req.getSession());
+			// User user = AuthController.login(req.getParameter("NetID"),
+			// req.getParameter("Password"), req.getSession());
 
-//			if (user == null) {
-//				showLogin(req, resp,
-//						new String[] { "Invaild netID or password." });
-//				return;
-//			}
+			// if (user == null) {
+			// showLogin(req, resp,
+			// new String[] { "Invaild netID or password." });
+			// return;
+			// }
 
 			// Successful login, redirect as appropriate
 			redirectLogin(req, resp);
@@ -263,10 +250,10 @@ public class AuthServlet extends AbstractBaseServlet {
 		}
 
 		// OnFail
-		PageBuilder forward = buildPage(Page.login, req, resp);
+		PageBuilder forward = new PageBuilder(Page.login, SERVLET_PATH);
 		forward.setAttribute("errors",
 				new String[] { "Invalid username or password" });
-		forward.show();
+		forward.passOffToJsp(req, resp);
 	}
 
 	private void redirectLogin(HttpServletRequest req, HttpServletResponse resp)
@@ -291,10 +278,5 @@ public class AuthServlet extends AbstractBaseServlet {
 		default:
 			throw new IllegalStateException("Unsupported user type");
 		}
-	}
-
-	@Override
-	protected String getJspPath() {
-		return PATH;
 	}
 }

@@ -17,14 +17,14 @@ public class AuthBean implements java.io.Serializable {
 	private static final long serialVersionUID = -6300883251650797582L;
 	
 	private static final String ATTRIBUTE_NAME = "auth";
-	HttpSession mSession;
+	HttpSession session;
 
-	public AuthBean(HttpSession session) {
-		mSession = session;
+	private AuthBean(HttpSession session) {
+		this.session = session;
 	}
 
 	public User getUser() {
-		return AuthController.getCurrentUser(mSession);
+		return AuthController.getCurrentUser(this.session);
 	}
 	
 	public com.google.appengine.api.users.User getGoogleuser() {
@@ -54,5 +54,9 @@ public class AuthBean implements java.io.Serializable {
 	public void apply(ServletRequest request) {
 		if (request != null)
 			request.setAttribute(ATTRIBUTE_NAME, this);
+	}
+
+	public static AuthBean getBean(HttpSession session) {
+		return new AuthBean(session);
 	}
 }

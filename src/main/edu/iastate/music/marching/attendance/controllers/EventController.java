@@ -11,7 +11,7 @@ import edu.iastate.music.marching.attendance.model.ModelFactory;
 public class EventController extends AbstractController {
 
 	DataTrain train;
-	
+
 	public EventController(DataTrain dataTrain) {
 		this.train = dataTrain;
 	}
@@ -22,6 +22,12 @@ public class EventController extends AbstractController {
 		od.store(event);
 		return true;
 	}
-	
+
+	public Event createOrUpdate(Type type, Date start, Date end) {
+		Event event = ModelFactory.newEvent(type, start, end);
+		ObjectDatastore od = this.train.getDataStore();
+		od.storeOrUpdate(event);
+		return event;
+	}
 
 }

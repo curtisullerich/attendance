@@ -15,11 +15,11 @@ public class TAServlet extends AbstractBaseServlet {
 	 */
 	private static final long serialVersionUID = -9160409137196393008L;
 
-	private static final String PATH = "ta";
+	private static final String SERVLET_PATH = "ta";
 
-	public static final String INDEX_URL = pageToUrl(Page.index, PATH);
+	public static final String INDEX_URL = pageToUrl(Page.index, SERVLET_PATH);
 
-	private enum Page implements IPathEnum {
+	private enum Page {
 		index;
 	}
 
@@ -30,11 +30,6 @@ public class TAServlet extends AbstractBaseServlet {
 		if(!isLoggedIn(req, resp, User.Type.TA, User.Type.Director))
 			return;
 
-	}
-
-	@Override
-	public String getJspPath() {
-		return PATH;
 	}
 
 }
