@@ -9,7 +9,7 @@ Git Instructions - Git Bash
 2.5) Delete Files From the Git
 	git rm <filename>		(patterns can be used - . adds every thing)
 3) Commit Files to the Git
-	git commit -m			(commits stagging area to local repository or branch)
+	git commit -m <message>		(commits stagging area to local repository or branch)
 4) Commit Local Repo to Online Repo
 	git push
 	
