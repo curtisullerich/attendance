@@ -16,19 +16,6 @@ import edu.iastate.music.marching.attendance.test.integration.AbstractTestCase;
 
 public class UserControllerTest extends AbstractTestCase {
 
-	private final LocalServiceTestHelper helper = new LocalServiceTestHelper(
-			new LocalDatastoreServiceTestConfig());
-
-	@Before
-	public void setUp() {
-		helper.setUp();
-	}
-
-	@After
-	public void tearDown() {
-		helper.tearDown();
-	}
-
 	@Test
 	public void testCreateSingleDirector() {
 		

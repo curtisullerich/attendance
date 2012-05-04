@@ -1,15 +1,12 @@
 package edu.iastate.music.marching.attendance.controllers;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
-import org.junit.Before;
 import org.junit.Test;
 
-public class MobileDataControllerTest {
+import edu.iastate.music.marching.attendance.test.integration.AbstractTestCase;
 
-	@Before
-	public void setUp() throws Exception {
-	}
+public class MobileDataControllerTest extends AbstractTestCase {
 
 	@Test
 	public void test() {
