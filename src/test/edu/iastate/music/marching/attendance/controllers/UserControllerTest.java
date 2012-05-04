@@ -1,14 +1,13 @@
 package edu.iastate.music.marching.attendance.controllers;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import com.google.appengine.api.datastore.QueryResultIterator;
-import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
-import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.code.twig.ObjectDatastore;
 
 import edu.iastate.music.marching.attendance.model.User;
@@ -25,7 +24,7 @@ public class UserControllerTest extends AbstractTestCase {
 		
 		UserController uc = train.getUsersController();
 		
-		uc.create(User.Type.Director, "director", 123, "I am", "The Director");
+		uc.createDirector("director", 123, "I am", "The Director");
 		
 		QueryResultIterator<User> directorq = datastore.find(User.class);
 		
@@ -44,33 +43,6 @@ public class UserControllerTest extends AbstractTestCase {
 	}
 	
 	@Test
-	public void testCreateSingleTA() {
-		
-		ObjectDatastore datastore = getObjectDataStore();
-		
-		DataTrain train = getDataTrain();
-		
-		UserController uc = train.getUsersController();
-		
-		uc.create(User.Type.TA, "ta_netid", 124, "I am", "A TA");
-		
-		QueryResultIterator<User> taq = datastore.find(User.class);
-		
-		// Grab a single user
-		assertTrue(taq.hasNext());
-		User ta = taq.next();
-		assertFalse(taq.hasNext());
-		
-		// Check returned object
-		assertNotNull(ta);
-		assertEquals(User.Type.TA, ta.getType());
-		assertEquals("ta_netid", ta.getNetID());
-		assertEquals(124, ta.getUniversityID());
-		assertEquals("I am", ta.getFirstName());
-		assertEquals("A TA", ta.getLastName());
-	}
-	
-	@Test
 	public void testCreateSingleStudent() {
 		
 		ObjectDatastore datastore = getObjectDataStore();
@@ -79,7 +51,7 @@ public class UserControllerTest extends AbstractTestCase {
 		
 		UserController uc = train.getUsersController();
 		
-		uc.create(User.Type.Student, "studenttt", 121, "I am", "A Student");
+		uc.createStudent("studenttt", 121, "I am", "A Student");
 		
 		QueryResultIterator<User> studentq = datastore.find(User.class);
 		

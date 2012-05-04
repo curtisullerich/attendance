@@ -40,11 +40,22 @@ public class UserController extends AbstractController {
 		return find.returnAll().now();
 	}
 
-	@SuppressWarnings("unchecked")
-	public User create(Type type, String netID, int univID, String firstName,
+	public User createStudent(String netID, int univID, String firstName,
 			String lastName) {
 
-		User user = ModelFactory.newUser(type, netID, univID);
+		User user = ModelFactory.newUser(User.Type.Student, netID, univID);
+		user.setFirstName(firstName);
+		user.setLastName(lastName);
+
+		this.datatrain.getDataStore().store(user);
+
+		return user;
+	}
+	
+	public User createDirector(String netID, int univID, String firstName,
+			String lastName) {
+
+		User user = ModelFactory.newUser(User.Type.Student, netID, univID);
 		user.setFirstName(firstName);
 		user.setLastName(lastName);
 

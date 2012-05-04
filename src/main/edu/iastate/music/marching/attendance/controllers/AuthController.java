@@ -31,8 +31,8 @@ public class AuthController {
 
 		UserController uc = DataTrain.getAndStartTrain().getUsersController();
 
-		User u = uc.create(User.Type.Student, netID, univID,
-				sanitizedFirstName, sanitizedLastName);
+		User u = uc.createStudent(netID, univID, sanitizedFirstName,
+				sanitizedLastName);
 
 		return u;
 
