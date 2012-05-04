@@ -77,32 +77,7 @@
 			<dd><input type="text" name="Major" value="<c:out value="${user.major}" />" /></dd>
 		</dl>
 	
-					<tr>
-						<td><label for="Current Password">Current Password</label></td>
-						<td><input type= "password" name="Current Password" id="Current Password" /></td>	
-					</tr>
 
-					<tr>
-						<td><label for="Password">New Password</label></td>
-						<td><input type= "password" name="Password" id="Password" /></td>	
-					</tr>
-					
-					<tr>
-						<td><label for="Password2">Re-Enter New Password</label></td>
-						<td><input type= "password" name="Password2" id="Password2"/></td>	
-
-					</tr>
-					
-					<tr>
-						<td><input type="password" name="Hashed Password"
-								id="Hashed Password" style="display: none" /></td>
-					</tr>	
-
-
-				</table>
-				
-				<p>New Passwords are Optional</p>
-				
 				<input type="submit" value="Save Info" name="SaveInfo"/>
 				<input type="button" value="Back" name="Back" onclick="window.location = '/student'"/>
 		</form>		
