@@ -13,11 +13,11 @@ public class ErrorServlet extends AbstractBaseServlet {
 	 */
 	private static final long serialVersionUID = -285523290212068266L;
 
-	private static final String PATH = "error";
+	private static final String SERVLET_PATH = "error";
 
-	public static final String URL = "/" + PATH;
+	public static final String URL = "/" + SERVLET_PATH;
 
-	public enum Page implements IPathEnum {
+	public enum Page {
 		index;
 	}
 
@@ -27,16 +27,10 @@ public class ErrorServlet extends AbstractBaseServlet {
 		resp.getOutputStream().println(req.getPathInfo());
 	}
 
-	public static void forwardError(HttpServletRequest req,
+	public static void showError(HttpServletRequest req,
 			HttpServletResponse resp, int i) throws ServletException,
 			IOException {
-		AbstractBaseServlet
-				.buildPage(new ErrorServlet(), Page.index, req, resp).show();
-	}
-
-	@Override
-	protected String getJspPath() {
-		return PATH;
+		new PageBuilder(Page.index, SERVLET_PATH).passOffToJsp(req, resp);
 	}
 
 }

@@ -13,6 +13,10 @@ import edu.iastate.music.marching.attendance.beans.PageTemplateBean;
 
 public class PageBuilder {
 
+	private static final String JSP_PATH_PRE = "/WEB-INF/";
+
+	private static final String JSP_PATH_POST = ".jsp";
+
 	private HttpServletRequest mRequest;
 
 	private String mJSPPath;
@@ -21,35 +25,18 @@ public class PageBuilder {
 
 	private PageTemplateBean mPageBean;
 
-	private PageBuilder(String jsp_path, HttpServletRequest req,
-			ServletResponse resp) {
+	private PageBuilder(String jsp_path) {
 		// Save parameters
 		mJSPPath = jsp_path;
-		mRequest = req;
-		mResponse = resp;
 
 		mPageBean = new PageTemplateBean(jsp_path);
 
 		mPageBean.setTitle(App.getTitle());
 	}
 
-	public <T extends Enum<T>> PageBuilder(AbstractBaseServlet servlet, T page,
-			HttpServletRequest req, HttpServletResponse resp) {
-		this(servlet.getJspPath() + "/" + page.name(), req, resp);
-
-	}
-
-	public void show() throws ServletException, IOException {
-
-		// Insert page template data bean
-		mPageBean.apply(mRequest);
-
-		// Insert authentication data bean
-		new AuthBean(mRequest.getSession()).apply(mRequest);
-
-		// Do actual forward
-		mRequest.getRequestDispatcher("/WEB-INF/" + mJSPPath + ".jsp").forward(
-				mRequest, mResponse);
+	public <T extends Enum<T>> PageBuilder(T page, String jsp_servlet_path) {
+		this(JSP_PATH_PRE + jsp_servlet_path + "/" + page.name()
+				+ JSP_PATH_POST);
 	}
 
 	public PageBuilder setPageTitle(String title) {
@@ -62,6 +49,19 @@ public class PageBuilder {
 		mRequest.setAttribute(name, value);
 
 		return this;
+	}
+
+	public void passOffToJsp(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+
+		// Insert page template data bean
+		mPageBean.apply(request);
+
+		// Insert authentication data bean
+		AuthBean.getBean(request.getSession()).apply(request);
+
+		// Do actual forward
+		request.getRequestDispatcher(mJSPPath).forward(request, response);
 	}
 
 }

@@ -20,4 +20,9 @@ public class AbsenceController extends AbstractController {
 		
 	}
 
+	public void createOrUpdateEarlyCheckout(User student, Date time) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

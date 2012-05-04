@@ -17,11 +17,11 @@ public class MobileAppDataServlet extends AbstractBaseServlet {
 	 */
 	private static final long serialVersionUID = -3138258973922548889L;
 
-	private static final String JSPATH = "mobiledata";
-	
-	private static final String DATA_PARAMETER = "tempForUpload";
+	private static final String SERVLET_PATH = "mobiledata";
 
-	public enum Page implements IPathEnum {
+	private static final String DATA_PARAMETER = "data";
+
+	public enum Page {
 		index;
 	}
 
@@ -29,30 +29,43 @@ public class MobileAppDataServlet extends AbstractBaseServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		if(!isLoggedIn(req, resp, User.Type.TA, User.Type.Director))
+		if (!isLoggedIn(req, resp, User.Type.TA, User.Type.Director))
 			return;
+
+		DataTrain train = DataTrain.getAndStartTrain();
+
+		MobileDataController mdc = train.getMobileDataController();
+
+		String classList = mdc.getClassList();
+
+		resp.getOutputStream().print(classList);
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		isLoggedIn(req, resp, User.Type.TA, User.Type.Director);
+		if (!isLoggedIn(req, resp, User.Type.TA, User.Type.Director))
+			return;
 		
+		// Default to success
+		String error = "Success";
+
 		DataTrain train = DataTrain.getAndStartTrain();
 
 		MobileDataController mdc = train.getMobileDataController();
 
-		//data here is delimited by "&newline&". Those values in turn are delimited by "&split&"
+		// data here is delimited by "&newline&". Those values in turn are
+		// delimited by "&split&"
 		String data = req.getParameter(DATA_PARAMETER);
 
-		mdc.pushMobileData(data);
-		
-	}
+		try {
+			mdc.pushMobileData(data);
+		} catch (IllegalArgumentException e) {
+		}
 
-	@Override
-	public String getJspPath() {
-		return JSPATH;
+		// TODO Error handling
+
 	}
 
 }

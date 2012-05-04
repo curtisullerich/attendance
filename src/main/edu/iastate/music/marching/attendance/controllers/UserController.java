@@ -1,5 +1,6 @@
 package edu.iastate.music.marching.attendance.controllers;
 
+import java.util.Iterator;
 import java.util.List;
 
 import javax.jdo.PersistenceManager;
@@ -26,78 +27,76 @@ public class UserController extends AbstractController {
 	}
 
 	public List<User> getAll() {
-		return this.datatrain.getDataStore().find().type(User.class).returnAll().now();
+		return this.datatrain.getDataStore().find().type(User.class)
+				.returnAll().now();
 	}
-	
+
 	public List<User> get(User.Type... types) {
-		
-		RootFindCommand<User> find = this.datatrain.getDataStore().find().type(User.class);
+
+		RootFindCommand<User> find = this.datatrain.getDataStore().find()
+				.type(User.class);
 		find.addFilter(User.FIELD_TYPE, FilterOperator.IN, types);
-		
+
 		return find.returnAll().now();
 	}
 
 	@SuppressWarnings("unchecked")
-	public User create(Type type, String netID, byte[] password, byte[] salt)
-			throws ModelException {
-		PersistenceManager pm = getPersistenceManager();
+	public User create(Type type, String netID, int univID, String firstName, String lastName) {
 
-		try {
+		User user = ModelFactory.newUser(type, netID, univID);
+		user.setType(type);
+		user.setNetID(netID);
 
-			// Check if user already in the system
-			Query query = pm.newQuery(User.class);
-			query.setFilter("netID == netIDParam");
-			query.declareParameters("String netIDParam");
-			if (((List<User>) query.execute(netID)).size() > 0) {
-				throw new ModelException("NetID already exists in the system");
-			}
+		this.datatrain.getDataStore().store(user);
 
-			Key key = KeyFactory.createKey(User.class.getSimpleName(), netID);
-			User u = ModelFactory.getUser();
-
-			// TODO
-			// u.setKey(key);
-
-			// Add in given parameters
-			u.setType(type);
-			u.setNetID(netID);
-
-			// Save to datastore
-			pm.makePersistent(u);
-
-			return pm.detachCopy(u);
-
-		} finally {
-			// closePersistenceManager(pm);
-		}
+		return user;
 	}
 
-	private User getDetached(Key key) {
-		PersistenceManager pm = getPersistenceManager();
-
-		try {
-			User u = pm.getObjectById(User.class, key);
-
-			return pm.detachCopy(u);
-		} finally {
-			closePersistenceManager(pm);
-		}
-	}
+	// PersistenceManager pm = getPersistenceManager();
+	//
+	// try {
+	//
+	// // Check if user already in the system
+	// Query query = pm.newQuery(User.class);
+	// query.setFilter("netID == netIDParam");
+	// query.declareParameters("String netIDParam");
+	// if (((List<User>) query.execute(netID)).size() > 0) {
+	// throw new ModelException("NetID already exists in the system");
+	// }
+	//
+	// Key key = KeyFactory.createKey(User.class.getSimpleName(), netID);
+	// User u = ModelFactory.getUser();
+	//
+	// // TODO
+	// // u.setKey(key);
+	//
+	// // Add in given parameters
+	// u.setType(type);
+	// u.setNetID(netID);
+	//
+	// // Save to datastore
+	// pm.makePersistent(u);
+	//
+	// return pm.detachCopy(u);
+	//
+	// } finally {
+	// // closePersistenceManager(pm);
+	// }
 
 	public void update(User user) {
-		if (user == null)
-			return;
-
-		PersistenceManager pm = getPersistenceManager();
-
-		try {
-			// User u = pm.getObjectById(User.class, user.getKey());
-			pm.makePersistent(user);
-			// pm.refresh(user);
-
-		} finally {
-			// closePersistenceManager(pm);
-		}
+		// if (user == null)
+		// return;
+		//
+		// PersistenceManager pm = getPersistenceManager();
+		//
+		// try {
+		// // User u = pm.getObjectById(User.class, user.getKey());
+		// pm.makePersistent(user);
+		// // pm.refresh(user);
+		//
+		// } finally {
+		// // closePersistenceManager(pm);
+		// }
 	}
 
 	/**
@@ -107,25 +106,17 @@ public class UserController extends AbstractController {
 	 */
 	public User get(String netid) {
 
-		PersistenceManager pm = getPersistenceManager();
+		List<User> users = this.datatrain.getDataStore().find()
+				.type(User.class)
+				.addFilter(User.FIELD_NETID, FilterOperator.EQUAL, netid)
+				.returnAll().now();
 
-		try {
-			// Check if user already in the system
-			Query query = pm.newQuery(User.class);
-			query.setFilter("netID == netIDParam");
-			query.declareParameters("String netIDParam");
-
-			@SuppressWarnings("unchecked")
-			List<User> users = (List<User>) query.execute(netid);
-
-			if (users.size() == 0) {
-				return null;
-			}
-
+		if (users.size() == 1)
 			return users.get(0);
-
-		} finally {
-			closePersistenceManager(pm);
-		}
+		else if (users.size() > 1)
+			throw new IllegalStateException(
+					"Found more than one user with same netid");
+		else
+			return null;
 	}
 }

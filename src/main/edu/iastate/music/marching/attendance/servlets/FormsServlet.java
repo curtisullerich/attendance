@@ -3,14 +3,16 @@ package edu.iastate.music.marching.attendance.servlets;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import edu.iastate.music.marching.attendance.model.User;
-import edu.iastate.music.marching.attendance.servlets.StudentServlet.Page;
 
 public class FormsServlet extends AbstractBaseServlet {
+	
+	private enum Page {
+		forma, formb, formc, formd, index, view; 
+	}
 	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -18,9 +20,9 @@ public class FormsServlet extends AbstractBaseServlet {
 		if (!isLoggedIn(req, resp, User.Type.Student, User.Type.Director) )
 			return;
 
-		Page page = pathInfoToPage(req, resp, Page.class);
+		Page page = parsePathInfo(req.getPathInfo(), Page.class);
 		if (page == null) {
-			do404(req, resp);
+			show404(req, resp);
 			return;
 		}
 		
@@ -44,24 +46,14 @@ public class FormsServlet extends AbstractBaseServlet {
 
 			break;
 		default:
-			do404(req, resp);
+			ErrorServlet.showError(req, resp, 404);
 			return;
-			break;
 		
 		
 		
 		}
 		
 		
-	}
-
-	private enum Page {
-		forma, formb, formc, formd, index, view; 
-	}
-	
-	@Override
-	protected String getJspPath() {
-		return "forms";
 	}
 
 }
