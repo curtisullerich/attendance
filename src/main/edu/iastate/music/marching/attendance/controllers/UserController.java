@@ -1,5 +1,6 @@
 package edu.iastate.music.marching.attendance.controllers;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -35,17 +36,19 @@ public class UserController extends AbstractController {
 
 		RootFindCommand<User> find = this.datatrain.getDataStore().find()
 				.type(User.class);
-		find.addFilter(User.FIELD_TYPE, FilterOperator.IN, types);
+		find.addFilter(User.FIELD_TYPE, FilterOperator.IN, Arrays.asList(types));
 
 		return find.returnAll().now();
 	}
 
 	public User createStudent(String netID, int univID, String firstName,
-			String lastName) {
+			String lastName, int year, String major) {
 
 		User user = ModelFactory.newUser(User.Type.Student, netID, univID);
 		user.setFirstName(firstName);
 		user.setLastName(lastName);
+		user.setYear(year);
+		user.setMajor(major);
 
 		this.datatrain.getDataStore().store(user);
 

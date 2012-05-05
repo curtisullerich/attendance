@@ -1,6 +1,9 @@
 package edu.iastate.music.marching.attendance.controllers;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -12,8 +15,13 @@ import edu.iastate.music.marching.attendance.model.User;
 
 public class MobileDataController {
 
-	private static final String NEWLINE = ",";
+	private static final String NEWLINE = "&newline&";
 	private static final String SEPARATOR = "&split&";
+	private static final SimpleDateFormat MOBILE_DATETIME_FORMAT = new SimpleDateFormat(
+			"yyyy-MM-dd HHmm");
+	private static final Object EVENT_TYPE_REHERSAL = null;
+	private static final Object EVENT_TYPE_PERFORMANCE = null;
+
 	private DataTrain train;
 
 	MobileDataController(DataTrain dataTrain) {
@@ -59,6 +67,7 @@ public class MobileDataController {
 
 			sb.append(NEWLINE);
 		}
+
 		return sb.toString();
 	}
 
@@ -91,15 +100,31 @@ public class MobileDataController {
 		for (String s : eventLines) {
 			// TODO, this is all really bullshit to mock it up.
 			String[] event = s.split(SEPARATOR);
-			String strType = event[1];
-			String startTime = event[5];
+			String strType = event[1].toLowerCase().trim();
 			String strDate = event[4];
+			String startTime = event[5];
 			String endTime = event[6];
-			Date start = new Date();
-			Date end = new Date();
 
-			Event.Type type2 = Event.Type.Performance;
-			Event newEvent = ec.createOrUpdate(type2, start, end);
+			Date start;
+			try {
+				start = MOBILE_DATETIME_FORMAT.parse(strDate + " " + startTime);
+			} catch (ParseException e) {
+				throw new IllegalArgumentException(
+						"Unable to parse event start datetime from: " + s, e);
+			}
+
+			Date end;
+			try {
+				end = MOBILE_DATETIME_FORMAT.parse(strDate + " " + endTime);
+			} catch (ParseException e) {
+				throw new IllegalArgumentException(
+						"Unable to parse event end datetime from: " + s, e);
+			}
+
+			Event.Type type = Event.Type.valueOf(strType.substring(0, 1)
+					.toUpperCase() + strType.substring(1));
+
+			Event newEvent = ec.createOrUpdate(type, start, end);
 
 			if (newEvent == null) {
 				// do something TODO
@@ -111,8 +136,20 @@ public class MobileDataController {
 			String[] parts = s.split(SEPARATOR);
 
 			if (s.contains("tardy")) {
-				Date time = null;
-				String netid = null;
+				String firstName = parts[1];
+				String lastName = parts[2];
+				String netid = parts[3];
+				String strDate = parts[4];
+				String strTime = parts[5];
+
+				Date time;
+				try {
+					time = MOBILE_DATETIME_FORMAT
+							.parse(strDate + " " + strTime);
+				} catch (ParseException e) {
+					throw new IllegalArgumentException(
+							"Unable to parse start datetime in:" + s, e);
+				}
 
 				User student = uc.get(netid);
 
@@ -126,19 +163,43 @@ public class MobileDataController {
 				String strStartTime = parts[5];
 				String strEndTime = parts[6];
 
-				Date start = null;
-				Date end = null;
+				Date start;
+				try {
+					start = MOBILE_DATETIME_FORMAT.parse(strDate + " "
+							+ strStartTime);
+				} catch (ParseException e) {
+					throw new IllegalArgumentException(
+							"Unable to parse start datetime in:" + s, e);
+				}
+				Date end;
+				try {
+					end = MOBILE_DATETIME_FORMAT.parse(strDate + " "
+							+ strEndTime);
+				} catch (ParseException e) {
+					throw new IllegalArgumentException(
+							"Unable to parse end datetime in:" + s, e);
+				}
 
 				User student = uc.get(netid);
-				
+
 				// TODO check for valid student
 
 				ac.createOrUpdateAbsence(student, start, end);
 			} else if (s.toLowerCase().contains("earlycheckout")) {
+				String firstName = parts[1];
+				String lastName = parts[2];
+				String netid = parts[3];
+				String strDate = parts[4];
+				String strTime = parts[5];
 
-				String netid = null;
-
-				Date time = null;
+				Date time;
+				try {
+					time = MOBILE_DATETIME_FORMAT
+							.parse(strDate + " " + strTime);
+				} catch (ParseException e) {
+					throw new IllegalArgumentException(
+							"Unable to parse start datetime in:" + s, e);
+				}
 
 				User student = uc.get(netid);
 

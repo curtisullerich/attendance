@@ -1,12 +1,13 @@
 package edu.iastate.music.marching.attendance.model;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import com.google.code.twig.annotation.Activate;
 import com.google.code.twig.annotation.Child;
 import com.google.code.twig.annotation.Id;
 
-public class User {
+public class User implements Serializable {
 
 	/**
 	 * 

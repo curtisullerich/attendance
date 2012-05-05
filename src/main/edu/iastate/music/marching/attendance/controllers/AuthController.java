@@ -32,7 +32,7 @@ public class AuthController {
 		UserController uc = DataTrain.getAndStartTrain().getUsersController();
 
 		User u = uc.createStudent(netID, univID, sanitizedFirstName,
-				sanitizedLastName);
+				sanitizedLastName, 0, null); // TODO
 
 		return u;
 

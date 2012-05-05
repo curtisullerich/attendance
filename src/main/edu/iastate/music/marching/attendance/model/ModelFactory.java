@@ -2,8 +2,6 @@ package edu.iastate.music.marching.attendance.model;
 
 import java.util.Date;
 
-import edu.iastate.music.marching.attendance.model.User.Type;
-
 public class ModelFactory {
 
 	public static Event newEvent(Event.Type type, Date start, Date end) {
@@ -14,11 +12,19 @@ public class ModelFactory {
 		return e;
 	}
 
-	public static User newUser(Type type, String netID, int univID) {
+	public static User newUser(User.Type type, String netID, int univID) {
 		User u = new User();
 		u.setType(type);
 		u.setNetID(netID);
 		u.setUniversityID(univID);
 		return u;
+	}
+
+	public static Absence newAbsence(
+			Absence.Type type, User student) {
+		Absence a = new Absence();
+		a.setType(type);
+		a.setStudent(student);
+		return a;
 	}
 }

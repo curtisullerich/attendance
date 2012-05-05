@@ -17,18 +17,18 @@ import edu.iastate.music.marching.attendance.model.Event;
 import edu.iastate.music.marching.attendance.model.ModelFactory;
 import edu.iastate.music.marching.attendance.model.User;
 
-public class MobileDataUpload extends AbstractTestCase {
+public class MobileDataUploadTest extends AbstractTestCase {
 
 	private static String SIMPLE_ABSENCE_TESTDATA = "absentStudentRehearsal&split&el&split&Starster&split&s&split&2012-05-03&split&1630&split&1750&split&null&newline&"
 			+ "storedRehearsal&split&rehearsal&split&|&split&|&split&2012-05-03&split&1630&split&1750&split&|&newline&"
 			+ "absentStudentRehearsal&split&P1&split&Z&split&zf&split&2012-05-03&split&1630&split&1750&split&4&newline&";
 
-	private static String SIMPLE_TARDY_TESTDATA = "tardyStudent&split&Daniel&split&Stiner&split&stiner&split&2012-05-03&split&0109&split&|&split&null&newline&"
-			+ "tardyStudent&split&Daniel&split&Stiner&split&stiner&split&2012-05-03&split&0116&split&|&split&null&newline&"
-			+ "tardyStudent&split&Brandon&split&Maxwell&split&bmaxwell&split&2012-05-03&split&0108&split&|&split&|&newline&"
-			+ "tardyStudent&split&Daniel&split&Stiner&split&stiner&split&2012-05-03&split&0107&split&|&split&null&newline&"
-			+ "tardyStudent&split&Daniel&split&Stiner&split&stiner&split&2012-05-03&split&0108&split&|&split&null&newline&"
-			+ "tardyStudent&split&Yifei&split&Zhu&split&zyf&split&2012-05-03&split&0108&split&|&split&4&newline&";
+	private static String SIMPLE_TARDY_TESTDATA = "tardyStudent&split&el&split&Starster&split&s&split&2012-05-03&split&0109&split&|&split&null&newline&"
+			+ "tardyStudent&split&el&split&Starster&split&s&split&2012-05-03&split&0116&split&|&split&null&newline&"
+			+ "tardyStudent&split&Bdog&split&Zemax&split&b&split&2012-05-03&split&0108&split&|&split&|&newline&"
+			+ "tardyStudent&split&el&split&Starster&split&s&split&2012-05-03&split&0107&split&|&split&null&newline&"
+			+ "tardyStudent&split&el&split&Starster&split&s&split&2012-05-03&split&0108&split&|&split&null&newline&"
+			+ "tardyStudent&split&P1&split&Z&split&zf&split&2012-05-03&split&0108&split&|&split&4&newline&";
 
 	@Test
 	public void simpleAbsenceInsertionThroughController() {
@@ -36,13 +36,13 @@ public class MobileDataUpload extends AbstractTestCase {
 
 		ObjectDatastore datastore = getObjectDataStore();
 
+		DataTrain train = DataTrain.getAndStartTrain();
+
 		User s = ModelFactory.newUser(User.Type.Student, "s", 1);
 		datastore.store(s);
 
-		User z = ModelFactory.newUser(User.Type.Student, "z", 2);
+		User z = ModelFactory.newUser(User.Type.Student, "zf", 2);
 		datastore.store(z);
-
-		DataTrain train = getDataTrain();
 
 		train.getMobileDataController().pushMobileData(SIMPLE_ABSENCE_TESTDATA);
 
@@ -60,11 +60,12 @@ public class MobileDataUpload extends AbstractTestCase {
 		event = events.get(0);
 
 		Calendar cal = Calendar.getInstance();
+		cal.setTimeInMillis(0);
+		
+		cal.set(2012, 04, 03, 16, 30, 0);
+		assertEquals(cal.getTime(), event.getStart());
 
-		cal.set(2012, 04, 03, 16, 30);
-		assertEquals(0, cal.getTime().compareTo(event.getStart()));
-
-		cal.set(2012, 04, 03, 17, 50);
+		cal.set(2012, 04, 03, 17, 50, 0);
 		assertEquals(0, cal.getTime().compareTo(event.getEnd()));
 
 		assertEquals(Event.Type.Rehearsal, event.getType());
@@ -81,7 +82,7 @@ public class MobileDataUpload extends AbstractTestCase {
 
 			if (a.getStudent().getNetID().equals("s")) {
 
-			} else if (a.getStudent().getNetID().equals("z")) {
+			} else if (a.getStudent().getNetID().equals("zf")) {
 
 			} else
 				fail("Found an absence we didn't insert");
@@ -91,16 +92,20 @@ public class MobileDataUpload extends AbstractTestCase {
 	@Test
 	public void simpleTardyInsertionThroughController() {
 
-		ObjectDatastore datastore = new AnnotationObjectDatastore(false);
+		ObjectDatastore datastore = getObjectDataStore();
 
-		DataTrain train = getDataTrain();
+		DataTrain train = DataTrain.getAndStartTrain();
 
-		train.getMobileDataController().pushMobileData(SIMPLE_ABSENCE_TESTDATA);
+		User s = ModelFactory.newUser(User.Type.Student, "s", 1);
+		datastore.store(s);
 
-		int i = datastore.find().type(Event.class).returnCount().now()
-				.intValue();
+		User z = ModelFactory.newUser(User.Type.Student, "zf", 2);
+		datastore.store(z);
+		
+		User b = ModelFactory.newUser(User.Type.Student, "b", 3);
+		datastore.store(b);
 
-		Event e = datastore.find().type(Event.class).returnAll().now().get(0);
+		train.getMobileDataController().pushMobileData(SIMPLE_TARDY_TESTDATA);
 
 		// Verify insertion lengths
 		assertEquals(0, datastore.find().type(Event.class).returnCount().now()
@@ -109,11 +114,6 @@ public class MobileDataUpload extends AbstractTestCase {
 		assertEquals(6, datastore.find().type(Absence.class).returnCount()
 				.now().intValue());
 
-		fail("Not yet implemented");
-	}
-
-	@Test
-	public void test() {
 		fail("Not yet implemented");
 	}
 

@@ -4,14 +4,46 @@ import java.util.Date;
 import java.util.Set;
 
 import com.google.code.twig.annotation.Child;
+import com.google.code.twig.annotation.Index;
 
 public class Event {
+
+	public static final String FIELD_START = "start";
+	public static final String FIELD_END = "end";
+	public static final String FIELD_TYPE = "type";
+	public static final String FIELD_DATE = "date";
 
 	/**
 	 * No-args constructor for datastore
 	 */
 	Event() {
 
+	}
+	
+	@Index
+	private Date start;
+	
+	@Index
+	private Date end;
+	
+	@Index
+	private Date date;
+
+	private Type type;
+
+	/**
+	 * Absent students
+	 * 
+	 */
+	@Child
+	private Set<Absence> absences;
+	
+	public Date getDate() {
+		return start;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
 	}
 
 	public Date getStart() {
@@ -41,17 +73,4 @@ public class Event {
 	public Type getType() {
 		return this.type;
 	}
-
-	private Date start;
-
-	private Date end;
-
-	private Type type;
-
-	/**
-	 * Absent students
-	 * 
-	 */
-	@Child
-	private Set<Absence> absences;
 }

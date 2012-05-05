@@ -30,7 +30,8 @@ public class AbstractTestCase {
 	}
 
 	protected ObjectDatastore getObjectDataStore() {
-		return new AnnotationObjectDatastore(false);
+
+		return new AnnotationObjectDatastore();
 	}
 
 }

@@ -51,7 +51,7 @@ public class UserControllerTest extends AbstractTestCase {
 		
 		UserController uc = train.getUsersController();
 		
-		uc.createStudent("studenttt", 121, "I am", "A Student");
+		uc.createStudent("studenttt", 121, "I am", "A Student", 10, "Being Silly");
 		
 		QueryResultIterator<User> studentq = datastore.find(User.class);
 		
@@ -67,5 +67,7 @@ public class UserControllerTest extends AbstractTestCase {
 		assertEquals(121, s.getUniversityID());
 		assertEquals("I am", s.getFirstName());
 		assertEquals("A Student", s.getLastName());
+		assertEquals(10, s.getYear());
+		assertEquals("Being Silly", s.getMajor());
 	}
 }
