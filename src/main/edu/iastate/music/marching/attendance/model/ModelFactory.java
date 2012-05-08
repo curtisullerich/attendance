@@ -12,9 +12,10 @@ public class ModelFactory {
 		return e;
 	}
 
-	public static User newUser(User.Type type, String netID, int univID) {
+	public static User newUser(User.Type type, com.google.appengine.api.users.User google_user, String netID, int univID) {
 		User u = new User();
 		u.setType(type);
+		u.setGoogleUser(google_user);
 		u.setNetID(netID);
 		u.setUniversityID(univID);
 		return u;

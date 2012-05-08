@@ -68,12 +68,6 @@
 			
 			<dt><label class="required" for="Major">Major</label></dt>
 			<dd><input type="text" name="Major" value="<c:out value="${Major}" />" /></dd>
-			
-			<dt><label class="required" for="Password">Password</label></dt>
-			<dd><input type="password" name="Password" /></dd>
-			
-			<dt><label class="required" for="PasswordConfirm">Re-Enter Password</label></dt>
-			<dd><input type="password" name="PasswordConfirm" /></dd>
 		</dl>
 
 		<input type="submit" value="Register" name="Register" />

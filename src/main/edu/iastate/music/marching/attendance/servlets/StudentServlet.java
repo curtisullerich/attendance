@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import edu.iastate.music.marching.attendance.controllers.AuthController;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.model.User;
-import edu.iastate.music.marching.attendance.util.InputUtil;
+import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
 public class StudentServlet extends AbstractBaseServlet {
 
@@ -98,17 +98,14 @@ public class StudentServlet extends AbstractBaseServlet {
 
 		// Validate data not going to be given to the Auth module (which does
 		// validation itself)
-		String sanitizedMajor = InputUtil.sanitize(major);
-		String santizedFirstName = InputUtil.sanitize(firstName);
-		String santizedLastName = InputUtil.sanitize(lastName);
 
 		User u = AuthController.getCurrentUser(req.getSession());
 
 		u.setYear(year);
-		u.setMajor(sanitizedMajor);
+		u.setMajor(major);
 		u.setSection(section);
-		u.setFirstName(santizedFirstName);
-		u.setLastName(santizedLastName);
+		u.setFirstName(firstName);
+		u.setLastName(lastName);
 
 		DataTrain.getAndStartTrain().getUsersController().update(u);
 		AuthController.updateCurrentUser(u, req.getSession());

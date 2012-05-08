@@ -13,10 +13,12 @@ import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.code.twig.FindCommand.RootFindCommand;
 import com.google.code.twig.ObjectDatastore;
 
+import edu.iastate.music.marching.attendance.App;
 import edu.iastate.music.marching.attendance.model.ModelException;
 import edu.iastate.music.marching.attendance.model.ModelFactory;
 import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.model.User.Type;
+import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
 public class UserController extends AbstractController {
 
@@ -41,77 +43,93 @@ public class UserController extends AbstractController {
 		return find.returnAll().now();
 	}
 
-	public User createStudent(String netID, int univID, String firstName,
-			String lastName, int year, String major) {
+	public User createStudent(com.google.appengine.api.users.User google_user,
+			int univID, String firstName, String lastName, int year,
+			String major, User.Section section) throws IllegalArgumentException {
 
-		User user = ModelFactory.newUser(User.Type.Student, netID, univID);
+		// Check google user
+		if (google_user == null)
+			throw new IllegalArgumentException("Must give a google user");
+
+		// Extract net id
+		String netID = google_user.getEmail().split("@")[0];
+
+		// Check no duplicate users exist
+		if (get(google_user) != null)
+			throw new IllegalArgumentException(
+					"User already exists in the system");
+
+		User user = ModelFactory.newUser(User.Type.Student, google_user, netID,
+				univID);
 		user.setFirstName(firstName);
 		user.setLastName(lastName);
 		user.setYear(year);
 		user.setMajor(major);
+		user.setSection(section);
+
+		validateUser(user);
 
 		this.datatrain.getDataStore().store(user);
 
 		return user;
 	}
-	
-	public User createDirector(String netID, int univID, String firstName,
-			String lastName) {
 
-		User user = ModelFactory.newUser(User.Type.Director, netID, univID);
+	private void validateUser(User user) throws IllegalArgumentException {
+
+		if (user == null)
+			throw new IllegalArgumentException("Invalid user");
+
+		// Check google user
+		if (!ValidationUtil.validGoogleUser(user.getGoogleUser()))
+			throw new IllegalArgumentException("Invalid google user");
+
+		// Check name
+		if (!ValidationUtil.isValidName(user.getFirstName()))
+			throw new IllegalArgumentException("Invalid first name");
+		if (!ValidationUtil.isValidName(user.getLastName()))
+			throw new IllegalArgumentException("Invalid last name");
+
+		// Check university id
+		// TODO
+		user.getUniversityID();
+
+		// Check student specific things
+		if (user.getType() == User.Type.Student) {
+			// TODO validation
+			user.getMajor();
+			user.getRank();
+			user.getSection();
+			user.getYear();
+		}
+
+	}
+
+	public User createDirector(com.google.appengine.api.users.User google_user,
+			int univID, String firstName, String lastName)
+			throws IllegalArgumentException {
+
+		// Check google user
+		if (google_user == null)
+			throw new IllegalArgumentException("Must give a google user");
+
+		// Extract net id
+		String netID = google_user.getEmail().split("@")[0];
+
+		// Check no duplicate users exist
+		if (get(google_user) != null)
+			throw new IllegalArgumentException(
+					"User already exists in the system");
+
+		User user = ModelFactory.newUser(User.Type.Director, google_user,
+				netID, univID);
 		user.setFirstName(firstName);
 		user.setLastName(lastName);
 
+		validateUser(user);
+
 		this.datatrain.getDataStore().store(user);
 
 		return user;
-	}
-
-	// PersistenceManager pm = getPersistenceManager();
-	//
-	// try {
-	//
-	// // Check if user already in the system
-	// Query query = pm.newQuery(User.class);
-	// query.setFilter("netID == netIDParam");
-	// query.declareParameters("String netIDParam");
-	// if (((List<User>) query.execute(netID)).size() > 0) {
-	// throw new ModelException("NetID already exists in the system");
-	// }
-	//
-	// Key key = KeyFactory.createKey(User.class.getSimpleName(), netID);
-	// User u = ModelFactory.getUser();
-	//
-	// // TODO
-	// // u.setKey(key);
-	//
-	// // Add in given parameters
-	// u.setType(type);
-	// u.setNetID(netID);
-	//
-	// // Save to datastore
-	// pm.makePersistent(u);
-	//
-	// return pm.detachCopy(u);
-	//
-	// } finally {
-	// // closePersistenceManager(pm);
-	// }
-
-	public void update(User user) {
-		// if (user == null)
-		// return;
-		//
-		// PersistenceManager pm = getPersistenceManager();
-		//
-		// try {
-		// // User u = pm.getObjectById(User.class, user.getKey());
-		// pm.makePersistent(user);
-		// // pm.refresh(user);
-		//
-		// } finally {
-		// // closePersistenceManager(pm);
-		// }
 	}
 
 	/**
@@ -133,5 +151,43 @@ public class UserController extends AbstractController {
 					"Found more than one user with same netid");
 		else
 			return null;
+	}
+
+	/**
+	 * 
+	 * @param googleUser
+	 *            Google user object from AuthController
+	 * @return
+	 */
+	public User get(com.google.appengine.api.users.User googleUser) {
+
+		User u;
+
+		if (googleUser == null)
+			return null;
+
+		Iterator<User> users = this.datatrain
+				.getDataStore()
+				.find()
+				.type(User.class)
+				.addFilter(User.FIELD_GOOGLEUSER, FilterOperator.EQUAL,
+						googleUser).now();
+
+		if (users.hasNext())
+			u = users.next();
+		else
+			return null;
+
+		if (users.hasNext())
+			throw new IllegalStateException(
+					"Found more than one user corresponding to a google user");
+
+		return u;
+	}
+
+	public void update(User u) {
+		validateUser(u);
+
+		this.datatrain.getDataStore().update(u);
 	}
 }

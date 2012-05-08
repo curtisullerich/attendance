@@ -38,10 +38,10 @@ public class MobileDataUploadTest extends AbstractTestCase {
 
 		DataTrain train = DataTrain.getAndStartTrain();
 
-		User s = ModelFactory.newUser(User.Type.Student, "s", 1);
+		User s = ModelFactory.newUser(User.Type.Student, null, "s", 1);
 		datastore.store(s);
 
-		User z = ModelFactory.newUser(User.Type.Student, "zf", 2);
+		User z = ModelFactory.newUser(User.Type.Student, null, "zf", 2);
 		datastore.store(z);
 
 		train.getMobileDataController().pushMobileData(SIMPLE_ABSENCE_TESTDATA);
@@ -61,7 +61,7 @@ public class MobileDataUploadTest extends AbstractTestCase {
 
 		Calendar cal = Calendar.getInstance();
 		cal.setTimeInMillis(0);
-		
+
 		cal.set(2012, 04, 03, 16, 30, 0);
 		assertEquals(cal.getTime(), event.getStart());
 
@@ -96,13 +96,13 @@ public class MobileDataUploadTest extends AbstractTestCase {
 
 		DataTrain train = DataTrain.getAndStartTrain();
 
-		User s = ModelFactory.newUser(User.Type.Student, "s", 1);
+		User s = ModelFactory.newUser(User.Type.Student, null, "s", 1);
 		datastore.store(s);
 
-		User z = ModelFactory.newUser(User.Type.Student, "zf", 2);
+		User z = ModelFactory.newUser(User.Type.Student, null, "zf", 2);
 		datastore.store(z);
-		
-		User b = ModelFactory.newUser(User.Type.Student, "b", 3);
+
+		User b = ModelFactory.newUser(User.Type.Student, null, "b", 3);
 		datastore.store(b);
 
 		train.getMobileDataController().pushMobileData(SIMPLE_TARDY_TESTDATA);

@@ -1,44 +1,24 @@
 package edu.iastate.music.marching.attendance.controllers;
 
-import java.nio.charset.Charset;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
 import edu.iastate.music.marching.attendance.model.User;
-import edu.iastate.music.marching.attendance.servlets.AuthServlet;
-import edu.iastate.music.marching.attendance.util.InputUtil;
+import edu.iastate.music.marching.attendance.util.ValidationUtil;
 import edu.iastate.music.marching.attendance.util.ValidationExceptions;
 
 public class AuthController {
 
-	private static final String HASH_ALGRO = "SHA-512";
-	private static final Charset HASH_CHARSET = Charset.forName("UTF-8");
-	private static final int SALT_SIZE = 64;
 	private static final String SESSION_USER_ATTRIBUTE = "authenticated_user";
+	
+	private DataTrain train;
 
-	public User createStudent(String netID, int univID,
-			String firstName, String lastName, List<String> errors) {
-
-		// Sanitize inputs and check they are valid
-		// TODO
-		String sanitizedFirstName = InputUtil.sanitize(firstName);
-		String sanitizedLastName = InputUtil.sanitize(lastName);
-
-		UserController uc = DataTrain.getAndStartTrain().getUsersController();
-
-		User u = uc.createStudent(netID, univID, sanitizedFirstName,
-				sanitizedLastName, 0, null); // TODO
-
-		return u;
-
+	public AuthController(DataTrain dataTrain) {
+		this.train = dataTrain;
 	}
 
 	private static void putUserInSession(User u, HttpSession session) {
@@ -64,6 +44,9 @@ public class AuthController {
 
 		if (u == null)
 			return false;
+		
+		if(allowed_types == null || allowed_types.length == 0)
+			return true;
 
 		for (User.Type type : allowed_types) {
 			if (u.getType() == type)
@@ -76,20 +59,20 @@ public class AuthController {
 	public static User getCurrentUser(HttpSession session) {
 		return getUserFromSession(session);
 	}
-	
+
 	public static com.google.appengine.api.users.User getGoogleUser() {
 		UserService userService = UserServiceFactory.getUserService();
-		
+
 		return userService.getCurrentUser();
 	}
 
 	public static void updateCurrentUser(User user, HttpSession session) {
 		// TODO
 		// if(user.getKey().equals(getUserFromSession(session).getKey()))
-		// putUserInSession(user, session);
+		putUserInSession(user, session);
 	}
 
-	public boolean google_login(HttpSession session) {
+	private boolean google_login(HttpSession session) {
 
 		UserService userService = UserServiceFactory.getUserService();
 
@@ -111,13 +94,6 @@ public class AuthController {
 		return false;
 	}
 
-	public static User createStudent(String netID, int univID,
-			String firstName, String lastName, String major, int year)
-			throws ValidationExceptions {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	public static void logout(HttpSession session) {
 		session.removeAttribute(SESSION_USER_ATTRIBUTE);
 	}
@@ -126,14 +102,28 @@ public class AuthController {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
-	public static String getGoogleLoginURL() {
+
+	public static String getGoogleLoginURL(String redirect_url) {
 		UserService userService = UserServiceFactory.getUserService();
-		
-		if(userService == null)
+
+		if (userService == null)
 			return null;
-		
-		return userService.createLoginURL(AuthServlet.URL_ON_GOOGLE_LOGIN);
+
+		return userService.createLoginURL(redirect_url);
+	}
+
+	public static String getGoogleLogoutURL(String redirect_url) {
+		UserService userService = UserServiceFactory.getUserService();
+
+		if (userService == null)
+			return null;
+
+		return userService.createLogoutURL(redirect_url);
+	}
+
+	public static boolean validGoogleUser() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
