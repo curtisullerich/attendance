@@ -27,6 +27,13 @@
 				}
 				
 				//determine date of latest class list
+				displayDateOfLatestClassList();
+			}
+			
+			
+			function displayDateOfLatestClassList()
+			{
+				//determine date of latest class list
 				var array = storeToArray(studentPrepend,"&","date");
 				var str;
 				if (array.length < 1) {
@@ -34,38 +41,8 @@
 				} else {
 					str="Current class list: " + array[0][0];
 				}
-				document.getElementById("classList").innerHTML = str;
-				//check for successful data upload	
-				if(localStorage.getItem("success") == "true"){
-					//clear all absence and tardy data
-					clearLocalStoragewithPrepend(absentPrependPerformance);
-					clearLocalStoragewithPrepend(absentPrependRehearsal);
-					clearLocalStoragewithPrepend(rehearsalPrepend);
-					clearLocalStoragewithPrepend(performancePrepend);
-					clearLocalStoragewithPrepend(tardyPrepend);
-					alert("Absence Data Successfully Uploaded and Locally Removed");
-					localStorage.removeItem("success");
-				}
 				
-				/* - old method for showing errors
-				//if upload unsuccessful, do not clear localStorage
-				else if(localStorage.getItem("success") == "false"){
-					alert("Absence Data Upload Unsuccessful - Local Data Was Not Changed");
-					localStorage.removeItem("success");
-				}
-				//alert user if a blank string was uploaded
-				else if(localStorage.getItem("success") == "emptyString")
-				{
-					alert("Nothing was uploaded to the server");
-					localStorage.removeItem("success");
-				}
-				
-				var error = localStorage.getItem("uploadError");
-				if(error != null){
-					alert("Upload error: " + error);
-					localStorage.removeItem("uploadError");
-				}
-				*/
+				$("#classList").text(str);
 			}
 			
 
@@ -99,7 +76,8 @@
 	            }
                 uncacheClassList();
                 
-                
+                // Disable update button
+                $("#update").attr('disabled', true);
                 
                 $.get("/MobileApp/data/classlist", function(result, errorString) {
                 	
@@ -112,7 +90,7 @@
              	    {
              	    	if (result.error == "login")
              	    	{
-             	    		alert("You must login first to download class data, redirecting you to login.");
+             	    		alert("You must login first as a TA or director to download class data, redirecting you to login.");
              	    		window.location = "/auth/login";
              	    	}
              	    	else if (result.error == "success")
@@ -120,7 +98,11 @@
              	    		if(result.data == "")
              	    			alert("Empty class list downloaded. Either a server error or no students are registered in the system.");
 	             	    	else
+	             	    	{
 	             		    	putClassListInLocalStorage(result.data);
+	             		    	
+	             		    	displayDateOfLatestClassList();
+	             		    }
              		    }
              		}
                 }, "json");
@@ -152,6 +134,10 @@
        	
        				var splat = new Array();
        				var mystring = classListArray[i];
+       				
+       				if(!mystring)
+       					continue;
+       				
        				splat = mystring.split("&split&");
        	
        				if(splat[0] == "TA")
