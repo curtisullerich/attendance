@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import edu.iastate.music.marching.attendance.controllers.AuthController;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
+import edu.iastate.music.marching.attendance.controllers.UserController;
 import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
@@ -95,20 +96,24 @@ public class StudentServlet extends AbstractBaseServlet {
 		firstName = req.getParameter("FirstName");
 		lastName = req.getParameter("LastName");
 		major = req.getParameter("Major");
-
-		// Validate data not going to be given to the Auth module (which does
-		// validation itself)
+		// TODO section, year
 
 		User u = AuthController.getCurrentUser(req.getSession());
+		
+		UserController uc = DataTrain.getAndStartTrain().getUsersController();
 
-		u.setYear(year);
-		u.setMajor(major);
-		u.setSection(section);
-		u.setFirstName(firstName);
-		u.setLastName(lastName);
+		User localUser = uc.get(u.getGoogleUser());
 
-		DataTrain.getAndStartTrain().getUsersController().update(u);
-		AuthController.updateCurrentUser(u, req.getSession());
+		localUser.setYear(year);
+		localUser.setMajor(major);
+		localUser.setSection(section);
+		localUser.setFirstName(firstName);
+		localUser.setLastName(lastName);
+		
+		// TODO May throw validation exceptions
+		uc.update(localUser);
+
+		AuthController.updateCurrentUser(localUser, req.getSession());
 
 		showInfo(req, resp);
 
