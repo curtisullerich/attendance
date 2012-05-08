@@ -30,8 +30,10 @@ public class StudentServlet extends AbstractBaseServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		if (!isLoggedIn(req, resp, User.Type.Student))
+		if (!isLoggedIn(req, resp, User.Type.Student)) {
+			resp.sendRedirect(AuthServlet.URL_LOGIN);
 			return;
+		}
 
 		Page page = parsePathInfo(req.getPathInfo(), Page.class);
 
@@ -62,8 +64,10 @@ public class StudentServlet extends AbstractBaseServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		if (!isLoggedIn(req, resp, User.Type.Student))
+		if (!isLoggedIn(req, resp, User.Type.Student)) {
+			resp.sendRedirect(AuthServlet.URL_LOGIN);
 			return;
+		}
 
 		Page page = parsePathInfo(req.getPathInfo(), Page.class);
 
@@ -135,6 +139,5 @@ public class StudentServlet extends AbstractBaseServlet {
 
 		page.passOffToJsp(req, resp);
 	}
-
 
 }

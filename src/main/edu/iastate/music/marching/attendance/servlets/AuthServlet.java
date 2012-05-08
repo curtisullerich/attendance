@@ -25,6 +25,11 @@ public class AuthServlet extends AbstractBaseServlet {
 
 	private static final String SERVLET_PATH = "auth";
 
+	public static final String URL_ON_LOGOUT = pageToUrl(Page.loggedout,
+			SERVLET_PATH);
+
+	public static final String URL_LOGOUT = pageToUrl(Page.logout, SERVLET_PATH);
+
 	public static final String URL_ON_GOOGLE_LOGIN = pageToUrl(
 			Page.on_google_login, SERVLET_PATH);
 
@@ -33,8 +38,10 @@ public class AuthServlet extends AbstractBaseServlet {
 
 	public static final String URL_LOGIN = pageToUrl(Page.login, SERVLET_PATH);
 
+	private static final String URL_REGISTER = pageToUrl(Page.register, SERVLET_PATH);
+
 	private enum Page {
-		index, login, register, logout, on_google_login, on_google_logout;
+		index, login, register_pre, register_post, logout, on_google_login, on_google_logout, loggedout, login_fail, register;
 	}
 
 	@Override
@@ -48,60 +55,26 @@ public class AuthServlet extends AbstractBaseServlet {
 		else
 			switch (page) {
 			case index:
-				resp.sendRedirect(urlFromPage(Page.login, SERVLET_PATH));
+				resp.sendRedirect(URL_LOGIN);
 				break;
 			case login:
-				showLogin(req, resp, null);
+				resp.sendRedirect(AuthController.getGoogleLoginURL());
 				break;
 			case logout:
 				doLogout(req, resp);
 				break;
+			case loggedout:
+				new PageBuilder(Page.loggedout, SERVLET_PATH).passOffToJsp(req,
+						resp);
+				break;
 			case register:
-				showRegistration(req, resp);
+				handleRegistration(req, resp);
 				break;
 			case on_google_login:
-				didGoogleLogin(req, resp);
+				didLogin(req, resp);
 				break;
 			}
 
-	}
-
-	private Page pathInfoToPage(String pathInfo, Class<Page> class1) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	private void didGoogleLogin(HttpServletRequest req, HttpServletResponse resp)
-			throws IOException, ServletException {
-		if (!AuthController.google_login(req.getSession())) {
-			// Failed google attempt
-			showLogin(req, resp, new String[] { "Google login failed." });
-		} else {
-			redirectLogin(req, resp);
-		}
-	}
-
-	private void showLogin(HttpServletRequest req, HttpServletResponse resp,
-			String[] errors) throws ServletException, IOException {
-
-		new PageBuilder(Page.login, SERVLET_PATH)
-				.setAttribute("errors", errors).passOffToJsp(req, resp);
-	}
-
-	private void showRegistration(HttpServletRequest req,
-			HttpServletResponse resp) throws ServletException, IOException {
-
-		PageBuilder page = new PageBuilder(Page.register, SERVLET_PATH);
-
-		page.setAttribute("sections", User.Section.values());
-
-		page.setPageTitle("Register");
-
-		// If no director
-		if (!App.isDirectorRegistered())
-			page.setAttribute("error_message", Lang.ERROR_MESSAGE_NO_DIRECTOR);
-
-		page.passOffToJsp(req, resp);
 	}
 
 	@Override
@@ -114,17 +87,8 @@ public class AuthServlet extends AbstractBaseServlet {
 			show404(req, resp);
 		else
 			switch (page) {
-			case index:
-				resp.sendRedirect(urlFromPage(Page.login, SERVLET_PATH));
-				break;
-			case login:
-				doLogin(req, resp);
-				break;
-			case logout:
-				doLogout(req, resp);
-				break;
-			case register:
-				doRegistration(req, resp);
+			case register_pre:
+				doRegistrationPost(req, resp);
 				break;
 			default:
 				show404(req, resp);
@@ -132,8 +96,59 @@ public class AuthServlet extends AbstractBaseServlet {
 
 	}
 
-	private void doRegistration(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
+	private void didLogin(HttpServletRequest req, HttpServletResponse resp)
+			throws IOException, ServletException {
+		if (!AuthController.login(req.getSession())) {
+			// Did login
+			redirectPostLogin(req, resp);
+		} else {
+			// Failed login attempt
+			new PageBuilder(Page.login_fail, SERVLET_PATH);
+		}
+	}
+
+	private void handleRegistration(HttpServletRequest req,
+			HttpServletResponse resp) throws ServletException, IOException {
+
+		if (AuthController.getGoogleUser() != null) {
+			// Have a valid google login
+			// Check if current user is already registered
+			User u = AuthController.getCurrentUser(req.getSession());
+			if (u == null) {
+				// Not yet registered
+				showRegistration(req, resp);
+			} else {
+				// Already registered
+				redirectPostLogin(req, resp);
+			}
+		} else {
+			// No valid google login, show a welcome page prompting them to
+			// login
+			new PageBuilder(Page.register_pre, SERVLET_PATH).passOffToJsp(req,
+					resp);
+		}
+	}
+
+	private void showRegistration(HttpServletRequest req,
+			HttpServletResponse resp) throws ServletException, IOException {
+
+		PageBuilder page = new PageBuilder(Page.register, SERVLET_PATH);
+		
+		page.setAttribute("NetID", AuthController.getGoogleUser().getEmail());
+
+		page.setAttribute("sections", User.Section.values());
+
+		page.setPageTitle("Register");
+
+		// If no director
+		if (!App.isDirectorRegistered())
+			page.setAttribute("error_message", "There is no director registered. You cannot register for an account yet.");
+
+		page.passOffToJsp(req, resp);
+	}
+
+	private void doRegistrationPost(HttpServletRequest req,
+			HttpServletResponse resp) throws ServletException, IOException {
 
 		String netID, firstName, lastName, major;
 		int univID = -1, year = -1;
@@ -225,58 +240,29 @@ public class AuthServlet extends AbstractBaseServlet {
 
 		AuthController.logout(req.getSession());
 
-		showLogin(req, resp, new String[] { "Successfully logged out" });
+		new PageBuilder(Page.loggedout, SERVLET_PATH).passOffToJsp(req, resp);
 	}
 
-	private void doLogin(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-
-		if (req.getParameter("Register") != null)
-			showRegistration(req, resp);
-		else {
-			// TODO
-			// User user = AuthController.login(req.getParameter("NetID"),
-			// req.getParameter("Password"), req.getSession());
-
-			// if (user == null) {
-			// showLogin(req, resp,
-			// new String[] { "Invaild netID or password." });
-			// return;
-			// }
-
-			// Successful login, redirect as appropriate
-			redirectLogin(req, resp);
-
-		}
-
-		// OnFail
-		PageBuilder forward = new PageBuilder(Page.login, SERVLET_PATH);
-		forward.setAttribute("errors",
-				new String[] { "Invalid username or password" });
-		forward.passOffToJsp(req, resp);
-	}
-
-	private void redirectLogin(HttpServletRequest req, HttpServletResponse resp)
-			throws IOException {
+	private void redirectPostLogin(HttpServletRequest req,
+			HttpServletResponse resp) throws IOException, ServletException {
 
 		User user = AuthController.getCurrentUser(req.getSession());
 
 		if (user == null)
-			throw new IllegalStateException(
-					"Invaild login redirection, no user logged in");
-
-		switch (user.getType()) {
-		case Student:
-			resp.sendRedirect(StudentServlet.INDEX_URL);
-			break;
-		case Director:
-			resp.sendRedirect(DirectorServlet.INDEX_URL);
-			break;
-		case TA:
-			resp.sendRedirect(TAServlet.INDEX_URL);
-			break;
-		default:
-			throw new IllegalStateException("Unsupported user type");
-		}
+			resp.sendRedirect(URL_REGISTER);
+		else
+			switch (user.getType()) {
+			case Student:
+				resp.sendRedirect(StudentServlet.INDEX_URL);
+				break;
+			case Director:
+				resp.sendRedirect(DirectorServlet.INDEX_URL);
+				break;
+			case TA:
+				resp.sendRedirect(TAServlet.INDEX_URL);
+				break;
+			default:
+				throw new IllegalStateException("Unsupported user type");
+			}
 	}
 }

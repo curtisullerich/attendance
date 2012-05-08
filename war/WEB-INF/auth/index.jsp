@@ -29,17 +29,21 @@
 				    </ul>
 				</c:if>
 			</dd>
-				
-			<dt><label class="required" for="NetID">NetID</label></dt>
-			<dd>
-				<input type="text" name="NetID" value="<c:out value="${NetID}" />" disabled readonly/>
-			</dd>
-			
 			<dt><label class="required" for="FirstName">First Name</label></dt>
 			<dd><input type="text" name="FirstName" value="<c:out value="${FirstName}" />" /></dd>
 			
 			<dt><label class="required" for="LastName">Last Name</label></dt>
 			<dd><input type="text" name="LastName" value="<c:out value="${LastName}" />" /></dd>
+			
+			<dt><label class="required" for="NetID">NetID</label></dt>
+			<dd>
+				<input type="text" name="NetID" value="<c:out value="${NetID}" />" />
+				<c:if test="${not empty NetID_error}">
+					<ul class="errors">
+						<li><c:out value="${NetID_error}" /></li>
+					</ul>
+				</c:if>
+			</dd>
 			
 			<dt><label class="required" for="UniversityID">University ID</label></dt>
 			<dd><input type="text" name="UniversityID" value="<c:out value="${UniversityID>0?UniversityID:''}" />" /></dd>

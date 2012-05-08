@@ -8,22 +8,13 @@
     <servlet-name>edu.iastate.music.marching.attendance.servlets.HomepageServlet</servlet-name>
     <url-pattern>/homepage</url-pattern>
   </servlet-mapping>
-  <security-constraint>
-    <web-resource-collection>
-      <web-resource-name>aname</web-resource-name>
-      <url-pattern>/homepage</url-pattern>
-    </web-resource-collection>
-    <user-data-constraint>
-      <transport-guarantee>CONFIDENTIAL</transport-guarantee>
-    </user-data-constraint>
-  </security-constraint>
   <servlet>
     <servlet-name>edu.iastate.music.marching.attendance.servlets.ErrorServlet</servlet-name>
     <servlet-class>edu.iastate.music.marching.attendance.servlets.ErrorServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>edu.iastate.music.marching.attendance.servlets.ErrorServlet</servlet-name>
-    <url-pattern>/error</url-pattern>
+    <url-pattern>/error/*</url-pattern>
   </servlet-mapping>
   <servlet>
     <servlet-name>edu.iastate.music.marching.attendance.servlets.AuthServlet</servlet-name>
@@ -33,15 +24,6 @@
     <servlet-name>edu.iastate.music.marching.attendance.servlets.AuthServlet</servlet-name>
     <url-pattern>/auth/*</url-pattern>
   </servlet-mapping>
-  <security-constraint>
-    <web-resource-collection>
-      <web-resource-name>aname</web-resource-name>
-      <url-pattern>/auth/*</url-pattern>
-    </web-resource-collection>
-    <user-data-constraint>
-      <transport-guarantee>CONFIDENTIAL</transport-guarantee>
-    </user-data-constraint>
-  </security-constraint>
   <servlet>
     <servlet-name>edu.iastate.music.marching.attendance.servlets.DirectorServlet</servlet-name>
     <servlet-class>edu.iastate.music.marching.attendance.servlets.DirectorServlet</servlet-class>
@@ -73,6 +55,14 @@
   <servlet-mapping>
     <servlet-name>edu.iastate.music.marching.attendance.servlets.StudentServlet</servlet-name>
     <url-pattern>/student/*</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>edu.iastate.music.marching.attendance.servlets.FormsServlet</servlet-name>
+    <servlet-class>edu.iastate.music.marching.attendance.servlets.FormsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>edu.iastate.music.marching.attendance.servlets.FormsServlet</servlet-name>
+    <url-pattern>/student/forms/*</url-pattern>
   </servlet-mapping>
   <servlet>
     <servlet-name>edu.iastate.music.marching.attendance.servlets.TAServlet</servlet-name>

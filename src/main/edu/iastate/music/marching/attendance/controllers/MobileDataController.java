@@ -73,6 +73,9 @@ public class MobileDataController {
 
 	public boolean pushMobileData(String data) throws IllegalArgumentException {
 
+		if(data == null)
+			return false;
+		
 		String[] fullLines = data.split(NEWLINE);
 
 		ArrayList<String> eventLines = new ArrayList<String>();

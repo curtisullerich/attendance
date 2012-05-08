@@ -1,6 +1,9 @@
 package edu.iastate.music.marching.attendance.servlets;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletResponse;
@@ -17,15 +20,19 @@ public class PageBuilder {
 
 	private static final String JSP_PATH_POST = ".jsp";
 
-	private HttpServletRequest mRequest;
-
 	private String mJSPPath;
-
-	private ServletResponse mResponse;
-
+	
+	private Map<String,Object> attribute_map;
 	private PageTemplateBean mPageBean;
+	
+	private PageBuilder()
+	{
+		attribute_map = new HashMap<String,Object>();
+	}
 
 	private PageBuilder(String jsp_path) {
+		this();
+		
 		// Save parameters
 		mJSPPath = jsp_path;
 
@@ -46,22 +53,26 @@ public class PageBuilder {
 	}
 
 	public PageBuilder setAttribute(String name, Object value) {
-		mRequest.setAttribute(name, value);
+		attribute_map.put(name, value);
 
 		return this;
 	}
 
-	public void passOffToJsp(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	public void passOffToJsp(HttpServletRequest req,
+			HttpServletResponse resp) throws ServletException, IOException {
+		
+		// Apply all saved attributes
+		for(Entry<String,Object> entry : attribute_map.entrySet())
+			req.setAttribute(entry.getKey(), entry.getValue());
 
 		// Insert page template data bean
-		mPageBean.apply(request);
+		mPageBean.apply(req);
 
 		// Insert authentication data bean
-		AuthBean.getBean(request.getSession()).apply(request);
+		AuthBean.getBean(req.getSession()).apply(req);
 
 		// Do actual forward
-		request.getRequestDispatcher(mJSPPath).forward(request, response);
+		req.getRequestDispatcher(mJSPPath).forward(req, resp);
 	}
 
 }

@@ -21,7 +21,7 @@ handlers:
 - url: /homepage
   servlet: edu.iastate.music.marching.attendance.servlets.HomepageServlet
   
-- url: /error
+- url: /error/*
   servlet: edu.iastate.music.marching.attendance.servlets.ErrorServlet
 
 - url: /auth/*
