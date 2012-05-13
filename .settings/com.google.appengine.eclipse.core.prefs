@@ -5,4 +5,4 @@ gaeDeployDialogSettings=
 gaeIsEclipseDefaultInstPath=true
 googleCloudSqlEnabled=false
 localDevMySqlEnabled=true
-ormEnhancementInclusions=src/main/
+ormEnhancementInclusions=
