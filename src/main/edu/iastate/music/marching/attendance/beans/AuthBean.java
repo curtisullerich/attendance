@@ -8,7 +8,6 @@ import com.google.appengine.api.users.UserServiceFactory;
 
 import edu.iastate.music.marching.attendance.controllers.AuthController;
 import edu.iastate.music.marching.attendance.model.User;
-import edu.iastate.music.marching.attendance.servlets.AuthServlet;
 
 public class AuthBean implements java.io.Serializable {
 	/**
@@ -37,6 +36,12 @@ public class AuthBean implements java.io.Serializable {
 		com.google.appengine.api.users.User google_user = getGoogleUser();
 
 		return google_user != null;
+	}
+	
+	public boolean isAdmin() {
+		UserService userService = UserServiceFactory.getUserService();
+		
+		return userService.isUserLoggedIn() && userService.isUserAdmin();
 	}
 
 	public void apply(ServletRequest request) {

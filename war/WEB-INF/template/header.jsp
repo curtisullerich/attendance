@@ -126,6 +126,15 @@
 						</ul>
 					</li>
 					</c:if>
+					
+					<c:if test="${auth.admin}">
+					<li class="selected">
+						<a href="/admin/">Admin</a>
+						<ul>
+							<li><a href="/admin/users/">Users</a></li>
+						</ul>
+					</li>
+					</c:if>
 				</ul>
 			</div>
 			<div class="grid-14" id="content">

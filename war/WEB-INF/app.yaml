@@ -45,6 +45,15 @@ handlers:
 - url: /ta/*
   servlet: edu.iastate.music.marching.attendance.servlets.TAServlet
 
+- url: /admin/*
+  servlet: edu.iastate.music.marching.attendance.servlets.AdminServlet
+  secure: always
+  login: admin
+
+admin_console:
+  pages:
+  - name: Users Admin
+    url: /admin/users
 
 error_handlers:
   - file: /error.html

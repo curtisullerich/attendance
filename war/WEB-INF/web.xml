@@ -72,6 +72,26 @@
     <servlet-name>edu.iastate.music.marching.attendance.servlets.TAServlet</servlet-name>
     <url-pattern>/ta/*</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>edu.iastate.music.marching.attendance.servlets.AdminServlet</servlet-name>
+    <servlet-class>edu.iastate.music.marching.attendance.servlets.AdminServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>edu.iastate.music.marching.attendance.servlets.AdminServlet</servlet-name>
+    <url-pattern>/admin/*</url-pattern>
+  </servlet-mapping>
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>aname</web-resource-name>
+      <url-pattern>/admin/*</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>admin</role-name>
+    </auth-constraint>
+    <user-data-constraint>
+      <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+    </user-data-constraint>
+  </security-constraint>
   <welcome-file-list>
     <welcome-file>homepage</welcome-file>
   </welcome-file-list>
