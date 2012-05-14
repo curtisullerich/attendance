@@ -114,7 +114,7 @@ public class FormsServlet extends AbstractBaseServlet {
 	 * @return
 	 */
 	private User.Type getServletUserType() {
-		String value = getServletConfig().getInitParameter("userType");
+		String value = getInitParameter("userType");
 
 		return User.Type.valueOf(value);
 	}

@@ -30,8 +30,11 @@ handlers:
 - url: /director/*
   servlet: edu.iastate.music.marching.attendance.servlets.DirectorServlet
 
-- url: /forms/*
+- url: /director/forms/*
   servlet: edu.iastate.music.marching.attendance.servlets.FormsServlet
+  init_params:
+    userType: Director
+  name: director_forms
 
 - url: /MobileApp/data/*
   servlet: edu.iastate.music.marching.attendance.servlets.MobileAppDataServlet
@@ -41,6 +44,9 @@ handlers:
 
 - url: /student/forms/*
   servlet: edu.iastate.music.marching.attendance.servlets.FormsServlet
+  init_params:
+    userType: Student
+  name: student_forms
 
 - url: /ta/*
   servlet: edu.iastate.music.marching.attendance.servlets.TAServlet

@@ -33,12 +33,16 @@
     <url-pattern>/director/*</url-pattern>
   </servlet-mapping>
   <servlet>
-    <servlet-name>edu.iastate.music.marching.attendance.servlets.FormsServlet</servlet-name>
+    <servlet-name>director_forms</servlet-name>
     <servlet-class>edu.iastate.music.marching.attendance.servlets.FormsServlet</servlet-class>
+    <init-param>
+      <param-name>userType</param-name>
+      <param-value>Director</param-value>
+    </init-param>
   </servlet>
   <servlet-mapping>
-    <servlet-name>edu.iastate.music.marching.attendance.servlets.FormsServlet</servlet-name>
-    <url-pattern>/forms/*</url-pattern>
+    <servlet-name>director_forms</servlet-name>
+    <url-pattern>/director/forms/*</url-pattern>
   </servlet-mapping>
   <servlet>
     <servlet-name>edu.iastate.music.marching.attendance.servlets.MobileAppDataServlet</servlet-name>
@@ -57,11 +61,15 @@
     <url-pattern>/student/*</url-pattern>
   </servlet-mapping>
   <servlet>
-    <servlet-name>edu.iastate.music.marching.attendance.servlets.FormsServlet</servlet-name>
+    <servlet-name>student_forms</servlet-name>
     <servlet-class>edu.iastate.music.marching.attendance.servlets.FormsServlet</servlet-class>
+    <init-param>
+      <param-name>userType</param-name>
+      <param-value>Student</param-value>
+    </init-param>
   </servlet>
   <servlet-mapping>
-    <servlet-name>edu.iastate.music.marching.attendance.servlets.FormsServlet</servlet-name>
+    <servlet-name>student_forms</servlet-name>
     <url-pattern>/student/forms/*</url-pattern>
   </servlet-mapping>
   <servlet>
