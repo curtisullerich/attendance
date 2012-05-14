@@ -1,5 +1,7 @@
 package edu.iastate.music.marching.attendance;
 
+import java.util.TimeZone;
+
 public class App {
 
 	private static final String TITLE = "ISUCF'V'MB Attendance";
@@ -14,6 +16,11 @@ public class App {
 	}
 
 	public static String getHashedMobilePassword() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static TimeZone getTimeZone() {
 		// TODO Auto-generated method stub
 		return null;
 	}

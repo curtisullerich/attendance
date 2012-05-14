@@ -40,7 +40,7 @@
 			
 			<dt><label for="NetID">NetID</label></dt>
 			<dd>
-				<input type="text" name="NetID" value="<c:out value="${user.netID}" />" />
+				<input type="text" name="NetID" value="<c:out value="${user.netID}"/>" disabled readonly/>
 				<c:if test="${not empty NetID_error}">
 					<ul class="errors">
 						<li><c:out value="${NetID_error}" /></li>
@@ -49,7 +49,7 @@
 			</dd>
 			
 			<dt><label for="UniversityID">University ID</label></dt>
-			<dd><input type="text" name="UniversityID" value="<c:out value="${user.universityID>0?user.universityID:''}" />" /></dd>
+			<dd><input type="text" name="UniversityID" value="<c:out value="${user.universityID>0?user.universityID:''}" />" disabled readonly/></dd>
 			
 			<dt><label for="Section">Section</label></dt>
 			<dd>

@@ -9,24 +9,9 @@ import org.junit.Test;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 
-public class AuthControllerTest {
+import edu.iastate.music.marching.attendance.test.integration.AbstractTestCase;
 
-	private final LocalServiceTestHelper helper = new LocalServiceTestHelper(
-			new LocalDatastoreServiceTestConfig());
-
-	@Before
-	public void setUp() {
-
-		helper.setUp();
-
-	}
-
-	@After
-	public void tearDown() {
-
-		helper.tearDown();
-
-	}
+public class AuthControllerTest extends AbstractTestCase {
 
 	@Test
 	public void testCreateUser() {

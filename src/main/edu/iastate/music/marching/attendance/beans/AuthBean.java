@@ -8,14 +8,13 @@ import com.google.appengine.api.users.UserServiceFactory;
 
 import edu.iastate.music.marching.attendance.controllers.AuthController;
 import edu.iastate.music.marching.attendance.model.User;
-import edu.iastate.music.marching.attendance.servlets.AuthServlet;
 
 public class AuthBean implements java.io.Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -6300883251650797582L;
-	
+
 	private static final String ATTRIBUTE_NAME = "auth";
 	HttpSession session;
 
@@ -26,31 +25,25 @@ public class AuthBean implements java.io.Serializable {
 	public User getUser() {
 		return AuthController.getCurrentUser(this.session);
 	}
-	
-	public com.google.appengine.api.users.User getGoogleuser() {
+
+	public com.google.appengine.api.users.User getGoogleUser() {
 		UserService userService = UserServiceFactory.getUserService();
-		
+
 		return userService.getCurrentUser();
 	}
 
-	public String getGoogleLoginURL() {
-		UserService userService = UserServiceFactory.getUserService();
-		
-		if(userService == null)
-			return null;
-		
-		return userService.createLoginURL(AuthServlet.URL_ON_GOOGLE_LOGIN);
+	public boolean isGoogleLogin() {
+		com.google.appengine.api.users.User google_user = getGoogleUser();
+
+		return google_user != null;
 	}
 	
-	public String getGoogleLogoutURL() {
+	public boolean isAdmin() {
 		UserService userService = UserServiceFactory.getUserService();
 		
-		if(userService == null)
-			return null;
-		
-		return userService.createLogoutURL(AuthServlet.URL_ON_GOOGLE_LOGOUT);
+		return userService.isUserLoggedIn() && userService.isUserAdmin();
 	}
-	
+
 	public void apply(ServletRequest request) {
 		if (request != null)
 			request.setAttribute(ATTRIBUTE_NAME, this);

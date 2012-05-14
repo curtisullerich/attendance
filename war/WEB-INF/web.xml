@@ -8,22 +8,13 @@
     <servlet-name>edu.iastate.music.marching.attendance.servlets.HomepageServlet</servlet-name>
     <url-pattern>/homepage</url-pattern>
   </servlet-mapping>
-  <security-constraint>
-    <web-resource-collection>
-      <web-resource-name>aname</web-resource-name>
-      <url-pattern>/homepage</url-pattern>
-    </web-resource-collection>
-    <user-data-constraint>
-      <transport-guarantee>CONFIDENTIAL</transport-guarantee>
-    </user-data-constraint>
-  </security-constraint>
   <servlet>
     <servlet-name>edu.iastate.music.marching.attendance.servlets.ErrorServlet</servlet-name>
     <servlet-class>edu.iastate.music.marching.attendance.servlets.ErrorServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>edu.iastate.music.marching.attendance.servlets.ErrorServlet</servlet-name>
-    <url-pattern>/error</url-pattern>
+    <url-pattern>/error/*</url-pattern>
   </servlet-mapping>
   <servlet>
     <servlet-name>edu.iastate.music.marching.attendance.servlets.AuthServlet</servlet-name>
@@ -33,15 +24,6 @@
     <servlet-name>edu.iastate.music.marching.attendance.servlets.AuthServlet</servlet-name>
     <url-pattern>/auth/*</url-pattern>
   </servlet-mapping>
-  <security-constraint>
-    <web-resource-collection>
-      <web-resource-name>aname</web-resource-name>
-      <url-pattern>/auth/*</url-pattern>
-    </web-resource-collection>
-    <user-data-constraint>
-      <transport-guarantee>CONFIDENTIAL</transport-guarantee>
-    </user-data-constraint>
-  </security-constraint>
   <servlet>
     <servlet-name>edu.iastate.music.marching.attendance.servlets.DirectorServlet</servlet-name>
     <servlet-class>edu.iastate.music.marching.attendance.servlets.DirectorServlet</servlet-class>
@@ -51,12 +33,16 @@
     <url-pattern>/director/*</url-pattern>
   </servlet-mapping>
   <servlet>
-    <servlet-name>edu.iastate.music.marching.attendance.servlets.FormsServlet</servlet-name>
+    <servlet-name>director_forms</servlet-name>
     <servlet-class>edu.iastate.music.marching.attendance.servlets.FormsServlet</servlet-class>
+    <init-param>
+      <param-name>userType</param-name>
+      <param-value>Director</param-value>
+    </init-param>
   </servlet>
   <servlet-mapping>
-    <servlet-name>edu.iastate.music.marching.attendance.servlets.FormsServlet</servlet-name>
-    <url-pattern>/forms/*</url-pattern>
+    <servlet-name>director_forms</servlet-name>
+    <url-pattern>/director/forms/*</url-pattern>
   </servlet-mapping>
   <servlet>
     <servlet-name>edu.iastate.music.marching.attendance.servlets.MobileAppDataServlet</servlet-name>
@@ -75,6 +61,18 @@
     <url-pattern>/student/*</url-pattern>
   </servlet-mapping>
   <servlet>
+    <servlet-name>student_forms</servlet-name>
+    <servlet-class>edu.iastate.music.marching.attendance.servlets.FormsServlet</servlet-class>
+    <init-param>
+      <param-name>userType</param-name>
+      <param-value>Student</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>student_forms</servlet-name>
+    <url-pattern>/student/forms/*</url-pattern>
+  </servlet-mapping>
+  <servlet>
     <servlet-name>edu.iastate.music.marching.attendance.servlets.TAServlet</servlet-name>
     <servlet-class>edu.iastate.music.marching.attendance.servlets.TAServlet</servlet-class>
   </servlet>
@@ -82,6 +80,26 @@
     <servlet-name>edu.iastate.music.marching.attendance.servlets.TAServlet</servlet-name>
     <url-pattern>/ta/*</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>edu.iastate.music.marching.attendance.servlets.AdminServlet</servlet-name>
+    <servlet-class>edu.iastate.music.marching.attendance.servlets.AdminServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>edu.iastate.music.marching.attendance.servlets.AdminServlet</servlet-name>
+    <url-pattern>/admin/*</url-pattern>
+  </servlet-mapping>
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>aname</web-resource-name>
+      <url-pattern>/admin/*</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>admin</role-name>
+    </auth-constraint>
+    <user-data-constraint>
+      <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+    </user-data-constraint>
+  </security-constraint>
   <welcome-file-list>
     <welcome-file>homepage</welcome-file>
   </welcome-file-list>

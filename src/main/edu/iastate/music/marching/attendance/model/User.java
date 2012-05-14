@@ -1,12 +1,14 @@
 package edu.iastate.music.marching.attendance.model;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import com.google.code.twig.annotation.Activate;
 import com.google.code.twig.annotation.Child;
 import com.google.code.twig.annotation.Id;
+import com.google.code.twig.annotation.Index;
 
-public class User {
+public class User implements Serializable {
 
 	/**
 	 * 
@@ -16,6 +18,8 @@ public class User {
 	public static final String FIELD_TYPE = "type";
 
 	public static final String FIELD_NETID = "netID";
+
+	public static final String FIELD_GOOGLEUSER = "google_user";
 
 	public enum Type {
 		Student, TA, Director;
@@ -65,10 +69,12 @@ public class User {
 
 	}
 
+	@Index
 	private com.google.appengine.api.users.User google_user;
 	
 	private Type type;
-
+	
+	@Index
 	private String netID;
 
 	private int universityID;
@@ -167,6 +173,14 @@ public class User {
 
 	public void setRank(String rank) {
 		this.rank = rank;
+	}
+
+	public void setGoogleUser(com.google.appengine.api.users.User google_user) {
+		this.google_user = google_user;
+	}
+	
+	public com.google.appengine.api.users.User getGoogleUser() {
+		return this.google_user;
 	}
 
 }

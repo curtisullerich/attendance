@@ -6,6 +6,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.MobileDataController;
 import edu.iastate.music.marching.attendance.model.User;
@@ -29,43 +31,71 @@ public class MobileAppDataServlet extends AbstractBaseServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		if (!isLoggedIn(req, resp, User.Type.TA, User.Type.Director))
-			return;
+		ClassListResult result = new ClassListResult();
 
-		DataTrain train = DataTrain.getAndStartTrain();
+		// Check if correct user type is logged in
+		if (!isLoggedIn(req, resp, User.Type.TA, User.Type.Director)) {
+			result.error = ResultError.login;
+		} else {
+			DataTrain train = DataTrain.getAndStartTrain();
 
-		MobileDataController mdc = train.getMobileDataController();
+			MobileDataController mdc = train.getMobileDataController();
 
-		String classList = mdc.getClassList();
+			result.data = mdc.getClassList();
+			result.error = ResultError.success;
+		}
 
-		resp.getOutputStream().print(classList);
+		// Print out JSON of result
+		resp.getOutputStream().print(new Gson().toJson(result));
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		if (!isLoggedIn(req, resp, User.Type.TA, User.Type.Director))
-			return;
-		
-		// Default to success
-		String error = "Success";
+		UploadResult result = new UploadResult();
 
-		DataTrain train = DataTrain.getAndStartTrain();
+		// Check if correct user type is logged in
+		if (!isLoggedIn(req, resp, User.Type.TA, User.Type.Director)) {
+			result.error = ResultError.login;
+		} else {
 
-		MobileDataController mdc = train.getMobileDataController();
+			DataTrain train = DataTrain.getAndStartTrain();
 
-		// data here is delimited by "&newline&". Those values in turn are
-		// delimited by "&split&"
-		String data = req.getParameter(DATA_PARAMETER);
+			MobileDataController mdc = train.getMobileDataController();
 
-		try {
-			mdc.pushMobileData(data);
-		} catch (IllegalArgumentException e) {
+			// data here is delimited by "&newline&". Those values in turn are
+			// delimited by "&split&"
+			String data = req.getParameter(DATA_PARAMETER);
+
+			try {
+				mdc.pushMobileData(data);
+			} catch (IllegalArgumentException e) {
+			}
+
+			// TODO Error handling
+
+			result.error = ResultError.success;
+			result.message = "";
+
 		}
 
-		// TODO Error handling
+		// Print out JSON of result
+		resp.getOutputStream().print(new Gson().toJson(result));
 
 	}
 
+	private enum ResultError {
+		success, login
+	}
+
+	private class UploadResult {
+		public ResultError error;
+		public String message;
+	}
+
+	private class ClassListResult {
+		public ResultError error;
+		public String data;
+	}
 }

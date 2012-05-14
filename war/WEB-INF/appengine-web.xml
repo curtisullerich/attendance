@@ -19,6 +19,9 @@
   <code-lock>false</code-lock>
   <sessions-enabled>true</sessions-enabled>
   <warmup-requests-enabled>false</warmup-requests-enabled>
+  <admin-console>
+    <page name='Users Admin' url='/admin/users'/>
+  </admin-console>
   <static-error-handlers>
     <handler file='/error.html'/>
   </static-error-handlers>

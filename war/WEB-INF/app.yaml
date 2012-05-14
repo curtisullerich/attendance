@@ -21,7 +21,7 @@ handlers:
 - url: /homepage
   servlet: edu.iastate.music.marching.attendance.servlets.HomepageServlet
   
-- url: /error
+- url: /error/*
   servlet: edu.iastate.music.marching.attendance.servlets.ErrorServlet
 
 - url: /auth/*
@@ -30,8 +30,11 @@ handlers:
 - url: /director/*
   servlet: edu.iastate.music.marching.attendance.servlets.DirectorServlet
 
-- url: /forms/*
+- url: /director/forms/*
   servlet: edu.iastate.music.marching.attendance.servlets.FormsServlet
+  init_params:
+    userType: Director
+  name: director_forms
 
 - url: /MobileApp/data/*
   servlet: edu.iastate.music.marching.attendance.servlets.MobileAppDataServlet
@@ -41,10 +44,22 @@ handlers:
 
 - url: /student/forms/*
   servlet: edu.iastate.music.marching.attendance.servlets.FormsServlet
+  init_params:
+    userType: Student
+  name: student_forms
 
 - url: /ta/*
   servlet: edu.iastate.music.marching.attendance.servlets.TAServlet
 
+- url: /admin/*
+  servlet: edu.iastate.music.marching.attendance.servlets.AdminServlet
+  secure: always
+  login: admin
+
+admin_console:
+  pages:
+  - name: Users Admin
+    url: /admin/users
 
 error_handlers:
   - file: /error.html

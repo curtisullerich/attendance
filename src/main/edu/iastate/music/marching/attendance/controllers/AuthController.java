@@ -1,8 +1,5 @@
 package edu.iastate.music.marching.attendance.controllers;
 
-import java.nio.charset.Charset;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -11,69 +8,17 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
 import edu.iastate.music.marching.attendance.model.User;
-import edu.iastate.music.marching.attendance.util.InputUtil;
+import edu.iastate.music.marching.attendance.util.ValidationUtil;
 import edu.iastate.music.marching.attendance.util.ValidationExceptions;
 
 public class AuthController {
 
-	private static final String HASH_ALGRO = "SHA-512";
-	private static final Charset HASH_CHARSET = Charset.forName("UTF-8");
-	private static final int SALT_SIZE = 64;
 	private static final String SESSION_USER_ATTRIBUTE = "authenticated_user";
+	
+	private DataTrain train;
 
-	public static User createStudent(String netID, int univID,
-			String firstName, String lastName, List<String> errors) {
-
-		// Sanitize inputs and check they are valid
-		// TODO
-		String sanitizedFirstName = InputUtil.sanitize(firstName);
-		String sanitizedLastName = InputUtil.sanitize(lastName);
-
-		UserController uc = DataTrain.getAndStartTrain().getUsersController();
-
-		User u = uc.create(User.Type.Student, netID, univID,
-				sanitizedFirstName, sanitizedLastName);
-
-		return u;
-
-	}
-
-	private static boolean checkPasswordStrength(String santizedPassword) {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	private static byte[] hashPassword(String password, byte[] salt) {
-
-		if (salt == null || password == null)
-			return null;
-
-		MessageDigest hasher;
-		try {
-			hasher = MessageDigest.getInstance(HASH_ALGRO);
-		} catch (NoSuchAlgorithmException e) {
-			return null;
-		}
-		// First just get the hash of the password
-		byte[] password_hash = hasher.digest(password.getBytes(HASH_CHARSET));
-
-		// Then add in the salt and hash again
-		byte[] hash_and_salt = new byte[salt.length + password_hash.length];
-
-		System.arraycopy(password_hash, 0, hash_and_salt, 0,
-				password_hash.length);
-		System.arraycopy(salt, 0, hash_and_salt, password_hash.length,
-				salt.length);
-
-		return hasher.digest(hash_and_salt);
-	}
-
-	private static String sanitizePassword(String password) {
-		return InputUtil.sanitize(password);
-	}
-
-	public static void logout(HttpSession session) {
-		session.removeAttribute(SESSION_USER_ATTRIBUTE);
+	public AuthController(DataTrain dataTrain) {
+		this.train = dataTrain;
 	}
 
 	private static void putUserInSession(User u, HttpSession session) {
@@ -99,6 +44,9 @@ public class AuthController {
 
 		if (u == null)
 			return false;
+		
+		if(allowed_types == null || allowed_types.length == 0)
+			return true;
 
 		for (User.Type type : allowed_types) {
 			if (u.getType() == type)
@@ -112,13 +60,19 @@ public class AuthController {
 		return getUserFromSession(session);
 	}
 
+	public static com.google.appengine.api.users.User getGoogleUser() {
+		UserService userService = UserServiceFactory.getUserService();
+
+		return userService.getCurrentUser();
+	}
+
 	public static void updateCurrentUser(User user, HttpSession session) {
 		// TODO
 		// if(user.getKey().equals(getUserFromSession(session).getKey()))
-		// putUserInSession(user, session);
+		putUserInSession(user, session);
 	}
 
-	public static boolean google_login(HttpSession session) {
+	private boolean google_login(HttpSession session) {
 
 		UserService userService = UserServiceFactory.getUserService();
 
@@ -140,11 +94,36 @@ public class AuthController {
 		return false;
 	}
 
-	public static User createStudent(String netID, int univID,
-			String firstName, String lastName, String major, int year)
-			throws ValidationExceptions {
+	public static void logout(HttpSession session) {
+		session.removeAttribute(SESSION_USER_ATTRIBUTE);
+	}
+
+	public static boolean login(HttpSession session) {
 		// TODO Auto-generated method stub
-		return null;
+		return false;
+	}
+
+	public static String getGoogleLoginURL(String redirect_url) {
+		UserService userService = UserServiceFactory.getUserService();
+
+		if (userService == null)
+			return null;
+
+		return userService.createLoginURL(redirect_url);
+	}
+
+	public static String getGoogleLogoutURL(String redirect_url) {
+		UserService userService = UserServiceFactory.getUserService();
+
+		if (userService == null)
+			return null;
+
+		return userService.createLogoutURL(redirect_url);
+	}
+
+	public static boolean validGoogleUser() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
