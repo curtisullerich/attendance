@@ -10,5 +10,5 @@
 
 <link rel="stylesheet" media="all" type="text/css" href="/css/custom.css">
 
-<script src="/js/common.js"></script>
-<script src="/js/jquery.min.js"></script>
+<script type="text/javascript" src="/js/common.js"></script>
+<script type="text/javascript" src="/js/jquery.min.js"></script>
