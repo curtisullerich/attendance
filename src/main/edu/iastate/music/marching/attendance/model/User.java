@@ -5,7 +5,6 @@ import java.util.Set;
 
 import com.google.code.twig.annotation.Activate;
 import com.google.code.twig.annotation.Child;
-import com.google.code.twig.annotation.Id;
 import com.google.code.twig.annotation.Index;
 
 public class User implements Serializable {

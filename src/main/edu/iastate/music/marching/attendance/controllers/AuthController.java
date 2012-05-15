@@ -1,15 +1,11 @@
 package edu.iastate.music.marching.attendance.controllers;
 
-import java.util.List;
-
 import javax.servlet.http.HttpSession;
 
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
 import edu.iastate.music.marching.attendance.model.User;
-import edu.iastate.music.marching.attendance.util.ValidationUtil;
-import edu.iastate.music.marching.attendance.util.ValidationExceptions;
 
 public class AuthController {
 

@@ -3,11 +3,8 @@ package edu.iastate.music.marching.attendance.controllers;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
-import org.datanucleus.sco.backed.LinkedList;
 
 import edu.iastate.music.marching.attendance.App;
 import edu.iastate.music.marching.attendance.model.Event;

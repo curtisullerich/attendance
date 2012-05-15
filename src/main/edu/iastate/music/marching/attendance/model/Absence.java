@@ -5,8 +5,6 @@ import java.util.Date;
 import com.google.code.twig.annotation.Activate;
 import com.google.code.twig.annotation.Parent;
 
-import edu.iastate.music.marching.attendance.model.Absence.Type;
-
 public class Absence {
 
 	public enum Type {
