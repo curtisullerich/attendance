@@ -1,7 +1,6 @@
 package edu.iastate.music.marching.attendance.model;
 
 import com.google.code.twig.annotation.Child;
-import com.google.code.twig.annotation.Embedded;
 import com.google.code.twig.annotation.Parent;
 
 public class Form {
@@ -13,6 +12,8 @@ public class Form {
 	public static enum Type {
 		A, B, C, D
 	};
+
+	public static final String FIELD_STUDENT = "student";
 
 	/**
 	 * Create users through UserController (DataModel.users().create(...)
