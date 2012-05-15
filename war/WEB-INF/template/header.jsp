@@ -65,15 +65,19 @@
 							</c:when>
 							<c:otherwise>
 								<b>
-								<a href="/auth/login" style="text-size:large;">Login</a>
-								&nbsp;&middot;&nbsp;
-								<a href="${auth.googleLoginURL}" style="text-size:large;">Google Login</a>
+								<c:choose>
+									<c:when test="${auth.googleLogin}">
+										<a href="/auth/logout" style="text-size:large;">Logout</a>
+									</c:when>
+									<c:otherwise>
+										<a href="/auth/login" style="text-size:large;">Login</a>
+									</c:otherwise>
+								</c:choose>
 								&nbsp;&middot;&nbsp;
 								</b>
 								<a href="/auth/register"><span style="text-size:small;">Register</span></a>
 							</c:otherwise>
 						</c:choose>
-
 					</div>
 				</div>
 			</div>
@@ -119,6 +123,15 @@
 						<a href="/about/">Students</a>
 						<ul>
 							<li><a href="/contact/">Contact Us</a></li>
+						</ul>
+					</li>
+					</c:if>
+					
+					<c:if test="${auth.admin}">
+					<li class="selected">
+						<a href="/admin/">Admin</a>
+						<ul>
+							<li><a href="/admin/users/">Users</a></li>
 						</ul>
 					</li>
 					</c:if>

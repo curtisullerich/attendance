@@ -1,14 +1,15 @@
 package edu.iastate.music.marching.attendance.controllers;
 
-import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
-import org.junit.After;
-import org.junit.Before;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 
 import com.google.appengine.api.datastore.QueryResultIterator;
-import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
-import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.code.twig.ObjectDatastore;
 
 import edu.iastate.music.marching.attendance.model.User;
@@ -16,43 +17,67 @@ import edu.iastate.music.marching.attendance.test.integration.AbstractTestCase;
 
 public class UserControllerTest extends AbstractTestCase {
 
-	private final LocalServiceTestHelper helper = new LocalServiceTestHelper(
-			new LocalDatastoreServiceTestConfig());
-
-	@Before
-	public void setUp() {
-		helper.setUp();
-	}
-
-	@After
-	public void tearDown() {
-		helper.tearDown();
-	}
+	private static final String DOMAIN = "iastate.edu";
 
 	@Test
-	public void testCreateSingleOfAllTypes() {
-		
+	public void testCreateSingleDirector() {
+
 		ObjectDatastore datastore = getObjectDataStore();
-		
+
 		DataTrain train = getDataTrain();
-		
+
 		UserController uc = train.getUsersController();
 		
-		uc.create(User.Type.Director, "director", 0, "I am", "The Director");
-		
-		QueryResultIterator<User> director = datastore.find(User.class, User.FIELD_NETID, "director");
-		
-		fail("Not yet implemented");
+		com.google.appengine.api.users.User google_user = new com.google.appengine.api.users.User("director@" + DOMAIN, "gmail.com");
+
+		uc.createDirector(google_user, 123, "I am", "The Director");
+
+		QueryResultIterator<User> directorq = datastore.find(User.class);
+
+		// Grab a single user
+		assertTrue(directorq.hasNext());
+		User d = directorq.next();
+		assertFalse(directorq.hasNext());
+
+		// Check returned object
+		assertNotNull(d);
+		assertEquals(User.Type.Director, d.getType());
+		assertEquals("director", d.getNetID());
+		assertEquals(123, d.getUniversityID());
+		assertEquals("I am", d.getFirstName());
+		assertEquals("The Director", d.getLastName());
 	}
 
 	@Test
-	public void testUpdate() {
-		fail("Not yet implemented");
-	}
+	public void testCreateSingleStudent() {
 
-	@Test
-	public void testGet() {
-		fail("Not yet implemented");
-	}
+		ObjectDatastore datastore = getObjectDataStore();
 
+		DataTrain train = getDataTrain();
+
+		UserController uc = train.getUsersController();
+
+		com.google.appengine.api.users.User google_user = new com.google.appengine.api.users.User("studenttt@" + DOMAIN, "gmail.com");
+		
+		uc.createStudent(google_user, 121, "I am", "A Student", 10, "Being Silly",
+				User.Section.AltoSax);
+
+		QueryResultIterator<User> studentq = datastore.find(User.class);
+
+		// Grab a single user
+		assertTrue(studentq.hasNext());
+		User s = studentq.next();
+		assertFalse(studentq.hasNext());
+
+		// Check returned object
+		assertNotNull(s);
+		assertEquals(User.Type.Student, s.getType());
+		assertEquals("studenttt", s.getNetID());
+		assertEquals(121, s.getUniversityID());
+		assertEquals("I am", s.getFirstName());
+		assertEquals("A Student", s.getLastName());
+		assertEquals(10, s.getYear());
+		assertEquals("Being Silly", s.getMajor());
+		assertEquals(User.Section.AltoSax, s.getSection());
+	}
 }

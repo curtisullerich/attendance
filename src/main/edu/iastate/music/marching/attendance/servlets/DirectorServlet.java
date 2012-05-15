@@ -29,7 +29,10 @@ public class DirectorServlet extends AbstractBaseServlet {
 			throws ServletException, IOException {
 
 		if (!isLoggedIn(req, resp, User.Type.Director))
+		{
+			resp.sendRedirect(AuthServlet.URL_LOGIN);
 			return;
+		}
 
 	}
 

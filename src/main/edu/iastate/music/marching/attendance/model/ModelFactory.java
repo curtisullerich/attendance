@@ -2,25 +2,30 @@ package edu.iastate.music.marching.attendance.model;
 
 import java.util.Date;
 
-import javax.jdo.JDOHelper;
-import javax.jdo.PersistenceManager;
-import javax.jdo.PersistenceManagerFactory;
-
-import edu.iastate.music.marching.attendance.model.User.Type;
-
 public class ModelFactory {
 
-	public static User getUser() {
-		return new User();
-	}
-
-
 	public static Event newEvent(Event.Type type, Date start, Date end) {
-		return new Event(type, start, end);
+		Event e = new Event();
+		e.setType(type);
+		e.setStart(start);
+		e.setEnd(end);
+		return e;
 	}
 
-	public static User newUser(Type type, String netID, int univID) {
-		// TODO Auto-generated method stub
-		return null;
+	public static User newUser(User.Type type, com.google.appengine.api.users.User google_user, String netID, int univID) {
+		User u = new User();
+		u.setType(type);
+		u.setGoogleUser(google_user);
+		u.setNetID(netID);
+		u.setUniversityID(univID);
+		return u;
+	}
+
+	public static Absence newAbsence(
+			Absence.Type type, User student) {
+		Absence a = new Absence();
+		a.setType(type);
+		a.setStudent(student);
+		return a;
 	}
 }

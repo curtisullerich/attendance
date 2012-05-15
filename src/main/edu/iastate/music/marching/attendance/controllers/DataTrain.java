@@ -15,7 +15,7 @@ public class DataTrain {
 
 	/** Never need to create an instance of this, only call static methods */
 	private DataTrain() {
-		datastore = new AnnotationObjectDatastore(false);
+		datastore = new AnnotationObjectDatastore();
 	}
 	
 	public AbsenceController getAbscencesController() {
@@ -40,6 +40,10 @@ public class DataTrain {
 
 	public MobileDataController getMobileDataController() {
 		return new MobileDataController(this);
+	}
+
+	public AuthController getAuthController() {
+		return new AuthController(this);
 	}
 
 }

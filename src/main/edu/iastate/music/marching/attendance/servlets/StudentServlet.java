@@ -8,8 +8,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import edu.iastate.music.marching.attendance.controllers.AuthController;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
+import edu.iastate.music.marching.attendance.controllers.UserController;
 import edu.iastate.music.marching.attendance.model.User;
-import edu.iastate.music.marching.attendance.util.InputUtil;
+import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
 public class StudentServlet extends AbstractBaseServlet {
 
@@ -30,8 +31,10 @@ public class StudentServlet extends AbstractBaseServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		if (!isLoggedIn(req, resp, User.Type.Student))
+		if (!isLoggedIn(req, resp, User.Type.Student)) {
+			resp.sendRedirect(AuthServlet.URL_LOGIN);
 			return;
+		}
 
 		Page page = parsePathInfo(req.getPathInfo(), Page.class);
 
@@ -62,8 +65,10 @@ public class StudentServlet extends AbstractBaseServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		if (!isLoggedIn(req, resp, User.Type.Student))
+		if (!isLoggedIn(req, resp, User.Type.Student)) {
+			resp.sendRedirect(AuthServlet.URL_LOGIN);
 			return;
+		}
 
 		Page page = parsePathInfo(req.getPathInfo(), Page.class);
 
@@ -91,23 +96,24 @@ public class StudentServlet extends AbstractBaseServlet {
 		firstName = req.getParameter("FirstName");
 		lastName = req.getParameter("LastName");
 		major = req.getParameter("Major");
-
-		// Validate data not going to be given to the Auth module (which does
-		// validation itself)
-		String sanitizedMajor = InputUtil.sanitize(major);
-		String santizedFirstName = InputUtil.sanitize(firstName);
-		String santizedLastName = InputUtil.sanitize(lastName);
+		// TODO section, year
 
 		User u = AuthController.getCurrentUser(req.getSession());
+		
+		UserController uc = DataTrain.getAndStartTrain().getUsersController();
 
-		u.setYear(year);
-		u.setMajor(sanitizedMajor);
-		u.setSection(section);
-		u.setFirstName(santizedFirstName);
-		u.setLastName(santizedLastName);
+		User localUser = uc.get(u.getGoogleUser());
 
-		DataTrain.getAndStartTrain().getUsersController().update(u);
-		AuthController.updateCurrentUser(u, req.getSession());
+		localUser.setYear(year);
+		localUser.setMajor(major);
+		localUser.setSection(section);
+		localUser.setFirstName(firstName);
+		localUser.setLastName(lastName);
+		
+		// TODO May throw validation exceptions
+		uc.update(localUser);
+
+		AuthController.updateCurrentUser(localUser, req.getSession());
 
 		showInfo(req, resp);
 
@@ -135,6 +141,5 @@ public class StudentServlet extends AbstractBaseServlet {
 
 		page.passOffToJsp(req, resp);
 	}
-
 
 }
