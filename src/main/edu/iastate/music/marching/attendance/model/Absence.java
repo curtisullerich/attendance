@@ -21,7 +21,7 @@ public class Absence {
 	private Type type;
 
 	@Parent
-	@Activate(0)
+	@Activate(1)
 	private Event event;
 
 	@Activate(0)

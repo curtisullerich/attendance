@@ -10,10 +10,10 @@
 	
 		<jsp:include page="/WEB-INF/template/header.jsp" />
 
-		<h1>Attendance for <c:out value="${user.netID}" /></h1>
+		<h1>Attendance for <c:out value="${user.name}" /></h1>
 		
 		<h2>Absences</h2>
-		<table>
+		<table border='1'>
 			<tr>
 				<th>Type</th>
 				<th>Event</th>
@@ -21,7 +21,7 @@
 			<c:forEach items="${absences}" var="absence">
 				<tr>
 					<td>${absence.type}</td>
-					<c:if test=${empty absence.event}">
+					<c:if test="${empty absence.event}">
 						No event. Absence from:
 						<td>
 							<fmt:formatDate value="${absence.start}" pattern="mm/dd/yyyy hh:mm" />
@@ -29,7 +29,7 @@
 							<fmt:formatDate value="${absence.end}" pattern="hh:mm" />
 						</td>
 					</c:if>
-					<c:if test=${not empty absence.event}">
+					<c:if test="${not empty absence.event}">
 						<td>
 							<fmt:formatDate value="${absence.event.start}" pattern="mm/dd/yyyy hh:mm" />
 							-
@@ -43,7 +43,7 @@
 		
 		
 		<h2>Forms</h2>
-		<table>
+		<table border='1'>
 			<tr>
 				<th>Start Date</th>
 				<th>End Date</th>

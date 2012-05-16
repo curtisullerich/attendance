@@ -10,6 +10,10 @@ public class MessageThread {
 	 * Create users through UserController (DataModel.users().create(...)
 	 */
 	MessageThread() {
+		// Defaults
+		
+		// Empty thread is resolved by default
+		resolved = true;
 	}
 
 	private boolean resolved;
