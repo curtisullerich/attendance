@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import edu.iastate.music.marching.attendance.controllers.AuthController;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.UserController;
+import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.User;
-import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
 public class StudentServlet extends AbstractBaseServlet {
 
@@ -46,7 +46,7 @@ public class StudentServlet extends AbstractBaseServlet {
 				showIndex(req, resp);
 				break;
 			case attendance:
-				showIndex(req, resp);
+				showAttendance(req, resp);
 				break;
 			case forms:
 				// TODO
@@ -59,6 +59,23 @@ public class StudentServlet extends AbstractBaseServlet {
 				break;
 			}
 
+	}
+
+	private void showAttendance(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		DataTrain train = DataTrain.getAndStartTrain();
+		
+		PageBuilder page = new PageBuilder(Page.attendance, SERVLET_PATH);
+		
+		User currentUser = AuthController.getCurrentUser(req.getSession());
+
+		page.setPageTitle("Attendance");
+		
+		page.setAttribute("user", currentUser);
+		page.setAttribute("forms", train.getFormsController().get(currentUser));
+		page.setAttribute("absences", train.getAbscencesController().get(currentUser));
+		
+		page.passOffToJsp(req, resp);
 	}
 
 	@Override

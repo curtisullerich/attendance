@@ -17,10 +17,15 @@
 	
 		<h1>Time Worked | Form D</h1>
 		
-		<p>This form includes all performances through any post-season activity <br/>
-		ending January 9, ${year+1}, and it must be submitted by 4:30 p.m. on Monday, August<br/>
-		23, ${year}.  Documentation must be submitted to the director for all absences (doctor's note, obituary, wedding program, etc.).<br/></p>
-		
+		<c:if test="${not empty error_messages}">
+			<p class="notify-msg error">
+				<strong>Error:</strong>
+				<c:forEach items="${error_messages}" var="error_message">
+					<c:out value="${error_message}" />
+					<br/>
+				</c:forEach>
+			</p>
+		</c:if>
 		
 		<form action="./formd" method="post" accept-charset="utf-8">
 		

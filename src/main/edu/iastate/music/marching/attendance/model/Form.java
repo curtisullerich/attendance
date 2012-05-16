@@ -1,8 +1,14 @@
 package edu.iastate.music.marching.attendance.model;
 
+import java.util.Date;
+
+import com.google.appengine.api.datastore.Text;
+import com.google.code.twig.annotation.Activate;
 import com.google.code.twig.annotation.Child;
-import com.google.code.twig.annotation.Embedded;
+import com.google.code.twig.annotation.Index;
 import com.google.code.twig.annotation.Parent;
+
+import edu.iastate.music.marching.attendance.model.Form.Type;
 
 public class Form {
 
@@ -14,26 +20,25 @@ public class Form {
 		A, B, C, D
 	};
 
+	public static final String FIELD_STUDENT = "student";
+
 	/**
-	 * Create users through UserController (DataModel.users().create(...)
+	 * Create users through FormController (DataTrain.get().getFormsController().createFormA(...)
 	 */
 	Form() {
 	}
-
-	// Select query using enums
-	// Query query =
-	// pm.newQuery("SELECT FROM com.xxx.yyy.User WHERE role == p1 ORDER BY key desc RANGE 0,50");
-	// query.declareParameters("Enum p1");
-	// AbstractQueryResult results = (AbstractQueryResult)
-	// pm.newQuery(q).execute(admin);
 	
 	/**
 	 * Owning student
 	 * 
 	 */
 	@Parent
+	private User owner;
+	
+	@Index
 	private User student;
 	
+	@Index
 	private Type type;
 	
 	private Status status;
@@ -41,5 +46,32 @@ public class Form {
 	private Status emailStatus;
 	
 	@Child
+	@Activate(1)
 	private MessageThread messages;
+	
+	@com.google.code.twig.annotation.Type(Text.class)
+	private String reason;
+	
+	private Date startTime;
+	private Date endTime;
+
+	// Strings to be used by Form B
+	private String dept;
+	private String course;
+	private String section;
+	private String building;
+
+	// String to be used by Form D
+	private String emailTo;
+	private int hoursWorked;
+
+	public void setType(Type type) {
+		this.type = type;
+	}
+
+	public void setStudent(User student) {
+		this.owner = student;
+		this.student = student;
+	}
+
 }

@@ -28,4 +28,15 @@ public class ModelFactory {
 		a.setStudent(student);
 		return a;
 	}
+
+	public static AppData newAppData() {
+		return new AppData();
+	}
+	
+	public static Form newForm(Form.Type type, User student) {
+		Form form = new Form();
+		form.setType(type);
+		form.setStudent(student);
+		return form;
+	}
 }
