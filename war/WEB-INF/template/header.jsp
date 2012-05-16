@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:if test="${not pagetemplate.mobile}">
 	<div class="skip"><a accesskey="2" href="#container">Skip Navigation</a></div>
 	<div class="hwrapper" id="header">
 		<div id="top-strip">
@@ -139,3 +140,7 @@
 			</div>
 			<div class="grid-14" id="content">
 				<div class="gutter">
+</c:if>
+<c:if test="${pagetemplate.mobile}">
+	<header class="hwrapper"><h1>ISUCF"V"MB Attendance</h1></header>
+</c:if>
