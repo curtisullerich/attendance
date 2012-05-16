@@ -5,6 +5,7 @@ import java.util.Set;
 
 import com.google.code.twig.annotation.Activate;
 import com.google.code.twig.annotation.Child;
+import com.google.code.twig.annotation.Id;
 import com.google.code.twig.annotation.Index;
 
 public class User implements Serializable {
@@ -67,6 +68,9 @@ public class User implements Serializable {
 	User() {
 
 	}
+	
+	@Id
+	private String id;
 
 	@Index
 	private com.google.appengine.api.users.User google_user;
@@ -124,6 +128,7 @@ public class User implements Serializable {
 
 	public void setNetID(String netID) {
 		this.netID = netID;
+		this.id = netID;
 	}
 
 	public Type getType() {
