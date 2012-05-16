@@ -79,4 +79,9 @@ public class AbsenceController extends AbstractController {
 		return absence;
 	}
 
+	public List<Absence> get(User currentUser) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

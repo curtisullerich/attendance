@@ -46,6 +46,10 @@ public class DataTrain {
 		return new AuthController(this);
 	}
 
+	public AppDataController getAppDataController() {
+		return new AppDataController(this);
+	}
+
 }
 
 
