@@ -46,7 +46,7 @@
 				
 				<dt><label>Reasons:</label></dt>
 				<dd>
-					<textarea rows="6" cols="50" id="reason" name="Reason" wrap="physical"></textarea>
+					<textarea rows="6" cols="50" id="reason" name="Reason" wrap="physical"><c:out value="${Reason}" /></textarea>
 				</dd>
 				
 			</dl>

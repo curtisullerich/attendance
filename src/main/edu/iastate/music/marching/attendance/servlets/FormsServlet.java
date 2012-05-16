@@ -2,7 +2,6 @@ package edu.iastate.music.marching.attendance.servlets;
 
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,9 +27,14 @@ public class FormsServlet extends AbstractBaseServlet {
 		forma, formb, formc, formd, index, view, remove, messages;
 	}
 
-	private static final String SERVLET_PAGE = "form";
-	private static final int SUCCESS_FORMA = 0;
-	private static final String URL_INDEX = null;
+	private static final String SERVLET_PATH = "form";
+
+	private static final String URL_INDEX = pageToUrl(Page.index, SERVLET_PATH);
+
+	private static final String SUCCESS_FORMA = "Submitted new Form A";
+	private static final String SUCCESS_FORMB = "Submitted new Form B";
+	private static final String SUCCESS_FORMC = "Submitted new Form C";
+	private static final String SUCCESS_FORMD = "Submitted new Form D";
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -117,23 +121,6 @@ public class FormsServlet extends AbstractBaseServlet {
 
 		DataTrain train = DataTrain.getAndStartTrain();
 
-		//
-		// //Form( netID, reason, startTime, endTime, type)
-		// Form myform= new
-		// Form(""+req.getSession().getAttribute("user"),reason,startTime,endTime,
-		// "FormA" );
-		//
-		// DatabaseUtil.addForm(myform);
-		//
-		// resp.sendRedirect("/JSPPages/Student_Page.jsp?formSubmitted='true'");
-		// return;
-		// }
-		// else
-		// {
-		// resp.sendRedirect("/JSPPages/Student_Form_A_Performance_Absence_Request.jsp?error='nullFields'");
-		// return;
-		// }
-
 		// Parse out all data from form and validate
 		boolean validForm = true;
 		List<String> errors = new LinkedList<String>();
@@ -146,13 +133,16 @@ public class FormsServlet extends AbstractBaseServlet {
 			// Extract all basic parameters
 			reason = req.getParameter("Reason");
 
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(parseStartDate(req));
-			date = calendar.getTime();
+			try {
+				date = parseStartDate(req);
+			} catch (IllegalArgumentException e) {
+				validForm = false;
+				errors.add(e.getMessage());
+			}
 		}
 
 		if (validForm) {
-			// Create our form
+			// Store our new form to the data store
 			User student = AuthController.getCurrentUser(req.getSession());
 
 			Form form = null;
@@ -176,20 +166,23 @@ public class FormsServlet extends AbstractBaseServlet {
 			resp.sendRedirect(url);
 		} else {
 			// Show form
-			PageBuilder page = new PageBuilder(Page.forma, SERVLET_PAGE);
+			PageBuilder page = new PageBuilder(Page.forma, SERVLET_PATH);
 
 			page.setPageTitle("Form A");
+			
+			page.setAttribute("error_messages", errors);
 
 			page.setAttribute("cutoff", train.getAppDataController().get()
 					.getFormSubmissionCutoff());
+			
+			page.setAttribute("Reason", reason);
 
 			page.passOffToJsp(req, resp);
 		}
 	}
 
 	private boolean formSubmitted(HttpServletRequest req) {
-		return "POST".equals(req.getMethod())
-				&& req.getParameter("Submit") != null;
+		return "POST".equals(req.getMethod());
 	}
 
 	private Date parseStartDate(HttpServletRequest req) {
@@ -225,22 +218,276 @@ public class FormsServlet extends AbstractBaseServlet {
 		return null;
 	}
 
+	private Date parseEndDate(HttpServletRequest req) {
+		// TODO Auto-generated method stub
+
+		//
+		// else if (req.getParameter("StartDay") != null &&
+		// req.getParameter("StartMonth") != null &&
+		// req.getParameter("StartYear") != null
+		// && req.getParameter("StartDay") != "" &&
+		// req.getParameter("StartMonth") != "" && req.getParameter("StartYear")
+		// != "" ) {
+		//
+		// int year = Integer.parseInt(req.getParameter("StartYear"));
+		// int month = Integer.parseInt(req.getParameter("StartMonth"));
+		// int day = Integer.parseInt(req.getParameter("StartDay"));
+		// if(!isValidateDate(month, day, year)) {
+		// resp.sendRedirect("/JSPPages/Student_Form_A_Performance_Absence_Request.jsp?error='invalidDate'");
+		// return;
+		// }
+		// //public Date(int year, int month, int day)
+		// Calendar calendar = Calendar.getInstance();
+		// calendar.setTimeInMillis(0);
+		// calendar.set(year, month, day);
+		//
+		// // Start at beginning of day
+		// Date start = calendar.getTime();
+		//
+		// // End exactly one time unit before the next day starts
+		// calendar.roll(Calendar.DATE, true)
+		// calendar.roll(Calendar.MILLISECOND, false);
+		// Date end = calendar.getTime();
+		return null;
+	}
+
 	private void handleFormB(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		new PageBuilder(Page.formb, SERVLET_PAGE).passOffToJsp(req, resp);
+		String department = null;
+		String course = null;
+		String section = null;
+		String building = null;
+		Date startDate = null;
+		Date endDate = null;
+		String type = null;
+		String comments = null;
+
+		DataTrain train = DataTrain.getAndStartTrain();
+
+		// Parse out all data from form and validate
+		boolean validForm = true;
+		List<String> errors = new LinkedList<String>();
+
+		if (!formSubmitted(req)) {
+			// This is not a post request to create a new form, no need to
+			// validate
+			validForm = false;
+		} else {
+			// Extract all basic parameters
+			department = req.getParameter("Department");
+			course = req.getParameter("Course");
+			section = req.getParameter("Section");
+			building = req.getParameter("Building");
+			type = req.getParameter("Type");
+			comments = req.getParameter("Comments");
+
+			try {
+				startDate = parseStartDate(req);
+				endDate = parseEndDate(req);
+			} catch (IllegalArgumentException e) {
+				validForm = false;
+				errors.add(e.getMessage());
+			}
+		}
+
+		if (validForm) {
+			// Store our new form to the data store
+			User student = AuthController.getCurrentUser(req.getSession());
+
+			Form form = null;
+			try {
+				// form = train.getFormsController().createFormA(student,
+				// startDate,
+				// comments);
+			} catch (IllegalArgumentException e) {
+				validForm = false;
+				errors.add(e.getMessage());
+			}
+
+			if (form == null) {
+				validForm = false;
+				errors.add("Internal Error: Failed to create form and store in database");
+			}
+		}
+		if (validForm) {
+			String url = URLEncoder.encode(URL_INDEX + "?success_message="
+					+ SUCCESS_FORMB, "UTF-8");
+			url = resp.encodeRedirectURL(url);
+			resp.sendRedirect(url);
+		} else {
+			// Show form
+			PageBuilder page = new PageBuilder(Page.formb, SERVLET_PATH);
+
+			page.setPageTitle("Form B");
+			
+			page.setAttribute("error_messages", errors);
+
+			page.setAttribute("Department", department);
+			page.setAttribute("Course", course);
+			page.setAttribute("Section", section);
+			page.setAttribute("Building", building);
+			setStartDate(startDate, page);
+			setEndDate(endDate, page);
+			page.setAttribute("Type", type);
+			page.setAttribute("Comments", comments);
+
+			page.passOffToJsp(req, resp);
+		}
 	}
 
 	private void handleFormC(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		new PageBuilder(Page.formc, SERVLET_PAGE).passOffToJsp(req, resp);
+		Date date = null;
+		String reason = null;
+
+		DataTrain train = DataTrain.getAndStartTrain();
+
+		// Parse out all data from form and validate
+		boolean validForm = true;
+		List<String> errors = new LinkedList<String>();
+
+		if (!formSubmitted(req)) {
+			// This is not a post request to create a new form, no need to
+			// validate
+			validForm = false;
+		} else {
+			// Extract all basic parameters
+			reason = req.getParameter("Reason");
+
+			try {
+				date = parseStartDate(req);
+			} catch (IllegalArgumentException e) {
+				validForm = false;
+				errors.add(e.getMessage());
+			}
+		}
+
+		if (validForm) {
+			// Store our new form to the data store
+			User student = AuthController.getCurrentUser(req.getSession());
+
+			Form form = null;
+			try {
+				form = train.getFormsController().createFormC(student, date,
+						reason);
+			} catch (IllegalArgumentException e) {
+				validForm = false;
+				errors.add(e.getMessage());
+			}
+
+			if (form == null) {
+				validForm = false;
+				errors.add("Internal Error: Failed to create form and store in database");
+			}
+		}
+		if (validForm) {
+			String url = URLEncoder.encode(URL_INDEX + "?success_message="
+					+ SUCCESS_FORMC, "UTF-8");
+			url = resp.encodeRedirectURL(url);
+			resp.sendRedirect(url);
+		} else {
+			// Show form
+			PageBuilder page = new PageBuilder(Page.formc, SERVLET_PATH);
+
+			page.setPageTitle("Form C");
+			
+			page.setAttribute("error_messages", errors);
+
+			setStartDate(date, page);
+			page.setAttribute("Reason", reason);
+
+			page.passOffToJsp(req, resp);
+		}
 	}
 
 	private void handleFormD(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+		String email = null;
+		int hours = 0;
+		Date date = null;
+		String details = null;
+
+		DataTrain train = DataTrain.getAndStartTrain();
+
+		// Parse out all data from form and validate
+		boolean validForm = true;
+		List<String> errors = new LinkedList<String>();
+
+		if (!formSubmitted(req)) {
+			// This is not a post request to create a new form, no need to
+			// validate
+			validForm = false;
+		} else {
+			// Extract all basic parameters
+			email = req.getParameter("Email");
+			details = req.getParameter("Details");
+
+			try {
+				hours = Integer.parseInt(req.getParameter("AmountWorked"));
+			} catch (NumberFormatException e) {
+				validForm = false;
+				errors.add("Invalid amount of hours worked: " + e.getMessage());
+			}
+
+			try {
+				date = parseStartDate(req);
+			} catch (IllegalArgumentException e) {
+				validForm = false;
+				errors.add(e.getMessage());
+			}
+		}
+
+		if (validForm) {
+			// Store our new form to the data store
+			User student = AuthController.getCurrentUser(req.getSession());
+
+			Form form = null;
+			try {
+				form = train.getFormsController().createFormD(student, date,
+						hours, details);
+			} catch (IllegalArgumentException e) {
+				validForm = false;
+				errors.add(e.getMessage());
+			}
+
+			if (form == null) {
+				validForm = false;
+				errors.add("Internal Error: Failed to create form and store in database");
+			}
+		}
+		if (validForm) {
+			String url = URLEncoder.encode(URL_INDEX + "?success_message="
+					+ SUCCESS_FORMD, "UTF-8");
+			url = resp.encodeRedirectURL(url);
+			resp.sendRedirect(url);
+		} else {
+			// Show form
+			PageBuilder page = new PageBuilder(Page.formd, SERVLET_PATH);
+
+			page.setPageTitle("Form D");
+			
+			page.setAttribute("error_messages", errors);
+
+			page.setAttribute("verifiers", train.getAppDataController().get()
+					.getTimeWorkedEmails());
+
+			page.setAttribute("Email", email);
+			page.setAttribute("AmountWorked", hours);
+			setStartDate(date, page);
+			page.setAttribute("Details", details);
+
+			page.passOffToJsp(req, resp);
+		}
+	}
+
+	private void setEndDate(Date date, PageBuilder page) {
 		// TODO Auto-generated method stub
-		new PageBuilder(Page.formd, SERVLET_PAGE).passOffToJsp(req, resp);
+
+	}
+
+	private void setStartDate(Date date, PageBuilder page) {
+		// TODO Auto-generated method stub
+
 	}
 
 	private void showIndex(HttpServletRequest req, HttpServletResponse resp)
@@ -249,7 +496,7 @@ public class FormsServlet extends AbstractBaseServlet {
 		DataTrain train = DataTrain.getAndStartTrain();
 		FormController fc = train.getFormsController();
 
-		PageBuilder page = new PageBuilder(Page.index, SERVLET_PAGE);
+		PageBuilder page = new PageBuilder(Page.index, SERVLET_PATH);
 
 		// Pass through any success message in the url parameters sent from a
 		// new form being created or deleted
