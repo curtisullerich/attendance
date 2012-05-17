@@ -17,7 +17,7 @@
 	
 		<h1>Class Conflict Request | Form B</h1>
 		
-		<p>First Year Members are only allowed one conflict.</p>
+		<p>First year members are only allowed one conflict.</p>
 		
 		<c:if test="${not empty error_messages}">
 			<p class="notify-msg error">
@@ -75,22 +75,38 @@
 					Please enter the <b>last</b> day that the class meets.
 				</dd>
 				
-				<dt><label class="required">Type:</label></dt>
+				<dt><label class="required">On:</label></dt>
 				<dd>
-					<input type='radio' value='Until' name='Type' id='until' ${Type eq 'Until' ? 'checked' : ''}> Until<br/>
-					<input type='radio' value='StartingAt' name='Type' id='startingat' ${Type eq 'StartingAt' ? 'checked' : ''}> Starting At<br/>
-					<input type='radio' value='Completely' name='Type' id='completely' ${Type eq 'Completely' ? 'checked' : ''}> Completely Miss<br/>
+					<select name="DayOfWeek">
+						<c:forEach items="${daysOfWeek}" var="day">
+							<option ${DayOfWeek eq day ? 'selected' : ''}>${day}</option>
+						</c:forEach>
+					</select>
+					<br/>
+					Please the day and time period that the class meets each week.
 				</dd>
 				
-				<dt><label class="required">Time:</label></dt>
+				<dt><label class="required">From:</label></dt>
 				<dd>
-					<input size='5' type='number' name='StartHour' min='01' max='12' placeholder='HH' value='<c:out value="${StartHour}" />' />
+					<input size='5' type='number' name='FromHour' min='01' max='12' placeholder='HH' value='<c:out value="${FromHour}" />' />
 					:
-					<input size='5' type='number' name='StartMinute' min='00' max='59' step='1' placeholder='MM' value='<c:out value="${StartMinute}" />' />
+					<input size='5' type='number' name='FromMinute' min='00' max='59' step='1' placeholder='MM' value='<c:out value="${FromMinute}" />' />
 					
-					<select name="StartPeriod">
-						<option ${StartPeriod eq 'AM' ? 'selected' : ''}>AM</option>
-						<option ${StartPeriod eq 'PM' ? 'selected' : ''}>PM</option>
+					<select name="FromAMPM">
+						<option ${FromAMPM eq 'AM' ? 'selected' : ''}>AM</option>
+						<option ${FromAMPM eq 'AM' ? '' : 'selected'}>PM</option>
+					</select>
+				</dd>
+				
+				<dt><label class="required">To:</label></dt>
+				<dd>
+					<input size='5' type='number' name='ToHour' min='01' max='12' placeholder='HH' value='<c:out value="${ToHour}" />' />
+					:
+					<input size='5' type='number' name='ToMinute' min='00' max='59' step='1' placeholder='MM' value='<c:out value="${ToMinute}" />' />
+					
+					<select name="ToAMPM">
+						<option ${ToAMPM eq 'AM' ? 'selected' : ''}>AM</option>
+						<option ${ToAMPM eq 'AM' ? '' : 'selected'}>PM</option>
 					</select>
 				</dd>
 				
