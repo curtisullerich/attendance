@@ -7,13 +7,13 @@
 		<jsp:include page="/WEB-INF/template/head.jsp" />
 	</head>
 	<body>
-TODO: edit information
+TODO: edit information<br/>
 
-messaging center
-new message indication
+messaging center<br/>
+new message indication<br/>
 
-view all forms
-unanchored absences page
+view all forms<br/>
+unanchored absences page<br/>
 delete everything button (with seven kinds of confirmation)
 
 
