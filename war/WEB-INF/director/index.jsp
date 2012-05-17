@@ -7,16 +7,20 @@
 		<jsp:include page="/WEB-INF/template/head.jsp" />
 	</head>
 	<body>
-TODO: link to messaging center (which needs to be implemented)
-new message indication
-current grade
+TODO: edit information
 
-if this student is staff: set ranks link
+messaging center
+new message indication
+
+view all forms
+unanchored absences page
+delete everything button (with seven kinds of confirmation)
+
+
 		<jsp:include page="/WEB-INF/template/header.jsp" />
 
-		<h1>Student Page</h1>
+		<h1>Director Page</h1>
 		<p>
-			Use the navigation options on the left to manage your attendance.
 		</p>
 		<jsp:include page="/WEB-INF/template/footer.jsp" />
 	</body>
