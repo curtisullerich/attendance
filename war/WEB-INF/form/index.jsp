@@ -24,8 +24,8 @@
 	</head>
 
 	<body>
-TODO: delete button
-view message therad button
+TODO: delete button<br/>
+view message thread button
 	
 		<jsp:include page="/WEB-INF/template/header.jsp" />
 	
