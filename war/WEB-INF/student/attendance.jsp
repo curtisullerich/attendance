@@ -7,8 +7,8 @@
 	</head>
 
 	<body>
-TODO: view message thread button
-new message indication
+TODO: view message thread button<br/>
+new message indication<br/>
 columns in the table: date, type (e.g. performance absence), status (pending, etc)
 
 		<jsp:include page="/WEB-INF/template/header.jsp" />
