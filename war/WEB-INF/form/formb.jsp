@@ -77,9 +77,9 @@
 				
 				<dt><label class="required">Type:</label></dt>
 				<dd>
-					<input type='radio' value='Until' name='Type' id='until'> Until<br/>
-					<input type='radio' value='Starting At' name='Type' id='startingat'> Starting At<br/>
-					<input type='radio' value='Completely' name='Type' id='completely'> Completely Miss<br/>
+					<input type='radio' value='Until' name='Type' id='until' ${Type eq 'Until' ? 'checked' : ''}> Until<br/>
+					<input type='radio' value='StartingAt' name='Type' id='startingat' ${Type eq 'StartingAt' ? 'checked' : ''}> Starting At<br/>
+					<input type='radio' value='Completely' name='Type' id='completely' ${Type eq 'Completely' ? 'checked' : ''}> Completely Miss<br/>
 				</dd>
 				
 				<dt><label class="required">Time:</label></dt>
@@ -89,14 +89,14 @@
 					<input size='5' type='number' name='StartMinute' min='00' max='59' step='1' placeholder='MM' value='<c:out value="${StartMinute}" />' />
 					
 					<select name="StartPeriod">
-						<option>AM</option>
-						<option>PM</option>
+						<option ${StartPeriod eq 'AM' ? 'selected' : ''}>AM</option>
+						<option ${StartPeriod eq 'PM' ? 'selected' : ''}>PM</option>
 					</select>
 				</dd>
 				
 				<dt><label for="Comments">Comments:</label></dt>
 				<dd>
-					<textarea rows="6" cols="50" name="Comments" wrap="physical"></textarea>
+					<textarea rows="6" cols="50" name="Comments" wrap="physical"><c:out value="${Comments}" /></textarea>
 				</dd>
 				
 			</dl>

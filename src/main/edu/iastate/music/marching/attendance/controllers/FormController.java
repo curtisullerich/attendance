@@ -60,4 +60,14 @@ public class FormController extends AbstractController {
 		// TODO
 	}
 
+	public Form createFormC(User student, Date date, String reason) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Form createFormD(User student, Date date, int hours, String details) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
