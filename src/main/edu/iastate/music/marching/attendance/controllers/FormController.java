@@ -102,7 +102,7 @@ public class FormController extends AbstractController {
 			// Commit
 			transaction.bendIronBack();
 
-		} catch (Exception ex) {
+		} catch (RuntimeException ex) {
 			transaction.derail();
 			throw ex;
 		}

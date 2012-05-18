@@ -60,6 +60,7 @@ public class DataTrain {
 	 * Note that only one transaction can be active at a time
 	 */
 	public Track switchTracks() {
+		
 		this.track = new Track(getDataStore().beginTransaction());
 		return this.track;
 	}

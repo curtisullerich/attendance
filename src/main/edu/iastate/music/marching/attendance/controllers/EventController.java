@@ -68,8 +68,7 @@ public class EventController extends AbstractController {
 
 		// Due to limitations of the data store, we cannot filter on the start and end fields,
 		// so match date and them manually filter results
-		RootFindCommand<Event> find = this.train.getDataStore().find()
-				.type(Event.class);
+		RootFindCommand<Event> find = this.train.getDataStore().find().type(Event.class);
 		find.addFilter(Event.FIELD_DATE, FilterOperator.EQUAL,
 				datetimeToJustDate(time));
 		Iterator<Event> iter = find.now();
