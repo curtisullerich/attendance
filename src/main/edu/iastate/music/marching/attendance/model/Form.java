@@ -8,8 +8,6 @@ import com.google.code.twig.annotation.Child;
 import com.google.code.twig.annotation.Index;
 import com.google.code.twig.annotation.Parent;
 
-import edu.iastate.music.marching.attendance.model.Form.Type;
-
 public class Form {
 
 	public static enum Status {
@@ -27,6 +25,7 @@ public class Form {
 	 * (DataTrain.get().getFormsController().createFormA(...)
 	 */
 	Form() {
+		this.messages = new MessageThread();
 	}
 
 	/**

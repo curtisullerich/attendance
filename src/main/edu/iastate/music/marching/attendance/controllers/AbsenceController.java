@@ -3,6 +3,7 @@ package edu.iastate.music.marching.attendance.controllers;
 import java.util.Date;
 import java.util.List;
 
+import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.code.twig.ObjectDatastore;
 
 import edu.iastate.music.marching.attendance.model.Absence;
@@ -19,10 +20,11 @@ public class AbsenceController extends AbstractController {
 	}
 
 	public Absence createOrUpdateTardy(User student, Date time) {
-		
-		if(student == null)
-			throw new IllegalArgumentException("Tried to create absence for null user");
-		
+
+		if (student == null)
+			throw new IllegalArgumentException(
+					"Tried to create absence for null user");
+
 		Absence absence = ModelFactory.newAbsence(Absence.Type.Tardy, student);
 		absence.setDatetime(time);
 
@@ -39,10 +41,11 @@ public class AbsenceController extends AbstractController {
 	}
 
 	public Absence createOrUpdateAbsence(User student, Date start, Date end) {
-		
-		if(student == null)
-			throw new IllegalArgumentException("Tried to create absence for null user");
-		
+
+		if (student == null)
+			throw new IllegalArgumentException(
+					"Tried to create absence for null user");
+
 		Absence absence = ModelFactory.newAbsence(Absence.Type.Tardy, student);
 		absence.setStart(start);
 		absence.setEnd(end);
@@ -60,11 +63,13 @@ public class AbsenceController extends AbstractController {
 	}
 
 	public Absence createOrUpdateEarlyCheckout(User student, Date time) {
-		
-		if(student == null)
-			throw new IllegalArgumentException("Tried to create absence for null user");
-		
-		Absence absence = ModelFactory.newAbsence(Absence.Type.EarlyCheckOut, student);
+
+		if (student == null)
+			throw new IllegalArgumentException(
+					"Tried to create absence for null user");
+
+		Absence absence = ModelFactory.newAbsence(Absence.Type.EarlyCheckOut,
+				student);
 		absence.setDatetime(time);
 
 		// Associate with event
@@ -79,9 +84,13 @@ public class AbsenceController extends AbstractController {
 		return absence;
 	}
 
-	public List<Absence> get(User currentUser) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Absence> get(User student) {
+		return this.train
+				.getDataStore()
+				.find()
+				.type(Absence.class)
+				.addFilter(Absence.FIELD_STUDENT, FilterOperator.EQUAL, student)
+				.returnAll().now();
 	}
 
 }

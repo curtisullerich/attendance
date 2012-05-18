@@ -1,6 +1,7 @@
 package edu.iastate.music.marching.attendance.servlets;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import edu.iastate.music.marching.attendance.controllers.AuthController;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.UserController;
+import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.User;
 
 public class StudentServlet extends AbstractBaseServlet {
@@ -70,9 +72,11 @@ public class StudentServlet extends AbstractBaseServlet {
 
 		page.setPageTitle("Attendance");
 		
+		List<Absence> a = train.getAbscencesController().get(currentUser);
+		
 		page.setAttribute("user", currentUser);
 		page.setAttribute("forms", train.getFormsController().get(currentUser));
-		page.setAttribute("absences", train.getAbscencesController().get(currentUser));
+		page.setAttribute("absences", a);
 		
 		page.passOffToJsp(req, resp);
 	}
