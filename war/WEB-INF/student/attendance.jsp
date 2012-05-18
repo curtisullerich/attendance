@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
 <html>
 	<head>
@@ -22,35 +23,47 @@ columns in the table: date, type (e.g. performance absence), status (pending, et
 				<th>Type</th>
 				<th>Status</th>
 				<th>Time of Arrival/Leaving</th>
+				<th>Messages</th>
 			</tr>
 			<c:forEach items="${absences}" var="absence">
 				<tr>
 					<c:if test="${empty absence.event}">
-						No event. Absence from:
 						<td>
-							<fmt:formatDate value="${absence.start}" pattern="mm/dd/yyyy hh:mm" />
-							-
-							<fmt:formatDate value="${absence.end}" pattern="hh:mm" />
+							No event.
+						</td>
+					</c:if>
+					<c:if test="${not empty absence.event}">
+						<td>
+							<c:out value="${absence.event.type}" />
 						</td>
 					</c:if>
 
 					<td>${absence.type}</td>
 					<td>${absence.status}</td>
 
+					<c:if test="${empty absence.event}">
+						<td>
+							<fmt:formatDate value="${absence.start}" pattern="mm/dd/yyyy hh:mm a" />
+							-
+							<fmt:formatDate value="${absence.end}" pattern="hh:mm a" />
+						</td>
+					</c:if>
 					<c:if test="${not empty absence.event}">
 						<td>
-							<fmt:formatDate value="${absence.event.start}" pattern="mm/dd/yyyy hh:mm" />
+							<fmt:formatDate value="${absence.event.start}" pattern="mm/dd/yyyy hh:mm a" />
 							-
-							<fmt:formatDate value="${absence.event.end}" pattern="hh:mm" />
+							<fmt:formatDate value="${absence.event.end}" pattern="hh:mm a" />
 						</td>
 					</c:if>
 					<td>
 						<c:if test="${absence.messageThread.resolved}">
-							<b>
+							<strong>
+								<a href="/student/message/viewthread?id=${absence.messageThread.id}">Unread messages</a>
+							</strong>
 						</c:if>
-						<a href="/message/viewthread?id=${absence.messageThread.id}">messages</a>
-						<c:if test="${absence.messageThread.resolved}">
-							</b>
+						
+						<c:if test="${!absence.messageThread.resolved}">
+							<a href="/student/message/viewthread?id=${absence.messageThread.id}">No new messages</a>
 						</c:if>
 						<!-- Messages button. Make it bold if there's an unresolved thread. -->
 					</td>
