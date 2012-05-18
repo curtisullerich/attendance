@@ -37,7 +37,7 @@ view message thread button
 			</p>
 		</c:if>
 		
-		<c:if test="${auth.user.type.student}">
+		<c:if test="${auth.user.type.student or auth.user.type.ta}">
 			<p>
 				Create a new form:
 				<a href="/student/forms/forma" title="Performance Absence Request">Form A</a>
@@ -71,7 +71,7 @@ view message thread button
 									<button onClick="remove('${form.id}');">Delete</button>
 								</td>
 								<td>
-									<button onClick="window.location='./messages?id=${form.id}'">messages</button>
+									<button onClick="window.location='./messages/viewthread?id=${form.id}'">messages</button>
 								</td>
 							</tr>	
 						</c:forEach>

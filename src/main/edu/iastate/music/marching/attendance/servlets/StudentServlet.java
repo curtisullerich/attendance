@@ -69,6 +69,9 @@ public class StudentServlet extends AbstractBaseServlet {
 		PageBuilder page = new PageBuilder(Page.attendance, SERVLET_PATH);
 		
 		User currentUser = AuthController.getCurrentUser(req.getSession());
+		
+		// HACK: @Daniel
+		currentUser = train.getUsersController().get(currentUser.getNetID());
 
 		page.setPageTitle("Attendance");
 		

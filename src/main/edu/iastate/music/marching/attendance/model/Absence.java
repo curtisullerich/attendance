@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.google.code.twig.annotation.Activate;
 import com.google.code.twig.annotation.Child;
+import com.google.code.twig.annotation.Id;
 import com.google.code.twig.annotation.Index;
 import com.google.code.twig.annotation.Parent;
 
@@ -12,7 +13,7 @@ public class Absence {
 	public enum Type {
 		Absence, Tardy, EarlyCheckOut
 	}
-	
+
 	public static enum Status {
 		Pending, Approved, Denied
 	};
@@ -24,12 +25,13 @@ public class Absence {
 	 * Create absence through AbsenceController (DataModel.absence().create(...)
 	 */
 	Absence() {
-		this.messages = new MessageThread();
-		this.status = Status.Pending;
 	}
+	
+	@Id
+	private long id;
 
 	private Type type;
-	
+
 	private Status status;
 
 	@Parent
@@ -40,7 +42,7 @@ public class Absence {
 	@Activate(0)
 	@Index
 	private User student;
-	
+
 	@Child
 	@Activate(1)
 	private MessageThread messages;
@@ -48,11 +50,16 @@ public class Absence {
 	private Date start;
 
 	private Date end;
+	
+	public long getId()
+	{
+		return id;
+	}
 
 	public User getStudent() {
 		return student;
 	}
-	
+
 	public void setStudent(User student) {
 		this.student = student;
 	}
@@ -96,7 +103,7 @@ public class Absence {
 	public void setEnd(Date end) {
 		this.end = end;
 	}
-	
+
 	public Status getStatus() {
 		return this.status;
 	}
@@ -104,7 +111,7 @@ public class Absence {
 	public void setStatus(Status status) {
 		this.status = status;
 	}
-	
+
 	public MessageThread getMessageThread() {
 		return this.messages;
 	}

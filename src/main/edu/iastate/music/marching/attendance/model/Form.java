@@ -5,8 +5,11 @@ import java.util.Date;
 import com.google.appengine.api.datastore.Text;
 import com.google.code.twig.annotation.Activate;
 import com.google.code.twig.annotation.Child;
+import com.google.code.twig.annotation.Id;
 import com.google.code.twig.annotation.Index;
 import com.google.code.twig.annotation.Parent;
+
+import edu.iastate.music.marching.attendance.model.Absence.Status;
 
 public class Form {
 
@@ -25,8 +28,10 @@ public class Form {
 	 * (DataTrain.get().getFormsController().createFormA(...)
 	 */
 	Form() {
-		this.messages = new MessageThread();
 	}
+	
+	@Id
+	private long id;
 
 	/**
 	 * Owning student
@@ -64,6 +69,15 @@ public class Form {
 	// String to be used by Form D
 	private String emailTo;
 	private int hoursWorked;
+	
+	public long getId()
+	{
+		return id;
+	}
+	
+	public Type getType() {
+		return this.type;
+	}
 
 	public void setType(Type type) {
 		this.type = type;
@@ -80,6 +94,42 @@ public class Form {
 
 	public void setDetails(String details) {
 		this.details = details;
+	}
+	
+	public Date getStart() {
+		return this.startTime;
+	}
+
+	public void setStart(Date startDate) {
+		this.startTime = startDate;
+	}
+	
+	public Date getEnd() {
+		return this.endTime;
+	}
+
+	public void setEnd(Date endDate) {
+		this.endTime = endDate;
+	}
+	
+	public Status getStatus() {
+		return this.status;
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+	public MessageThread getMessageThread() {
+		return this.messages;
+	}
+
+	public void setMessageThread(MessageThread messageThread) {
+		this.messages = messageThread;
+	}
+
+	public void setBuilding(String building) {
+		this.building = building;
 	}
 
 }
