@@ -2,8 +2,6 @@ package edu.iastate.music.marching.attendance.servlets;
 
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
@@ -165,9 +163,9 @@ public class FormsServlet extends AbstractBaseServlet {
 			}
 		}
 		if (validForm) {
-			String url = URLEncoder.encode(URL_INDEX + "?success_message="
-					+ SUCCESS_FORMA, "UTF-8");
-			url = resp.encodeRedirectURL(url);
+			String url = URL_INDEX + "?success_message="
+					+ URLEncoder.encode(SUCCESS_FORMA, "UTF-8");
+			//url = resp.encodeRedirectURL(url);
 			resp.sendRedirect(url);
 		} else {
 			// Show form
@@ -178,7 +176,7 @@ public class FormsServlet extends AbstractBaseServlet {
 			page.setAttribute("error_messages", errors);
 
 			page.setAttribute("cutoff", train.getAppDataController().get()
-					.getFormSubmissionCutoff());
+					.getFormSubmissionCutoff().getTime());
 
 			page.setAttribute("Reason", reason);
 			setStartDate(date, page);
@@ -593,11 +591,16 @@ public class FormsServlet extends AbstractBaseServlet {
 		// new form being created or deleted
 		page.setAttribute("success_message",
 				req.getParameter("success_message"));
+		
+		User currentUser = AuthController.getCurrentUser(req.getSession());
+		
+		// HACK: @Daniel
+		currentUser = train.getUsersController().get(currentUser.getNetID());
 
 		// Handle students and director differently
 		List<Form> forms = null;
 		if (getServletUserType() == User.Type.Student)
-			forms = fc.get(AuthController.getCurrentUser(req.getSession()));
+			forms = fc.get(currentUser);
 		else if (getServletUserType() == User.Type.Director)
 			forms = fc.getAll();
 		page.setAttribute("forms", forms);
@@ -621,7 +624,7 @@ public class FormsServlet extends AbstractBaseServlet {
 
 		return User.Type.valueOf(value);
 	}
-	
+
 	/**
 	 * This servlet can be used for multiple user types, this grabs the type of
 	 * user this specific servlet instance can be accessed by
@@ -633,7 +636,7 @@ public class FormsServlet extends AbstractBaseServlet {
 
 		// Since a TA is also a student, we also allow them access to their
 		// student forms
-		if(userType == User.Type.Student)
+		if (userType == User.Type.Student)
 			return new User.Type[] { User.Type.Student, User.Type.TA };
 		else
 			return new User.Type[] { userType };

@@ -8,6 +8,7 @@ import com.google.code.twig.ObjectDatastore;
 
 import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.Event;
+import edu.iastate.music.marching.attendance.model.MessageThread;
 import edu.iastate.music.marching.attendance.model.ModelFactory;
 import edu.iastate.music.marching.attendance.model.User;
 
@@ -24,6 +25,8 @@ public class AbsenceController extends AbstractController {
 		if (student == null)
 			throw new IllegalArgumentException(
 					"Tried to create absence for null user");
+		
+		// TODO : Check for exact duplicates
 
 		Absence absence = ModelFactory.newAbsence(Absence.Type.Tardy, student);
 		absence.setDatetime(time);
@@ -35,9 +38,7 @@ public class AbsenceController extends AbstractController {
 			absence.setEvent(events.get(0));
 		// else the absence is orphaned
 
-		ObjectDatastore od = this.train.getDataStore();
-		od.storeOrUpdate(absence);
-		return absence;
+		return storeAbsence(absence);
 	}
 
 	public Absence createOrUpdateAbsence(User student, Date start, Date end) {
@@ -45,6 +46,8 @@ public class AbsenceController extends AbstractController {
 		if (student == null)
 			throw new IllegalArgumentException(
 					"Tried to create absence for null user");
+		
+		// TODO : Check for exact duplicates
 
 		Absence absence = ModelFactory.newAbsence(Absence.Type.Tardy, student);
 		absence.setStart(start);
@@ -57,9 +60,7 @@ public class AbsenceController extends AbstractController {
 			absence.setEvent(events.get(0));
 		// else the absence is orphaned
 
-		ObjectDatastore od = this.train.getDataStore();
-		od.storeOrUpdate(absence);
-		return absence;
+		return storeAbsence(absence);
 	}
 
 	public Absence createOrUpdateEarlyCheckout(User student, Date time) {
@@ -67,6 +68,8 @@ public class AbsenceController extends AbstractController {
 		if (student == null)
 			throw new IllegalArgumentException(
 					"Tried to create absence for null user");
+
+		// TODO : Check for exact duplicates
 
 		Absence absence = ModelFactory.newAbsence(Absence.Type.EarlyCheckOut,
 				student);
@@ -79,8 +82,20 @@ public class AbsenceController extends AbstractController {
 			absence.setEvent(events.get(0));
 		// else the absence is orphaned
 
+		return storeAbsence(absence);
+	}
+
+	private Absence storeAbsence(Absence absence) {
 		ObjectDatastore od = this.train.getDataStore();
-		od.storeOrUpdate(absence);
+
+		// First build an empty message thread and store it
+		MessageThread messages = ModelFactory.newMessageThread();
+		od.store(messages);
+		absence.setMessageThread(messages);
+
+		// Then do actual store
+		od.store(absence);
+		
 		return absence;
 	}
 

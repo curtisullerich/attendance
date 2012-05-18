@@ -30,6 +30,7 @@ public class ModelFactory {
 	}
 
 	public static AppData newAppData() {
+		AppData appData = new AppData();	
 		return new AppData();
 	}
 	
@@ -37,6 +38,7 @@ public class ModelFactory {
 		Form form = new Form();
 		form.setType(type);
 		form.setStudent(student);
+		form.setBuilding("");
 		return form;
 	}
 
@@ -46,5 +48,14 @@ public class ModelFactory {
 		upload.setTimestamp(uploadTime);
 		upload.setData(uploadData);
 		return upload;
+	}
+
+	public static MessageThread newMessageThread() {
+		MessageThread m = new MessageThread();
+		
+		// Defaults
+		m.setResolved(false);
+		
+		return m;
 	}
 }
