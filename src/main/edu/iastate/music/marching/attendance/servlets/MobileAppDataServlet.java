@@ -1,6 +1,7 @@
 package edu.iastate.music.marching.attendance.servlets;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -8,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
+import edu.iastate.music.marching.attendance.controllers.AuthController;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.MobileDataController;
 import edu.iastate.music.marching.attendance.model.User;
@@ -35,14 +37,14 @@ public class MobileAppDataServlet extends AbstractBaseServlet {
 
 		// Check if correct user type is logged in
 		if (!isLoggedIn(req, resp, User.Type.TA, User.Type.Director)) {
-			result.error = ResultError.login;
+			result.error = ResultErrorType.login;
 		} else {
 			DataTrain train = DataTrain.getAndStartTrain();
 
 			MobileDataController mdc = train.getMobileDataController();
 
 			result.data = mdc.getClassList();
-			result.error = ResultError.success;
+			result.error = ResultErrorType.success;
 		}
 
 		// Print out JSON of result
@@ -57,26 +59,31 @@ public class MobileAppDataServlet extends AbstractBaseServlet {
 
 		// Check if correct user type is logged in
 		if (!isLoggedIn(req, resp, User.Type.TA, User.Type.Director)) {
-			result.error = ResultError.login;
+			result.error = ResultErrorType.login;
 		} else {
 
 			DataTrain train = DataTrain.getAndStartTrain();
 
 			MobileDataController mdc = train.getMobileDataController();
 
-			// data here is delimited by "&newline&". Those values in turn are
-			// delimited by "&split&"
-			String data = req.getParameter(DATA_PARAMETER);
-
+			// data here is the posted content delimited by "&newline&". Those values in turn are
+			// delimited by "&split&"	
+			String data;
 			try {
-				mdc.pushMobileData(data);
+				data = new java.util.Scanner(req.getInputStream()).useDelimiter("\\A").next();
+		    } catch (java.util.NoSuchElementException e) {
+		    	data = "";
+		    }
+
+			// Optimistically set a success type
+			result.error = ResultErrorType.success;
+			
+			try {
+				result.message = mdc.pushMobileData(data, AuthController.getCurrentUser(req.getSession()));
 			} catch (IllegalArgumentException e) {
+				result.error = ResultErrorType.exception;
+				result.message = e.getMessage();
 			}
-
-			// TODO Error handling
-
-			result.error = ResultError.success;
-			result.message = "";
 
 		}
 
@@ -85,17 +92,17 @@ public class MobileAppDataServlet extends AbstractBaseServlet {
 
 	}
 
-	private enum ResultError {
-		success, login
+	private enum ResultErrorType {
+		success, login, exception
 	}
 
 	private class UploadResult {
-		public ResultError error;
+		public ResultErrorType error;
 		public String message;
 	}
 
 	private class ClassListResult {
-		public ResultError error;
+		public ResultErrorType error;
 		public String data;
 	}
 }

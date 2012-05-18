@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import edu.iastate.music.marching.attendance.controllers.AuthController;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.UserController;
-import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.User;
 
 public class StudentServlet extends AbstractBaseServlet {
@@ -31,7 +30,7 @@ public class StudentServlet extends AbstractBaseServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		if (!isLoggedIn(req, resp, User.Type.Student)) {
+		if (!isLoggedIn(req, resp, User.Type.Student, User.Type.TA)) {
 			resp.sendRedirect(AuthServlet.URL_LOGIN);
 			return;
 		}
@@ -82,7 +81,7 @@ public class StudentServlet extends AbstractBaseServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		if (!isLoggedIn(req, resp, User.Type.Student)) {
+		if (!isLoggedIn(req, resp, User.Type.Student, User.Type.TA)) {
 			resp.sendRedirect(AuthServlet.URL_LOGIN);
 			return;
 		}

@@ -210,6 +210,18 @@
              	    		alert("You must login first to upload data, redirecting you to the login page.");
              	    		window.location = "/auth/login";
              	    	}
+             	    	else if (result.error == "exception")
+             	    	{
+             	    		alert("Encountered exception while uploading data, error has been logged and will be reported to the director. Still removing data from local storage.\n" + result.message);
+             	    		
+             	    		// Wipe local data store
+             	    		//clear all absence and tardy data
+							clearLocalStoragewithPrepend(absentPrependPerformance);
+							clearLocalStoragewithPrepend(absentPrependRehearsal);
+							clearLocalStoragewithPrepend(rehearsalPrepend);
+							clearLocalStoragewithPrepend(performancePrepend);
+							clearLocalStoragewithPrepend(tardyPrepend);
+             	    	}
              	    	else if (result.error == "success")
              	    	{
              	    		// Assume upload went okay

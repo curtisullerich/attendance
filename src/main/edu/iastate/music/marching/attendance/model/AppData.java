@@ -4,6 +4,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import edu.iastate.music.marching.attendance.App;
+
 public class AppData {
 	/**
 	 * Get app data through datatrain: DataTrain.get().getAppDataController.get()
@@ -51,8 +53,10 @@ public class AppData {
 		return hashedMobilePassword;
 	}
 	
-	public Date getFormSubmissionCutoff()
+	public Calendar getFormSubmissionCutoff()
 	{
-		return formCutoff;
+		Calendar calendar = Calendar.getInstance(App.getTimeZone());
+		calendar.setTime(this.formCutoff);
+		return calendar;
 	}
 }

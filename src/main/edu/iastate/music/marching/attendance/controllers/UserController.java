@@ -130,18 +130,7 @@ public class UserController extends AbstractController {
 	 */
 	public User get(String netid) {
 
-		List<User> users = this.datatrain.getDataStore().find()
-				.type(User.class)
-				.addFilter(User.FIELD_NETID, FilterOperator.EQUAL, netid)
-				.returnAll().now();
-
-		if (users.size() == 1)
-			return users.get(0);
-		else if (users.size() > 1)
-			throw new IllegalStateException(
-					"Found more than one user with same netid");
-		else
-			return null;
+		return this.datatrain.getDataStore().load(User.class, netid);
 	}
 
 	/**

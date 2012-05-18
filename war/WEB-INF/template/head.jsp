@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 	<title>${pagetemplate.title}</title>
 	<c:choose>
-	<c:when test="${not pagetemplate.mobile}">
+	<c:when test="${not pagetemplate.mobileSite}">
 	<link href="/css/base.css" media="all" rel="stylesheet">
 	<!--[if lt IE 9]>
 		<style>
@@ -12,7 +12,11 @@
 	<![endif]--> 
 	<link rel="stylesheet" media="all" type="text/css" href="/css/custom.css">
 	</c:when>
-	<c:when test="${pagetemplate.mobile}">
+	<c:when test="${pagetemplate.mobileSite}">
+	
+	<link href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" media="all" rel="stylesheet">
+	<script type="text/javascript" src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
+	
 	<link href="/css/base.mobile.css" media="all" rel="stylesheet">
 	<!--[if lte IE 8]>
 		<script>

@@ -38,13 +38,16 @@ public class MobileDataUploadTest extends AbstractTestCase {
 
 		DataTrain train = DataTrain.getAndStartTrain();
 
+		User ta = ModelFactory.newUser(User.Type.TA, null, "ta", 3);
+		datastore.store(ta);
+		
 		User s = ModelFactory.newUser(User.Type.Student, null, "s", 1);
 		datastore.store(s);
 
 		User z = ModelFactory.newUser(User.Type.Student, null, "zf", 2);
 		datastore.store(z);
 
-		train.getMobileDataController().pushMobileData(SIMPLE_ABSENCE_TESTDATA);
+		train.getMobileDataController().pushMobileData(SIMPLE_ABSENCE_TESTDATA, ta);
 
 		// Verify insertion lengths
 		assertEquals(1, datastore.find().type(Event.class).returnCount().now()
@@ -104,8 +107,11 @@ public class MobileDataUploadTest extends AbstractTestCase {
 
 		User b = ModelFactory.newUser(User.Type.Student, null, "b", 3);
 		datastore.store(b);
+		
+		User ta = ModelFactory.newUser(User.Type.TA, null, "ta", 4);
+		datastore.store(ta);
 
-		train.getMobileDataController().pushMobileData(SIMPLE_TARDY_TESTDATA);
+		train.getMobileDataController().pushMobileData(SIMPLE_TARDY_TESTDATA, ta);
 
 		// Verify insertion lengths
 		assertEquals(0, datastore.find().type(Event.class).returnCount().now()

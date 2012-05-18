@@ -34,4 +34,9 @@ public class ValidationUtil {
 		return "iastate.edu".equals(domain);
 	}
 
+	public static boolean isValidText(String text, boolean canBeEmpty) {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
 }
