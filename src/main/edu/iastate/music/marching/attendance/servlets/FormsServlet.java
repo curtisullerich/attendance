@@ -44,7 +44,7 @@ public class FormsServlet extends AbstractBaseServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		if (!isLoggedIn(req, resp, getServletUserType())) {
+		if (!isLoggedIn(req, resp, getServletUserTypes())) {
 			resp.sendRedirect(AuthServlet.URL_LOGIN);
 			return;
 		}
@@ -88,7 +88,7 @@ public class FormsServlet extends AbstractBaseServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		if (!isLoggedIn(req, resp, getServletUserType())) {
+		if (!isLoggedIn(req, resp, getServletUserTypes())) {
 			resp.sendRedirect(AuthServlet.URL_LOGIN);
 			return;
 		}
@@ -213,7 +213,7 @@ public class FormsServlet extends AbstractBaseServlet {
 		} catch (NumberFormatException e) {
 			exp.getErrors().add("Invalid day, not a number.");
 		}
-		
+
 		calendar.setTimeInMillis(0);
 		calendar.setLenient(false);
 
@@ -247,7 +247,7 @@ public class FormsServlet extends AbstractBaseServlet {
 
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(parseStartDate(req));
-		
+
 		try {
 			hour = Integer.parseInt(req.getParameter("StartHour"));
 		} catch (NumberFormatException e) {
@@ -267,8 +267,7 @@ public class FormsServlet extends AbstractBaseServlet {
 			timeofday = Calendar.PM;
 		else
 			exp.getErrors().add("Invalid time of day (AM/PM)");
-		
-		
+
 		calendar.setLenient(false);
 
 		try {
@@ -394,7 +393,7 @@ public class FormsServlet extends AbstractBaseServlet {
 			PageBuilder page = new PageBuilder(Page.formb, SERVLET_PATH);
 
 			page.setPageTitle("Form B");
-			
+
 			page.setAttribute("daysOfWeek", App.getDaysOfTheWeek());
 
 			page.setAttribute("error_messages", errors);
@@ -621,6 +620,23 @@ public class FormsServlet extends AbstractBaseServlet {
 		String value = getInitParameter("userType");
 
 		return User.Type.valueOf(value);
+	}
+	
+	/**
+	 * This servlet can be used for multiple user types, this grabs the type of
+	 * user this specific servlet instance can be accessed by
+	 * 
+	 * @return
+	 */
+	private User.Type[] getServletUserTypes() {
+		User.Type userType = getServletUserType();
+
+		// Since a TA is also a student, we also allow them access to their
+		// student forms
+		if(userType == User.Type.Student)
+			return new User.Type[] { User.Type.Student, User.Type.TA };
+		else
+			return new User.Type[] { userType };
 	}
 
 }

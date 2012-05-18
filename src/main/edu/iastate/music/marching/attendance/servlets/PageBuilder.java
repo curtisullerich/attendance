@@ -20,29 +20,27 @@ public class PageBuilder {
 	private static final String JSP_PATH_POST = ".jsp";
 
 	private String mJSPPath;
-	
-	private Map<String,Object> attribute_map;
+
+	private Map<String, Object> attribute_map;
 	private PageTemplateBean mPageBean;
-	
-	private PageBuilder()
-	{
-		attribute_map = new HashMap<String,Object>();
+
+	private PageBuilder() {
+		attribute_map = new HashMap<String, Object>();
 	}
 
-	private PageBuilder(String jsp_path) {
+	private PageBuilder(String jsp_simple_path) {
 		this();
-		
-		// Save parameters
-		mJSPPath = jsp_path;
 
-		mPageBean = new PageTemplateBean(jsp_path);
+		// Save parameters
+		mJSPPath = JSP_PATH_PRE + jsp_simple_path + JSP_PATH_POST;
+
+		mPageBean = new PageTemplateBean(jsp_simple_path);
 
 		mPageBean.setTitle(App.getTitle());
 	}
 
 	public <T extends Enum<T>> PageBuilder(T page, String jsp_servlet_path) {
-		this(JSP_PATH_PRE + jsp_servlet_path + "/" + page.name()
-				+ JSP_PATH_POST);
+		this(jsp_servlet_path + "/" + page.name());
 	}
 
 	public PageBuilder setPageTitle(String title) {
@@ -57,11 +55,11 @@ public class PageBuilder {
 		return this;
 	}
 
-	public void passOffToJsp(HttpServletRequest req,
-			HttpServletResponse resp) throws ServletException, IOException {
-		
+	public void passOffToJsp(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+
 		// Apply all saved attributes
-		for(Entry<String,Object> entry : attribute_map.entrySet())
+		for (Entry<String, Object> entry : attribute_map.entrySet())
 			req.setAttribute(entry.getKey(), entry.getValue());
 
 		// Insert page template data bean
