@@ -8,7 +8,7 @@
 	</head>
 	<body>
 TODO: 
-student staff: set ranks link
+student staff: set ranks
 		<jsp:include page="/WEB-INF/template/header.jsp" />
 
 		<h1>Student Staff Page</h1>

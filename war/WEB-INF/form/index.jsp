@@ -16,17 +16,12 @@
 			if (confirm("Are you sure you want to delete?"))
 			{
 				$('#loading').fadeIn();
-				window.location = "/JSPPages/remove?id=" + id;
+				window.location = "/student/forms?removeid=" + id;
 			}
 		}
 		</script>
-		
 	</head>
-
 	<body>
-TODO: delete button<br/>
-view message thread button
-	
 		<jsp:include page="/WEB-INF/template/header.jsp" />
 	
 		<h1>View Forms</h1>
@@ -37,7 +32,7 @@ view message thread button
 			</p>
 		</c:if>
 		
-		<c:if test="${auth.user.type.student}">
+		<c:if test="${auth.user.type.student or auth.user.type.ta}">
 			<p>
 				Create a new form:
 				<a href="/student/forms/forma" title="Performance Absence Request">Form A</a>
@@ -71,7 +66,7 @@ view message thread button
 									<button onClick="remove('${form.id}');">Delete</button>
 								</td>
 								<td>
-									<button onClick="window.location='./messages?id=${form.id}'">messages</button>
+									<button onClick="window.location='./messages/viewthread?id=${form.id}'">messages</button>
 								</td>
 							</tr>	
 						</c:forEach>

@@ -8,7 +8,6 @@ import com.google.code.twig.annotation.Entity;
 import com.google.code.twig.annotation.Id;
 import com.google.code.twig.annotation.Index;
 
-@Entity(allocateIdsBy=100)
 public class MessageThread {
 
 	/**

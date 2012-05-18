@@ -11,6 +11,8 @@ import com.google.code.twig.ObjectDatastore;
 import edu.iastate.music.marching.attendance.App;
 import edu.iastate.music.marching.attendance.controllers.DataTrain.Track;
 import edu.iastate.music.marching.attendance.model.Form;
+import edu.iastate.music.marching.attendance.model.MessageThread;
+import edu.iastate.music.marching.attendance.model.ModelFactory;
 import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.util.ValidationExceptions;
 import edu.iastate.music.marching.attendance.util.ValidationUtil;
@@ -28,15 +30,18 @@ public class FormController extends AbstractController {
 				.returnAll().now();
 	}
 
+	/**
+	 * 
+	 * @param user Assume user is associated in data store
+	 * @return
+	 */
 	public List<Form> get(User user) {
+		ObjectDatastore od = this.dataTrain.getDataStore();
+		RootFindCommand<Form> find = od.find().type(Form.class);
 
-		RootFindCommand<Form> find = this.dataTrain.getDataStore().find()
-				.type(Form.class);
-
-		// Set the ancestor for this form
+		// Set the ancestor for this form, automatically limits results to be
+		// forms of the user
 		find = find.ancestor(user);
-
-		find.addFilter(Form.FIELD_STUDENT, FilterOperator.EQUAL, user);
 
 		return find.returnAll().now();
 	}
@@ -88,24 +93,31 @@ public class FormController extends AbstractController {
 	}
 
 	private void storeForm(Form form) {
+		// TODO: Reintroduce transactions
+
 		// Perform store of this new form and update of student's grade in a
 		// transaction to prevent inconsistent states
-		Track transaction = dataTrain.switchTracksInternal();
+		// Track transaction = dataTrain.switchTracksInternal();
+		//
+		// try {
+		// First build an empty message thread and store it
+		MessageThread messages = ModelFactory.newMessageThread();
+		dataTrain.getDataStore().store(messages);
+		form.setMessageThread(messages);
 
-		try {
-			// Store
-			dataTrain.getDataStore().store(form);
+		// Store
+		dataTrain.getDataStore().store(form);
 
-			// Update grade, it may have changed
-			dataTrain.getUsersController().update(form.getStudent());
+		// Update grade, it may have changed
+		dataTrain.getUsersController().update(form.getStudent());
 
-			// Commit
-			transaction.bendIronBack();
+		// Commit
+		// transaction.bendIronBack();
 
-		} catch (RuntimeException ex) {
-			transaction.derail();
-			throw ex;
-		}
+		// } catch (RuntimeException ex) {
+		// transaction.derail();
+		// throw ex;
+		// }
 	}
 
 	/**
@@ -120,12 +132,26 @@ public class FormController extends AbstractController {
 	private Form createForm(Form.Type type, User student, Date startDate,
 			Date endDate) {
 
-		// if(date.before(Calendar.getInstance(App.getTimeZone())))
-		// {
-		// exp.getErrors().add("Date given was before today, no back-dating allowed");
-		// }
-		return null;
-		// TODO
+		if (type == null)
+			throw new IllegalArgumentException("Null type given for form");
+
+		if (student == null)
+			throw new IllegalArgumentException("Null student given for form");
+
+		if (startDate == null)
+			throw new IllegalArgumentException("Null startDate given for form");
+
+		if (endDate == null)
+			throw new IllegalArgumentException("Null endDate given for form");
+
+		// TODO more validation of start/end dates
+
+		Form form = ModelFactory.newForm(type, student);
+
+		form.setStart(startDate);
+		form.setEnd(endDate);
+
+		return form;
 	}
 
 	public Form createFormC(User student, Date date, String reason) {

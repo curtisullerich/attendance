@@ -8,10 +8,6 @@
 	</head>
 
 	<body>
-TODO: view message thread button<br/>
-new message indication<br/>
-columns in the table: date, type (e.g. performance absence), status (pending, etc)
-
 		<jsp:include page="/WEB-INF/template/header.jsp" />
 
 		<h1>Attendance for <c:out value="${user.name}" /></h1>
@@ -58,12 +54,12 @@ columns in the table: date, type (e.g. performance absence), status (pending, et
 					<td>
 						<c:if test="${absence.messageThread.resolved}">
 							<strong>
-								<a href="/student/message/viewthread?id=${absence.messageThread.id}">Unread messages</a>
+								<a href="/student/messages/viewthread?id=${absence.messageThread.id}">Unread messages</a>
 							</strong>
 						</c:if>
 						
 						<c:if test="${!absence.messageThread.resolved}">
-							<a href="/student/message/viewthread?id=${absence.messageThread.id}">No new messages</a>
+							<a href="/student/messages/viewthread?id=${absence.messageThread.id}">No new messages</a>
 						</c:if>
 						<!-- Messages button. Make it bold if there's an unresolved thread. -->
 					</td>
