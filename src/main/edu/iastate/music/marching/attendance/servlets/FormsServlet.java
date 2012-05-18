@@ -2,6 +2,9 @@ package edu.iastate.music.marching.attendance.servlets;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,11 +13,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.iastate.music.marching.attendance.App;
 import edu.iastate.music.marching.attendance.controllers.AuthController;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.FormController;
 import edu.iastate.music.marching.attendance.model.Form;
 import edu.iastate.music.marching.attendance.model.User;
+import edu.iastate.music.marching.attendance.util.ValidationExceptions;
 
 public class FormsServlet extends AbstractBaseServlet {
 
@@ -39,7 +44,7 @@ public class FormsServlet extends AbstractBaseServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		if (!isLoggedIn(req, resp, getServletUserType())) {
+		if (!isLoggedIn(req, resp, getServletUserTypes())) {
 			resp.sendRedirect(AuthServlet.URL_LOGIN);
 			return;
 		}
@@ -83,7 +88,7 @@ public class FormsServlet extends AbstractBaseServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		if (!isLoggedIn(req, resp, getServletUserType())) {
+		if (!isLoggedIn(req, resp, getServletUserTypes())) {
 			resp.sendRedirect(AuthServlet.URL_LOGIN);
 			return;
 		}
@@ -169,13 +174,14 @@ public class FormsServlet extends AbstractBaseServlet {
 			PageBuilder page = new PageBuilder(Page.forma, SERVLET_PATH);
 
 			page.setPageTitle("Form A");
-			
+
 			page.setAttribute("error_messages", errors);
 
 			page.setAttribute("cutoff", train.getAppDataController().get()
 					.getFormSubmissionCutoff());
-			
+
 			page.setAttribute("Reason", reason);
+			setStartDate(date, page);
 
 			page.passOffToJsp(req, resp);
 		}
@@ -186,36 +192,104 @@ public class FormsServlet extends AbstractBaseServlet {
 	}
 
 	private Date parseStartDate(HttpServletRequest req) {
-		// TODO Auto-generated method stub
+		int year = 0, month = 0, day = 0;
+		Calendar calendar = Calendar.getInstance(App.getTimeZone());
 
-		//
-		// else if (req.getParameter("StartDay") != null &&
-		// req.getParameter("StartMonth") != null &&
-		// req.getParameter("StartYear") != null
-		// && req.getParameter("StartDay") != "" &&
-		// req.getParameter("StartMonth") != "" && req.getParameter("StartYear")
-		// != "" ) {
-		//
-		// int year = Integer.parseInt(req.getParameter("StartYear"));
-		// int month = Integer.parseInt(req.getParameter("StartMonth"));
-		// int day = Integer.parseInt(req.getParameter("StartDay"));
-		// if(!isValidateDate(month, day, year)) {
-		// resp.sendRedirect("/JSPPages/Student_Form_A_Performance_Absence_Request.jsp?error='invalidDate'");
-		// return;
-		// }
-		// //public Date(int year, int month, int day)
-		// Calendar calendar = Calendar.getInstance();
-		// calendar.setTimeInMillis(0);
-		// calendar.set(year, month, day);
-		//
-		// // Start at beginning of day
-		// Date start = calendar.getTime();
-		//
-		// // End exactly one time unit before the next day starts
-		// calendar.roll(Calendar.DATE, true)
-		// calendar.roll(Calendar.MILLISECOND, false);
-		// Date end = calendar.getTime();
-		return null;
+		// Do validate first and store any problems to this exception
+		ValidationExceptions exp = new ValidationExceptions();
+
+		try {
+			year = Integer.parseInt(req.getParameter("StartYear"));
+		} catch (NumberFormatException e) {
+			exp.getErrors().add("Invalid year, not a number.");
+		}
+		try {
+			month = Integer.parseInt(req.getParameter("StartMonth"));
+		} catch (NumberFormatException e) {
+			exp.getErrors().add("Invalid month, not a number.");
+		}
+		try {
+			day = Integer.parseInt(req.getParameter("StartDay"));
+		} catch (NumberFormatException e) {
+			exp.getErrors().add("Invalid day, not a number.");
+		}
+
+		calendar.setTimeInMillis(0);
+		calendar.setLenient(false);
+
+		try {
+			calendar.set(Calendar.YEAR, year);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			exp.getErrors().add("Invalid year given:" + e.getMessage() + '.');
+		}
+		try {
+			calendar.set(Calendar.MONTH, month);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			exp.getErrors().add("Invalid month given:" + e.getMessage() + '.');
+		}
+		try {
+			calendar.set(Calendar.DATE, day);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			exp.getErrors().add("Invalid day given:" + e.getMessage() + '.');
+		}
+
+		if (exp.getErrors().size() > 0)
+			throw exp;
+
+		return calendar.getTime();
+	}
+
+	private Date parseStartDateTime(HttpServletRequest req, Date date) {
+		int hour = 0, minute = 0, timeofday = 0;
+
+		// Do validate first and store any problems to this exception
+		ValidationExceptions exp = new ValidationExceptions();
+
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(parseStartDate(req));
+
+		try {
+			hour = Integer.parseInt(req.getParameter("StartHour"));
+		} catch (NumberFormatException e) {
+			exp.getErrors().add("Invalid hour, not a number");
+		}
+		try {
+			minute = Integer.parseInt(req.getParameter("StartMinute"));
+		} catch (NumberFormatException e) {
+			exp.getErrors().add("Invalid minute, not a number");
+		}
+
+		if (req.getParameter("StartPeriod") == null)
+			exp.getErrors().add("Time of day (AM/PM) not specified");
+		else if ("AM".equals(req.getParameter("StartPeriod").toUpperCase()))
+			timeofday = Calendar.AM;
+		else if ("PM".equals(req.getParameter("StartPeriod").toUpperCase()))
+			timeofday = Calendar.PM;
+		else
+			exp.getErrors().add("Invalid time of day (AM/PM)");
+
+		calendar.setLenient(false);
+
+		try {
+			calendar.set(Calendar.HOUR, hour);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			exp.getErrors().add("Invalid year given:" + e.getMessage());
+		}
+		try {
+			calendar.set(Calendar.MINUTE, minute);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			exp.getErrors().add("Invalid month given:" + e.getMessage());
+		}
+		try {
+			calendar.set(Calendar.AM_PM, timeofday);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			exp.getErrors().add("Invalid time of day given:" + e.getMessage());
+		}
+
+		if (exp.getErrors().size() > 0)
+			throw exp;
+
+		return calendar.getTime();
 	}
 
 	private Date parseEndDate(HttpServletRequest req) {
@@ -319,7 +393,9 @@ public class FormsServlet extends AbstractBaseServlet {
 			PageBuilder page = new PageBuilder(Page.formb, SERVLET_PATH);
 
 			page.setPageTitle("Form B");
-			
+
+			page.setAttribute("daysOfWeek", App.getDaysOfTheWeek());
+
 			page.setAttribute("error_messages", errors);
 
 			page.setAttribute("Department", department);
@@ -390,7 +466,7 @@ public class FormsServlet extends AbstractBaseServlet {
 			PageBuilder page = new PageBuilder(Page.formc, SERVLET_PATH);
 
 			page.setPageTitle("Form C");
-			
+
 			page.setAttribute("error_messages", errors);
 
 			setStartDate(date, page);
@@ -465,7 +541,7 @@ public class FormsServlet extends AbstractBaseServlet {
 			PageBuilder page = new PageBuilder(Page.formd, SERVLET_PATH);
 
 			page.setPageTitle("Form D");
-			
+
 			page.setAttribute("error_messages", errors);
 
 			page.setAttribute("verifiers", train.getAppDataController().get()
@@ -481,13 +557,28 @@ public class FormsServlet extends AbstractBaseServlet {
 	}
 
 	private void setEndDate(Date date, PageBuilder page) {
-		// TODO Auto-generated method stub
+		if (date == null)
+			return;
 
+		Calendar c = Calendar.getInstance(App.getTimeZone());
+		c.setTime(date);
+		page.setAttribute("EndYear", c.get(Calendar.YEAR));
+		page.setAttribute("EndMonth", c.get(Calendar.MONTH));
+		page.setAttribute("EndDay", c.get(Calendar.DATE));
 	}
 
 	private void setStartDate(Date date, PageBuilder page) {
-		// TODO Auto-generated method stub
+		if (date == null)
+			return;
 
+		Calendar c = Calendar.getInstance(App.getTimeZone());
+		c.setTime(date);
+		page.setAttribute("StartYear", c.get(Calendar.YEAR));
+		page.setAttribute("StartMonth", c.get(Calendar.MONTH));
+		page.setAttribute("StartDay", c.get(Calendar.DATE));
+		page.setAttribute("StartHour", c.get(Calendar.HOUR));
+		page.setAttribute("StartMinute", c.get(Calendar.MINUTE));
+		page.setAttribute("StartPeriod", c.get(Calendar.AM_PM));
 	}
 
 	private void showIndex(HttpServletRequest req, HttpServletResponse resp)
@@ -529,6 +620,23 @@ public class FormsServlet extends AbstractBaseServlet {
 		String value = getInitParameter("userType");
 
 		return User.Type.valueOf(value);
+	}
+	
+	/**
+	 * This servlet can be used for multiple user types, this grabs the type of
+	 * user this specific servlet instance can be accessed by
+	 * 
+	 * @return
+	 */
+	private User.Type[] getServletUserTypes() {
+		User.Type userType = getServletUserType();
+
+		// Since a TA is also a student, we also allow them access to their
+		// student forms
+		if(userType == User.Type.Student)
+			return new User.Type[] { User.Type.Student, User.Type.TA };
+		else
+			return new User.Type[] { userType };
 	}
 
 }

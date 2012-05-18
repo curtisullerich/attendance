@@ -39,4 +39,12 @@ public class ModelFactory {
 		form.setStudent(student);
 		return form;
 	}
+
+	public static MobileDataUpload newMobileDataUpload(User uploader, Date uploadTime, String uploadData) {
+		MobileDataUpload upload = new MobileDataUpload();
+		upload.setUploader(uploader);
+		upload.setTimestamp(uploadTime);
+		upload.setData(uploadData);
+		return upload;
+	}
 }

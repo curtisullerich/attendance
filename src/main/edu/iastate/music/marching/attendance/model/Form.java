@@ -15,7 +15,7 @@ public class Form {
 	public static enum Status {
 		Pending, Approved, Denied
 	};
-	
+
 	public static enum Type {
 		A, B, C, D
 	};
@@ -23,35 +23,36 @@ public class Form {
 	public static final String FIELD_STUDENT = "student";
 
 	/**
-	 * Create users through FormController (DataTrain.get().getFormsController().createFormA(...)
+	 * Create users through FormController
+	 * (DataTrain.get().getFormsController().createFormA(...)
 	 */
 	Form() {
 	}
-	
+
 	/**
 	 * Owning student
 	 * 
 	 */
 	@Parent
 	private User owner;
-	
+
 	@Index
 	private User student;
-	
+
 	@Index
 	private Type type;
-	
+
 	private Status status;
-	
+
 	private Status emailStatus;
-	
+
 	@Child
 	@Activate(1)
 	private MessageThread messages;
-	
+
 	@com.google.code.twig.annotation.Type(Text.class)
-	private String reason;
-	
+	private String details;
+
 	private Date startTime;
 	private Date endTime;
 
@@ -72,6 +73,14 @@ public class Form {
 	public void setStudent(User student) {
 		this.owner = student;
 		this.student = student;
+	}
+
+	public User getStudent() {
+		return this.student;
+	}
+
+	public void setDetails(String details) {
+		this.details = details;
 	}
 
 }

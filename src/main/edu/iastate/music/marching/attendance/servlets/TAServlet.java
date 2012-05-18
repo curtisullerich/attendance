@@ -27,11 +27,33 @@ public class TAServlet extends AbstractBaseServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		if (!isLoggedIn(req, resp, User.Type.TA, User.Type.Director)) {
+		if (!isLoggedIn(req, resp, User.Type.TA)) {
 			resp.sendRedirect(AuthServlet.URL_LOGIN);
 			return;
 		}
 
+		Page page = parsePathInfo(req.getPathInfo(), Page.class);
+
+		if (page == null)
+			ErrorServlet.showError(req, resp, 404);
+		else
+			switch (page) {
+			case index:
+				showIndex(req, resp);
+				break;
+			default:
+				ErrorServlet.showError(req, resp, 404);
+			}
+
+	}
+
+	private void showIndex(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		PageBuilder page = new PageBuilder(Page.index, SERVLET_PATH);
+
+		page.setPageTitle("Staff");
+
+		page.passOffToJsp(req, resp);
 	}
 
 }
