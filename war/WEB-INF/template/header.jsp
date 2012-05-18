@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:if test="${not pagetemplate.mobile}">
+<c:if test="${not pagetemplate.mobileSite}">
 	<div class="skip"><a accesskey="2" href="#container">Skip Navigation</a></div>
 	<div class="hwrapper" id="header">
 		<div id="top-strip">
@@ -95,52 +95,11 @@
 	<div id="container">
 		<div class="grids-24">
 			<div class="grid-5 sidebar" id="left-sidebar">
-				<ul class="navigation">
-
-					<c:if test="${auth.user.type.student}">
-					<li class="selected">
-						<a href="/student">Student</a>
-						<ul>
-							<li class="first ${pagetemplate.jspath=='/student/attendance'?'selected':''}"><a href="/student/attendance">Attendance</a></li>
-							<li class="${pagetemplate.jspath=='/student/forms'?'selected':''}">
-								<a href="/student/forms">Forms</a>
-							</li>
-							<li class="${pagetemplate.jspath=='/student/messages'?'selected':''}"><a href="/student/messages">Messages</a></li>
-							<li class="${pagetemplate.jspath=='/student/info'?'selected':''}"><a href="/student/info">Edit Info</a></li>
-						</ul>
-					</c:if>
-					
-					<c:if test="${auth.user.type.ta}">
-					<li class="selected">
-						<a href="/about/">Students</a>
-						<ul>
-							<li><a href="/contact/">Contact Us</a></li>
-						</ul>
-					</li>
-					</c:if>
-					
-					<c:if test="${auth.user.type.director}">
-					<li class="selected">
-						<a href="/about/">Students</a>
-						<ul>
-							<li><a href="/contact/">Contact Us</a></li>
-						</ul>
-					</li>
-					</c:if>
-					
-					<c:if test="${auth.admin}">
-					<li class="selected">
-						<a href="/admin/">Admin</a>
-						<ul>
-							<li><a href="/admin/users/">Users</a></li>
-						</ul>
-					</li>
-					</c:if>
-				</ul>
+<jsp:include page="/WEB-INF/template/menu.jsp" />
 			</div>
 			<div class="grid-14" id="content">
 				<div class="gutter">
 </c:if>
-<c:if test="${pagetemplate.mobile}">
-	<header class="hwrapper"><h1>ISUCF"V"MB Attendance</h1></header>
+<c:if test="${pagetemplate.mobileSite}">
+	<header class="hwrapper"><h1><c:out value="${pagetemplate.title}" /></h1></header>
 </c:if>
