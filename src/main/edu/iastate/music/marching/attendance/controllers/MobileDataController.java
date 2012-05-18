@@ -3,11 +3,15 @@ package edu.iastate.music.marching.attendance.controllers;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import edu.iastate.music.marching.attendance.App;
+import edu.iastate.music.marching.attendance.controllers.DataTrain.Track;
 import edu.iastate.music.marching.attendance.model.Event;
+import edu.iastate.music.marching.attendance.model.MobileDataUpload;
+import edu.iastate.music.marching.attendance.model.ModelFactory;
 import edu.iastate.music.marching.attendance.model.User;
 
 public class MobileDataController {
@@ -68,11 +72,18 @@ public class MobileDataController {
 		return sb.toString();
 	}
 
-	public boolean pushMobileData(String data) throws IllegalArgumentException {
+	public String pushMobileData(String data, User uploader)
+			throws IllegalArgumentException {
 
-		if(data == null)
-			return false;
-		
+		// First lets log what is being uploaded
+		MobileDataUpload upload = ModelFactory.newMobileDataUpload(uploader,
+				Calendar.getInstance(App.getTimeZone()).getTime(), data);
+		this.train.getDataStore().store(upload);
+
+		// Check we actually have something to work with
+		if (data == null || "".equals(data.trim()))
+			throw new IllegalArgumentException("Empty data uploaded");
+
 		String[] fullLines = data.split(NEWLINE);
 
 		ArrayList<String> eventLines = new ArrayList<String>();
@@ -89,126 +100,143 @@ public class MobileDataController {
 			}
 		}
 
-		EventController ec = this.train.getEventsController();
-		AbsenceController ac = this.train.getAbscencesController();
-		UserController uc = this.train.getUsersController();
+		// Do everything in a transaction so entire upload goes as a single
+		// unit, rolling back if anything fails
+		//Track transaction = train.switchTracks();
 
-		// List<Event> localEvents = new LinkedList<Event>();
+		//try {
 
-		// TODO do we get the data in the same format as we push it? i.e.,
-		// SEPARATOR delimited?
-		for (String s : eventLines) {
-			// TODO, this is all really bullshit to mock it up.
-			String[] event = s.split(SEPARATOR);
-			String strType = event[1].toLowerCase().trim();
-			String strDate = event[4];
-			String startTime = event[5];
-			String endTime = event[6];
+			EventController ec = this.train.getEventsController();
+			AbsenceController ac = this.train.getAbscencesController();
+			UserController uc = this.train.getUsersController();
 
-			Date start;
-			try {
-				start = MOBILE_DATETIME_FORMAT.parse(strDate + " " + startTime);
-			} catch (ParseException e) {
-				throw new IllegalArgumentException(
-						"Unable to parse event start datetime from: " + s, e);
-			}
+			// List<Event> localEvents = new LinkedList<Event>();
 
-			Date end;
-			try {
-				end = MOBILE_DATETIME_FORMAT.parse(strDate + " " + endTime);
-			} catch (ParseException e) {
-				throw new IllegalArgumentException(
-						"Unable to parse event end datetime from: " + s, e);
-			}
-
-			Event.Type type = Event.Type.valueOf(strType.substring(0, 1)
-					.toUpperCase() + strType.substring(1));
-
-			Event newEvent = ec.createOrUpdate(type, start, end);
-
-			if (newEvent == null) {
-				// do something TODO
-			}
-		}
-
-		for (String s : otherLines) {
-
-			String[] parts = s.split(SEPARATOR);
-
-			if (s.contains("tardy")) {
-				String firstName = parts[1];
-				String lastName = parts[2];
-				String netid = parts[3];
-				String strDate = parts[4];
-				String strTime = parts[5];
-
-				Date time;
-				try {
-					time = MOBILE_DATETIME_FORMAT
-							.parse(strDate + " " + strTime);
-				} catch (ParseException e) {
-					throw new IllegalArgumentException(
-							"Unable to parse start datetime in:" + s, e);
-				}
-
-				User student = uc.get(netid);
-
-				ac.createOrUpdateTardy(student, time);
-			} else if (s.contains("absent")) {
-
-				String firstName = parts[1];
-				String lastName = parts[2];
-				String netid = parts[3];
-				String strDate = parts[4];
-				String strStartTime = parts[5];
-				String strEndTime = parts[6];
+			// TODO do we get the data in the same format as we push it? i.e.,
+			// SEPARATOR delimited?
+			for (String s : eventLines) {
+				// TODO, this is all really bullshit to mock it up.
+				String[] event = s.split(SEPARATOR);
+				String strType = event[1].toLowerCase().trim();
+				String strDate = event[4];
+				String startTime = event[5];
+				String endTime = event[6];
 
 				Date start;
 				try {
 					start = MOBILE_DATETIME_FORMAT.parse(strDate + " "
-							+ strStartTime);
+							+ startTime);
 				} catch (ParseException e) {
 					throw new IllegalArgumentException(
-							"Unable to parse start datetime in:" + s, e);
+							"Unable to parse event start datetime from: " + s,
+							e);
 				}
+
 				Date end;
 				try {
-					end = MOBILE_DATETIME_FORMAT.parse(strDate + " "
-							+ strEndTime);
+					end = MOBILE_DATETIME_FORMAT.parse(strDate + " " + endTime);
 				} catch (ParseException e) {
 					throw new IllegalArgumentException(
-							"Unable to parse end datetime in:" + s, e);
+							"Unable to parse event end datetime from: " + s, e);
 				}
 
-				User student = uc.get(netid);
+				Event.Type type = Event.Type.valueOf(strType.substring(0, 1)
+						.toUpperCase() + strType.substring(1));
 
-				// TODO check for valid student
+				Event newEvent = ec.createOrUpdate(type, start, end);
 
-				ac.createOrUpdateAbsence(student, start, end);
-			} else if (s.toLowerCase().contains("earlycheckout")) {
-				String firstName = parts[1];
-				String lastName = parts[2];
-				String netid = parts[3];
-				String strDate = parts[4];
-				String strTime = parts[5];
-
-				Date time;
-				try {
-					time = MOBILE_DATETIME_FORMAT
-							.parse(strDate + " " + strTime);
-				} catch (ParseException e) {
-					throw new IllegalArgumentException(
-							"Unable to parse start datetime in:" + s, e);
+				if (newEvent == null) {
+					// do something TODO
 				}
-
-				User student = uc.get(netid);
-
-				ac.createOrUpdateEarlyCheckout(student, time);
-			} else {
-				// WE HAVE SOMETHING INCORRECT HERE, JIM.
 			}
-		}
 
-		return true;
+			for (String s : otherLines) {
+
+				String[] parts = s.split(SEPARATOR);
+
+				if (s.contains("tardy")) {
+					String firstName = parts[1];
+					String lastName = parts[2];
+					String netid = parts[3];
+					String strDate = parts[4];
+					String strTime = parts[5];
+
+					Date time;
+					try {
+						time = MOBILE_DATETIME_FORMAT.parse(strDate + " "
+								+ strTime);
+					} catch (ParseException e) {
+						throw new IllegalArgumentException(
+								"Unable to parse start datetime in:" + s, e);
+					}
+
+					User student = uc.get(netid);
+
+					ac.createOrUpdateTardy(student, time);
+				} else if (s.contains("absent")) {
+
+					String firstName = parts[1];
+					String lastName = parts[2];
+					String netid = parts[3];
+					String strDate = parts[4];
+					String strStartTime = parts[5];
+					String strEndTime = parts[6];
+
+					Date start;
+					try {
+						start = MOBILE_DATETIME_FORMAT.parse(strDate + " "
+								+ strStartTime);
+					} catch (ParseException e) {
+						throw new IllegalArgumentException(
+								"Unable to parse start datetime in:" + s, e);
+					}
+					Date end;
+					try {
+						end = MOBILE_DATETIME_FORMAT.parse(strDate + " "
+								+ strEndTime);
+					} catch (ParseException e) {
+						throw new IllegalArgumentException(
+								"Unable to parse end datetime in:" + s, e);
+					}
+
+					User student = uc.get(netid);
+
+					// TODO check for valid student
+
+					ac.createOrUpdateAbsence(student, start, end);
+				} else if (s.toLowerCase().contains("earlycheckout")) {
+					String firstName = parts[1];
+					String lastName = parts[2];
+					String netid = parts[3];
+					String strDate = parts[4];
+					String strTime = parts[5];
+
+					Date time;
+					try {
+						time = MOBILE_DATETIME_FORMAT.parse(strDate + " "
+								+ strTime);
+					} catch (ParseException e) {
+						throw new IllegalArgumentException(
+								"Unable to parse start datetime in:" + s, e);
+					}
+
+					User student = uc.get(netid);
+
+					ac.createOrUpdateEarlyCheckout(student, time);
+				} else {
+					// WE HAVE SOMETHING INCORRECT HERE, JIM.
+				}
+			}
+
+//		} catch (RuntimeException ex) {
+//			transaction.derail();
+//			throw ex;
+//		}
+//
+//		// Must have all worked
+//		transaction.bendIronBack();
+
+		// TODO return string about what was uploaded here
+		return "Upload stats";
 	}
 }

@@ -1,0 +1,56 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+				<ul class="navigation group drilldown panel">
+					<c:if test="${auth.user.type.student or auth.user.type.ta}">
+					<li class="selected">
+						<a href="/student">Student</a>
+						<ul>
+							<li class="first ${pagetemplate.jspath eq 'student/attendance'?'selected':''}"><a href="/student/attendance">Attendance</a></li>
+							<c:if test="${fn:startsWith(pagetemplate.jspath, 'form/')}">
+							<li class="${pagetemplate.jspath eq 'form/index'?'selected':''}">
+								<a href="/student/forms">Forms</a>
+								<ul>
+									<li class="first ${pagetemplate.jspath eq 'form/forma'?'selected':''}"><a href="/student/forms/forma">Form A</a></li>
+									<li class="first ${pagetemplate.jspath eq 'form/formb'?'selected':''}"><a href="/student/forms/formb">Form B</a></li>
+									<li class="first ${pagetemplate.jspath eq 'form/formc'?'selected':''}"><a href="/student/forms/formc">Form C</a></li>
+									<li class="first ${pagetemplate.jspath eq 'form/formd'?'selected':''}"><a href="/student/forms/formd">Form D</a></li>
+								</ul>
+							</li>
+							</c:if>
+							<c:if test="${!fn:startsWith(pagetemplate.jspath, 'form/')}">
+							<li><a href="/student/forms">Forms</a></li>
+							</c:if>
+							<li class="${pagetemplate.jspath eq 'student/messages'?'selected':''}"><a href="/student/messages">Messages</a></li>
+							<li class="${pagetemplate.jspath eq 'student/info'?'selected':''}"><a href="/student/info">Edit Info</a></li>
+						</ul>
+					</c:if>
+					
+					<c:if test="${auth.user.type.ta}">
+					<li class="selected">
+						<a href="/ta">Student Staff</a>
+						<ul>
+							<li><a href="/ta/ranks">Set Ranks</a></li>
+							<li><a href="/MobileApp/FieldAppMain.html">Mobile Field App</a></li>
+						</ul>
+					</li>
+					</c:if>
+					
+					<c:if test="${auth.user.type.director}">
+					<li class="selected">
+						<a href="/about/">Director</a>
+						<ul>
+							<li><a href="/director/todo">TODO</a></li>
+						</ul>
+					</li>
+					</c:if>
+					
+					<c:if test="${auth.admin}">
+					<li class="selected">
+						<a href="/admin/">Admin</a>
+						<ul>
+							<li><a href="/admin/users/">Users</a></li>
+						</ul>
+					</li>
+					</c:if>
+				</ul>

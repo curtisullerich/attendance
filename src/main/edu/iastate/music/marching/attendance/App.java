@@ -1,5 +1,6 @@
 package edu.iastate.music.marching.attendance;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -23,7 +24,11 @@ public class App {
 	}
 
 	public static String getHashedMobilePassword() {
-		return getAppData().getHashedMobilePassword();
+		// HACK @Daniel
+		// For debugging
+		// TODO change back
+		return "5BAA61E4C9B93F3F0682250B6CF8331B7EE68FD8";
+		//return getAppData().getHashedMobilePassword();
 	}
 
 	public static TimeZone getTimeZone() {
@@ -37,8 +42,12 @@ public class App {
 
 	private static AppData getAppData() {
 		// TODO Caching
-		return DataTrain.getAndStartTrain()
-				.getAppDataController().get();
+		return DataTrain.getAndStartTrain().getAppDataController().get();
+	}
+
+	public static List<String> getDaysOfTheWeek() {
+		return Arrays.asList(new String[] { "Monday", "Tuesday", "Wednesday",
+				"Thursday", "Friday", "Saturday", "Sunday" });
 	}
 
 }
