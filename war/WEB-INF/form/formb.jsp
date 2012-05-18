@@ -83,7 +83,7 @@
 						</c:forEach>
 					</select>
 					<br/>
-					Please the day and time period that the class meets each week.
+					Please enter the day and time period that the class meets each week.
 				</dd>
 				
 				<dt><label class="required">From:</label></dt>
