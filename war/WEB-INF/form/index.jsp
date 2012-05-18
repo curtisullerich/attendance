@@ -16,17 +16,12 @@
 			if (confirm("Are you sure you want to delete?"))
 			{
 				$('#loading').fadeIn();
-				window.location = "/JSPPages/remove?id=" + id;
+				window.location = "/student/forms?removeid=" + id;
 			}
 		}
 		</script>
-		
 	</head>
-
 	<body>
-TODO: delete button<br/>
-view message thread button
-	
 		<jsp:include page="/WEB-INF/template/header.jsp" />
 	
 		<h1>View Forms</h1>

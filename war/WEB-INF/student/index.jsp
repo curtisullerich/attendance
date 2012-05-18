@@ -10,8 +10,6 @@
 TODO: link to messaging center (which needs to be implemented)<br/>
 new message indication<br/>
 current grade<br/>
-
-if this student is staff: set ranks link
 		<jsp:include page="/WEB-INF/template/header.jsp" />
 
 		<h1>Student Page</h1>
