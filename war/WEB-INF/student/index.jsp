@@ -7,9 +7,9 @@
 		<jsp:include page="/WEB-INF/template/head.jsp" />
 	</head>
 	<body>
-TODO: link to messaging center (which needs to be implemented)
-new message indication
-current grade
+TODO: link to messaging center (which needs to be implemented)<br/>
+new message indication<br/>
+current grade<br/>
 
 if this student is staff: set ranks link
 		<jsp:include page="/WEB-INF/template/header.jsp" />

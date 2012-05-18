@@ -7,8 +7,8 @@
 	</head>
 
 	<body>
-TODO: view message thread button
-new message indication
+TODO: view message thread button<br/>
+new message indication<br/>
 columns in the table: date, type (e.g. performance absence), status (pending, etc)
 
 		<jsp:include page="/WEB-INF/template/header.jsp" />
@@ -18,12 +18,13 @@ columns in the table: date, type (e.g. performance absence), status (pending, et
 		<h2>Absences</h2>
 		<table border='1'>
 			<tr>
+				<th>Event</th><!-- Should include date, start time, and end time! -->
 				<th>Type</th>
-				<th>Event</th>
+				<th>Status</th>
+				<th>Time of Arrival/Leaving</th>
 			</tr>
 			<c:forEach items="${absences}" var="absence">
 				<tr>
-					<td>${absence.type}</td>
 					<c:if test="${empty absence.event}">
 						No event. Absence from:
 						<td>
@@ -32,6 +33,10 @@ columns in the table: date, type (e.g. performance absence), status (pending, et
 							<fmt:formatDate value="${absence.end}" pattern="hh:mm" />
 						</td>
 					</c:if>
+
+					<td>${absence.type}</td>
+					<td>${absence.status}</td>
+
 					<c:if test="${not empty absence.event}">
 						<td>
 							<fmt:formatDate value="${absence.event.start}" pattern="mm/dd/yyyy hh:mm" />
@@ -39,29 +44,17 @@ columns in the table: date, type (e.g. performance absence), status (pending, et
 							<fmt:formatDate value="${absence.event.end}" pattern="hh:mm" />
 						</td>
 					</c:if>
-					
-				</tr>
-			</c:forEach>
-		</table>
-		
-		
-		<h2>Forms</h2>
-		<table border='1'>
-			<tr>
-				<th>Start Date</th>
-				<th>End Date</th>
-				<th>Type</th>
-				<th>Status</th>
-			</tr>
-			<c:forEach items="${forms}" var="form">
-				<tr>
-					<td><fmt:formatDate value="${form.start}" pattern="mm/dd/yyyy" /></td>
-					<td><fmt:formatDate value="${form.end}" pattern="mm/dd/yyyy" /></td>
-					<td>${form.type}</td>
-					<td>${form.status}</td>
 					<td>
-						<button onClick="window.location='./messages?id=${form.id}'">messages</button>
+						<c:if test="${absence.messageThread.resolved}">
+							<b>
+						</c:if>
+						<a href="/message/viewthread?id=${absence.messageThread.id}">messages</a>
+						<c:if test="${absence.messageThread.resolved}">
+							</b>
+						</c:if>
+						<!-- Messages button. Make it bold if there's an unresolved thread. -->
 					</td>
+					
 				</tr>
 			</c:forEach>
 		</table>

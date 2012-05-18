@@ -7,12 +7,12 @@
 	</head>
 
 	<body>
-TODO
-columns: last name, first name, section, university ID, events, grade
-    can click on name to view student's page
-    can click on any absence to change anything about it (including deleting it)
-    can click on any event at the top to view stats about it
-    link to stats about the whole semester
+TODO<br/>
+columns: last name, first name, section, university ID, events, grade<br/>
+    can click on name to view student's page<br/>
+    can click on any absence to change anything about it (including deleting it)<br/>
+    can click on any event at the top to view stats about it<br/>
+    link to stats about the whole semester<br/>
     export grades button
 		<jsp:include page="/WEB-INF/template/header.jsp" />
 
