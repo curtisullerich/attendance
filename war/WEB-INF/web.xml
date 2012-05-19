@@ -1,35 +1,51 @@
 <!-- Generated from app.yaml. Do not edit. -->
 <web-app version='2.5' xmlns='http://java.sun.com/xml/ns/javaee' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd'>
   <servlet>
-    <servlet-name>edu.iastate.music.marching.attendance.servlets.HomepageServlet</servlet-name>
+    <servlet-name>homepage</servlet-name>
     <servlet-class>edu.iastate.music.marching.attendance.servlets.HomepageServlet</servlet-class>
+    <init-param>
+      <param-name>path</param-name>
+      <param-value>homepage</param-value>
+    </init-param>
   </servlet>
   <servlet-mapping>
-    <servlet-name>edu.iastate.music.marching.attendance.servlets.HomepageServlet</servlet-name>
+    <servlet-name>homepage</servlet-name>
     <url-pattern>/homepage</url-pattern>
   </servlet-mapping>
   <servlet>
-    <servlet-name>edu.iastate.music.marching.attendance.servlets.ErrorServlet</servlet-name>
+    <servlet-name>error</servlet-name>
     <servlet-class>edu.iastate.music.marching.attendance.servlets.ErrorServlet</servlet-class>
+    <init-param>
+      <param-name>path</param-name>
+      <param-value>error</param-value>
+    </init-param>
   </servlet>
   <servlet-mapping>
-    <servlet-name>edu.iastate.music.marching.attendance.servlets.ErrorServlet</servlet-name>
+    <servlet-name>error</servlet-name>
     <url-pattern>/error/*</url-pattern>
   </servlet-mapping>
   <servlet>
-    <servlet-name>edu.iastate.music.marching.attendance.servlets.AuthServlet</servlet-name>
+    <servlet-name>auth</servlet-name>
     <servlet-class>edu.iastate.music.marching.attendance.servlets.AuthServlet</servlet-class>
+    <init-param>
+      <param-name>path</param-name>
+      <param-value>auth</param-value>
+    </init-param>
   </servlet>
   <servlet-mapping>
-    <servlet-name>edu.iastate.music.marching.attendance.servlets.AuthServlet</servlet-name>
+    <servlet-name>auth</servlet-name>
     <url-pattern>/auth/*</url-pattern>
   </servlet-mapping>
   <servlet>
-    <servlet-name>edu.iastate.music.marching.attendance.servlets.DirectorServlet</servlet-name>
+    <servlet-name>director</servlet-name>
     <servlet-class>edu.iastate.music.marching.attendance.servlets.DirectorServlet</servlet-class>
+    <init-param>
+      <param-name>path</param-name>
+      <param-value>director</param-value>
+    </init-param>
   </servlet>
   <servlet-mapping>
-    <servlet-name>edu.iastate.music.marching.attendance.servlets.DirectorServlet</servlet-name>
+    <servlet-name>director</servlet-name>
     <url-pattern>/director/*</url-pattern>
   </servlet-mapping>
   <servlet>
@@ -49,19 +65,27 @@
     <url-pattern>/director/forms/*</url-pattern>
   </servlet-mapping>
   <servlet>
-    <servlet-name>edu.iastate.music.marching.attendance.servlets.MobileAppDataServlet</servlet-name>
+    <servlet-name>mobileapp_data</servlet-name>
     <servlet-class>edu.iastate.music.marching.attendance.servlets.MobileAppDataServlet</servlet-class>
+    <init-param>
+      <param-name>path</param-name>
+      <param-value>MobileApp/data</param-value>
+    </init-param>
   </servlet>
   <servlet-mapping>
-    <servlet-name>edu.iastate.music.marching.attendance.servlets.MobileAppDataServlet</servlet-name>
+    <servlet-name>mobileapp_data</servlet-name>
     <url-pattern>/MobileApp/data/*</url-pattern>
   </servlet-mapping>
   <servlet>
-    <servlet-name>edu.iastate.music.marching.attendance.servlets.StudentServlet</servlet-name>
+    <servlet-name>student</servlet-name>
     <servlet-class>edu.iastate.music.marching.attendance.servlets.StudentServlet</servlet-class>
+    <init-param>
+      <param-name>path</param-name>
+      <param-value>student</param-value>
+    </init-param>
   </servlet>
   <servlet-mapping>
-    <servlet-name>edu.iastate.music.marching.attendance.servlets.StudentServlet</servlet-name>
+    <servlet-name>student</servlet-name>
     <url-pattern>/student/*</url-pattern>
   </servlet-mapping>
   <servlet>
@@ -69,7 +93,7 @@
     <servlet-class>edu.iastate.music.marching.attendance.servlets.FormsServlet</servlet-class>
     <init-param>
       <param-name>path</param-name>
-      <param-value>/student/forms</param-value>
+      <param-value>student/forms</param-value>
     </init-param>
     <init-param>
       <param-name>userType</param-name>
@@ -85,7 +109,7 @@
     <servlet-class>edu.iastate.music.marching.attendance.servlets.TAServlet</servlet-class>
     <init-param>
       <param-name>path</param-name>
-      <param-value>/ta</param-value>
+      <param-value>ta</param-value>
     </init-param>
   </servlet>
   <servlet-mapping>
@@ -97,7 +121,7 @@
     <servlet-class>edu.iastate.music.marching.attendance.servlets.AdminServlet</servlet-class>
     <init-param>
       <param-name>path</param-name>
-      <param-value>/admin</param-value>
+      <param-value>admin</param-value>
     </init-param>
   </servlet>
   <servlet-mapping>
