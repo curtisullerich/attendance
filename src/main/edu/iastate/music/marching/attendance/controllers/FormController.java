@@ -46,52 +46,6 @@ public class FormController extends AbstractController {
 		return find.returnAll().now();
 	}
 
-	public Form createFormA(User student, Date date, String reason) {
-		Calendar calendar = Calendar.getInstance(App.getTimeZone());
-		calendar.setTime(date);
-
-		// Simple validation first
-		ValidationExceptions exp = new ValidationExceptions();
-
-		if (!ValidationUtil.isValidText(reason, true)) {
-			exp.getErrors().add("Invalid reason");
-		}
-
-		// Check date is before cutoff but after today
-		if (!calendar.after(Calendar.getInstance(App.getTimeZone())))
-			exp.getErrors().add("Invalid date, must be after today.");
-		if (!calendar.before(dataTrain.getAppDataController().get()
-				.getFormSubmissionCutoff()))
-			exp.getErrors().add(
-					"Invalid date, must before form submission cutoff.");
-
-		if (exp.getErrors().size() > 0)
-			throw exp;
-
-		// Parsed date starts at beginning of day
-		calendar.set(Calendar.HOUR_OF_DAY, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
-		Date startDate = calendar.getTime();
-
-		// End exactly one time unit before the next day starts
-		calendar.roll(Calendar.DATE, true);
-		calendar.roll(Calendar.MILLISECOND, false);
-		Date endDate = calendar.getTime();
-
-		// Pass on remaining creation work
-		Form form = createForm(Form.Type.A, student, startDate, endDate);
-
-		// Set remaining fields
-		form.setDetails(reason);
-
-		// Perform store
-		storeForm(form);
-
-		return form;
-	}
-
 	private void storeForm(Form form) {
 		// TODO: Reintroduce transactions
 
@@ -154,14 +108,81 @@ public class FormController extends AbstractController {
 		return form;
 	}
 
-	public Form createFormC(User student, Date date, String reason) {
-		// TODO Auto-generated method stub
+	//TODO perform form a-specific validation
+	public Form createFormA(User student, Date date, String reason) {
+		return formACHelper(student,date,reason,Form.Type.A);
+	}
+
+	public Form createFormB(User student, Date date, String reason) {
+		// TODO NEEDS MORE PARAMETERS
 		return null;
+	}
+	
+	//TODO perform form c-specific validation
+	public Form createFormC(User student, Date date, String reason) {
+		return formACHelper(student,date,reason,Form.Type.C);
 	}
 
 	public Form createFormD(User student, Date date, int hours, String details) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	/**
+	 * Creates a form of type A or C because they have identical creation
+	 * with separate time-based validation.
+	 * 
+	 * @param student
+	 * @param date
+	 * @param reason
+	 * @param type The Form.Type A or C
+	 * @author curtisu
+	 * @return
+	 */
+	private Form formACHelper(User student, Date date, String reason, Form.Type type) {
+		Calendar calendar = Calendar.getInstance(App.getTimeZone());
+		calendar.setTime(date);
+
+		// Simple validation first
+		ValidationExceptions exp = new ValidationExceptions();
+
+		if (!ValidationUtil.isValidText(reason, true)) {
+			exp.getErrors().add("Invalid reason");
+		}
+
+		// Check date is before cutoff but after today
+		if (!calendar.after(Calendar.getInstance(App.getTimeZone())))
+			exp.getErrors().add("Invalid date, must be after today.");
+		if (!calendar.before(dataTrain.getAppDataController().get()
+				.getFormSubmissionCutoff()))
+			exp.getErrors().add(
+					"Invalid date, must before form submission cutoff.");
+
+		if (exp.getErrors().size() > 0)
+			throw exp;
+
+		// Parsed date starts at beginning of day
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		Date startDate = calendar.getTime();
+
+		// End exactly one time unit before the next day starts
+		calendar.roll(Calendar.DATE, true);
+		calendar.roll(Calendar.MILLISECOND, false);
+		Date endDate = calendar.getTime();
+
+		// Pass on remaining creation work
+		Form form = createForm(type, student, startDate, endDate);
+
+		// Set remaining fields
+		form.setDetails(reason);
+
+		// Perform store
+		storeForm(form);
+
+		return form;
 	}
 
 }
