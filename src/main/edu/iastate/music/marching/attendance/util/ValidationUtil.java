@@ -2,6 +2,8 @@ package edu.iastate.music.marching.attendance.util;
 
 import java.util.regex.Pattern;
 
+import edu.iastate.music.marching.attendance.App;
+
 public class ValidationUtil {
 	
 	private static final Pattern PATTERN_NAME = Pattern.compile("[\\w\\. -]+");
@@ -37,6 +39,10 @@ public class ValidationUtil {
 	public static boolean isValidText(String text, boolean canBeEmpty) {
 		// TODO Auto-generated method stub
 		return true;
+	}
+
+	public static boolean isValidFormDEmail(String email) {
+		return App.getTimeWorkedEmails().contains(email);
 	}
 
 }
