@@ -54,12 +54,12 @@
 					<td>
 						<c:if test="${absence.messageThread.resolved}">
 							<strong>
-								<a href="/student/messages/viewthread?id=${absence.messageThread.id}">Unread messages</a>
+								<a href="/student/messages/viewthread?id=${absence.messageThread.id}">messages</a>
 							</strong>
 						</c:if>
 						
 						<c:if test="${!absence.messageThread.resolved}">
-							<a href="/student/messages/viewthread?id=${absence.messageThread.id}">No new messages</a>
+							<a href="/student/messages/viewthread?id=${absence.messageThread.id}">messages</a>
 						</c:if>
 						<!-- Messages button. Make it bold if there's an unresolved thread. -->
 					</td>

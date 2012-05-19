@@ -4,10 +4,8 @@ import java.util.Date;
 
 import com.google.appengine.api.datastore.Text;
 import com.google.code.twig.annotation.Activate;
-import com.google.code.twig.annotation.Child;
 import com.google.code.twig.annotation.Id;
 import com.google.code.twig.annotation.Index;
-import com.google.code.twig.annotation.Parent;
 
 import edu.iastate.music.marching.attendance.model.Absence.Status;
 
@@ -37,7 +35,6 @@ public class Form {
 	 * Owning student
 	 * 
 	 */
-	@Parent
 	private User owner;
 
 	@Index
@@ -50,7 +47,6 @@ public class Form {
 
 	private Status emailStatus;
 
-	@Child
 	@Activate(1)
 	private MessageThread messages;
 
