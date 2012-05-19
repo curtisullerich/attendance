@@ -36,6 +36,10 @@
     <servlet-name>director_forms</servlet-name>
     <servlet-class>edu.iastate.music.marching.attendance.servlets.FormsServlet</servlet-class>
     <init-param>
+      <param-name>path</param-name>
+      <param-value>/student/forms</param-value>
+    </init-param>
+    <init-param>
       <param-name>userType</param-name>
       <param-value>Director</param-value>
     </init-param>
@@ -64,6 +68,10 @@
     <servlet-name>student_forms</servlet-name>
     <servlet-class>edu.iastate.music.marching.attendance.servlets.FormsServlet</servlet-class>
     <init-param>
+      <param-name>path</param-name>
+      <param-value>/student/forms</param-value>
+    </init-param>
+    <init-param>
       <param-name>userType</param-name>
       <param-value>Student</param-value>
     </init-param>
@@ -73,19 +81,27 @@
     <url-pattern>/student/forms/*</url-pattern>
   </servlet-mapping>
   <servlet>
-    <servlet-name>edu.iastate.music.marching.attendance.servlets.TAServlet</servlet-name>
+    <servlet-name>ta</servlet-name>
     <servlet-class>edu.iastate.music.marching.attendance.servlets.TAServlet</servlet-class>
+    <init-param>
+      <param-name>path</param-name>
+      <param-value>/ta</param-value>
+    </init-param>
   </servlet>
   <servlet-mapping>
-    <servlet-name>edu.iastate.music.marching.attendance.servlets.TAServlet</servlet-name>
+    <servlet-name>ta</servlet-name>
     <url-pattern>/ta/*</url-pattern>
   </servlet-mapping>
   <servlet>
-    <servlet-name>edu.iastate.music.marching.attendance.servlets.AdminServlet</servlet-name>
+    <servlet-name>admin</servlet-name>
     <servlet-class>edu.iastate.music.marching.attendance.servlets.AdminServlet</servlet-class>
+    <init-param>
+      <param-name>path</param-name>
+      <param-value>/admin</param-value>
+    </init-param>
   </servlet>
   <servlet-mapping>
-    <servlet-name>edu.iastate.music.marching.attendance.servlets.AdminServlet</servlet-name>
+    <servlet-name>admin</servlet-name>
     <url-pattern>/admin/*</url-pattern>
   </servlet-mapping>
   <security-constraint>

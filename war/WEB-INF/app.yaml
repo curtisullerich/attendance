@@ -20,46 +20,72 @@ handlers:
   
 - url: /homepage
   servlet: edu.iastate.music.marching.attendance.servlets.HomepageServlet
+  init_params:
+    path: "homepage"
+  name: homepage
   
 - url: /error/*
   servlet: edu.iastate.music.marching.attendance.servlets.ErrorServlet
+  init_params:
+    path: "error"
+  name: error
 
 - url: /auth/*
   servlet: edu.iastate.music.marching.attendance.servlets.AuthServlet
+  init_params:
+    path: "auth"
+  name: auth
 
 - url: /director/*
   servlet: edu.iastate.music.marching.attendance.servlets.DirectorServlet
+  init_params:
+    path: "director"
+  name: director
 
 - url: /director/forms/*
   servlet: edu.iastate.music.marching.attendance.servlets.FormsServlet
   init_params:
     userType: Director
+    path: "/student/forms"
   name: director_forms
 
 - url: /MobileApp/data/*
   servlet: edu.iastate.music.marching.attendance.servlets.MobileAppDataServlet
+  init_params:
+    path: "MobileApp/data"
+  name: mobileapp_data
 
 - url: /student/*
   servlet: edu.iastate.music.marching.attendance.servlets.StudentServlet
+  init_params:
+    path: "student"
+  name: student
 
 - url: /student/forms/*
   servlet: edu.iastate.music.marching.attendance.servlets.FormsServlet
   init_params:
     userType: Student
+    path: "student/forms"
   name: student_forms
 
 - url: /ta/*
   servlet: edu.iastate.music.marching.attendance.servlets.TAServlet
+  init_params:
+    path: "ta"
+  name: ta
 
 - url: /admin/*
   servlet: edu.iastate.music.marching.attendance.servlets.AdminServlet
   secure: always
   login: admin
+  init_params:
+    path: "admin"
+  name: admin
 
 admin_console:
   pages:
   - name: Users Admin
-    url: /admin/users
+    url: admin/users
 
 error_handlers:
   - file: /error.html

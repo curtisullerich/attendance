@@ -54,7 +54,7 @@ public class DataTrain {
 		return this.datastore;
 	}
 
-	/*
+	/**
 	 * Starts a new data store transaction
 	 * 
 	 * Note that only one transaction can be active at a time
@@ -138,7 +138,7 @@ public class DataTrain {
 		}
 
 		/**
-		 * End this transaction a asynchronously without committing any of the
+		 * End this transaction asynchronously without committing any of the
 		 * changes made
 		 */
 		public Future<Void> derailAsync() {

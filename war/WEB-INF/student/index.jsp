@@ -14,6 +14,7 @@ current grade<br/>
 
 		<h1>Student Page</h1>
 		<p>
+			Current grade: <c:out value="${user.grade}" /><br/><br/>
 			Use the navigation options on the left to manage your attendance.
 		</p>
 		<jsp:include page="/WEB-INF/template/footer.jsp" />

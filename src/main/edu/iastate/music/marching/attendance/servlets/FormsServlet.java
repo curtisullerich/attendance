@@ -453,8 +453,8 @@ public class FormsServlet extends AbstractBaseServlet {
 			}
 		}
 		if (validForm) {
-			String url = URLEncoder.encode(getIndexURL() + "?success_message="
-					+ SUCCESS_FORMC, "UTF-8");
+			String url = getIndexURL() + "?success_message="
+					+ URLEncoder.encode(SUCCESS_FORMC, "UTF-8");
 			url = resp.encodeRedirectURL(url);
 			resp.sendRedirect(url);
 		} else {
@@ -528,8 +528,8 @@ public class FormsServlet extends AbstractBaseServlet {
 			}
 		}
 		if (validForm) {
-			String url = URLEncoder.encode(getIndexURL() + "?success_message="
-					+ SUCCESS_FORMD, "UTF-8");
+			String url = getIndexURL() + "?success_message="
+					+ URLEncoder.encode(SUCCESS_FORMD, "UTF-8");
 			url = resp.encodeRedirectURL(url);
 			resp.sendRedirect(url);
 		} else {
@@ -640,6 +640,10 @@ public class FormsServlet extends AbstractBaseServlet {
 			return new User.Type[] { userType };
 	}
 
+	/**
+	 * Have to use a method since this servlet can be mapped from different
+	 * paths
+	 */
 	private String getIndexURL() {
 		return pageToUrl(Page.index, getInitParameter("path"));
 	}
