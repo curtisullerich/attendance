@@ -32,8 +32,6 @@ public class FormsServlet extends AbstractBaseServlet {
 
 	private static final String SERVLET_PATH = "form";
 
-	private static final String URL_INDEX = pageToUrl(Page.index, SERVLET_PATH);
-
 	private static final String SUCCESS_FORMA = "Submitted new Form A";
 	private static final String SUCCESS_FORMB = "Submitted new Form B";
 	private static final String SUCCESS_FORMC = "Submitted new Form C";
@@ -163,9 +161,9 @@ public class FormsServlet extends AbstractBaseServlet {
 			}
 		}
 		if (validForm) {
-			String url = URL_INDEX + "?success_message="
+			String url = getIndexURL() + "?success_message="
 					+ URLEncoder.encode(SUCCESS_FORMA, "UTF-8");
-			//url = resp.encodeRedirectURL(url);
+			// url = resp.encodeRedirectURL(url);
 			resp.sendRedirect(url);
 		} else {
 			// Show form
@@ -382,8 +380,8 @@ public class FormsServlet extends AbstractBaseServlet {
 			}
 		}
 		if (validForm) {
-			String url = URLEncoder.encode(URL_INDEX + "?success_message="
-					+ SUCCESS_FORMB, "UTF-8");
+			String url = getIndexURL() + "?success_message="
+					+ URLEncoder.encode(SUCCESS_FORMB, "UTF-8");
 			url = resp.encodeRedirectURL(url);
 			resp.sendRedirect(url);
 		} else {
@@ -455,7 +453,7 @@ public class FormsServlet extends AbstractBaseServlet {
 			}
 		}
 		if (validForm) {
-			String url = URLEncoder.encode(URL_INDEX + "?success_message="
+			String url = URLEncoder.encode(getIndexURL() + "?success_message="
 					+ SUCCESS_FORMC, "UTF-8");
 			url = resp.encodeRedirectURL(url);
 			resp.sendRedirect(url);
@@ -530,7 +528,7 @@ public class FormsServlet extends AbstractBaseServlet {
 			}
 		}
 		if (validForm) {
-			String url = URLEncoder.encode(URL_INDEX + "?success_message="
+			String url = URLEncoder.encode(getIndexURL() + "?success_message="
 					+ SUCCESS_FORMD, "UTF-8");
 			url = resp.encodeRedirectURL(url);
 			resp.sendRedirect(url);
@@ -591,9 +589,9 @@ public class FormsServlet extends AbstractBaseServlet {
 		// new form being created or deleted
 		page.setAttribute("success_message",
 				req.getParameter("success_message"));
-		
+
 		User currentUser = AuthController.getCurrentUser(req.getSession());
-		
+
 		// HACK: @Daniel
 		currentUser = train.getUsersController().get(currentUser.getNetID());
 
@@ -640,6 +638,10 @@ public class FormsServlet extends AbstractBaseServlet {
 			return new User.Type[] { User.Type.Student, User.Type.TA };
 		else
 			return new User.Type[] { userType };
+	}
+
+	private String getIndexURL() {
+		return pageToUrl(Page.index, getInitParameter("path"));
 	}
 
 }
