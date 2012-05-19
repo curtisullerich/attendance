@@ -35,6 +35,7 @@ public class ValidationUtil {
 
 	private static boolean validEmailDomain(String domain) {
 		// TODO Auto-generated method stub
+		// TODO This should be an application setting
 		return "iastate.edu".equals(domain);
 	}
 
@@ -44,6 +45,7 @@ public class ValidationUtil {
 	}
 
 	public static boolean isValidFormDEmail(String email) {
+		// TODO Do this using a data train please
 		return App.getTimeWorkedEmails().contains(email);
 	}
 	

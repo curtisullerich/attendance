@@ -184,6 +184,9 @@
 	        }
 	        
 	        function loginAndUpload(){
+
+				// Disable upload button
+                $("#submit").attr('disabled', true);
 		    				
 				//create list of data to upload to the server
 				var str = "";
@@ -202,12 +205,15 @@
              	    {
              	    	// Data did not even get to the server
              	    	alert("Unknown error communicating with server. Data not uploaded.");
+             	    	
+             	    	// Re-enable upload button
+                		$("#submit").attr('disabled', false);
              	    }
              	    else
              	    {
              	    	if (result.error == "login")
              	    	{
-             	    		alert("You must login first to upload data, redirecting you to the login page.");
+             	    		alert("You must login first as a TA to upload data, redirecting you to the login page.");
              	    		window.location = "/auth/login";
              	    	}
              	    	else if (result.error == "exception")

@@ -38,9 +38,10 @@
 					
 					<c:if test="${auth.user.type.director}">
 					<li class="selected">
-						<a href="/about/">Director</a>
+						<a href="/director/">Director</a>
 						<ul>
-							<li><a href="/director/todo">TODO</a></li>
+							<li class="${pagetemplate.jspath eq 'director/appinfo'?'selected':''}"><a href="/director/appinfo">App Settings</a></li>
+							<li class="${pagetemplate.jspath eq 'director/users'?'selected':''}"><a href="/director/users">Edit Users</a></li>
 						</ul>
 					</li>
 					</c:if>
@@ -49,7 +50,7 @@
 					<li class="selected">
 						<a href="/admin/">Admin</a>
 						<ul>
-							<li><a href="/admin/users/">Users</a></li>
+							<li><a href="/admin/users">Users</a></li>
 						</ul>
 					</li>
 					</c:if>

@@ -15,7 +15,7 @@
 		<h2>Absences</h2>
 		<table border='1'>
 			<tr>
-				<th>Event</th><!-- Should include date, start time, and end time! -->
+				<th>Event</th>
 				<th>Type</th>
 				<th>Status</th>
 				<th>Time of Arrival/Leaving</th>
@@ -31,24 +31,23 @@
 					<c:if test="${not empty absence.event}">
 						<td>
 							<c:out value="${absence.event.type}" />
+							<fmt:formatDate value="${absence.event.start}" pattern="MM/dd/yyyy hh:mm a" />
+							-
+							<fmt:formatDate value="${absence.event.end}" pattern="hh:mm a" />
 						</td>
 					</c:if>
 
 					<td>${absence.type}</td>
 					<td>${absence.status}</td>
 
-					<c:if test="${empty absence.event}">
+					<c:if test="${absence.type.Tardy or absence.type.EarlyCheckOut}">
 						<td>
-							<fmt:formatDate value="${absence.start}" pattern="mm/dd/yyyy hh:mm a" />
-							-
-							<fmt:formatDate value="${absence.end}" pattern="hh:mm a" />
+							<fmt:formatDate value="${absence.start}" pattern="hh:mm a" />
 						</td>
 					</c:if>
 					<c:if test="${not empty absence.event}">
 						<td>
-							<fmt:formatDate value="${absence.event.start}" pattern="mm/dd/yyyy hh:mm a" />
 							-
-							<fmt:formatDate value="${absence.event.end}" pattern="hh:mm a" />
 						</td>
 					</c:if>
 					<td>
