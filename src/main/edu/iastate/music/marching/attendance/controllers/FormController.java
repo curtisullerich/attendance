@@ -74,58 +74,213 @@ public class FormController extends AbstractController {
 		// }
 	}
 
-	/**
-	 * Does not store form, just creates and validates
-	 * 
-	 * @param type
-	 * @param student
-	 * @param startDate
-	 * @param endDate
-	 * @return
-	 */
-	private Form createForm(Form.Type type, User student, Date startDate,
-			Date endDate) {
-
-		if (type == null)
-			throw new IllegalArgumentException("Null type given for form");
-
-		if (student == null)
-			throw new IllegalArgumentException("Null student given for form");
-
-		if (startDate == null)
-			throw new IllegalArgumentException("Null startDate given for form");
-
-		if (endDate == null)
-			throw new IllegalArgumentException("Null endDate given for form");
-
-		// TODO more validation of start/end dates
-
-		Form form = ModelFactory.newForm(type, student);
-
-		form.setStart(startDate);
-		form.setEnd(endDate);
-
-		return form;
-	}
+//	/**
+//	 * Does not store form, just creates and validates
+//	 * 
+//	 * @param type
+//	 * @param student
+//	 * @param startDate
+//	 * @param endDate
+//	 * @return
+//	 */
+//	private Form createForm(Form.Type type, User student, Date startDate,
+//			Date endDate) {
+//
+//		if (type == null)
+//			throw new IllegalArgumentException("Null type given for form");
+//
+//		if (student == null)
+//			throw new IllegalArgumentException("Null student given for form");
+//
+//		if (startDate == null)
+//			throw new IllegalArgumentException("Null startDate given for form");
+//
+//		if (endDate == null)
+//			throw new IllegalArgumentException("Null endDate given for form");
+//
+//		// TODO more validation of start/end dates
+//		Form form = ModelFactory.newForm(type, student);
+//
+//		form.setStart(startDate);
+//		form.setEnd(endDate);
+//
+//
+//		return form;
+//	}
 
 	//TODO perform form a-specific validation
 	public Form createFormA(User student, Date date, String reason) {
+		Calendar calendar = Calendar.getInstance(App.getTimeZone());
+		calendar.setTime(date);
+
+		// Simple validation first
+		ValidationExceptions exp = new ValidationExceptions();
+
+		if (!ValidationUtil.isValidText(reason, true)) {
+			exp.getErrors().add("Invalid reason");
+		}
+
+		// Check date is before cutoff but after today
+		if (!calendar.after(Calendar.getInstance(App.getTimeZone()))) {
+			exp.getErrors().add("Invalid date, must be after today.");
+		}
+
+		if (!calendar.before(dataTrain.getAppDataController().get()
+				.getFormSubmissionCutoff())) {
+			exp.getErrors().add(
+					"Invalid date, must before form submission cutoff.");
+		}
+
+		if (exp.getErrors().size() > 0) {
+			throw exp;
+		}
+
 		return formACHelper(student,date,reason,Form.Type.A);
 	}
 
-	public Form createFormB(User student, Date date, String reason) {
-		// TODO NEEDS MORE PARAMETERS
-		return null;
+	public Form createFormB(User student, String department, String course, String section, String building, Date startDate, Date endDate, Enum day, Date startTime, Date endTime, String details) {
+		// TODO NEEDS MORE PARAMETERS and LOTS OF VALIDATION
+		Calendar calendar = Calendar.getInstance(App.getTimeZone());
+//		calendar.setTime(date);
+
+		// Simple validation first
+		ValidationExceptions exp = new ValidationExceptions();
+
+		if (!ValidationUtil.isValidText(details, true)) {
+			exp.getErrors().add("Invalid details");
+		}
+
+		//TODO MORE VALIDATION
+		if (exp.getErrors().size() > 0) {
+			throw exp;
+		}
+		
+		Form form = ModelFactory.newForm(Form.Type.B, student);
+
+		form.setStart(startDate);
+		form.setEnd(endDate);
+		//TODO form.set(All the other things)
+		
+		// Set remaining fields
+		form.setDetails(details);
+
+		// Perform store
+		storeForm(form);
+
+		return form;	
 	}
 	
 	//TODO perform form c-specific validation
 	public Form createFormC(User student, Date date, String reason) {
+		Calendar calendar = Calendar.getInstance(App.getTimeZone());
+		calendar.setTime(date);
+
+		// Simple validation first
+		ValidationExceptions exp = new ValidationExceptions();
+
+		if (!ValidationUtil.isValidText(reason, true)) {
+			exp.getErrors().add("Invalid reason");
+		}
+
+		// Check date is before cutoff but after today
+		if (!dateIsAtLeastThreeWeekdaysFresh(date)) {
+			exp.getErrors().add("Invalid date, submitted too late");
+		}
+
+		if (exp.getErrors().size() > 0) {
+			throw exp;
+		}
+		
 		return formACHelper(student,date,reason,Form.Type.C);
 	}
 
-	public Form createFormD(User student, Date date, int hours, String details) {
-		// TODO Auto-generated method stub
-		return null;
+	/**
+	 * Validation check for form C submission date
+	 * @param date
+	 * @return
+	 */
+	private boolean dateIsAtLeastThreeWeekdaysFresh(Date date) {
+		Calendar today = Calendar.getInstance(App.getTimeZone());
+		today.set(Calendar.HOUR_OF_DAY, 0);
+		today.set(Calendar.MINUTE,0);
+		today.set(Calendar.SECOND,0);
+		today.set(Calendar.MILLISECOND,0);
+
+		if (today.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
+			today.roll(Calendar.DATE, 2);
+		} else if (today.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+			today.roll(Calendar.DATE,1);
+		}
+		//now if it was a weekend, it's Monday for the comparison
+		
+		Calendar other = Calendar.getInstance(App.getTimeZone());
+		other.setTime(date);
+		other.set(Calendar.HOUR_OF_DAY, 0);
+		other.set(Calendar.MINUTE,0);
+		other.set(Calendar.SECOND,0);
+		other.set(Calendar.MILLISECOND,0);
+				
+		other.roll(Calendar.DATE, 3);
+
+		if (other.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
+			other.roll(Calendar.DATE, 2);
+		} else if (other.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+			other.roll(Calendar.DATE,1);
+		}
+		//now if it was a weekend, it's Monday for the comparison
+		
+		//now we should just be comparing weekend-agnostic DAYS.
+		return !other.after(today);
+	}
+	
+	
+	public Form createFormD(User student, String email, Date date, int hours, String details) {
+		Calendar calendar = Calendar.getInstance(App.getTimeZone());
+		calendar.setTime(date);
+
+		// Simple validation first
+		ValidationExceptions exp = new ValidationExceptions();
+
+		if (!ValidationUtil.isValidText(details, true)) {
+			exp.getErrors().add("Invalid details");
+		}
+		
+		if (hours <= 0) {
+			exp.getErrors().add("Time worked is not positive");
+		}
+
+		if (!ValidationUtil.isValidFormDEmail(email)) {
+			exp.getErrors().add("Verification email is not valid");
+		}
+		
+		if (exp.getErrors().size() > 0) {
+			throw exp;
+		}
+		
+		// Parsed date starts at beginning of day
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		Date startDate = calendar.getTime();
+
+		// End exactly one time unit before the next day starts
+		calendar.roll(Calendar.DATE, true);
+		calendar.roll(Calendar.MILLISECOND, false);
+		Date endDate = calendar.getTime();
+
+		Form form = ModelFactory.newForm(Form.Type.D, student);
+
+		form.setStart(startDate);
+		form.setEnd(endDate);
+
+		// Set remaining fields
+		form.setDetails(details);
+
+		// Perform store
+		storeForm(form);
+
+		return form;
 	}
 	
 	/**
@@ -142,25 +297,7 @@ public class FormController extends AbstractController {
 	private Form formACHelper(User student, Date date, String reason, Form.Type type) {
 		Calendar calendar = Calendar.getInstance(App.getTimeZone());
 		calendar.setTime(date);
-
-		// Simple validation first
-		ValidationExceptions exp = new ValidationExceptions();
-
-		if (!ValidationUtil.isValidText(reason, true)) {
-			exp.getErrors().add("Invalid reason");
-		}
-
-		// Check date is before cutoff but after today
-		if (!calendar.after(Calendar.getInstance(App.getTimeZone())))
-			exp.getErrors().add("Invalid date, must be after today.");
-		if (!calendar.before(dataTrain.getAppDataController().get()
-				.getFormSubmissionCutoff()))
-			exp.getErrors().add(
-					"Invalid date, must before form submission cutoff.");
-
-		if (exp.getErrors().size() > 0)
-			throw exp;
-
+		
 		// Parsed date starts at beginning of day
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
 		calendar.set(Calendar.MINUTE, 0);
@@ -173,8 +310,10 @@ public class FormController extends AbstractController {
 		calendar.roll(Calendar.MILLISECOND, false);
 		Date endDate = calendar.getTime();
 
-		// Pass on remaining creation work
-		Form form = createForm(type, student, startDate, endDate);
+		Form form = ModelFactory.newForm(type, student);
+
+		form.setStart(startDate);
+		form.setEnd(endDate);
 
 		// Set remaining fields
 		form.setDetails(reason);

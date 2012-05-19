@@ -515,7 +515,7 @@ public class FormsServlet extends AbstractBaseServlet {
 
 			Form form = null;
 			try {
-				form = train.getFormsController().createFormD(student, date,
+				form = train.getFormsController().createFormD(student, email, date,
 						hours, details);
 			} catch (IllegalArgumentException e) {
 				validForm = false;
