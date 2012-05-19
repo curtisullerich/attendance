@@ -183,7 +183,7 @@ public class FormController extends AbstractController {
 		}
 
 		// Check date is before cutoff but after today
-		if (!dateIsAtLeastThreeWeekdaysFresh(date)) {
+		if (!ValidationUtil.dateIsAtLeastThreeWeekdaysFresh(date)) {
 			exp.getErrors().add("Invalid date, submitted too late");
 		}
 
@@ -194,44 +194,7 @@ public class FormController extends AbstractController {
 		return formACHelper(student,date,reason,Form.Type.C);
 	}
 
-	/**
-	 * Validation check for form C submission date
-	 * @param date
-	 * @return
-	 */
-	private boolean dateIsAtLeastThreeWeekdaysFresh(Date date) {
-		Calendar today = Calendar.getInstance(App.getTimeZone());
-		today.set(Calendar.HOUR_OF_DAY, 0);
-		today.set(Calendar.MINUTE,0);
-		today.set(Calendar.SECOND,0);
-		today.set(Calendar.MILLISECOND,0);
 
-		if (today.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
-			today.roll(Calendar.DATE, 2);
-		} else if (today.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-			today.roll(Calendar.DATE,1);
-		}
-		//now if it was a weekend, it's Monday for the comparison
-		
-		Calendar other = Calendar.getInstance(App.getTimeZone());
-		other.setTime(date);
-		other.set(Calendar.HOUR_OF_DAY, 0);
-		other.set(Calendar.MINUTE,0);
-		other.set(Calendar.SECOND,0);
-		other.set(Calendar.MILLISECOND,0);
-				
-		other.roll(Calendar.DATE, 3);
-
-		if (other.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
-			other.roll(Calendar.DATE, 2);
-		} else if (other.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-			other.roll(Calendar.DATE,1);
-		}
-		//now if it was a weekend, it's Monday for the comparison
-		
-		//now we should just be comparing weekend-agnostic DAYS.
-		return !other.after(today);
-	}
 	
 	
 	public Form createFormD(User student, String email, Date date, int hours, String details) {
