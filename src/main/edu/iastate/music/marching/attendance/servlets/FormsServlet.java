@@ -18,6 +18,7 @@ import edu.iastate.music.marching.attendance.controllers.FormController;
 import edu.iastate.music.marching.attendance.model.Form;
 import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.util.ValidationExceptions;
+import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
 public class FormsServlet extends AbstractBaseServlet {
 
@@ -126,7 +127,7 @@ public class FormsServlet extends AbstractBaseServlet {
 		boolean validForm = true;
 		List<String> errors = new LinkedList<String>();
 
-		if (!formSubmitted(req)) {
+		if (!ValidationUtil.isPost(req)) {
 			// This is not a post request to create a new form, no need to
 			// validate
 			validForm = false;
@@ -181,10 +182,6 @@ public class FormsServlet extends AbstractBaseServlet {
 
 			page.passOffToJsp(req, resp);
 		}
-	}
-
-	private boolean formSubmitted(HttpServletRequest req) {
-		return "POST".equals(req.getMethod());
 	}
 
 	private Date parseStartDate(HttpServletRequest req) {
@@ -338,7 +335,7 @@ public class FormsServlet extends AbstractBaseServlet {
 		boolean validForm = true;
 		List<String> errors = new LinkedList<String>();
 
-		if (!formSubmitted(req)) {
+		if (!ValidationUtil.isPost(req)) {
 			// This is not a post request to create a new form, no need to
 			// validate
 			validForm = false;
@@ -418,7 +415,7 @@ public class FormsServlet extends AbstractBaseServlet {
 		boolean validForm = true;
 		List<String> errors = new LinkedList<String>();
 
-		if (!formSubmitted(req)) {
+		if (!ValidationUtil.isPost(req)) {
 			// This is not a post request to create a new form, no need to
 			// validate
 			validForm = false;
@@ -485,7 +482,7 @@ public class FormsServlet extends AbstractBaseServlet {
 		boolean validForm = true;
 		List<String> errors = new LinkedList<String>();
 
-		if (!formSubmitted(req)) {
+		if (!ValidationUtil.isPost(req)) {
 			// This is not a post request to create a new form, no need to
 			// validate
 			validForm = false;

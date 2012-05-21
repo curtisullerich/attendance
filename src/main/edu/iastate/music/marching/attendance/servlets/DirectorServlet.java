@@ -1,6 +1,8 @@
 package edu.iastate.music.marching.attendance.servlets;
 
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -9,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.UserController;
 import edu.iastate.music.marching.attendance.model.User;
+import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
 public class DirectorServlet extends AbstractBaseServlet {
 
@@ -92,7 +95,23 @@ public class DirectorServlet extends AbstractBaseServlet {
 	private void postAppInfo(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		DataTrain train = DataTrain.getAndStartTrain();
+		
+		//get the train
+		
+		//check if there was a form submitted
+			//no->//rebuild and return the page with errors
+			//yes->//parse and validate
+				//get the item from the controller
+				//update the item and save it
+				//return the jsp
+		boolean validForm = true;
+		List<String> errors = new LinkedList<String>();
 
+		if (!ValidationUtil.isPost(req)) {
+			//not a valid POST
+			validForm = false;
+		}
+		
 		PageBuilder page = new PageBuilder(Page.appinfo, SERVLET_JSP_PATH);
 
 		page.setAttribute("appinfo", train.getAppDataController().get());
