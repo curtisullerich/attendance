@@ -70,9 +70,9 @@ public class FormsServlet extends AbstractBaseServlet {
 		case view:
 			// TODO
 			break;
-		case remove:
-			removeForm(req, resp);
-			break;
+//		case remove:
+//			removeForm(req, resp);
+//			break;
 		case messages:
 			// TODO
 			break;
@@ -219,7 +219,7 @@ public class FormsServlet extends AbstractBaseServlet {
 			exp.getErrors().add("Invalid year given:" + e.getMessage() + '.');
 		}
 		try {
-			calendar.set(Calendar.MONTH, month);
+			calendar.set(Calendar.MONTH, month-1);
 		} catch (ArrayIndexOutOfBoundsException e) {
 			exp.getErrors().add("Invalid month given:" + e.getMessage() + '.');
 		}
@@ -590,6 +590,18 @@ public class FormsServlet extends AbstractBaseServlet {
 		page.setAttribute("success_message",
 				req.getParameter("success_message"));
 
+		String removeid = req.getParameter("removeid");
+		if (removeid != null && removeid != "") {
+			long id = Long.parseLong(removeid);
+			if (fc.removeForm(id)) {
+				page.setAttribute("success_message","Form successfully deleted");
+			} else {
+				page.setAttribute("error_messages", "Form not deleted. If the form was already approved then you can't delete it.");
+				//TODO you might be able to. Check with staub
+			}
+		}
+		
+		
 		User currentUser = AuthController.getCurrentUser(req.getSession());
 
 		// HACK: @Daniel

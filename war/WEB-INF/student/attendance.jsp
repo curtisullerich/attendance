@@ -13,6 +13,7 @@
 		<h1>Attendance for <c:out value="${user.name}" /></h1>
 		
 		<h2>Absences</h2>
+
 		<jsp:include page="/WEB-INF/common/absences.jsp" />
 		
 		<jsp:include page="/WEB-INF/template/footer.jsp" />

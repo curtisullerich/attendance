@@ -3,10 +3,8 @@ package edu.iastate.music.marching.attendance.model;
 import java.util.Date;
 
 import com.google.code.twig.annotation.Activate;
-import com.google.code.twig.annotation.Child;
 import com.google.code.twig.annotation.Id;
 import com.google.code.twig.annotation.Index;
-import com.google.code.twig.annotation.Parent;
 
 public class Absence {
 
@@ -46,7 +44,6 @@ public class Absence {
 
 	private Status status;
 
-	@Parent
 	@Activate(1)
 	@Index
 	private Event event;
@@ -55,7 +52,6 @@ public class Absence {
 	@Index
 	private User student;
 
-	@Child
 	@Activate(1)
 	private MessageThread messages;
 

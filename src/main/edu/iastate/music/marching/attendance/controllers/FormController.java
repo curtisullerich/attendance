@@ -9,7 +9,6 @@ import com.google.code.twig.FindCommand.RootFindCommand;
 import com.google.code.twig.ObjectDatastore;
 
 import edu.iastate.music.marching.attendance.App;
-import edu.iastate.music.marching.attendance.controllers.DataTrain.Track;
 import edu.iastate.music.marching.attendance.model.Form;
 import edu.iastate.music.marching.attendance.model.MessageThread;
 import edu.iastate.music.marching.attendance.model.ModelFactory;
@@ -41,8 +40,7 @@ public class FormController extends AbstractController {
 
 		// Set the ancestor for this form, automatically limits results to be
 		// forms of the user
-		find = find.ancestor(user);
-
+		find = find.addFilter(Form.FIELD_STUDENT, FilterOperator.EQUAL, user);
 		return find.returnAll().now();
 	}
 
@@ -163,6 +161,7 @@ public class FormController extends AbstractController {
 		
 		// Set remaining fields
 		form.setDetails(details);
+		form.setStatus(Form.Status.Pending);
 
 		// Perform store
 		storeForm(form);
@@ -239,6 +238,7 @@ public class FormController extends AbstractController {
 
 		// Set remaining fields
 		form.setDetails(details);
+		form.setStatus(Form.Status.Pending);
 
 		// Perform store
 		storeForm(form);
@@ -280,11 +280,29 @@ public class FormController extends AbstractController {
 
 		// Set remaining fields
 		form.setDetails(reason);
+		form.setStatus(Form.Status.Pending);
 
 		// Perform store
 		storeForm(form);
 
 		return form;
 	}
-
+	
+	public boolean removeForm(Long id) {
+		ObjectDatastore od = this.dataTrain.getDataStore();
+		Form form = od.load(Form.class,id);
+		if (form.getStatus() == Form.Status.Approved) {
+			//you can't remove an approved form.
+			//TODO  you might be able to. check with staub
+			return false;
+		} else {
+			User student = form.getStudent();
+			MessageThread mt = form.getMessageThread();
+			od.delete(mt); //the associated messages are embedded in the MessageThread, so there's no need to delete them separately
+			od.delete(form);
+			od.refresh(student);
+			return true;
+		}
+	}
+	
 }

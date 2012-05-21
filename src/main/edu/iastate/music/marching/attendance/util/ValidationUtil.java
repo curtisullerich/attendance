@@ -85,7 +85,7 @@ public class ValidationUtil {
 		//now if it was a weekend, it's Monday for the comparison
 		
 		//now we should just be comparing weekend-agnostic DAYS.
-		return !other.after(today);
+		return !other.before(today);
 	}
 
 }
