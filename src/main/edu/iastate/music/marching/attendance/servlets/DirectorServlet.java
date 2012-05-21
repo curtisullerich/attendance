@@ -18,7 +18,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 	private static final long serialVersionUID = 6100206975846317440L;
 
 	public enum Page {
-		index, appinfo, users, user;
+		index, appinfo, attendance, export, forms, unanchored, users, user, stats;
 	}
 
 	private static final String SERVLET_JSP_PATH = "director";
@@ -44,8 +44,14 @@ public class DirectorServlet extends AbstractBaseServlet {
 			case index:
 				showIndex(req, resp);
 				break;
+			case attendance:
+				showAttendance(req, resp);
+				break;
 			case appinfo:
 				showAppInfo(req, resp);
+				break;
+			case unanchored:
+				showUnanchored(req, resp);
 				break;
 			case users:
 				showUsers(req, resp);
@@ -82,8 +88,9 @@ public class DirectorServlet extends AbstractBaseServlet {
 			}
 
 	}
-	
-	private void postAppInfo(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+	private void postAppInfo(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
 		DataTrain train = DataTrain.getAndStartTrain();
 
 		PageBuilder page = new PageBuilder(Page.appinfo, SERVLET_JSP_PATH);
@@ -95,7 +102,8 @@ public class DirectorServlet extends AbstractBaseServlet {
 		page.passOffToJsp(req, resp);
 	}
 
-	private void showAppInfo(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	private void showAppInfo(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
 
 		DataTrain train = DataTrain.getAndStartTrain();
 
@@ -104,6 +112,34 @@ public class DirectorServlet extends AbstractBaseServlet {
 		page.setAttribute("appinfo", train.getAppDataController().get());
 
 		page.setPageTitle("Application Info");
+
+		page.passOffToJsp(req, resp);
+	}
+	
+	private void showAttendance(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+
+		DataTrain train = DataTrain.getAndStartTrain();
+
+		PageBuilder page = new PageBuilder(Page.attendance, SERVLET_JSP_PATH);
+
+		page.setAttribute("absences", train.getAbscencesController().getAll());
+
+		page.setPageTitle("Attendance");
+
+		page.passOffToJsp(req, resp);
+	}
+	
+	private void showUnanchored(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+
+		DataTrain train = DataTrain.getAndStartTrain();
+
+		PageBuilder page = new PageBuilder(Page.unanchored, SERVLET_JSP_PATH);
+
+		page.setAttribute("absences", train.getAbscencesController().getUnanchored());
+
+		page.setPageTitle("Unanchored");
 
 		page.passOffToJsp(req, resp);
 	}

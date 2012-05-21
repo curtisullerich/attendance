@@ -11,7 +11,19 @@ import com.google.code.twig.annotation.Parent;
 public class Absence {
 
 	public enum Type {
-		Absence, Tardy, EarlyCheckOut
+		Absence, Tardy, EarlyCheckOut;
+
+		public boolean isAbsence() {
+			return Absence.equals(this);
+		}
+
+		public boolean isTardy() {
+			return Tardy.equals(this);
+		}
+
+		public boolean isEarlyCheckOut() {
+			return EarlyCheckOut.equals(this);
+		}
 	}
 
 	public static enum Status {
@@ -26,7 +38,7 @@ public class Absence {
 	 */
 	Absence() {
 	}
-	
+
 	@Id
 	private long id;
 
@@ -50,9 +62,8 @@ public class Absence {
 	private Date start;
 
 	private Date end;
-	
-	public long getId()
-	{
+
+	public long getId() {
 		return id;
 	}
 

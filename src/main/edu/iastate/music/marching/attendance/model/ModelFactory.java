@@ -2,6 +2,8 @@ package edu.iastate.music.marching.attendance.model;
 
 import java.util.Date;
 
+import com.google.code.twig.annotation.AnnotationObjectDatastore;
+
 public class ModelFactory {
 
 	public static Event newEvent(Event.Type type, Date start, Date end) {
@@ -57,5 +59,9 @@ public class ModelFactory {
 		m.setResolved(false);
 		
 		return m;
+	}
+	
+	public static AnnotationObjectDatastore newObjectDatastore() {
+		return new ObjectDatastore();
 	}
 }

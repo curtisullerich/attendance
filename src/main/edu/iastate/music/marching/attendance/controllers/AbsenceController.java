@@ -1,10 +1,13 @@
 package edu.iastate.music.marching.attendance.controllers;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.code.twig.ObjectDatastore;
+import com.google.common.collect.Iterators;
 
 import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.Event;
@@ -25,7 +28,7 @@ public class AbsenceController extends AbstractController {
 		if (student == null)
 			throw new IllegalArgumentException(
 					"Tried to create absence for null user");
-		
+
 		// TODO : Check for exact duplicates
 
 		Absence absence = ModelFactory.newAbsence(Absence.Type.Tardy, student);
@@ -46,7 +49,7 @@ public class AbsenceController extends AbstractController {
 		if (student == null)
 			throw new IllegalArgumentException(
 					"Tried to create absence for null user");
-		
+
 		// TODO : Check for exact duplicates
 
 		Absence absence = ModelFactory.newAbsence(Absence.Type.Tardy, student);
@@ -95,7 +98,7 @@ public class AbsenceController extends AbstractController {
 
 		// Then do actual store
 		od.store(absence);
-		
+
 		return absence;
 	}
 
@@ -106,6 +109,17 @@ public class AbsenceController extends AbstractController {
 				.type(Absence.class)
 				.addFilter(Absence.FIELD_STUDENT, FilterOperator.EQUAL, student)
 				.returnAll().now();
+	}
+
+	public List<Absence> getUnanchored() {
+		return this.train.getDataStore().find().type(Absence.class)
+				.addFilter(Absence.FIELD_STUDENT, FilterOperator.EQUAL, null)
+				.returnAll().now();
+	}
+
+	public List<Absence> getAll() {
+		return this.train.getDataStore().find().type(Absence.class).returnAll()
+				.now();
 	}
 
 }
