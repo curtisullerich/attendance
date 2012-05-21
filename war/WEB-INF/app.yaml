@@ -82,10 +82,5 @@ handlers:
     path: "admin"
   name: admin
 
-admin_console:
-  pages:
-  - name: Users Admin
-    url: "admin/users"
-
 error_handlers:
   - file: /error.html
