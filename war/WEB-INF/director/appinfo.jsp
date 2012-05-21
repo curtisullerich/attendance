@@ -81,7 +81,6 @@
 				<input type="email" id="TimeWorkedEmail" />
 				<input type="button" value="Add Email" onclick="addTimeWorkedEmail()"/>
 				<br/>
-				Leave blank to not change the password.
 			</dd>
 			
 

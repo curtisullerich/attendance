@@ -10,7 +10,8 @@
 		<h1>${pagetemplate.title}</h1>
 		<br/>
 		<jsp:include page="/WEB-INF/common/absences.jsp" />
-		
+
 		<jsp:include page="/WEB-INF/template/footer.jsp" />
 	</body>
+
 </html>

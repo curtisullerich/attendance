@@ -40,8 +40,15 @@
 					<li class="selected">
 						<a href="/director/">Director</a>
 						<ul>
+							<li class="${pagetemplate.jspath eq 'director/attendance'?'selected':''}"><a href="/director/attendance">Attendance</a></li>
+							<li class="${pagetemplate.jspath eq 'director/forms'?'selected':''}"><a href="/director/forms">Forms</a></li>
+							<li class="${pagetemplate.jspath eq 'director/stats'?'selected':''}"><a href="/director/stats">Statistics</a></li>
+							<li class="${pagetemplate.jspath eq 'director/messages'?'selected':''}"><a href="/director/messages">Messages</a></li>
+							<li class="${pagetemplate.jspath eq 'director/unanchored'?'selected':''}"><a href="/director/unanchored">Un-Anchored</a></li>
+							<li class="${pagetemplate.jspath eq 'director/users'?'selected':''}"><a href="/director/users">Users</a></li>
+							<li class="${pagetemplate.jspath eq 'director/info'?'selected':''}"><a href="/director/info">My Info</a></li>
 							<li class="${pagetemplate.jspath eq 'director/appinfo'?'selected':''}"><a href="/director/appinfo">App Settings</a></li>
-							<li class="${pagetemplate.jspath eq 'director/users'?'selected':''}"><a href="/director/users">Edit Users</a></li>
+							<li class="${pagetemplate.jspath eq 'director/export'?'selected':''}"><a href="/director/export">Export Grades</a></li>
 						</ul>
 					</li>
 					</c:if>

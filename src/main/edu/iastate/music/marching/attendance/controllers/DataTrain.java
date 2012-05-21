@@ -3,12 +3,14 @@ package edu.iastate.music.marching.attendance.controllers;
 import java.util.concurrent.Future;
 
 import com.google.appengine.api.datastore.Transaction;
-import com.google.code.twig.ObjectDatastore;
 import com.google.code.twig.annotation.AnnotationObjectDatastore;
+import com.google.code.twig.standard.StandardObjectDatastore;
+
+import edu.iastate.music.marching.attendance.model.ModelFactory;
 
 public class DataTrain {
 
-	private ObjectDatastore datastore;
+	private AnnotationObjectDatastore datastore;
 	/**
 	 * Current transaction
 	 */
@@ -19,7 +21,7 @@ public class DataTrain {
 	}
 
 	public DataTrain() {
-		datastore = new AnnotationObjectDatastore();
+		datastore = ModelFactory.newObjectDatastore();
 	}
 
 	public AbsenceController getAbscencesController() {
@@ -50,7 +52,7 @@ public class DataTrain {
 		return new UserController(this);
 	}
 
-	ObjectDatastore getDataStore() {
+	StandardObjectDatastore getDataStore() {
 		return this.datastore;
 	}
 
