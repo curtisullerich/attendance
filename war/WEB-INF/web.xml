@@ -53,7 +53,7 @@
     <servlet-class>edu.iastate.music.marching.attendance.servlets.FormsServlet</servlet-class>
     <init-param>
       <param-name>path</param-name>
-      <param-value>/student/forms</param-value>
+      <param-value>director/forms</param-value>
     </init-param>
     <init-param>
       <param-name>userType</param-name>

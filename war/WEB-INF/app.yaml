@@ -46,7 +46,7 @@ handlers:
   servlet: edu.iastate.music.marching.attendance.servlets.FormsServlet
   init_params:
     userType: Director
-    path: "/student/forms"
+    path: "director/forms"
   name: director_forms
 
 - url: /MobileApp/data/*
@@ -85,7 +85,7 @@ handlers:
 admin_console:
   pages:
   - name: Users Admin
-    url: admin/users
+    url: "admin/users"
 
 error_handlers:
   - file: /error.html
