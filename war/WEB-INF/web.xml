@@ -65,6 +65,22 @@
     <url-pattern>/director/forms/*</url-pattern>
   </servlet-mapping>
   <servlet>
+    <servlet-name>director_messages</servlet-name>
+    <servlet-class>edu.iastate.music.marching.attendance.servlets.MessagingServlet</servlet-class>
+    <init-param>
+      <param-name>path</param-name>
+      <param-value>director/messages</param-value>
+    </init-param>
+    <init-param>
+      <param-name>userType</param-name>
+      <param-value>Director</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>director_messages</servlet-name>
+    <url-pattern>/director/messages/*</url-pattern>
+  </servlet-mapping>
+  <servlet>
     <servlet-name>mobileapp_data</servlet-name>
     <servlet-class>edu.iastate.music.marching.attendance.servlets.MobileAppDataServlet</servlet-class>
     <init-param>
@@ -103,6 +119,22 @@
   <servlet-mapping>
     <servlet-name>student_forms</servlet-name>
     <url-pattern>/student/forms/*</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <servlet-name>student_messages</servlet-name>
+    <servlet-class>edu.iastate.music.marching.attendance.servlets.MessagingServlet</servlet-class>
+    <init-param>
+      <param-name>path</param-name>
+      <param-value>student/messages</param-value>
+    </init-param>
+    <init-param>
+      <param-name>userType</param-name>
+      <param-value>Student</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>student_messages</servlet-name>
+    <url-pattern>/student/messages/*</url-pattern>
   </servlet-mapping>
   <servlet>
     <servlet-name>ta</servlet-name>
