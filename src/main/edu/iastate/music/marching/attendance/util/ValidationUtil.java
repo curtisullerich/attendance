@@ -4,6 +4,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.regex.Pattern;
 
+import javax.servlet.http.HttpServletRequest;
+
 import edu.iastate.music.marching.attendance.App;
 
 public class ValidationUtil {
@@ -42,6 +44,10 @@ public class ValidationUtil {
 	public static boolean isValidText(String text, boolean canBeEmpty) {
 		// TODO Auto-generated method stub
 		return true;
+	}
+	
+	public static boolean isPost(HttpServletRequest req) {
+		return "POST".equals(req.getMethod());
 	}
 
 	public static boolean isValidFormDEmail(String email) {
