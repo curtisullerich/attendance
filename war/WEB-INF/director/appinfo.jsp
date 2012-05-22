@@ -35,7 +35,7 @@
 		<jsp:include page="/WEB-INF/template/header.jsp" />
 	
 		<h1>Application Settings for: <c:out value="${appinfo.title}" /></h1>
-		<form action="" method="post" accept-charset="utf-8">
+		<form action="./appinfo" method="post" accept-charset="utf-8">
 		
 		<dl class="block-layout">
 			
@@ -88,7 +88,6 @@
 	
 
 				<input type="submit" value="Save Info" name="SaveInfo"/>
-				<input type="button" value="Back" name="Back" onclick="window.location = '/admin/users'"/>
 		</form>		
 		
 		<jsp:include page="/WEB-INF/template/footer.jsp" />
