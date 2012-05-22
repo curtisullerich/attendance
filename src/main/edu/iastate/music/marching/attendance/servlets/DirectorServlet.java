@@ -1,6 +1,8 @@
 package edu.iastate.music.marching.attendance.servlets;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -8,8 +10,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.iastate.music.marching.attendance.controllers.AppDataController;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.UserController;
+import edu.iastate.music.marching.attendance.model.AppData;
 import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
@@ -95,7 +99,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 	private void postAppInfo(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		DataTrain train = DataTrain.getAndStartTrain();
-		
+		AppDataController appDataController = new AppDataController(train);
 		//get the train
 		
 		//check if there was a form submitted
@@ -106,11 +110,36 @@ public class DirectorServlet extends AbstractBaseServlet {
 				//return the jsp
 		boolean validForm = true;
 		List<String> errors = new LinkedList<String>();
-
+		String[] emails = null;
+		
 		if (!ValidationUtil.isPost(req)) {
 			//not a valid POST
 			validForm = false;
 		}
+		else
+		{
+			emails = req.getParameter("hiddenEmails").split("delimit");
+			if (emails != null) {
+				AppData data = appDataController.get();
+				List<String> emailList = new LinkedList<String>();
+				for (int i = 0; i < emails.length; i++)
+				{
+					emailList.add(emails[i]);
+				}
+				
+				data.setTimeWorkedEmails(emailList);
+				
+				//I think everything above saves all that stuff in the AppData
+				//It just doesn't update on the actual page. I had changed this 
+				//method to public so I had access to it but that didn't help.
+				appDataController.save(data);
+			}
+			else {
+				validForm = false;
+			}
+		}
+		
+		
 		
 		PageBuilder page = new PageBuilder(Page.appinfo, SERVLET_JSP_PATH);
 

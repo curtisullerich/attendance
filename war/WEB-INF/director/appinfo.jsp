@@ -23,6 +23,21 @@
 		      $(this).remove();
 		    });
 		}
+		
+		function preprocessEmails(){
+			var opts = document.getElementById('TimeWorkedEmails').options;
+			var emails = "";
+			for (var i = 0; i < opts.length; i++)
+			{
+				emails += opts[i].value + "delimit";
+			}
+//			$("#TimeWorkedEmails").each(function()
+//			{
+//			    emails += $(this).val() + "delimit";
+//			});
+
+			$('input[name=hiddenEmails]').val(emails);
+		}
 		</script>
 	</head>
 
@@ -87,9 +102,9 @@
 		</dl>
 	
 
-				<input type="submit" value="Save Info" name="SaveInfo"/>
+				<input type="submit" value="Save Info" name="SaveInfo" onclick="preprocessEmails();"/>
+				<input type="hidden" id="hiddenEmails" name="hiddenEmails" value="">
 		</form>		
-		
 		<jsp:include page="/WEB-INF/template/footer.jsp" />
 	</body>
 
