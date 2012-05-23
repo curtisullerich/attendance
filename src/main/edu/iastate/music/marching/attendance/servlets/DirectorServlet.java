@@ -2,6 +2,7 @@ package edu.iastate.music.marching.attendance.servlets;
 
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
@@ -86,11 +87,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		//example value: train.getAppDataController().get();
 		
-		Calendar date = Calendar.getInstance(TimeZone.getTimeZone("America/Chicago"));
-		String printedDate = date.get(Calendar.HOUR)+":"+((date.get(Calendar.MINUTE) > 9) ? date.get(Calendar.MINUTE) : "0"+date.get(Calendar.MINUTE))+" "+(date.get(Calendar.AM_PM) == Calendar.PM ? "pm" : "am")+" on "+(date.get(Calendar.MONTH)+1)+"/"+date.get(Calendar.DAY_OF_MONTH)+"/"+date.get(Calendar.YEAR);
-		
-		@SuppressWarnings("unused")
-		boolean ampm = date.get(Calendar.MINUTE) <= 9;
+		Date date = new Date();		
 		
 		int numAbsences = train.getAbsencesController().get(Absence.Type.Absence).size();
 		int numTardy = train.getAbsencesController().get(Absence.Type.Tardy).size();
@@ -101,9 +98,10 @@ public class DirectorServlet extends AbstractBaseServlet {
 		String avgAbsent = numEvents != 0 ? (numAbsences/numEvents)+"" : "No Recorded Events";
 		String avgPresentWR = numEvents != 0 ? (numStudents-(numAbsences+numTardy)/numEvents)+"" : "No Recorded Events";
 		
-		page.setAttribute("date", printedDate);
+		page.setAttribute("date", date);
 		
 		page.setAttribute("numStudents", numStudents);
+		page.setAttribute("numEvents", numEvents);
 		page.setAttribute("avgPresentStudents", avgPresent);
 		page.setAttribute("avgTardyStudents", avgTardy);
 		page.setAttribute("avgAbsentStudents", avgAbsent);
