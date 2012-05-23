@@ -1,12 +1,14 @@
 package edu.iastate.music.marching.attendance.controllers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.code.twig.ObjectDatastore;
+import com.google.code.twig.FindCommand.RootFindCommand;
 import com.google.common.collect.Iterators;
 
 import edu.iastate.music.marching.attendance.model.Absence;
@@ -109,6 +111,15 @@ public class AbsenceController extends AbstractController {
 				.type(Absence.class)
 				.addFilter(Absence.FIELD_STUDENT, FilterOperator.EQUAL, student)
 				.returnAll().now();
+	}
+	
+	public List<Absence> get(Absence.Type... types) {
+
+		RootFindCommand<Absence> find = this.train.getDataStore().find()
+				.type(Absence.class);
+		find.addFilter(Absence.FIELD_TYPE, FilterOperator.IN, Arrays.asList(types));
+
+		return find.returnAll().now();
 	}
 
 	public List<Absence> getUnanchored() {

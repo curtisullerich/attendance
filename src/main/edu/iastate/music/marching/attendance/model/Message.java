@@ -20,4 +20,20 @@ public class Message {
 	//the time at which the message was sent
 	private Date timestamp;
 
+	public User getAuthor() {
+		return this.author;
+	}
+
+	public void setAuthor(User author) {
+		this.author = author;
+	}
+
+	public String getText() {
+		return this.text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
+
 }

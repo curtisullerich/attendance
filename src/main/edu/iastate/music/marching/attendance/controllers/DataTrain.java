@@ -28,7 +28,7 @@ public class DataTrain {
 		return new MessageThreadController(this);
 	}
 
-	public AbsenceController getAbscencesController() {
+	public AbsenceController getAbsencesController() {
 		return new AbsenceController(this);
 	}
 
@@ -55,6 +55,10 @@ public class DataTrain {
 	public UserController getUsersController() {
 		return new UserController(this);
 	}
+	
+	public MessagingController getMessagingController() {
+		return new MessagingController(this);
+	}
 
 	StandardObjectDatastore getDataStore() {
 		return this.datastore;
@@ -66,7 +70,7 @@ public class DataTrain {
 	 * Note that only one transaction can be active at a time
 	 */
 	public Track switchTracks() {
-		
+
 		this.track = new Track(getDataStore().beginTransaction());
 		return this.track;
 	}
