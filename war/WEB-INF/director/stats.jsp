@@ -23,7 +23,7 @@
 		<br/>
 		<br/>
 		
-		<table style="font-size:small" cellspacing=10 width=400>
+		<table style="font-size:small" cellspacing=10 width=450>
 			<tr>
 				<td>
 					Number of Students: 
@@ -42,7 +42,7 @@
 			</tr>
 			<tr>
 				<td>
-					Average Present Students (including those tardy): 
+					Average Present Students (including those tardy and leaving early): 
 				</td>
 				<td>
 					<c:out value="${avgPresentStudents}" />
@@ -62,6 +62,14 @@
 				</td>
 				<td>
 					<c:out value="${avgTardyStudents}" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Average Students Who Leave Early: 
+				</td>
+				<td>
+					<c:out value="${avgLeaveEarly}" />
 				</td>
 			</tr>
 			<tr>
@@ -89,6 +97,8 @@
 			</tr>
 		</table>
 		
+		<br/>
+		Please be aware that these statistics will be made inaccurate by Un-Anchored items.
 		
 		<jsp:include page="/WEB-INF/template/footer.jsp" />
 	</body>

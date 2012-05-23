@@ -57,7 +57,7 @@
 					document.getElementById("Early Check-Out").checked = false;
 					return false;
 				}
-				var subType = r1==0 ? "tardy" : "earlyOut"; 
+				var subType = r1 == true ? "tardy" : "earlyOut"; 
 				//converts input (universityID card or netID) to netID
 				var input = document.getElementById("student").value;
 				document.getElementById("student").value = "";
@@ -170,7 +170,9 @@
 			 */
 			function printTardies(sortType) {
 				//create array of tardy records from today
-				var array = storeToArray(tardyPrepend, dateToday(), sortType);
+				var tardies = storeToArray(tardyPrepend, dateToday(), sortType);
+				var earlyOuts = storeToArray(earlyCheckOutPrepend, dateToday(), sortType);
+				var array = tardies.concat(earlyOuts);
 				if(array.length > 0){
 					//sort array - first column takes precedence, sorted by ascii
 					array.sort();
@@ -232,6 +234,7 @@
 					document.getElementById("clear").value = "Clearing...";
 					//clear all tardy records
 					clearLocalStoragewithPrepend(tardyPrepend);
+					clearLocalStoragewithPrepend(earlyCheckOutPrepend);
 					//turn off printed tardy list
 					viewTardiesOn = false;
 					retrieveTardies();
