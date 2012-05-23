@@ -46,8 +46,15 @@ handlers:
   servlet: edu.iastate.music.marching.attendance.servlets.FormsServlet
   init_params:
     userType: Director
-    path: "/student/forms"
+    path: "director/forms"
   name: director_forms
+
+- url: /director/messages/*
+  servlet: edu.iastate.music.marching.attendance.servlets.MessagingServlet
+  init_params:
+    userType: Director
+    path: "director/messages"
+  name: director_messages
 
 - url: /MobileApp/data/*
   servlet: edu.iastate.music.marching.attendance.servlets.MobileAppDataServlet
@@ -68,6 +75,13 @@ handlers:
     path: "student/forms"
   name: student_forms
 
+- url: /student/messages/*
+  servlet: edu.iastate.music.marching.attendance.servlets.MessagingServlet
+  init_params:
+    userType: Student
+    path: "student/messages"
+  name: student_messages
+
 - url: /ta/*
   servlet: edu.iastate.music.marching.attendance.servlets.TAServlet
   init_params:
@@ -81,11 +95,6 @@ handlers:
   init_params:
     path: "admin"
   name: admin
-
-admin_console:
-  pages:
-  - name: Users Admin
-    url: admin/users
 
 error_handlers:
   - file: /error.html
