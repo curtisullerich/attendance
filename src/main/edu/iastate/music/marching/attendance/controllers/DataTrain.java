@@ -24,7 +24,7 @@ public class DataTrain {
 		datastore = ModelFactory.newObjectDatastore();
 	}
 
-	public AbsenceController getAbscencesController() {
+	public AbsenceController getAbsencesController() {
 		return new AbsenceController(this);
 	}
 

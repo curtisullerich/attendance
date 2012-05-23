@@ -107,7 +107,7 @@ public class MobileDataController {
 		//try {
 
 			EventController ec = this.train.getEventsController();
-			AbsenceController ac = this.train.getAbscencesController();
+			AbsenceController ac = this.train.getAbsencesController();
 			UserController uc = this.train.getUsersController();
 
 			// List<Event> localEvents = new LinkedList<Event>();
@@ -237,6 +237,6 @@ public class MobileDataController {
 //		transaction.bendIronBack();
 
 		// TODO return string about what was uploaded here
-		return "Upload stats";
+		return "TODO: return string about what was uploaded here";
 	}
 }
