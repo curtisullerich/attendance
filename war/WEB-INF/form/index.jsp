@@ -66,7 +66,7 @@
 									<button onClick="remove('${form.id}');">Delete</button>
 								</td>
 								<td>
-									<button onClick="window.location='./messages/viewthread?id=${form.id}'">messages</button>
+									<button onClick="window.location='./messages/viewthread?id=${form.messageThread.id}'">messages</button>
 								</td>
 							</tr>	
 						</c:forEach>
