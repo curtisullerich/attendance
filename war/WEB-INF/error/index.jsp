@@ -6,36 +6,28 @@
 <html>
   <head>
     <jsp:include page="/WEB-INF/template/head.jsp" />
-    <link rel="stylesheet" type="text/css" href="/css/404.css">
-	<title>@10Dance 404!!</title>
 	<script src="/js/common.js"></script>
   </head>
   <body>
   	<jsp:include page="/WEB-INF/template/header.jsp" />
-   	<div class="errorbox">
-   		<div class="heading">
+   	<div>
+   		<div>
 			<h1>You've been 404'd!!</h1>
 		</div>
 		<br/>
-		<div class="whitebox">
+		<div>
 			This is not the page you're looking for.
 			<br/>
 			Unfortunately, we can't find it.
 			<br/>
 			Try double-checking the URL you entered.
 			<br/>
-			If you got this error by clicking on a link, contact the developers at <a href="mailto:a10dance@iastate.edu?Subject=@10dance%20404%20Error">a10dance@iastate.edu</a>.
+			If you got this error by clicking on a link,
 			<br/>
-			<br/>
-			You can easily find your way to the main
-			<br/>
-			@10dance page using this fancy-shmancy button:
-			<div class="centeralign">
-				<input class="button" type="button" id="main" value="Main Home Page" onclick="window.location='/'" />
-			</div>
+			contact the developers at <a href="mailto:mbattendance@iastate.edu?Subject=@10dance%20404%20Error">mbattendance@iastate.edu</a>.
 		</div>
-		<input class="back" type="button" id="back" value="Back" onclick="goBack()"/>
 		<br/>
+		<img src="/img/404Cy.png" height="250" alt="404 Cy" />
    </div>
     <jsp:include page="/WEB-INF/template/footer.jsp" />
   </body>

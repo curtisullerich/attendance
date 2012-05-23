@@ -30,6 +30,7 @@ public class Absence {
 
 	public static final String FIELD_EVENT = "event";
 	public static final String FIELD_STUDENT = "student";
+	public static final String FIELD_TYPE = "type";
 
 	/**
 	 * Create absence through AbsenceController (DataModel.absence().create(...)
