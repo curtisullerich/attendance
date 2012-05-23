@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <html>
 	<head>
 		<jsp:include page="/WEB-INF/template/head.jsp" />
@@ -13,7 +15,11 @@
 		
 		<h1>${pagetemplate.title}</h1>
 		
-		<b>Current as of <c:out value="${date}"/></b>
+		<b>Current as of
+			<fmt:setTimeZone value="America/Chicago" />
+			<fmt:formatDate value="${date}" pattern="h:mm a" /> 
+			<fmt:formatDate value="${date}" pattern="M/dd/yyyy" />
+		</b>
 		<br/>
 		<br/>
 		
@@ -24,6 +30,14 @@
 				</td>
 				<td>
 					<c:out value="${numStudents}" />
+				</td>
+			</tr>
+			<tr>
+				<td>
+					Number of Events: 
+				</td>
+				<td>
+					<c:out value="${numEvents}" />
 				</td>
 			</tr>
 			<tr>
