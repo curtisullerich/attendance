@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 import com.google.code.twig.annotation.Activate;
+import com.google.code.twig.annotation.Embedded;
 import com.google.code.twig.annotation.Id;
 import com.google.code.twig.annotation.Index;
 
@@ -98,7 +99,7 @@ public class User implements Serializable {
 	private String major;
 	
 	private String rank;
-
+		
 	public String getFirstName() {
 		return firstName;
 	}

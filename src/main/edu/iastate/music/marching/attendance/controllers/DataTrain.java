@@ -24,6 +24,10 @@ public class DataTrain {
 		datastore = ModelFactory.newObjectDatastore();
 	}
 
+	public MessageThreadController getMessageThreadController() {
+		return new MessageThreadController(this);
+	}
+
 	public AbsenceController getAbscencesController() {
 		return new AbsenceController(this);
 	}

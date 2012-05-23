@@ -53,7 +53,6 @@
 			</dl>
 			
 			<input type="submit" value="Save Info" name="SaveInfo"/>
-			<input type="button" value="Back" name="Back" onclick="window.location = './'"/>
 		</form>		
 		
 		<jsp:include page="/WEB-INF/template/footer.jsp" />
