@@ -7,7 +7,8 @@
 	</head>
 
 	<body>
-	
+		TODO <br/>
+		Link to director/user not admin/user
 		<jsp:include page="/WEB-INF/template/header.jsp" />
 	
 		<h1>Users</h1>

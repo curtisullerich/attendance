@@ -7,7 +7,9 @@
 	</head>
 
 	<body>
-	
+		TODO <br/>
+		action should be /director/users (I think) <br/>
+		include attendance statistics
 		<jsp:include page="/WEB-INF/template/header.jsp" />
 	
 		<h1>User: <c:out value="${user.netID}" /></h1>

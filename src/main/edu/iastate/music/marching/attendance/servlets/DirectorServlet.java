@@ -66,10 +66,32 @@ public class DirectorServlet extends AbstractBaseServlet {
 			case user:
 				showUserInfo(req, resp);
 				break;
+			case stats:
+				showStats(req, resp);
+				break;
 			default:
 				ErrorServlet.showError(req, resp, 404);
 			}
 
+	}
+
+	private void showStats(HttpServletRequest req, HttpServletResponse resp) 
+			throws ServletException, IOException {
+		
+		DataTrain train = DataTrain.getAndStartTrain();
+		
+		PageBuilder page = new PageBuilder(Page.stats, SERVLET_JSP_PATH);
+
+		//example value: train.getAppDataController().get();
+		
+		page.setAttribute("avgPresentStudents", 5/*value*/);
+		//page.setAttribute("avgPresentStudents", /*value*/);
+		//page.setAttribute("avgPresentStudents", /*value*/);
+		//page.setAttribute("avgPresentStudents", /*value*/);
+
+		page.setPageTitle("Statistics");
+		
+		page.passOffToJsp(req, resp);
 	}
 
 	@Override
