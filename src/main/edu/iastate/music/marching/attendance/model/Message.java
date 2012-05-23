@@ -14,4 +14,20 @@ public class Message {
 	@Type(Text.class)
 	private String text;
 
+	public User getAuthor() {
+		return this.author;
+	}
+
+	public void setAuthor(User author) {
+		this.author = author;
+	}
+
+	public String getText() {
+		return this.text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
+
 }
