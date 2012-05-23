@@ -87,16 +87,18 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		//example value: train.getAppDataController().get();
 		
-		Date date = new Date();		
+		Date date = new Date();	
 		
 		int numAbsences = train.getAbsencesController().get(Absence.Type.Absence).size();
 		int numTardy = train.getAbsencesController().get(Absence.Type.Tardy).size();
+		int numLeaveEarly = train.getAbsencesController().get(Absence.Type.EarlyCheckOut).size();
 		int numStudents = train.getUsersController().get(User.Type.Student).size();
 		int numEvents = train.getEventsController().readAll().size(); 
 		String avgPresent =  numEvents != 0 ? (numStudents-(numAbsences/numEvents))+"" : "No Recorded Events";
 		String avgTardy = numEvents != 0 ? (numTardy/numEvents)+"" : "No Recorded Events";
+		String avgLeaveEarly = numEvents != 0 ? (numLeaveEarly/numEvents)+"" : "No Recorded Events";		
 		String avgAbsent = numEvents != 0 ? (numAbsences/numEvents)+"" : "No Recorded Events";
-		String avgPresentWR = numEvents != 0 ? (numStudents-(numAbsences+numTardy)/numEvents)+"" : "No Recorded Events";
+		String avgPresentWR = numEvents != 0 ? (numStudents-(numAbsences+numTardy+numLeaveEarly)/numEvents)+"" : "No Recorded Events";
 		
 		page.setAttribute("date", date);
 		
@@ -106,6 +108,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		page.setAttribute("avgTardyStudents", avgTardy);
 		page.setAttribute("avgAbsentStudents", avgAbsent);
 		page.setAttribute("avgPresentStudentsWR", avgPresentWR);
+		page.setAttribute("avgLeaveEarly", avgLeaveEarly);
 
 		page.setPageTitle("Statistics");
 		
