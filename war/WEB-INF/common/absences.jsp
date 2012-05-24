@@ -51,12 +51,26 @@
 					<td>
 						<c:if test="${absence.messageThread.resolved}">
 							<strong>
-								<a href="/student/messages/viewthread?id=${absence.messageThread.id}">Unread messages</a>
+								<c:choose>
+									<c:when test="${auth.user.type.director}">
+										<a href="/director/messages/viewthread?id=${absence.messageThread.id}">Messages(${fn:length(absence.messageThread.messages.size)})</a>
+									</c:when>
+									<c:when test="${auth.user.type.student || auth.user.type.ta}">
+										<a href="/student/messages/viewthread?id=${absence.messageThread.id}">Messages(${fn:length(absence.messageThread.messages.size)})</a>
+									</c:when>
+								</c:choose>
 							</strong>
 						</c:if>
 						
 						<c:if test="${!absence.messageThread.resolved}">
-							<a href="/student/messages/viewthread?id=${absence.messageThread.id}">No new messages</a>
+							<c:choose>
+								<c:when test="${auth.user.type.director}">
+									<a href="/director/messages/viewthread?id=${absence.messageThread.id}">Messages(${fn:length(absence.messageThread.messages.size)})</a>
+								</c:when>
+								<c:when test="${auth.user.type.student || auth.user.type.ta}">
+									<a href="/student/messages/viewthread?id=${absence.messageThread.id}">Messages(${fn:length(absence.messageThread.messages.size)})</a>
+								</c:when>
+							</c:choose>
 						</c:if>
 						<!-- Messages button. Make it bold if there's an unresolved thread. -->
 					</td>

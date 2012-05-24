@@ -1,12 +1,7 @@
 package edu.iastate.music.marching.attendance.servlets;
 
 import java.io.IOException;
-<<<<<<< HEAD
-import java.io.PrintWriter;
-import java.util.Enumeration;
-=======
 import java.util.Date;
->>>>>>> 155df6c0db15df0ae902b12398ccd8877c67313e
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,17 +9,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-<<<<<<< HEAD
 import edu.iastate.music.marching.attendance.controllers.AppDataController;
-import edu.iastate.music.marching.attendance.controllers.DataTrain;
-import edu.iastate.music.marching.attendance.controllers.UserController;
-import edu.iastate.music.marching.attendance.model.AppData;
-=======
 import edu.iastate.music.marching.attendance.controllers.AuthController;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.UserController;
 import edu.iastate.music.marching.attendance.model.Absence;
->>>>>>> 155df6c0db15df0ae902b12398ccd8877c67313e
+import edu.iastate.music.marching.attendance.model.AppData;
 import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
@@ -193,15 +183,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 			}
 		}
 		
-		
-		
-		PageBuilder page = new PageBuilder(Page.appinfo, SERVLET_PATH);
-
-		page.setAttribute("appinfo", train.getAppDataController().get());
-
-		page.setPageTitle("Application Info");
-
-		page.passOffToJsp(req, resp);
+		showAppInfo(req,resp);
 	}
 
 	private void showAppInfo(HttpServletRequest req, HttpServletResponse resp)
@@ -211,8 +193,9 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		PageBuilder page = new PageBuilder(Page.appinfo, SERVLET_PATH);
 
-		page.setAttribute("appinfo", train.getAppDataController().get());
-
+		AppData ad = train.getAppDataController().get();
+		page.setAttribute("appinfo", ad);
+		page.setAttribute("emails", ad.getTimeWorkedEmails());
 		page.setPageTitle("Application Info");
 
 		page.passOffToJsp(req, resp);

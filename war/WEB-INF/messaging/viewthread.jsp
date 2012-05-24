@@ -16,7 +16,7 @@
 			<h2>Resolved.</h2>
 			<%//the button that allows the director to mark a message as unresolved or resolved. ONLY VISIBLE TO DIRECTORS. %>
 			<c:if test="${auth.user.type.director}">
-				<form>
+				<form method="post" accept-charset="utf-8">
 					<input type="hidden" value="<c:out value="${thread.id}" />" name="id"/>
 					<input type="text" hidden="true" value="true" name="resolved"/>
 					<input type="submit" value="Un-resolve issue" name='resolveB'/>
@@ -28,7 +28,7 @@
 		<c:if test="${!thread.resolved}">
 			<h2>Not Resolved.</h2>
 			<c:if test="${auth.user.type.director}">
-				<form>
+				<form method="post" accept-charset="utf-8">
 					<input type="hidden" value="<c:out value="${thread.id}" />" name="id"/>
 					<input type="text" hidden="true" value="false" name="resolved"/>
 					<input type="submit" value="Resolve issue" name='resolveB'/>
@@ -45,7 +45,7 @@
 		<div>
 			<c:forEach items="${thread.messages}" var="message">
 				<p>
-					At <fmt:formatDate value="${message.timestamp}" pattern="M/dd/yyyy" /> 
+					<fmt:formatDate value="${message.timestamp}" pattern="'On' M/dd/yyyy 'at' h:mm:ss a"/> 
 					<strong><c:out value="${message.author.name}" /> (<c:out value="${message.author.netID}" />)</strong>
 					said:
 					<c:out value="${message.text}" />

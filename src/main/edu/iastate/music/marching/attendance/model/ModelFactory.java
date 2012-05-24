@@ -1,5 +1,6 @@
 package edu.iastate.music.marching.attendance.model;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import com.google.code.twig.annotation.AnnotationObjectDatastore;
@@ -69,6 +70,7 @@ public class ModelFactory {
 		Message m = new Message();
 		m.setAuthor(sender);
 		m.setText(message);
+		m.setTimestamp(Calendar.getInstance().getTime());
 		return m;
 	}
 }

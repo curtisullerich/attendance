@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-
+ 
 <jsp:useBean id="date" class="java.util.Date" />
 
 <fmt:formatDate var="year" value="${date}" pattern="yyyy" />
@@ -10,15 +10,17 @@
 <html>
 	<head>
 		<jsp:include page="/WEB-INF/template/head.jsp" />
-		
-		<script type="text/javascript">
-		function remove(id){
-			if (confirm("Are you sure you want to delete?"))
-			{
-				$('#loading').fadeIn();
-				window.location = "/student/forms?removeid=" + id;
+		<script>
+			function remove(url) {
+				if (confirm("Are you sure you want to delete?"))
+				{
+					$('#loading').fadeIn();
+					window.location = "/"+url;
+				}
 			}
-		}
+			function noRemove() {
+				alert("You can only delete pending forms.");
+			}
 		</script>
 	</head>
 	<body>
@@ -58,15 +60,52 @@
 						</tr>
 						<c:forEach items="${forms}" var="form">
 							<tr id="row_form_<c:out value="${form.id}" />">
-								<td><fmt:formatDate value="${form.start}" pattern="mm/dd/yyyy" /></td>
-								<td><fmt:formatDate value="${form.end}" pattern="mm/dd/yyyy" /></td>
+								<td><fmt:formatDate value="${form.start}" pattern="M/d/yyyy" /></td>
+								<td><fmt:formatDate value="${form.end}" pattern="M/d/yyyy" /></td>
 								<td>${form.type}</td>
 								<td>${form.status}</td>
 								<td>
-									<button onClick="remove('${form.id}');">Delete</button>
+									<c:choose>
+										<c:when test="${auth.user.type.student}">
+											<c:choose>
+												<c:when test="${form.status.value eq 'Pending'}">
+													<button onClick="remove('student/forms?removeid=${form.id}');">Delete</button>
+												</c:when>
+												<c:when test="${form.status ne 'Pending'}">
+													<button onClick="noRemove();">Delete</button>
+												</c:when>
+											</c:choose>
+										</c:when>
+										<c:when test="${auth.user.type.director}">
+											<button onClick="remove('director/forms?removeid=${form.id}');">Delete</button>
+										</c:when>
+									</c:choose>
 								</td>
 								<td>
-									<button onClick="window.location='./messages/viewthread?id=${form.id}'">messages</button>
+									<c:if test="${!form.messageThread.resolved}">
+										<strong>
+											<c:choose>
+												<c:when test="${auth.user.type.director}">
+													<a href="/director/messages/viewthread?id=${form.messageThread.id}">Messages(${fn:length(absence.messageThread.messages)})</a>
+												</c:when>
+												<c:when test="${auth.user.type.student || auth.user.type.ta}">
+													<a href="/student/messages/viewthread?id=${form.messageThread.id}">Messages(${fn:length(absence.messageThread.messages)})</a>
+												</c:when>
+											</c:choose>
+										</strong>
+									</c:if>
+									
+									<c:if test="${form.messageThread.resolved}">
+										<c:choose>
+											<c:when test="${auth.user.type.director}">
+												<a href="/director/messages/viewthread?id=${form.messageThread.id}">Messages(${fn:length(absence.messageThread.messages)})</a>
+											</c:when>
+											<c:when test="${auth.user.type.student || auth.user.type.ta}">
+												<a href="/student/messages/viewthread?id=${form.messageThread.id}">Messages(${fn:length(absence.messageThread.messages)})</a>
+											</c:when>
+										</c:choose>
+									</c:if>
+									<!-- Messages button. Make it bold if there's an unresolved thread. -->
 								</td>
 							</tr>	
 						</c:forEach>

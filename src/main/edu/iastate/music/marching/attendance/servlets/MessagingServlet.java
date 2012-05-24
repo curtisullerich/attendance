@@ -78,19 +78,19 @@ public class MessagingServlet extends AbstractBaseServlet {
 		//there are two possibilities, so figure 
 		//out which button was pressed and handle it
 		String resolved = req.getParameter("resolved");
-		String id = req.getParameter("Id");
+		String id = req.getParameter("id");
 		String message = req.getParameter("Message");
 		long longid = Long.parseLong(id);
 		DataTrain train = DataTrain.getAndStartTrain();
 
-		if (resolved != null && !resolved.equals("")) {//resolve or unresolved
+		if (resolved != null && !resolved.equals("")) {//resolve or unresolve
 			MessagingController mc = train.getMessagingController();
 			MessageThread mt = mc.get(longid);
 			
-			if (resolved.equals("true")) {
+			if (resolved.equals("false")) {
 				mt.setResolved(true);
 				mc.update(mt);
-			} else if (resolved.equals("false")) {
+			} else if (resolved.equals("true")) {
 				mt.setResolved(false);
 				mc.update(mt);
 			} else {

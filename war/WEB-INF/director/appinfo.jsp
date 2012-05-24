@@ -87,8 +87,11 @@
 			<dt><label for="TimeWorkedEmails">Valid Time Worked Emails for Form D</label></dt>
 			<dd>
 				<select id="TimeWorkedEmails" name="TimeWorkedEmails" size="10">
-					<c:forEach items="${daysOfWeek}" var="day">
-						<option ${DayOfWeek eq day ? 'selected' : ''}>${day}</option>
+<%-- 					<c:forEach items="${daysOfWeek}" var="day"> --%>
+<%-- 						<option ${DayOfWeek eq day ? 'selected' : ''}>${day}</option> --%>
+<%-- 					</c:forEach> --%>
+					<c:forEach items="${emails}" var="email">
+						<option ${email }>${email}</option>
 					</c:forEach>
 				</select>
 				<input type="button" value="Remove Selected" name="Back" onclick="deleteTimeWorkedEmails()"/>

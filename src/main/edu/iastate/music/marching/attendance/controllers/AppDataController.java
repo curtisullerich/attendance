@@ -59,7 +59,8 @@ public class AppDataController extends AbstractController {
 		return appData;
 	}
 
-	private AppData save(AppData appData) {
+	//TODO made this public. Is that okay?
+	public AppData save(AppData appData) {
 		dataTrain.getDataStore().storeOrUpdate(appData);
 		return appData;
 	}
