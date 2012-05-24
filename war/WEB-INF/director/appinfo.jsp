@@ -87,8 +87,8 @@
 			<dt><label for="TimeWorkedEmails">Valid Time Worked Emails for Form D</label></dt>
 			<dd>
 				<select id="TimeWorkedEmails" name="TimeWorkedEmails" size="10">
-					<c:forEach items="${daysOfWeek}" var="day">
-						<option ${DayOfWeek eq day ? 'selected' : ''}>${day}</option>
+					<c:forEach items="${emails}" var="email">
+						<option ${email }>${email}</option>
 					</c:forEach>
 				</select>
 				<input type="button" value="Remove Selected" name="Back" onclick="deleteTimeWorkedEmails()"/>
@@ -103,6 +103,7 @@
 	
 
 				<input type="submit" value="Save Info" name="SaveInfo" onclick="preprocessEmails();"/>
+				<input id='Year' size='5' type='hidden' name='Year' value='<c:out value="${year}" />' />
 				<input type="hidden" id="hiddenEmails" name="hiddenEmails" value="">
 		</form>		
 		<jsp:include page="/WEB-INF/template/footer.jsp" />
