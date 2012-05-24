@@ -1,6 +1,7 @@
 package edu.iastate.music.marching.attendance.servlets;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -9,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.iastate.music.marching.attendance.App;
 import edu.iastate.music.marching.attendance.controllers.AppDataController;
 import edu.iastate.music.marching.attendance.controllers.AuthController;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
@@ -16,6 +18,7 @@ import edu.iastate.music.marching.attendance.controllers.UserController;
 import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.AppData;
 import edu.iastate.music.marching.attendance.model.User;
+import edu.iastate.music.marching.attendance.util.ValidationExceptions;
 import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
 public class DirectorServlet extends AbstractBaseServlet {
@@ -144,6 +147,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 			throws ServletException, IOException {
 		DataTrain train = DataTrain.getAndStartTrain();
 		AppDataController appDataController = new AppDataController(train);
+		AppData data = appDataController.get();
 		//get the train
 		
 		//check if there was a form submitted
@@ -155,35 +159,45 @@ public class DirectorServlet extends AbstractBaseServlet {
 		boolean validForm = true;
 		List<String> errors = new LinkedList<String>();
 		String[] emails = null;
-		
+		String monthNum, dayNum, hourNum, minuteNum;
+		String amPm = null;
 		if (!ValidationUtil.isPost(req)) {
-			//not a valid POST
 			validForm = false;
 		}
 		else
 		{
+			//Check and update the emails
 			emails = req.getParameter("hiddenEmails").split("delimit");
 			if (emails != null) {
-				AppData data = appDataController.get();
 				List<String> emailList = new LinkedList<String>();
 				for (int i = 0; i < emails.length; i++)
 				{
 					emailList.add(emails[i]);
 				}
-				
 				data.setTimeWorkedEmails(emailList);
-				
-				//I think everything above saves all that stuff in the AppData
-				//It just doesn't update on the actual page. I had changed this 
-				//method to public so I had access to it but that didn't help.
-				appDataController.save(data);
 			}
 			else {
 				validForm = false;
 			}
+			//Handle the thrown exception
+			Date testDate = parseDate(req.getParameter("Month"), req.getParameter("Day"), 
+					req.getParameter("Year"), req.getParameter("ToHour"), 
+					req.getParameter("ToMinute"));
+			if (testDate != null)
+			{
+				data.setFormSubmissionCutoff(testDate);
+			}
+			else
+			{
+				validForm = false;
+			}
 		}
 		
-		showAppInfo(req,resp);
+		if (validForm)
+		{
+			appDataController.save(data);
+		}
+		showAppInfo(req, resp);
 	}
 
 	private void showAppInfo(HttpServletRequest req, HttpServletResponse resp)
@@ -192,10 +206,27 @@ public class DirectorServlet extends AbstractBaseServlet {
 		DataTrain train = DataTrain.getAndStartTrain();
 
 		PageBuilder page = new PageBuilder(Page.appinfo, SERVLET_PATH);
+		
+		AppData data = train.getAppDataController().get();
+		
+		Calendar cutoffDate = data.getFormSubmissionCutoff();
 
-		AppData ad = train.getAppDataController().get();
-		page.setAttribute("appinfo", ad);
-		page.setAttribute("emails", ad.getTimeWorkedEmails());
+		page.setAttribute("appinfo", data);
+
+		page.setAttribute("emails", data.getTimeWorkedEmails());
+		
+		page.setAttribute("Month", cutoffDate.get(Calendar.MONTH) + 1);
+		
+		page.setAttribute("Day", cutoffDate.get(Calendar.DATE));
+		
+		page.setAttribute("ToHour", cutoffDate.get((Calendar.HOUR == 0) ? 12: Calendar.HOUR));
+		
+		page.setAttribute("ToMinute", cutoffDate.get(Calendar.MINUTE));
+		
+		page.setAttribute("ToAMPM", (cutoffDate.get(Calendar.AM_PM) == Calendar.AM) ? "AM" : "PM");
+		
+		//page.setAttribute("cutoffTime", data.getFormSubmissionCutoff());
+		
 		page.setPageTitle("Application Info");
 
 		page.passOffToJsp(req, resp);
@@ -320,6 +351,74 @@ public class DirectorServlet extends AbstractBaseServlet {
 		page.setPageTitle("Director");
 
 		page.passOffToJsp(req, resp);
+	}
+	
+	private Date parseDate(String sMonth, String sDay, String sYear, String hour, String minute) {
+		int year = 0, month = 0, day = 0;
+		Calendar calendar = Calendar.getInstance(App.getTimeZone());
+
+		// Do validate first and store any problems to this exception
+		ValidationExceptions exp = new ValidationExceptions();
+		try {
+			year = Integer.parseInt(sYear);
+		} catch (NumberFormatException e) {
+			exp.getErrors().add("Invalid year, not a number.");
+		}
+		try {
+			month = Integer.parseInt(sMonth);
+		} catch (NumberFormatException e) {
+			exp.getErrors().add("Invalid month, not a number.");
+		}
+		try {
+			day = Integer.parseInt(sDay);
+		} catch (NumberFormatException e) {
+			exp.getErrors().add("Invalid day, not a number.");
+		}
+
+		calendar.setTimeInMillis(0);
+		calendar.setLenient(false);
+
+		try {
+			calendar.set(Calendar.YEAR, year);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			exp.getErrors().add("Invalid year given:" + e.getMessage() + '.');
+		}
+		try {
+			calendar.set(Calendar.MONTH, month-1);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			exp.getErrors().add("Invalid month given:" + e.getMessage() + '.');
+		}
+		try {
+			calendar.set(Calendar.DATE, day);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			exp.getErrors().add("Invalid day given:" + e.getMessage() + '.');
+		}
+
+		
+		//JSP only allows valid time numbers
+		try
+		{
+			calendar.set(Calendar.HOUR, Integer.parseInt(hour));
+		}
+		catch (NumberFormatException e)
+		{
+			exp.getErrors().add("Invalid hour, not a number");
+		}
+		
+		try
+		{
+			calendar.set(Calendar.MINUTE, Integer.parseInt(minute));
+		}
+		catch (NumberFormatException e)
+		{
+			exp.getErrors().add("Invalid minute, not a number");
+		}
+
+		if (exp.getErrors().size() > 0)
+			throw exp;
+
+		//TODO check the hour and minute
+		return calendar.getTime();
 	}
 
 }
