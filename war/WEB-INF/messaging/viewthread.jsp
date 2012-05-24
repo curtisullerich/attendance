@@ -13,12 +13,27 @@
 		<h1>Message Thread</h1>
 		
 		<c:if test="${thread.resolved}">
-			<strong>Resolved.</strong>
+			<h2>Resolved.</h2>
+			<%//the button that allows the director to mark a message as unresolved or resolved. ONLY VISIBLE TO DIRECTORS. %>
+			<c:if test="${auth.user.type.director}">
+				<form>
+					<input type="hidden" value="<c:out value="${thread.id}" />" name="id"/>
+					<input type="text" hidden="true" value="true" name="resolved"/>
+					<input type="submit" value="Un-resolve issue" name='resolveB'/>
+				</form>
+			</c:if>
 			<br/>
 		</c:if>
 		
 		<c:if test="${!thread.resolved}">
-			<strong>Not Resolved.</strong>
+			<h2>Not Resolved.</h2>
+			<c:if test="${auth.user.type.director}">
+				<form>
+					<input type="hidden" value="<c:out value="${thread.id}" />" name="id"/>
+					<input type="text" hidden="true" value="false" name="resolved"/>
+					<input type="submit" value="Resolve issue" name='resolveB'/>
+				</form>
+			</c:if>
 			<br/>
 		</c:if>
 		
@@ -30,9 +45,11 @@
 		<div>
 			<c:forEach items="${thread.messages}" var="message">
 				<p>
+					At <fmt:formatDate value="${message.timestamp}" pattern="M/dd/yyyy" /> 
+					<strong><c:out value="${message.author.name}" /> (<c:out value="${message.author.netID}" />)</strong>
+					said:
 					<c:out value="${message.text}" />
 					<br/>
-					<strong><c:out value="${message.author.name}" /> (<c:out value="${message.author.netID}" />)</strong>	
 				</p>
 			</c:forEach>
 		</div>
@@ -48,7 +65,7 @@
 				
 			</dl>
 			
-			<input type="hidden" value="<c:out value="${thread.id}" />" name="Id"/>
+			<input type="hidden" value="<c:out value="${thread.id}" />" name="id"/>
 			
 			<input type="submit" value="Add Message" name="Submit"/>
 		
