@@ -32,7 +32,6 @@ public class ModelFactory {
 	}
 
 	public static AppData newAppData() {
-		AppData appData = new AppData();	
 		return new AppData();
 	}
 	
@@ -56,6 +55,7 @@ public class ModelFactory {
 		MessageThread m = new MessageThread();
 		
 		// Defaults
+		// TODO: Move defaults to controller
 		m.setResolved(false);
 		
 		return m;
@@ -63,5 +63,12 @@ public class ModelFactory {
 	
 	public static AnnotationObjectDatastore newObjectDatastore() {
 		return new ObjectDatastore();
+	}
+
+	public static Message newMessage(User sender, String message) {
+		Message m = new Message();
+		m.setAuthor(sender);
+		m.setText(message);
+		return m;
 	}
 }

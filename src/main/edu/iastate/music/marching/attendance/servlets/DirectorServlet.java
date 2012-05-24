@@ -1,8 +1,12 @@
 package edu.iastate.music.marching.attendance.servlets;
 
 import java.io.IOException;
+<<<<<<< HEAD
 import java.io.PrintWriter;
 import java.util.Enumeration;
+=======
+import java.util.Date;
+>>>>>>> 155df6c0db15df0ae902b12398ccd8877c67313e
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,10 +14,17 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+<<<<<<< HEAD
 import edu.iastate.music.marching.attendance.controllers.AppDataController;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.UserController;
 import edu.iastate.music.marching.attendance.model.AppData;
+=======
+import edu.iastate.music.marching.attendance.controllers.AuthController;
+import edu.iastate.music.marching.attendance.controllers.DataTrain;
+import edu.iastate.music.marching.attendance.controllers.UserController;
+import edu.iastate.music.marching.attendance.model.Absence;
+>>>>>>> 155df6c0db15df0ae902b12398ccd8877c67313e
 import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
@@ -25,13 +36,13 @@ public class DirectorServlet extends AbstractBaseServlet {
 	private static final long serialVersionUID = 6100206975846317440L;
 
 	public enum Page {
-		index, appinfo, attendance, export, forms, unanchored, users, user, stats;
+		index, appinfo, attendance, export, forms, unanchored, users, user, stats, info;
 	}
 
-	private static final String SERVLET_JSP_PATH = "director";
+	private static final String SERVLET_PATH = "director";
 
 	public static final String INDEX_URL = pageToUrl(
-			DirectorServlet.Page.index, SERVLET_JSP_PATH);
+			DirectorServlet.Page.index, SERVLET_PATH);
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -69,6 +80,9 @@ public class DirectorServlet extends AbstractBaseServlet {
 			case stats:
 				showStats(req, resp);
 				break;
+			case info:
+				showInfo(req, resp);
+				break;
 			default:
 				ErrorServlet.showError(req, resp, 404);
 			}
@@ -80,14 +94,32 @@ public class DirectorServlet extends AbstractBaseServlet {
 		
 		DataTrain train = DataTrain.getAndStartTrain();
 		
-		PageBuilder page = new PageBuilder(Page.stats, SERVLET_JSP_PATH);
+		PageBuilder page = new PageBuilder(Page.stats, SERVLET_PATH);
 
 		//example value: train.getAppDataController().get();
 		
-		page.setAttribute("avgPresentStudents", 5/*value*/);
-		//page.setAttribute("avgPresentStudents", /*value*/);
-		//page.setAttribute("avgPresentStudents", /*value*/);
-		//page.setAttribute("avgPresentStudents", /*value*/);
+		Date date = new Date();	
+		
+		int numAbsences = train.getAbsencesController().get(Absence.Type.Absence).size();
+		int numTardy = train.getAbsencesController().get(Absence.Type.Tardy).size();
+		int numLeaveEarly = train.getAbsencesController().get(Absence.Type.EarlyCheckOut).size();
+		int numStudents = train.getUsersController().get(User.Type.Student).size();
+		int numEvents = train.getEventsController().readAll().size(); 
+		String avgPresent =  numEvents != 0 ? (numStudents-(numAbsences/numEvents))+"" : "No Recorded Events";
+		String avgTardy = numEvents != 0 ? (numTardy/numEvents)+"" : "No Recorded Events";
+		String avgLeaveEarly = numEvents != 0 ? (numLeaveEarly/numEvents)+"" : "No Recorded Events";		
+		String avgAbsent = numEvents != 0 ? (numAbsences/numEvents)+"" : "No Recorded Events";
+		String avgPresentWR = numEvents != 0 ? (numStudents-(numAbsences+numTardy+numLeaveEarly)/numEvents)+"" : "No Recorded Events";
+		
+		page.setAttribute("date", date);
+		
+		page.setAttribute("numStudents", numStudents);
+		page.setAttribute("numEvents", numEvents);
+		page.setAttribute("avgPresentStudents", avgPresent);
+		page.setAttribute("avgTardyStudents", avgTardy);
+		page.setAttribute("avgAbsentStudents", avgAbsent);
+		page.setAttribute("avgPresentStudentsWR", avgPresentWR);
+		page.setAttribute("avgLeaveEarly", avgLeaveEarly);
 
 		page.setPageTitle("Statistics");
 		
@@ -163,7 +195,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		
 		
 		
-		PageBuilder page = new PageBuilder(Page.appinfo, SERVLET_JSP_PATH);
+		PageBuilder page = new PageBuilder(Page.appinfo, SERVLET_PATH);
 
 		page.setAttribute("appinfo", train.getAppDataController().get());
 
@@ -177,7 +209,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		DataTrain train = DataTrain.getAndStartTrain();
 
-		PageBuilder page = new PageBuilder(Page.appinfo, SERVLET_JSP_PATH);
+		PageBuilder page = new PageBuilder(Page.appinfo, SERVLET_PATH);
 
 		page.setAttribute("appinfo", train.getAppDataController().get());
 
@@ -191,9 +223,9 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		DataTrain train = DataTrain.getAndStartTrain();
 
-		PageBuilder page = new PageBuilder(Page.attendance, SERVLET_JSP_PATH);
+		PageBuilder page = new PageBuilder(Page.attendance, SERVLET_PATH);
 
-		page.setAttribute("absences", train.getAbscencesController().getAll());
+		page.setAttribute("absences", train.getAbsencesController().getAll());
 
 		page.setPageTitle("Attendance");
 
@@ -205,15 +237,27 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		DataTrain train = DataTrain.getAndStartTrain();
 
-		PageBuilder page = new PageBuilder(Page.unanchored, SERVLET_JSP_PATH);
+		PageBuilder page = new PageBuilder(Page.unanchored, SERVLET_PATH);
 
-		page.setAttribute("absences", train.getAbscencesController().getUnanchored());
+		page.setAttribute("absences", train.getAbsencesController().getUnanchored());
 
 		page.setPageTitle("Unanchored");
 
 		page.passOffToJsp(req, resp);
 	}
 
+	private void showInfo(HttpServletRequest req, HttpServletResponse resp)
+			throws IOException, ServletException {
+
+		PageBuilder page = new PageBuilder(Page.info, SERVLET_PATH);
+
+		page.setAttribute("user",
+				AuthController.getCurrentUser(req.getSession()));
+
+		page.passOffToJsp(req, resp);
+	}
+	
+	
 	private void postUserInfo(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException, ServletException {
 
@@ -247,7 +291,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		DataTrain train = DataTrain.getAndStartTrain();
 
-		PageBuilder page = new PageBuilder(Page.users, SERVLET_JSP_PATH);
+		PageBuilder page = new PageBuilder(Page.users, SERVLET_PATH);
 
 		page.setAttribute("users", train.getUsersController().getAll());
 
@@ -260,7 +304,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		DataTrain train = DataTrain.getAndStartTrain();
 
-		PageBuilder page = new PageBuilder(Page.user, SERVLET_JSP_PATH);
+		PageBuilder page = new PageBuilder(Page.user, SERVLET_PATH);
 
 		// Grab the second part of the url as the user's netid
 		String[] parts = req.getPathInfo().split("/");
@@ -288,7 +332,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 	private void showIndex(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		PageBuilder page = new PageBuilder(Page.index, SERVLET_JSP_PATH);
+		PageBuilder page = new PageBuilder(Page.index, SERVLET_PATH);
 
 		page.setPageTitle("Director");
 

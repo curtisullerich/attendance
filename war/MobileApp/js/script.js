@@ -18,6 +18,7 @@ var absentPrependRehearsal = "absentStudentRehearsal";
 var rehearsalPrepend = "storedRehearsal";
 var performancePrepend = "storedPerformance";
 var tardyPrepend = "tardyStudent";
+var earlyCheckOutPrepend = "earlyCheckOutStudent";
 var studentPrepend = "studentRecord";
 var loginPrepend = "storedLogin";
 
