@@ -11,11 +11,7 @@ TODO: edit information<br/>
 
 messaging center<br/>
 new message indication<br/>
-
-view all forms<br/>
-unanchored absences page<br/>
 delete everything button (with seven kinds of confirmation)
-
 
 		<jsp:include page="/WEB-INF/template/header.jsp" />
 

@@ -51,7 +51,8 @@
 						</c:when>
 					</c:choose>
 					<td>
-						<c:if test="${absence.messageThread.resolved}">
+
+						<c:if test="${!absence.messageThread.resolved}">
 							<strong>
 								<c:choose>
 									<c:when test="${auth.user.type.director}">
@@ -64,7 +65,7 @@
 							</strong>
 						</c:if>
 						
-						<c:if test="${!absence.messageThread.resolved}">
+						<c:if test="${absence.messageThread.resolved}">
 							<c:choose>
 								<c:when test="${auth.user.type.director}">
 									<a href="/director/messages/viewthread?id=${absence.messageThread.id}">Messages(${fn:length(absence.messageThread.messages)})</a>

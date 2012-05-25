@@ -1,15 +1,13 @@
 package edu.iastate.music.marching.attendance.controllers;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Query.FilterOperator;
-import com.google.code.twig.ObjectDatastore;
 import com.google.code.twig.FindCommand.RootFindCommand;
-import com.google.common.collect.Iterators;
+import com.google.code.twig.ObjectDatastore;
 
 import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.Event;
@@ -42,7 +40,7 @@ public class AbsenceController extends AbstractController {
 		if (events.size() == 1)
 			absence.setEvent(events.get(0));
 		// else the absence is orphaned
-
+		absence.setStatus(Absence.Status.Pending);
 		return storeAbsence(absence);
 	}
 
@@ -64,7 +62,7 @@ public class AbsenceController extends AbstractController {
 		if (events.size() == 1)
 			absence.setEvent(events.get(0));
 		// else the absence is orphaned
-
+		absence.setStatus(Absence.Status.Pending);
 		return storeAbsence(absence);
 	}
 
@@ -79,6 +77,7 @@ public class AbsenceController extends AbstractController {
 		Absence absence = ModelFactory.newAbsence(Absence.Type.EarlyCheckOut,
 				student);
 		absence.setDatetime(time);
+		absence.setStatus(Absence.Status.Pending);
 
 		// Associate with event
 		List<Event> events = train.getEventsController().get(time);
@@ -112,16 +111,18 @@ public class AbsenceController extends AbstractController {
 				.addFilter(Absence.FIELD_STUDENT, FilterOperator.EQUAL, student)
 				.returnAll().now();
 	}
-	
+
 	public List<Absence> get(Absence.Type... types) {
 
 		RootFindCommand<Absence> find = this.train.getDataStore().find()
 				.type(Absence.class);
-		find.addFilter(Absence.FIELD_TYPE, FilterOperator.IN, Arrays.asList(types));
+		find.addFilter(Absence.FIELD_TYPE, FilterOperator.IN,
+				Arrays.asList(types));
 
 		return find.returnAll().now();
 	}
 
+	// TODO doesn't work
 	public List<Absence> getUnanchored() {
 		return this.train.getDataStore().find().type(Absence.class)
 				.addFilter(Absence.FIELD_STUDENT, FilterOperator.EQUAL, null)
@@ -133,4 +134,21 @@ public class AbsenceController extends AbstractController {
 				.now();
 	}
 
+	/**
+	 * Returns a list of all Absences that have the
+	 * given Event associate with them.
+	 * @param associated
+	 * @return
+	 */
+	public List<Absence> getAll(Event associated) {
+		ObjectDatastore od = this.train.getDataStore();
+		od.associate(associated);
+		Key k = od.associatedKey(associated);
+		return this.train
+				.getDataStore()
+				.find()
+				.type(Absence.class)
+				.addFilter(Absence.FIELD_EVENT, FilterOperator.IN,
+						Arrays.asList(new Key[] { k })).returnAll().now();
+	}
 }

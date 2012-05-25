@@ -1,6 +1,7 @@
 package edu.iastate.music.marching.attendance.servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
@@ -17,6 +18,7 @@ import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.UserController;
 import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.AppData;
+import edu.iastate.music.marching.attendance.model.Event;
 import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.util.ValidationExceptions;
 import edu.iastate.music.marching.attendance.util.ValidationUtil;
@@ -241,6 +243,20 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		page.setAttribute("absences", train.getAbsencesController().getAll());
 
+		List<List<Absence>> studentAbsences = new ArrayList<List<Absence>>();
+		List<Event> events = train.getEventsController().readAll();
+		List<User> students = train.getUsersController().get(User.Type.Student);
+		
+		
+//		for (User s : students) {
+//			Absence a = train.getAbsencesController().get()
+//			studentAbsences.add();
+//		}
+		
+		//now we have a list that contains lists of every absence associated with a particular event
+		//these correspond to one column in the attendance table each
+		page.setAttribute("studentAbsences", studentAbsences);
+		page.setAttribute("events",events);
 		page.setPageTitle("Attendance");
 
 		page.passOffToJsp(req, resp);
@@ -253,7 +269,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		PageBuilder page = new PageBuilder(Page.unanchored, SERVLET_PATH);
 
-		page.setAttribute("absences", train.getAbsencesController().getUnanchored());
+		page.setAttribute("absences", train.getAbsencesController().getAll());
 
 		page.setPageTitle("Unanchored");
 
