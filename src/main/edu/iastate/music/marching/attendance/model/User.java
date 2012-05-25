@@ -67,15 +67,15 @@ public class User implements Serializable {
 	User() {
 
 	}
-	
+
 	@Id
 	private String id;
 
 	@Index
 	private com.google.appengine.api.users.User google_user;
-	
+
 	private Type type;
-	
+
 	@Index
 	private String netID;
 
@@ -96,9 +96,9 @@ public class User implements Serializable {
 	private int year;
 
 	private String major;
-	
+
 	private String rank;
-		
+
 	public String getFirstName() {
 		return firstName;
 	}
@@ -179,9 +179,19 @@ public class User implements Serializable {
 	public void setGoogleUser(com.google.appengine.api.users.User google_user) {
 		this.google_user = google_user;
 	}
-	
+
 	public com.google.appengine.api.users.User getGoogleUser() {
 		return this.google_user;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof User) {
+			User u = (User) o;
+			if (this.netID.equals(u.netID))
+				return true;
+		}
+		return false;
 	}
 
 }

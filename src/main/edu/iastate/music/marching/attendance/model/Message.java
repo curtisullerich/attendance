@@ -1,11 +1,12 @@
 package edu.iastate.music.marching.attendance.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import com.google.appengine.api.datastore.Text;
 import com.google.code.twig.annotation.Type;
 
-public class Message {
+public class Message implements Serializable {
 
 	Message() {
 
