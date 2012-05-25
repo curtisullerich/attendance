@@ -13,7 +13,9 @@
 		<h1>Message Thread</h1>
 		
 		<c:if test="${thread.resolved}">
-			<h2>Resolved.</h2>
+			<table><tr>
+			<td><i>Resolved.</i></td>
+			<td>
 			<%//the button that allows the director to mark a message as unresolved or resolved. ONLY VISIBLE TO DIRECTORS. %>
 			<c:if test="${auth.user.type.director}">
 				<form method="post" accept-charset="utf-8">
@@ -22,11 +24,16 @@
 					<input type="submit" value="Un-resolve issue" name='resolveB'/>
 				</form>
 			</c:if>
+			</td>
+			</tr>
+			</table>
 			<br/>
 		</c:if>
 		
 		<c:if test="${!thread.resolved}">
-			<h2>Not Resolved.</h2>
+			<table><tr>
+			<td><i>Not Resolved.</i></td>
+			<td>
 			<c:if test="${auth.user.type.director}">
 				<form method="post" accept-charset="utf-8">
 					<input type="hidden" value="<c:out value="${thread.id}" />" name="id"/>
@@ -34,6 +41,9 @@
 					<input type="submit" value="Resolve issue" name='resolveB'/>
 				</form>
 			</c:if>
+			</td>
+			</tr>
+			</table>
 			<br/>
 		</c:if>
 		
@@ -44,10 +54,10 @@
 		
 		<div>
 			<c:forEach items="${thread.messages}" var="message">
-				<p>
+				<p><u>
 					<fmt:formatDate value="${message.timestamp}" pattern="'On' M/dd/yyyy 'at' h:mm:ss a"/> 
 					<strong><c:out value="${message.author.name}" /> (<c:out value="${message.author.netID}" />)</strong>
-					said:
+					said</u>:
 					<c:out value="${message.text}" />
 					<br/>
 				</p>
@@ -58,7 +68,7 @@
 		
 			<dl class="block-layout">
 				
-				<dt><label>Message:</label></dt>
+				<dt><label>New message:</label></dt>
 				<dd>
 					<textarea rows="6" cols="50" name="Message" wrap="physical"></textarea>
 				</dd>
