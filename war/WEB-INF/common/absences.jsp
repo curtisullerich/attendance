@@ -1,6 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
 		<table border='1'>
 			<tr>
 				<th>Event</th>
@@ -53,10 +55,10 @@
 							<strong>
 								<c:choose>
 									<c:when test="${auth.user.type.director}">
-										<a href="/director/messages/viewthread?id=${absence.messageThread.id}">Messages(${fn:length(absence.messageThread.messages.size)})</a>
+										<a href="/director/messages/viewthread?id=${absence.messageThread.id}">Messages(${fn:length(absence.messageThread.messages)})</a>
 									</c:when>
-									<c:when test="${auth.user.type.student || auth.user.type.ta}">
-										<a href="/student/messages/viewthread?id=${absence.messageThread.id}">Messages(${fn:length(absence.messageThread.messages.size)})</a>
+									<c:when test="${auth.user.type.student}">
+										<a href="/student/messages/viewthread?id=${absence.messageThread.id}">Messages(${fn:length(absence.messageThread.messages)})</a>
 									</c:when>
 								</c:choose>
 							</strong>
@@ -65,10 +67,10 @@
 						<c:if test="${!absence.messageThread.resolved}">
 							<c:choose>
 								<c:when test="${auth.user.type.director}">
-									<a href="/director/messages/viewthread?id=${absence.messageThread.id}">Messages(${fn:length(absence.messageThread.messages.size)})</a>
+									<a href="/director/messages/viewthread?id=${absence.messageThread.id}">Messages(${fn:length(absence.messageThread.messages)})</a>
 								</c:when>
-								<c:when test="${auth.user.type.student || auth.user.type.ta}">
-									<a href="/student/messages/viewthread?id=${absence.messageThread.id}">Messages(${fn:length(absence.messageThread.messages.size)})</a>
+								<c:when test="${auth.user.type.student}">
+									<a href="/student/messages/viewthread?id=${absence.messageThread.id}">Messages(${fn:length(absence.messageThread.messages)})</a>
 								</c:when>
 							</c:choose>
 						</c:if>

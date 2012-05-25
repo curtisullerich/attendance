@@ -86,10 +86,10 @@
 										<strong>
 											<c:choose>
 												<c:when test="${auth.user.type.director}">
-													<a href="/director/messages/viewthread?id=${form.messageThread.id}">Messages(${fn:length(absence.messageThread.messages)})</a>
+													<a href="/director/messages/viewthread?id=${form.messageThread.id}">Messages(${fn:length(form.messageThread.messages)})</a>
 												</c:when>
 												<c:when test="${auth.user.type.student || auth.user.type.ta}">
-													<a href="/student/messages/viewthread?id=${form.messageThread.id}">Messages(${fn:length(absence.messageThread.messages)})</a>
+													<a href="/student/messages/viewthread?id=${form.messageThread.id}">Messages(${fn:length(form.messageThread.messages)})</a>
 												</c:when>
 											</c:choose>
 										</strong>
@@ -98,10 +98,10 @@
 									<c:if test="${form.messageThread.resolved}">
 										<c:choose>
 											<c:when test="${auth.user.type.director}">
-												<a href="/director/messages/viewthread?id=${form.messageThread.id}">Messages(${fn:length(absence.messageThread.messages)})</a>
+												<a href="/director/messages/viewthread?id=${form.messageThread.id}">Messages(${fn:length(form.messageThread.messages)})</a>
 											</c:when>
 											<c:when test="${auth.user.type.student || auth.user.type.ta}">
-												<a href="/student/messages/viewthread?id=${form.messageThread.id}">Messages(${fn:length(absence.messageThread.messages)})</a>
+												<a href="/student/messages/viewthread?id=${form.messageThread.id}">Messages(${fn:length(form.messageThread.messages)})</a>
 											</c:when>
 										</c:choose>
 									</c:if>

@@ -1,7 +1,6 @@
 package edu.iastate.music.marching.attendance.model;
 
 import java.util.List;
-import java.util.Set;
 
 import com.google.code.twig.annotation.Embedded;
 import com.google.code.twig.annotation.Id;
@@ -33,7 +32,7 @@ public class MessageThread {
 	 * List of all users who have messages in this conversation
 	 */
 	@Index
-	private Set<User> participants;
+	private List<User> participants;
 
 	@Embedded
 	private List<Message> messages;
@@ -69,11 +68,11 @@ public class MessageThread {
 		this.resolved = resolved;
 	}
 
-	public Set<User> getParticipants() {
+	public List<User> getParticipants() {
 		return this.participants;
 	}
 
-	public void setParticipants(Set<User> participants) {
+	public void setParticipants(List<User> participants) {
 		this.participants = participants;
 	}
 

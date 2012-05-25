@@ -1,10 +1,9 @@
 package edu.iastate.music.marching.attendance.model;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.List;
 
 import com.google.code.twig.annotation.Activate;
-import com.google.code.twig.annotation.Embedded;
 import com.google.code.twig.annotation.Id;
 import com.google.code.twig.annotation.Index;
 
@@ -83,10 +82,10 @@ public class User implements Serializable {
 	private int universityID;
 
 	@Activate(0)
-	private Set<Absence> absences;
+	private List<Absence> absences;
 
 	@Activate(0)
-	private Set<Form> forms;
+	private List<Form> forms;
 
 	private Section section;
 
