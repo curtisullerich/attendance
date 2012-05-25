@@ -67,11 +67,45 @@ public class MessagingServlet extends AbstractBaseServlet {
 		else
 			switch (page) {
 			case viewthread:
-				postMessageThread(req, resp);
+				handleThread(req, resp);
 				break;
 			default:
 				ErrorServlet.showError(req, resp, 404);
 			}
+	}
+
+	private void handleThread(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		//there are two possibilities, so figure 
+		//out which button was pressed and handle it
+		String resolved = req.getParameter("resolved");
+		String id = req.getParameter("id");
+		String message = req.getParameter("Message");
+		long longid = Long.parseLong(id);
+		DataTrain train = DataTrain.getAndStartTrain();
+
+		if (resolved != null && !resolved.equals("")) {//resolve or unresolve
+			MessagingController mc = train.getMessagingController();
+			MessageThread mt = mc.get(longid);
+			
+			if (resolved.equals("false")) {
+				mt.setResolved(true);
+				mc.update(mt);
+			} else if (resolved.equals("true")) {
+				mt.setResolved(false);
+				mc.update(mt);
+			} else {
+				//?TODO
+			}
+		} else if (message != null && !message.equals("")) {//add a message
+			MessagingController mc = train.getMessagingController();
+			MessageThread mt = mc.get(longid);
+			User sender = AuthController.getCurrentUser(req.getSession());
+			mc.appendMessage(mt, sender, message);
+			
+		} else {
+			//?TODO 
+		}
+		showThread(req, resp, longid, train);
 	}
 
 	private void postMessageThread(HttpServletRequest req,

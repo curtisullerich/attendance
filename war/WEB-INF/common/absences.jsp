@@ -1,6 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
 		<table border='1'>
 			<tr>
 				<th>Event</th>
@@ -51,12 +53,26 @@
 					<td>
 						<c:if test="${absence.messageThread.resolved}">
 							<strong>
-								<a href="/student/messages/viewthread?id=${absence.messageThread.id}">Unread messages</a>
+								<c:choose>
+									<c:when test="${auth.user.type.director}">
+										<a href="/director/messages/viewthread?id=${absence.messageThread.id}">Messages(${fn:length(absence.messageThread.messages)})</a>
+									</c:when>
+									<c:when test="${auth.user.type.student}">
+										<a href="/student/messages/viewthread?id=${absence.messageThread.id}">Messages(${fn:length(absence.messageThread.messages)})</a>
+									</c:when>
+								</c:choose>
 							</strong>
 						</c:if>
 						
 						<c:if test="${!absence.messageThread.resolved}">
-							<a href="/student/messages/viewthread?id=${absence.messageThread.id}">No new messages</a>
+							<c:choose>
+								<c:when test="${auth.user.type.director}">
+									<a href="/director/messages/viewthread?id=${absence.messageThread.id}">Messages(${fn:length(absence.messageThread.messages)})</a>
+								</c:when>
+								<c:when test="${auth.user.type.student}">
+									<a href="/student/messages/viewthread?id=${absence.messageThread.id}">Messages(${fn:length(absence.messageThread.messages)})</a>
+								</c:when>
+							</c:choose>
 						</c:if>
 						<!-- Messages button. Make it bold if there's an unresolved thread. -->
 					</td>

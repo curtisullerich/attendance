@@ -57,7 +57,11 @@
 					document.getElementById("Early Check-Out").checked = false;
 					return false;
 				}
+<<<<<<< HEAD
+				var subType = r1!=0 ? "tardy" : "earlyOut"; 
+=======
 				var subType = r1 == true ? "tardy" : "earlyOut"; 
+>>>>>>> 155df6c0db15df0ae902b12398ccd8877c67313e
 				//converts input (universityID card or netID) to netID
 				var input = document.getElementById("student").value;
 				document.getElementById("student").value = "";

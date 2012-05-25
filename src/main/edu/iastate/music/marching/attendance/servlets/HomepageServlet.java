@@ -20,6 +20,13 @@ public class HomepageServlet extends AbstractBaseServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
+		
+		//create default users, set director and ta
+		//set appdata
+		
+		
+		
+		
 		User user = AuthController.getCurrentUser(req.getSession());
 
 		if (user == null)

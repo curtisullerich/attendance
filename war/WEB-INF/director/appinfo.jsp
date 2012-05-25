@@ -23,6 +23,21 @@
 		      $(this).remove();
 		    });
 		}
+		
+		function preprocessEmails(){
+			var opts = document.getElementById('TimeWorkedEmails').options;
+			var emails = "";
+			for (var i = 0; i < opts.length; i++)
+			{
+				emails += opts[i].value + "delimit";
+			}
+//			$("#TimeWorkedEmails").each(function()
+//			{
+//			    emails += $(this).val() + "delimit";
+//			});
+
+			$('input[name=hiddenEmails]').val(emails);
+		}
 		</script>
 	</head>
 
@@ -72,8 +87,14 @@
 			<dt><label for="TimeWorkedEmails">Valid Time Worked Emails for Form D</label></dt>
 			<dd>
 				<select id="TimeWorkedEmails" name="TimeWorkedEmails" size="10">
-					<c:forEach items="${daysOfWeek}" var="day">
-						<option ${DayOfWeek eq day ? 'selected' : ''}>${day}</option>
+<<<<<<< HEAD
+<%-- 					<c:forEach items="${daysOfWeek}" var="day"> --%>
+<%-- 						<option ${DayOfWeek eq day ? 'selected' : ''}>${day}</option> --%>
+<%-- 					</c:forEach> --%>
+=======
+>>>>>>> 2b071fc38f5ab3f3506456c05b56d5ab2b937836
+					<c:forEach items="${emails}" var="email">
+						<option ${email }>${email}</option>
 					</c:forEach>
 				</select>
 				<input type="button" value="Remove Selected" name="Back" onclick="deleteTimeWorkedEmails()"/>
@@ -87,9 +108,10 @@
 		</dl>
 	
 
-				<input type="submit" value="Save Info" name="SaveInfo"/>
+				<input type="submit" value="Save Info" name="SaveInfo" onclick="preprocessEmails();"/>
+				<input id='Year' size='5' type='hidden' name='Year' value='<c:out value="${year}" />' />
+				<input type="hidden" id="hiddenEmails" name="hiddenEmails" value="">
 		</form>		
-		
 		<jsp:include page="/WEB-INF/template/footer.jsp" />
 	</body>
 

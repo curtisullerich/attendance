@@ -2,12 +2,9 @@ package edu.iastate.music.marching.attendance.controllers;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import com.google.appengine.api.datastore.Query.FilterOperator;
-import com.google.common.collect.Sets;
 
 import edu.iastate.music.marching.attendance.model.Message;
 import edu.iastate.music.marching.attendance.model.MessageThread;
@@ -27,7 +24,7 @@ public class MessagingController extends AbstractController {
 		MessageThread thread = ModelFactory.newMessageThread();
 
 		if (initial_participants != null)
-			thread.setParticipants(Sets.newHashSet(initial_participants));
+			thread.setParticipants(Arrays.asList(initial_participants));
 
 		return thread;
 	}
@@ -42,10 +39,10 @@ public class MessagingController extends AbstractController {
 			throw new IllegalArgumentException("Null sender given");
 
 		// Add sender as partitipant in conversation
-		Set<User> thread_participants = thread.getParticipants();
+		List<User> thread_participants = thread.getParticipants();
 		if (thread_participants == null)
 		{
-			thread_participants = new HashSet<User>();
+			thread_participants = new ArrayList<User>();
 			thread.setParticipants(thread_participants);
 		}
 		thread_participants.add(sender);

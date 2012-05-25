@@ -12,7 +12,10 @@ import edu.iastate.music.marching.attendance.model.Absence.Status;
 public class Form {
 
 	public static enum Status {
-		Pending, Approved, Denied
+		Pending, Approved, Denied;
+		public String getValue() {
+			return name();
+		}
 	};
 
 	public static enum Type {
@@ -110,6 +113,10 @@ public class Form {
 	
 	public Status getStatus() {
 		return this.status;
+	}
+	
+	public String getStatusString() {
+		return this.status.toString();
 	}
 
 	public void setStatus(Status status) {
