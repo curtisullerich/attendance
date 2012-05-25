@@ -23,9 +23,14 @@ public class MessagingController extends AbstractController {
 
 		MessageThread thread = ModelFactory.newMessageThread();
 
-		if (initial_participants != null)
-			thread.setParticipants(Arrays.asList(initial_participants));
-
+		if (initial_participants != null){
+			for (User u : initial_participants) {
+				if (!thread.getParticipants().contains(u)) {
+					thread.addParticipant(u);
+				}
+//				thread.setParticipants(Arrays.asList(initial_participants));
+			}
+		}
 		return thread;
 	}
 

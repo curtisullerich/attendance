@@ -84,4 +84,9 @@ public class MessageThread {
 		this.messages = messages;
 	}
 
+	public void addParticipant(User u) {
+		this.participants.add(u);
+		
+	}
+
 }
