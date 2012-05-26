@@ -42,20 +42,27 @@
 							</p>
 						</td>
 						<td>
+							<c:if test="${!thread.resolved}"><strong></c:if>
 							<c:forEach items="${thread.participants}" var="participant" varStatus="">
 								<c:out value="${participant.name}"/>
 								<br/>
 							</c:forEach>
+							<c:if test="${!thread.resolved}"></strong></c:if>
 						</td>
 						<td>
-							event / form info
+							<c:if test="${!thread.resolved}"><strong></c:if>
+							<p>event / form info</p>
+							<c:if test="${!thread.resolved}"></strong></c:if>
 						</td>
 						<td>
+							<c:if test="${!thread.resolved}"><strong></c:if>
 							<p style="overflow:hidden;">
 								<c:out value="${thread.messages[0].text}"/>
 							</p>
+							<c:if test="${!thread.resolved}"></strong></c:if>
 						</td>
 						<td style="text-align:right;">
+							<c:if test="${!thread.resolved}"><strong></c:if>
 							<p>
 								<fmt:formatDate var="fmtDate" value="${thread.messages[0].timestamp}" pattern="yyyy-MM-dd"/>
 								<fmt:formatDate var="fmtYear" value="${thread.messages[0].timestamp}" pattern="yyyy"/>
@@ -71,6 +78,7 @@
 									</c:otherwise>
 								</c:choose>
 							</p>
+							<c:if test="${!thread.resolved}"></strong></c:if>
 						</td>
 					</tr>
 				</c:forEach>
