@@ -9,10 +9,10 @@
 
 		<h1>${pagetemplate.title}</h1>
 		<br/>
-		<jsp:include page="/WEB-INF/common/absences.jsp" />
 			
-			<table>
+			<table class="gray full-width">
 				<!-- start headers -->
+				<thead>
 				<tr><th>Last Name</th><th>First name</th><th>Section</th><th>University ID</th>
 					<!-- all events. TODO will need to link this -->
 					<c:forEach items="${events}" var="event">
@@ -20,7 +20,10 @@
 					</c:forEach>				
 				<th>Grade</th>
 				<!-- headers are now done -->
+				</tr>
+				</thead>
 				<%System.out.println("in jsp"); %>
+				<tbody>
 				<c:forEach items="${students }" var="student">
 					//now we need one list per student. Iterate through the list of events and grab the info about their attendance on that date.
 					<%System.out.println("inside loop a"); %>
@@ -28,6 +31,7 @@
 						//basic info
 						<td>${student.firstName }</td><td>${student.lastName }</td><td>${student.section }</td><td>${student.universityID }</td>
 						//event attendances
+						<c:forEach items="${events}" var="event">
 						<td>
 							<c:forEach items="${absenceMap[student][event] }" var="absence">
 								<%System.out.println("inside loop b"); %>
@@ -42,13 +46,14 @@
 										${absence.status } ${absence.type }: ${absence.datetime }<br/>
 									</c:when>
 								</c:choose>
-
+							</c:forEach>		
 						</td>
+						</c:forEach>
 						//grade
 						<td>${student.grade }</td>
 					</tr>
 				</c:forEach>			
-			
+			</tbody>
 			
 			
 			
