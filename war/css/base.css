@@ -1,3 +1,11 @@
+/**
+ * Base.css - contains default styles for the new ISU theme.
+ * 
+ * @version  0.11
+ * @link     http://www.sample.iastate.edu/
+ * @package  PHPTemplate
+ */
+
 /*=======================================================*/
 /*== Typography =========================================*/
 /*=======================================================*/
@@ -31,16 +39,14 @@ a img{
 	border: 0;
 }
 
-h1{
-	font-size: 20px;
-	line-height: normal;
+h1, h2, h3, h4, h5, h6{
 	margin-top: 0;
 	margin-bottom: 6px;
 }
 
-h2, h3, h4, h5, h6{
-	margin-top: 12px;
-	margin-bottom: 6px;
+h1{
+	font-size: 20px;
+	line-height: normal;
 }
 
 h2{
@@ -60,12 +66,29 @@ h4{
 
 p, ul, ol, dl{
 	margin-top: 0;
-	margin-bottom: 1em;
+	margin-bottom: 12px;
 }
 
 ul, ol{
 	margin-left: 0;
 	padding-left: 22px;
+}
+
+ul ul, ul ol, ol ul, ol ol{
+	margin-bottom: 0;
+}
+
+ul{
+	list-style: disc;
+}
+
+ol{
+	list-style: decimal;
+}
+
+ul.no-bullets, ol.no-bullets{
+	list-style: none;
+	padding-left: 0;
 }
 
 ul.right{
@@ -80,6 +103,10 @@ ul.left > li, ul.right > li{
 dl > dt + dt,
 dl > dd + dt{
 	margin-top: 6px;
+}
+
+dl > dt{
+	font-weight: bold;
 }
 
 dl > dd{
@@ -161,9 +188,20 @@ table.gray tbody th{
 	border-color: #a7a7a7;
 }
 
+table.gray tr.dark-title th{
+	background-color: #4a4a4a;
+	border-color: #222;
+	color: #eee;
+}
+
 table.gray tbody tr:nth-child(even) td,
 table.gray tbody tr.even td{
 	background-color: #f8f8f8;
+}
+
+table.gray tbody tr:nth-child(odd) td,
+table.gray tbody tr.odd td{
+	background-color: #fff;
 }
 
 table.gray tbody tr td.ops,
@@ -200,6 +238,11 @@ table.cream tbody tr.even td{
 	background: #f8f8f0;
 }
 
+table.cream tbody tr:nth-child(odd) td,
+table.cream tbody tr.odd td{
+	background: #fff;
+}
+
 table.cream tbody tr td.ops a + a{
 	margin-left: 10px;
 }
@@ -223,7 +266,7 @@ form dl.table-layout{
 form dl.block-layout > dt > label.required:after,
 form dl.inline-layout > dt > label.required:after,
 form dl.table-layout > dt > label.required:after{
-	color: #8B0000;
+	color: darkred;
 	content: ' *';
 }
 
@@ -258,7 +301,7 @@ form dl.table-layout > dd > fieldset > legend{
 form dl.block-layout > dd > ul.errors,
 form dl.inline-layout > dd > ul.errors,
 form dl.table-layout > dd > ul.errors{
-	color: #8B0000;
+	color: darkred;
 	list-style: none;
 	margin: 3px 0 0;
 	padding: 0;
@@ -331,20 +374,29 @@ form dl.table-layout > dd{
 /*===================*/
 
 .notify-msg{
-	background-color: #f2f2f2;
-	border: 1px solid #c2c2c2;
-	margin-bottom: 1em;
+	background-color: #d5edf8;
+	border: 1px solid #7fb8d2;
+	color: #1c4f66;
+	margin-bottom: 12px;
 	padding: 6px 9px;
+}
+
+.notify-msg.warning{
+	background-color: #fcfcc4;
+	border-color: #cccb4a;
+	color: #626114;
+}
+
+.notify-msg.error{
+	background-color: #f9ccd4;
+	border-color: #d27988;
+	color: #651321;
 }
 
 .notify-msg.success{
 	background-color: #e3f9cc;
 	border-color: #84bc49;
-}
-
-.notify-msg.error{
-	background-color: #f9ccd4;
-	border-color: #bc495c;
+	color: #385916;
 }
 
 #loading{
@@ -363,6 +415,67 @@ form dl.table-layout > dd{
 	text-align: center;
 	top: 0;
 	width: 200px;
+}
+
+/*== Pagination ==*/
+/*================*/
+
+.pagination{
+	overflow: hidden;
+}
+
+.pagination .prev, .pagination .next, .pagination .page{
+	border-radius: 3px;
+	float: left;
+	text-align: center;
+	text-decoration: none;
+	transition: background-color 0.2s, color 0.2s;
+	-moz-transition: background-color 0.2s, color 0.2s;
+	-webkit-transition: background-color 0.2s, color 0.2s;
+}
+
+.pagination .prev, .pagination .next{
+	background-color: #444;
+	border: 1px solid #444;
+	color: #fff;
+	font-weight: bold;
+	min-width: 10px;
+	padding: 2px 6px;
+}
+
+.pagination .prev span, .pagination .next span{
+	display: block;
+	margin: -1px 0 1px;
+}
+
+.pagination .prev{
+	margin-right: 3px;
+}
+
+.pagination .next{
+	margin-left: 3px;
+}
+
+.pagination .prev:hover, .pagination .next:hover{
+	background-color: #777;
+}
+
+.pagination .page{
+	color: #cb1a2a;
+	margin: 0 3px;
+	min-width: 24px;
+	padding: 3px 0;
+}
+
+.pagination .page.sep{
+	color: #444;
+	margin: 0;
+	min-width: 0;
+}
+
+.pagination a.page:hover, .pagination .active{
+	background-color: #cb1a2a;
+	color: #fff;
 }
 
 /*=======================================================*/
@@ -705,6 +818,17 @@ body.grid-layout-720 .hwrapper{
 	padding: 4px;
 }
 
+#content .toolbar.sticky{
+	border-radius: 0;
+	left: 0;
+	padding-left: 0;
+	padding-right: 0;
+	position: fixed;
+	text-align: center;
+	top: 0;
+	width: 100%;
+}
+
 #content .toolbar .button{
 	color: #444;
 	float: left;
@@ -741,6 +865,12 @@ body.grid-layout-720 .hwrapper{
 	margin: 0 6px;
 }
 
+#content .toolbar.sticky .button,
+#content .toolbar.sticky .button-group{
+	display: inline-block;
+	float: none;
+}
+
 #content .toolbar .button-group .button{
 	border-radius: 0;
 	position: relative;
@@ -766,12 +896,14 @@ body.grid-layout-720 .hwrapper{
 #content .toolbar .button-group .button.first{
 	border-bottom-left-radius: 12px;
 	border-top-left-radius: 12px;
+	padding-left: 12px;
 }
 
 #content .toolbar .button-group .button:last-child,
 #content .toolbar .button-group .button.last{
 	border-bottom-right-radius: 12px;
 	border-top-right-radius: 12px;
+	padding-right: 12px;
 }
 
 #content .figure{
@@ -1029,6 +1161,18 @@ body.grid-layout-720 .hwrapper{
 }
 
 /*=======================================================*/
+/*== Misc ===============================================*/
+/*=======================================================*/
+
+.flush-bottom{
+	margin-bottom: 0;
+}
+
+.flush-top{
+	margin-top: 3px;
+}
+
+/*=======================================================*/
 /*== Print ==============================================*/
 /*=======================================================*/
 
@@ -1038,7 +1182,7 @@ body.grid-layout-720 .hwrapper{
 	display: none;
 }
 
-.hwrapper, .fwrapper, #left-sidebar, #right-sidebar{
+.hwrapper, #left-sidebar, #right-sidebar, #footer .first{
 	display: none;
 }
 
