@@ -42,7 +42,7 @@
 										${absence.status } ${absence.type }: ${absence.datetime }<br/>
 									</c:when>
 								</c:choose>
-
+							</c:forEach>
 						</td>
 						//grade
 						<td>${student.grade }</td>
