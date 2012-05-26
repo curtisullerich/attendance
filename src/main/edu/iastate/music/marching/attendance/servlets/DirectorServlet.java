@@ -2,6 +2,7 @@ package edu.iastate.music.marching.attendance.servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
@@ -61,7 +62,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 				showAttendance(req, resp);
 				break;
 			case appinfo:
-				showAppInfo(req, resp);
+				showAppInfo(req, resp, new LinkedList<String>());
 				break;
 			case unanchored:
 				showUnanchored(req, resp);
@@ -148,7 +149,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 	private void postAppInfo(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		DataTrain train = DataTrain.getAndStartTrain();
-		AppDataController appDataController = new AppDataController(train);
+		AppDataController appDataController = train.getAppDataController();
 		AppData data = appDataController.get();
 		//get the train
 		
@@ -160,49 +161,68 @@ public class DirectorServlet extends AbstractBaseServlet {
 				//return the jsp
 		boolean validForm = true;
 		List<String> errors = new LinkedList<String>();
-		String[] emails = null;
-		String monthNum, dayNum, hourNum, minuteNum;
-		String amPm = null;
+		String newPass = null;
+		List<String> emailList = null;
 		if (!ValidationUtil.isPost(req)) {
 			validForm = false;
 		}
 		else
 		{
-			//Check and update the emails
-			emails = req.getParameter("hiddenEmails").split("delimit");
-			if (emails != null) {
-				List<String> emailList = new LinkedList<String>();
-				for (int i = 0; i < emails.length; i++)
-				{
-					emailList.add(emails[i]);
-				}
-				data.setTimeWorkedEmails(emailList);
-			}
-			else {
-				validForm = false;
-			}
-			//Handle the thrown exception
-			Date testDate = parseDate(req.getParameter("Month"), req.getParameter("Day"), 
-					req.getParameter("Year"), req.getParameter("ToHour"), 
-					req.getParameter("ToMinute"));
-			if (testDate != null)
+			//All of this emailList checking should be abstracted out probably
+			
+			//Check and update the emails. Need to use the constructor of LinkedList otherwise
+			//Its runtime type is AbstractSequentialList...and basically no methods are supported
+			emailList = new LinkedList<String>(Arrays.asList(req.getParameter("hiddenEmails").split("delimit")));
+			//If they remove all the emails it adds an empty string to the appdata so we need to remove them
+			for (int i = 0; i < emailList.size(); ++i)
 			{
-				data.setFormSubmissionCutoff(testDate);
+				if (emailList.get(i).equals(""))
+					emailList.remove(i--);
+			}
+			if (emailList == null || emailList.size() <= 0) {
+				validForm = false;
+				errors.add("Invalid Input: There must be at least one valid email. Emails will remain unchanged.");
 			}
 			else
 			{
+				data.setTimeWorkedEmails(emailList);
+			}
+			//Handle the thrown exception
+			Date testDate = null;
+			try
+			{
+				testDate = parseDate(req.getParameter("Month"), req.getParameter("Day"), 
+						req.getParameter("Year"), req.getParameter("ToHour"), 
+						req.getParameter("ToMinute"));
+				data.setFormSubmissionCutoff(testDate);
+			}
+			catch (ValidationExceptions e)
+			{
 				validForm = false;
+				errors.add(e.getMessage());
+			}
+			//Thrown by Calendar.getTime() if we don't have a valid time
+			catch (IllegalArgumentException e)
+			{
+				validForm = false;
+				errors.add("Invalid Input: The input date is invalid.");
+			}
+			
+			//Check if they added a new password and then change it
+			newPass = req.getParameter("hashedPass");
+			if (newPass != null && !newPass.equals(""))
+			{
+				data.setHashedMobilePassword(newPass);
 			}
 		}
-		
 		if (validForm)
 		{
 			appDataController.save(data);
 		}
-		showAppInfo(req, resp);
+		showAppInfo(req, resp, errors);
 	}
 
-	private void showAppInfo(HttpServletRequest req, HttpServletResponse resp)
+	private void showAppInfo(HttpServletRequest req, HttpServletResponse resp, List<String> errors)
 			throws ServletException, IOException {
 
 		DataTrain train = DataTrain.getAndStartTrain();
@@ -228,7 +248,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		page.setAttribute("ToAMPM", (cutoffDate.get(Calendar.AM_PM) == Calendar.AM) ? "AM" : "PM");
 		
 		//page.setAttribute("cutoffTime", data.getFormSubmissionCutoff());
-		
+		page.setAttribute("error_messages", errors);
 		page.setPageTitle("Application Info");
 
 		page.passOffToJsp(req, resp);
@@ -433,7 +453,6 @@ public class DirectorServlet extends AbstractBaseServlet {
 		if (exp.getErrors().size() > 0)
 			throw exp;
 
-		//TODO check the hour and minute
 		return calendar.getTime();
 	}
 

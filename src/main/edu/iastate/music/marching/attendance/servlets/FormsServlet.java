@@ -139,7 +139,7 @@ public class FormsServlet extends AbstractBaseServlet {
 				date = parseStartDate(req);
 			} catch (IllegalArgumentException e) {
 				validForm = false;
-				errors.add(e.getMessage());
+				errors.add("Invalid Input: The input date is invalid.");
 			}
 		}
 
@@ -353,7 +353,7 @@ public class FormsServlet extends AbstractBaseServlet {
 				endDate = parseEndDate(req);
 			} catch (IllegalArgumentException e) {
 				validForm = false;
-				errors.add(e.getMessage());
+				errors.add("Invalid Input: The input date is invalid.");
 			}
 		}
 
@@ -427,7 +427,7 @@ public class FormsServlet extends AbstractBaseServlet {
 				date = parseStartDate(req);
 			} catch (IllegalArgumentException e) {
 				validForm = false;
-				errors.add(e.getMessage());
+				errors.add("Invalid Input: The input date is invalid.");
 			}
 		}
 
@@ -502,7 +502,7 @@ public class FormsServlet extends AbstractBaseServlet {
 				date = parseStartDate(req);
 			} catch (IllegalArgumentException e) {
 				validForm = false;
-				errors.add(e.getMessage());
+				errors.add("Invalid Input: The input date is invalid.");
 			}
 		}
 

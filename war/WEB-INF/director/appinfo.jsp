@@ -8,7 +8,8 @@
 <html>
 	<head>
 		<jsp:include page="/WEB-INF/template/head.jsp" />
-		
+		<script type="text/javascript" src="/js/sha.js"></script>
+	
 		<script type="text/javascript">
 		function addTimeWorkedEmail() {
 			var email = $('#TimeWorkedEmail').val();
@@ -24,19 +25,16 @@
 		    });
 		}
 		
-		function preprocessEmails(){
+		function preprocessInfo(){
 			var opts = document.getElementById('TimeWorkedEmails').options;
 			var emails = "";
 			for (var i = 0; i < opts.length; i++)
 			{
 				emails += opts[i].value + "delimit";
 			}
-//			$("#TimeWorkedEmails").each(function()
-//			{
-//			    emails += $(this).val() + "delimit";
-//			});
-
 			$('input[name=hiddenEmails]').val(emails);
+			var pass = $('#MobilePassword').val();
+			$('input[name=hashedPass]').val(Sha1.hash(pass, true));			
 		}
 		</script>
 	</head>
@@ -50,6 +48,18 @@
 		<jsp:include page="/WEB-INF/template/header.jsp" />
 	
 		<h1>Application Settings for: <c:out value="${appinfo.title}" /></h1>
+		
+		<c:if test="${not empty error_messages}">
+			<p class="notify-msg error">
+				<strong>Error:</strong>
+				<c:forEach items="${error_messages}" var="error_message">
+					<c:out value="${error_message}" />
+					<br/>
+				</c:forEach>
+			</p>
+		</c:if>
+		
+		
 		<form action="./appinfo" method="post" accept-charset="utf-8">
 		
 		<dl class="block-layout">
@@ -59,7 +69,7 @@
 			
 			<dt><label for="MobilePassword">New Mobile App Password</label></dt>
 			<dd>
-				<input type="password" name="MobilePassword" />
+				<input type="password" id="MobilePassword" name="MobilePassword" />
 				<br/>
 				Leave blank to not change the password.
 			</dd>
@@ -87,12 +97,9 @@
 			<dt><label for="TimeWorkedEmails">Valid Time Worked Emails for Form D</label></dt>
 			<dd>
 				<select id="TimeWorkedEmails" name="TimeWorkedEmails" size="10">
-<<<<<<< HEAD
 <%-- 					<c:forEach items="${daysOfWeek}" var="day"> --%>
 <%-- 						<option ${DayOfWeek eq day ? 'selected' : ''}>${day}</option> --%>
 <%-- 					</c:forEach> --%>
-=======
->>>>>>> 2b071fc38f5ab3f3506456c05b56d5ab2b937836
 					<c:forEach items="${emails}" var="email">
 						<option ${email }>${email}</option>
 					</c:forEach>
@@ -106,11 +113,10 @@
 			
 
 		</dl>
-	
-
-				<input type="submit" value="Save Info" name="SaveInfo" onclick="preprocessEmails();"/>
+				<input type="submit" value="Save Info" name="SaveInfo" onclick="preprocessInfo();"/>
 				<input id='Year' size='5' type='hidden' name='Year' value='<c:out value="${year}" />' />
 				<input type="hidden" id="hiddenEmails" name="hiddenEmails" value="">
+				<input type="hidden" id="hashedPass" name="hashedPass" value="">
 		</form>		
 		<jsp:include page="/WEB-INF/template/footer.jsp" />
 	</body>
