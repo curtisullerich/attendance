@@ -12,22 +12,41 @@
 		<jsp:include page="/WEB-INF/common/absences.jsp" />
 			
 			<table>
+				<!-- start headers -->
 				<tr><th>Last Name</th><th>First name</th><th>Section</th><th>University ID</th>
-				//all events
-				<c:forEach items="${events}" var="event">
-					<th><fmt:formatDate value="${event}" pattern="M/dd/yyyy"/></th>
-				</c:forEach>				
+					<!-- all events. TODO will need to link this -->
+					<c:forEach items="${events}" var="event">
+						<th><fmt:formatDate value="${event}" pattern="M/dd/yyyy"/></th>
+					</c:forEach>				
 				<th>Grade</th>
-				<c:forEach items="${student }" var="student">
-				//now we need one list per student. Iterate through the list of events and grab the info about their attendance on that date.
-				<tr>
-				//basic info
-				<td>${student.firstName }</td><td>${student.lastName }</td><td>${student.section }</td><td>${student.universityID }</td>
-				//event attendances
-					//this is going to be tricky in jstl....
-				//grade
-				<td>${student.grade }</td>
-				</tr>
+				<!-- headers are now done -->
+				<%System.out.println("in jsp"); %>
+				<c:forEach items="${students }" var="student">
+					//now we need one list per student. Iterate through the list of events and grab the info about their attendance on that date.
+					<%System.out.println("inside loop a"); %>
+					<tr>
+						//basic info
+						<td>${student.firstName }</td><td>${student.lastName }</td><td>${student.section }</td><td>${student.universityID }</td>
+						//event attendances
+						<td>
+							<c:forEach items="${absenceMap[student][event] }" var="absence">
+								<%System.out.println("inside loop b"); %>
+								<c:choose>
+									<c:when test="${absence.type.tardy}">
+										${absence.status } ${absence.type }: ${absence.datetime }<br/>
+									</c:when>
+									<c:when test="${absence.type.absence}">
+										${absence.status } ${absence.type } <br/>
+									</c:when>
+									<c:when test="${absence.type.earlyCheckOut}">
+										${absence.status } ${absence.type }: ${absence.datetime }<br/>
+									</c:when>
+								</c:choose>
+
+						</td>
+						//grade
+						<td>${student.grade }</td>
+					</tr>
 				</c:forEach>			
 			
 			

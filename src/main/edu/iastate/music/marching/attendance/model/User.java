@@ -35,6 +35,23 @@ public class User implements Serializable {
 			return this.equals(Director);
 		}
 	}
+	
+	public enum Grade {
+		A, Aminus("A-"), Bplus("B+"), B, Bminus("B-"), Cplus("C+"), C, Cminus("C-"), Dplus("D+"), D, Dminus("D-"), F;
+		private String mDisplayString;
+		private Grade() {
+			mDisplayString = this.toString();
+		}
+		private Grade(String display_string) {
+			mDisplayString = display_string;
+		}
+		private String getDisplayName() {
+			return mDisplayString;
+		}
+		public String getValue() {
+			return name();
+		}
+	}
 
 	public enum Section {
 		Piccolo, Clarinet, AltoSax("Alto Sax"), TenorSax("Tenor Sax"), Trumpet, Trombone, Mellophone, Baritone, Sousaphone, Guard, DrumMajor(
@@ -76,6 +93,8 @@ public class User implements Serializable {
 
 	private Type type;
 
+	private Grade grade;
+	
 	@Index
 	private String netID;
 
@@ -98,6 +117,8 @@ public class User implements Serializable {
 	private String major;
 
 	private String rank;
+	
+
 
 	public String getFirstName() {
 		return firstName;
@@ -136,6 +157,14 @@ public class User implements Serializable {
 		this.type = type;
 	}
 
+	public void setGrade(Grade grade) {
+		this.grade = grade;
+	}
+	
+	public Grade getGrade() {
+		return this.grade;
+	}
+	
 	public int getYear() {
 		return year;
 	}

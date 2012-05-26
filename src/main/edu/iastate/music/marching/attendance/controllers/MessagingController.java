@@ -120,5 +120,26 @@ public class MessagingController extends AbstractController {
 		return this.train.getDataStore().find().type(MessageThread.class)
 				.returnAll().now();
 	}
+	
+	/**
+	 * Returns the most recent message added to this MessageThread.
+	 * 
+	 * @author curtisu
+	 * @return
+	 */
+	public Message getMostRecent(MessageThread mt) {
+		List<Message> messages = mt.getMessages();
+		if (messages.size() == 0 ) {
+			return null;
+		}
+		Message mostRecent = messages.get(0);
+		for (Message m : messages) {
+			if(m.getTimestamp().after(mostRecent.getTimestamp())) {
+				mostRecent = m;
+			}
+		}
+		return mostRecent;
+	}
+
 
 }

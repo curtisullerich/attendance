@@ -25,7 +25,7 @@
 						<td>
 							<tr><fmt:formatDate value="${thread.mostRecent.timestamp}" pattern="yyyy/MM/dd 'at' HH:mm:ss"/></tr>
 							<tr>
-							<c:forEach items="${thread.participants } var="participant">
+							<c:forEach items="${thread.participants }" var="participant">
 								< c:out value="${participant.name }"/>  
 							</c:forEach>
 							</tr>

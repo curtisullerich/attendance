@@ -141,7 +141,7 @@ public class MessagingServlet extends AbstractBaseServlet {
 		// conversation,
 		// or is a director
 
-		PageBuilder builder = new PageBuilder(Page.viewthread, SERVLET_JSP_PATH);
+		PageBuilder builder = new PageBuilder(Page.index, SERVLET_JSP_PATH);
 
 		builder.setAttribute("threads", threads);
 

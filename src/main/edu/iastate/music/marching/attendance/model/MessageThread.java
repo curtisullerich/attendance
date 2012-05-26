@@ -42,25 +42,6 @@ public class MessageThread {
 	public long getId() {
 		return id;
 	}
-
-	/**
-	 * Returns the most recent message added to this MessageThread.
-	 * 
-	 * @author curtisu
-	 * @return
-	 */
-	public Message mostRecent() {
-		if (messages.size() == 0 ) {
-			return null;
-		}
-		Message mostRecent = messages.get(0);
-		for (Message m : messages) {
-			if(m.getTimestamp().after(mostRecent.getTimestamp())) {
-				mostRecent = m;
-			}
-		}
-		return mostRecent;
-	}
 	
 	public boolean isResolved() {
 		return resolved;
@@ -90,5 +71,4 @@ public class MessageThread {
 		this.participants.add(u);
 		
 	}
-
 }

@@ -135,20 +135,30 @@ public class AbsenceController extends AbstractController {
 	}
 
 	/**
-	 * Returns a list of all Absences that have the
-	 * given Event associate with them.
+	 * Returns a list of all Absences that have the given Event associate with
+	 * them.
+	 * 
 	 * @param associated
 	 * @return
 	 */
-	public List<Absence> getAll(Event associated) {
-		ObjectDatastore od = this.train.getDataStore();
-		od.associate(associated);
-		Key k = od.associatedKey(associated);
+	public List<Absence> getAll(Event event) {
+
 		return this.train
 				.getDataStore()
 				.find()
 				.type(Absence.class)
-				.addFilter(Absence.FIELD_EVENT, FilterOperator.IN,
-						Arrays.asList(new Key[] { k })).returnAll().now();
+				.addFilter(Absence.FIELD_EVENT, FilterOperator.EQUAL, event)
+				.returnAll().now();
+	}
+
+	public List<Absence> getAll(Event event, User student) {
+
+		return this.train
+				.getDataStore()
+				.find()
+				.type(Absence.class)
+				.addFilter(Absence.FIELD_STUDENT, FilterOperator.EQUAL, student)
+				.addFilter(Absence.FIELD_EVENT, FilterOperator.EQUAL, event)
+				.returnAll().now();
 	}
 }
