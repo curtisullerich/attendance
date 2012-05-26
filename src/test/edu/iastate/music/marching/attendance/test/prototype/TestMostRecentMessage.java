@@ -51,7 +51,7 @@ public class TestMostRecentMessage extends AbstractTestCase {
 		assertEquals(2, result.getParticipants().size());
 		assertEquals(4, result.getMessages().size());
 		// TODO more checks
-		assertEquals("End", result.getMostRecent().getText());
+		assertEquals("End", result.getMessages().get(0).getText());
 	}
 
 }
