@@ -36,7 +36,7 @@
 					<select name="Email" autofocus>
 						<option value="">(Select)</option>
 						<c:forEach items="${verifiers}" var="verifier">
-							<option><c:out value="${verifier}" />${verifier}</option>
+							<option><c:out value="${verifier}" /></option>
 						</c:forEach>
 					</select>
 				</dd>
