@@ -1,5 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<fmt:setTimeZone value="America/Chicago" />
+
 <html>
 	<head>
 		<jsp:include page="/WEB-INF/template/head.jsp" />
@@ -16,8 +19,8 @@
 				<tr><th>Last Name</th><th>First name</th><th>Section</th><th>University ID</th>
 					<!-- all events. TODO will need to link this -->
 					<c:forEach items="${events}" var="event">
-						<th><fmt:formatDate value="${event}" pattern="M/dd/yyyy"/></th>
-					</c:forEach>				
+						<th><c:out value="${event.type}" /><br/><fmt:formatDate value="${event.date}" pattern="M/dd/yyyy"/></th>
+					</c:forEach>
 				<th>Grade</th>
 				<!-- headers are now done -->
 				</tr>
@@ -46,7 +49,7 @@
 										${absence.status } ${absence.type }: ${absence.datetime }<br/>
 									</c:when>
 								</c:choose>
-							</c:forEach>		
+							</c:forEach>
 						</td>
 						</c:forEach>
 						//grade

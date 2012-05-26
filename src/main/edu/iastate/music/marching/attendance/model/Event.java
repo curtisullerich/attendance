@@ -3,6 +3,8 @@ package edu.iastate.music.marching.attendance.model;
 import java.util.Date;
 import java.util.List;
 
+import com.google.code.twig.annotation.Activate;
+import com.google.code.twig.annotation.Id;
 import com.google.code.twig.annotation.Index;
 
 public class Event {
@@ -19,6 +21,9 @@ public class Event {
 
 	}
 	
+	@Id
+	private long id;
+	
 	@Index
 	private Date start;
 	
@@ -34,7 +39,9 @@ public class Event {
 	 * Absent students
 	 * 
 	 */
-	private List<Absence> absences;
+	// HACK: DANIEL
+	//@Activate(0)
+	//private List<Absence> absences;
 	
 	public Date getDate() {
 		return start;
