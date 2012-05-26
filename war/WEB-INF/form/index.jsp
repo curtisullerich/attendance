@@ -49,14 +49,16 @@
 				<div>
 					<p>Number of Forms Submitted: ${fn:length(forms)}</p>
 					<br/>
-					<table border='1'>
+					<table class="gray full-width">
 						<tr>
+							<thead>
 							<th>Start Date</th>
 							<th>End Date</th>
 							<th>Type</th>
 							<th>Status</th>
 							<th>Delete</th>
 							<th>Messages</th>
+							</thead>
 						</tr>
 						<c:forEach items="${forms}" var="form">
 							<tr id="row_form_<c:out value="${form.id}" />">

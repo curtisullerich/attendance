@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
-		<table border='1'>
+		<table class="gray full-width">
 			<tr>
 				<th>Event</th>
 				<th>Type</th>
