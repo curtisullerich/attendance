@@ -53,8 +53,7 @@ public class FormController extends AbstractController {
 		//
 		// try {
 		// First build an empty message thread and store it
-		MessageThread messages = ModelFactory.newMessageThread();
-		dataTrain.getDataStore().store(messages);
+		MessageThread messages = dataTrain.getMessagingController().createMessageThread(form.getStudent());
 		form.setMessageThread(messages);
 
 		// Store
