@@ -116,9 +116,37 @@ public class ValidationUtilTest {
 	}
 	
 	@Test
+	public void testDateIsAtLeastThreeWeekdaysFresh_SixDaysFromNow() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.roll(Calendar.DATE, 6);
+		assertTrue(ValidationUtil.dateIsAtLeastThreeWeekdaysFresh(calendar.getTime()));
+	}
+	
+	@Test
+	public void testDateIsAtLeastThreeWeekdaysFresh_SevenDaysFromNow() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.roll(Calendar.DATE, 7);
+		assertTrue(ValidationUtil.dateIsAtLeastThreeWeekdaysFresh(calendar.getTime()));
+	}
+	
+	@Test
+	public void testDateIsAtLeastThreeWeekdaysFresh_EightDaysFromNow() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.roll(Calendar.DATE, 8);
+		assertTrue(ValidationUtil.dateIsAtLeastThreeWeekdaysFresh(calendar.getTime()));
+	}
+	
+	@Test
 	public void testDateIsAtLeastThreeWeekdaysFresh_WeekFromNow() {
 		Calendar calendar = Calendar.getInstance();
 		calendar.roll(Calendar.WEEK_OF_YEAR, 1);
+		assertTrue(ValidationUtil.dateIsAtLeastThreeWeekdaysFresh(calendar.getTime()));
+	}
+	
+	@Test
+	public void testDateIsAtLeastThreeWeekdaysFresh_TwoWeeksFromNow() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.roll(Calendar.WEEK_OF_YEAR, 2);
 		assertTrue(ValidationUtil.dateIsAtLeastThreeWeekdaysFresh(calendar.getTime()));
 	}
 	

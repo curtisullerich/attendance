@@ -25,3 +25,11 @@
 }
 
 
+table.gray-hover tbody tr:hover td {
+	background-color:#bbb;
+	cursor:default;
+}
+table.gray-hover tbody tr:active td {
+	background-color:#888;
+	cursor:default;
+}

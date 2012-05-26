@@ -39,8 +39,8 @@ public class MessagingControllerTest extends AbstractTestCase {
 		MessageThread mtd = train.getMessagingController()
 				.createMessageThread();
 
-		train.getMessagingController().appendMessage(mtd, director, "D");
-		train.getMessagingController().appendMessage(mts, student, "S");
+		train.getMessagingController().addMessage(mtd, director, "D");
+		train.getMessagingController().addMessage(mts, student, "S");
 
 		List<MessageThread> results_student = getDataTrain().getMessagingController().get(
 				student);
@@ -89,8 +89,8 @@ public class MessagingControllerTest extends AbstractTestCase {
 		MessageThread mtd = train.getMessagingController()
 				.createMessageThread();
 
-		train.getMessagingController().appendMessage(mtd, director, "D");
-		train.getMessagingController().appendMessage(mts, student, "S");
+		train.getMessagingController().addMessage(mtd, director, "D");
+		train.getMessagingController().addMessage(mts, student, "S");
 
 		MessageThread results = getDataTrain().getMessagingController().get(
 				mts.getId());
@@ -132,10 +132,10 @@ public class MessagingControllerTest extends AbstractTestCase {
 
 		MessageThread mt = train.getMessagingController().createMessageThread();
 
-		train.getMessagingController().appendMessage(mt, director, "Begin");
-		train.getMessagingController().appendMessage(mt, director, "Middle");
-		train.getMessagingController().appendMessage(mt, student, "Middle");
-		train.getMessagingController().appendMessage(mt, student, "End");
+		train.getMessagingController().addMessage(mt, director, "Begin");
+		train.getMessagingController().addMessage(mt, director, "Middle");
+		train.getMessagingController().addMessage(mt, student, "Middle");
+		train.getMessagingController().addMessage(mt, student, "End");
 
 		// Load from datastore and compare
 		MessageThread result = getObjectDataStore().load(MessageThread.class,
