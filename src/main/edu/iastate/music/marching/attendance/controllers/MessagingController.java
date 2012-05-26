@@ -9,6 +9,7 @@ import java.util.Set;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.code.twig.ObjectDatastore;
+import com.google.common.collect.Sets;
 
 import edu.iastate.music.marching.attendance.model.Message;
 import edu.iastate.music.marching.attendance.model.MessageThread;
@@ -28,12 +29,14 @@ public class MessagingController extends AbstractController {
 		MessageThread thread = ModelFactory.newMessageThread();
 
 		if (initial_participants != null){
-			for (User u : initial_participants) {
-				if (!thread.getParticipants().contains(u)) {
-					thread.addParticipant(u);
-				}
-//				thread.setParticipants(Arrays.asList(initial_participants));
-			}
+			//for (User u : initial_participants) {
+//				if (!thread.getParticipants().contains(u)) {
+//					thread.addParticipant(u);
+//				}
+				
+				
+			//}
+			thread.setParticipants(Sets.newHashSet(initial_participants));
 		}
 //		if (initial_participants != null)
 //			thread.setParticipants(Sets.newHashSet(Arrays
@@ -44,7 +47,7 @@ public class MessagingController extends AbstractController {
 		return thread;
 	}
 
-	public MessageThread appendMessage(MessageThread thread, User sender,
+	public MessageThread addMessage(MessageThread thread, User sender,
 			String message) {
 
 		if (thread == null)
@@ -67,7 +70,7 @@ public class MessagingController extends AbstractController {
 			messages = new ArrayList<Message>();
 			thread.setMessages(messages);
 		}
-		messages.add(ModelFactory.newMessage(sender, message));
+		messages.add(0, ModelFactory.newMessage(sender, message));
 
 		update(thread);
 

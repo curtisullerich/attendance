@@ -100,7 +100,7 @@ public class MessagingServlet extends AbstractBaseServlet {
 			MessagingController mc = train.getMessagingController();
 			MessageThread mt = mc.get(longid);
 			User sender = AuthController.getCurrentUser(req.getSession());
-			mc.appendMessage(mt, sender, message);
+			mc.addMessage(mt, sender, message);
 			
 		} else {
 			//?TODO 
@@ -124,7 +124,7 @@ public class MessagingServlet extends AbstractBaseServlet {
 		// conversation,
 		// or is a director
 		
-		train.getMessagingController().appendMessage(thread, AuthController.getCurrentUser(req.getSession()), message);
+		train.getMessagingController().addMessage(thread, AuthController.getCurrentUser(req.getSession()), message);
 
 		showThread(req, resp, threadId, train);
 	}
@@ -134,7 +134,11 @@ public class MessagingServlet extends AbstractBaseServlet {
 		DataTrain train = DataTrain.getAndStartTrain();
 
 		// TODO Handle exceptions maybe for invalid thread id's?
-		List<MessageThread> threads = train.getMessagingController().get(
+		List<MessageThread> threads;
+		if(AuthController.getCurrentUser(req.getSession()).getType().equals(User.Type.Director))
+			threads = train.getMessagingController().getAll();
+		else
+			threads = train.getMessagingController().get(
 				AuthController.getCurrentUser(req.getSession()));
 
 		// TODO Verify currently logged in user is a participant in the

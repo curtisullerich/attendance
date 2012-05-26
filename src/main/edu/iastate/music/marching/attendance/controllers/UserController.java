@@ -15,7 +15,7 @@ public class UserController extends AbstractController {
 
 	DataTrain datatrain;
 
-	UserController(DataTrain dataTrain) {
+	public UserController(DataTrain dataTrain) {
 		super(dataTrain);
 		this.datatrain = dataTrain;
 	}
