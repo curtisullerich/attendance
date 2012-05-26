@@ -97,7 +97,7 @@
 			<div class="grid-5 sidebar" id="left-sidebar">
 <jsp:include page="/WEB-INF/template/menu.jsp" />
 			</div>
-			<div class="grid-14" id="content">
+			<div class="grid-19" id="content">
 				<div class="gutter">
 </c:if>
 <c:if test="${pagetemplate.mobileSite}">
