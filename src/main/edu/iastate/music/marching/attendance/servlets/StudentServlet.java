@@ -59,7 +59,6 @@ public class StudentServlet extends AbstractBaseServlet {
 				showInfo(req, resp);
 				break;
 			}
-
 	}
 
 	private void showAttendance(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -159,7 +158,8 @@ public class StudentServlet extends AbstractBaseServlet {
 			throws ServletException, IOException {
 
 		PageBuilder page = new PageBuilder(Page.index, SERVLET_PATH);
-
+		User currentUser = AuthController.getCurrentUser(req.getSession());
+		page.setAttribute("user",currentUser);
 		page.setPageTitle("Student");
 
 		page.passOffToJsp(req, resp);
