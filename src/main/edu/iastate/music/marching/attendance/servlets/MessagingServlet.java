@@ -1,6 +1,8 @@
 package edu.iastate.music.marching.attendance.servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -144,10 +146,21 @@ public class MessagingServlet extends AbstractBaseServlet {
 		// TODO Verify currently logged in user is a participant in the
 		// conversation,
 		// or is a director
+		
+		List<MessageThread> nonempty_threads = new ArrayList<MessageThread>();
+		
+		if(threads != null)
+			for(MessageThread mt : threads)
+			{
+				if(mt.getMessages() != null && mt.getMessages().size() > 0)
+					nonempty_threads.add(mt);
+			}
+		
+		Collections.sort(nonempty_threads, MessageThread.SORT_LATEST_MESSAGE_DESC);
 
 		PageBuilder builder = new PageBuilder(Page.index, SERVLET_JSP_PATH);
 
-		builder.setAttribute("threads", threads);
+		builder.setAttribute("threads", nonempty_threads);
 
 		builder.passOffToJsp(req, resp);
 	}
