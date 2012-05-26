@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -267,18 +268,25 @@ public class DirectorServlet extends AbstractBaseServlet {
 		List<Event> events = train.getEventsController().readAll();
 
 		AbsenceController ac = train.getAbsencesController();
-		HashMap<User, HashMap<Event, List<Absence>>> absenceMap = new HashMap<User, HashMap<Event, List<Absence>>>();
+		
+		Map<User, Map<Event, List<Absence>>> absenceMap = new HashMap<User, Map<Event, List<Absence>>>();
 		for (User s : students) {
+			
+			Map<Event, List<Absence>> eventAbsencesMap = new HashMap<Event, List<Absence>>();
 
 			//for each event, create a Map that will contain a list of all Absences for this student AND this event
 			for (Event e : events) {
-				HashMap<Event, List<Absence>> eventAbsencesMap = new HashMap<Event,List<Absence>>();
+				//HashMap<Event, List<Absence>> eventAbsencesMap = new HashMap<Event,List<Absence>>();
 				
 				List<Absence> currentEventAbsences = ac.getAll(e,s);
 				
 				eventAbsencesMap.put(e, currentEventAbsences);
-				absenceMap.put(s, eventAbsencesMap);
+				
 			}
+			
+			absenceMap.put(s, eventAbsencesMap);
+			
+			
 		}
 
 		page.setAttribute("students", students);

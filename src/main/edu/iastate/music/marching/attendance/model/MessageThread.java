@@ -1,5 +1,6 @@
 package edu.iastate.music.marching.attendance.model;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
@@ -13,6 +14,29 @@ public class MessageThread {
 	public static final String FIELD_PARTICIPANTS = "participants";
 
 	public static final String FIELD_RESOLVED = "resolved";
+
+	/**
+	 * Sorts by the latest message in the thread in descending order,
+	 * meaning that threads with new messages will come first in a sortr
+	 * 
+	 * Does not attempt to sort empty threads with no messages.
+	 */
+	public static final Comparator<? super MessageThread> SORT_LATEST_MESSAGE_DESC = new Comparator<MessageThread>() {
+
+		@Override
+		public int compare(MessageThread o1, MessageThread o2) {
+			List<Message> m1 = o1.getMessages();
+			List<Message> m2 = o2.getMessages();
+			
+			if(m1 == null || m2 == null)
+				return 0;
+			
+			if(m1.size() < 1 || m2.size() < 1)
+				return 0;
+			
+			return m2.get(0).getTimestamp().compareTo(m1.get(0).getTimestamp());
+		}
+	};
 
 	/**
 	 * Create users through UserController (DataModel.users().create(...)

@@ -21,7 +21,7 @@
 							<c:if test="${!fn:startsWith(pagetemplate.jspath, 'form/')}">
 							<li><a href="/student/forms">Forms</a></li>
 							</c:if>
-							<li class="${pagetemplate.jspath eq 'student/messages'?'selected':''}"><a href="/student/messages">Messages</a></li>
+							<li class="${fn:startsWith(pagetemplate.jspath, 'messaging/')?'selected':''}"><a href="/student/messages">Messages</a></li>
 							<li class="${pagetemplate.jspath eq 'student/info'?'selected':''}"><a href="/student/info">Edit Info</a></li>
 						</ul>
 					</c:if>
