@@ -13,11 +13,13 @@
 	
 		<h1>Users</h1>
 		
-		<table>
+		<table class="gray">
 			<tr>
+				<thead>
 				<th>Type</th>
 				<th>Netid</th>
 				<th>Name</th>
+				</thead>
 			</tr>
 			<c:forEach items="${users}" var="user" varStatus="loopStatus">
 				<tr>

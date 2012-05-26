@@ -100,11 +100,11 @@ public class User implements Serializable {
 
 	private int universityID;
 
-	@Activate(0)
-	private List<Absence> absences;
-
-	@Activate(0)
-	private List<Form> forms;
+//	@Activate(0)
+//	private List<Absence> absences;
+//
+//	@Activate(0)
+//	private List<Form> forms;
 
 	private Section section;
 
@@ -162,6 +162,7 @@ public class User implements Serializable {
 	}
 	
 	public Grade getGrade() {
+		
 		return this.grade;
 	}
 	

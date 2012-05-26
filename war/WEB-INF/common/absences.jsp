@@ -3,13 +3,15 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
-		<table border='1'>
+		<table class="gray full-width">
 			<tr>
+				<thead>
 				<th>Event</th>
 				<th>Type</th>
 				<th>Status</th>
 				<th>Time of Arrival/Leaving</th>
 				<th>Messages</th>
+				</thead>
 			</tr>
 			<c:forEach items="${absences}" var="absence">
 				<tr>

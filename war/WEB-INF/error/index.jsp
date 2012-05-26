@@ -12,7 +12,7 @@
   	<jsp:include page="/WEB-INF/template/header.jsp" />
    	<div>
    		<div>
-			<h1>You've been 404'd!!</h1>
+			<h1>404!</h1>
 		</div>
 		<br/>
 		<div>
