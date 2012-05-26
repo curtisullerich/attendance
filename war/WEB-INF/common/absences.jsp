@@ -5,11 +5,13 @@
 
 		<table class="gray full-width">
 			<tr>
+				<thead>
 				<th>Event</th>
 				<th>Type</th>
 				<th>Status</th>
 				<th>Time of Arrival/Leaving</th>
 				<th>Messages</th>
+				</thead>
 			</tr>
 			<c:forEach items="${absences}" var="absence">
 				<tr>

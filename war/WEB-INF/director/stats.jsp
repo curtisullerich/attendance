@@ -9,7 +9,7 @@
 	<body>
 	
 		TODO<br/>
-		implement reporting of avg grades once grades are implemented
+		implement reporting of average grades once grades are implemented
 	
 		<jsp:include page="/WEB-INF/template/header.jsp" />
 		
