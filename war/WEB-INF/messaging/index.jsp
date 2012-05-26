@@ -43,10 +43,12 @@
 						</td>
 						<td>
 							<c:if test="${!thread.resolved}"><strong></c:if>
-							<c:forEach items="${thread.participants}" var="participant" varStatus="">
-								<c:out value="${participant.name}"/>
-								<br/>
-							</c:forEach>
+							<p>
+								<c:forEach items="${thread.participants}" var="participant" varStatus="">
+									<c:out value="${participant.name}"/>
+									<br/>
+								</c:forEach>
+							</p>
 							<c:if test="${!thread.resolved}"></strong></c:if>
 						</td>
 						<td>

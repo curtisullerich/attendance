@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import edu.iastate.music.marching.attendance.App;
+import edu.iastate.music.marching.attendance.controllers.AbsenceController;
 import edu.iastate.music.marching.attendance.controllers.AppDataController;
 import edu.iastate.music.marching.attendance.controllers.AuthController;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
@@ -261,21 +263,27 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		PageBuilder page = new PageBuilder(Page.attendance, SERVLET_PATH);
 
-		page.setAttribute("absences", train.getAbsencesController().getAll());
-
-		List<List<Absence>> studentAbsences = new ArrayList<List<Absence>>();
-		List<Event> events = train.getEventsController().readAll();
 		List<User> students = train.getUsersController().get(User.Type.Student);
-		
-		
-//		for (User s : students) {
-//			Absence a = train.getAbsencesController().get()
-//			studentAbsences.add();
-//		}
-		
-		//now we have a list that contains lists of every absence associated with a particular event
-		//these correspond to one column in the attendance table each
-		page.setAttribute("studentAbsences", studentAbsences);
+		List<Event> events = train.getEventsController().readAll();
+
+		AbsenceController ac = train.getAbsencesController();
+		HashMap<User, HashMap<Event, List<Absence>>> absenceMap = new HashMap<User, HashMap<Event, List<Absence>>>();
+		for (User s : students) {
+
+			//for each event, create a Map that will contain a list of all Absences for this student AND this event
+			for (Event e : events) {
+				HashMap<Event, List<Absence>> eventAbsencesMap = new HashMap<Event,List<Absence>>();
+				
+				List<Absence> currentEventAbsences = ac.getAll(e,s);
+				
+				eventAbsencesMap.put(e, currentEventAbsences);
+				absenceMap.put(s, eventAbsencesMap);
+			}
+		}
+
+		page.setAttribute("students", students);
+		page.setAttribute("absenceMap", absenceMap);
+		page.setAttribute("absences", train.getAbsencesController().getAll());
 		page.setAttribute("events",events);
 		page.setPageTitle("Attendance");
 
