@@ -81,6 +81,10 @@ public class Form {
 	private String section;
 	private String building;
 
+	public String getBuilding() {
+		return building;
+	}
+
 	// String to be used by Form D
 	private String emailTo;
 	private int hoursWorked;
@@ -184,6 +188,22 @@ public class Form {
 
 	public void setBuilding(String building) {
 		this.building = building;
+	}
+
+	public String getSection() {
+		return section;
+	}
+
+	public void setSection(String section) {
+		this.section = section;
+	}
+
+	public Status getEmailStatus() {
+		return emailStatus;
+	}
+
+	public void setEmailStatus(Status emailStatus) {
+		this.emailStatus = emailStatus;
 	}
 
 }

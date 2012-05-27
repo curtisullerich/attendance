@@ -216,8 +216,8 @@ public class FormsServlet extends AbstractBaseServlet {
 		Date endDate = null;
 		Date fromTime = null;
 		Date toTime = null;
-		int day = 0;
-		String type = null;
+		int day = -1;
+//		String type = null;
 		String comments = null;
 
 		DataTrain train = DataTrain.getAndStartTrain();
@@ -236,7 +236,7 @@ public class FormsServlet extends AbstractBaseServlet {
 			course = req.getParameter("Course");
 			section = req.getParameter("Section");
 			building = req.getParameter("Building");
-			type = req.getParameter("Type");
+		//	type = req.getParameter("Type");
 			comments = req.getParameter("Comments");
 
 			// this is one-based! Starting on Sunday.
@@ -305,7 +305,7 @@ public class FormsServlet extends AbstractBaseServlet {
 					.getTimeZone());
 			setEndDate(endDate, page, train.getAppDataController().get()
 					.getTimeZone());
-			page.setAttribute("Type", type);
+			page.setAttribute("Type", Form.Type.B);
 			page.setAttribute("Comments", comments);
 
 			page.passOffToJsp(req, resp);
