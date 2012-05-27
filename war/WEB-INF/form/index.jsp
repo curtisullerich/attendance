@@ -56,8 +56,8 @@
 							<th>End Date</th>
 							<th>Type</th>
 							<th>Status</th>
-							<th>Delete</th>
-							<th>Messages</th>
+							<th></th>
+							<th></th>
 							</thead>
 						</tr>
 						<c:forEach items="${forms}" var="form">
