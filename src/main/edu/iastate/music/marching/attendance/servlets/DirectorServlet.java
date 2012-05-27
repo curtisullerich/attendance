@@ -23,6 +23,7 @@ import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.AppData;
 import edu.iastate.music.marching.attendance.model.Event;
 import edu.iastate.music.marching.attendance.model.User;
+import edu.iastate.music.marching.attendance.util.Util;
 import edu.iastate.music.marching.attendance.util.ValidationExceptions;
 import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
@@ -195,7 +196,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 				
 					try
 					{
-						toUpdate.setDatetime(parseDate(req.getParameter("StartMonth"), req.getParameter("StartDay"),
+						toUpdate.setDatetime(Util.parseDate(req.getParameter("StartMonth"), req.getParameter("StartDay"),
 								req.getParameter("StartYear"), req.getParameter("StartHour"), req.getParameter("StartAMPM"),
 								req.getParameter("StartMinute"), train.getAppDataController().get().getTimeZone()));
 						toUpdate.setType(Absence.Type.valueOf(type));
@@ -279,12 +280,11 @@ public class DirectorServlet extends AbstractBaseServlet {
 			}
 			// Handle the thrown exception
 			Date testDate = null;
-			try {
-				testDate = parseDate(req.getParameter("Month"),
-						req.getParameter("Day"), req.getParameter("Year"),
-						req.getParameter("ToHour"), req.getParameter("ToAMPM"),
-						req.getParameter("ToMinute"), train
-								.getAppDataController().get().getTimeZone());
+			try
+			{
+				testDate = Util.parseDate(req.getParameter("Month"), req.getParameter("Day"), 
+						req.getParameter("Year"), req.getParameter("ToHour"), req.getParameter("ToAMPM"), 
+						req.getParameter("ToMinute"));
 				data.setFormSubmissionCutoff(testDate);
 			} catch (ValidationExceptions e) {
 				validForm = false;
@@ -542,83 +542,6 @@ public class DirectorServlet extends AbstractBaseServlet {
 		{
 			showAttendance(req, resp, errors);
 		}		
-	}
-	
-	private Date parseDate(String sMonth, String sDay, String sYear, String hour, String AMPM, String minute, TimeZone timezone) {
-		int year = 0, month = 0, day = 0;
-		Calendar calendar = Calendar.getInstance(timezone);
-
-		// Do validate first and store any problems to this exception
-		ValidationExceptions exp = new ValidationExceptions();
-		try {
-			year = Integer.parseInt(sYear);
-		} catch (NumberFormatException e) {
-			exp.getErrors().add("Invalid year, not a number.");
-		}
-		try {
-			month = Integer.parseInt(sMonth);
-		} catch (NumberFormatException e) {
-			exp.getErrors().add("Invalid month, not a number.");
-		}
-		try {
-			day = Integer.parseInt(sDay);
-		} catch (NumberFormatException e) {
-			exp.getErrors().add("Invalid day, not a number.");
-		}
-
-		calendar.setTimeInMillis(0);
-		calendar.setLenient(false);
-
-		try {
-			calendar.set(Calendar.YEAR, year);
-		} catch (ArrayIndexOutOfBoundsException e) {
-			exp.getErrors().add("Invalid year given:" + e.getMessage() + '.');
-		}
-		try {
-			calendar.set(Calendar.MONTH, month - 1);
-		} catch (ArrayIndexOutOfBoundsException e) {
-			exp.getErrors().add("Invalid month given:" + e.getMessage() + '.');
-		}
-		try {
-			calendar.set(Calendar.DATE, day);
-		} catch (ArrayIndexOutOfBoundsException e) {
-			exp.getErrors().add("Invalid day given:" + e.getMessage() + '.');
-		}
-
-		// JSP only allows valid time numbers
-		try {
-			calendar.set(Calendar.HOUR, Integer.parseInt(hour));
-		} catch (NumberFormatException e) {
-			exp.getErrors().add("Invalid hour, not a number");
-		}
-
-		try {
-			calendar.set(Calendar.MINUTE, Integer.parseInt(minute));
-		} catch (NumberFormatException e) {
-			exp.getErrors().add("Invalid minute, not a number");
-		}
-		int timeOfDay = 0;
-		if ("AM".equals(AMPM.toUpperCase()))
-			timeOfDay = Calendar.AM;
-		else if ("PM".equals(AMPM.toUpperCase()))
-			timeOfDay = Calendar.PM;
-		else
-		{
-			exp.getErrors().add("Invalid input for AM/PM");
-		}
-		
-		try {
-			calendar.set(Calendar.AM_PM, timeOfDay);
-		} catch (ArrayIndexOutOfBoundsException e) {
-			exp.getErrors().add("Invalid time of day given:" + e.getMessage());
-		}
-		
-		
-
-		if (exp.getErrors().size() > 0)
-			throw exp;
-
-		return calendar.getTime();
 	}
 
 }

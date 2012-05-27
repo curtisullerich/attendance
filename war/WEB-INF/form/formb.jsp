@@ -79,8 +79,10 @@
 				<dt><label class="required">On:</label></dt>
 				<dd>
 					<select name="DayOfWeek">
-						<c:forEach items="${daysOfWeek}" var="day">
-							<option ${DayOfWeek eq day ? 'selected' : ''}>${day}</option>
+						<c:forEach items="${daysOfWeek}" varStatus="status" var="day">
+							<%//the purpose of the varStatus is to put an integer as the value to be sent
+							//to the server so we can just to a parseInt instead of an iteration to get the day%>
+							<option value="${status.count}" ${DayOfWeek eq day ? 'selected' : ''}>${day}</option>
 						</c:forEach>
 					</select>
 					<br/>

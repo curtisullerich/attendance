@@ -138,7 +138,7 @@ public class FormController extends AbstractController {
 
 	public Form createFormB(User student, String department, String course,
 			String section, String building, Date startDate, Date endDate,
-			Enum day, Date startTime, Date endTime, String details) {
+			int day, Date startTime, Date endTime, String details) {
 		// TODO NEEDS MORE PARAMETERS and LOTS OF VALIDATION
 		Calendar calendar = Calendar.getInstance();
 		// calendar.setTime(date);
@@ -182,7 +182,8 @@ public class FormController extends AbstractController {
 		}
 
 		// Check date is before cutoff but after today
-		if (!ValidationUtil.dateIsAtLeastThreeWeekdaysFresh(date, this.dataTrain.getAppDataController().get().getTimeZone())) {
+		if (!ValidationUtil.dateIsAtLeastThreeWeekdaysFresh(date,
+				this.dataTrain.getAppDataController().get().getTimeZone())) {
 			exp.getErrors().add("Invalid date, submitted too late");
 		}
 
@@ -285,6 +286,12 @@ public class FormController extends AbstractController {
 		// Perform store
 		storeForm(form);
 
+		return form;
+	}
+
+	public Form get(long id) {
+		ObjectDatastore od = this.dataTrain.getDataStore();
+		Form form = od.load(Form.class, id);
 		return form;
 	}
 
