@@ -136,31 +136,46 @@ public class MessagingServlet extends AbstractBaseServlet {
 		DataTrain train = DataTrain.getAndStartTrain();
 
 		// TODO Handle exceptions maybe for invalid thread id's?
-		List<MessageThread> threads;
+		List<MessageThread> resolved;
+		List<MessageThread> unresolved;
 		if(AuthController.getCurrentUser(req.getSession()).getType().equals(User.Type.Director))
-			threads = train.getMessagingController().getAll();
+		{
+			resolved = train.getMessagingController().get(true);
+			unresolved =  train.getMessagingController().get(false);
+		}
 		else
-			threads = train.getMessagingController().get(
-				AuthController.getCurrentUser(req.getSession()));
-
+		{
+			resolved = train.getMessagingController().get(AuthController.getCurrentUser(req.getSession()), true);
+			unresolved =  train.getMessagingController().get(AuthController.getCurrentUser(req.getSession()), false);
+		}
+		
 		// TODO Verify currently logged in user is a participant in the
 		// conversation,
 		// or is a director
 		
-		List<MessageThread> nonempty_threads = new ArrayList<MessageThread>();
+		List<MessageThread> nonempty_resolved = new ArrayList<MessageThread>();
+		List<MessageThread> nonempty_unresolved = new ArrayList<MessageThread>();
 		
-		if(threads != null)
-			for(MessageThread mt : threads)
+		if(resolved != null)
+			for(MessageThread mt : resolved)
 			{
 				if(mt.getMessages() != null && mt.getMessages().size() > 0)
-					nonempty_threads.add(mt);
+					nonempty_resolved.add(mt);
+			}
+		if(unresolved != null)
+			for(MessageThread mt : unresolved)
+			{
+				if(mt.getMessages() != null && mt.getMessages().size() > 0)
+					nonempty_unresolved.add(mt);
 			}
 		
-		Collections.sort(nonempty_threads, MessageThread.SORT_LATEST_MESSAGE_DESC);
+		Collections.sort(nonempty_resolved, MessageThread.SORT_LATEST_MESSAGE_DESC);
+		Collections.sort(nonempty_unresolved, MessageThread.SORT_LATEST_MESSAGE_DESC);
 
 		PageBuilder builder = new PageBuilder(Page.index, SERVLET_JSP_PATH);
 
-		builder.setAttribute("threads", nonempty_threads);
+		builder.setAttribute("resolved", nonempty_resolved);
+		builder.setAttribute("unresolved", nonempty_unresolved);
 
 		builder.passOffToJsp(req, resp);
 	}
