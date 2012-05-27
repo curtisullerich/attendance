@@ -2,15 +2,14 @@ package edu.iastate.music.marching.attendance.util;
 
 import java.util.Calendar;
 import java.util.Date;
-
-import edu.iastate.music.marching.attendance.App;
+import java.util.TimeZone;
 
 public class Util {
 
 
-	public static Date parseDate(String sMonth, String sDay, String sYear, String hour, String AMPM, String minute) {
+	public static Date parseDate(String sMonth, String sDay, String sYear, String hour, String AMPM, String minute, TimeZone timeZone) {
 		int year = 0, month = 0, day = 0;
-		Calendar calendar = Calendar.getInstance(App.getTimeZone());
+		Calendar calendar = Calendar.getInstance(timeZone);
 
 		// Do validate first and store any problems to this exception
 		ValidationExceptions exp = new ValidationExceptions();

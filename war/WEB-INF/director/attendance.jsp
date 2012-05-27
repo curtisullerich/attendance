@@ -1,8 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"
 	isELIgnored="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-<fmt:setTimeZone value="America/Chicago" />
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setTimeZone value="${pagetemplate.timeZoneID}" />
 
 <html>
 <head>

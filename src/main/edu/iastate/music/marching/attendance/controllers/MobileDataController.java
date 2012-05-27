@@ -7,8 +7,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import edu.iastate.music.marching.attendance.App;
-import edu.iastate.music.marching.attendance.controllers.DataTrain.Track;
 import edu.iastate.music.marching.attendance.model.Event;
 import edu.iastate.music.marching.attendance.model.MobileDataUpload;
 import edu.iastate.music.marching.attendance.model.ModelFactory;
@@ -49,7 +47,7 @@ public class MobileDataController {
 				sb.append(SEPARATOR);
 				sb.append(next.getLastName());
 				sb.append(SEPARATOR);
-				sb.append(App.getHashedMobilePassword());
+				sb.append(train.getAppDataController().get().getHashedMobilePassword());
 				sb.append(SEPARATOR);
 				sb.append(next.getRank());
 			} else if (next.getType() == User.Type.Student) {
@@ -77,7 +75,7 @@ public class MobileDataController {
 
 		// First lets log what is being uploaded
 		MobileDataUpload upload = ModelFactory.newMobileDataUpload(uploader,
-				Calendar.getInstance(App.getTimeZone()).getTime(), data);
+				Calendar.getInstance(this.train.getAppDataController().get().getTimeZone()).getTime(), data);
 		this.train.getDataStore().store(upload);
 
 		// Check we actually have something to work with
