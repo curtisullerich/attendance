@@ -88,6 +88,11 @@ public class AbsenceController extends AbstractController {
 
 		return storeAbsence(absence);
 	}
+	
+	public void updateAbsence(Absence absence)
+	{
+		this.train.getDataStore().update(absence);
+	}
 
 	private Absence storeAbsence(Absence absence) {
 		ObjectDatastore od = this.train.getDataStore();
@@ -110,6 +115,10 @@ public class AbsenceController extends AbstractController {
 				.type(Absence.class)
 				.addFilter(Absence.FIELD_STUDENT, FilterOperator.EQUAL, student)
 				.returnAll().now();
+	}
+	
+	public Absence get(long id) {
+		return this.train.getDataStore().load(Absence.class, id);
 	}
 
 	public List<Absence> get(Absence.Type... types) {

@@ -35,7 +35,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 	private static final long serialVersionUID = 6100206975846317440L;
 
 	public enum Page {
-		index, appinfo, attendance, export, forms, unanchored, users, user, stats, info;
+		index, appinfo, attendance, export, forms, unanchored, users, user, stats, info, viewabsence;
 	}
 
 	private static final String SERVLET_PATH = "director";
@@ -61,8 +61,11 @@ public class DirectorServlet extends AbstractBaseServlet {
 			case index:
 				showIndex(req, resp);
 				break;
+			case viewabsence:
+				viewAbsence(req, resp, new LinkedList<String>());
+				break;	
 			case attendance:
-				showAttendance(req, resp);
+				showAttendance(req, resp, new LinkedList<String>());
 				break;
 			case appinfo:
 				showAppInfo(req, resp, new LinkedList<String>());
@@ -143,10 +146,79 @@ public class DirectorServlet extends AbstractBaseServlet {
 			case users:
 				postUserInfo(req, resp);
 				break;
+			case viewabsence:
+				postAbsenceInfo(req, resp);
+				break;	
 			default:
 				ErrorServlet.showError(req, resp, 404);
 			}
 
+	}
+
+	private void postAbsenceInfo(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		DataTrain train = DataTrain.getAndStartTrain();
+		
+		AbsenceController ac = train.getAbsencesController();
+		
+		boolean validForm = true;
+		
+		List<String> errors = new LinkedList<String>();
+		
+		if (!ValidationUtil.isPost(req)) {
+			validForm = false;
+		}
+		else
+		{
+			String absid = req.getParameter("absenceid");
+			long id;
+			Absence toUpdate = null;
+			if (absid != null)
+			{
+				id = Long.parseLong(absid);
+				toUpdate = ac.get(id);
+				if (toUpdate != null)
+				{
+					String type = req.getParameter("Type");
+					String status = req.getParameter("Status");
+				
+					try
+					{
+						toUpdate.setDatetime(parseDate(req.getParameter("StartMonth"), req.getParameter("StartDay"),
+								req.getParameter("StartYear"), req.getParameter("StartHour"), req.getParameter("StartAMPM"),
+								req.getParameter("StartMinute")));
+						toUpdate.setType(Absence.Type.valueOf(type));
+						toUpdate.setStatus(Absence.Status.valueOf(status));
+					}
+					catch (ValidationExceptions e)
+					{
+						validForm = false;
+						errors.add("Invalid Input: The input date was invalid.");
+					}
+				}
+				else
+				{
+					validForm = false;
+					errors.add("Could not find the Absence to update");
+				}
+			}
+			else
+			{
+				validForm = false;
+				errors.add("Could not find the Absence to update");
+			}
+			
+			if (validForm)
+			{
+				//How about update the absence huh?
+				ac.updateAbsence(toUpdate);
+				showAttendance(req, resp, null);
+			}
+			else
+			{
+				viewAbsence(req, resp, errors);
+			}
+		}
 	}
 
 	private void postAppInfo(HttpServletRequest req, HttpServletResponse resp)
@@ -195,7 +267,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 			try
 			{
 				testDate = parseDate(req.getParameter("Month"), req.getParameter("Day"), 
-						req.getParameter("Year"), req.getParameter("ToHour"), 
+						req.getParameter("Year"), req.getParameter("ToHour"), req.getParameter("ToAMPM"), 
 						req.getParameter("ToMinute"));
 				data.setFormSubmissionCutoff(testDate);
 			}
@@ -257,7 +329,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		page.passOffToJsp(req, resp);
 	}
 	
-	private void showAttendance(HttpServletRequest req, HttpServletResponse resp)
+	private void showAttendance(HttpServletRequest req, HttpServletResponse resp, List<String> errors)
 			throws ServletException, IOException {
 
 		DataTrain train = DataTrain.getAndStartTrain();
@@ -294,7 +366,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		page.setAttribute("absences", train.getAbsencesController().getAll());
 		page.setAttribute("events",events);
 		page.setPageTitle("Attendance");
-
+		page.setAttribute("error_messages", errors);
 		page.passOffToJsp(req, resp);
 	}
 	
@@ -405,7 +477,61 @@ public class DirectorServlet extends AbstractBaseServlet {
 		page.passOffToJsp(req, resp);
 	}
 	
-	private Date parseDate(String sMonth, String sDay, String sYear, String hour, String minute) {
+	private void viewAbsence(HttpServletRequest req, HttpServletResponse resp, List<String> incomingErrors) 
+			throws ServletException, IOException {
+		DataTrain train = DataTrain.getAndStartTrain();
+		
+		AbsenceController ac = train.getAbsencesController();
+		
+		boolean validInput = true;
+		
+		List<String> errors = new LinkedList<String>();
+		
+		String urlParam = req.getParameter("absenceid");
+		
+		Absence checkedAbsence = null;
+		
+		long absenceid;
+		
+		if (urlParam != null)
+		{
+			absenceid = Long.parseLong(urlParam);
+			checkedAbsence = ac.get(absenceid);
+		}
+		else
+		{
+			validInput = false;
+			errors.add("No absence to look for");
+		}
+		
+		
+		//Shouldn't ever happen since the id is sent by us from the jsp
+		if (checkedAbsence == null)
+		{
+			validInput = false;
+			errors.add("Could not find the absence.");
+		}
+		
+		PageBuilder page = null;
+		User stud = checkedAbsence.getStudent();		
+		if (validInput)
+		{
+			page = new PageBuilder(Page.viewabsence, SERVLET_PATH);
+			page.setPageTitle("View Absence");
+			page.setAttribute("absence", checkedAbsence);
+			page.setAttribute("types", Absence.Type.values());
+			page.setAttribute("status", Absence.Status.values());
+			page.setAttribute("student", checkedAbsence.getStudent());
+			page.setAttribute("error_messages", incomingErrors);
+			page.passOffToJsp(req, resp);
+		}
+		else
+		{
+			showAttendance(req, resp, errors);
+		}		
+	}
+	
+	private Date parseDate(String sMonth, String sDay, String sYear, String hour, String AMPM, String minute) {
 		int year = 0, month = 0, day = 0;
 		Calendar calendar = Calendar.getInstance(App.getTimeZone());
 
@@ -446,8 +572,6 @@ public class DirectorServlet extends AbstractBaseServlet {
 			exp.getErrors().add("Invalid day given:" + e.getMessage() + '.');
 		}
 
-		
-		//JSP only allows valid time numbers
 		try
 		{
 			calendar.set(Calendar.HOUR, Integer.parseInt(hour));
@@ -465,6 +589,23 @@ public class DirectorServlet extends AbstractBaseServlet {
 		{
 			exp.getErrors().add("Invalid minute, not a number");
 		}
+		int timeOfDay = 0;
+		if ("AM".equals(AMPM.toUpperCase()))
+			timeOfDay = Calendar.AM;
+		else if ("PM".equals(AMPM.toUpperCase()))
+			timeOfDay = Calendar.PM;
+		else
+		{
+			exp.getErrors().add("Invalid input for AM/PM");
+		}
+		
+		try {
+			calendar.set(Calendar.AM_PM, timeOfDay);
+		} catch (ArrayIndexOutOfBoundsException e) {
+			exp.getErrors().add("Invalid time of day given:" + e.getMessage());
+		}
+		
+		
 
 		if (exp.getErrors().size() > 0)
 			throw exp;
