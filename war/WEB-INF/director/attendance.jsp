@@ -45,25 +45,22 @@
 				<tr>
 					<td>${student.firstName }</td>
 					<td>${student.lastName }</td>
-					<td>${student.section }</td>
+					<td>${student.section.displayName }</td>
 					<td>${student.universityID }</td>
 					<c:forEach items="${events}" var="event">
 						<td><c:forEach items="${absenceMap[student][event] }"
 								var="absence">
 								<c:choose>
-									<c:when test="${absence.type.tardy}">
-										<a href="/director/viewabsence?absenceid=${absence.id }">${absence.status
-											} ${absence.type }<!-- : ${absence.datetime }--></a>
+									<c:when test="${absence.type.tardy && !absence.status.approved}">
+										<a href="/director/viewabsence?absenceid=${absence.id }">${absence.status} ${absence.type }<!-- : ${absence.datetime }--></a>
 										<br />
 									</c:when>
-									<c:when test="${absence.type.absence}">
-										<a href="/director/viewabsence?absenceid=${absence.id }">${absence.status
-											} ${absence.type } </a>
+									<c:when test="${absence.type.absence && !absence.status.approved}">
+										<a href="/director/viewabsence?absenceid=${absence.id }">${absence.status} ${absence.type } </a>
 										<br />
 									</c:when>
-									<c:when test="${absence.type.earlyCheckOut}">
-										<a href="/director/viewabsence?absenceid=${absence.id }">${absence.status
-											} ${absence.type }<!-- : ${absence.datetime }--></a>
+									<c:when test="${absence.type.earlyCheckOut && !absence.status.approved}">
+										<a href="/director/viewabsence?absenceid=${absence.id }">${absence.status} ${absence.type }<!-- : ${absence.datetime }--></a>
 										<br />
 									</c:when>
 								</c:choose>

@@ -7,9 +7,6 @@
 		<jsp:include page="/WEB-INF/template/head.jsp" />
 	</head>
 	<body>
-<br/>
-TODO: delete everything button (with seven kinds of confirmation)
-
 		<jsp:include page="/WEB-INF/template/header.jsp" />
 
 		<h1>Director Page</h1>

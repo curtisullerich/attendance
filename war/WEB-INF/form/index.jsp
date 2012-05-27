@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
- <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setTimeZone value="${pagetemplate.timeZoneID}" />
  
 <jsp:useBean id="date" class="java.util.Date" />
@@ -69,7 +69,7 @@
 								<td>${form.status}</td>
 								<td>
 									<c:choose>
-										<c:when test="${auth.user.type.student}">
+										<c:when test="${auth.user.type.student || auth.user.type.ta}">
 											<c:choose>
 												<c:when test="${form.status.value eq 'Pending'}">
 													<button onClick="remove('student/forms?removeid=${form.id}');">Delete</button>

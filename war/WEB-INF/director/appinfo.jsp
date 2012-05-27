@@ -40,12 +40,7 @@
 		</script>
 	</head>
 
-	<body>
-		TODO:
-		Working post of data to actually change: <br/>
-		submission cutoff time <br/>
-		valid email domains
-		
+	<body>		
 		<jsp:include page="/WEB-INF/template/header.jsp" />
 	
 		<h1>Application Settings for: <c:out value="${appinfo.title}" /></h1>

@@ -3,6 +3,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setTimeZone value="${pagetemplate.timeZoneID}" />
+	<c:choose>
+	<c:when test="${fn:length(absences) > 0}">
 
 		<table class="gray full-width">
 			<tr>
@@ -84,3 +86,8 @@
 				</tr>
 			</c:forEach>
 		</table>
+	</c:when>
+	<c:otherwise>
+	<p>No absences, tardies, or early check outs yet!</p>
+	</c:otherwise>
+	</c:choose>

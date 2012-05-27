@@ -56,7 +56,7 @@
 			
 				<dt><label for="StartMonth" class="required">Starting Date:</label></dt>
 				<dd>
-					<input id='startMonth' size='5' type='number' name='StartMonth' min='01' max='12' placeholder='MM' value='<c:out value="${StartMonth}" />' />
+					<input id='startMonth' size='5' type='number' name='StartMonth' min='01' max='12' placeholder='MM' value='<c:out value="${empty StartMonth ? '' : StartMonth+1}" />' />
 					/
 					<input id='startDay' size='5' type='number' name='StartDay' min='01' max='31' step='1' placeholder='DD' value='<c:out value="${StartDay}" />' />
 					/
@@ -67,7 +67,7 @@
 				
 				<dt><label for="EndMonth" class="required">Ending Date:</label></dt>
 				<dd>
-					<input size='5' type='number' name='EndMonth' min='01' max='12' placeholder='MM' value='<c:out value="${EndMonth}" />' />
+					<input size='5' type='number' name='EndMonth' min='01' max='12' placeholder='MM' value='<c:out value="${empty EndMonth ? '' : EndMonth+1}" />' />
 					/
 					<input size='5' type='number' name='EndDay' min='01' max='31' step='1' placeholder='DD' value='<c:out value="${EndDay}" />' />
 					/

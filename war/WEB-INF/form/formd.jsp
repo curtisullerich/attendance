@@ -33,6 +33,8 @@
 			<dl class="block-layout">
 	
 				<dt><label class="required">Who needs to verify?</label></dt>
+				<label>If the person for whom your worked off time is not listed, put his or her contact<br/>
+				 information in the details box below and select the director here.</label>
 				<dd>
 					<select name="Email" autofocus>
 						<option value="">(Select)</option>
@@ -43,6 +45,7 @@
 				</dd>
 				
 				<dt><label for="AmountWorked" class="required">Total amount of work</label></dt>
+				<label>If you worked on more than one day, just select one of them here and make note of it below.</label>
 				<dd>
 					<input size='5' type='number' name='AmountWorked' value='<c:out value="${AmountWorked}" />' style="width:64pt" />
 					<label for="AmountWorked">Hours</label>
@@ -50,7 +53,7 @@
 				
 				<dt><label for="StartMonth" class="required">Date</label></dt>
 				<dd>
-					<input id='startMonth' size='5' type='number' name='StartMonth' min='01' max='12' placeholder='MM' value='<c:out value="${StartMonth}" />' />
+					<input id='startMonth' size='5' type='number' name='StartMonth' min='01' max='12' placeholder='MM' value='<c:out value="${empty StartMonth ? '' : StartMonth+1}" />' />
 					/
 					<input id='startDay' size='5' type='number' name='StartDay' min='01' max='31' step='1' placeholder='DD' value='<c:out value="${StartDay}" />' />
 					/

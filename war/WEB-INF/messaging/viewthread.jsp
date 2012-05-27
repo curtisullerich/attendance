@@ -52,19 +52,6 @@
 			<strong>No messages yet.</strong>
 			<br/>
 		</c:if>
-		
-		<div>
-			<c:forEach items="${thread.messages}" var="message">
-				<p><u>
-					<fmt:formatDate value="${message.timestamp}" pattern="'On' M/dd/yyyy 'at' h:mm:ss a"/> 
-					<strong><c:out value="${message.author.name}" /> (<c:out value="${message.author.netID}" />)</strong>
-					said</u>:
-					<c:out value="${message.text}" />
-					<br/>
-				</p>
-			</c:forEach>
-		</div>
-		
 		<form method="post" accept-charset="utf-8">
 		
 			<dl class="block-layout">
@@ -81,6 +68,18 @@
 			<input type="submit" value="Add Message" name="Submit"/>
 		
 		</form>
+		
+		<div>
+			<c:forEach items="${thread.messages}" var="message">
+				<p><u>
+					<fmt:formatDate value="${message.timestamp}" pattern="'On' M/dd/yyyy 'at' h:mm:ss a"/> 
+					<strong><c:out value="${message.author.name}" /> (<c:out value="${message.author.netID}" />)</strong>
+					said</u>:
+					<c:out value="${message.text}" />
+					<br/>
+				</p>
+			</c:forEach>
+		</div>
 		
 		<jsp:include page="/WEB-INF/template/footer.jsp" />
 	</body>

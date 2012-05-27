@@ -7,8 +7,6 @@
 	</head>
 
 	<body>
-		TODO <br/>
-		Link to director/user not admin/user
 		<jsp:include page="/WEB-INF/template/header.jsp" />
 	
 		<h1>Users</h1>
@@ -26,7 +24,7 @@
 					
 					<td><c:out value="${user.type}" /></td>
 					<td>
-						<a href="/admin/user/<c:out value="${user.netID}" />">
+						<a href="/director/user/<c:out value="${user.netID}" />">
 							<c:out value="${user.netID}" />
 						</a>
 					</td>

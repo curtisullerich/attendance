@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <fmt:setTimeZone value="${pagetemplate.timeZoneID}" />
 
 <html>
@@ -13,7 +14,9 @@
 
 		<h1>Attendance for <c:out value="${user.name}" /></h1>
 		
-		<h2>Absences</h2>
+		<c:if test="${fn:length(absences) > 0}">
+			<h2>Absences</h2>
+		</c:if>
 		<c:if test="${not empty error_messages}">
 			<p class="notify-msg error">
 				<strong>Error:</strong>

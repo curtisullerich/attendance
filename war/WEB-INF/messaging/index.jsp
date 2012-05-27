@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <fmt:setTimeZone value="${pagetemplate.timeZoneID}" />
 
 <jsp:useBean id="now" class="java.util.Date" />
@@ -18,6 +19,8 @@
 		
 		
 		<h1>Message Inbox</h1>
+		<c:choose>
+		<c:when test="${fn:length(threads) > 0}">
 		<br/>
 		<div class="">
 			<table class="gray full-width gray-hover" style="table-layout:fixed;white-space:nowrap;overflow:hidden;">
@@ -91,6 +94,11 @@
 				</tbody>
 			</table>
 		</div>
+		</c:when>
+		<c:otherwise>
+		<p>No messages here!</p>
+		</c:otherwise>
+		</c:choose>
 
 		<jsp:include page="/WEB-INF/template/footer.jsp" />
 	</body>

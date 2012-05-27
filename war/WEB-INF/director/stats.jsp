@@ -8,10 +8,6 @@
 		<jsp:include page="/WEB-INF/template/head.jsp" />
 	</head>
 	<body>
-	
-		TODO<br/>
-		implement reporting of average grades once grades are implemented
-	
 		<jsp:include page="/WEB-INF/template/header.jsp" />
 		
 		<h1>${pagetemplate.title}</h1>
@@ -24,10 +20,14 @@
 		<br/>
 		<br/>
 		
-		<table style="font-size:small" cellspacing=10 width=450>
+		<table class="gray"><!-- style="font-size:small" cellspacing=10 width=450-->
+			<tr>
+				<th>Statistics</th>
+				<th></th>
+			</tr>
 			<tr>
 				<td>
-					Number of Students: 
+					Number of students
 				</td>
 				<td>
 					<c:out value="${numStudents}" />
@@ -35,7 +35,7 @@
 			</tr>
 			<tr>
 				<td>
-					Number of Events: 
+					Number of events
 				</td>
 				<td>
 					<c:out value="${numEvents}" />
@@ -43,7 +43,7 @@
 			</tr>
 			<tr>
 				<td>
-					Average Present Students (including those tardy and leaving early): 
+					Average present students (including those tardy and leaving early)
 				</td>
 				<td>
 					<c:out value="${avgPresentStudents}" />
@@ -51,7 +51,7 @@
 			</tr>
 			<tr>
 				<td>
-					Average Students Present for Whole Rehearsal: 
+					Average students present for whole rehearsal: 
 				</td>
 				<td>
 					<c:out value="${avgPresentStudentsWR}" />
@@ -59,7 +59,7 @@
 			</tr>
 			<tr>
 				<td>
-					Average Tardy Students: 
+					Average tardy students
 				</td>
 				<td>
 					<c:out value="${avgTardyStudents}" />
@@ -67,7 +67,7 @@
 			</tr>
 			<tr>
 				<td>
-					Average Students Who Leave Early: 
+					Average students who leave early
 				</td>
 				<td>
 					<c:out value="${avgLeaveEarly}" />
@@ -75,7 +75,7 @@
 			</tr>
 			<tr>
 				<td>
-					Average Absent Students: 
+					Average absent students
 				</td>
 				<td>
 					<c:out value="${avgAbsentStudents}" />
@@ -83,23 +83,17 @@
 			</tr>
 			<tr>
 				<td>
+					Average grade
 				</td>
 				<td>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					Average Grade: 
-				</td>
-				<td>
-					<!-- <c:out value="${avgGrade}" /> -->
-					F--
+					<c:out value="${avgGrade}" />
 				</td>
 			</tr>
 		</table>
 		
 		<br/>
-		Please be aware that these statistics will be made inaccurate by Un-Anchored items.
+		Please be aware that these statistics will be made inaccurate by un-anchored items.<br/>
+		Would other statistics be useful? <script>document.write('<a href="mailto:'+ ["mbattendance", "iastate.edu"].join('@') +'">'+ ["Let", "know"].join(' us ') +'</a>')</script><noscript>mbattendance (at) iastate (dot) edu</noscript>.
 		
 		<jsp:include page="/WEB-INF/template/footer.jsp" />
 	</body>
