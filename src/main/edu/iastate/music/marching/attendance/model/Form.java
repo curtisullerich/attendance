@@ -19,7 +19,25 @@ public class Form {
 	};
 
 	public static enum Type {
-		A, B, C, D
+		A, B, C, D;
+		
+		private String mDisplayString;
+
+		private Type() {
+			mDisplayString = this.toString();
+		}
+
+		private Type(String display_string) {
+			mDisplayString = display_string;
+		}
+		
+		public String getDisplayName() {
+			return mDisplayString;
+		}
+		
+		public String getValue() {
+			return name();
+		}
 	};
 
 	public static final String FIELD_STUDENT = "student";

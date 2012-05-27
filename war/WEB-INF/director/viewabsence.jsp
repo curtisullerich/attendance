@@ -23,7 +23,7 @@
 		</c:if>
 		
 		<form action="./viewabsence" method="post" accept-charset="utf-8">
-			<d1 class="block-layout">
+			<dl class="block-layout">
 			<fmt:formatDate var="arst" value="${absence.start}" pattern="yyyy"/> 
 			<dt><label></label></dt>
 			

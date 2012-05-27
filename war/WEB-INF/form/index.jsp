@@ -65,7 +65,7 @@
 							<tr id="row_form_<c:out value="${form.id}" />">
 								<td><fmt:formatDate value="${form.start}" pattern="M/d/yyyy" /></td>
 								<td><fmt:formatDate value="${form.end}" pattern="M/d/yyyy" /></td>
-								<td>${form.type}</td>
+								<td><a href="/student/forms/view?formid=${form.id}">${form.type}</td>
 								<td>${form.status}</td>
 								<td>
 									<c:choose>
