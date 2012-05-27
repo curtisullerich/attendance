@@ -54,11 +54,6 @@ public class ModelFactory {
 
 	public static MessageThread newMessageThread() {
 		MessageThread m = new MessageThread();
-		
-		// Defaults
-		// TODO: Move defaults to controller
-		m.setResolved(false);
-		
 		return m;
 	}
 	

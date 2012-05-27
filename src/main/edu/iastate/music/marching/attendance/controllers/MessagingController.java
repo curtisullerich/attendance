@@ -29,19 +29,13 @@ public class MessagingController extends AbstractController {
 		MessageThread thread = ModelFactory.newMessageThread();
 
 		if (initial_participants != null){
-			//for (User u : initial_participants) {
-//				if (!thread.getParticipants().contains(u)) {
-//					thread.addParticipant(u);
-//				}
-				
-				
-			//}
 			thread.setParticipants(Sets.newHashSet(initial_participants));
 		}
-//		if (initial_participants != null)
-//			thread.setParticipants(Sets.newHashSet(Arrays
-//					.asList(initial_participants)));
-
+		
+		// Default to resolved, no messages yet
+		thread.setResolved(true);
+		
+		
 		train.getDataStore().store(thread);
 
 		return thread;
@@ -71,6 +65,9 @@ public class MessagingController extends AbstractController {
 			thread.setMessages(messages);
 		}
 		messages.add(0, ModelFactory.newMessage(sender, message));
+		
+		// Always unresolved after adding a message
+		thread.setResolved(false);
 
 		update(thread);
 
