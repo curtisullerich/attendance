@@ -30,7 +30,7 @@
 					<li class="selected">
 						<a href="/ta">Student Staff</a>
 						<ul>
-							<li><a href="/ta/ranks">Set Ranks</a></li>
+							<li><a href="/ta/setranks">Set Ranks</a></li>
 							<li><a href="/MobileApp/FieldAppMain.html">Mobile Field App</a></li>
 						</ul>
 					</li>

@@ -96,8 +96,6 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		PageBuilder page = new PageBuilder(Page.stats, SERVLET_PATH);
 
-		// example value: train.getAppDataController().get();
-
 		Date date = new Date();
 
 		int numAbsences = train.getAbsencesController()
@@ -122,8 +120,6 @@ public class DirectorServlet extends AbstractBaseServlet {
 				+ numTardy + numLeaveEarly)
 				/ numEvents)
 				+ "" : "No Recorded Events";
-		
-		
 		
 		page.setAttribute("date", date);
 
