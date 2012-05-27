@@ -22,12 +22,12 @@
 	text-decoration: underline;
 }
 
-table.gray-hover tbody tr:hover td {
+table.gray-hover tbody tr:hover td,td.gray-hover:hover {
 	background-color: #bbb;
 	cursor: default;
 }
 
-table.gray-hover tbody tr:active td {
+table.gray-hover tbody tr:active td,td.gray-hover:active {
 	background-color: #888;
 	cursor: default;
 }
@@ -73,9 +73,4 @@ div.message-theirs {
 	padding: 5px;
 	margin: 0px;
 	background-color: #f9f9f9;
-}
-
-div.message-theirs p {
-	
-}
 }
