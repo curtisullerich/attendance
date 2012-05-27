@@ -376,7 +376,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		page.setPageTitle("Attendance");
 		page.setAttribute("error_messages", errors);
 		//so if the page arrives with ?=showApproved=true then we display them
-		User me = AuthController.getCurrentUser(req.getSession());
+		User me = train.getAuthController().getCurrentUser(req.getSession());
 		if (ValidationUtil.isPost(req)) {
 			String show = req.getParameter("approved");
 			boolean showb = Boolean.parseBoolean(show);
@@ -408,7 +408,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		PageBuilder page = new PageBuilder(Page.info, SERVLET_PATH);
 
 		page.setAttribute("user",
-				AuthController.getCurrentUser(req.getSession()));
+				DataTrain.getAndStartTrain().getAuthController().getCurrentUser(req.getSession()));
 
 		page.passOffToJsp(req, resp);
 	}

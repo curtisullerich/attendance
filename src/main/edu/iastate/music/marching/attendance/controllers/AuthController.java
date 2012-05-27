@@ -13,6 +13,8 @@ public class AuthController {
 	
 	private DataTrain train;
 
+	private User currentUser = null;
+
 	public AuthController(DataTrain dataTrain) {
 		this.train = dataTrain;
 	}
@@ -52,8 +54,16 @@ public class AuthController {
 		return false;
 	}
 
-	public static User getCurrentUser(HttpSession session) {
-		return getUserFromSession(session);
+	public User getCurrentUser(HttpSession session) {
+		
+		if(this.currentUser  == null)
+		{
+			this.currentUser = getUserFromSession(session);
+			train.getDataStore().disassociate(this.currentUser);
+			train.getDataStore().associate(this.currentUser);
+		}
+		
+		return currentUser;
 	}
 
 	public static com.google.appengine.api.users.User getGoogleUser() {
