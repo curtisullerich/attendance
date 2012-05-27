@@ -196,6 +196,11 @@ public class DirectorServlet extends AbstractBaseServlet {
 						validForm = false;
 						errors.add("Invalid Input: The input date was invalid.");
 					}
+					catch (IllegalArgumentException e)
+					{
+						validForm = false;
+						errors.add("Invalid Input: The input date is invalid.");
+					}
 				}
 				else
 				{
@@ -522,7 +527,6 @@ public class DirectorServlet extends AbstractBaseServlet {
 			page.setAttribute("absence", checkedAbsence);
 			page.setAttribute("types", Absence.Type.values());
 			page.setAttribute("status", Absence.Status.values());
-			page.setAttribute("student", checkedAbsence.getStudent());
 			page.setAttribute("error_messages", incomingErrors);
 			page.passOffToJsp(req, resp);
 		}
