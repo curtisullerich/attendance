@@ -135,7 +135,7 @@ public class FormController extends AbstractController {
 		return formACHelper(student,date,reason,Form.Type.A);
 	}
 
-	public Form createFormB(User student, String department, String course, String section, String building, Date startDate, Date endDate, Enum day, Date startTime, Date endTime, String details) {
+	public Form createFormB(User student, String department, String course, String section, String building, Date startDate, Date endDate, int day, Date startTime, Date endTime, String details) {
 		// TODO NEEDS MORE PARAMETERS and LOTS OF VALIDATION
 		Calendar calendar = Calendar.getInstance(App.getTimeZone());
 //		calendar.setTime(date);
@@ -284,6 +284,12 @@ public class FormController extends AbstractController {
 		// Perform store
 		storeForm(form);
 
+		return form;
+	}
+	
+	public Form get(long id) {
+		ObjectDatastore od = this.dataTrain.getDataStore();
+		Form form = od.load(Form.class,id);
 		return form;
 	}
 	

@@ -7,7 +7,6 @@
 		<jsp:include page="/WEB-INF/template/head.jsp" />
 	</head>
 	<body>
-TODO: current grade<br/>
 		<jsp:include page="/WEB-INF/template/header.jsp" />
 
 		<h1>Student Page</h1>

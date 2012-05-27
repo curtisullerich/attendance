@@ -54,7 +54,7 @@ public class FormsServlet extends AbstractBaseServlet {
 
 		switch (page) {
 		case forma:
-			handleFormA(req, resp);
+			postFormA(req, resp);
 			break;
 		case formb:
 			handleFormB(req, resp);
@@ -69,16 +69,32 @@ public class FormsServlet extends AbstractBaseServlet {
 			showIndex(req, resp);
 			break;
 		case view:
-			// TODO
+			viewForm(req, resp);
 			break;
-//		case remove:
-//			removeForm(req, resp);
-//			break;
+		// case remove:
+		// removeForm(req, resp);
+		// break;
 		case messages:
 			// TODO
 			break;
 		default:
 			ErrorServlet.showError(req, resp, 404);
+		}
+	}
+
+	private void viewForm(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		DataTrain train = DataTrain.getAndStartTrain();
+		Form form = null;
+		try {
+			long id = Long.parseLong(req.getParameter("formid"));
+			form = train.getFormsController().get(id);
+			PageBuilder page = new PageBuilder(Page.view, SERVLET_PATH);
+			page.setPageTitle("Form " + form.getType());
+			page.setAttribute("form", form);
+			page.passOffToJsp(req, resp);
+		} catch (NumberFormatException nfe) {
+			// TODO show an error?
 		}
 	}
 
@@ -97,7 +113,7 @@ public class FormsServlet extends AbstractBaseServlet {
 		else
 			switch (page) {
 			case forma:
-				handleFormA(req, resp);
+				postFormA(req, resp);
 				break;
 			case formb:
 				handleFormB(req, resp);
@@ -116,7 +132,7 @@ public class FormsServlet extends AbstractBaseServlet {
 			}
 	}
 
-	private void handleFormA(HttpServletRequest req, HttpServletResponse resp)
+	private void postFormA(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		String reason = null;
 		Date date = null;
@@ -183,140 +199,107 @@ public class FormsServlet extends AbstractBaseServlet {
 			page.passOffToJsp(req, resp);
 		}
 	}
+//
+//	private Date parsePrependedDate(HttpServletRequest req, String prepend) {
+//		int year = 0, month = 0, day = 0;
+//		Calendar calendar = Calendar.getInstance(App.getTimeZone());
+//
+//		// Do validate first and store any problems to this exception
+//		ValidationExceptions exp = new ValidationExceptions();
+//
+//		try {
+//			year = Integer.parseInt(req.getParameter(prepend + "Year"));
+//		} catch (NumberFormatException e) {
+//			exp.getErrors().add("Invalid year, not a number.");
+//		}
+//		try {
+//			month = Integer.parseInt(req.getParameter(prepend + "Month"));
+//		} catch (NumberFormatException e) {
+//			exp.getErrors().add("Invalid month, not a number.");
+//		}
+//		try {
+//			day = Integer.parseInt(req.getParameter(prepend + "Day"));
+//		} catch (NumberFormatException e) {
+//			exp.getErrors().add("Invalid day, not a number.");
+//		}
+//
+//		calendar.setTimeInMillis(0);
+//		calendar.setLenient(false);
+//
+//		try {
+//			calendar.set(Calendar.YEAR, year);
+//		} catch (ArrayIndexOutOfBoundsException e) {
+//			exp.getErrors().add("Invalid year given:" + e.getMessage() + '.');
+//		}
+//		try {
+//			calendar.set(Calendar.MONTH, month - 1);
+//		} catch (ArrayIndexOutOfBoundsException e) {
+//			exp.getErrors().add("Invalid month given:" + e.getMessage() + '.');
+//		}
+//		try {
+//			calendar.set(Calendar.DATE, day);
+//		} catch (ArrayIndexOutOfBoundsException e) {
+//			exp.getErrors().add("Invalid day given:" + e.getMessage() + '.');
+//		}
+//
+//		if (exp.getErrors().size() > 0)
+//			throw exp;
+//
+//		return calendar.getTime();
+//	}
 
-	private Date parseStartDate(HttpServletRequest req) {
-		int year = 0, month = 0, day = 0;
-		Calendar calendar = Calendar.getInstance(App.getTimeZone());
-
-		// Do validate first and store any problems to this exception
-		ValidationExceptions exp = new ValidationExceptions();
-
-		try {
-			year = Integer.parseInt(req.getParameter("StartYear"));
-		} catch (NumberFormatException e) {
-			exp.getErrors().add("Invalid year, not a number.");
-		}
-		try {
-			month = Integer.parseInt(req.getParameter("StartMonth"));
-		} catch (NumberFormatException e) {
-			exp.getErrors().add("Invalid month, not a number.");
-		}
-		try {
-			day = Integer.parseInt(req.getParameter("StartDay"));
-		} catch (NumberFormatException e) {
-			exp.getErrors().add("Invalid day, not a number.");
-		}
-
-		calendar.setTimeInMillis(0);
-		calendar.setLenient(false);
-
-		try {
-			calendar.set(Calendar.YEAR, year);
-		} catch (ArrayIndexOutOfBoundsException e) {
-			exp.getErrors().add("Invalid year given:" + e.getMessage() + '.');
-		}
-		try {
-			calendar.set(Calendar.MONTH, month-1);
-		} catch (ArrayIndexOutOfBoundsException e) {
-			exp.getErrors().add("Invalid month given:" + e.getMessage() + '.');
-		}
-		try {
-			calendar.set(Calendar.DATE, day);
-		} catch (ArrayIndexOutOfBoundsException e) {
-			exp.getErrors().add("Invalid day given:" + e.getMessage() + '.');
-		}
-
-		if (exp.getErrors().size() > 0)
-			throw exp;
-
-		return calendar.getTime();
-	}
-
-	private Date parseStartDateTime(HttpServletRequest req, Date date) {
-		int hour = 0, minute = 0, timeofday = 0;
-
-		// Do validate first and store any problems to this exception
-		ValidationExceptions exp = new ValidationExceptions();
-
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(parseStartDate(req));
-
-		try {
-			hour = Integer.parseInt(req.getParameter("StartHour"));
-		} catch (NumberFormatException e) {
-			exp.getErrors().add("Invalid hour, not a number");
-		}
-		try {
-			minute = Integer.parseInt(req.getParameter("StartMinute"));
-		} catch (NumberFormatException e) {
-			exp.getErrors().add("Invalid minute, not a number");
-		}
-
-		if (req.getParameter("StartPeriod") == null)
-			exp.getErrors().add("Time of day (AM/PM) not specified");
-		else if ("AM".equals(req.getParameter("StartPeriod").toUpperCase()))
-			timeofday = Calendar.AM;
-		else if ("PM".equals(req.getParameter("StartPeriod").toUpperCase()))
-			timeofday = Calendar.PM;
-		else
-			exp.getErrors().add("Invalid time of day (AM/PM)");
-
-		calendar.setLenient(false);
-
-		try {
-			calendar.set(Calendar.HOUR, hour);
-		} catch (ArrayIndexOutOfBoundsException e) {
-			exp.getErrors().add("Invalid year given:" + e.getMessage());
-		}
-		try {
-			calendar.set(Calendar.MINUTE, minute);
-		} catch (ArrayIndexOutOfBoundsException e) {
-			exp.getErrors().add("Invalid month given:" + e.getMessage());
-		}
-		try {
-			calendar.set(Calendar.AM_PM, timeofday);
-		} catch (ArrayIndexOutOfBoundsException e) {
-			exp.getErrors().add("Invalid time of day given:" + e.getMessage());
-		}
-
-		if (exp.getErrors().size() > 0)
-			throw exp;
-
-		return calendar.getTime();
-	}
-
-	private Date parseEndDate(HttpServletRequest req) {
-		// TODO Auto-generated method stub
-
-		//
-		// else if (req.getParameter("StartDay") != null &&
-		// req.getParameter("StartMonth") != null &&
-		// req.getParameter("StartYear") != null
-		// && req.getParameter("StartDay") != "" &&
-		// req.getParameter("StartMonth") != "" && req.getParameter("StartYear")
-		// != "" ) {
-		//
-		// int year = Integer.parseInt(req.getParameter("StartYear"));
-		// int month = Integer.parseInt(req.getParameter("StartMonth"));
-		// int day = Integer.parseInt(req.getParameter("StartDay"));
-		// if(!isValidateDate(month, day, year)) {
-		// resp.sendRedirect("/JSPPages/Student_Form_A_Performance_Absence_Request.jsp?error='invalidDate'");
-		// return;
-		// }
-		// //public Date(int year, int month, int day)
-		// Calendar calendar = Calendar.getInstance();
-		// calendar.setTimeInMillis(0);
-		// calendar.set(year, month, day);
-		//
-		// // Start at beginning of day
-		// Date start = calendar.getTime();
-		//
-		// // End exactly one time unit before the next day starts
-		// calendar.roll(Calendar.DATE, true)
-		// calendar.roll(Calendar.MILLISECOND, false);
-		// Date end = calendar.getTime();
-		return null;
-	}
+//	private Date parseStartDateTime(HttpServletRequest req) {
+//		int hour = 0, minute = 0, timeofday = 0;
+//
+//		// Do validate first and store any problems to this exception
+//		ValidationExceptions exp = new ValidationExceptions();
+//
+//		Calendar calendar = Calendar.getInstance();
+//		calendar.setTime(parseStartDate(req));
+//
+//		try {
+//			hour = Integer.parseInt(req.getParameter("StartHour"));
+//		} catch (NumberFormatException e) {
+//			exp.getErrors().add("Invalid hour, not a number");
+//		}
+//		try {
+//			minute = Integer.parseInt(req.getParameter("StartMinute"));
+//		} catch (NumberFormatException e) {
+//			exp.getErrors().add("Invalid minute, not a number");
+//		}
+//
+//		if (req.getParameter("StartPeriod") == null)
+//			exp.getErrors().add("Time of day (AM/PM) not specified");
+//		else if ("AM".equals(req.getParameter("StartPeriod").toUpperCase()))
+//			timeofday = Calendar.AM;
+//		else if ("PM".equals(req.getParameter("StartPeriod").toUpperCase()))
+//			timeofday = Calendar.PM;
+//		else
+//			exp.getErrors().add("Invalid time of day (AM/PM)");
+//
+//		calendar.setLenient(false);
+//
+//		try {
+//			calendar.set(Calendar.HOUR, hour);
+//		} catch (ArrayIndexOutOfBoundsException e) {
+//			exp.getErrors().add("Invalid year given:" + e.getMessage());
+//		}
+//		try {
+//			calendar.set(Calendar.MINUTE, minute);
+//		} catch (ArrayIndexOutOfBoundsException e) {
+//			exp.getErrors().add("Invalid month given:" + e.getMessage());
+//		}
+//		try {
+//			calendar.set(Calendar.AM_PM, timeofday);
+//		} catch (ArrayIndexOutOfBoundsException e) {
+//			exp.getErrors().add("Invalid time of day given:" + e.getMessage());
+//		}
+//
+//		if (exp.getErrors().size() > 0)
+//			throw exp;
+//
+//		return calendar.getTime();
+//	}
 
 	private void handleFormB(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -326,6 +309,9 @@ public class FormsServlet extends AbstractBaseServlet {
 		String building = null;
 		Date startDate = null;
 		Date endDate = null;
+		Date startTime = null;
+		Date endTime = null;
+		int day = 0;
 		String type = null;
 		String comments = null;
 
@@ -347,10 +333,15 @@ public class FormsServlet extends AbstractBaseServlet {
 			building = req.getParameter("Building");
 			type = req.getParameter("Type");
 			comments = req.getParameter("Comments");
-
+			
+			//this is one-based! Starting on Sunday.
+			day = Integer.parseInt(req.getParameter("DayOfWeek"));
+			
 			try {
 				startDate = parseStartDate(req);
 				endDate = parseEndDate(req);
+				startTime = parseStartDateTime(req);
+				endTime = parseEndDateTime(req);
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add("Invalid Input: The input date is invalid.");
@@ -363,9 +354,9 @@ public class FormsServlet extends AbstractBaseServlet {
 
 			Form form = null;
 			try {
-				// form = train.getFormsController().createFormA(student,
-				// startDate,
-				// comments);
+				form = train.getFormsController().createFormB(student,
+						department, course, section, building, startDate,
+						endDate, day, startTime, endTime, comments);
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add(e.getMessage());
@@ -386,11 +377,8 @@ public class FormsServlet extends AbstractBaseServlet {
 			PageBuilder page = new PageBuilder(Page.formb, SERVLET_PATH);
 
 			page.setPageTitle("Form B");
-
 			page.setAttribute("daysOfWeek", App.getDaysOfTheWeek());
-
 			page.setAttribute("error_messages", errors);
-
 			page.setAttribute("Department", department);
 			page.setAttribute("Course", course);
 			page.setAttribute("Section", section);
@@ -512,8 +500,8 @@ public class FormsServlet extends AbstractBaseServlet {
 
 			Form form = null;
 			try {
-				form = train.getFormsController().createFormD(student, email, date,
-						hours, details);
+				form = train.getFormsController().createFormD(student, email,
+						date, hours, details);
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add(e.getMessage());
@@ -591,14 +579,15 @@ public class FormsServlet extends AbstractBaseServlet {
 		if (removeid != null && removeid != "") {
 			long id = Long.parseLong(removeid);
 			if (fc.removeForm(id)) {
-				page.setAttribute("success_message","Form successfully deleted");
+				page.setAttribute("success_message",
+						"Form successfully deleted");
 			} else {
-				page.setAttribute("error_messages", "Form not deleted. If the form was already approved then you can't delete it.");
-				//TODO you might be able to. Check with staub
+				page.setAttribute("error_messages",
+						"Form not deleted. If the form was already approved then you can't delete it.");
+				// TODO you might be able to. Check with staub
 			}
 		}
-		
-		
+
 		User currentUser = AuthController.getCurrentUser(req.getSession());
 
 		// HACK: @Daniel
