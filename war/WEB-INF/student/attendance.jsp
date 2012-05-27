@@ -14,6 +14,15 @@
 		<h1>Attendance for <c:out value="${user.name}" /></h1>
 		
 		<h2>Absences</h2>
+		<c:if test="${not empty error_messages}">
+			<p class="notify-msg error">
+				<strong>Error:</strong>
+				<c:forEach items="${error_messages}" var="error_message">
+					<c:out value="${error_message}" />
+					<br/>
+				</c:forEach>
+			</p>
+		</c:if>
 
 		<jsp:include page="/WEB-INF/common/absences.jsp" />
 		

@@ -13,6 +13,15 @@
 
 	<h1>${pagetemplate.title}</h1>
 	<br />
+		<c:if test="${not empty error_messages}">
+			<p class="notify-msg error">
+				<strong>Error:</strong>
+				<c:forEach items="${error_messages}" var="error_message">
+					<c:out value="${error_message}" />
+					<br/>
+				</c:forEach>
+			</p>
+		</c:if>
 
 	<table class="gray full-width">
 		<!-- start headers -->
