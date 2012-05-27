@@ -190,8 +190,8 @@ public class UserController extends AbstractController {
 			} else if (a.getStatus() == Absence.Status.Pending
 					|| a.getStatus() == Absence.Status.Denied) {
 
-				//this means that absences with unanchored
-				//events will have no grade penalty
+				// this means that absences with unanchored
+				// events will have no grade penalty
 				if (a.getEvent() != null) {
 					switch (a.getEvent().getType()) {
 					case Performance:
@@ -227,7 +227,7 @@ public class UserController extends AbstractController {
 		student.setGrade(intToGrade(count));
 	}
 
-	private static User.Grade intToGrade(int count) {
+	private User.Grade intToGrade(int count) {
 		switch (count) {
 		case 0:
 			return User.Grade.A;
@@ -254,5 +254,16 @@ public class UserController extends AbstractController {
 		default:
 			return User.Grade.F;
 		}
+	}
+
+	public User.Grade averageGrade() {
+//		int count = 0;
+//		List<User> students = this.get(User.Type.Student);
+//		for (User s : students) {
+//			count += s.getGrade().ordinal();
+//		}
+//		return intToGrade((int) count / students.size());
+		//TODO
+		return User.Grade.F;
 	}
 }

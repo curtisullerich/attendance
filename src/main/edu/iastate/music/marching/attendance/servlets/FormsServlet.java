@@ -196,7 +196,7 @@ public class FormsServlet extends AbstractBaseServlet {
 			page.setAttribute("error_messages", errors);
 
 			page.setAttribute("cutoff", train.getAppDataController().get()
-					.getFormSubmissionCutoff().getTime());
+					.getFormSubmissionCutoff());
 
 			page.setAttribute("Reason", reason);
 			setStartDate(date, page, train.getAppDataController().get()

@@ -12,15 +12,15 @@ public class Absence {
 		Absence, Tardy, EarlyCheckOut;
 
 		private String mDisplayString;
-		
+
 		private Type() {
 			mDisplayString = this.toString();
 		}
-		
+
 		private Type(String display_string) {
 			mDisplayString = display_string;
 		}
-		
+
 		public boolean isAbsence() {
 			return Absence.equals(this);
 		}
@@ -32,11 +32,11 @@ public class Absence {
 		public boolean isEarlyCheckOut() {
 			return EarlyCheckOut.equals(this);
 		}
-		
+
 		public String getDisplayName() {
 			return mDisplayString;
 		}
-		
+
 		public String getValue() {
 			return name();
 		}
@@ -44,18 +44,30 @@ public class Absence {
 
 	public static enum Status {
 		Pending, Approved, Denied;
-		
+
 		private String mDisplayString;
-		
+
 		private Status() {
 			mDisplayString = this.toString();
 		}
+
 		public String getDisplayName() {
 			return mDisplayString;
 		}
-		
+
 		public String getValue() {
 			return name();
+		}
+		public boolean isPending() {
+			return this == Pending;
+		}
+
+		public boolean isApproved() {
+			return this == Approved;
+		}
+
+		public boolean isDenied() {
+			return this == Denied;
 		}
 	};
 
@@ -158,5 +170,4 @@ public class Absence {
 	public void setMessageThread(MessageThread messageThread) {
 		this.messages = messageThread;
 	}
-
 }

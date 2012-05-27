@@ -87,7 +87,6 @@ public class DirectorServlet extends AbstractBaseServlet {
 			default:
 				ErrorServlet.showError(req, resp, 404);
 			}
-
 	}
 
 	private void showStats(HttpServletRequest req, HttpServletResponse resp)
@@ -123,7 +122,9 @@ public class DirectorServlet extends AbstractBaseServlet {
 				+ numTardy + numLeaveEarly)
 				/ numEvents)
 				+ "" : "No Recorded Events";
-
+		
+		
+		
 		page.setAttribute("date", date);
 
 		page.setAttribute("numStudents", numStudents);
@@ -133,6 +134,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		page.setAttribute("avgAbsentStudents", avgAbsent);
 		page.setAttribute("avgPresentStudentsWR", avgPresentWR);
 		page.setAttribute("avgLeaveEarly", avgLeaveEarly);
+		page.setAttribute("avgGrade",train.getUsersController().averageGrade());
 
 		page.setPageTitle("Statistics");
 
