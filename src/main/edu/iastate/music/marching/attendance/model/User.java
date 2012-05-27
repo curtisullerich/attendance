@@ -45,7 +45,7 @@ public class User implements Serializable {
 		private Grade(String display_string) {
 			mDisplayString = display_string;
 		}
-		private String getDisplayName() {
+		public String getDisplayName() {
 			return mDisplayString;
 		}
 		public String getValue() {

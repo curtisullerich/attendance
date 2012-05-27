@@ -7,6 +7,8 @@ import java.util.List;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.code.twig.FindCommand.RootFindCommand;
 
+import edu.iastate.music.marching.attendance.model.Absence;
+import edu.iastate.music.marching.attendance.model.Event;
 import edu.iastate.music.marching.attendance.model.ModelFactory;
 import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.util.ValidationUtil;
@@ -167,7 +169,90 @@ public class UserController extends AbstractController {
 
 	public void update(User u) {
 		validateUser(u);
-
+		updateUserGrade(u);
 		this.datatrain.getDataStore().update(u);
+	}
+
+	/**
+	 * Always calculated based on the attendance stored in the database. There
+	 * should never be a reason for a user to override a grade manually.
+	 * 
+	 * Note that this DOES NOT currently refresh the student in the database.
+	 */
+	public void updateUserGrade(User student) {
+		AbsenceController ac = this.datatrain.getAbsencesController();
+		int count = 0;
+		List<Absence> absences = ac.get(student);
+		for (Absence a : absences) {
+
+			if (a.getStatus() == Absence.Status.Approved) {
+				// nothing to do, it's approved!
+			} else if (a.getStatus() == Absence.Status.Pending
+					|| a.getStatus() == Absence.Status.Denied) {
+
+				//this means that absences with unanchored
+				//events will have no grade penalty
+				if (a.getEvent() != null) {
+					switch (a.getEvent().getType()) {
+					case Performance:
+						switch (a.getType()) {
+						case Absence:
+							count += 6;
+							break;
+						case Tardy:
+							count += 2;
+							break;
+						case EarlyCheckOut:
+							// no penalty? TODO
+							break;
+						}
+						break;
+					case Rehearsal:
+						switch (a.getType()) {
+						case Absence:
+							count += 3;
+							break;
+						case Tardy:
+							count += 1;
+							break;
+						case EarlyCheckOut:
+							// no penalty? TODO
+							break;
+						}
+						break;
+					}
+				}
+			}
+		}
+		student.setGrade(intToGrade(count));
+	}
+
+	private static User.Grade intToGrade(int count) {
+		switch (count) {
+		case 0:
+			return User.Grade.A;
+		case 1:
+			return User.Grade.Aminus;
+		case 2:
+			return User.Grade.Bplus;
+		case 3:
+			return User.Grade.B;
+		case 4:
+			return User.Grade.Bminus;
+		case 5:
+			return User.Grade.Cplus;
+		case 6:
+			return User.Grade.C;
+		case 7:
+			return User.Grade.Cminus;
+		case 8:
+			return User.Grade.Dplus;
+		case 9:
+			return User.Grade.D;
+		case 10:
+			return User.Grade.Dminus;
+		default:
+			return User.Grade.F;
+		}
 	}
 }

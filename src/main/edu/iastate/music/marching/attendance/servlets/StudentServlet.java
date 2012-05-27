@@ -12,6 +12,7 @@ import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.UserController;
 import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.User;
+import edu.iastate.music.marching.attendance.model.User.Section;
 
 public class StudentServlet extends AbstractBaseServlet {
 
@@ -59,28 +60,28 @@ public class StudentServlet extends AbstractBaseServlet {
 				showInfo(req, resp);
 				break;
 			}
-
 	}
 
-	private void showAttendance(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
+	private void showAttendance(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+
 		DataTrain train = DataTrain.getAndStartTrain();
-		
+
 		PageBuilder page = new PageBuilder(Page.attendance, SERVLET_PATH);
-		
+
 		User currentUser = AuthController.getCurrentUser(req.getSession());
-		
+
 		// HACK: @Daniel
 		currentUser = train.getUsersController().get(currentUser.getNetID());
 
 		page.setPageTitle("Attendance");
-		
+
 		List<Absence> a = train.getAbsencesController().get(currentUser);
-		
+
 		page.setAttribute("user", currentUser);
 		page.setAttribute("forms", train.getFormsController().get(currentUser));
 		page.setAttribute("absences", a);
-		
+
 		page.passOffToJsp(req, resp);
 	}
 
@@ -119,10 +120,24 @@ public class StudentServlet extends AbstractBaseServlet {
 		firstName = req.getParameter("FirstName");
 		lastName = req.getParameter("LastName");
 		major = req.getParameter("Major");
+
+		String sectionString = req.getParameter("Section");
+		for (Section s : User.Section.values()) {
+			if (sectionString.equals(s.name())) {
+				section = s;
+			}
+		}
+
+		try {
+			year = Integer.parseInt(req.getParameter("Year"));
+		} catch (NumberFormatException nfe) {
+			// TODO create a list of errors
+			nfe.printStackTrace();
+		}
 		// TODO section, year
 
 		User u = AuthController.getCurrentUser(req.getSession());
-		
+
 		UserController uc = DataTrain.getAndStartTrain().getUsersController();
 
 		User localUser = uc.get(u.getGoogleUser());
@@ -132,7 +147,7 @@ public class StudentServlet extends AbstractBaseServlet {
 		localUser.setSection(section);
 		localUser.setFirstName(firstName);
 		localUser.setLastName(lastName);
-		
+
 		// TODO May throw validation exceptions
 		uc.update(localUser);
 
@@ -159,7 +174,8 @@ public class StudentServlet extends AbstractBaseServlet {
 			throws ServletException, IOException {
 
 		PageBuilder page = new PageBuilder(Page.index, SERVLET_PATH);
-
+		User currentUser = AuthController.getCurrentUser(req.getSession());
+		page.setAttribute("user", currentUser);
 		page.setPageTitle("Student");
 
 		page.passOffToJsp(req, resp);
