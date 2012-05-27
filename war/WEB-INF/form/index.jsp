@@ -50,23 +50,46 @@
 				<div>
 					<p>Number of Forms Submitted: ${fn:length(forms)}</p>
 					<br/>
-					<table class="gray full-width">
-						<tr>
-							<thead>
-							<th>Start Date</th>
-							<th>End Date</th>
-							<th>Type</th>
-							<th>Status</th>
-							<th></th>
-							<th></th>
-							</thead>
-						</tr>
+					<table class="gray full-width gray-hover" style="table-layout:fixed;white-space:nowrap;overflow:hidden;">
+						<colgroup>
+							<col width="8%" />
+							<col width="10%" />
+							<col width="57%" />
+							<col width="10%" />
+							<col width="15%" />
+						</colgroup>
+						<thead>
+							<tr class="dark-title">
+								<th>Type</th>
+								<th>Status</th>
+								<th>About</th>
+								<th></th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
 						<c:forEach items="${forms}" var="form">
-							<tr id="row_form_<c:out value="${form.id}" />">
-								<td><fmt:formatDate value="${form.start}" pattern="M/d/yyyy" /></td>
-								<td><fmt:formatDate value="${form.end}" pattern="M/d/yyyy" /></td>
-								<td>${form.type}</td>
-								<td>${form.status}</td>
+<%--					<tr id="row_form_<c:out value="${form.id}" />"> --%>
+						<tr>
+							<%//Note that I did this because the last two columns are buttons. %>
+							<td onclick="window.location='form/viewform?id=<c:out value="${form.id}"/>'">${form.type}</td>
+							<td onclick="window.location='form/viewform?id=<c:out value="${form.id}"/>'">${form.status}</td>
+							<td onclick="window.location='form/viewform?id=<c:out value="${form.id}"/>'">
+							<p style="overflow:hidden;">								
+								<c:choose>
+									<c:when test="${form.type.a || form.type.c}">							
+										<fmt:formatDate value="${form.start}" pattern="M/d/yyyy" /> <c:if test="${not empty form.details }"> - ${form.details }</c:if>
+									</c:when>
+									<c:when test ="${form.type.b }">
+										${form.dept} ${form.course } <c:if test="${not empty form.details }"> - ${form.details }</c:if>
+									</c:when>
+									<c:when test ="${form.type.d }">
+										<fmt:formatDate value="${form.start}" pattern="M/d/yyyy" /> - ${form.hoursWorked } hours worked for ${form.emailTo } <c:if test="${not empty form.details }"> - ${form.details } </c:if>
+									</c:when>
+								</c:choose>
+								</p>
+								</td>								
+								<!-- Make the delete button and messages link. -->
 								<td>
 									<c:choose>
 										<c:when test="${auth.user.type.student || auth.user.type.ta}">
@@ -97,7 +120,6 @@
 											</c:choose>
 										</strong>
 									</c:if>
-									
 									<c:if test="${form.messageThread.resolved}">
 										<c:choose>
 											<c:when test="${auth.user.type.director}">
@@ -112,6 +134,7 @@
 								</td>
 							</tr>	
 						</c:forEach>
+						</tbody>
 					</table>
 				</div>
 			</c:when>

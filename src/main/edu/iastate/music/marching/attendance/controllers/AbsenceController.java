@@ -52,7 +52,7 @@ public class AbsenceController extends AbstractController {
 
 		// TODO : Check for exact duplicates
 
-		Absence absence = ModelFactory.newAbsence(Absence.Type.Tardy, student);
+		Absence absence = ModelFactory.newAbsence(Absence.Type.Absence, student);
 		absence.setStart(start);
 		absence.setEnd(end);
 

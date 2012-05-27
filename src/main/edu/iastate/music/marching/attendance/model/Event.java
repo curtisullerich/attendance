@@ -43,6 +43,10 @@ public class Event {
 	//@Activate(0)
 	//private List<Absence> absences;
 	
+	public long getId() {
+		return this.id;
+	}
+	
 	public Date getDate() {
 		return start;
 	}
