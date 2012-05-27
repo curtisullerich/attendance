@@ -19,7 +19,7 @@
 		
 		<br/>
 		
-		<div class="gutter" style="padding:80px;padding-top:0px;">
+		<div class="gutter" style="padding:0px 20px;">
 			<c:choose>
 				<c:when test="${auth.user.type.director}">
 					<div class="threadresolved">
@@ -85,7 +85,7 @@
 			<br/>
 		</c:if>
 			<c:forEach items="${thread.messages}" var="message">
-				<div class="grid-9 ${(auth.user eq message.author)?'message-mine':'message-theirs'}">
+				<div class="grid-12 ${(auth.user eq message.author)?'message-mine':'message-theirs'}">
 				<p>
 					<strong style="font-size:104%"><c:out value="${message.author.name}" /></strong>
 					<br/>
