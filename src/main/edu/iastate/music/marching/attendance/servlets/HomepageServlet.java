@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import edu.iastate.music.marching.attendance.controllers.AuthController;
+import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.model.User;
 
 public class HomepageServlet extends AbstractBaseServlet {
@@ -27,7 +28,7 @@ public class HomepageServlet extends AbstractBaseServlet {
 		
 		
 		
-		User user = AuthController.getCurrentUser(req.getSession());
+		User user = DataTrain.getAndStartTrain().getAuthController().getCurrentUser(req.getSession());
 
 		if (user == null)
 			resp.sendRedirect(AuthServlet.URL_LOGIN);

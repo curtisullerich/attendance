@@ -16,7 +16,7 @@
 			<p><strong><i>No unresolved messages.</i></strong></p>
 		</c:when>
 		<c:otherwise>
-			<c:set var="threads" value="${unresolved}"/>
+			<c:set var="threads" value="${unresolved}" scope="request"/>
 			<jsp:include page="/WEB-INF/messaging/include/threadtable.jsp" />
 		</c:otherwise>
 		</c:choose>
@@ -27,7 +27,7 @@
 			<p><i>No resolved messages.</i></p>
 		</c:when>
 		<c:otherwise>
-			<c:set var="threads" value="${resolved}"/>
+			<c:set var="threads" value="${resolved}" scope="request"/>
 			<jsp:include page="/WEB-INF/messaging/include/threadtable.jsp" />
 		</c:otherwise>
 		</c:choose>

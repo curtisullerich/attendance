@@ -156,6 +156,10 @@ public class User implements Serializable {
 		this.netID = netID;
 		this.id = netID;
 	}
+	
+	public String getId(){
+		return id;
+	}
 
 	public Type getType() {
 		return this.type;

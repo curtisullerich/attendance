@@ -101,7 +101,7 @@ public class MessagingServlet extends AbstractBaseServlet {
 		} else if (message != null && !message.equals("")) {//add a message
 			MessagingController mc = train.getMessagingController();
 			MessageThread mt = mc.get(longid);
-			User sender = AuthController.getCurrentUser(req.getSession());
+			User sender = train.getAuthController().getCurrentUser(req.getSession());
 			mc.addMessage(mt, sender, message);
 			
 		} else {
@@ -126,7 +126,7 @@ public class MessagingServlet extends AbstractBaseServlet {
 		// conversation,
 		// or is a director
 		
-		train.getMessagingController().addMessage(thread, AuthController.getCurrentUser(req.getSession()), message);
+		train.getMessagingController().addMessage(thread, train.getAuthController().getCurrentUser(req.getSession()), message);
 
 		showThread(req, resp, threadId, train);
 	}
@@ -138,15 +138,15 @@ public class MessagingServlet extends AbstractBaseServlet {
 		// TODO Handle exceptions maybe for invalid thread id's?
 		List<MessageThread> resolved;
 		List<MessageThread> unresolved;
-		if(AuthController.getCurrentUser(req.getSession()).getType().equals(User.Type.Director))
+		if(train.getAuthController().getCurrentUser(req.getSession()).getType().equals(User.Type.Director))
 		{
 			resolved = train.getMessagingController().get(true);
 			unresolved =  train.getMessagingController().get(false);
 		}
 		else
 		{
-			resolved = train.getMessagingController().get(AuthController.getCurrentUser(req.getSession()), true);
-			unresolved =  train.getMessagingController().get(AuthController.getCurrentUser(req.getSession()), false);
+			resolved = train.getMessagingController().get(train.getAuthController().getCurrentUser(req.getSession()), true);
+			unresolved =  train.getMessagingController().get(train.getAuthController().getCurrentUser(req.getSession()), false);
 		}
 		
 		// TODO Verify currently logged in user is a participant in the

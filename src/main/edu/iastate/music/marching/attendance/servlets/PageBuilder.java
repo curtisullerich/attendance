@@ -29,29 +29,33 @@ public class PageBuilder {
 
 	private AppData mAppData;
 
+	private DataTrain mDataTrain;
+
 	private PageBuilder() {
 		attribute_map = new HashMap<String, Object>();
 	}
 
-	private PageBuilder(String jsp_simple_path, AppData appData) {
+	private PageBuilder(String jsp_simple_path, DataTrain train) {
 		this();
 
 		// Save parameters
 		mJSPPath = JSP_PATH_PRE + jsp_simple_path + JSP_PATH_POST;
 		
-		mAppData = appData;
+		mDataTrain = train;
+		
+		mAppData = mDataTrain.getAppDataController().get();
 
-		mPageBean = new PageTemplateBean(jsp_simple_path, appData);
+		mPageBean = new PageTemplateBean(jsp_simple_path, mAppData);
 
-		mPageBean.setTitle(appData.getTitle());
+		mPageBean.setTitle(mAppData.getTitle());
 	}
 
 	public <T extends Enum<T>> PageBuilder(T page, String jsp_servlet_path) {
-		this(jsp_servlet_path + "/" + page.name(), DataTrain.getAndStartTrain().getAppDataController().get());
+		this(jsp_servlet_path + "/" + page.name(), DataTrain.getAndStartTrain());
 	}
 	
-	public <T extends Enum<T>> PageBuilder(T page, String jsp_servlet_path, AppData appData) {
-		this(jsp_servlet_path + "/" + page.name(), appData);
+	public <T extends Enum<T>> PageBuilder(T page, String jsp_servlet_path, DataTrain dataTrain) {
+		this(jsp_servlet_path + "/" + page.name(), dataTrain);
 	}
 
 	public PageBuilder setPageTitle(String title) {
@@ -77,7 +81,7 @@ public class PageBuilder {
 		mPageBean.apply(req);
 
 		// Insert authentication data bean
-		AuthBean.getBean(req.getSession()).apply(req);
+		AuthBean.getBean(req.getSession(), mDataTrain).apply(req);
 
 		// Do actual forward
 		req.getRequestDispatcher(mJSPPath).forward(req, resp);

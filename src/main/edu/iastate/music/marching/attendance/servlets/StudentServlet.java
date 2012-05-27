@@ -69,7 +69,7 @@ public class StudentServlet extends AbstractBaseServlet {
 
 		PageBuilder page = new PageBuilder(Page.attendance, SERVLET_PATH);
 
-		User currentUser = AuthController.getCurrentUser(req.getSession());
+		User currentUser = train.getAuthController().getCurrentUser(req.getSession());
 
 		// HACK: @Daniel
 		currentUser = train.getUsersController().get(currentUser.getNetID());
@@ -111,6 +111,8 @@ public class StudentServlet extends AbstractBaseServlet {
 
 	private void postInfo(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException, ServletException {
+		
+		DataTrain train = DataTrain.getAndStartTrain();
 
 		String firstName, lastName, major;
 		int year = -1;
@@ -136,7 +138,7 @@ public class StudentServlet extends AbstractBaseServlet {
 		}
 		// TODO section, year
 
-		User u = AuthController.getCurrentUser(req.getSession());
+		User u = train.getAuthController().getCurrentUser(req.getSession());
 
 		UserController uc = DataTrain.getAndStartTrain().getUsersController();
 
@@ -163,7 +165,7 @@ public class StudentServlet extends AbstractBaseServlet {
 		PageBuilder page = new PageBuilder(Page.info, SERVLET_PATH);
 
 		page.setAttribute("user",
-				AuthController.getCurrentUser(req.getSession()));
+				DataTrain.getAndStartTrain().getAuthController().getCurrentUser(req.getSession()));
 
 		page.setAttribute("sections", User.Section.values());
 
@@ -174,7 +176,7 @@ public class StudentServlet extends AbstractBaseServlet {
 			throws ServletException, IOException {
 
 		PageBuilder page = new PageBuilder(Page.index, SERVLET_PATH);
-		User currentUser = AuthController.getCurrentUser(req.getSession());
+		User currentUser = DataTrain.getAndStartTrain().getAuthController().getCurrentUser(req.getSession());
 		page.setAttribute("user", currentUser);
 		page.setPageTitle("Student");
 

@@ -7,6 +7,7 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
 import edu.iastate.music.marching.attendance.controllers.AuthController;
+import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.model.User;
 
 public class AuthBean implements java.io.Serializable {
@@ -18,12 +19,15 @@ public class AuthBean implements java.io.Serializable {
 	private static final String ATTRIBUTE_NAME = "auth";
 	HttpSession session;
 
-	private AuthBean(HttpSession session) {
+	private DataTrain train;
+
+	private AuthBean(HttpSession session, DataTrain train) {
 		this.session = session;
+		this.train = train;
 	}
 
 	public User getUser() {
-		return AuthController.getCurrentUser(this.session);
+		return this.train.getAuthController().getCurrentUser(this.session);
 	}
 
 	public com.google.appengine.api.users.User getGoogleUser() {
@@ -49,7 +53,7 @@ public class AuthBean implements java.io.Serializable {
 			request.setAttribute(ATTRIBUTE_NAME, this);
 	}
 
-	public static AuthBean getBean(HttpSession session) {
-		return new AuthBean(session);
+	public static AuthBean getBean(HttpSession session, DataTrain train) {
+		return new AuthBean(session, train);
 	}
 }

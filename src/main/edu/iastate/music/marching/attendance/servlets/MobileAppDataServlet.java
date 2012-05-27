@@ -79,7 +79,7 @@ public class MobileAppDataServlet extends AbstractBaseServlet {
 			result.error = ResultErrorType.success;
 			
 			try {
-				result.message = mdc.pushMobileData(data, AuthController.getCurrentUser(req.getSession()));
+				result.message = mdc.pushMobileData(data, train.getAuthController().getCurrentUser(req.getSession()));
 			} catch (IllegalArgumentException e) {
 				result.error = ResultErrorType.exception;
 				result.message = e.getMessage();

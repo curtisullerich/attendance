@@ -166,7 +166,7 @@ public class FormsServlet extends AbstractBaseServlet {
 
 		if (validForm) {
 			// Store our new form to the data store
-			User student = AuthController.getCurrentUser(req.getSession());
+			User student = train.getAuthController().getCurrentUser(req.getSession());
 
 			Form form = null;
 			try {
@@ -268,7 +268,7 @@ public class FormsServlet extends AbstractBaseServlet {
 
 		if (validForm) {
 			// Store our new form to the data store
-			User student = AuthController.getCurrentUser(req.getSession());
+			User student = train.getAuthController().getCurrentUser(req.getSession());
 
 			Form form = null;
 			try {
@@ -344,7 +344,7 @@ public class FormsServlet extends AbstractBaseServlet {
 
 		if (validForm) {
 			// Store our new form to the data store
-			User student = AuthController.getCurrentUser(req.getSession());
+			User student = train.getAuthController().getCurrentUser(req.getSession());
 
 			Form form = null;
 			try {
@@ -423,7 +423,7 @@ public class FormsServlet extends AbstractBaseServlet {
 
 		if (validForm) {
 			// Store our new form to the data store
-			User student = AuthController.getCurrentUser(req.getSession());
+			User student = train.getAuthController().getCurrentUser(req.getSession());
 
 			Form form = null;
 			try {
@@ -516,7 +516,7 @@ public class FormsServlet extends AbstractBaseServlet {
 			}
 		}
 
-		User currentUser = AuthController.getCurrentUser(req.getSession());
+		User currentUser = train.getAuthController().getCurrentUser(req.getSession());
 
 		// HACK: @Daniel
 		currentUser = train.getUsersController().get(currentUser.getNetID());
