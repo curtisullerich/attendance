@@ -10,7 +10,7 @@
 	<body>
 		<jsp:include page="/WEB-INF/template/header.jsp" />
 		
-		<h1>Absence Info For: <c:out value="${student.name}" /></h1>
+		<h1>Absence Info For: <c:out value="${absence.student.name}" /></h1>
 		
 		<c:if test="${not empty error_messages}">
 			<p class="notify-msg error">
