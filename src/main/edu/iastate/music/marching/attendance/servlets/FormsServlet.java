@@ -156,7 +156,8 @@ public class FormsServlet extends AbstractBaseServlet {
 			try {
 				date = Util.parseDate(req.getParameter("StartMonth"),
 						req.getParameter("StartDay"),
-						req.getParameter("StartYear"), "0", "AM", "0");
+						req.getParameter("StartYear"), "0", "AM", "0", train
+								.getAppDataController().get().getTimeZone());
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add("Invalid Input: The input date is invalid.");
@@ -244,16 +245,21 @@ public class FormsServlet extends AbstractBaseServlet {
 			try {
 				startDate = Util.parseDate(req.getParameter("StartMonth"),
 						req.getParameter("StartDay"),
-						req.getParameter("StartYear"), "0", "AM", "0");
+						req.getParameter("StartYear"), "0", "AM", "0", train
+								.getAppDataController().get().getTimeZone());
 				endDate = Util.parseDate(req.getParameter("EndMonth"),
 						req.getParameter("EndDay"),
-						req.getParameter("EndYear"), "0", "AM", "0");
+						req.getParameter("EndYear"), "0", "AM", "0", train
+								.getAppDataController().get().getTimeZone());
 				fromTime = Util.parseDate("1", "1", "1",
-						req.getParameter("FromHour"), req.getParameter("FromAMPM"),
-						req.getParameter("FromMinute"));
+						req.getParameter("FromHour"),
+						req.getParameter("FromAMPM"),
+						req.getParameter("FromMinute"), train
+								.getAppDataController().get().getTimeZone());
 				toTime = Util.parseDate("1", "1", "1",
 						req.getParameter("ToHour"), req.getParameter("ToAMPM"),
-						req.getParameter("ToMinute"));
+						req.getParameter("ToMinute"), train
+								.getAppDataController().get().getTimeZone());
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add("Invalid Input: The input date is invalid.");
@@ -328,7 +334,8 @@ public class FormsServlet extends AbstractBaseServlet {
 			try {
 				date = Util.parseDate(req.getParameter("StartMonth"),
 						req.getParameter("StartDay"),
-						req.getParameter("StartYear"), "0", "AM", "0");
+						req.getParameter("StartYear"), "0", "AM", "0", train
+								.getAppDataController().get().getTimeZone());
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add("Invalid Input: The input date is invalid.");
@@ -406,7 +413,8 @@ public class FormsServlet extends AbstractBaseServlet {
 			try {
 				date = Util.parseDate(req.getParameter("StartMonth"),
 						req.getParameter("StartDay"),
-						req.getParameter("StartYear"), "0", "AM", "0");
+						req.getParameter("StartYear"), "0", "AM", "0", train
+								.getAppDataController().get().getTimeZone());
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add("Invalid Input: The input date is invalid.");
