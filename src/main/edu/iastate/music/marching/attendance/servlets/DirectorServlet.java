@@ -158,6 +158,9 @@ public class DirectorServlet extends AbstractBaseServlet {
 			case viewabsence:
 				postAbsenceInfo(req, resp);
 				break;
+			case attendance:
+				showAttendance(req, resp, new LinkedList<String>());
+				break;
 			default:
 				ErrorServlet.showError(req, resp, 404);
 			}
@@ -343,7 +346,6 @@ public class DirectorServlet extends AbstractBaseServlet {
 		List<Event> events = train.getEventsController().readAll();
 
 		AbsenceController ac = train.getAbsencesController();
-
 		Map<User, Map<Event, List<Absence>>> absenceMap = new HashMap<User, Map<Event, List<Absence>>>();
 		for (User s : students) {
 
@@ -358,11 +360,9 @@ public class DirectorServlet extends AbstractBaseServlet {
 				List<Absence> currentEventAbsences = ac.getAll(e, s);
 
 				eventAbsencesMap.put(e, currentEventAbsences);
-
 			}
 
 			absenceMap.put(s, eventAbsencesMap);
-
 		}
 
 		page.setAttribute("students", students);
@@ -371,6 +371,16 @@ public class DirectorServlet extends AbstractBaseServlet {
 		page.setAttribute("events", events);
 		page.setPageTitle("Attendance");
 		page.setAttribute("error_messages", errors);
+		//so if the page arrives with ?=showApproved=true then we display them
+		User me = AuthController.getCurrentUser(req.getSession());
+		if (ValidationUtil.isPost(req)) {
+			String show = req.getParameter("approved");
+			boolean showb = Boolean.parseBoolean(show);
+			me.setShowApproved(showb);
+			train.getUsersController().update(me);
+		}
+		
+		page.setAttribute("showApproved", me.isShowApproved());
 		page.passOffToJsp(req, resp);
 	}
 
@@ -380,9 +390,9 @@ public class DirectorServlet extends AbstractBaseServlet {
 		DataTrain train = DataTrain.getAndStartTrain();
 
 		PageBuilder page = new PageBuilder(Page.unanchored, SERVLET_PATH);
-
+		List<Event> events = train.getEventsController().readAll();
+		page.setAttribute("events", events);
 		page.setAttribute("absences", train.getAbsencesController().getAll());
-
 		page.setPageTitle("Unanchored");
 
 		page.passOffToJsp(req, resp);

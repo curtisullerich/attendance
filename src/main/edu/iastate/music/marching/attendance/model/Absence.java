@@ -92,7 +92,7 @@ public class Absence {
 	@Index
 	private Event event;
 
-	@Activate(0)
+	@Activate(1)
 	@Index
 	private User student;
 
