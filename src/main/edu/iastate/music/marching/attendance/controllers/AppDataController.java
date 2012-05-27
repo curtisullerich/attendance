@@ -2,6 +2,7 @@ package edu.iastate.music.marching.attendance.controllers;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 import com.google.appengine.api.datastore.QueryResultIterator;
 
@@ -38,8 +39,10 @@ public class AppDataController extends AbstractController {
 			
 			appData.setTitle("Band Attendance");
 			
+			appData.setTimeZone(TimeZone.getDefault());
+			
 			// Default form cutoff is the end of august
-			Calendar calendar = Calendar.getInstance(App.getTimeZone());
+			Calendar calendar = Calendar.getInstance(appData.getTimeZone());
 			calendar.set(Calendar.MONTH, Calendar.AUGUST);
 			calendar.set(Calendar.DATE, 0);
 			calendar.set(Calendar.HOUR_OF_DAY, 16);
@@ -50,6 +53,7 @@ public class AppDataController extends AbstractController {
 			calendar.roll(Calendar.MILLISECOND, false);
 			appData.setFormSubmissionCutoff(calendar.getTime());
 			
+			// Defaults to "password"
 			appData.setHashedMobilePassword("5BAA61E4C9B93F3F0682250B6CF8331B7EE68FD8");
 			
 			appData = save(appData);

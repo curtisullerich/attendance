@@ -1,10 +1,8 @@
 package edu.iastate.music.marching.attendance.model;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
-import edu.iastate.music.marching.attendance.App;
+import java.util.TimeZone;
 
 public class AppData {
 	/**
@@ -23,6 +21,8 @@ public class AppData {
 	private List<String> timeWorkedEmails;
 
 	private String hashedMobilePassword;
+
+	private String timeZoneID;
 
 	public boolean isDirectorRegistered() {
 		return this.directorRegistered;
@@ -56,13 +56,19 @@ public class AppData {
 		this.hashedMobilePassword = hashedMobilePassword;
 	}
 
-	public Calendar getFormSubmissionCutoff() {
-		Calendar calendar = Calendar.getInstance(App.getTimeZone());
-		calendar.setTime(this.formCutoff);
-		return calendar;
+	public Date getFormSubmissionCutoff() {
+		return this.formCutoff;
 	}
 
 	public void setFormSubmissionCutoff(Date formCutoff) {
 		this.formCutoff = formCutoff;
+	}
+
+	public TimeZone getTimeZone() {
+		return TimeZone.getTimeZone(this.timeZoneID);
+	}
+	
+	public void setTimeZone(TimeZone timezone) {
+		this.timeZoneID = timezone.getID();
 	}
 }

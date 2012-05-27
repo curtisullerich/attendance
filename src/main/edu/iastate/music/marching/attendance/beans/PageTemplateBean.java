@@ -2,6 +2,8 @@ package edu.iastate.music.marching.attendance.beans;
 
 import javax.servlet.http.HttpServletRequest;
 
+import edu.iastate.music.marching.attendance.model.AppData;
+
 public class PageTemplateBean implements java.io.Serializable {
 
 	/**
@@ -24,14 +26,18 @@ public class PageTemplateBean implements java.io.Serializable {
 	private boolean mobileBrowser = false;
 
 	private boolean mobileSite = false;
+	
+	private AppData mAppData;
 
 	/**
 	 * No-arg constructor always for a bean
+	 * @param appData 
 	 * 
 	 * @param mJSPPath
 	 */
-	public PageTemplateBean(String jsp_path) {
+	public PageTemplateBean(String jsp_path, AppData appData) {
 		mJSPPath = jsp_path;
+		mAppData = appData;
 	}
 
 	public boolean isMobileDevice() {
@@ -45,6 +51,10 @@ public class PageTemplateBean implements java.io.Serializable {
 	public String getJspath() {
 		return mJSPPath;
 	}
+	
+	public String getTimeZoneID() {
+		return mAppData.getTimeZone().getID();
+	}
 
 	public String getTitle() {
 		return title;
@@ -56,7 +66,7 @@ public class PageTemplateBean implements java.io.Serializable {
 
 	public void apply(HttpServletRequest request) {
 
-		// Check if mobile site view is explictly set
+		// Check if mobile site view is explicitly set
 		if ("true".equals(request.getParameter("mobile")))
 			request.getSession().setAttribute(SESSION_ATTRIBUTE_SHOWMOBILESITE,
 					true);

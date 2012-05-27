@@ -10,7 +10,7 @@ import edu.iastate.music.marching.attendance.model.ModelFactory;
 
 public class DataTrain {
 
-	private AnnotationObjectDatastore datastore;
+	private AnnotationObjectDatastore datastore = null;
 	/**
 	 * Current transaction
 	 */

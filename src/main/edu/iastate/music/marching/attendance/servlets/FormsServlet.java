@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.TimeZone;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -71,9 +72,9 @@ public class FormsServlet extends AbstractBaseServlet {
 		case view:
 			// TODO
 			break;
-//		case remove:
-//			removeForm(req, resp);
-//			break;
+		// case remove:
+		// removeForm(req, resp);
+		// break;
 		case messages:
 			// TODO
 			break;
@@ -136,7 +137,8 @@ public class FormsServlet extends AbstractBaseServlet {
 			reason = req.getParameter("Reason");
 
 			try {
-				date = parseStartDate(req);
+				date = parseStartDate(req, train.getAppDataController().get()
+						.getTimeZone());
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add("Invalid Input: The input date is invalid.");
@@ -178,15 +180,16 @@ public class FormsServlet extends AbstractBaseServlet {
 					.getFormSubmissionCutoff().getTime());
 
 			page.setAttribute("Reason", reason);
-			setStartDate(date, page);
+			setStartDate(date, page, train.getAppDataController().get()
+					.getTimeZone());
 
 			page.passOffToJsp(req, resp);
 		}
 	}
 
-	private Date parseStartDate(HttpServletRequest req) {
+	private Date parseStartDate(HttpServletRequest req, TimeZone timezone) {
 		int year = 0, month = 0, day = 0;
-		Calendar calendar = Calendar.getInstance(App.getTimeZone());
+		Calendar calendar = Calendar.getInstance(timezone);
 
 		// Do validate first and store any problems to this exception
 		ValidationExceptions exp = new ValidationExceptions();
@@ -216,7 +219,7 @@ public class FormsServlet extends AbstractBaseServlet {
 			exp.getErrors().add("Invalid year given:" + e.getMessage() + '.');
 		}
 		try {
-			calendar.set(Calendar.MONTH, month-1);
+			calendar.set(Calendar.MONTH, month - 1);
 		} catch (ArrayIndexOutOfBoundsException e) {
 			exp.getErrors().add("Invalid month given:" + e.getMessage() + '.');
 		}
@@ -232,14 +235,15 @@ public class FormsServlet extends AbstractBaseServlet {
 		return calendar.getTime();
 	}
 
-	private Date parseStartDateTime(HttpServletRequest req, Date date) {
+	private Date parseStartDateTime(HttpServletRequest req, Date date,
+			TimeZone timezone) {
 		int hour = 0, minute = 0, timeofday = 0;
 
 		// Do validate first and store any problems to this exception
 		ValidationExceptions exp = new ValidationExceptions();
 
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(parseStartDate(req));
+		Calendar calendar = Calendar.getInstance(timezone);
+		calendar.setTime(parseStartDate(req, timezone));
 
 		try {
 			hour = Integer.parseInt(req.getParameter("StartHour"));
@@ -285,7 +289,7 @@ public class FormsServlet extends AbstractBaseServlet {
 		return calendar.getTime();
 	}
 
-	private Date parseEndDate(HttpServletRequest req) {
+	private Date parseEndDate(HttpServletRequest req, TimeZone timezone) {
 		// TODO Auto-generated method stub
 
 		//
@@ -349,8 +353,10 @@ public class FormsServlet extends AbstractBaseServlet {
 			comments = req.getParameter("Comments");
 
 			try {
-				startDate = parseStartDate(req);
-				endDate = parseEndDate(req);
+				startDate = parseStartDate(req, train.getAppDataController()
+						.get().getTimeZone());
+				endDate = parseEndDate(req, train.getAppDataController().get()
+						.getTimeZone());
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add("Invalid Input: The input date is invalid.");
@@ -395,8 +401,10 @@ public class FormsServlet extends AbstractBaseServlet {
 			page.setAttribute("Course", course);
 			page.setAttribute("Section", section);
 			page.setAttribute("Building", building);
-			setStartDate(startDate, page);
-			setEndDate(endDate, page);
+			setStartDate(startDate, page, train.getAppDataController().get()
+					.getTimeZone());
+			setEndDate(endDate, page, train.getAppDataController().get()
+					.getTimeZone());
 			page.setAttribute("Type", type);
 			page.setAttribute("Comments", comments);
 
@@ -424,7 +432,8 @@ public class FormsServlet extends AbstractBaseServlet {
 			reason = req.getParameter("Reason");
 
 			try {
-				date = parseStartDate(req);
+				date = parseStartDate(req, train.getAppDataController().get()
+						.getTimeZone());
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add("Invalid Input: The input date is invalid.");
@@ -462,7 +471,8 @@ public class FormsServlet extends AbstractBaseServlet {
 
 			page.setAttribute("error_messages", errors);
 
-			setStartDate(date, page);
+			setStartDate(date, page, train.getAppDataController().get()
+					.getTimeZone());
 			page.setAttribute("Reason", reason);
 
 			page.passOffToJsp(req, resp);
@@ -499,7 +509,8 @@ public class FormsServlet extends AbstractBaseServlet {
 			}
 
 			try {
-				date = parseStartDate(req);
+				date = parseStartDate(req, train.getAppDataController().get()
+						.getTimeZone());
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add("Invalid Input: The input date is invalid.");
@@ -512,8 +523,8 @@ public class FormsServlet extends AbstractBaseServlet {
 
 			Form form = null;
 			try {
-				form = train.getFormsController().createFormD(student, email, date,
-						hours, details);
+				form = train.getFormsController().createFormD(student, email,
+						date, hours, details);
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add(e.getMessage());
@@ -542,29 +553,30 @@ public class FormsServlet extends AbstractBaseServlet {
 
 			page.setAttribute("Email", email);
 			page.setAttribute("AmountWorked", hours);
-			setStartDate(date, page);
+			setStartDate(date, page, train.getAppDataController().get()
+					.getTimeZone());
 			page.setAttribute("Details", details);
 
 			page.passOffToJsp(req, resp);
 		}
 	}
 
-	private void setEndDate(Date date, PageBuilder page) {
+	private void setEndDate(Date date, PageBuilder page, TimeZone timezone) {
 		if (date == null)
 			return;
 
-		Calendar c = Calendar.getInstance(App.getTimeZone());
+		Calendar c = Calendar.getInstance(timezone);
 		c.setTime(date);
 		page.setAttribute("EndYear", c.get(Calendar.YEAR));
 		page.setAttribute("EndMonth", c.get(Calendar.MONTH));
 		page.setAttribute("EndDay", c.get(Calendar.DATE));
 	}
 
-	private void setStartDate(Date date, PageBuilder page) {
+	private void setStartDate(Date date, PageBuilder page, TimeZone timezone) {
 		if (date == null)
 			return;
 
-		Calendar c = Calendar.getInstance(App.getTimeZone());
+		Calendar c = Calendar.getInstance(timezone);
 		c.setTime(date);
 		page.setAttribute("StartYear", c.get(Calendar.YEAR));
 		page.setAttribute("StartMonth", c.get(Calendar.MONTH));
@@ -591,14 +603,15 @@ public class FormsServlet extends AbstractBaseServlet {
 		if (removeid != null && removeid != "") {
 			long id = Long.parseLong(removeid);
 			if (fc.removeForm(id)) {
-				page.setAttribute("success_message","Form successfully deleted");
+				page.setAttribute("success_message",
+						"Form successfully deleted");
 			} else {
-				page.setAttribute("error_messages", "Form not deleted. If the form was already approved then you can't delete it.");
-				//TODO you might be able to. Check with staub
+				page.setAttribute("error_messages",
+						"Form not deleted. If the form was already approved then you can't delete it.");
+				// TODO you might be able to. Check with staub
 			}
 		}
-		
-		
+
 		User currentUser = AuthController.getCurrentUser(req.getSession());
 
 		// HACK: @Daniel

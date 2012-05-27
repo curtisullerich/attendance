@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -88,30 +89,42 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 	}
 
-	private void showStats(HttpServletRequest req, HttpServletResponse resp) 
+	private void showStats(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		
+
 		DataTrain train = DataTrain.getAndStartTrain();
-		
+
 		PageBuilder page = new PageBuilder(Page.stats, SERVLET_PATH);
 
-		//example value: train.getAppDataController().get();
-		
-		Date date = new Date();	
-		
-		int numAbsences = train.getAbsencesController().get(Absence.Type.Absence).size();
-		int numTardy = train.getAbsencesController().get(Absence.Type.Tardy).size();
-		int numLeaveEarly = train.getAbsencesController().get(Absence.Type.EarlyCheckOut).size();
-		int numStudents = train.getUsersController().get(User.Type.Student).size();
-		int numEvents = train.getEventsController().readAll().size(); 
-		String avgPresent =  numEvents != 0 ? (numStudents-(numAbsences/numEvents))+"" : "No Recorded Events";
-		String avgTardy = numEvents != 0 ? (numTardy/numEvents)+"" : "No Recorded Events";
-		String avgLeaveEarly = numEvents != 0 ? (numLeaveEarly/numEvents)+"" : "No Recorded Events";		
-		String avgAbsent = numEvents != 0 ? (numAbsences/numEvents)+"" : "No Recorded Events";
-		String avgPresentWR = numEvents != 0 ? (numStudents-(numAbsences+numTardy+numLeaveEarly)/numEvents)+"" : "No Recorded Events";
-		
+		// example value: train.getAppDataController().get();
+
+		Date date = new Date();
+
+		int numAbsences = train.getAbsencesController()
+				.get(Absence.Type.Absence).size();
+		int numTardy = train.getAbsencesController().get(Absence.Type.Tardy)
+				.size();
+		int numLeaveEarly = train.getAbsencesController()
+				.get(Absence.Type.EarlyCheckOut).size();
+		int numStudents = train.getUsersController().get(User.Type.Student)
+				.size();
+		int numEvents = train.getEventsController().readAll().size();
+		String avgPresent = numEvents != 0 ? (numStudents - (numAbsences / numEvents))
+				+ ""
+				: "No Recorded Events";
+		String avgTardy = numEvents != 0 ? (numTardy / numEvents) + ""
+				: "No Recorded Events";
+		String avgLeaveEarly = numEvents != 0 ? (numLeaveEarly / numEvents)
+				+ "" : "No Recorded Events";
+		String avgAbsent = numEvents != 0 ? (numAbsences / numEvents) + ""
+				: "No Recorded Events";
+		String avgPresentWR = numEvents != 0 ? (numStudents - (numAbsences
+				+ numTardy + numLeaveEarly)
+				/ numEvents)
+				+ "" : "No Recorded Events";
+
 		page.setAttribute("date", date);
-		
+
 		page.setAttribute("numStudents", numStudents);
 		page.setAttribute("numEvents", numEvents);
 		page.setAttribute("avgPresentStudents", avgPresent);
@@ -121,7 +134,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		page.setAttribute("avgLeaveEarly", avgLeaveEarly);
 
 		page.setPageTitle("Statistics");
-		
+
 		page.passOffToJsp(req, resp);
 	}
 
@@ -154,109 +167,107 @@ public class DirectorServlet extends AbstractBaseServlet {
 		DataTrain train = DataTrain.getAndStartTrain();
 		AppDataController appDataController = train.getAppDataController();
 		AppData data = appDataController.get();
-		//get the train
-		
-		//check if there was a form submitted
-			//no->//rebuild and return the page with errors
-			//yes->//parse and validate
-				//get the item from the controller
-				//update the item and save it
-				//return the jsp
+		// get the train
+
+		// check if there was a form submitted
+		// no->//rebuild and return the page with errors
+		// yes->//parse and validate
+		// get the item from the controller
+		// update the item and save it
+		// return the jsp
 		boolean validForm = true;
 		List<String> errors = new LinkedList<String>();
 		String newPass = null;
 		List<String> emailList = null;
 		if (!ValidationUtil.isPost(req)) {
 			validForm = false;
-		}
-		else
-		{
-			//All of this emailList checking should be abstracted out probably
-			
-			//Check and update the emails. Need to use the constructor of LinkedList otherwise
-			//Its runtime type is AbstractSequentialList...and basically no methods are supported
-			emailList = new LinkedList<String>(Arrays.asList(req.getParameter("hiddenEmails").split("delimit")));
-			//If they remove all the emails it adds an empty string to the appdata so we need to remove them
-			for (int i = 0; i < emailList.size(); ++i)
-			{
+		} else {
+			// All of this emailList checking should be abstracted out probably
+
+			// Check and update the emails. Need to use the constructor of
+			// LinkedList otherwise
+			// Its runtime type is AbstractSequentialList...and basically no
+			// methods are supported
+			emailList = new LinkedList<String>(Arrays.asList(req.getParameter(
+					"hiddenEmails").split("delimit")));
+			// If they remove all the emails it adds an empty string to the
+			// appdata so we need to remove them
+			for (int i = 0; i < emailList.size(); ++i) {
 				if (emailList.get(i).equals(""))
 					emailList.remove(i--);
 			}
 			if (emailList == null || emailList.size() <= 0) {
 				validForm = false;
 				errors.add("Invalid Input: There must be at least one valid email. Emails will remain unchanged.");
-			}
-			else
-			{
+			} else {
 				data.setTimeWorkedEmails(emailList);
 			}
-			//Handle the thrown exception
+			// Handle the thrown exception
 			Date testDate = null;
-			try
-			{
-				testDate = parseDate(req.getParameter("Month"), req.getParameter("Day"), 
-						req.getParameter("Year"), req.getParameter("ToHour"), 
-						req.getParameter("ToMinute"));
+			try {
+				testDate = parseDate(req.getParameter("Month"),
+						req.getParameter("Day"), req.getParameter("Year"),
+						req.getParameter("ToHour"),
+						req.getParameter("ToMinute"), train
+								.getAppDataController().get().getTimeZone());
 				data.setFormSubmissionCutoff(testDate);
-			}
-			catch (ValidationExceptions e)
-			{
+			} catch (ValidationExceptions e) {
 				validForm = false;
 				errors.add(e.getMessage());
 			}
-			//Thrown by Calendar.getTime() if we don't have a valid time
-			catch (IllegalArgumentException e)
-			{
+			// Thrown by Calendar.getTime() if we don't have a valid time
+			catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add("Invalid Input: The input date is invalid.");
 			}
-			
-			//Check if they added a new password and then change it
+
+			// Check if they added a new password and then change it
 			newPass = req.getParameter("hashedPass");
-			if (newPass != null && !newPass.equals(""))
-			{
+			if (newPass != null && !newPass.equals("")) {
 				data.setHashedMobilePassword(newPass);
 			}
 		}
-		if (validForm)
-		{
+		if (validForm) {
 			appDataController.save(data);
 		}
 		showAppInfo(req, resp, errors);
 	}
 
-	private void showAppInfo(HttpServletRequest req, HttpServletResponse resp, List<String> errors)
-			throws ServletException, IOException {
+	private void showAppInfo(HttpServletRequest req, HttpServletResponse resp,
+			List<String> errors) throws ServletException, IOException {
 
 		DataTrain train = DataTrain.getAndStartTrain();
 
 		PageBuilder page = new PageBuilder(Page.appinfo, SERVLET_PATH);
-		
+
 		AppData data = train.getAppDataController().get();
-		
-		Calendar cutoffDate = data.getFormSubmissionCutoff();
+
+		Calendar cutoffDate = Calendar.getInstance(data.getTimeZone());
+		cutoffDate.setTime(data.getFormSubmissionCutoff());
 
 		page.setAttribute("appinfo", data);
 
 		page.setAttribute("emails", data.getTimeWorkedEmails());
-		
+
 		page.setAttribute("Month", cutoffDate.get(Calendar.MONTH) + 1);
-		
+
 		page.setAttribute("Day", cutoffDate.get(Calendar.DATE));
-		
-		page.setAttribute("ToHour", cutoffDate.get((Calendar.HOUR == 0) ? 12: Calendar.HOUR));
-		
+
+		page.setAttribute("ToHour",
+				cutoffDate.get((Calendar.HOUR == 0) ? 12 : Calendar.HOUR));
+
 		page.setAttribute("ToMinute", cutoffDate.get(Calendar.MINUTE));
-		
-		page.setAttribute("ToAMPM", (cutoffDate.get(Calendar.AM_PM) == Calendar.AM) ? "AM" : "PM");
-		
-		//page.setAttribute("cutoffTime", data.getFormSubmissionCutoff());
+
+		page.setAttribute("ToAMPM",
+				(cutoffDate.get(Calendar.AM_PM) == Calendar.AM) ? "AM" : "PM");
+
+		// page.setAttribute("cutoffTime", data.getFormSubmissionCutoff());
 		page.setAttribute("error_messages", errors);
 		page.setPageTitle("Application Info");
 
 		page.passOffToJsp(req, resp);
 	}
-	
+
 	private void showAttendance(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
@@ -268,36 +279,37 @@ public class DirectorServlet extends AbstractBaseServlet {
 		List<Event> events = train.getEventsController().readAll();
 
 		AbsenceController ac = train.getAbsencesController();
-		
+
 		Map<User, Map<Event, List<Absence>>> absenceMap = new HashMap<User, Map<Event, List<Absence>>>();
 		for (User s : students) {
-			
+
 			Map<Event, List<Absence>> eventAbsencesMap = new HashMap<Event, List<Absence>>();
 
-			//for each event, create a Map that will contain a list of all Absences for this student AND this event
+			// for each event, create a Map that will contain a list of all
+			// Absences for this student AND this event
 			for (Event e : events) {
-				//HashMap<Event, List<Absence>> eventAbsencesMap = new HashMap<Event,List<Absence>>();
-				
-				List<Absence> currentEventAbsences = ac.getAll(e,s);
-				
+				// HashMap<Event, List<Absence>> eventAbsencesMap = new
+				// HashMap<Event,List<Absence>>();
+
+				List<Absence> currentEventAbsences = ac.getAll(e, s);
+
 				eventAbsencesMap.put(e, currentEventAbsences);
-				
+
 			}
-			
+
 			absenceMap.put(s, eventAbsencesMap);
-			
-			
+
 		}
 
 		page.setAttribute("students", students);
 		page.setAttribute("absenceMap", absenceMap);
 		page.setAttribute("absences", train.getAbsencesController().getAll());
-		page.setAttribute("events",events);
+		page.setAttribute("events", events);
 		page.setPageTitle("Attendance");
 
 		page.passOffToJsp(req, resp);
 	}
-	
+
 	private void showUnanchored(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
@@ -322,8 +334,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		page.passOffToJsp(req, resp);
 	}
-	
-	
+
 	private void postUserInfo(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException, ServletException {
 
@@ -404,10 +415,11 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		page.passOffToJsp(req, resp);
 	}
-	
-	private Date parseDate(String sMonth, String sDay, String sYear, String hour, String minute) {
+
+	private Date parseDate(String sMonth, String sDay, String sYear,
+			String hour, String minute, TimeZone timezone) {
 		int year = 0, month = 0, day = 0;
-		Calendar calendar = Calendar.getInstance(App.getTimeZone());
+		Calendar calendar = Calendar.getInstance(timezone);
 
 		// Do validate first and store any problems to this exception
 		ValidationExceptions exp = new ValidationExceptions();
@@ -436,7 +448,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 			exp.getErrors().add("Invalid year given:" + e.getMessage() + '.');
 		}
 		try {
-			calendar.set(Calendar.MONTH, month-1);
+			calendar.set(Calendar.MONTH, month - 1);
 		} catch (ArrayIndexOutOfBoundsException e) {
 			exp.getErrors().add("Invalid month given:" + e.getMessage() + '.');
 		}
@@ -446,23 +458,16 @@ public class DirectorServlet extends AbstractBaseServlet {
 			exp.getErrors().add("Invalid day given:" + e.getMessage() + '.');
 		}
 
-		
-		//JSP only allows valid time numbers
-		try
-		{
+		// JSP only allows valid time numbers
+		try {
 			calendar.set(Calendar.HOUR, Integer.parseInt(hour));
-		}
-		catch (NumberFormatException e)
-		{
+		} catch (NumberFormatException e) {
 			exp.getErrors().add("Invalid hour, not a number");
 		}
-		
-		try
-		{
+
+		try {
 			calendar.set(Calendar.MINUTE, Integer.parseInt(minute));
-		}
-		catch (NumberFormatException e)
-		{
+		} catch (NumberFormatException e) {
 			exp.getErrors().add("Invalid minute, not a number");
 		}
 
