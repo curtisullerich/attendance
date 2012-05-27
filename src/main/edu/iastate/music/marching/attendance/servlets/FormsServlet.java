@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.TimeZone;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -155,7 +156,8 @@ public class FormsServlet extends AbstractBaseServlet {
 			try {
 				date = Util.parseDate(req.getParameter("StartMonth"),
 						req.getParameter("StartDay"),
-						req.getParameter("StartYear"), "0", "AM", "0");
+						req.getParameter("StartYear"), "0", "AM", "0", train
+								.getAppDataController().get().getTimeZone());
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add("Invalid Input: The input date is invalid.");
@@ -197,113 +199,12 @@ public class FormsServlet extends AbstractBaseServlet {
 					.getFormSubmissionCutoff().getTime());
 
 			page.setAttribute("Reason", reason);
-			setStartDate(date, page);
+			setStartDate(date, page, train.getAppDataController().get()
+					.getTimeZone());
 
 			page.passOffToJsp(req, resp);
 		}
 	}
-
-	//
-	// private Date parsePrependedDate(HttpServletRequest req, String prepend) {
-	// int year = 0, month = 0, day = 0;
-	// Calendar calendar = Calendar.getInstance(App.getTimeZone());
-	//
-	// // Do validate first and store any problems to this exception
-	// ValidationExceptions exp = new ValidationExceptions();
-	//
-	// try {
-	// year = Integer.parseInt(req.getParameter(prepend + "Year"));
-	// } catch (NumberFormatException e) {
-	// exp.getErrors().add("Invalid year, not a number.");
-	// }
-	// try {
-	// month = Integer.parseInt(req.getParameter(prepend + "Month"));
-	// } catch (NumberFormatException e) {
-	// exp.getErrors().add("Invalid month, not a number.");
-	// }
-	// try {
-	// day = Integer.parseInt(req.getParameter(prepend + "Day"));
-	// } catch (NumberFormatException e) {
-	// exp.getErrors().add("Invalid day, not a number.");
-	// }
-	//
-	// calendar.setTimeInMillis(0);
-	// calendar.setLenient(false);
-	//
-	// try {
-	// calendar.set(Calendar.YEAR, year);
-	// } catch (ArrayIndexOutOfBoundsException e) {
-	// exp.getErrors().add("Invalid year given:" + e.getMessage() + '.');
-	// }
-	// try {
-	// calendar.set(Calendar.MONTH, month - 1);
-	// } catch (ArrayIndexOutOfBoundsException e) {
-	// exp.getErrors().add("Invalid month given:" + e.getMessage() + '.');
-	// }
-	// try {
-	// calendar.set(Calendar.DATE, day);
-	// } catch (ArrayIndexOutOfBoundsException e) {
-	// exp.getErrors().add("Invalid day given:" + e.getMessage() + '.');
-	// }
-	//
-	// if (exp.getErrors().size() > 0)
-	// throw exp;
-	//
-	// return calendar.getTime();
-	// }
-
-	// private Date parseStartDateTime(HttpServletRequest req) {
-	// int hour = 0, minute = 0, timeofday = 0;
-	//
-	// // Do validate first and store any problems to this exception
-	// ValidationExceptions exp = new ValidationExceptions();
-	//
-	// Calendar calendar = Calendar.getInstance();
-	// calendar.setTime(parseStartDate(req));
-	//
-	// try {
-	// hour = Integer.parseInt(req.getParameter("StartHour"));
-	// } catch (NumberFormatException e) {
-	// exp.getErrors().add("Invalid hour, not a number");
-	// }
-	// try {
-	// minute = Integer.parseInt(req.getParameter("StartMinute"));
-	// } catch (NumberFormatException e) {
-	// exp.getErrors().add("Invalid minute, not a number");
-	// }
-	//
-	// if (req.getParameter("StartPeriod") == null)
-	// exp.getErrors().add("Time of day (AM/PM) not specified");
-	// else if ("AM".equals(req.getParameter("StartPeriod").toUpperCase()))
-	// timeofday = Calendar.AM;
-	// else if ("PM".equals(req.getParameter("StartPeriod").toUpperCase()))
-	// timeofday = Calendar.PM;
-	// else
-	// exp.getErrors().add("Invalid time of day (AM/PM)");
-	//
-	// calendar.setLenient(false);
-	//
-	// try {
-	// calendar.set(Calendar.HOUR, hour);
-	// } catch (ArrayIndexOutOfBoundsException e) {
-	// exp.getErrors().add("Invalid year given:" + e.getMessage());
-	// }
-	// try {
-	// calendar.set(Calendar.MINUTE, minute);
-	// } catch (ArrayIndexOutOfBoundsException e) {
-	// exp.getErrors().add("Invalid month given:" + e.getMessage());
-	// }
-	// try {
-	// calendar.set(Calendar.AM_PM, timeofday);
-	// } catch (ArrayIndexOutOfBoundsException e) {
-	// exp.getErrors().add("Invalid time of day given:" + e.getMessage());
-	// }
-	//
-	// if (exp.getErrors().size() > 0)
-	// throw exp;
-	//
-	// return calendar.getTime();
-	// }
 
 	private void handleFormB(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -344,17 +245,21 @@ public class FormsServlet extends AbstractBaseServlet {
 			try {
 				startDate = Util.parseDate(req.getParameter("StartMonth"),
 						req.getParameter("StartDay"),
-						req.getParameter("StartYear"), "0", "AM", "0");
+						req.getParameter("StartYear"), "0", "AM", "0", train
+								.getAppDataController().get().getTimeZone());
 				endDate = Util.parseDate(req.getParameter("EndMonth"),
 						req.getParameter("EndDay"),
-						req.getParameter("EndYear"), "0", "AM", "0");
+						req.getParameter("EndYear"), "0", "AM", "0", train
+								.getAppDataController().get().getTimeZone());
 				fromTime = Util.parseDate("1", "1", "1",
-						req.getParameter("FromHour"), req.getParameter("FromAMPM"),
-						req.getParameter("FromMinute"));
+						req.getParameter("FromHour"),
+						req.getParameter("FromAMPM"),
+						req.getParameter("FromMinute"), train
+								.getAppDataController().get().getTimeZone());
 				toTime = Util.parseDate("1", "1", "1",
 						req.getParameter("ToHour"), req.getParameter("ToAMPM"),
-						req.getParameter("ToMinute"));
-
+						req.getParameter("ToMinute"), train
+								.getAppDataController().get().getTimeZone());
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add("Invalid Input: The input date is invalid.");
@@ -396,8 +301,10 @@ public class FormsServlet extends AbstractBaseServlet {
 			page.setAttribute("Course", course);
 			page.setAttribute("Section", section);
 			page.setAttribute("Building", building);
-			setStartDate(startDate, page);
-			setEndDate(endDate, page);
+			setStartDate(startDate, page, train.getAppDataController().get()
+					.getTimeZone());
+			setEndDate(endDate, page, train.getAppDataController().get()
+					.getTimeZone());
 			page.setAttribute("Type", type);
 			page.setAttribute("Comments", comments);
 
@@ -427,7 +334,8 @@ public class FormsServlet extends AbstractBaseServlet {
 			try {
 				date = Util.parseDate(req.getParameter("StartMonth"),
 						req.getParameter("StartDay"),
-						req.getParameter("StartYear"), "0", "AM", "0");
+						req.getParameter("StartYear"), "0", "AM", "0", train
+								.getAppDataController().get().getTimeZone());
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add("Invalid Input: The input date is invalid.");
@@ -465,7 +373,8 @@ public class FormsServlet extends AbstractBaseServlet {
 
 			page.setAttribute("error_messages", errors);
 
-			setStartDate(date, page);
+			setStartDate(date, page, train.getAppDataController().get()
+					.getTimeZone());
 			page.setAttribute("Reason", reason);
 
 			page.passOffToJsp(req, resp);
@@ -504,7 +413,8 @@ public class FormsServlet extends AbstractBaseServlet {
 			try {
 				date = Util.parseDate(req.getParameter("StartMonth"),
 						req.getParameter("StartDay"),
-						req.getParameter("StartYear"), "0", "AM", "0");
+						req.getParameter("StartYear"), "0", "AM", "0", train
+								.getAppDataController().get().getTimeZone());
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add("Invalid Input: The input date is invalid.");
@@ -547,29 +457,30 @@ public class FormsServlet extends AbstractBaseServlet {
 
 			page.setAttribute("Email", email);
 			page.setAttribute("AmountWorked", hours);
-			setStartDate(date, page);
+			setStartDate(date, page, train.getAppDataController().get()
+					.getTimeZone());
 			page.setAttribute("Details", details);
 
 			page.passOffToJsp(req, resp);
 		}
 	}
 
-	private void setEndDate(Date date, PageBuilder page) {
+	private void setEndDate(Date date, PageBuilder page, TimeZone timezone) {
 		if (date == null)
 			return;
 
-		Calendar c = Calendar.getInstance(App.getTimeZone());
+		Calendar c = Calendar.getInstance(timezone);
 		c.setTime(date);
 		page.setAttribute("EndYear", c.get(Calendar.YEAR));
 		page.setAttribute("EndMonth", c.get(Calendar.MONTH));
 		page.setAttribute("EndDay", c.get(Calendar.DATE));
 	}
 
-	private void setStartDate(Date date, PageBuilder page) {
+	private void setStartDate(Date date, PageBuilder page, TimeZone timezone) {
 		if (date == null)
 			return;
 
-		Calendar c = Calendar.getInstance(App.getTimeZone());
+		Calendar c = Calendar.getInstance(timezone);
 		c.setTime(date);
 		page.setAttribute("StartYear", c.get(Calendar.YEAR));
 		page.setAttribute("StartMonth", c.get(Calendar.MONTH));

@@ -8,7 +8,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import edu.iastate.music.marching.attendance.App;
 import edu.iastate.music.marching.attendance.controllers.AuthController;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.model.User;
@@ -141,6 +140,8 @@ public class AuthServlet extends AbstractBaseServlet {
 
 	private void showRegistration(HttpServletRequest req,
 			HttpServletResponse resp) throws ServletException, IOException {
+		
+		DataTrain train = DataTrain.getAndStartTrain();
 
 		PageBuilder page = new PageBuilder(Page.register, SERVLET_PATH);
 
@@ -151,7 +152,7 @@ public class AuthServlet extends AbstractBaseServlet {
 		page.setPageTitle("Register");
 
 		// If no director
-		if (!App.isDirectorRegistered())
+		if (!train.getAppDataController().get().isDirectorRegistered())
 			page.setAttribute("error_message",
 					"There is no director registered. You cannot register for an account yet.");
 

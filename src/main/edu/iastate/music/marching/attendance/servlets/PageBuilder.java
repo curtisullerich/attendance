@@ -12,6 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import edu.iastate.music.marching.attendance.App;
 import edu.iastate.music.marching.attendance.beans.AuthBean;
 import edu.iastate.music.marching.attendance.beans.PageTemplateBean;
+import edu.iastate.music.marching.attendance.controllers.AppDataController;
+import edu.iastate.music.marching.attendance.controllers.DataTrain;
+import edu.iastate.music.marching.attendance.model.AppData;
 
 public class PageBuilder {
 
@@ -24,27 +27,35 @@ public class PageBuilder {
 	private Map<String, Object> attribute_map;
 	private PageTemplateBean mPageBean;
 
+	private AppData mAppData;
+
 	private PageBuilder() {
 		attribute_map = new HashMap<String, Object>();
 	}
 
-	private PageBuilder(String jsp_simple_path) {
+	private PageBuilder(String jsp_simple_path, AppData appData) {
 		this();
 
 		// Save parameters
 		mJSPPath = JSP_PATH_PRE + jsp_simple_path + JSP_PATH_POST;
+		
+		mAppData = appData;
 
-		mPageBean = new PageTemplateBean(jsp_simple_path);
+		mPageBean = new PageTemplateBean(jsp_simple_path, appData);
 
-		mPageBean.setTitle(App.getTitle());
+		mPageBean.setTitle(appData.getTitle());
 	}
 
 	public <T extends Enum<T>> PageBuilder(T page, String jsp_servlet_path) {
-		this(jsp_servlet_path + "/" + page.name());
+		this(jsp_servlet_path + "/" + page.name(), DataTrain.getAndStartTrain().getAppDataController().get());
+	}
+	
+	public <T extends Enum<T>> PageBuilder(T page, String jsp_servlet_path, AppData appData) {
+		this(jsp_servlet_path + "/" + page.name(), appData);
 	}
 
 	public PageBuilder setPageTitle(String title) {
-		mPageBean.setTitle(title + " - " + App.getTitle());
+		mPageBean.setTitle(title + " - " + mAppData.getTitle());
 
 		return this;
 	}

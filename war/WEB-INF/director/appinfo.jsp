@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<fmt:setTimeZone value="${pagetemplate.timeZoneID}" />
 
 <jsp:useBean id="date" class="java.util.Date" />
 <fmt:formatDate var="year" value="${date}" pattern="yyyy" />

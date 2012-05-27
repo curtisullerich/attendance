@@ -8,7 +8,6 @@ import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.code.twig.FindCommand.RootFindCommand;
 import com.google.code.twig.ObjectDatastore;
 
-import edu.iastate.music.marching.attendance.App;
 import edu.iastate.music.marching.attendance.model.Form;
 import edu.iastate.music.marching.attendance.model.MessageThread;
 import edu.iastate.music.marching.attendance.model.ModelFactory;
@@ -31,7 +30,8 @@ public class FormController extends AbstractController {
 
 	/**
 	 * 
-	 * @param user Assume user is associated in data store
+	 * @param user
+	 *            Assume user is associated in data store
 	 * @return
 	 */
 	public List<Form> get(User user) {
@@ -53,7 +53,8 @@ public class FormController extends AbstractController {
 		//
 		// try {
 		// First build an empty message thread and store it
-		MessageThread messages = dataTrain.getMessagingController().createMessageThread(form.getStudent());
+		MessageThread messages = dataTrain.getMessagingController()
+				.createMessageThread(form.getStudent());
 		form.setMessageThread(messages);
 
 		// Store
@@ -71,43 +72,43 @@ public class FormController extends AbstractController {
 		// }
 	}
 
-//	/**
-//	 * Does not store form, just creates and validates
-//	 * 
-//	 * @param type
-//	 * @param student
-//	 * @param startDate
-//	 * @param endDate
-//	 * @return
-//	 */
-//	private Form createForm(Form.Type type, User student, Date startDate,
-//			Date endDate) {
-//
-//		if (type == null)
-//			throw new IllegalArgumentException("Null type given for form");
-//
-//		if (student == null)
-//			throw new IllegalArgumentException("Null student given for form");
-//
-//		if (startDate == null)
-//			throw new IllegalArgumentException("Null startDate given for form");
-//
-//		if (endDate == null)
-//			throw new IllegalArgumentException("Null endDate given for form");
-//
-//		// TODO more validation of start/end dates
-//		Form form = ModelFactory.newForm(type, student);
-//
-//		form.setStart(startDate);
-//		form.setEnd(endDate);
-//
-//
-//		return form;
-//	}
+	// /**
+	// * Does not store form, just creates and validates
+	// *
+	// * @param type
+	// * @param student
+	// * @param startDate
+	// * @param endDate
+	// * @return
+	// */
+	// private Form createForm(Form.Type type, User student, Date startDate,
+	// Date endDate) {
+	//
+	// if (type == null)
+	// throw new IllegalArgumentException("Null type given for form");
+	//
+	// if (student == null)
+	// throw new IllegalArgumentException("Null student given for form");
+	//
+	// if (startDate == null)
+	// throw new IllegalArgumentException("Null startDate given for form");
+	//
+	// if (endDate == null)
+	// throw new IllegalArgumentException("Null endDate given for form");
+	//
+	// // TODO more validation of start/end dates
+	// Form form = ModelFactory.newForm(type, student);
+	//
+	// form.setStart(startDate);
+	// form.setEnd(endDate);
+	//
+	//
+	// return form;
+	// }
 
-	//TODO perform form a-specific validation
+	// TODO perform form a-specific validation
 	public Form createFormA(User student, Date date, String reason) {
-		Calendar calendar = Calendar.getInstance(App.getTimeZone());
+		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
 
 		// Simple validation first
@@ -118,7 +119,7 @@ public class FormController extends AbstractController {
 		}
 
 		// Check date is before cutoff but after today
-		if (!calendar.after(Calendar.getInstance(App.getTimeZone()))) {
+		if (!calendar.after(Calendar.getInstance())) {
 			exp.getErrors().add("Invalid date, must be after today.");
 		}
 
@@ -132,13 +133,15 @@ public class FormController extends AbstractController {
 			throw exp;
 		}
 
-		return formACHelper(student,date,reason,Form.Type.A);
+		return formACHelper(student, date, reason, Form.Type.A);
 	}
 
-	public Form createFormB(User student, String department, String course, String section, String building, Date startDate, Date endDate, int day, Date startTime, Date endTime, String details) {
+	public Form createFormB(User student, String department, String course,
+			String section, String building, Date startDate, Date endDate,
+			int day, Date startTime, Date endTime, String details) {
 		// TODO NEEDS MORE PARAMETERS and LOTS OF VALIDATION
-		Calendar calendar = Calendar.getInstance(App.getTimeZone());
-//		calendar.setTime(date);
+		Calendar calendar = Calendar.getInstance();
+		// calendar.setTime(date);
 
 		// Simple validation first
 		ValidationExceptions exp = new ValidationExceptions();
@@ -147,17 +150,17 @@ public class FormController extends AbstractController {
 			exp.getErrors().add("Invalid details");
 		}
 
-		//TODO MORE VALIDATION
+		// TODO MORE VALIDATION
 		if (exp.getErrors().size() > 0) {
 			throw exp;
 		}
-		
+
 		Form form = ModelFactory.newForm(Form.Type.B, student);
 
 		form.setStart(startDate);
 		form.setEnd(endDate);
-		//TODO form.set(All the other things)
-		
+		// TODO form.set(All the other things)
+
 		// Set remaining fields
 		form.setDetails(details);
 		form.setStatus(Form.Status.Pending);
@@ -167,11 +170,9 @@ public class FormController extends AbstractController {
 
 		return form;
 	}
-	
-	//TODO perform form c-specific validation
+
+	// TODO perform form c-specific validation
 	public Form createFormC(User student, Date date, String reason) {
-		Calendar calendar = Calendar.getInstance(App.getTimeZone());
-		calendar.setTime(date);
 
 		// Simple validation first
 		ValidationExceptions exp = new ValidationExceptions();
@@ -181,22 +182,21 @@ public class FormController extends AbstractController {
 		}
 
 		// Check date is before cutoff but after today
-		if (!ValidationUtil.dateIsAtLeastThreeWeekdaysFresh(date)) {
+		if (!ValidationUtil.dateIsAtLeastThreeWeekdaysFresh(date,
+				this.dataTrain.getAppDataController().get().getTimeZone())) {
 			exp.getErrors().add("Invalid date, submitted too late");
 		}
 
 		if (exp.getErrors().size() > 0) {
 			throw exp;
 		}
-		
-		return formACHelper(student,date,reason,Form.Type.C);
+
+		return formACHelper(student, date, reason, Form.Type.C);
 	}
 
-
-	
-	
-	public Form createFormD(User student, String email, Date date, int hours, String details) {
-		Calendar calendar = Calendar.getInstance(App.getTimeZone());
+	public Form createFormD(User student, String email, Date date, int hours,
+			String details) {
+		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
 
 		// Simple validation first
@@ -205,7 +205,7 @@ public class FormController extends AbstractController {
 		if (!ValidationUtil.isValidText(details, true)) {
 			exp.getErrors().add("Invalid details");
 		}
-		
+
 		if (hours <= 0) {
 			exp.getErrors().add("Time worked is not positive");
 		}
@@ -213,11 +213,11 @@ public class FormController extends AbstractController {
 		if (!ValidationUtil.isValidFormDEmail(email)) {
 			exp.getErrors().add("Verification email is not valid");
 		}
-		
+
 		if (exp.getErrors().size() > 0) {
 			throw exp;
 		}
-		
+
 		// Parsed date starts at beginning of day
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
 		calendar.set(Calendar.MINUTE, 0);
@@ -244,22 +244,24 @@ public class FormController extends AbstractController {
 
 		return form;
 	}
-	
+
 	/**
-	 * Creates a form of type A or C because they have identical creation
-	 * with separate time-based validation.
+	 * Creates a form of type A or C because they have identical creation with
+	 * separate time-based validation.
 	 * 
 	 * @param student
 	 * @param date
 	 * @param reason
-	 * @param type The Form.Type A or C
+	 * @param type
+	 *            The Form.Type A or C
 	 * @author curtisu
 	 * @return
 	 */
-	private Form formACHelper(User student, Date date, String reason, Form.Type type) {
-		Calendar calendar = Calendar.getInstance(App.getTimeZone());
+	private Form formACHelper(User student, Date date, String reason,
+			Form.Type type) {
+		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
-		
+
 		// Parsed date starts at beginning of day
 		calendar.set(Calendar.HOUR_OF_DAY, 0);
 		calendar.set(Calendar.MINUTE, 0);
@@ -286,28 +288,30 @@ public class FormController extends AbstractController {
 
 		return form;
 	}
-	
+
 	public Form get(long id) {
 		ObjectDatastore od = this.dataTrain.getDataStore();
-		Form form = od.load(Form.class,id);
+		Form form = od.load(Form.class, id);
 		return form;
 	}
-	
+
 	public boolean removeForm(Long id) {
 		ObjectDatastore od = this.dataTrain.getDataStore();
-		Form form = od.load(Form.class,id);
+		Form form = od.load(Form.class, id);
 		if (form.getStatus() == Form.Status.Approved) {
-			//you can't remove an approved form.
-			//TODO  you might be able to. check with staub
+			// you can't remove an approved form.
+			// TODO you might be able to. check with staub
 			return false;
 		} else {
 			User student = form.getStudent();
 			MessageThread mt = form.getMessageThread();
-			od.delete(mt); //the associated messages are embedded in the MessageThread, so there's no need to delete them separately
+			od.delete(mt); // the associated messages are embedded in the
+							// MessageThread, so there's no need to delete them
+							// separately
 			od.delete(form);
 			od.refresh(student);
 			return true;
 		}
 	}
-	
+
 }
