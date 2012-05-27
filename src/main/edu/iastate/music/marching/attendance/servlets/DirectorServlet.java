@@ -384,9 +384,9 @@ public class DirectorServlet extends AbstractBaseServlet {
 		DataTrain train = DataTrain.getAndStartTrain();
 
 		PageBuilder page = new PageBuilder(Page.unanchored, SERVLET_PATH);
-
+		List<Event> events = train.getEventsController().readAll();
+		page.setAttribute("events", events);
 		page.setAttribute("absences", train.getAbsencesController().getAll());
-
 		page.setPageTitle("Unanchored");
 
 		page.passOffToJsp(req, resp);

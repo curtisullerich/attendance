@@ -48,7 +48,9 @@
 					<td>${student.section.displayName }</td>
 					<td>${student.universityID }</td>
 					<c:forEach items="${events}" var="event">
-						<td><c:forEach items="${absenceMap[student][event] }"
+					<!-- TODO make them clickable and overable only if there was nothing for that day -->
+					<td class="${empty absenceMap[student][event] ? 'gray-hover' : ''}" onClick="${empty absenceMap[student][event] ? 'window.location=\'/director/viewabsence\'' : ''}">
+							<c:forEach items="${absenceMap[student][event] }"
 								var="absence">
 								<c:choose>
 									<c:when test="${absence.type.tardy && !absence.status.approved}">
@@ -63,6 +65,9 @@
 										<a href="/director/viewabsence?absenceid=${absence.id }">${absence.status} ${absence.type }<!-- : ${absence.datetime }--></a>
 										<br />
 									</c:when>
+									<c:when test="${absence.status.approved}">
+										
+									</c:when>									
 								</c:choose>
 							</c:forEach></td>
 					</c:forEach>
