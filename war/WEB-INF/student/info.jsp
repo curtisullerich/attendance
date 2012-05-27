@@ -31,8 +31,8 @@
 					<option value="">(Select One)</option>
 					<c:forEach items="${sections}" var="s" varStatus="loop">
 						<option value="<c:out value="${s.value}" />"
-							${user.section==s.value ? 'selected="true"' : ''}
-							><c:out value="${s.displayName}" /></option>
+							${user.section==s.value ? 'selected="true"' : ''}>
+							<c:out value="${s.displayName}" /></option>
 					</c:forEach>
 				</select>
 			</dd>
