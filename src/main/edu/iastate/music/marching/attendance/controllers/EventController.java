@@ -31,12 +31,12 @@ public class EventController extends AbstractController {
 
 	public Event createOrUpdate(Type type, Date start, Date end) {
 		Event event = ModelFactory.newEvent(type, start, end);
-		
+
 		// Check that start and end are on the same day
 		// TODO
-		
+
 		event.setDate(datetimeToJustDate(start));
-		
+
 		ObjectDatastore od = this.train.getDataStore();
 		od.storeOrUpdate(event);
 		return event;
@@ -54,6 +54,11 @@ public class EventController extends AbstractController {
 				.now();
 	}
 
+	public Integer getCount() {
+		return this.train.getDataStore().find().type(Event.class).returnCount()
+				.now();
+	}
+
 	/**
 	 * Gets a list of events which are happening during given time
 	 * 
@@ -62,25 +67,26 @@ public class EventController extends AbstractController {
 	 * @return
 	 */
 	public List<Event> get(Date time) {
-		
-		// Build date for the day of the event
-		
 
-		// Due to limitations of the data store, we cannot filter on the start and end fields,
+		// Build date for the day of the event
+
+		// Due to limitations of the data store, we cannot filter on the start
+		// and end fields,
 		// so match date and them manually filter results
-		RootFindCommand<Event> find = this.train.getDataStore().find().type(Event.class);
+		RootFindCommand<Event> find = this.train.getDataStore().find()
+				.type(Event.class);
 		find.addFilter(Event.FIELD_DATE, FilterOperator.EQUAL,
 				datetimeToJustDate(time));
 		Iterator<Event> iter = find.now();
-		
+
 		List<Event> matchingEvents = new ArrayList<Event>();
-		while(iter.hasNext())
-		{
+		while (iter.hasNext()) {
 			Event e = iter.next();
-			if(e.getStart().compareTo(time) <= 0 && e.getEnd().compareTo(time) >= 0)
+			if (e.getStart().compareTo(time) <= 0
+					&& e.getEnd().compareTo(time) >= 0)
 				matchingEvents.add(e);
 		}
-		
+
 		return matchingEvents;
 	}
 
@@ -99,16 +105,16 @@ public class EventController extends AbstractController {
 		find.addFilter(Event.FIELD_END, FilterOperator.EQUAL, end);
 		return find.returnAll().now();
 	}
-	
-	private Date datetimeToJustDate(Date datetime)
-	{
+
+	private Date datetimeToJustDate(Date datetime) {
 		Calendar ctime = Calendar.getInstance();
 		ctime.setTime(datetime);
-		
+
 		Calendar cdate = Calendar.getInstance();
 		cdate.setTimeInMillis(0);
-		cdate.set(ctime.get(Calendar.YEAR), ctime.get(Calendar.MONTH), ctime.get(Calendar.DATE));
-		
+		cdate.set(ctime.get(Calendar.YEAR), ctime.get(Calendar.MONTH),
+				ctime.get(Calendar.DATE));
+
 		return cdate.getTime();
 	}
 

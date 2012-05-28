@@ -130,6 +130,16 @@ public class AbsenceController extends AbstractController {
 
 		return find.returnAll().now();
 	}
+	
+	public Integer getCount(Absence.Type type) {
+
+		RootFindCommand<Absence> find = this.train.getDataStore().find()
+				.type(Absence.class);
+		find.addFilter(Absence.FIELD_TYPE, FilterOperator.EQUAL,
+				type);
+
+		return find.returnCount().now();
+	}
 
 	// TODO doesn't work
 	public List<Absence> getUnanchored() {

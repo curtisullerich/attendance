@@ -100,13 +100,13 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		int numAbsences = train.getAbsencesController()
 				.get(Absence.Type.Absence).size();
-		int numTardy = train.getAbsencesController().get(Absence.Type.Tardy)
-				.size();
-		int numLeaveEarly = train.getAbsencesController()
-				.get(Absence.Type.EarlyCheckOut).size();
-		int numStudents = train.getUsersController().get(User.Type.Student)
-				.size();
-		int numEvents = train.getEventsController().readAll().size();
+		int numTardy = train.getAbsencesController().getCount(
+				Absence.Type.Tardy);
+		int numLeaveEarly = train.getAbsencesController().getCount(
+				Absence.Type.EarlyCheckOut);
+		int numStudents = train.getUsersController()
+				.getCount(User.Type.Student);
+		int numEvents = train.getEventsController().getCount();
 		String avgPresent = numEvents != 0 ? (numStudents - (numAbsences / numEvents))
 				+ ""
 				: "No Recorded Events";
@@ -120,7 +120,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 				+ numTardy + numLeaveEarly)
 				/ numEvents)
 				+ "" : "No Recorded Events";
-		
+
 		page.setAttribute("date", date);
 
 		page.setAttribute("numStudents", numStudents);
@@ -130,7 +130,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		page.setAttribute("avgAbsentStudents", avgAbsent);
 		page.setAttribute("avgPresentStudentsWR", avgPresentWR);
 		page.setAttribute("avgLeaveEarly", avgLeaveEarly);
-		page.setAttribute("avgGrade",train.getUsersController().averageGrade());
+		page.setAttribute("avgGrade", train.getUsersController().averageGrade());
 
 		page.setPageTitle("Statistics");
 
@@ -292,17 +292,13 @@ public class DirectorServlet extends AbstractBaseServlet {
 			newPass = req.getParameter("hashedPass");
 			newPassConf = req.getParameter("hashedPassConf");
 			if (newPass != null && !newPass.equals("")) {
-				if (newPassConf == null || newPassConf.equals(""))
-				{
+				if (newPassConf == null || newPassConf.equals("")) {
 					validForm = false;
 					errors.add("Password and Confirm Password didn't match.");
-				}
-				else if (!newPass.equals(newPassConf)){
+				} else if (!newPass.equals(newPassConf)) {
 					validForm = false;
 					errors.add("Password and Confirm Password didn't match");
-				}
-				else 
-				{
+				} else {
 					data.setHashedMobilePassword(newPass);
 				}
 			}
@@ -333,7 +329,8 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		page.setAttribute("Day", cutoffDate.get(Calendar.DATE));
 
-		page.setAttribute("ToHour", (cutoffDate.get(Calendar.HOUR) == 0) ? 12 : cutoffDate.get(Calendar.HOUR));
+		page.setAttribute("ToHour", (cutoffDate.get(Calendar.HOUR) == 0) ? 12
+				: cutoffDate.get(Calendar.HOUR));
 
 		page.setAttribute("ToMinute", cutoffDate.get(Calendar.MINUTE));
 
@@ -384,7 +381,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		page.setAttribute("events", events);
 		page.setPageTitle("Attendance");
 		page.setAttribute("error_messages", errors);
-		//so if the page arrives with ?=showApproved=true then we display them
+		// so if the page arrives with ?=showApproved=true then we display them
 		User me = train.getAuthController().getCurrentUser(req.getSession());
 		if (ValidationUtil.isPost(req)) {
 			String show = req.getParameter("approved");
@@ -392,7 +389,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 			me.setShowApproved(showb);
 			train.getUsersController().update(me);
 		}
-		
+
 		page.setAttribute("showApproved", me.isShowApproved());
 		page.passOffToJsp(req, resp);
 	}
@@ -416,8 +413,8 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		PageBuilder page = new PageBuilder(Page.info, SERVLET_PATH);
 
-		page.setAttribute("user",
-				DataTrain.getAndStartTrain().getAuthController().getCurrentUser(req.getSession()));
+		page.setAttribute("user", DataTrain.getAndStartTrain()
+				.getAuthController().getCurrentUser(req.getSession()));
 
 		page.passOffToJsp(req, resp);
 	}

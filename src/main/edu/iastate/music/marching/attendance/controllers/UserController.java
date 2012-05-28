@@ -11,6 +11,7 @@ import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.Event;
 import edu.iastate.music.marching.attendance.model.ModelFactory;
 import edu.iastate.music.marching.attendance.model.User;
+import edu.iastate.music.marching.attendance.model.User.Type;
 import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
 public class UserController extends AbstractController {
@@ -34,6 +35,14 @@ public class UserController extends AbstractController {
 		find.addFilter(User.FIELD_TYPE, FilterOperator.IN, Arrays.asList(types));
 
 		return find.returnAll().now();
+	}
+	
+	public int getCount(Type type) {
+		RootFindCommand<User> find = this.datatrain.getDataStore().find()
+				.type(User.class);
+		find.addFilter(User.FIELD_TYPE, FilterOperator.EQUAL, type);
+
+		return find.returnCount().now();
 	}
 
 	public User createStudent(com.google.appengine.api.users.User google_user,
@@ -259,14 +268,18 @@ public class UserController extends AbstractController {
 	public User.Grade averageGrade() {
 		int total = 0;
 		int count = 0;
-		List<User> students = this.get(User.Type.Student);
+		List<User> students = this.get(User.Type.Student, User.Type.TA);
 		for (User s : students) {
-			if(s != null && s.getGrade() != null)
+			//if(s.getGrade() != null)
 			{
 				total += s.getGrade().ordinal();
 				count += 1;
 			}
 		}
-		return intToGrade((int) total / count);
+		
+		if(count == 0)
+			return null;
+		else
+			return intToGrade((int) total / count);
 	}
 }
