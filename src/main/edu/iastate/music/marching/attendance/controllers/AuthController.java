@@ -56,11 +56,15 @@ public class AuthController {
 
 	public User getCurrentUser(HttpSession session) {
 		
-		if(this.currentUser  == null)
+		if(this.currentUser == null)
 		{
 			this.currentUser = getUserFromSession(session);
-			train.getDataStore().disassociate(this.currentUser);
-			train.getDataStore().associate(this.currentUser);
+		
+			if(this.currentUser != null)
+			{
+				train.getDataStore().disassociate(this.currentUser);
+				train.getDataStore().associate(this.currentUser);
+			}
 		}
 		
 		return currentUser;
@@ -76,28 +80,6 @@ public class AuthController {
 		// TODO
 		// if(user.getKey().equals(getUserFromSession(session).getKey()))
 		putUserInSession(user, session);
-	}
-
-	private boolean google_login(HttpSession session) {
-
-		UserService userService = UserServiceFactory.getUserService();
-
-		if (!userService.isUserLoggedIn())
-			return false;
-
-		String email = userService.getCurrentUser().getEmail();
-
-		// Hack
-		User u = DataTrain.getAndStartTrain().getUsersController()
-				.get(email.split("@")[0]);
-
-		if (u != null && "iastate.edu".equals(email.split("@")[1])) {
-			putUserInSession(u, session);
-			return true;
-		}
-
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 	public static void logout(HttpSession session) {
