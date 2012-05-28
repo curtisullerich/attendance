@@ -93,35 +93,43 @@ public class UserControllerTest extends AbstractTestCase {
 		User s1 = createStudent(uc, "student1", 121, "First", "last", 2, "major", User.Section.AltoSax);
 		User s2 = createStudent(uc, "student2", 122, "First", "Last", 2, "major", User.Section.AltoSax);
 		User s3 = createStudent(uc, "student3", 123, "First", "Last", 2, "major", User.Section.AltoSax);
+		User s4 = createStudent(uc, "stiner", 34234, "ars", "l", 3, "astart", User.Section.AltoSax);
 		
 		datastore.associate(s1);
 		datastore.associate(s2);
 		datastore.associate(s3);
+		datastore.associate(s4);
 		
 		s1.setGrade(User.Grade.A);
 		s2.setGrade(User.Grade.A);
 		s3.setGrade(User.Grade.A);
+		s4.setGrade(User.Grade.A);
 		datastore.update(s1);
 		datastore.update(s2);
 		datastore.update(s3);
+		datastore.update(s4);
 		
 		assertEquals(User.Grade.A, uc.averageGrade());
 		
 		s1.setGrade(User.Grade.A);
 		s2.setGrade(User.Grade.B);
 		s3.setGrade(User.Grade.C);
+		s4.setGrade(User.Grade.D);
 		datastore.update(s1);
 		datastore.update(s2);
 		datastore.update(s3);
+		datastore.update(s4);
 		
-		assertEquals(User.Grade.B, uc.averageGrade());
+		assertEquals(User.Grade.Bminus, uc.averageGrade());
 		
 		s1.setGrade(User.Grade.A);
 		s2.setGrade(User.Grade.Aminus);
 		s3.setGrade(User.Grade.A);
+		s4.setGrade(User.Grade.Aminus);
 		datastore.update(s1);
 		datastore.update(s2);
 		datastore.update(s3);
+		datastore.update(s4);
 		
 		assertEquals(User.Grade.A, uc.averageGrade());
 		
