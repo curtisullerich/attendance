@@ -257,11 +257,16 @@ public class UserController extends AbstractController {
 	}
 
 	public User.Grade averageGrade() {
+		int total = 0;
 		int count = 0;
 		List<User> students = this.get(User.Type.Student);
 		for (User s : students) {
-			count += s.getGrade().ordinal();
+			if(s != null && s.getGrade() != null)
+			{
+				total += s.getGrade().ordinal();
+				count += 1;
+			}
 		}
-		return intToGrade((int) count / students.size());
+		return intToGrade((int) total / count);
 	}
 }
