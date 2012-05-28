@@ -36,7 +36,10 @@
 			$('input[name=hiddenEmails]').val(emails);
 			var pass = $('#MobilePassword').val();
 			if (pass != "")
-				$('input[name=hashedPass]').val(Sha1.hash(pass, true));			
+				$('input[name=hashedPass]').val(Sha1.hash(pass, true));		
+			var passConf = $('#MobilePasswordConf').val();
+			if (passConf != "")
+				$('input[name=hashedPassConf]').val(Sha1.hash(passConf, true));
 		}
 		</script>
 	</head>
@@ -57,8 +60,6 @@
 		</c:if>
 		
 		
-		<form action="./appinfo" method="post" accept-charset="utf-8">
-		
 		<dl class="block-layout">
 			
 			<dt><label class="required" for="Title">Title</label></dt>
@@ -70,7 +71,16 @@
 				<br/>
 				Leave blank to not change the password.
 			</dd>
-			
+			<dt><label for="MobilPasswordConfirm">Confirm New Mobile App Password</label></dt>
+			<dd>
+				<input type="password" id="MobilePasswordConf" name = "MobilePasswordConf" />
+				<br/>
+			</dd>	
+		</d1>
+		
+		<%//Put the form down here so the MobilePassword wasn't getting posted in the form %>
+		<form action="./appinfo" method="post" accept-charset="utf-8">	
+		<dl class="block-layout">
 			<dt><label for="Month" class="required">Form A Submission Cutoff:</label></dt>
 			<dd>
 				<input size='5' type='number' name='Month' min='01' max='12' placeholder='MM' value='<c:out value="${Month}" />' />
@@ -114,6 +124,7 @@
 				<input id='Year' size='5' type='hidden' name='Year' value='<c:out value="${year}" />' />
 				<input type="hidden" id="hiddenEmails" name="hiddenEmails" value="">
 				<input type="hidden" id="hashedPass" name="hashedPass" value="">
+				<input type="hidden" id="hashedPassConf" name = "hashedPassConf" value ="">
 		</form>		
 		<jsp:include page="/WEB-INF/template/footer.jsp" />
 	</body>

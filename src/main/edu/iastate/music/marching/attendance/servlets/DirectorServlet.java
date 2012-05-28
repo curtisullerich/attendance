@@ -244,6 +244,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		boolean validForm = true;
 		List<String> errors = new LinkedList<String>();
 		String newPass = null;
+		String newPassConf = null;
 		List<String> emailList = null;
 		if (!ValidationUtil.isPost(req)) {
 			validForm = false;
@@ -289,8 +290,21 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 			// Check if they added a new password and then change it
 			newPass = req.getParameter("hashedPass");
+			newPassConf = req.getParameter("hashedPassConf");
 			if (newPass != null && !newPass.equals("")) {
-				data.setHashedMobilePassword(newPass);
+				if (newPassConf == null || newPassConf.equals(""))
+				{
+					validForm = false;
+					errors.add("Password and Confirm Password didn't match.");
+				}
+				else if (!newPass.equals(newPassConf)){
+					validForm = false;
+					errors.add("Password and Confirm Password didn't match");
+				}
+				else 
+				{
+					data.setHashedMobilePassword(newPass);
+				}
 			}
 		}
 		if (validForm) {
@@ -319,10 +333,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		page.setAttribute("Day", cutoffDate.get(Calendar.DATE));
 
-		int hour = cutoffDate.get((cutoffDate.get(Calendar.HOUR) == 0) ? 12 : cutoffDate.get(Calendar.HOUR));
-		int minute = cutoffDate.get(Calendar.MINUTE);
-		page.setAttribute("ToHour",
-				cutoffDate.get((cutoffDate.get(Calendar.HOUR) == 0) ? 12 : cutoffDate.get(Calendar.HOUR)));
+		page.setAttribute("ToHour", (cutoffDate.get(Calendar.HOUR) == 0) ? 12 : cutoffDate.get(Calendar.HOUR));
 
 		page.setAttribute("ToMinute", cutoffDate.get(Calendar.MINUTE));
 
