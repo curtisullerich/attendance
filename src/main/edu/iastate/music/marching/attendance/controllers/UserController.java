@@ -259,6 +259,9 @@ public class UserController extends AbstractController {
 	public User.Grade averageGrade() {
 		int total = 0;
 		int count = 0;
+		// TODO all fields of users in this method are still null. 
+		//I would say we should just abandon average grade 
+		//calculation, but we need to understand why this is happening.
 		List<User> students = this.get(User.Type.Student);
 		for (User s : students) {
 			if(s != null && s.getGrade() != null)
@@ -266,6 +269,9 @@ public class UserController extends AbstractController {
 				total += s.getGrade().ordinal();
 				count += 1;
 			}
+		}
+		if (count == 0) {
+			count = 1;
 		}
 		return intToGrade((int) total / count);
 	}
