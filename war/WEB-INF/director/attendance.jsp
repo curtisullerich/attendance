@@ -6,6 +6,37 @@
 <html>
 <head>
 <jsp:include page="/WEB-INF/template/head.jsp" />
+<style type="text/css">
+#container
+{
+	width:auto;
+	display:inline-block;
+	margin-left: 50px;
+	margin-right: 50px;
+}
+#container-inner {
+	width:auto;
+	overflow:visible;
+}
+#container div.sidebar {
+	position:absolute;
+}
+#content {
+	width:auto;
+	margin-left:210px;
+}
+
+td .show-absence-onhover {
+	color:#aaa;
+	display:none;
+}
+td:hover .show-absence-onhover {
+	display:block;
+}
+td:hover .show-absence-onhover a {
+	color:#aaa;
+}
+</style>
 </head>
 <body>
 	<jsp:include page="/WEB-INF/template/header.jsp" />
@@ -35,8 +66,10 @@
 			<input type="hidden" value="submit" name="approvedB"/>
 		</form>
 	</div>
+	
+	<br/><br/>
 
-	<div style="overflow:auto;">
+	<div>
 	<table class="gray full-width">
 		<!-- start headers -->
 		<thead>
@@ -62,29 +95,62 @@
 					<td>${student.section.displayName }</td>
 					<td>${student.universityID }</td>
 					<c:forEach items="${events}" var="event">
-					<!-- TODO make them clickable and hoverable only if there was nothing for that day -->
-					<td class="${empty absenceMap[student][event] ? 'gray-hover' : ''}" onClick="${empty absenceMap[student][event] ? 'window.location=\'/director/viewabsence\'' : ''}">
-							<c:forEach items="${absenceMap[student][event] }"
-								var="absence">
-								<c:choose>
-									<c:when test="${absence.type.tardy && !absence.status.approved}">
+					
+						<c:set var="cellcontents" value="" />
+							
+						<c:forEach items="${absenceMap[student][event]}" var="absence">
+							<c:choose>
+								<c:when test="${absence.type.tardy && !absence.status.approved}">
+									<c:set var="cellcontents">
+										${cellcontents}
 										<a href="/director/viewabsence?absenceid=${absence.id }">${absence.status} ${absence.type }<!-- : ${absence.datetime }--></a>
-										<br />
-									</c:when>
-									<c:when test="${absence.type.absence && !absence.status.approved}">
+										<br/>
+									</c:set>
+								</c:when>
+								<c:when test="${absence.type.absence && !absence.status.approved}">
+									<c:set var="cellcontents">
+										${cellcontents}
 										<a href="/director/viewabsence?absenceid=${absence.id }">${absence.status} ${absence.type } </a>
-										<br />
-									</c:when>
-									<c:when test="${absence.type.earlyCheckOut && !absence.status.approved}">
+										<br/>
+									</c:set>
+								</c:when>
+								<c:when test="${absence.type.earlyCheckOut && !absence.status.approved}">
+									<c:set var="cellcontents">
+										${cellcontents}
 										<a href="/director/viewabsence?absenceid=${absence.id }">${absence.status} ${absence.type }<!-- : ${absence.datetime }--></a>
-										<br />
-									</c:when>
-									<c:when test="${absence.status.approved && showApproved}">
-										<a href="/director/viewabsence?absenceid=${absence.id }" >${absence.status} ${absence.type }<!-- : ${absence.datetime }--></a>
-										<br />
-									</c:when>									
-								</c:choose>
-							</c:forEach></td>
+										<br/>
+									</c:set>
+								</c:when>
+								<c:when test="${absence.status.approved}">
+									<c:if test="${showApproved}">
+										<c:set var="cellcontents">
+											${cellcontents}
+											<a href="/director/viewabsence?absenceid=${absence.id }" >${absence.status} ${absence.type }<!-- : ${absence.datetime }--></a>
+											<br/>
+										</c:set>
+									</c:if>
+									<c:if test="${!showApproved}">
+										<c:set var="cellcontents">
+											${cellcontents}
+											<span class="show-absence-onhover">
+												<a href="/director/viewabsence?absenceid=${absence.id }" >${absence.status} ${absence.type }<!-- : ${absence.datetime }--></a>
+												<br/>
+											</span>
+										</c:set>
+									</c:if>
+								</c:when>
+								<c:otherwise>								
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+
+						<c:set var="cellonclick">
+							window.location='/director/viewabsence';
+						</c:set>
+					<!-- TODO make them clickable and hoverable only if there was nothing for that day -->
+						<td class="${(empty absenceMap[student][event])?'gray-hover':''}" onClick="${cellonclick}">
+							${cellcontents}
+						</td>
 					</c:forEach>
 					<td>${student.grade.displayName }</td>
 				</tr>

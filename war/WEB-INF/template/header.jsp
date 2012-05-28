@@ -93,7 +93,7 @@
 		</div>
 	</div>
 	<div id="container">
-		<div class="grids-24">
+		<div id="container-inner" class="grids-24">
 			<div class="grid-5 sidebar" id="left-sidebar">
 <jsp:include page="/WEB-INF/template/menu.jsp" />
 			</div>
