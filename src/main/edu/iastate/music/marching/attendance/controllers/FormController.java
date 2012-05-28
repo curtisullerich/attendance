@@ -158,6 +158,7 @@ public class FormController extends AbstractController {
 		Form form = ModelFactory.newForm(Form.Type.B, student);
 		
 		//TODO: This was a quick fix just to get the startTime and endTime to actually do something
+		
 		startDate.setHours(startTime.getHours());
 		startDate.setMinutes(startTime.getMinutes());
 		
