@@ -61,10 +61,8 @@
 		
 		
 		<dl class="block-layout">
-			
 			<dt><label class="required" for="Title">Title</label></dt>
 			<dd><input type="text" name="Title" value="<c:out value="${appinfo.title}" />" /></dd>
-			
 			<dt><label for="MobilePassword">New Mobile App Password</label></dt>
 			<dd>
 				<input type="password" id="MobilePassword" name="MobilePassword" />
@@ -74,9 +72,8 @@
 			<dt><label for="MobilPasswordConfirm">Confirm New Mobile App Password</label></dt>
 			<dd>
 				<input type="password" id="MobilePasswordConf" name = "MobilePasswordConf" />
-				<br/>
 			</dd>	
-		</d1>
+		</dl>
 		
 		<%//Put the form down here so the MobilePassword wasn't getting posted in the form %>
 		<form action="./appinfo" method="post" accept-charset="utf-8">	
