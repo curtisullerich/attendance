@@ -8,9 +8,86 @@
 <fmt:formatDate var="fmtCurrentYear" value="${now}" pattern="yyyy"/>
 
 <html>
-	<head>
-		<jsp:include page="/WEB-INF/template/head.jsp" />
-	</head>
+<head>
+<jsp:include page="/WEB-INF/template/head.jsp" />
+<script type="text/javascript">
+<!--
+   function newMessage() {
+   
+		var threadid = $("#newmessageform input[name=id]").val();
+		var name = $("#newmessageform input[name=name]").val();
+		var text = $("#newmessageform textarea").val();
+		
+		if(!text)
+		{
+			alert("Please enter a message");
+			return false;
+		}
+		
+		$.post(window.location, {'id':threadid, 'Message':text});
+		
+		var currentDate = new Date();
+		var hour = currentDate.getHours();
+		var minute = currentDate.getMinutes();
+		
+		var date;
+		if (hour%12 == 0)
+			date = "12";
+		else
+			date = hour.toString();
+		
+		if (minute < 10)
+			date += ":0" + minute;
+		else
+			date += ":" + minute;
+		
+		if (hour >= 12)
+			date += " PM";
+		else
+			date += " AM";
+		
+		
+		var message = $("<div class='grid-12 message-mine'>"
+		+ "<p>"
+		+ '<strong style="font-size:104%">'
+		+ name
+		+ "</strong>"
+		+ "<br/>"
+		+ text
+		+ "<br/>"
+		+ '<span style="float:right;color:#aaa;">'
+		+ date
+		+ '</span>'
+		+ '</p>'
+		+ '</div>');
+		message.hide();
+		message.prependTo( "#message_thread" );
+		message.show('fast');
+		
+		
+		$("#newmessageform textarea").val("");
+		
+		
+		return false;
+   }
+   
+	function changeResolved()
+	{
+		var resolved = $('#threadresolveform input:radio[name=resolved][checked=checked]').val();
+		var threadid = $("#threadresolveform input[name=id]").val();
+
+		$.post(window.location, {'id':threadid, 'resolved':resolved});
+		
+		if(resolved == "false")
+			$("#newmessagepreview").html("Click here to send a reply <strong>un-resolve</strong> the thread");
+		else
+			$("#newmessagepreview").text("Click here to send a reply");
+		
+		return false;
+	}
+ // -->
+</script>
+</head>
 
 	<body>
 		<jsp:include page="/WEB-INF/template/header.jsp" />
@@ -23,7 +100,7 @@
 			<c:choose>
 				<c:when test="${auth.user.type.director}">
 					<div class="threadresolved">
-						<form id="threadresolveform" method="post" accept-charset="utf-8">
+						<form id="threadresolveform" method="post" accept-charset="utf-8" onsubmit="return changeResolved();">
 							<input id="resolved_radio" name="resolved" value="false" type="radio" onclick="$('#threadresolveform').submit();" ${thread.resolved?'checked="checked"':''} />
 							<label for="resolved_radio">Resolved</label>
 							
@@ -49,7 +126,7 @@
 		
 		<div class="grid-full">
 			<c:if test="${!(empty thread.messages)}">
-				<div id="newmessagepreview" class="newmessagepreview" onclick="$('#newmessageform').show('fast');$('#newmessagepreview').hide('fast');">
+				<div id="newmessagepreview" class="newmessagepreview" onclick="$('#newmessageform').show('fast');$('#newmessagepreview').hide('fast');$('#newmessageform textarea').focus();">
 					Click here to send a reply
 					<c:if test="${thread.resolved}">
 						and <strong>un-resolve</strong> the thread
@@ -58,18 +135,21 @@
 				<br/>
 			</c:if>
 		
-			<form id="newmessageform" method="post" accept-charset="utf-8" style="display:${(empty thread.messages)?'block':'none'};">
+			<form id="newmessageform" method="post" accept-charset="utf-8" style="display:${(empty thread.messages)?'block':'none'};"
+				onsubmit="return newMessage();">
 			
 				<dl class="block-layout">
 					
 					<dt><label>New message:</label></dt>
 					<dd>
-						<textarea rows="6" cols="50" name="Message" wrap="physical"></textarea>
+						<textarea rows="6" cols="50" name="Message" wrap="physical" autofocus></textarea>
 					</dd>
 					
 				</dl>
 				
-				<input type="hidden" value="<c:out value="${thread.id}" />" name="id"/>
+				<input type="hidden" value="<c:out value="${thread.id}" />" name="Id"/>
+				
+				<input type="hidden" value="<c:out value="${auth.user.name}" />" name="name"/>
 				
 				<input type="submit" value="Add Message" name="Submit"/>
 			
@@ -84,6 +164,7 @@
 			<strong>No messages yet.</strong>
 			<br/>
 		</c:if>
+		<div id="message_thread">
 			<c:forEach items="${thread.messages}" var="message">
 				<div class="grid-12 ${(auth.user eq message.author)?'message-mine':'message-theirs'}">
 				<p>
@@ -109,6 +190,7 @@
 				</p>
 				</div>
 			</c:forEach>
+		</div>
 		</div>
 		
 		<jsp:include page="/WEB-INF/template/footer.jsp" />

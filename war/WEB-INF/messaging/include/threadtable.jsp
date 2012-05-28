@@ -11,15 +11,13 @@
 		<div class="">
 			<table class="gray full-width gray-hover" style="table-layout:fixed;white-space:nowrap;overflow:hidden;">
 				<colgroup>
-					<col width="12%" />
 					<col width="15%" />
 					<col width="23%" />
-					<col width="40%" />
+					<col width="52%" />
 					<col width="10%" />
 				</colgroup>
 				<thead>
 				<tr class="dark-title">
-					<th>Resolved?</th>
 					<th>Participants</th>
 					<th>Subject</th>
 					<th colspan=2>Latest Message</th>
@@ -28,12 +26,6 @@
 				<tbody>
 				<c:forEach items="${threads}" var="thread" varStatus="loopCount">
 					<tr onclick="window.location='messages/viewthread?id=<c:out value="${thread.id}"/>'">
-						<td>
-							<p>
-								<c:if test="${thread.resolved}">Resolved</c:if>
-								<c:if test="${!thread.resolved}"><strong>Unresolved</strong></c:if>
-							</p>
-						</td>
 						<td>
 							<c:if test="${!thread.resolved}"><strong></c:if>
 							<p>
