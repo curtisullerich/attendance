@@ -94,6 +94,7 @@ public class FormsServlet extends AbstractBaseServlet {
 			PageBuilder page = new PageBuilder(Page.view, SERVLET_PATH);
 			page.setPageTitle("Form " + form.getType());
 			page.setAttribute("form", form);
+			page.setAttribute("day", form.getDayAsString());
 			page.passOffToJsp(req, resp);
 		} catch (NumberFormatException nfe) {
 			// TODO show an error?

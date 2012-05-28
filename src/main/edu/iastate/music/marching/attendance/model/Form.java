@@ -20,7 +20,24 @@ public class Form {
 
 	public static enum Type {
 		A, B, C, D;
+		
+		private String mDisplayString;
 
+		private Type() {
+			mDisplayString = this.toString();
+		}
+
+		private Type(String display_string) {
+			mDisplayString = display_string;
+		}
+		
+		public String getDisplayName() {
+			return mDisplayString;
+		}
+		
+		public String getValue() {
+			return name();
+		}
 		public boolean isA() {
 			return this == A;
 		}
@@ -80,7 +97,47 @@ public class Form {
 	private String course;
 	private String section;
 	private String building;
+	private int day;
 
+	public void setDay(int day)
+	{
+		this.day = day;
+	}
+	
+	public int getDayAsInt()
+	{
+		return day;
+	}
+	
+	public String getDayAsString()
+	{
+		String ret = "";
+		switch(day)
+		{
+		case 1:
+			ret = "Sunday";
+			break;
+		case 2:
+			ret = "Monday";
+			break;
+		case 3:
+			ret = "Tuesday";
+			break;
+		case 4:
+			ret = "Wednesday";
+			break;
+		case 5:
+			ret = "Thursday";
+			break;
+		case 6:
+			ret = "Friday";
+			break;
+		case 7:
+			ret = "Saturday";
+			break;
+		}
+		return ret;
+	}
 	public String getBuilding() {
 		return building;
 	}

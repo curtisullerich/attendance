@@ -21,10 +21,9 @@
 				</c:forEach>
 			</p>
 		</c:if>
-
-		<fmt:formatDate var="arst" value="${absence.start}" pattern="yyyy"/> 
 		<form action="./viewabsence" method="post" accept-charset="utf-8">
-			<dl class="block-layout">
+			<fmt:formatDate var="arst" value="${absence.start}" pattern="yyyy"/> 
+			<dt><label></label></dt>
 			
 				<dt><label for="StartMonth" class="required">Start Time</label></dt>
 				<dd><fmt:formatDate value="${absence.start}" pattern="M/d/yyyy"/>
@@ -76,7 +75,7 @@
 			
 			<input type="hidden" value="${absence.id}" name="absenceid"/>
 			<input type="submit" value="Submit Changes" name="SubmitChanges" />
-						<input type="button" value="Back" name="Back" onclick="window.location = '/director/attendance'"/>
+			<input type="button" value="Back" name="Back" onclick="window.location = '/director/attendance'"/>
 		</form>
 	
 	

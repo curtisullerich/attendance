@@ -52,9 +52,9 @@
 					<br/>
 					<table class="gray full-width gray-hover" style="table-layout:fixed;white-space:nowrap;overflow:hidden;">
 						<colgroup>
-							<col width="8%" />
-							<col width="10%" />
-							<col width="57%" />
+							<col width="12%" />
+							<col width="12%" />
+							<col width="51%" />
 							<col width="10%" />
 							<col width="15%" />
 						</colgroup>
@@ -69,6 +69,11 @@
 						</thead>
 						<tbody>
 						<c:forEach items="${forms}" var="form">
+							<tr id="row_form_<c:out value="${form.id}" />">
+								<td><fmt:formatDate value="${form.start}" pattern="M/d/yyyy" /></td>
+								<td><fmt:formatDate value="${form.end}" pattern="M/d/yyyy" /></td>
+								<td><a href="/student/forms/view?formid=${form.id}">${form.type}</td>
+								<td>${form.status}</td>
 <%--					<tr id="row_form_<c:out value="${form.id}" />"> --%>
 						<tr>
 							<%//Note that I did this because the last two columns are buttons. %>
