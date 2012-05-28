@@ -95,6 +95,7 @@ public class FormsServlet extends AbstractBaseServlet {
 			page.setPageTitle("Form " + form.getType());
 			page.setAttribute("types", Form.Type.values());
 			page.setAttribute("form", form);
+			page.setAttribute("day", form.getDayAsString());
 			page.passOffToJsp(req, resp);
 		} catch (NumberFormatException nfe) {
 			// TODO show an error?
@@ -167,7 +168,7 @@ public class FormsServlet extends AbstractBaseServlet {
 
 		if (validForm) {
 			// Store our new form to the data store
-			User student = AuthController.getCurrentUser(req.getSession());
+			User student = train.getAuthController().getCurrentUser(req.getSession());
 
 			Form form = null;
 			try {
@@ -217,8 +218,8 @@ public class FormsServlet extends AbstractBaseServlet {
 		Date endDate = null;
 		Date fromTime = null;
 		Date toTime = null;
-		int day = 0;
-		String type = null;
+		int day = -1;
+//		String type = null;
 		String comments = null;
 
 		DataTrain train = DataTrain.getAndStartTrain();
@@ -237,7 +238,7 @@ public class FormsServlet extends AbstractBaseServlet {
 			course = req.getParameter("Course");
 			section = req.getParameter("Section");
 			building = req.getParameter("Building");
-			type = req.getParameter("Type");
+		//	type = req.getParameter("Type");
 			comments = req.getParameter("Comments");
 
 			// this is one-based! Starting on Sunday.
@@ -269,7 +270,7 @@ public class FormsServlet extends AbstractBaseServlet {
 
 		if (validForm) {
 			// Store our new form to the data store
-			User student = AuthController.getCurrentUser(req.getSession());
+			User student = train.getAuthController().getCurrentUser(req.getSession());
 
 			Form form = null;
 			try {
@@ -306,7 +307,7 @@ public class FormsServlet extends AbstractBaseServlet {
 					.getTimeZone());
 			setEndDate(endDate, page, train.getAppDataController().get()
 					.getTimeZone());
-			page.setAttribute("Type", type);
+			page.setAttribute("Type", Form.Type.B);
 			page.setAttribute("Comments", comments);
 
 			page.passOffToJsp(req, resp);
@@ -345,7 +346,7 @@ public class FormsServlet extends AbstractBaseServlet {
 
 		if (validForm) {
 			// Store our new form to the data store
-			User student = AuthController.getCurrentUser(req.getSession());
+			User student = train.getAuthController().getCurrentUser(req.getSession());
 
 			Form form = null;
 			try {
@@ -424,7 +425,7 @@ public class FormsServlet extends AbstractBaseServlet {
 
 		if (validForm) {
 			// Store our new form to the data store
-			User student = AuthController.getCurrentUser(req.getSession());
+			User student = train.getAuthController().getCurrentUser(req.getSession());
 
 			Form form = null;
 			try {
@@ -517,7 +518,7 @@ public class FormsServlet extends AbstractBaseServlet {
 			}
 		}
 
-		User currentUser = AuthController.getCurrentUser(req.getSession());
+		User currentUser = train.getAuthController().getCurrentUser(req.getSession());
 
 		// HACK: @Daniel
 		currentUser = train.getUsersController().get(currentUser.getNetID());

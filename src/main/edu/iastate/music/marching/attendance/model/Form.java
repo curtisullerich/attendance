@@ -38,6 +38,21 @@ public class Form {
 		public String getValue() {
 			return name();
 		}
+		public boolean isA() {
+			return this == A;
+		}
+
+		public boolean isB() {
+			return this == B;
+		}
+
+		public boolean isC() {
+			return this == C;
+		}
+
+		public boolean isD() {
+			return this == D;
+		}
 	};
 
 	public static final String FIELD_STUDENT = "student";
@@ -48,7 +63,7 @@ public class Form {
 	 */
 	Form() {
 	}
-	
+
 	@Id
 	private long id;
 
@@ -82,16 +97,59 @@ public class Form {
 	private String course;
 	private String section;
 	private String building;
+	private int day;
+
+	public void setDay(int day)
+	{
+		this.day = day;
+	}
+	
+	public int getDayAsInt()
+	{
+		return day;
+	}
+	
+	public String getDayAsString()
+	{
+		String ret = "";
+		switch(day)
+		{
+		case 1:
+			ret = "Sunday";
+			break;
+		case 2:
+			ret = "Monday";
+			break;
+		case 3:
+			ret = "Tuesday";
+			break;
+		case 4:
+			ret = "Wednesday";
+			break;
+		case 5:
+			ret = "Thursday";
+			break;
+		case 6:
+			ret = "Friday";
+			break;
+		case 7:
+			ret = "Saturday";
+			break;
+		}
+		return ret;
+	}
+	public String getBuilding() {
+		return building;
+	}
 
 	// String to be used by Form D
 	private String emailTo;
 	private int hoursWorked;
-	
-	public long getId()
-	{
+
+	public long getId() {
 		return id;
 	}
-	
+
 	public Type getType() {
 		return this.type;
 	}
@@ -112,6 +170,10 @@ public class Form {
 	public void setDetails(String details) {
 		this.details = details;
 	}
+
+	public String getDetails() {
+		return this.details;
+	}
 	
 	public Date getStart() {
 		return this.startTime;
@@ -120,19 +182,51 @@ public class Form {
 	public void setStart(Date startDate) {
 		this.startTime = startDate;
 	}
-	
+
 	public Date getEnd() {
 		return this.endTime;
+	}
+
+	public String getDept() {
+		return dept;
+	}
+
+	public void setDept(String dept) {
+		this.dept = dept;
+	}
+
+	public String getCourse() {
+		return course;
+	}
+
+	public void setCourse(String course) {
+		this.course = course;
+	}
+
+	public String getEmailTo() {
+		return emailTo;
+	}
+
+	public void setEmailTo(String emailTo) {
+		this.emailTo = emailTo;
+	}
+
+	public int getHoursWorked() {
+		return hoursWorked;
+	}
+
+	public void setHoursWorked(int hoursWorked) {
+		this.hoursWorked = hoursWorked;
 	}
 
 	public void setEnd(Date endDate) {
 		this.endTime = endDate;
 	}
-	
+
 	public Status getStatus() {
 		return this.status;
 	}
-	
+
 	public String getStatusString() {
 		return this.status.toString();
 	}
@@ -151,6 +245,22 @@ public class Form {
 
 	public void setBuilding(String building) {
 		this.building = building;
+	}
+
+	public String getSection() {
+		return section;
+	}
+
+	public void setSection(String section) {
+		this.section = section;
+	}
+
+	public Status getEmailStatus() {
+		return emailStatus;
+	}
+
+	public void setEmailStatus(Status emailStatus) {
+		this.emailStatus = emailStatus;
 	}
 
 }

@@ -118,7 +118,7 @@ public class User implements Serializable {
 
 	private String rank;
 	
-
+	private boolean showApproved;
 
 	public String getFirstName() {
 		return firstName;
@@ -132,6 +132,14 @@ public class User implements Serializable {
 		return lastName;
 	}
 
+	public boolean isShowApproved() {
+		return this.showApproved;
+	}
+	
+	public void setShowApproved(boolean show) {
+		this.showApproved = show;
+	}
+	
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
@@ -147,6 +155,10 @@ public class User implements Serializable {
 	public void setNetID(String netID) {
 		this.netID = netID;
 		this.id = netID;
+	}
+	
+	public String getId(){
+		return id;
 	}
 
 	public Type getType() {

@@ -156,11 +156,53 @@ public class FormController extends AbstractController {
 		}
 
 		Form form = ModelFactory.newForm(Form.Type.B, student);
-
+		
+		//TODO: This was a quick fix just to get the startTime and endTime to actually do something
+		startDate.setHours(startTime.getHours());
+		startDate.setMinutes(startTime.getMinutes());
+		
+		endDate.setHours(endTime.getHours());
+		endDate.setMinutes(endTime.getMinutes());
+		
 		form.setStart(startDate);
 		form.setEnd(endDate);
 		// TODO form.set(All the other things)
-
+		if (ValidationUtil.isValidText(department, false))
+		{
+			form.setDept(department);
+		}
+		else
+		{
+			exp.getErrors().add("Invalid department.");
+		}
+		
+		if (ValidationUtil.isValidText(course, false))
+		{
+			form.setCourse(course);
+		}
+		else
+		{
+			exp.getErrors().add("Invalid department.");
+		}
+		
+		if (ValidationUtil.isValidText(section, false))
+		{
+			form.setSection(section);
+		}
+		else
+		{
+			exp.getErrors().add("Invalid department.");
+		}
+		
+		if (ValidationUtil.isValidText(building, false))
+		{
+			form.setBuilding(building);
+		}
+		else
+		{
+			exp.getErrors().add("Invalid department.");
+		}
+		form.setDay(day);
 		// Set remaining fields
 		form.setDetails(details);
 		form.setStatus(Form.Status.Pending);
@@ -238,6 +280,8 @@ public class FormController extends AbstractController {
 		// Set remaining fields
 		form.setDetails(details);
 		form.setStatus(Form.Status.Pending);
+		form.setEmailTo(email);
+		form.setHoursWorked(hours);
 
 		// Perform store
 		storeForm(form);

@@ -118,11 +118,13 @@ public class AuthServlet extends AbstractBaseServlet {
 
 	private void handleRegistration(HttpServletRequest req,
 			HttpServletResponse resp) throws ServletException, IOException {
+		
+		DataTrain train = DataTrain.getAndStartTrain();
 
 		if (AuthController.getGoogleUser() != null) {
 			// Have a valid google login
 			// Check if current user is already registered
-			User u = AuthController.getCurrentUser(req.getSession());
+			User u = train.getAuthController().getCurrentUser(req.getSession());
 			if (u == null) {
 				// Not yet registered
 				showRegistration(req, resp);
@@ -262,8 +264,8 @@ public class AuthServlet extends AbstractBaseServlet {
 
 	private void redirectPostLogin(HttpServletRequest req,
 			HttpServletResponse resp) throws IOException, ServletException {
-
-		User user = AuthController.getCurrentUser(req.getSession());
+		
+		User user = DataTrain.getAndStartTrain().getAuthController().getCurrentUser(req.getSession());
 
 		if (user == null)
 			resp.sendRedirect(URL_REGISTER);

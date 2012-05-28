@@ -1,7 +1,5 @@
 package edu.iastate.music.marching.attendance.test.unit.controllers;
 
-import static org.mockito.Mockito.*;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -81,5 +79,62 @@ public class UserControllerTest extends AbstractTestCase {
 		assertEquals(10, s.getYear());
 		assertEquals("Being Silly", s.getMajor());
 		assertEquals(User.Section.AltoSax, s.getSection());
+	}
+	
+	@Test
+	public void averageGrade() {
+		
+		ObjectDatastore datastore = getObjectDataStore();
+		
+		DataTrain train = getDataTrain();
+
+		UserController uc = train.getUsersController();
+		
+		User s1 = createStudent(uc, "student1", 121, "First", "last", 2, "major", User.Section.AltoSax);
+		User s2 = createStudent(uc, "student2", 122, "First", "Last", 2, "major", User.Section.AltoSax);
+		User s3 = createStudent(uc, "student3", 123, "First", "Last", 2, "major", User.Section.AltoSax);
+		
+		datastore.associate(s1);
+		datastore.associate(s2);
+		datastore.associate(s3);
+		
+		s1.setGrade(User.Grade.A);
+		s2.setGrade(User.Grade.A);
+		s3.setGrade(User.Grade.A);
+		datastore.update(s1);
+		datastore.update(s2);
+		datastore.update(s3);
+		
+		assertEquals(User.Grade.A, uc.averageGrade());
+		
+		s1.setGrade(User.Grade.A);
+		s2.setGrade(User.Grade.B);
+		s3.setGrade(User.Grade.C);
+		datastore.update(s1);
+		datastore.update(s2);
+		datastore.update(s3);
+		
+		assertEquals(User.Grade.B, uc.averageGrade());
+		
+		s1.setGrade(User.Grade.A);
+		s2.setGrade(User.Grade.Aminus);
+		s3.setGrade(User.Grade.A);
+		datastore.update(s1);
+		datastore.update(s2);
+		datastore.update(s3);
+		
+		assertEquals(User.Grade.A, uc.averageGrade());
+		
+		
+	}
+	
+	private User createStudent(UserController uc, String email_firstpart, int univID, String firstName, String lastName, int year,
+			String major, User.Section section) {
+		
+		com.google.appengine.api.users.User google_user = new com.google.appengine.api.users.User(email_firstpart + "@" + DOMAIN, "gmail.com");
+
+		User u = uc.createStudent(google_user, univID, firstName, lastName, year, major, section);
+		
+		return u;
 	}
 }
