@@ -52,9 +52,9 @@
 					<br/>
 					<table class="gray full-width gray-hover" style="table-layout:fixed;white-space:nowrap;overflow:hidden;">
 						<colgroup>
-							<col width="8%" />
-							<col width="10%" />
-							<col width="57%" />
+							<col width="12%" />
+							<col width="12%" />
+							<col width="51%" />
 							<col width="10%" />
 							<col width="15%" />
 						</colgroup>

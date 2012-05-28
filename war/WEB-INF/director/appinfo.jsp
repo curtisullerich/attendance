@@ -35,7 +35,8 @@
 			}
 			$('input[name=hiddenEmails]').val(emails);
 			var pass = $('#MobilePassword').val();
-			$('input[name=hashedPass]').val(Sha1.hash(pass, true));			
+			if (pass != "")
+				$('input[name=hashedPass]').val(Sha1.hash(pass, true));			
 		}
 		</script>
 	</head>

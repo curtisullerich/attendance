@@ -319,6 +319,8 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		page.setAttribute("Day", cutoffDate.get(Calendar.DATE));
 
+		int hour = cutoffDate.get((cutoffDate.get(Calendar.HOUR) == 0) ? 12 : cutoffDate.get(Calendar.HOUR));
+		int minute = cutoffDate.get(Calendar.MINUTE);
 		page.setAttribute("ToHour",
 				cutoffDate.get((cutoffDate.get(Calendar.HOUR) == 0) ? 12 : cutoffDate.get(Calendar.HOUR)));
 
