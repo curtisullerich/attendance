@@ -75,7 +75,7 @@
 			
 			<input type="hidden" value="${absence.id}" name="absenceid"/>
 			<input type="submit" value="Submit Changes" name="SubmitChanges" />
-						<input type="button" value="Back" name="Back" onclick="window.location = '/director/attendance'"/>
+			<input type="button" value="Back" name="Back" onclick="window.location = '/director/attendance'"/>
 		</form>
 	
 	

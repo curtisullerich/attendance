@@ -56,7 +56,9 @@
 				<dd>${form.hoursWorked}</dd>
 				
 				<dt><label>Start Date</label></dt>	
-				<dd><fmt:formatDate value="${form.start}" pattern="M/d/yyyy"/></dd>
+				<dd>
+				<fmt:formatDate value="${form.start}" pattern="M/d/yyyy"/>
+				</dd>
 			
 			</c:if>
 			<dt><label>Details</label>

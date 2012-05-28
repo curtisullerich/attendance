@@ -93,7 +93,6 @@ public class FormsServlet extends AbstractBaseServlet {
 			form = train.getFormsController().get(id);
 			PageBuilder page = new PageBuilder(Page.view, SERVLET_PATH);
 			page.setPageTitle("Form " + form.getType());
-			page.setAttribute("types", Form.Type.values());
 			page.setAttribute("form", form);
 			page.setAttribute("day", form.getDayAsString());
 			page.passOffToJsp(req, resp);
