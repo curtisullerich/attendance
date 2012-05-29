@@ -81,14 +81,14 @@
 					<c:out value="${avgAbsentStudents}" />
 				</td>
 			</tr>
-			<tr>
-				<td>
-					Average grade
-				</td>
-				<td>
-					<c:out value="${avgGrade}" />
-				</td>
-			</tr>
+<!-- 			<tr> -->
+<!-- 				<td> -->
+<!-- 					Average grade -->
+<!-- 				</td> -->
+<!-- 				<td> -->
+<%-- 					<c:out value="${avgGrade}" /> --%>
+<!-- 				</td> -->
+<!-- 			</tr> -->
 		</table>
 		
 		<br/>

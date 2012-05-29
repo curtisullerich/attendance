@@ -130,8 +130,8 @@ public class DirectorServlet extends AbstractBaseServlet {
 		page.setAttribute("avgAbsentStudents", avgAbsent);
 		page.setAttribute("avgPresentStudentsWR", avgPresentWR);
 		page.setAttribute("avgLeaveEarly", avgLeaveEarly);
-		page.setAttribute("avgGrade", train.getUsersController().averageGrade());
-
+//		page.setAttribute("avgGrade", train.getUsersController().averageGrade());
+		
 		page.setPageTitle("Statistics");
 
 		page.passOffToJsp(req, resp);
@@ -354,7 +354,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		List<User> students = train.getUsersController().get(User.Type.Student);
 		List<Event> events = train.getEventsController().readAll();
-
+		UserController uc = train.getUsersController();
 		AbsenceController ac = train.getAbsencesController();
 		Map<User, Map<Event, List<Absence>>> absenceMap = new HashMap<User, Map<Event, List<Absence>>>();
 		for (User s : students) {
@@ -371,7 +371,6 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 				eventAbsencesMap.put(e, currentEventAbsences);
 			}
-
 			absenceMap.put(s, eventAbsencesMap);
 		}
 

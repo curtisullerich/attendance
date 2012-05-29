@@ -33,7 +33,6 @@ public class AbsenceController extends AbstractController {
 
 		Absence absence = ModelFactory.newAbsence(Absence.Type.Tardy, student);
 		absence.setDatetime(time);
-
 		// Associate with event
 		List<Event> events = train.getEventsController().get(time);
 
@@ -41,7 +40,7 @@ public class AbsenceController extends AbstractController {
 			absence.setEvent(events.get(0));
 		// else the absence is orphaned
 		absence.setStatus(Absence.Status.Pending);
-		return storeAbsence(absence);
+		return storeAbsence(absence, student);
 	}
 
 	public Absence createOrUpdateAbsence(User student, Date start, Date end) {
@@ -58,12 +57,11 @@ public class AbsenceController extends AbstractController {
 
 		// Associate with event
 		List<Event> events = train.getEventsController().get(start, end);
-
 		if (events.size() == 1)
 			absence.setEvent(events.get(0));
 		// else the absence is orphaned
 		absence.setStatus(Absence.Status.Pending);
-		return storeAbsence(absence);
+		return storeAbsence(absence, student);
 	}
 
 	public Absence createOrUpdateEarlyCheckout(User student, Date time) {
@@ -86,7 +84,7 @@ public class AbsenceController extends AbstractController {
 			absence.setEvent(events.get(0));
 		// else the absence is orphaned
 
-		return storeAbsence(absence);
+		return storeAbsence(absence, student);
 	}
 	
 	public void updateAbsence(Absence absence)
@@ -94,7 +92,7 @@ public class AbsenceController extends AbstractController {
 		this.train.getDataStore().update(absence);
 	}
 
-	private Absence storeAbsence(Absence absence) {
+	private Absence storeAbsence(Absence absence, User student) {
 		ObjectDatastore od = this.train.getDataStore();
 
 		// First build an empty message thread and store it
@@ -104,6 +102,7 @@ public class AbsenceController extends AbstractController {
 
 		// Then do actual store
 		od.store(absence);
+		train.getUsersController().updateUserGrade(student);
 
 		return absence;
 	}

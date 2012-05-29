@@ -176,7 +176,9 @@ public class StudentServlet extends AbstractBaseServlet {
 			throws ServletException, IOException {
 
 		PageBuilder page = new PageBuilder(Page.index, SERVLET_PATH);
-		User currentUser = DataTrain.getAndStartTrain().getAuthController().getCurrentUser(req.getSession());
+		DataTrain train = DataTrain.getAndStartTrain();
+		User currentUser = train.getAuthController().getCurrentUser(req.getSession());
+
 		page.setAttribute("user", currentUser);
 		page.setPageTitle("Student");
 

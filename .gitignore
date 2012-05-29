@@ -1,2 +1,5 @@
 Thumbs.db
 appengine*.jar
+.settings/*
+.project
+.classpath

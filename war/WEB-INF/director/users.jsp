@@ -15,7 +15,7 @@
 			<tr>
 				<thead>
 				<th>Type</th>
-				<th>Netid</th>
+				<th>NetID</th>
 				<th>Name</th>
 				</thead>
 			</tr>
