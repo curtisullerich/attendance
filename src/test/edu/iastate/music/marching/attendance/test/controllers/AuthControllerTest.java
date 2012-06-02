@@ -2,16 +2,11 @@ package edu.iastate.music.marching.attendance.test.controllers;
 
 import static org.junit.Assert.fail;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
-import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
-import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
+import edu.iastate.music.marching.attendance.test.AbstractDataStoreTest;
 
-import edu.iastate.music.marching.attendance.test.AbstractTestCase;
-
-public class AuthControllerTest extends AbstractTestCase {
+public class AuthControllerTest extends AbstractDataStoreTest {
 
 	@Test
 	public void testCreateUser() {

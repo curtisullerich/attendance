@@ -2,7 +2,6 @@ package edu.iastate.music.marching.attendance.test.util;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -16,7 +15,7 @@ public class ValidationUtilTest {
 
 	private final static TimeZone TIMEZONE = TimeZone.getTimeZone("UTC");
 	
-// TODO
+// TODO: Most of the remaining methods are unused, don't test unused methods, delete them
 //	@Test
 //	public void testIsValidName() {
 //		fail("Not yet implemented");

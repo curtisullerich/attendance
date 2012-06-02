@@ -11,11 +11,9 @@ import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.UserController;
 import edu.iastate.music.marching.attendance.model.MessageThread;
 import edu.iastate.music.marching.attendance.model.User;
-import edu.iastate.music.marching.attendance.test.AbstractTestCase;
+import edu.iastate.music.marching.attendance.test.AbstractDataStoreTest;
 
-public class MessagingControllerTest extends AbstractTestCase {
-
-	private static final String DOMAIN = "iastate.edu";
+public class MessagingControllerTest extends AbstractDataStoreTest {
 
 	@Test
 	public void testGetUserFilter() {
@@ -24,15 +22,8 @@ public class MessagingControllerTest extends AbstractTestCase {
 
 		// Setup two users
 		UserController uc = train.getUsersController();
-		com.google.appengine.api.users.User google_user = new com.google.appengine.api.users.User(
-				"director@" + DOMAIN, "gmail.com");
-		User director = uc.createDirector(google_user, 123, "I am",
-				"The Director");
-
-		com.google.appengine.api.users.User google_user2 = new com.google.appengine.api.users.User(
-				"studenttt@" + DOMAIN, "gmail.com");
-		User student = uc.createStudent(google_user2, 121, "I am", "A Student",
-				10, "Being Silly", User.Section.AltoSax);
+		User director = createDirector(uc, "director", 123, "I am", "The Director");
+		User student = createStudent(uc, "studenttt", 121, "First", "last", 2, "major", User.Section.AltoSax);
 
 		MessageThread mts = train.getMessagingController()
 				.createMessageThread();
@@ -74,15 +65,8 @@ public class MessagingControllerTest extends AbstractTestCase {
 
 		// Setup two users
 		UserController uc = train.getUsersController();
-		com.google.appengine.api.users.User google_user = new com.google.appengine.api.users.User(
-				"director@" + DOMAIN, "gmail.com");
-		User director = uc.createDirector(google_user, 123, "I am",
-				"The Director");
-
-		com.google.appengine.api.users.User google_user2 = new com.google.appengine.api.users.User(
-				"studenttt@" + DOMAIN, "gmail.com");
-		User student = uc.createStudent(google_user2, 121, "I am", "A Student",
-				10, "Being Silly", User.Section.AltoSax);
+		User director = createDirector(uc, "director", 123, "I am", "The Director");
+		User student = createStudent(uc, "studenttt", 121, "First", "last", 2, "major", User.Section.AltoSax);
 
 		MessageThread mts = train.getMessagingController()
 				.createMessageThread();
@@ -120,15 +104,8 @@ public class MessagingControllerTest extends AbstractTestCase {
 
 		// Setup two users
 		UserController uc = train.getUsersController();
-		com.google.appengine.api.users.User google_user = new com.google.appengine.api.users.User(
-				"director@" + DOMAIN, "gmail.com");
-		User director = uc.createDirector(google_user, 123, "I am",
-				"The Director");
-
-		com.google.appengine.api.users.User google_user2 = new com.google.appengine.api.users.User(
-				"studenttt@" + DOMAIN, "gmail.com");
-		User student = uc.createStudent(google_user2, 121, "I am", "A Student",
-				10, "Being Silly", User.Section.AltoSax);
+		User director = createDirector(uc, "director", 123, "I am", "The Director");
+		User student = createStudent(uc, "studenttt", 121, "First", "last", 2, "major", User.Section.AltoSax);
 
 		MessageThread mt = train.getMessagingController().createMessageThread();
 
@@ -146,6 +123,39 @@ public class MessagingControllerTest extends AbstractTestCase {
 		assertEquals(2, result.getParticipants().size());
 		assertEquals(4, result.getMessages().size());
 		// TODO more checks
+	}
+	
+	/**
+	 * Rational: jstl in the JSP assumes messages[0] is the latest message in a thread
+	 */
+	@Test
+	public void testMostRecentMessage() {
+
+		DataTrain train = getDataTrain();
+
+		// Setup two users
+		UserController uc = train.getUsersController();
+		User director = createDirector(uc, "director", 123, "I am", "The Director");
+		User student = createStudent(uc, "studenttt", 121, "First", "last", 2, "major", User.Section.AltoSax);
+
+		MessageThread mt = train.getMessagingController().createMessageThread();
+
+		train.getMessagingController().addMessage(mt, director, "Begin");
+		train.getMessagingController().addMessage(mt, director, "Middle");
+		train.getMessagingController().addMessage(mt, student, "Middle");
+		train.getMessagingController().addMessage(mt, student, "End");
+
+		// Load from datastore and compare
+		MessageThread result = getObjectDataStore().load(MessageThread.class,
+				mt.getId());
+		result = getDataTrain().getMessagingController().get(mt.getId());
+
+		// Check returned object
+		assertNotNull(result);
+		assertEquals(2, result.getParticipants().size());
+		assertEquals(4, result.getMessages().size());
+		// TODO more checks
+		assertEquals("End", result.getMessages().get(0).getText());
 	}
 
 }

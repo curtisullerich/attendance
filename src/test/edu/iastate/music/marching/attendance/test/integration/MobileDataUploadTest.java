@@ -1,5 +1,6 @@
 package edu.iastate.music.marching.attendance.test.integration;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
@@ -9,7 +10,6 @@ import java.util.List;
 import org.junit.Test;
 
 import com.google.code.twig.ObjectDatastore;
-import com.google.code.twig.annotation.AnnotationObjectDatastore;
 
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.model.Absence;
@@ -78,15 +78,18 @@ public class MobileDataUploadTest extends AbstractTestCase {
 				.returnAll().now();
 		assertEquals(2, absences.size());
 
+		boolean foundS = false;
 		for (Absence a : absences) {
 
 			// Check parent relation
 			assertEquals(a.getEvent(), event);
 
 			if (a.getStudent().getNetID().equals("s")) {
-
+				assertFalse("There should only be one abscence for user s", foundS);
+				foundS = true;
+				// TODO assert information about inserted absence
 			} else if (a.getStudent().getNetID().equals("zf")) {
-
+				// TODO assert information about inserted absence
 			} else
 				fail("Found an absence we didn't insert");
 		}
@@ -120,7 +123,7 @@ public class MobileDataUploadTest extends AbstractTestCase {
 		assertEquals(6, datastore.find().type(Absence.class).returnCount()
 				.now().intValue());
 
-		fail("Not yet implemented");
+		// TODO: Check actual data returned
 	}
 
 }

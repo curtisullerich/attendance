@@ -1,43 +1,38 @@
 package edu.iastate.music.marching.attendance.test.controllers;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+
+import java.util.List;
 
 import org.junit.Test;
 
-import com.google.appengine.api.datastore.QueryResultIterator;
 import com.google.code.twig.ObjectDatastore;
 
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.UserController;
 import edu.iastate.music.marching.attendance.model.User;
-import edu.iastate.music.marching.attendance.test.AbstractTestCase;
+import edu.iastate.music.marching.attendance.test.AbstractDataStoreTest;
 
-public class UserControllerTest extends AbstractTestCase {
-
-	private static final String DOMAIN = "iastate.edu";
+public class UserControllerTest extends AbstractDataStoreTest {
 
 	@Test
 	public void testCreateSingleDirector() {
 
-		ObjectDatastore datastore = getObjectDataStore();
-
+		// Setup
 		DataTrain train = getDataTrain();
 
 		UserController uc = train.getUsersController();
 		
-		com.google.appengine.api.users.User google_user = new com.google.appengine.api.users.User("director@" + DOMAIN, "gmail.com");
+		createDirector(uc, "director", 123, "I am", "The Director");
+		
+		// Verify
+		List<User> users = uc.getAll();
+		
+		assertNotNull(users);
+		assertEquals(1, users.size());
 
-		uc.createDirector(google_user, 123, "I am", "The Director");
-
-		QueryResultIterator<User> directorq = datastore.find(User.class);
-
-		// Grab a single user
-		assertTrue(directorq.hasNext());
-		User d = directorq.next();
-		assertFalse(directorq.hasNext());
+		User d = users.get(0);
 
 		// Check returned object
 		assertNotNull(d);
@@ -51,23 +46,20 @@ public class UserControllerTest extends AbstractTestCase {
 	@Test
 	public void testCreateSingleStudent() {
 
-		ObjectDatastore datastore = getObjectDataStore();
-
 		DataTrain train = getDataTrain();
 
 		UserController uc = train.getUsersController();
 
-		com.google.appengine.api.users.User google_user = new com.google.appengine.api.users.User("studenttt@" + DOMAIN, "gmail.com");
-		
-		uc.createStudent(google_user, 121, "I am", "A Student", 10, "Being Silly",
+		createStudent(uc, "studenttt", 121, "I am", "A Student", 10, "Being Silly",
 				User.Section.AltoSax);
 
-		QueryResultIterator<User> studentq = datastore.find(User.class);
+		// Verify
+		List<User> users = uc.getAll();
+		
+		assertNotNull(users);
+		assertEquals(1, users.size());
 
-		// Grab a single user
-		assertTrue(studentq.hasNext());
-		User s = studentq.next();
-		assertFalse(studentq.hasNext());
+		User s = users.get(0);
 
 		// Check returned object
 		assertNotNull(s);
@@ -134,15 +126,5 @@ public class UserControllerTest extends AbstractTestCase {
 		assertEquals(User.Grade.A, uc.averageGrade());
 		
 		
-	}
-	
-	private User createStudent(UserController uc, String email_firstpart, int univID, String firstName, String lastName, int year,
-			String major, User.Section section) {
-		
-		com.google.appengine.api.users.User google_user = new com.google.appengine.api.users.User(email_firstpart + "@" + DOMAIN, "gmail.com");
-
-		User u = uc.createStudent(google_user, univID, firstName, lastName, year, major, section);
-		
-		return u;
 	}
 }
