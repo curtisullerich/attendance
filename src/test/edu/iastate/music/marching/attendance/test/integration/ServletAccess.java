@@ -152,8 +152,8 @@ public class ServletAccess extends AbstractTest {
 	private HttpServletRequest setTASession(HttpServletRequest req) {
 		HttpSession session = mock(HttpSession.class);
 		when(session.getAttribute("authenticated_user")).thenReturn(
-				createTA(getDataTrain().getUsersController(), "studenttt", 121,
-						"I am", "A Student", 10, "Being Silly",
+				createTA(getDataTrain().getUsersController(), "ta", 121,
+						"I am", "A TA", 10, "Being Silly",
 						User.Section.AltoSax));
 		when(req.getSession()).thenReturn(session);
 		return req;
