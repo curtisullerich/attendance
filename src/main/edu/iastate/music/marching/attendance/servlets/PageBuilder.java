@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -84,7 +85,8 @@ public class PageBuilder {
 		AuthBean.getBean(req.getSession(), mDataTrain).apply(req);
 
 		// Do actual forward
-		req.getRequestDispatcher(mJSPPath).forward(req, resp);
+		RequestDispatcher d = req.getRequestDispatcher(mJSPPath);
+		d.forward(req, resp);
 	}
 
 }
