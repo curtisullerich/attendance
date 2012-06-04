@@ -4,9 +4,9 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
-import edu.iastate.music.marching.attendance.test.AbstractDataStoreTest;
+import edu.iastate.music.marching.attendance.test.AbstractTest;
 
-public class MobileDataControllerTest extends AbstractDataStoreTest {
+public class MobileDataControllerTest extends AbstractTest {
 
 	@Test
 	public void test() {

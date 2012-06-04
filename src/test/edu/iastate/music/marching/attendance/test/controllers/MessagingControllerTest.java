@@ -11,9 +11,9 @@ import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.UserController;
 import edu.iastate.music.marching.attendance.model.MessageThread;
 import edu.iastate.music.marching.attendance.model.User;
-import edu.iastate.music.marching.attendance.test.AbstractDataStoreTest;
+import edu.iastate.music.marching.attendance.test.AbstractTest;
 
-public class MessagingControllerTest extends AbstractDataStoreTest {
+public class MessagingControllerTest extends AbstractTest {
 
 	@Test
 	public void testGetUserFilter() {

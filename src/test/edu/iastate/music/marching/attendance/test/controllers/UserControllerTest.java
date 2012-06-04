@@ -12,9 +12,9 @@ import com.google.code.twig.ObjectDatastore;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.UserController;
 import edu.iastate.music.marching.attendance.model.User;
-import edu.iastate.music.marching.attendance.test.AbstractDataStoreTest;
+import edu.iastate.music.marching.attendance.test.AbstractTest;
 
-public class UserControllerTest extends AbstractDataStoreTest {
+public class UserControllerTest extends AbstractTest {
 
 	@Test
 	public void testCreateSingleDirector() {

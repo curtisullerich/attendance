@@ -1,7 +1,7 @@
 package edu.iastate.music.marching.attendance.test.integration;
 
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
 import java.util.Calendar;
@@ -16,8 +16,9 @@ import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.Event;
 import edu.iastate.music.marching.attendance.model.ModelFactory;
 import edu.iastate.music.marching.attendance.model.User;
+import edu.iastate.music.marching.attendance.test.AbstractTest;
 
-public class MobileDataUploadTest extends AbstractTestCase {
+public class MobileDataUploadTest extends AbstractTest {
 
 	private static String SIMPLE_ABSENCE_TESTDATA = "absentStudentRehearsal&split&el&split&Starster&split&s&split&2012-05-03&split&1630&split&1750&split&null&newline&"
 			+ "storedRehearsal&split&rehearsal&split&|&split&|&split&2012-05-03&split&1630&split&1750&split&|&newline&"

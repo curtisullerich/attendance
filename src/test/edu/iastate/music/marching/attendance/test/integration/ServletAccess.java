@@ -16,10 +16,10 @@ import org.junit.Test;
 
 import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.servlets.DirectorServlet;
-import edu.iastate.music.marching.attendance.test.AbstractServletTest;
+import edu.iastate.music.marching.attendance.test.AbstractTest;
 
-public class ServletAccess extends AbstractServletTest {
-	
+public class ServletAccess extends AbstractTest {
+
 	@Test
 	public void DirectorServlet_Student_Test() throws ServletException,
 			IOException, InstantiationException, IllegalAccessException {

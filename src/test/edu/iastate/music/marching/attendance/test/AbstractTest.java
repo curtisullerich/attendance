@@ -1,5 +1,14 @@
 package edu.iastate.music.marching.attendance.test;
 
+import static org.mockito.Mockito.when;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.junit.After;
 import org.junit.Before;
 
@@ -13,7 +22,7 @@ import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.UserController;
 import edu.iastate.music.marching.attendance.model.User;
 
-public class AbstractDataStoreTest {
+public class AbstractTest {
 
 	private static final String EMAIL_DOMAIN = "iastate.edu";
 
@@ -60,7 +69,7 @@ public class AbstractDataStoreTest {
 		return uc.createStudent(google_user, univID, firstName, lastName, year,
 				major, section);
 	}
-	
+
 	protected static final User createTA(UserController uc,
 			String email_firstpart, int univID, String firstName,
 			String lastName, int year, String major, User.Section section) {
@@ -68,10 +77,43 @@ public class AbstractDataStoreTest {
 		com.google.appengine.api.users.User google_user = new com.google.appengine.api.users.User(
 				email_firstpart + "@" + EMAIL_DOMAIN, "gmail.com");
 
-		User u = uc.createStudent(google_user, univID, firstName, lastName, year,
-				major, section);
+		User u = uc.createStudent(google_user, univID, firstName, lastName,
+				year, major, section);
 		u.setType(User.Type.TA);
 		uc.update(u);
 		return u;
+	}
+
+	protected <T extends HttpServlet> void doGet(Class<T> clazz,
+			HttpServletRequest req, HttpServletResponse resp)
+			throws InstantiationException, IllegalAccessException,
+			ServletException, IOException {
+
+		commonDoGetPostSetup(req, resp);
+
+		when(req.getMethod()).thenReturn("GET");
+
+		HttpServlet s = clazz.newInstance();
+		s.service(req, resp);
+	}
+
+	protected <T extends HttpServlet> void doPost(Class<T> clazz,
+			HttpServletRequest req, HttpServletResponse resp)
+			throws InstantiationException, IllegalAccessException,
+			ServletException, IOException {
+
+		commonDoGetPostSetup(req, resp);
+
+		when(req.getMethod()).thenReturn("POST");
+
+		HttpServlet s = clazz.newInstance();
+		s.service(req, resp);
+	}
+
+	private void commonDoGetPostSetup(HttpServletRequest req,
+			HttpServletResponse resp) {
+		when(req.getHeader("User-Agent"))
+				.thenReturn(
+						"Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.52 Safari/536.5");
 	}
 }
