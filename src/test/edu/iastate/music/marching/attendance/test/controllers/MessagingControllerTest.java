@@ -33,7 +33,7 @@ public class MessagingControllerTest extends AbstractDataStoreTest {
 		train.getMessagingController().addMessage(mtd, director, "D");
 		train.getMessagingController().addMessage(mts, student, "S");
 
-		List<MessageThread> results_student = getDataTrain().getMessagingController().get(
+		List<MessageThread> results_student = train.getMessagingController().get(
 				student);
 		// Check resulting list
 		assertEquals(1, results_student.size());

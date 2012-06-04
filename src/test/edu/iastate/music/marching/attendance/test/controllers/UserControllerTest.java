@@ -87,6 +87,8 @@ public class UserControllerTest extends AbstractDataStoreTest {
 		User s3 = createStudent(uc, "student3", 123, "First", "Last", 2, "major", User.Section.AltoSax);
 		User s4 = createStudent(uc, "stiner", 34234, "ars", "l", 3, "astart", User.Section.AltoSax);
 		
+		// Using a separate data store just because
+		// but to do so the users need to be associated with it
 		datastore.associate(s1);
 		datastore.associate(s2);
 		datastore.associate(s3);
