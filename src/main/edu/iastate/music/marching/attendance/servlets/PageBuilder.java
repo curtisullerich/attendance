@@ -10,10 +10,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import edu.iastate.music.marching.attendance.App;
 import edu.iastate.music.marching.attendance.beans.AuthBean;
 import edu.iastate.music.marching.attendance.beans.PageTemplateBean;
-import edu.iastate.music.marching.attendance.controllers.AppDataController;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.model.AppData;
 

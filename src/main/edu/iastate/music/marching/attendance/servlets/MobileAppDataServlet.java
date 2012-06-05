@@ -1,7 +1,6 @@
 package edu.iastate.music.marching.attendance.servlets;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -9,7 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
-import edu.iastate.music.marching.attendance.controllers.AuthController;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.MobileDataController;
 import edu.iastate.music.marching.attendance.model.User;
@@ -20,10 +18,6 @@ public class MobileAppDataServlet extends AbstractBaseServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = -3138258973922548889L;
-
-	private static final String SERVLET_PATH = "mobiledata";
-
-	private static final String DATA_PARAMETER = "data";
 
 	public enum Page {
 		index;
@@ -97,12 +91,16 @@ public class MobileAppDataServlet extends AbstractBaseServlet {
 	}
 
 	private class UploadResult {
+		@SuppressWarnings("unused")
 		public ResultErrorType error;
+		@SuppressWarnings("unused")
 		public String message;
 	}
 
 	private class ClassListResult {
+		@SuppressWarnings("unused")
 		public ResultErrorType error;
+		@SuppressWarnings("unused")
 		public String data;
 	}
 }

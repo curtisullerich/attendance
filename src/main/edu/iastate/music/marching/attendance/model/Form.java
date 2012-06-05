@@ -7,8 +7,6 @@ import com.google.code.twig.annotation.Activate;
 import com.google.code.twig.annotation.Id;
 import com.google.code.twig.annotation.Index;
 
-import edu.iastate.music.marching.attendance.model.Absence.Status;
-
 public class Form {
 
 	public static enum Status {

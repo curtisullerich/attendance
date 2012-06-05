@@ -1,15 +1,10 @@
 package edu.iastate.music.marching.attendance.controllers;
 
 import java.util.Calendar;
-import java.util.List;
 import java.util.TimeZone;
 
-import com.google.appengine.api.datastore.QueryResultIterator;
-
-import edu.iastate.music.marching.attendance.App;
 import edu.iastate.music.marching.attendance.model.AppData;
 import edu.iastate.music.marching.attendance.model.ModelFactory;
-import edu.iastate.music.marching.attendance.model.User;
 
 public class AppDataController extends AbstractController {
 

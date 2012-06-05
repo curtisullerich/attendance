@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -16,9 +17,64 @@ import org.junit.Test;
 
 import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.servlets.DirectorServlet;
+import edu.iastate.music.marching.attendance.servlets.MobileAppDataServlet;
 import edu.iastate.music.marching.attendance.test.AbstractTest;
 
 public class ServletAccess extends AbstractTest {
+
+	@Test
+	public void DirectorServlet_Student_ClassList_Test() throws ServletException, IOException,
+			InstantiationException, IllegalAccessException {
+		HttpServletRequest req = mock(HttpServletRequest.class);
+		HttpServletResponse resp = mock(HttpServletResponse.class);
+
+		setDirectorSession(req);
+
+		when(req.getPathInfo()).thenReturn("/classlist");
+		
+		ServletOutputStream sos = mock(ServletOutputStream.class);
+		
+		when(resp.getOutputStream()).thenReturn(sos);
+
+		doGet(MobileAppDataServlet.class, req, resp);
+		
+		// Verify data is written to the servlet output stream
+		verify(sos).print("{\"error\":\"success\",\"data\":\"\"}");
+	}
+
+	@Test
+	public void MobileDataServlet_TA_ClassList_Test() throws ServletException,
+			IOException, InstantiationException, IllegalAccessException {
+		HttpServletRequest req = mock(HttpServletRequest.class);
+		HttpServletResponse resp = mock(HttpServletResponse.class);
+
+		setDirectorSession(req);
+
+		when(req.getPathInfo()).thenReturn("/classlist");
+		
+		ServletOutputStream sos = mock(ServletOutputStream.class);
+		
+		when(resp.getOutputStream()).thenReturn(sos);
+
+		doGet(MobileAppDataServlet.class, req, resp);
+	}
+
+	@Test
+	public void MobileDataServlet_Director_ClassList_Test() throws ServletException,
+			IOException, InstantiationException, IllegalAccessException {
+		HttpServletRequest req = mock(HttpServletRequest.class);
+		HttpServletResponse resp = mock(HttpServletResponse.class);
+
+		setDirectorSession(req);
+
+		when(req.getPathInfo()).thenReturn("/classlist");
+		
+		ServletOutputStream sos = mock(ServletOutputStream.class);
+		
+		when(resp.getOutputStream()).thenReturn(sos);
+
+		doGet(MobileAppDataServlet.class, req, resp);
+	}
 
 	@Test
 	public void DirectorServlet_Student_Test() throws ServletException,
