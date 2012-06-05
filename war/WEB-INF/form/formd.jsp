@@ -18,8 +18,6 @@
 	
 		<h1>Time Worked | Form D</h1>
 		
-		<p>Please be specific and be thorough.</p>
-		
 		<c:if test="${not empty error_messages}">
 			<p class="notify-msg error">
 				<strong>Error:</strong>
@@ -65,6 +63,8 @@
 				<dt><label for="Details">Work Details</label></dt>
 				<dd>
 					<textarea rows="6" cols="50" name="Details" wrap="physical"><c:out value="${Details}" /></textarea>
+					<br/>
+					Please be specific and be thorough.
 				</dd>
 				
 			</dl>

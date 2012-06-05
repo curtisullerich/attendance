@@ -20,8 +20,6 @@
 		
 		<p>First year members are only allowed one conflict.</p>
 		
-		<p>Please be specific and be thorough.</p>
-		
 		<c:if test="${not empty error_messages}">
 			<p class="notify-msg error">
 				<strong>Error:</strong>
@@ -118,6 +116,8 @@
 				<dt><label for="Comments">Comments:</label></dt>
 				<dd>
 					<textarea rows="6" cols="50" name="Comments" wrap="physical"><c:out value="${Comments}" /></textarea>
+					<br/>
+					Please be specific and be thorough.
 				</dd>
 				
 			</dl>
