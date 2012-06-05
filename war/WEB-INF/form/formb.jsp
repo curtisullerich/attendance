@@ -20,6 +20,8 @@
 		
 		<p>First year members are only allowed one conflict.</p>
 		
+		<p>Please be specific and be thorough.</p>
+		
 		<c:if test="${not empty error_messages}">
 			<p class="notify-msg error">
 				<strong>Error:</strong>

@@ -22,6 +22,8 @@
 		ending January 30, ${year+1}, and it must be submitted by <fmt:formatDate value="${cutoff}" pattern="hh:mm a 'on' E, MMMMM d, yyyy" />.
 		Documentation must be submitted to the director for all absences (doctor's note, obituary, wedding program, etc.).</p>
 		
+		<p>Please be specific and be thorough.</p>
+		
 		<c:if test="${not empty error_messages}">
 			<p class="notify-msg error">
 				<strong>Error:</strong>

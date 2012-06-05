@@ -18,6 +18,8 @@
 	
 		<h1>Time Worked | Form D</h1>
 		
+		<p>Please be specific and be thorough.</p>
+		
 		<c:if test="${not empty error_messages}">
 			<p class="notify-msg error">
 				<strong>Error:</strong>
