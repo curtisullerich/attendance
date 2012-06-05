@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import edu.iastate.music.marching.attendance.controllers.AbsenceController;
 import edu.iastate.music.marching.attendance.controllers.AppDataController;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
+import edu.iastate.music.marching.attendance.controllers.EventController;
 import edu.iastate.music.marching.attendance.controllers.UserController;
 import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.AppData;
@@ -97,11 +98,11 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		Date date = new Date();
 
-		int numAbsences = train.getAbsencesController()
+		int numAbsences = train.getAbsenceController()
 				.get(Absence.Type.Absence).size();
-		int numTardy = train.getAbsencesController().getCount(
-				Absence.Type.Tardy);
-		int numLeaveEarly = train.getAbsencesController().getCount(
+		int numTardy = train.getAbsenceController()
+				.getCount(Absence.Type.Tardy);
+		int numLeaveEarly = train.getAbsenceController().getCount(
 				Absence.Type.EarlyCheckOut);
 		int numStudents = train.getUsersController()
 				.getCount(User.Type.Student);
@@ -129,8 +130,9 @@ public class DirectorServlet extends AbstractBaseServlet {
 		page.setAttribute("avgAbsentStudents", avgAbsent);
 		page.setAttribute("avgPresentStudentsWR", avgPresentWR);
 		page.setAttribute("avgLeaveEarly", avgLeaveEarly);
-//		page.setAttribute("avgGrade", train.getUsersController().averageGrade());
-		
+		// page.setAttribute("avgGrade",
+		// train.getUsersController().averageGrade());
+
 		page.setPageTitle("Statistics");
 
 		page.passOffToJsp(req, resp);
@@ -160,17 +162,43 @@ public class DirectorServlet extends AbstractBaseServlet {
 			case attendance:
 				showAttendance(req, resp, new LinkedList<String>());
 				break;
+			case unanchored:
+				postUnanchored(req, resp);
+				break;
 			default:
 				ErrorServlet.showError(req, resp, 404);
 			}
 
 	}
 
+	private void postUnanchored(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		DataTrain train = DataTrain.getAndStartTrain();
+		AbsenceController ac = train.getAbsenceController();
+		EventController ec = train.getEventsController();
+		int count = Integer.parseInt(req.getParameter("UnanchoredCount"));
+
+		for (int i = 0; i <= count; i++) {
+			String eventID = req.getParameter("EventID" + i);
+			String absenceID = req.getParameter("AbsenceID" + i);
+			if (eventID != null && !eventID.equals("")) {
+				if (absenceID != null && !absenceID.equals("")) {
+					// retrieve the event and link it up
+					Event e = ec.get(Long.parseLong(eventID));
+					Absence a = ac.get(Long.parseLong(absenceID));
+					a.setEvent(e);
+					ac.updateAbsence(a);
+				}
+			}
+		}
+		showUnanchored(req, resp);
+	}
+
 	private void postAbsenceInfo(HttpServletRequest req,
 			HttpServletResponse resp) throws ServletException, IOException {
 		DataTrain train = DataTrain.getAndStartTrain();
 
-		AbsenceController ac = train.getAbsencesController();
+		AbsenceController ac = train.getAbsenceController();
 
 		boolean validForm = true;
 
@@ -354,7 +382,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		List<User> students = train.getUsersController().get(User.Type.Student);
 		List<Event> events = train.getEventsController().readAll();
 		UserController uc = train.getUsersController();
-		AbsenceController ac = train.getAbsencesController();
+		AbsenceController ac = train.getAbsenceController();
 		Map<User, Map<Event, List<Absence>>> absenceMap = new HashMap<User, Map<Event, List<Absence>>>();
 		for (User s : students) {
 
@@ -375,7 +403,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		page.setAttribute("students", students);
 		page.setAttribute("absenceMap", absenceMap);
-		page.setAttribute("absences", train.getAbsencesController().getAll());
+		page.setAttribute("absences", train.getAbsenceController().getAll());
 		page.setAttribute("events", events);
 		page.setPageTitle("Attendance");
 		page.setAttribute("error_messages", errors);
@@ -400,7 +428,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		PageBuilder page = new PageBuilder(Page.unanchored, SERVLET_PATH);
 		List<Event> events = train.getEventsController().readAll();
 		page.setAttribute("events", events);
-		page.setAttribute("absences", train.getAbsencesController().getAll());
+		page.setAttribute("absences", train.getAbsenceController().getAll());
 		page.setPageTitle("Unanchored");
 
 		page.passOffToJsp(req, resp);
@@ -502,7 +530,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 			List<String> incomingErrors) throws ServletException, IOException {
 		DataTrain train = DataTrain.getAndStartTrain();
 
-		AbsenceController ac = train.getAbsencesController();
+		AbsenceController ac = train.getAbsenceController();
 
 		boolean validInput = true;
 

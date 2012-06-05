@@ -118,4 +118,10 @@ public class EventController extends AbstractController {
 		return cdate.getTime();
 	}
 
+	public Event get(long id) {
+		ObjectDatastore od = this.train.getDataStore();
+		Event e = od.load(Event.class, id);
+		return e;
+	}
+
 }

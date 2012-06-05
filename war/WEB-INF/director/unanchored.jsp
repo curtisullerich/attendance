@@ -14,7 +14,9 @@
 		<h1>${pagetemplate.title}</h1>
 		<br/>
 
-		<p>Seeing a lot of unanchored items from the same day? You're probably missing an event. <a href="/director/makeevent">Create one.</a></p>
+		<p>Seeing a lot of unanchored items from the same day? You're probably missing an event. <a href="./makeevent">Create one.</a></p>
+		
+		<form action="./unanchored" method="post" accept-charset="utf-8">
 		<table class="gray full-width">
 			<tr>
 				<thead>
@@ -25,16 +27,14 @@
 				<th>Messages</th>
 				</thead>
 			</tr>
-			<c:forEach items="${absences}" var="absence">
+			<c:forEach items="${absences}" var="absence" varStatus="i">
 					<c:if test="${empty absence.event}">
 						<tr>
 
 						<td>
-							<select name="EventID">
+							<select name=${"\"EventID"}${i.count}${"\""}>
 								<option value="">Choose one:</option>
-								<c:forEach items="${events}" varStatus="status" var="event">
-									<%//the purpose of the varStatus is to put an integer as the value to be sent
-									//to the server so we can just to a parseInt instead of an iteration to get the day%>
+								<c:forEach items="${events}" var="event">
 									<option value="${event.id}"> ${event.type} on <fmt:formatDate value="${event.date}" pattern="MMMMM d, yyyy" /></option>
 								</c:forEach>
 							</select>
@@ -50,7 +50,10 @@
 						</td>
 					</c:if>
 
-					<td>${absence.type}</td>
+					<td>
+						<input type="hidden" name=${"\"AbsenceID"}${i.count}${"\""} value="${absence.id}"/>
+						${absence.type}
+					</td>
 					<td>${absence.status}</td>
 					<c:choose>
 						<c:when test="${(absence.type.tardy) || (absence.type.earlyCheckOut)}">
@@ -104,6 +107,10 @@
 					</c:if>
 					</c:forEach>
 		</table>
+		<br/>
+		<input type="hidden" value="${fn:length(absences)}" name="UnanchoredCount"/>
+		<input type="submit" value="Anchor to the selected events" name="Submit"/>
+		</form>
 
 		<jsp:include page="/WEB-INF/template/footer.jsp" />
 	</body>
