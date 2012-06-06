@@ -237,7 +237,7 @@ public class FormController extends AbstractController {
 		return formACHelper(student, date, reason, Form.Type.C);
 	}
 
-	public Form createFormD(User student, String email, Date date, int hours,
+	public Form createFormD(User student, String email, Date date, int minutes,
 			String details) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
@@ -249,7 +249,7 @@ public class FormController extends AbstractController {
 			exp.getErrors().add("Invalid details");
 		}
 
-		if (hours <= 0) {
+		if (minutes <= 0) {
 			exp.getErrors().add("Time worked is not positive");
 		}
 
@@ -282,7 +282,7 @@ public class FormController extends AbstractController {
 		form.setDetails(details);
 		form.setStatus(Form.Status.Pending);
 		form.setEmailTo(email);
-		form.setHoursWorked(hours);
+		form.setMinutesWorked(minutes);
 
 		// Perform store
 		storeForm(form);

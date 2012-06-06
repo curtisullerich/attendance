@@ -383,7 +383,7 @@ public class FormsServlet extends AbstractBaseServlet {
 	private void handleFormD(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		String email = null;
-		int hours = 0;
+		int minutes = 0;
 		Date date = null;
 		String details = null;
 
@@ -403,7 +403,7 @@ public class FormsServlet extends AbstractBaseServlet {
 			details = req.getParameter("Details");
 
 			try {
-				hours = Integer.parseInt(req.getParameter("AmountWorked"));
+				minutes = Integer.parseInt(req.getParameter("AmountWorked"));
 			} catch (NumberFormatException e) {
 				validForm = false;
 				errors.add("Invalid amount of hours worked: " + e.getMessage());
@@ -427,7 +427,7 @@ public class FormsServlet extends AbstractBaseServlet {
 			Form form = null;
 			try {
 				form = train.getFormsController().createFormD(student, email,
-						date, hours, details);
+						date, minutes, details);
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add(e.getMessage());
@@ -455,7 +455,7 @@ public class FormsServlet extends AbstractBaseServlet {
 					.getTimeWorkedEmails());
 
 			page.setAttribute("Email", email);
-			page.setAttribute("AmountWorked", hours);
+			page.setAttribute("AmountWorked", minutes);
 			setStartDate(date, page, train.getAppDataController().get()
 					.getTimeZone());
 			page.setAttribute("Details", details);

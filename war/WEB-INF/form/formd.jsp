@@ -48,7 +48,7 @@
 				<label>If you worked on more than one day, just select one of them here and make note of it below.</label>
 				<dd>
 					<input size='5' type='number' name='AmountWorked' value='<c:out value="${AmountWorked}" />' style="width:64pt" />
-					<label for="AmountWorked">Hours</label>
+					<label for="AmountWorked">Minutes</label>
 				</dd>
 				
 				<dt><label for="StartMonth" class="required">Date</label></dt>

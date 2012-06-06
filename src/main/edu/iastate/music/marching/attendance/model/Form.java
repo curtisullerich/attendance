@@ -142,7 +142,7 @@ public class Form {
 
 	// String to be used by Form D
 	private String emailTo;
-	private int hoursWorked;
+	private int minutesWorked;
 
 	public long getId() {
 		return id;
@@ -209,12 +209,12 @@ public class Form {
 		this.emailTo = emailTo;
 	}
 
-	public int getHoursWorked() {
-		return hoursWorked;
+	public int getMinutesWorked() {
+		return minutesWorked;
 	}
 
-	public void setHoursWorked(int hoursWorked) {
-		this.hoursWorked = hoursWorked;
+	public void setMinutesWorked(int hoursWorked) {
+		this.minutesWorked = hoursWorked;
 	}
 
 	public void setEnd(Date endDate) {
