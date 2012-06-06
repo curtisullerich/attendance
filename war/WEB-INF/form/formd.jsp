@@ -67,7 +67,7 @@
 				
 			</dl>
 			
-			<input type="submit" value="Save Info" name="SaveInfo"/>
+			<input type="submit" value="Submit" name="Submit"/>
 		</form>		
 		
 		<jsp:include page="/WEB-INF/template/footer.jsp" />

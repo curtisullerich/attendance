@@ -53,7 +53,7 @@
 				<dd>${form.emailTo}</dd>
 				
 				<dt><label>Total amount of work</label></dt>
-				<dd>${form.hoursWorked}</dd>
+				<dd>${form.minutesWorked}</dd>
 				
 				<dt><label>Start Date</label></dt>	
 				<dd>

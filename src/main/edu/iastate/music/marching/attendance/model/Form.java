@@ -213,8 +213,8 @@ public class Form {
 		return minutesWorked;
 	}
 
-	public void setMinutesWorked(int hoursWorked) {
-		this.minutesWorked = hoursWorked;
+	public void setMinutesWorked(int minutesWorked) {
+		this.minutesWorked = minutesWorked;
 	}
 
 	public void setEnd(Date endDate) {

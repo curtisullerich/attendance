@@ -18,6 +18,7 @@ import edu.iastate.music.marching.attendance.controllers.FormController;
 import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.Form;
 import edu.iastate.music.marching.attendance.model.User;
+import edu.iastate.music.marching.attendance.model.Absence.Type;
 import edu.iastate.music.marching.attendance.util.Util;
 import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
@@ -348,11 +349,23 @@ public class FormsServlet extends AbstractBaseServlet {
 			}
 
 			try {
-				date = Util.parseDate(req.getParameter("Month"),
-						req.getParameter("Day"), req.getParameter("Year"),
-						req.getParameter("Hour"), req.getParameter("AMPM"),
-						req.getParameter("Minute"), train
-								.getAppDataController().get().getTimeZone());
+				if (type == Absence.Type.Absence) {
+					date = Util.parseDate(req.getParameter("Month"),
+							req.getParameter("Day"), req.getParameter("Year"),
+							"0", "AM", "0", train.getAppDataController().get()
+									.getTimeZone());
+
+				} else {
+					date = Util
+							.parseDate(req.getParameter("Month"),
+									req.getParameter("Day"),
+									req.getParameter("Year"),
+									req.getParameter("Hour"),
+									req.getParameter("AMPM"),
+									req.getParameter("Minute"), train
+											.getAppDataController().get()
+											.getTimeZone());
+				}
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add("Invalid Input: The input date is invalid.");
@@ -425,7 +438,7 @@ public class FormsServlet extends AbstractBaseServlet {
 				minutes = Integer.parseInt(req.getParameter("AmountWorked"));
 			} catch (NumberFormatException e) {
 				validForm = false;
-				errors.add("Invalid amount of hours worked: " + e.getMessage());
+				errors.add("Invalid amount of time worked: " + e.getMessage());
 			}
 
 			try {

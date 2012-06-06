@@ -45,7 +45,7 @@
 					/
 					<input id='Year' size='5' type='number' name='Year' min='${year}' max='${year+1}' step='1' placeholder='YYYY' value='<c:out value="${StartYear}" />' />
 				</dd>
-				<dt><label class="required">Time of leaving or arriving (if not missing the full rehearsal)</label></dt>
+				<dt><label >Time of leaving or arriving (if not missing the full rehearsal)</label></dt>
 				<dd>
 					<input size='5' type='number' name='Hour' min='01' max='12' placeholder='HH' value='<c:out value="${FromHour}" />' />
 					:
