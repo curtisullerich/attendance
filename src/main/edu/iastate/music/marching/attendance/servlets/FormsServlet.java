@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import edu.iastate.music.marching.attendance.App;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.FormController;
+import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.Form;
 import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.util.Util;
@@ -165,7 +166,8 @@ public class FormsServlet extends AbstractBaseServlet {
 
 		if (validForm) {
 			// Store our new form to the data store
-			User student = train.getAuthController().getCurrentUser(req.getSession());
+			User student = train.getAuthController().getCurrentUser(
+					req.getSession());
 
 			Form form = null;
 			try {
@@ -216,7 +218,7 @@ public class FormsServlet extends AbstractBaseServlet {
 		Date fromTime = null;
 		Date toTime = null;
 		int day = -1;
-//		String type = null;
+		// String type = null;
 		String comments = null;
 
 		DataTrain train = DataTrain.getAndStartTrain();
@@ -235,7 +237,7 @@ public class FormsServlet extends AbstractBaseServlet {
 			course = req.getParameter("Course");
 			section = req.getParameter("Section");
 			building = req.getParameter("Building");
-		//	type = req.getParameter("Type");
+			// type = req.getParameter("Type");
 			comments = req.getParameter("Comments");
 
 			// this is one-based! Starting on Sunday.
@@ -267,7 +269,8 @@ public class FormsServlet extends AbstractBaseServlet {
 
 		if (validForm) {
 			// Store our new form to the data store
-			User student = train.getAuthController().getCurrentUser(req.getSession());
+			User student = train.getAuthController().getCurrentUser(
+					req.getSession());
 
 			Form form = null;
 			try {
@@ -315,6 +318,7 @@ public class FormsServlet extends AbstractBaseServlet {
 			throws ServletException, IOException {
 		Date date = null;
 		String reason = null;
+		Absence.Type type = null;
 
 		DataTrain train = DataTrain.getAndStartTrain();
 
@@ -330,10 +334,24 @@ public class FormsServlet extends AbstractBaseServlet {
 			// Extract all basic parameters
 			reason = req.getParameter("Reason");
 
+			String stype = req.getParameter("Type");
+			if (stype != null && !stype.equals("")) {
+				if (stype.equals(Absence.Type.Absence.getValue())) {
+					type = Absence.Type.Absence;
+				} else if (stype.equals(Absence.Type.Tardy.getValue())) {
+					type = Absence.Type.Tardy;
+				} else if (stype.equals(Absence.Type.EarlyCheckOut.getValue())) {
+					type = Absence.Type.EarlyCheckOut;
+				}
+			} else {
+				errors.add("Invalid type.");
+			}
+
 			try {
-				date = Util.parseDate(req.getParameter("StartMonth"),
-						req.getParameter("StartDay"),
-						req.getParameter("StartYear"), "0", "AM", "0", train
+				date = Util.parseDate(req.getParameter("Month"),
+						req.getParameter("Day"), req.getParameter("Year"),
+						req.getParameter("Hour"), req.getParameter("AMPM"),
+						req.getParameter("Minute"), train
 								.getAppDataController().get().getTimeZone());
 			} catch (IllegalArgumentException e) {
 				validForm = false;
@@ -343,12 +361,13 @@ public class FormsServlet extends AbstractBaseServlet {
 
 		if (validForm) {
 			// Store our new form to the data store
-			User student = train.getAuthController().getCurrentUser(req.getSession());
+			User student = train.getAuthController().getCurrentUser(
+					req.getSession());
 
 			Form form = null;
 			try {
 				form = train.getFormsController().createFormC(student, date,
-						reason);
+						type, reason);
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add(e.getMessage());
@@ -371,7 +390,7 @@ public class FormsServlet extends AbstractBaseServlet {
 			page.setPageTitle("Form C");
 
 			page.setAttribute("error_messages", errors);
-
+			page.setAttribute("types", Absence.Type.values());
 			setStartDate(date, page, train.getAppDataController().get()
 					.getTimeZone());
 			page.setAttribute("Reason", reason);
@@ -422,7 +441,8 @@ public class FormsServlet extends AbstractBaseServlet {
 
 		if (validForm) {
 			// Store our new form to the data store
-			User student = train.getAuthController().getCurrentUser(req.getSession());
+			User student = train.getAuthController().getCurrentUser(
+					req.getSession());
 
 			Form form = null;
 			try {
@@ -515,7 +535,8 @@ public class FormsServlet extends AbstractBaseServlet {
 			}
 		}
 
-		User currentUser = train.getAuthController().getCurrentUser(req.getSession());
+		User currentUser = train.getAuthController().getCurrentUser(
+				req.getSession());
 
 		// HACK: @Daniel
 		currentUser = train.getUsersController().get(currentUser.getNetID());

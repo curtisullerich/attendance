@@ -60,22 +60,29 @@ public class ValidationUtil {
 	 * @param date
 	 * @return
 	 */
-	public static boolean dateIsAtLeastThreeWeekdaysFresh(Date date, TimeZone timezone) {
+	public static boolean dateIsAtLeastThreeWeekdaysFresh(Date date,
+			TimeZone timezone) {
 		int weekdays = 3;
+
 		Date to = date;
 		Date now = Calendar.getInstance(timezone).getTime();
 		return dateIsWeekdaysFrom(now, to, weekdays, timezone);
 	}
-	
+
 	/**
-	 * Compares dates to see if the second date is no more than the given
-	 * number of weekdays after the first
-	 * @param from Start date
-	 * @param to To date
-	 * @param days maximum difference in days
+	 * Compares dates to see if the second date is no more than the given number
+	 * of weekdays after the first
+	 * 
+	 * @param from
+	 *            Start date
+	 * @param to
+	 *            To date
+	 * @param days
+	 *            maximum difference in days
 	 * @return True if from.date - to.date <= days and from < to
 	 */
-	public static boolean dateIsWeekdaysFrom(Date from, Date to, int days, TimeZone timezone) {
+	public static boolean dateIsWeekdaysFrom(Date from, Date to, int days,
+			TimeZone timezone) {
 		Calendar today = Calendar.getInstance(timezone);
 		today.setTime(from);
 		today.set(Calendar.HOUR_OF_DAY, 0);
