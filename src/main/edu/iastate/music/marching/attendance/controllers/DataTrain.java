@@ -36,7 +36,7 @@ public class DataTrain {
 		return new AuthController(this);
 	}
 
-	public EventController getEventsController() {
+	public EventController getEventController() {
 		return new EventController(this);
 	}
 

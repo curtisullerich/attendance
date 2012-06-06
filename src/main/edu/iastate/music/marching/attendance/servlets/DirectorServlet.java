@@ -34,7 +34,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 	private static final long serialVersionUID = 6100206975846317440L;
 
 	public enum Page {
-		index, appinfo, attendance, export, forms, unanchored, users, user, stats, info, viewabsence;
+		index, appinfo, attendance, export, forms, unanchored, users, user, stats, info, viewabsence, makeevent;
 	}
 
 	private static final String SERVLET_PATH = "director";
@@ -70,7 +70,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 				showAppInfo(req, resp, new LinkedList<String>());
 				break;
 			case unanchored:
-				showUnanchored(req, resp);
+				showUnanchored(req, resp, new LinkedList<String>());
 				break;
 			case users:
 				showUsers(req, resp);
@@ -84,9 +84,27 @@ public class DirectorServlet extends AbstractBaseServlet {
 			case info:
 				showInfo(req, resp);
 				break;
+			case makeevent:
+				showMakeevent(req, resp);
+				break;
 			default:
 				ErrorServlet.showError(req, resp, 404);
 			}
+	}
+
+	private void showMakeevent(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		DataTrain train = DataTrain.getAndStartTrain();
+
+		PageBuilder page = new PageBuilder(Page.makeevent, SERVLET_PATH);
+		Date today = new Date();// TODO this probably isn't the proper way to do
+								// this
+		page.setAttribute("today", today);
+		page.setAttribute("arst", Calendar.getInstance().get(Calendar.YEAR));
+		page.setAttribute("types", Event.Type.values());
+		page.setPageTitle("Make Event");
+
+		page.passOffToJsp(req, resp);
 	}
 
 	private void showStats(HttpServletRequest req, HttpServletResponse resp)
@@ -106,7 +124,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 				Absence.Type.EarlyCheckOut);
 		int numStudents = train.getUsersController()
 				.getCount(User.Type.Student);
-		int numEvents = train.getEventsController().getCount();
+		int numEvents = train.getEventController().getCount();
 		String avgPresent = numEvents != 0 ? (numStudents - (numAbsences / numEvents))
 				+ ""
 				: "No Recorded Events";
@@ -165,17 +183,51 @@ public class DirectorServlet extends AbstractBaseServlet {
 			case unanchored:
 				postUnanchored(req, resp);
 				break;
+			case makeevent:
+				postEvent(req, resp);
+				break;
 			default:
 				ErrorServlet.showError(req, resp, 404);
 			}
 
 	}
 
+	private void postEvent(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		DataTrain train = DataTrain.getAndStartTrain();
+		EventController ec = train.getEventController();
+		List<String> errors = new LinkedList<String>();
+
+		try {
+			Date start = Util.parseDate(req.getParameter("Month"),
+					req.getParameter("Day"), req.getParameter("Year"),
+					req.getParameter("StartHour"),
+					req.getParameter("StartAMPM"),
+					req.getParameter("StartMinute"), train
+							.getAppDataController().get().getTimeZone());
+			Date end = Util.parseDate(req.getParameter("Month"),
+					req.getParameter("Day"), req.getParameter("Year"),
+					req.getParameter("EndHour"), req.getParameter("EndAMPM"),
+					req.getParameter("EndMinute"), train.getAppDataController()
+							.get().getTimeZone());
+			Event.Type type = req.getParameter("Type").equals(
+					Event.Type.Rehearsal.getDisplayName()) ? Event.Type.Rehearsal
+					: Event.Type.Performance;
+			ec.createOrUpdate(type, start, end);
+		} catch (ValidationExceptions e) {
+			errors.add("Invalid Input: The input date was invalid.");
+		} catch (IllegalArgumentException e) {
+			errors.add("Invalid Input: The input date is invalid.");
+		}
+		// TODO show success message?
+		showUnanchored(req, resp, errors);
+	}
+
 	private void postUnanchored(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		DataTrain train = DataTrain.getAndStartTrain();
 		AbsenceController ac = train.getAbsenceController();
-		EventController ec = train.getEventsController();
+		EventController ec = train.getEventController();
 		int count = Integer.parseInt(req.getParameter("UnanchoredCount"));
 
 		for (int i = 0; i <= count; i++) {
@@ -191,7 +243,8 @@ public class DirectorServlet extends AbstractBaseServlet {
 				}
 			}
 		}
-		showUnanchored(req, resp);
+		// TODO show success message and add error messages?
+		showUnanchored(req, resp, new LinkedList<String>());
 	}
 
 	private void postAbsenceInfo(HttpServletRequest req,
@@ -380,7 +433,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		PageBuilder page = new PageBuilder(Page.attendance, SERVLET_PATH);
 
 		List<User> students = train.getUsersController().get(User.Type.Student);
-		List<Event> events = train.getEventsController().readAll();
+		List<Event> events = train.getEventController().readAll();
 		UserController uc = train.getUsersController();
 		AbsenceController ac = train.getAbsenceController();
 		Map<User, Map<Event, List<Absence>>> absenceMap = new HashMap<User, Map<Event, List<Absence>>>();
@@ -420,16 +473,18 @@ public class DirectorServlet extends AbstractBaseServlet {
 		page.passOffToJsp(req, resp);
 	}
 
-	private void showUnanchored(HttpServletRequest req, HttpServletResponse resp)
+	private void showUnanchored(HttpServletRequest req,
+			HttpServletResponse resp, List<String> errors)
 			throws ServletException, IOException {
 
 		DataTrain train = DataTrain.getAndStartTrain();
 
 		PageBuilder page = new PageBuilder(Page.unanchored, SERVLET_PATH);
-		List<Event> events = train.getEventsController().readAll();
+		List<Event> events = train.getEventController().readAll();
 		page.setAttribute("events", events);
 		page.setAttribute("absences", train.getAbsenceController().getAll());
 		page.setPageTitle("Unanchored");
+		page.setAttribute("error_messages", errors);
 
 		page.passOffToJsp(req, resp);
 	}
