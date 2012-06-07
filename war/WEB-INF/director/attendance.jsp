@@ -46,10 +46,9 @@ td:hover .show-add-onhover {
 td:hover .show-add-onhover a {
 	color:#aaa;
 }
-.highlight {
-	background-color:#9ff;
-}
-
+table.gray tr:nth-child(odd) td.highlight, table.gray tr:nth-child(even) td.highlight {
+	background-color: e2e2c5;
+}<%// e0e0e0 is another option for the color%>
 </style>
 </head>
 <body>
@@ -84,7 +83,7 @@ td:hover .show-add-onhover a {
 	<br/><br/>
 
 	<div>
-	<table class="gray full-width">
+	<table class="gray">
 		<!-- start headers -->
 		<thead>
 			<tr>
