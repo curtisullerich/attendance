@@ -27,15 +27,27 @@
 }
 
 td .show-absence-onhover {
-	color:#aaa;
+	color:#333;
 	display:none;
 }
 td:hover .show-absence-onhover {
 	display:block;
 }
 td:hover .show-absence-onhover a {
+	color:#333;
+}
+td .show-add-onhover {
+	color:#aaa;
+	display:none;
+}
+td:hover .show-add-onhover {
+	display:block;
+}
+td:hover .show-add-onhover a {
 	color:#aaa;
 }
+
+
 </style>
 </head>
 <body>
@@ -80,7 +92,7 @@ td:hover .show-absence-onhover a {
 				<th>University ID</th>
 				<!-- all events. TODO will need to link this -->
 				<c:forEach items="${events}" var="event">
-					<th><c:out value="${event.type}" /><br />
+					<th title="<fmt:formatDate value="${event.date}" pattern="EEEE"/>"><c:out value="${event.type}" /><br />
 					<fmt:formatDate value="${event.date}" pattern="M/dd/yyyy" /></th>
 				</c:forEach>
 				<th>Grade</th>
@@ -144,11 +156,18 @@ td:hover .show-absence-onhover a {
 							</c:choose>
 						</c:forEach>
 
-						<c:set var="cellonclick">
-							window.location='/director/viewabsence';
-						</c:set>
-					<!-- TODO make them clickable and hoverable only if there was nothing for that day -->
-						<td class="${(empty absenceMap[student][event])?'gray-hover':''}" onClick="${cellonclick}">
+<%//						<c:set var="cellonclick">
+						//	window.location='/director/viewabsence';
+						//</c:set>
+					// TODO make them clickable and hoverable only if there was nothing for that day%>
+					<%//class="${(empty absenceMap[student][event])?'show-add-onhover':''}" onClick="${cellonclick}" %>
+						<td class="${(event.type.performance)?'gray':''}">
+							<c:if test="${empty absenceMap[student][event] }">
+								<span class="show-add-onhover">
+									<a href="/director/viewabsence?absenceid=new&eventid=${event.id}&studentid=${student.id}" >Add Absence</a>
+									<br/>
+								</span>
+							</c:if>		
 							${cellcontents}
 						</td>
 					</c:forEach>

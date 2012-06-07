@@ -591,15 +591,37 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		List<String> errors = new LinkedList<String>();
 
-		String urlParam = req.getParameter("absenceid");
+		String sabsenceid = req.getParameter("absenceid");
 
 		Absence checkedAbsence = null;
 
 		long absenceid;
+		PageBuilder page = new PageBuilder(Page.viewabsence, SERVLET_PATH);
 
-		if (urlParam != null) {
-			absenceid = Long.parseLong(urlParam);
-			checkedAbsence = ac.get(absenceid);
+		if (sabsenceid != null) {
+
+			if (sabsenceid.equals("new")) {
+
+				// get the event id and make a new absence. the director will
+				// have to submit at the next page for it to be stored
+				String seventid = req.getParameter("eventid");
+				String sstudentid= req.getParameter("studentid");
+				Event e = null;
+				User student = null;
+				if (seventid != null && !seventid.equals("") && sstudentid != null && !sstudentid.equals("")) {
+					e = train.getEventController().get(Long.parseLong(seventid));
+					student = train.getUsersController().get(sstudentid);
+				}
+				if (e != null && student != null) {
+					checkedAbsence = train.getAbsenceController().createOrUpdateAbsence(student, e.getStart(), e.getEnd());
+					page.setAttribute("new", true);
+				} else {
+					validInput = false;
+				}
+			} else {
+				absenceid = Long.parseLong(sabsenceid);
+				checkedAbsence = ac.get(absenceid);
+			}
 		} else {
 			validInput = false;
 			errors.add("No absence to look for");
@@ -612,7 +634,6 @@ public class DirectorServlet extends AbstractBaseServlet {
 		}
 
 		if (validInput) {
-			PageBuilder page = new PageBuilder(Page.viewabsence, SERVLET_PATH);
 			page.setPageTitle("View Absence");
 			page.setAttribute("absence", checkedAbsence);
 			page.setAttribute("types", Absence.Type.values());

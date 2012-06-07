@@ -1,9 +1,11 @@
 package edu.iastate.music.marching.attendance.model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.google.code.twig.annotation.Id;
 import com.google.code.twig.annotation.Index;
+import com.ibm.icu.util.Calendar;
 
 public class Event {
 
@@ -64,7 +66,7 @@ public class Event {
 	public Date getEnd() {
 		return end;
 	}
-
+	
 	public void setEnd(Date end) {
 		this.end = end;
 	}

@@ -33,7 +33,6 @@
 					<th>Last Name</th>
 					<th>First name</th>
 					<th>Section</th>
-					<th>University ID</th>
 					<th>Rank</th>
 					<!-- headers are now done -->
 				</tr>
@@ -44,7 +43,6 @@
 						<td>${student.firstName }</td>
 						<td>${student.lastName }</td>
 						<td>${student.section.displayName }</td>
-						<td>${student.universityID }</td>
 						<td><input type="text" name=${student.id } value=${student.rank }></input></td>
 					</tr>
 				</c:forEach>

@@ -76,7 +76,13 @@
 			
 			<input type="hidden" value="${absence.id}" name="absenceid"/>
 			<input type="submit" value="Submit Changes" name="SubmitChanges" />
-			<input type="button" value="Back" name="Back" onclick="window.location = '/director/attendance'"/>
+			<input type="button" value="Cancel" name="Cancel" onclick="window.location = '/director/attendance'"/>
+			<c:if test="${not new}">
+				<input type="button" value="Messages" name="Message" onclick="window.location = '/director/messages/viewthread?id=${absence.messageThread.id}'"/>
+			</c:if>	
+			<c:if test="${new }">
+				<input type="button" value="Messages" disabled name="Message" title="You can't view messages until you've actually created this absence." onclick="window.location = '/director/messages/viewthread?id=${absence.messageThread.id}'"/>
+			</c:if>
 		</form>
 	
 	
