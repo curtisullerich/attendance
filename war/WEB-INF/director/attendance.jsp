@@ -46,7 +46,9 @@ td:hover .show-add-onhover {
 td:hover .show-add-onhover a {
 	color:#aaa;
 }
-
+.highlight {
+	background-color:#9ff;
+}
 
 </style>
 </head>
@@ -161,7 +163,7 @@ td:hover .show-add-onhover a {
 						//</c:set>
 					// TODO make them clickable and hoverable only if there was nothing for that day%>
 					<%//class="${(empty absenceMap[student][event])?'show-add-onhover':''}" onClick="${cellonclick}" %>
-						<td class="${(event.type.performance)?'gray':''}">
+						<td class="${(event.type.performance)?'highlight':''}">
 							<c:if test="${empty absenceMap[student][event] }">
 								<span class="show-add-onhover">
 									<a href="/director/viewabsence?absenceid=new&eventid=${event.id}&studentid=${student.id}" >Add Absence</a>
