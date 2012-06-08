@@ -353,7 +353,7 @@ public class FormController extends AbstractController {
 			exp.getErrors().add("Time worked is not positive");
 		}
 
-		if (!ValidationUtil.isValidFormDEmail(email)) {
+		if (!ValidationUtil.isValidFormDEmail(email, this.dataTrain.getAppDataController().get())) {
 			exp.getErrors().add("Verification email is not valid");
 		}
 

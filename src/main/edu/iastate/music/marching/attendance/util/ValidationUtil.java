@@ -8,6 +8,8 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
+import edu.iastate.music.marching.attendance.controllers.UserController;
+import edu.iastate.music.marching.attendance.model.AppData;
 
 public class ValidationUtil {
 
@@ -19,23 +21,23 @@ public class ValidationUtil {
 	}
 
 	public static boolean validGoogleUser(
-			com.google.appengine.api.users.User google_user) {
+			com.google.appengine.api.users.User google_user, DataTrain train) {
 
 		if (google_user == null)
 			return false;
 
 		String[] email_parts = google_user.getEmail().split("@");
 
-		if (email_parts.length == 2 && validEmailDomain(email_parts[1])) {
+		if (email_parts.length == 2 && validEmailDomain(email_parts[1], train)) {
 			return true;
 		} else {
 			return false;
 		}
 	}
 
-	private static boolean validEmailDomain(String domain) {
-		// TODO Auto-generated method stub
+	private static boolean validEmailDomain(String domain, DataTrain train) {
 		// TODO This should be an application setting
+		AppData app = train.getAppDataController().get();
 		return "iastate.edu".equals(domain);
 	}
 
@@ -48,10 +50,8 @@ public class ValidationUtil {
 		return "POST".equals(req.getMethod());
 	}
 
-	public static boolean isValidFormDEmail(String email) {
-		// TODO Do this using a passed in data train please
-		return DataTrain.getAndStartTrain().getAppDataController().get()
-				.getTimeWorkedEmails().contains(email);
+	public static boolean isValidFormDEmail(String email, AppData appData) {
+		return appData.getTimeWorkedEmails().contains(email);
 	}
 
 	/**

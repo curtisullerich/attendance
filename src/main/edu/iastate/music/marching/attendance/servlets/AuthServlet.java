@@ -82,6 +82,8 @@ public class AuthServlet extends AbstractBaseServlet {
 
 	private void doLogin(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException, ServletException {
+		
+		DataTrain train = DataTrain.getAndStartTrain();
 
 		com.google.appengine.api.users.User google_user = AuthController
 				.getGoogleUser();
@@ -92,11 +94,10 @@ public class AuthServlet extends AbstractBaseServlet {
 					Page.login, SERVLET_PATH)));
 		} else {
 			// Some kind of google user logged in, check it is a valid one
-			if (ValidationUtil.validGoogleUser(google_user)) {
+			if (ValidationUtil.validGoogleUser(google_user, train)) {
 
 				// Check if there is a user in the system already for this
 				// google user
-				DataTrain train = DataTrain.getAndStartTrain();
 
 				User u = train.getUsersController().get(google_user);
 
