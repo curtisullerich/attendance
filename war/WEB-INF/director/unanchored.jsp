@@ -61,7 +61,7 @@
 
 					<td>
 						<input type="hidden" name=${"\"AbsenceID"}${i.count}${"\""} value="${absence.id}"/>
-						${absence.type}
+						<a href="/director/viewabsence?absenceid=${absence.id}">${absence.type}</a>
 					</td>
 					<td>${absence.status}</td>
 					<c:choose>
