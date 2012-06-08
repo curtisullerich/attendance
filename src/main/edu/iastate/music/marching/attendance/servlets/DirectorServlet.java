@@ -16,10 +16,12 @@ import javax.servlet.http.HttpServletResponse;
 import edu.iastate.music.marching.attendance.controllers.AbsenceController;
 import edu.iastate.music.marching.attendance.controllers.AppDataController;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
+import edu.iastate.music.marching.attendance.controllers.FormController;
 import edu.iastate.music.marching.attendance.controllers.UserController;
 import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.AppData;
 import edu.iastate.music.marching.attendance.model.Event;
+import edu.iastate.music.marching.attendance.model.Form;
 import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.util.Util;
 import edu.iastate.music.marching.attendance.util.ValidationExceptions;
@@ -33,7 +35,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 	private static final long serialVersionUID = 6100206975846317440L;
 
 	public enum Page {
-		index, appinfo, attendance, export, forms, unanchored, users, user, stats, info, viewabsence;
+		index, appinfo, attendance, export, forms, unanchored, users, user, stats, info, viewabsence, student;
 	}
 
 	private static final String SERVLET_PATH = "director";
@@ -83,6 +85,8 @@ public class DirectorServlet extends AbstractBaseServlet {
 			case info:
 				showInfo(req, resp);
 				break;
+			case student:
+				showStudent(req, resp);
 			default:
 				ErrorServlet.showError(req, resp, 404);
 			}
@@ -539,6 +543,52 @@ public class DirectorServlet extends AbstractBaseServlet {
 		} else {
 			showAttendance(req, resp, errors);
 		}
+	}
+	
+	private void showStudent(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+
+		DataTrain train = DataTrain.getAndStartTrain();
+
+		PageBuilder page = new PageBuilder(Page.student, SERVLET_PATH);
+		
+		String userEmail = req.getParameter("email");
+
+		User currentUser = train.getUsersController().get(userEmail);
+
+		page.setPageTitle("Attendance");
+
+		List<Absence> a = train.getAbsencesController().get(currentUser);
+
+		page.setAttribute("user", currentUser);
+		page.setAttribute("forms", train.getFormsController().get(currentUser));
+		page.setAttribute("absences", a);
+		
+		FormController fc = train.getFormsController();
+
+		// Pass through any success message in the url parameters sent from a
+		// new form being created or deleted
+		page.setAttribute("success_message",
+				req.getParameter("success_message"));
+
+		String removeid = req.getParameter("removeid");
+		if (removeid != null && removeid != "") {
+			long id = Long.parseLong(removeid);
+			if (fc.removeForm(id)) {
+				page.setAttribute("success_message",
+						"Form successfully deleted");
+			} else {
+				page.setAttribute("error_messages",
+						"Form not deleted. If the form was already approved then you can't delete it.");
+				// TODO you might be able to. Check with staub
+			}
+		}
+
+		// Handle students and director differently
+		List<Form> forms = fc.getAll();
+		page.setAttribute("forms", forms);
+
+		page.passOffToJsp(req, resp);
 	}
 
 }
