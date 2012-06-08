@@ -31,9 +31,9 @@
 							<tr id="row_form_<c:out value="${form.id}" />">
 						<tr>
 							<%//Note that I did this because the last two columns are buttons. %>
-							<td onclick="window.location='form/viewform?id=<c:out value="${form.id}"/>'">${form.type}</td>
-							<td onclick="window.location='form/viewform?id=<c:out value="${form.id}"/>'">${form.status}</td>
-							<td onclick="window.location='form/viewform?id=<c:out value="${form.id}"/>'">
+							<td onclick="window.location='forms/view?id=<c:out value="${form.id}"/>'">${form.type}</td>
+							<td onclick="window.location='forms/view?id=<c:out value="${form.id}"/>'">${form.status}</td>
+							<td onclick="window.location='forms/view?id=<c:out value="${form.id}"/>'">
 							<p style="overflow:hidden;">								
 								<c:choose>
 									<c:when test="${form.type.a || form.type.c}">							
