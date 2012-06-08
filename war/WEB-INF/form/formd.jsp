@@ -63,6 +63,8 @@
 				<dt><label for="Details">Work Details</label></dt>
 				<dd>
 					<textarea rows="6" cols="50" name="Details" wrap="physical"><c:out value="${Details}" /></textarea>
+					<br/>
+					Please be specific and be thorough.
 				</dd>
 				
 			</dl>

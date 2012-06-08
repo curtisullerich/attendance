@@ -21,6 +21,7 @@
 		<p>This form must be turned in no later than three weekdays following the rehearsal absence or tardy.
 		Documentation is required for all absences (doctor's note, obituary, wedding program, etc.).</p>
 		<!-- TODO:enforce the three-day submission policy. -->
+		
 		<br/>
 		
 		<c:if test="${not empty error_messages}">
@@ -70,6 +71,8 @@
 				<dt><label>Reasons</label></dt>
 				<dd>
 					<textarea rows="6" cols="50" id="reason" name="Reason" wrap="physical"><c:out value="${Reason}" /></textarea>
+					<br/>
+					Please be specific and be thorough.
 				</dd>
 				
 			</dl>
