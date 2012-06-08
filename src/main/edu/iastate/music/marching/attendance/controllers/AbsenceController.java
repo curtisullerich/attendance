@@ -33,7 +33,7 @@ public class AbsenceController extends AbstractController {
 		Absence absence = ModelFactory.newAbsence(Absence.Type.Tardy, student);
 		absence.setDatetime(time);
 		// Associate with event
-		List<Event> events = train.getEventsController().get(time);
+		List<Event> events = train.getEventController().get(time);
 
 		if (events.size() == 1)
 			absence.setEvent(events.get(0));
@@ -55,7 +55,7 @@ public class AbsenceController extends AbstractController {
 		absence.setEnd(end);
 
 		// Associate with event
-		List<Event> events = train.getEventsController().get(start, end);
+		List<Event> events = train.getEventController().get(start, end);
 		if (events.size() == 1)
 			absence.setEvent(events.get(0));
 		// else the absence is orphaned
@@ -77,7 +77,7 @@ public class AbsenceController extends AbstractController {
 		absence.setStatus(Absence.Status.Pending);
 
 		// Associate with event
-		List<Event> events = train.getEventsController().get(time);
+		List<Event> events = train.getEventController().get(time);
 
 		if (events.size() == 1)
 			absence.setEvent(events.get(0));

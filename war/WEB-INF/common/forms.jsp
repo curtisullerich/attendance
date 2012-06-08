@@ -3,7 +3,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setTimeZone value="${pagetemplate.timeZoneID}" />
-	<c:choose>
+
+		<c:choose>
 			<c:when test="${fn:length(forms) > 0}">
 				<div>
 					<p>Number of Forms Submitted: ${fn:length(forms)}</p>
@@ -42,7 +43,7 @@
 										${form.dept} ${form.course } <c:if test="${not empty form.details }"> - ${form.details }</c:if>
 									</c:when>
 									<c:when test ="${form.type.d }">
-										<fmt:formatDate value="${form.start}" pattern="M/d/yyyy" /> - ${form.hoursWorked } hours worked for ${form.emailTo } <c:if test="${not empty form.details }"> - ${form.details } </c:if>
+										<fmt:formatDate value="${form.start}" pattern="M/d/yyyy" /> - ${form.minutesWorked } hours worked for ${form.emailTo } <c:if test="${not empty form.details }"> - ${form.details } </c:if>
 									</c:when>
 								</c:choose>
 								</p>
@@ -53,15 +54,15 @@
 										<c:when test="${auth.user.type.student || auth.user.type.ta}">
 											<c:choose>
 												<c:when test="${form.status.value eq 'Pending'}">
-													<button onClick="removeForm('student/forms?removeid=${form.id}');">Delete</button>
+													<button onClick="remove('student/forms?removeid=${form.id}');">Delete</button>
 												</c:when>
 												<c:when test="${form.status ne 'Pending'}">
-													<button onClick="noRemoveForm();">Delete</button>
+													<button onClick="noRemove();">Delete</button>
 												</c:when>
 											</c:choose>
 										</c:when>
 										<c:when test="${auth.user.type.director}">
-											<button onClick="removeForm('director/forms?removeid=${form.id}');">Delete</button>
+											<button onClick="remove('director/forms?removeid=${form.id}');">Delete</button>
 										</c:when>
 									</c:choose>
 								</td>

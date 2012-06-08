@@ -188,7 +188,7 @@ public class UserController extends AbstractController {
 	 * Note that this DOES NOT currently refresh the student in the database.
 	 */
 	public void updateUserGrade(User student) {
-		AbsenceController ac = this.datatrain.getAbsencesController();
+		AbsenceController ac = this.datatrain.getAbsenceController();
 		int count = 0;
 		List<Absence> absences = ac.get(student);
 		for (Absence a : absences) {

@@ -104,8 +104,8 @@ public class MobileDataController {
 
 		//try {
 
-			EventController ec = this.train.getEventsController();
-			AbsenceController ac = this.train.getAbsencesController();
+			EventController ec = this.train.getEventController();
+			AbsenceController ac = this.train.getAbsenceController();
 			UserController uc = this.train.getUsersController();
 
 			// List<Event> localEvents = new LinkedList<Event>();

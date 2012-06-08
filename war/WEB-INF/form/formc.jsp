@@ -38,16 +38,37 @@
 		
 			<dl class="block-layout">
 
-				<dt><label>Date:</label></dt>
+				<dt ><label class="required">Date</label></dt>
 				<dd>
-					<input autofocus id='startMonth' size='5' type='number' name='StartMonth' min='01' max='12' placeholder='MM' value='<c:out value="${empty StartMonth ? '' : StartMonth+1}" />' />
+					<input autofocus id='Month' size='5' type='number' name='Month' min='01' max='12' placeholder='MM' value='<c:out value="${empty StartMonth ? '' : StartMonth+1}" />' />
 					/
-					<input id='startDay' size='5' type='number' name='StartDay' min='01' max='31' step='1' placeholder='DD' value='<c:out value="${StartDay}" />' />
+					<input id='Day' size='5' type='number' name='Day' min='01' max='31' step='1' placeholder='DD' value='<c:out value="${StartDay}" />' />
 					/
-					<input id='startYear' size='5' type='number' name='StartYear' min='${year}' max='${year+1}' step='1' placeholder='YYYY' value='<c:out value="${StartYear}" />' />
+					<input id='Year' size='5' type='number' name='Year' min='${year}' max='${year+1}' step='1' placeholder='YYYY' value='<c:out value="${StartYear}" />' />
 				</dd>
-				
-				<dt><label>Reasons:</label></dt>
+				<dt><label >Time of leaving or arriving (if not missing the full rehearsal)</label></dt>
+				<dd>
+					<input size='5' type='number' name='Hour' min='01' max='12' placeholder='HH' value='<c:out value="${FromHour}" />' />
+					:
+					<input size='5' type='number' name='Minute' min='00' max='59' step='1' placeholder='MM' value='<c:out value="${FromMinute}" />' />
+					
+					<select name="AMPM">
+						<option>AM</option>
+						<option selected>PM</option>
+					</select>
+				</dd>
+				<dt><label for="Type" class="required">Type</label></dt>
+				<dd>
+					<select name="Type">
+						<c:forEach items="${types}" var="s" varStatus="loop">
+							<option value="<c:out value="${s.value}" />"
+								${absence.type==s.value ? 'selected="true"' : ''}
+								><c:out value="${s.displayName}" /></option>
+						</c:forEach>
+					</select>
+				</dd>
+								
+				<dt><label>Reasons</label></dt>
 				<dd>
 					<textarea rows="6" cols="50" id="reason" name="Reason" wrap="physical"><c:out value="${Reason}" /></textarea>
 					<br/>

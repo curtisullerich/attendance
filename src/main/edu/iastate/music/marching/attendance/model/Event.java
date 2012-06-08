@@ -1,9 +1,11 @@
 package edu.iastate.music.marching.attendance.model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import com.google.code.twig.annotation.Id;
 import com.google.code.twig.annotation.Index;
+import com.ibm.icu.util.Calendar;
 
 public class Event {
 
@@ -18,16 +20,16 @@ public class Event {
 	Event() {
 
 	}
-	
+
 	@Id
 	private long id;
-	
+
 	@Index
 	private Date start;
-	
+
 	@Index
 	private Date end;
-	
+
 	@Index
 	private Date date;
 
@@ -38,13 +40,13 @@ public class Event {
 	 * 
 	 */
 	// HACK: DANIEL
-	//@Activate(0)
-	//private List<Absence> absences;
-	
+	// @Activate(0)
+	// private List<Absence> absences;
+
 	public long getId() {
 		return this.id;
 	}
-	
+
 	public Date getDate() {
 		return start;
 	}
@@ -64,13 +66,39 @@ public class Event {
 	public Date getEnd() {
 		return end;
 	}
-
+	
 	public void setEnd(Date end) {
 		this.end = end;
 	}
 
 	public enum Type {
 		Rehearsal, Performance;
+		private String mDisplayString;
+
+		private Type() {
+			mDisplayString = this.toString();
+		}
+
+		private Type(String display_string) {
+			mDisplayString = display_string;
+		}
+
+		public boolean isRehearsal() {
+			return Rehearsal.equals(this);
+		}
+
+		public boolean isPerformance() {
+			return Performance.equals(this);
+		}
+
+		public String getDisplayName() {
+			return mDisplayString;
+		}
+
+		public String getValue() {
+			return name();
+		}
+
 	}
 
 	public void setType(Event.Type type) {

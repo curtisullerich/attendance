@@ -17,6 +17,7 @@ import edu.iastate.music.marching.attendance.controllers.AbsenceController;
 import edu.iastate.music.marching.attendance.controllers.AppDataController;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.FormController;
+import edu.iastate.music.marching.attendance.controllers.EventController;
 import edu.iastate.music.marching.attendance.controllers.UserController;
 import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.AppData;
@@ -35,7 +36,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 	private static final long serialVersionUID = 6100206975846317440L;
 
 	public enum Page {
-		index, appinfo, attendance, export, forms, unanchored, users, user, stats, info, viewabsence, student;
+		index, appinfo, attendance, export, forms, unanchored, users, user, stats, info, viewabsence, student, makeevent;
 	}
 
 	private static final String SERVLET_PATH = "director";
@@ -71,7 +72,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 				showAppInfo(req, resp, new LinkedList<String>());
 				break;
 			case unanchored:
-				showUnanchored(req, resp);
+				showUnanchored(req, resp, new LinkedList<String>());
 				break;
 			case users:
 				showUsers(req, resp);
@@ -87,9 +88,27 @@ public class DirectorServlet extends AbstractBaseServlet {
 				break;
 			case student:
 				showStudent(req, resp);
+			case makeevent:
+				showMakeevent(req, resp);
+				break;
 			default:
 				ErrorServlet.showError(req, resp, 404);
 			}
+	}
+
+	private void showMakeevent(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		DataTrain train = DataTrain.getAndStartTrain();
+
+		PageBuilder page = new PageBuilder(Page.makeevent, SERVLET_PATH);
+		Date today = new Date();// TODO this probably isn't the proper way to do
+								// this
+		page.setAttribute("today", today);
+		page.setAttribute("arst", Calendar.getInstance().get(Calendar.YEAR));
+		page.setAttribute("types", Event.Type.values());
+		page.setPageTitle("Make Event");
+
+		page.passOffToJsp(req, resp);
 	}
 
 	private void showStats(HttpServletRequest req, HttpServletResponse resp)
@@ -101,15 +120,15 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		Date date = new Date();
 
-		int numAbsences = train.getAbsencesController()
+		int numAbsences = train.getAbsenceController()
 				.get(Absence.Type.Absence).size();
-		int numTardy = train.getAbsencesController().getCount(
-				Absence.Type.Tardy);
-		int numLeaveEarly = train.getAbsencesController().getCount(
+		int numTardy = train.getAbsenceController()
+				.getCount(Absence.Type.Tardy);
+		int numLeaveEarly = train.getAbsenceController().getCount(
 				Absence.Type.EarlyCheckOut);
 		int numStudents = train.getUsersController()
 				.getCount(User.Type.Student);
-		int numEvents = train.getEventsController().getCount();
+		int numEvents = train.getEventController().getCount();
 		String avgPresent = numEvents != 0 ? (numStudents - (numAbsences / numEvents))
 				+ ""
 				: "No Recorded Events";
@@ -133,8 +152,9 @@ public class DirectorServlet extends AbstractBaseServlet {
 		page.setAttribute("avgAbsentStudents", avgAbsent);
 		page.setAttribute("avgPresentStudentsWR", avgPresentWR);
 		page.setAttribute("avgLeaveEarly", avgLeaveEarly);
-//		page.setAttribute("avgGrade", train.getUsersController().averageGrade());
-		
+		// page.setAttribute("avgGrade",
+		// train.getUsersController().averageGrade());
+
 		page.setPageTitle("Statistics");
 
 		page.passOffToJsp(req, resp);
@@ -164,17 +184,78 @@ public class DirectorServlet extends AbstractBaseServlet {
 			case attendance:
 				showAttendance(req, resp, new LinkedList<String>());
 				break;
+			case unanchored:
+				postUnanchored(req, resp);
+				break;
+			case makeevent:
+				postEvent(req, resp);
+				break;
 			default:
 				ErrorServlet.showError(req, resp, 404);
 			}
 
 	}
 
+	private void postEvent(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		DataTrain train = DataTrain.getAndStartTrain();
+		EventController ec = train.getEventController();
+		List<String> errors = new LinkedList<String>();
+
+		try {
+			Date start = Util.parseDate(req.getParameter("Month"),
+					req.getParameter("Day"), req.getParameter("Year"),
+					req.getParameter("StartHour"),
+					req.getParameter("StartAMPM"),
+					req.getParameter("StartMinute"), train
+							.getAppDataController().get().getTimeZone());
+			Date end = Util.parseDate(req.getParameter("Month"),
+					req.getParameter("Day"), req.getParameter("Year"),
+					req.getParameter("EndHour"), req.getParameter("EndAMPM"),
+					req.getParameter("EndMinute"), train.getAppDataController()
+							.get().getTimeZone());
+			Event.Type type = req.getParameter("Type").equals(
+					Event.Type.Rehearsal.getDisplayName()) ? Event.Type.Rehearsal
+					: Event.Type.Performance;
+			ec.createOrUpdate(type, start, end);
+		} catch (ValidationExceptions e) {
+			errors.add("Invalid Input: The input date was invalid.");
+		} catch (IllegalArgumentException e) {
+			errors.add("Invalid Input: The input date is invalid.");
+		}
+		// TODO show success message?
+		showUnanchored(req, resp, errors);
+	}
+
+	private void postUnanchored(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		DataTrain train = DataTrain.getAndStartTrain();
+		AbsenceController ac = train.getAbsenceController();
+		EventController ec = train.getEventController();
+		int count = Integer.parseInt(req.getParameter("UnanchoredCount"));
+
+		for (int i = 0; i <= count; i++) {
+			String eventID = req.getParameter("EventID" + i);
+			String absenceID = req.getParameter("AbsenceID" + i);
+			if (eventID != null && !eventID.equals("")) {
+				if (absenceID != null && !absenceID.equals("")) {
+					// retrieve the event and link it up
+					Event e = ec.get(Long.parseLong(eventID));
+					Absence a = ac.get(Long.parseLong(absenceID));
+					a.setEvent(e);
+					ac.updateAbsence(a);
+				}
+			}
+		}
+		// TODO show success message and add error messages?
+		showUnanchored(req, resp, new LinkedList<String>());
+	}
+
 	private void postAbsenceInfo(HttpServletRequest req,
 			HttpServletResponse resp) throws ServletException, IOException {
 		DataTrain train = DataTrain.getAndStartTrain();
 
-		AbsenceController ac = train.getAbsencesController();
+		AbsenceController ac = train.getAbsenceController();
 
 		boolean validForm = true;
 
@@ -356,9 +437,9 @@ public class DirectorServlet extends AbstractBaseServlet {
 		PageBuilder page = new PageBuilder(Page.attendance, SERVLET_PATH);
 
 		List<User> students = train.getUsersController().get(User.Type.Student);
-		List<Event> events = train.getEventsController().readAll();
+		List<Event> events = train.getEventController().readAll();
 		UserController uc = train.getUsersController();
-		AbsenceController ac = train.getAbsencesController();
+		AbsenceController ac = train.getAbsenceController();
 		Map<User, Map<Event, List<Absence>>> absenceMap = new HashMap<User, Map<Event, List<Absence>>>();
 		for (User s : students) {
 
@@ -379,7 +460,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		page.setAttribute("students", students);
 		page.setAttribute("absenceMap", absenceMap);
-		page.setAttribute("absences", train.getAbsencesController().getAll());
+		page.setAttribute("absences", train.getAbsenceController().getAll());
 		page.setAttribute("events", events);
 		page.setPageTitle("Attendance");
 		page.setAttribute("error_messages", errors);
@@ -396,16 +477,18 @@ public class DirectorServlet extends AbstractBaseServlet {
 		page.passOffToJsp(req, resp);
 	}
 
-	private void showUnanchored(HttpServletRequest req, HttpServletResponse resp)
+	private void showUnanchored(HttpServletRequest req,
+			HttpServletResponse resp, List<String> errors)
 			throws ServletException, IOException {
 
 		DataTrain train = DataTrain.getAndStartTrain();
 
 		PageBuilder page = new PageBuilder(Page.unanchored, SERVLET_PATH);
-		List<Event> events = train.getEventsController().readAll();
+		List<Event> events = train.getEventController().readAll();
 		page.setAttribute("events", events);
-		page.setAttribute("absences", train.getAbsencesController().getAll());
+		page.setAttribute("absences", train.getAbsenceController().getAll());
 		page.setPageTitle("Unanchored");
+		page.setAttribute("error_messages", errors);
 
 		page.passOffToJsp(req, resp);
 	}
@@ -506,21 +589,43 @@ public class DirectorServlet extends AbstractBaseServlet {
 			List<String> incomingErrors) throws ServletException, IOException {
 		DataTrain train = DataTrain.getAndStartTrain();
 
-		AbsenceController ac = train.getAbsencesController();
+		AbsenceController ac = train.getAbsenceController();
 
 		boolean validInput = true;
 
 		List<String> errors = new LinkedList<String>();
 
-		String urlParam = req.getParameter("absenceid");
+		String sabsenceid = req.getParameter("absenceid");
 
 		Absence checkedAbsence = null;
 
 		long absenceid;
+		PageBuilder page = new PageBuilder(Page.viewabsence, SERVLET_PATH);
 
-		if (urlParam != null) {
-			absenceid = Long.parseLong(urlParam);
-			checkedAbsence = ac.get(absenceid);
+		if (sabsenceid != null) {
+
+			if (sabsenceid.equals("new")) {
+
+				// get the event id and make a new absence. the director will
+				// have to submit at the next page for it to be stored
+				String seventid = req.getParameter("eventid");
+				String sstudentid= req.getParameter("studentid");
+				Event e = null;
+				User student = null;
+				if (seventid != null && !seventid.equals("") && sstudentid != null && !sstudentid.equals("")) {
+					e = train.getEventController().get(Long.parseLong(seventid));
+					student = train.getUsersController().get(sstudentid);
+				}
+				if (e != null && student != null) {
+					checkedAbsence = train.getAbsenceController().createOrUpdateAbsence(student, e.getStart(), e.getEnd());
+					page.setAttribute("new", true);
+				} else {
+					validInput = false;
+				}
+			} else {
+				absenceid = Long.parseLong(sabsenceid);
+				checkedAbsence = ac.get(absenceid);
+			}
 		} else {
 			validInput = false;
 			errors.add("No absence to look for");
@@ -533,7 +638,6 @@ public class DirectorServlet extends AbstractBaseServlet {
 		}
 
 		if (validInput) {
-			PageBuilder page = new PageBuilder(Page.viewabsence, SERVLET_PATH);
 			page.setPageTitle("View Absence");
 			page.setAttribute("absence", checkedAbsence);
 			page.setAttribute("types", Absence.Type.values());
