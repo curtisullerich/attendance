@@ -89,7 +89,7 @@ public class FormsServlet extends AbstractBaseServlet {
 		DataTrain train = DataTrain.getAndStartTrain();
 		Form form = null;
 		try {
-			long id = Long.parseLong(req.getParameter("formid"));
+			long id = Long.parseLong(req.getParameter("id"));
 			form = train.getFormsController().get(id);
 			PageBuilder page = new PageBuilder(Page.view, SERVLET_PATH);
 			page.setPageTitle("Form " + form.getType());
