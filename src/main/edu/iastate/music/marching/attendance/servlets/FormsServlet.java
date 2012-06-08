@@ -89,7 +89,7 @@ public class FormsServlet extends AbstractBaseServlet {
 		DataTrain train = DataTrain.getAndStartTrain();
 		Form form = null;
 		try {
-			long id = Long.parseLong(req.getParameter("formid"));
+			long id = Long.parseLong(req.getParameter("id"));
 			form = train.getFormsController().get(id);
 			PageBuilder page = new PageBuilder(Page.view, SERVLET_PATH);
 			page.setPageTitle("Form " + form.getType());
@@ -97,7 +97,8 @@ public class FormsServlet extends AbstractBaseServlet {
 			page.setAttribute("day", form.getDayAsString());
 			page.passOffToJsp(req, resp);
 		} catch (NumberFormatException nfe) {
-			// TODO show an error?
+			// TODO Log this
+			ErrorServlet.showError(req, resp, 500);
 		}
 	}
 
