@@ -81,7 +81,7 @@ public class UserController extends AbstractController {
 			throw new IllegalArgumentException("Invalid user");
 
 		// Check google user
-		if (!ValidationUtil.validGoogleUser(user.getGoogleUser()))
+		if (!ValidationUtil.validGoogleUser(user.getGoogleUser(), this.datatrain))
 			throw new IllegalArgumentException("Invalid google user");
 
 		// Check name
