@@ -688,26 +688,26 @@ public class DirectorServlet extends AbstractBaseServlet {
 			showAttendance(req, resp, errors);
 		}
 	}
-	
+
 	private void showStudent(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
 		DataTrain train = DataTrain.getAndStartTrain();
 
 		PageBuilder page = new PageBuilder(Page.student, SERVLET_PATH);
-		
+
 		String userEmail = req.getParameter("email");
 
 		User currentUser = train.getUsersController().get(userEmail);
 
 		page.setPageTitle("Attendance");
 
-		List<Absence> a = train.getAbsencesController().get(currentUser);
+		List<Absence> a = train.getAbsenceController().get(currentUser);
 
 		page.setAttribute("user", currentUser);
 		page.setAttribute("forms", train.getFormsController().get(currentUser));
 		page.setAttribute("absences", a);
-		
+
 		FormController fc = train.getFormsController();
 
 		// Pass through any success message in the url parameters sent from a
