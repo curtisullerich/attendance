@@ -17,7 +17,7 @@
 		</c:when>
 		<c:otherwise>
 			<c:set var="threads" value="${unresolved}" scope="request"/>
-			<jsp:include page="/WEB-INF/messaging/include/threadtable.jsp" />
+			<jsp:include page="/WEB-INF/common/threadtable.jsp" />
 		</c:otherwise>
 		</c:choose>
 		
@@ -28,7 +28,7 @@
 		</c:when>
 		<c:otherwise>
 			<c:set var="threads" value="${resolved}" scope="request"/>
-			<jsp:include page="/WEB-INF/messaging/include/threadtable.jsp" />
+			<jsp:include page="/WEB-INF/common/threadtable.jsp" />
 		</c:otherwise>
 		</c:choose>
 		
