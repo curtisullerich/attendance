@@ -3,6 +3,8 @@ package edu.iastate.music.marching.attendance.servlets;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -438,6 +440,40 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		List<User> students = train.getUsersController().get(User.Type.Student);
 		List<Event> events = train.getEventController().readAll();
+
+		Comparator<User> studentComparator = new Comparator<User>() {
+			public int compare(User a, User b) {
+				if (a == null) {
+					return -1;
+				} else if (b == null) {
+					return 1;
+				} else {
+					return a.getLastName().compareToIgnoreCase(b.getLastName());
+				}
+			}
+		};
+
+		Comparator<Event> eventComparator = new Comparator<Event>() {
+			public int compare(Event a, Event b) {
+				if (a == null) {
+					return -1;
+				} else if (b == null) {
+					return 1;
+				} else {
+					if (a.getStart().before(b.getStart())) {
+						return -1;
+					} else if (b.getStart().before(a.getStart())) {
+						return 1;
+					} else {
+						return 0;
+					}
+				}
+			}
+		};
+		// TODO is there better way to do this? Note that otherwise, events
+		// print in the order of creation, NOT date order.
+		Collections.sort(students, studentComparator);
+		Collections.sort(events, eventComparator);
 		UserController uc = train.getUsersController();
 		AbsenceController ac = train.getAbsenceController();
 		Map<User, Map<Event, List<Absence>>> absenceMap = new HashMap<User, Map<Event, List<Absence>>>();
@@ -609,15 +645,19 @@ public class DirectorServlet extends AbstractBaseServlet {
 				// get the event id and make a new absence. the director will
 				// have to submit at the next page for it to be stored
 				String seventid = req.getParameter("eventid");
-				String sstudentid= req.getParameter("studentid");
+				String sstudentid = req.getParameter("studentid");
 				Event e = null;
 				User student = null;
-				if (seventid != null && !seventid.equals("") && sstudentid != null && !sstudentid.equals("")) {
-					e = train.getEventController().get(Long.parseLong(seventid));
+				if (seventid != null && !seventid.equals("")
+						&& sstudentid != null && !sstudentid.equals("")) {
+					e = train.getEventController()
+							.get(Long.parseLong(seventid));
 					student = train.getUsersController().get(sstudentid);
 				}
 				if (e != null && student != null) {
-					checkedAbsence = train.getAbsenceController().createOrUpdateAbsence(student, e.getStart(), e.getEnd());
+					checkedAbsence = train.getAbsenceController()
+							.createOrUpdateAbsence(student, e.getStart(),
+									e.getEnd());
 					page.setAttribute("new", true);
 				} else {
 					validInput = false;
@@ -648,14 +688,14 @@ public class DirectorServlet extends AbstractBaseServlet {
 			showAttendance(req, resp, errors);
 		}
 	}
-	
+
 	private void showStudent(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
 		DataTrain train = DataTrain.getAndStartTrain();
 
 		PageBuilder page = new PageBuilder(Page.student, SERVLET_PATH);
-		
+
 		String userEmail = req.getParameter("email");
 
 		User currentUser = train.getUsersController().get(userEmail);
@@ -667,7 +707,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		page.setAttribute("user", currentUser);
 		page.setAttribute("forms", train.getFormsController().get(currentUser));
 		page.setAttribute("absences", a);
-		
+
 		FormController fc = train.getFormsController();
 
 		// Pass through any success message in the url parameters sent from a
