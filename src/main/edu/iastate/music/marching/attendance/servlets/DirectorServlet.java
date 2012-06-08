@@ -662,7 +662,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		page.setPageTitle("Attendance");
 
-		List<Absence> a = train.getAbsencesController().get(currentUser);
+		List<Absence> a = train.getAbsenceController().get(currentUser);
 
 		page.setAttribute("user", currentUser);
 		page.setAttribute("forms", train.getFormsController().get(currentUser));
