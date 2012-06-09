@@ -50,8 +50,6 @@
 		<h1>Application Settings for: <c:out value="${appinfo.title}" /></h1>		
 		
 		<dl class="block-layout">
-			<dt><label class="required" for="Title">Title</label></dt>
-			<dd><input type="text" name="Title" value="<c:out value="${appinfo.title}" />" /></dd>
 			<dt><label for="MobilePassword">New Mobile App Password</label></dt>
 			<dd>
 				<input type="password" id="MobilePassword" name="MobilePassword" />
@@ -67,7 +65,18 @@
 		<%//Put the form down here so the MobilePassword wasn't getting posted in the form %>
 		<form action="./appinfo" method="post" accept-charset="utf-8">	
 		<dl class="block-layout">
-			<dt><label for="Month" class="required">Form A Submission Cutoff:</label></dt>
+<!-- 			<dt><label for="Timezone" class="required">Timezone</label></dt> -->
+<!-- 			<dd> -->
+<!-- 				<select name="Timezone"> -->
+<%-- 					<option selected>${timezone }</option> --%>
+				
+<!-- 				</select> -->
+<!-- 			</dd> -->
+			<dt><label class="required" for="Title">Title</label></dt>
+			<dd><input type="text" name="Title" value="<c:out value="${appinfo.title}" />" /></dd>
+			
+			<dt><label for="Month" class="required">Form A Submission Cutoff</label></dt>
+			
 			<dd>
 				<input size='5' type='number' name='Month' min='01' max='12' placeholder='MM' value='<c:out value="${Month}" />' />
 				/

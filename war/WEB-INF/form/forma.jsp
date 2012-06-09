@@ -26,7 +26,7 @@
 		
 			<dl class="block-layout">
 	
-				<dt><label>Date:</label></dt>
+				<dt><label class='required'>Date:</label></dt>
 				<dd>
 					<input autofocus id='startMonth' size='5' type='number' name='StartMonth' min='01' max='12' placeholder='MM' value='<c:out value="${empty StartMonth ? '' : StartMonth+1}" />' />
 					/
@@ -35,7 +35,7 @@
 					<input id='startYear' size='5' type='number' name='StartYear' min='${year}' max='${year+1}' step='1' placeholder='YYYY' value='<c:out value="${StartYear}" />' />
 				</dd>
 				
-				<dt><label>Reasons:</label></dt>
+				<dt><label class='required'>Reasons:</label></dt>
 				<dd>
 					<textarea rows="6" cols="50" id="reason" name="Reason" wrap="physical"><c:out value="${Reason}" /></textarea>
 					<br/>

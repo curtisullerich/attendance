@@ -1,6 +1,7 @@
 package edu.iastate.music.marching.attendance.servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
@@ -17,7 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import edu.iastate.music.marching.attendance.controllers.AbsenceController;
 import edu.iastate.music.marching.attendance.controllers.AppDataController;
-import edu.iastate.music.marching.attendance.controllers.AuthController;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.EventController;
 import edu.iastate.music.marching.attendance.controllers.FormController;
@@ -201,10 +201,38 @@ public class DirectorServlet extends AbstractBaseServlet {
 			case studentinfo:
 				postStudentInfo(req, resp);
 				break;
+			case info:
+				postDirectorInfo(req, resp);
+				break;
 			default:
 				ErrorServlet.showError(req, resp, 404);
 			}
 
+	}
+
+	private void postDirectorInfo(HttpServletRequest req,
+			HttpServletResponse resp) throws IOException, ServletException {
+		DataTrain train = DataTrain.getAndStartTrain();
+		String first = req.getParameter("FirstName");
+		String last = req.getParameter("LastName");
+		User director = train.getAuthController().getCurrentUser(
+				req.getSession());
+		List<String> errors = new ArrayList<String>();
+		if (first == null || first.equals("")) {
+			errors.add("Please supply a first name.");
+		}
+		if (last == null || last.equals("")) {
+			errors.add("Please supply a last name.");
+		}
+		if (errors.size() > 0) {
+			req.setAttribute("errors", errors);
+		} else {
+			director.setFirstName(first);
+			director.setLastName(last);
+			train.getUsersController().update(director);
+			req.setAttribute("success_message", "Info saved successfully.");
+		}
+		showInfo(req, resp);
 	}
 
 	private void postStudentInfo(HttpServletRequest req,
@@ -404,6 +432,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		List<String> errors = new LinkedList<String>();
 		String newPass = null;
 		String newPassConf = null;
+		String title = null;
 		List<String> emailList = null;
 		if (!ValidationUtil.isPost(req)) {
 			validForm = false;
@@ -460,6 +489,14 @@ public class DirectorServlet extends AbstractBaseServlet {
 				} else {
 					data.setHashedMobilePassword(newPass);
 				}
+			}
+
+			title = req.getParameter("Title");
+			if (title == null || title.equals("")) {
+				errors.add("Must supply a title.");
+
+			} else {
+				data.setTitle(title);
 			}
 		}
 		if (validForm) {
