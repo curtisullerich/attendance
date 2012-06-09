@@ -17,15 +17,18 @@ import javax.servlet.http.HttpServletResponse;
 
 import edu.iastate.music.marching.attendance.controllers.AbsenceController;
 import edu.iastate.music.marching.attendance.controllers.AppDataController;
+import edu.iastate.music.marching.attendance.controllers.AuthController;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
-import edu.iastate.music.marching.attendance.controllers.FormController;
 import edu.iastate.music.marching.attendance.controllers.EventController;
+import edu.iastate.music.marching.attendance.controllers.FormController;
 import edu.iastate.music.marching.attendance.controllers.UserController;
 import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.AppData;
 import edu.iastate.music.marching.attendance.model.Event;
 import edu.iastate.music.marching.attendance.model.Form;
+import edu.iastate.music.marching.attendance.model.MessageThread;
 import edu.iastate.music.marching.attendance.model.User;
+import edu.iastate.music.marching.attendance.model.User.Section;
 import edu.iastate.music.marching.attendance.util.Util;
 import edu.iastate.music.marching.attendance.util.ValidationExceptions;
 import edu.iastate.music.marching.attendance.util.ValidationUtil;
@@ -38,7 +41,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 	private static final long serialVersionUID = 6100206975846317440L;
 
 	public enum Page {
-		index, appinfo, attendance, export, forms, unanchored, users, user, stats, info, viewabsence, student, makeevent;
+		index, appinfo, attendance, export, forms, unanchored, users, user, stats, info, viewabsence, student, makeevent, delete, studentinfo;
 	}
 
 	private static final String SERVLET_PATH = "director";
@@ -192,10 +195,75 @@ public class DirectorServlet extends AbstractBaseServlet {
 			case makeevent:
 				postEvent(req, resp);
 				break;
+			case delete:
+				deleteStudent(req, resp);
+				break;
+			case studentinfo:
+				postStudentInfo(req,resp);
+				break;
 			default:
 				ErrorServlet.showError(req, resp, 404);
 			}
 
+	}
+
+	private void postStudentInfo(HttpServletRequest req,
+			HttpServletResponse resp) throws ServletException, IOException {
+		DataTrain train = DataTrain.getAndStartTrain();
+
+		String firstName, lastName, major, netid;
+		int year = -1;
+		User.Section section = null;
+
+		// Grab all the data from the fields
+		firstName = req.getParameter("FirstName");
+		lastName = req.getParameter("LastName");
+		major = req.getParameter("Major");
+		netid = req.getParameter("NetID");
+		String sectionString = req.getParameter("Section");
+		for (Section s : User.Section.values()) {
+			if (sectionString.equals(s.name())) {
+				section = s;
+			}
+		}
+
+		try {
+			year = Integer.parseInt(req.getParameter("Year"));
+		} catch (NumberFormatException nfe) {
+			// TODO create a list of errors
+			nfe.printStackTrace();
+		}
+		// TODO section, year
+
+		UserController uc = DataTrain.getAndStartTrain().getUsersController();
+
+		User user = uc.get(netid);
+		
+		user.setYear(year);
+		user.setMajor(major);
+		user.setSection(section);
+		user.setFirstName(firstName);
+		user.setLastName(lastName);
+
+		// TODO May throw validation exceptions
+		uc.update(user);
+		
+		req.setAttribute("id", netid);
+		showStudent(req,resp);
+	}
+
+	private void deleteStudent(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		String sid = req.getParameter("deleteid");
+		if (sid != null) {
+			UserController uc = DataTrain.getAndStartTrain()
+					.getUsersController();
+			User todie = uc.get(sid);
+			uc.delete(todie);
+		}
+
+		// TODO add a success or error message
+		showAttendance(req, resp, null);
 	}
 
 	private void postEvent(HttpServletRequest req, HttpServletResponse resp)
@@ -696,17 +764,22 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		PageBuilder page = new PageBuilder(Page.student, SERVLET_PATH);
 
-		String userEmail = req.getParameter("email");
+		String netid = req.getParameter("id");
 
-		User currentUser = train.getUsersController().get(userEmail);
+		User currentUser = train.getUsersController().get(netid);
+
+		List<MessageThread> messageThreads = train.getMessagingController()
+				.get(currentUser);
 
 		page.setPageTitle("Attendance");
 
-		List<Absence> a = train.getAbsenceController().get(currentUser);
+		List<Absence> absences = train.getAbsenceController().get(currentUser);
 
 		page.setAttribute("user", currentUser);
 		page.setAttribute("forms", train.getFormsController().get(currentUser));
-		page.setAttribute("absences", a);
+		page.setAttribute("absences", absences);
+		page.setAttribute("threads", messageThreads);
+		page.setAttribute("sections", User.Section.values());
 
 		FormController fc = train.getFormsController();
 

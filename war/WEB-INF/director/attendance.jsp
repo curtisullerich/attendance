@@ -103,8 +103,8 @@ table.gray tr:nth-child(odd) td.highlight, table.gray tr:nth-child(even) td.high
 		<tbody>
 			<c:forEach items="${students }" var="student">
 				<tr>
-					<td>${student.firstName }</td>
-					<td>${student.lastName }</td>
+					<td><a href="/director/student?id=${student.id }">${student.lastName }</a></td>
+					<td><a href="/director/student?id=${student.id }">${student.firstName }</td>
 					<td>${student.section.displayName }</td>
 					<td>${student.universityID }</td>
 					<c:forEach items="${events}" var="event">

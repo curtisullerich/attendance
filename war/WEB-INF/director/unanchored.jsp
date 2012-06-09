@@ -26,16 +26,16 @@
 		<p>Seeing a lot of unanchored items from the same day? You're probably missing an event. <a href="./makeevent">Create one.</a></p>
 		
 		<form action="./unanchored" method="post" accept-charset="utf-8">
-		<table class="gray full-width">
-			<tr>
-				<thead>
-				<th>Event</th>
-				<th>Type</th>
-				<th>Status</th>
-				<th>Time of Arrival/Leaving</th>
-				<th>Messages</th>
-				</thead>
-			</tr>
+		<table class="gray full-width gray-hover">
+			<thead>
+				<tr class="dark-title">
+					<th>Event</th>
+					<th>Type</th>
+					<th>Status</th>
+					<th>Time of Arrival/Leaving</th>
+					<th>Messages</th>
+				</tr>
+			</thead>
 			<c:forEach items="${absences}" var="absence" varStatus="i">
 					<c:if test="${empty absence.event}">
 						<tr>
@@ -59,19 +59,19 @@
 						</td>
 					</c:if>
 
-					<td>
+					<td onclick="window.location='/director/viewabsence?absenceid=${absence.id}'">
 						<input type="hidden" name=${"\"AbsenceID"}${i.count}${"\""} value="${absence.id}"/>
-						<a href="/director/viewabsence?absenceid=${absence.id}">${absence.type}</a>
+						${absence.type}
 					</td>
-					<td>${absence.status}</td>
+					<td onclick="window.location='/director/viewabsence?absenceid=${absence.id}'">${absence.status}</td>
 					<c:choose>
 						<c:when test="${(absence.type.tardy) || (absence.type.earlyCheckOut)}">
-						<td>
+						<td onclick="window.location='/director/viewabsence?absenceid=${absence.id}'">
 							<fmt:formatDate value="${absence.start}" pattern="hh:mm a" />
 						</td>
 						</c:when>
 						<c:when test="${(absence.type.absence) && (empty absence.event)}">
-						<td>
+						<td onclick="window.location='/director/viewabsence?absenceid=${absence.id}'">
 							<fmt:formatDate value="${absence.start}" pattern="M/dd/yyyy" />
 							<fmt:formatDate value="${absence.start}" pattern="h:mm a" />
 							-
@@ -79,7 +79,7 @@
 						</td>
 						</c:when>
 						<c:when test="${(absence.type.absence) && (not empty absence.event)}">
-							<td>
+							<td onclick="window.location='/director/viewabsence?absenceid=${absence.id}'">
 								-
 							</td>
 						</c:when>

@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.google.appengine.api.datastore.Query.FilterOperator;
+import com.google.code.twig.ObjectDatastore;
 import com.google.code.twig.FindCommand.RootFindCommand;
 
 import edu.iastate.music.marching.attendance.model.Absence;
@@ -280,5 +281,10 @@ public class UserController extends AbstractController {
 			return null;
 		else
 			return intToGrade((int) total / count);
+	}
+
+	public void delete(User user) {
+		ObjectDatastore od = this.datatrain.getDataStore();
+		od.delete(user);
 	}
 }
