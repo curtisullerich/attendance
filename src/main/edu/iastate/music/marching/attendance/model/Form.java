@@ -54,6 +54,7 @@ public class Form {
 	};
 
 	public static final String FIELD_STUDENT = "student";
+	public static final String HASHED_ID = "hashedId";
 
 	/**
 	 * Create users through FormController
@@ -65,6 +66,7 @@ public class Form {
 	@Id
 	private long id;
 
+	private long hashedId;
 	/**
 	 * Owning student
 	 * 
@@ -97,6 +99,15 @@ public class Form {
 	private String building;
 	private int day;
 
+	public void setHashedId(long id) {
+		hashedId = id;
+	}
+	
+	public long getHashedId() {
+		return hashedId;
+	}
+	
+	
 	public void setDay(int day)
 	{
 		this.day = day;

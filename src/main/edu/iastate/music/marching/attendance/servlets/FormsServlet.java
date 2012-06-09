@@ -2,12 +2,21 @@ package edu.iastate.music.marching.attendance.servlets;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Properties;
 import java.util.TimeZone;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,7 +27,6 @@ import edu.iastate.music.marching.attendance.controllers.FormController;
 import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.Form;
 import edu.iastate.music.marching.attendance.model.User;
-import edu.iastate.music.marching.attendance.model.Absence.Type;
 import edu.iastate.music.marching.attendance.util.Util;
 import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
@@ -30,7 +38,7 @@ public class FormsServlet extends AbstractBaseServlet {
 	private static final long serialVersionUID = -4738485557840953303L;
 
 	private enum Page {
-		forma, formb, formc, formd, index, view, remove, messages;
+		forma, formb, formc, formd, index, view, remove, messages, verify;
 	}
 
 	private static final String SERVLET_PATH = "form";
@@ -73,6 +81,9 @@ public class FormsServlet extends AbstractBaseServlet {
 		case view:
 			viewForm(req, resp);
 			break;
+		case verify:
+			verifyFormD(req, resp);
+			break;
 		// case remove:
 		// removeForm(req, resp);
 		// break;
@@ -82,6 +93,37 @@ public class FormsServlet extends AbstractBaseServlet {
 		default:
 			ErrorServlet.showError(req, resp, 404);
 		}
+	}
+
+	private void verifyFormD(HttpServletRequest req, HttpServletResponse resp) {
+		//TODO
+		DataTrain train = DataTrain.getAndStartTrain();
+		FormController fc = new FormController(train);
+		List<String> errors = new LinkedList<String>();
+		boolean isValid = true;
+		String status = req.getParameter("s");
+		long hashedId = 0;
+		try {
+			hashedId = Long.parseLong(req.getParameter("i"));
+		}
+		catch (NumberFormatException e) {
+			errors.add("Unable to identify form.");
+			isValid = false;
+		}
+		if (isValid) {
+			Form f = fc.getByHashedId(hashedId);
+			if (status.equals("a")) {
+				f.setStatus(Form.Status.Approved);
+
+			}
+			else {
+				f.setStatus(Form.Status.Denied);
+			}
+			fc.update(f);
+		}
+		//TODO what now? Where do we go from here?
+		
+		
 	}
 
 	private void viewForm(HttpServletRequest req, HttpServletResponse resp)
@@ -452,14 +494,14 @@ public class FormsServlet extends AbstractBaseServlet {
 				errors.add("Invalid Input: The input date is invalid.");
 			}
 		}
-
+		User student = train.getAuthController().getCurrentUser(req.getSession());
+		
 		if (validForm) {
 			// Store our new form to the data store
-			User student = train.getAuthController().getCurrentUser(
-					req.getSession());
 
 			Form form = null;
 			try {
+				//hash the id for use in the accepting and declining forms
 				form = train.getFormsController().createFormD(student, email,
 						date, minutes, details);
 			} catch (IllegalArgumentException e) {

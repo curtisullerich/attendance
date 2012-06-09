@@ -1,12 +1,23 @@
 package edu.iastate.music.marching.attendance.controllers;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
+
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.code.twig.FindCommand.RootFindCommand;
 import com.google.code.twig.ObjectDatastore;
+import com.sun.jmx.mbeanserver.Util;
 
 import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.Form;
@@ -43,6 +54,19 @@ public class FormController extends AbstractController {
 		// forms of the user
 		find = find.addFilter(Form.FIELD_STUDENT, FilterOperator.EQUAL, user);
 		return find.returnAll().now();
+	}
+	
+	public void update(Form f) {
+		this.dataTrain.getDataStore().update(f);
+	}
+	
+	public Form getByHashedId(long id) {
+		return this.dataTrain
+				.getDataStore()
+				.find()
+				.type(Form.class)
+				.addFilter(Form.HASHED_ID, FilterOperator.EQUAL, id)
+				.returnUnique().now();
 	}
 
 	private void storeForm(Form form) {
@@ -384,12 +408,45 @@ public class FormController extends AbstractController {
 		form.setEmailTo(email);
 		form.setMinutesWorked(minutes);
 
+//		form.setHashedId(Util.sha1(Long.toString(form.getId())));
+
+		sendEmail(student, minutes, date, email, form.getHashedId());
 		// Perform store
 		storeForm(form);
 
 		return form;
 	}
 
+	private boolean sendEmail(User student, int minutes, Date date, String email, long hashedId) {
+		Properties props = new Properties();
+		Session session = Session.getDefaultInstance(props, null);
+		
+		String msgBody = new StringBuilder().append(student.getFirstName() + " " + student.getLastName())
+			.append(" has requested that you approve their " + minutes + " minutes of time worked ")
+			.append("on " + new SimpleDateFormat("MM/dd/yyyy").format(date) + ".</br></br>")
+			.append("<a href=\"/form/verify?s=a&i=" + hashedId + "\">Click here to Approve</a>")
+			.append("<a href=\"/form/verify?s=d&i=" + hashedId + "\">Click here to Deny</a>")
+			.append("</br>Thanks!").toString();
+		
+
+		try {
+			MimeMessage msg = new MimeMessage(session);
+			msg.setFrom(new InternetAddress("mbattendance@iastate.edu"));
+			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
+			
+			msg.setSubject(student.getFirstName() + " " + student.getLastName() + " Requests Time Worked Approval");
+			msg.setContent(msgBody, "text/html; charset=UTF-8");
+			
+			Transport.send(msg);
+			return true;
+		} catch (AddressException e) {
+			throw new IllegalArgumentException("Internal Error: Could not send Email");
+		} catch (MessagingException e) {
+			throw new IllegalArgumentException("Internal Error: Could not send Email");
+		}
+
+	}
+	
 	public Form get(long id) {
 		ObjectDatastore od = this.dataTrain.getDataStore();
 		Form form = od.load(Form.class, id);
