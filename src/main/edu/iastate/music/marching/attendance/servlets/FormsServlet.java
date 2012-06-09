@@ -96,7 +96,6 @@ public class FormsServlet extends AbstractBaseServlet {
 	}
 
 	private void verifyFormD(HttpServletRequest req, HttpServletResponse resp) {
-		//TODO
 		DataTrain train = DataTrain.getAndStartTrain();
 		FormController fc = new FormController(train);
 		List<String> errors = new LinkedList<String>();
@@ -121,7 +120,7 @@ public class FormsServlet extends AbstractBaseServlet {
 			}
 			fc.update(f);
 		}
-		//TODO what now? Where do we go from here?
+		//TODO what now? Where do we go from here? Apparently nothing...
 		
 		
 	}

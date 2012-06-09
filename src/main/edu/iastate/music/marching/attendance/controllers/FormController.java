@@ -408,7 +408,7 @@ public class FormController extends AbstractController {
 		form.setEmailTo(email);
 		form.setMinutesWorked(minutes);
 
-//		form.setHashedId(Util.sha1(Long.toString(form.getId())));
+		form.setHashedId(Long.toString(form.getId()).hashCode());
 
 		sendEmail(student, minutes, date, email, form.getHashedId());
 		// Perform store
@@ -424,8 +424,8 @@ public class FormController extends AbstractController {
 		String msgBody = new StringBuilder().append(student.getFirstName() + " " + student.getLastName())
 			.append(" has requested that you approve their " + minutes + " minutes of time worked ")
 			.append("on " + new SimpleDateFormat("MM/dd/yyyy").format(date) + ".</br></br>")
-			.append("<a href=\"/form/verify?s=a&i=" + hashedId + "\">Click here to Approve</a>")
-			.append("<a href=\"/form/verify?s=d&i=" + hashedId + "\">Click here to Deny</a>")
+			.append("<a href=\"www.isucfvmb-attendance.appspot.com/form/verify?s=a&i=" + hashedId + "\">Click here to Approve</a>")
+			.append("<a href=\"www.isucfvmb-attendance.appspot.com/form/verify?s=d&i=" + hashedId + "\">Click here to Deny</a>")
 			.append("</br>Thanks!").toString();
 		
 
