@@ -50,7 +50,7 @@
 					<input id='startYear' size='5' type='number' name='StartYear' min='${year}' max='${year+1}' step='1' placeholder='YYYY' value='<c:out value="${StartYear}" />' />
 				</dd>
 				
-				<dt><label for="Details">Work Details</label></dt>
+				<dt><label class='required' for="Details">Work Details</label></dt>
 				<dd>
 					<textarea rows="6" cols="50" name="Details" wrap="physical"><c:out value="${Details}" /></textarea>
 					<br/>

@@ -17,7 +17,7 @@
 <!-- 		</div> -->
 <!-- 		<br/> -->
 		<div>
-			This is not the page you're looking for.
+			<h1>This is not the page you want.</h1>
 			<br/>
 			Unfortunately, we can't find it.
 			<br/>
@@ -27,7 +27,7 @@
 			<br/>
 			contact the developers at <a href="mailto:mbattendance@iastate.edu?Subject=@10dance%20404%20Error">mbattendance@iastate.edu</a>.
 		</div>
-		<br/>
+		<br/><br/>
 		<img src="/img/404Cy.png" height="250" alt="404 Cy" />
    </div>
     <jsp:include page="/WEB-INF/template/footer.jsp" />
