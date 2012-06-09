@@ -103,3 +103,4 @@
 <c:if test="${pagetemplate.mobileSite}">
 	<header class="hwrapper"><h1><c:out value="${pagetemplate.title}" /></h1></header>
 </c:if>
+<jsp:include page="/WEB-INF/common/displaymessages.jsp"/>

@@ -47,18 +47,7 @@
 	<body>		
 		<jsp:include page="/WEB-INF/template/header.jsp" />
 	
-		<h1>Application Settings for: <c:out value="${appinfo.title}" /></h1>
-		
-		<c:if test="${not empty error_messages}">
-			<p class="notify-msg error">
-				<strong>Error:</strong>
-				<c:forEach items="${error_messages}" var="error_message">
-					<c:out value="${error_message}" />
-					<br/>
-				</c:forEach>
-			</p>
-		</c:if>
-		
+		<h1>Application Settings for: <c:out value="${appinfo.title}" /></h1>		
 		
 		<dl class="block-layout">
 			<dt><label class="required" for="Title">Title</label></dt>

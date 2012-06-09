@@ -17,17 +17,7 @@
 		<jsp:include page="/WEB-INF/template/header.jsp" />
 	
 		<h1>Time Worked | Form D</h1>
-		
-		<c:if test="${not empty error_messages}">
-			<p class="notify-msg error">
-				<strong>Error:</strong>
-				<c:forEach items="${error_messages}" var="error_message">
-					<c:out value="${error_message}" />
-					<br/>
-				</c:forEach>
-			</p>
-		</c:if>
-		
+				
 		<form action="./formd" method="post" accept-charset="utf-8">
 		
 			<dl class="block-layout">

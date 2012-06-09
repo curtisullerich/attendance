@@ -56,15 +56,6 @@ table.gray tr:nth-child(odd) td.highlight, table.gray tr:nth-child(even) td.high
 
 	<h1>${pagetemplate.title}</h1>
 	<br />
-		<c:if test="${not empty error_messages}">
-			<p class="notify-msg error">
-				<strong>Error:</strong>
-				<c:forEach items="${error_messages}" var="error_message">
-					<c:out value="${error_message}" />
-					<br/>
-				</c:forEach>
-			</p>
-		</c:if>
 
 <%-- 	<button id="show" onClick="showApproved();"><c:out value="${showApproved ? 'Hide Approved' :'Show Approved' }"/></button> --%>
 	<div class="threadresolved">

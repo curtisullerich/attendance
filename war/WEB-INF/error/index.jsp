@@ -12,10 +12,10 @@
   <body>
   	<jsp:include page="/WEB-INF/template/header.jsp" />
    	<div>
-   		<div>
-			<h1>404!</h1>
-		</div>
-		<br/>
+<!--    		<div> -->
+<!-- 			<h1>404!</h1> -->
+<!-- 		</div> -->
+<!-- 		<br/> -->
 		<div>
 			This is not the page you're looking for.
 			<br/>

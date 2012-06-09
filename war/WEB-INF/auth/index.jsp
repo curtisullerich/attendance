@@ -21,15 +21,6 @@
 	<form action="/auth/register" method="post" accept-charset="utf-8">
 		<dl class="block-layout">
 			<dt><label></label></dt>
-			<dd>
-				<c:if test="${not empty errors}">
-				    <ul class="errors">
-				    	<c:forEach items="${errors}" var="e" varStatus="loop">
-				    		<li><c:out value="${e}" /></li>
-				    	</c:forEach>
-				    </ul>
-				</c:if>
-			</dd>
 			<dt><label class="required" for="FirstName">First Name</label></dt>
 			<dd><input type="text" name="FirstName" value="<c:out value="${FirstName}" />" /></dd>
 			

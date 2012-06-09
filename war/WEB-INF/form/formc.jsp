@@ -22,18 +22,7 @@
 		Documentation is required for all absences (doctor's note, obituary, wedding program, etc.).</p>
 		<!-- TODO:enforce the three-day submission policy. -->
 		
-		<br/>
-		
-		<c:if test="${not empty error_messages}">
-			<p class="notify-msg error">
-				<strong>Error:</strong>
-				<c:forEach items="${error_messages}" var="error_message">
-					<c:out value="${error_message}" />
-					<br/>
-				</c:forEach>
-			</p>
-		</c:if>
-		
+		<br/>		
 		<form action="./formc" method="post" accept-charset="utf-8">
 		
 			<dl class="block-layout">

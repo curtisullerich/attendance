@@ -28,9 +28,11 @@
 				
 				<dt><label for="NetID">NetID</label></dt>
 				<dd>
-					<input type="text" name="NetID" value="<c:out value="${user.netID}"/>" disabled readonly/>
+					<input type="text" value="<c:out value="${user.id}"/>" disabled readonly/>
 				</dd>
-				
+					<input type="hidden" name="NetID" value="<c:out value="${user.id}"/>"/>				
+					<input type="hidden" name="id" value="<c:out value="${user.id}"/>"/>				
+
 				<dt><label for="UniversityID">University ID</label></dt>
 				<dd><input type="text" name="UniversityID" value="<c:out value="${user.universityID}" />" disabled readonly/></dd>
 				

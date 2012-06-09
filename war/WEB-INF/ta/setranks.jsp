@@ -13,17 +13,6 @@
 
 	<h1>${pagetemplate.title}</h1>
 	<br />
-		<c:if test="${not empty error_messages}">
-			<p class="notify-msg error">
-				<strong>Error:</strong>
-				<c:forEach items="${error_messages}" var="error_message">
-					<c:out value="${error_message}" />
-					<br/>
-				</c:forEach>
-			</p>
-		</c:if>
-		
-		
 
 	<form action="./setranks" method="POST">
 		<table class="gray full-width">

@@ -199,7 +199,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 				deleteStudent(req, resp);
 				break;
 			case studentinfo:
-				postStudentInfo(req,resp);
+				postStudentInfo(req, resp);
 				break;
 			default:
 				ErrorServlet.showError(req, resp, 404);
@@ -238,7 +238,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		UserController uc = DataTrain.getAndStartTrain().getUsersController();
 
 		User user = uc.get(netid);
-		
+
 		user.setYear(year);
 		user.setMajor(major);
 		user.setSection(section);
@@ -247,9 +247,13 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		// TODO May throw validation exceptions
 		uc.update(user);
-		
-		req.setAttribute("id", netid);
-		showStudent(req,resp);
+
+		String lenetid = netid.toString();
+		// so the user can get it
+		req.setAttribute("id", netid.toString());
+		req.setAttribute("success_message", "Info successfully updated.");
+
+		showStudent(req, resp);
 	}
 
 	private void deleteStudent(HttpServletRequest req, HttpServletResponse resp)

@@ -18,14 +18,7 @@
 		<jsp:include page="/WEB-INF/template/header.jsp" />
 
 		<h1>Student Staff Page</h1>
-		
-		
-		<c:if test="${not empty success_message}">
-			<p class="notify-msg success">
-				<strong>Success:</strong> <c:out value="${success_message}" />
-			</p>
-		</c:if>
-		
+				
 		<p>		
 			Use the navigation options on the left to manage your attendance.
 		</p>

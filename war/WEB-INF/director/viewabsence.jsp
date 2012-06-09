@@ -12,15 +12,6 @@
 		
 		<h1>Absence Info For: <c:out value="${absence.student.name}" /></h1>
 		
-		<c:if test="${not empty error_messages}">
-			<p class="notify-msg error">
-				<strong>Error:</strong>
-				<c:forEach items="${error_messages}" var="error_message">
-					<c:out value="${error_message}" />
-					<br/>
-				</c:forEach>
-			</p>
-		</c:if>
 		<form action="./viewabsence" method="post" accept-charset="utf-8">
 			<fmt:formatDate var="arst" value="${absence.start}" pattern="yyyy"/> 
 			<dl class="block-layout">

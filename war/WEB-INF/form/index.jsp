@@ -17,12 +17,6 @@
 	
 		<h1>View Forms</h1>
 		
-		<c:if test="${not empty success_message}">
-			<p class="notify-msg success">
-				<strong>Success:</strong> <c:out value="${success_message}" />
-			</p>
-		</c:if>
-		
 		<c:if test="${auth.user.type.student or auth.user.type.ta}">
 			<!-- p>
 				Create a new form:
