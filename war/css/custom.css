@@ -74,3 +74,19 @@ div.message-theirs {
 	margin: 0px;
 	background-color: #f9f9f9;
 }
+
+.msg_list { 
+	/*used for fancy expansion*/
+}
+
+.msg_head {
+	padding: 5px 10px;
+	cursor: pointer;
+	position: relative; 
+	background-color: #ddd;
+	margin: 1px;
+}
+
+.msg_body { 
+	padding: 5px 10px 15px; 
+}

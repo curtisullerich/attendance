@@ -211,7 +211,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 			HttpServletResponse resp) throws ServletException, IOException {
 		DataTrain train = DataTrain.getAndStartTrain();
 
-		String firstName, lastName, major, netid;
+		String firstName, lastName, major, netid, rank;
 		int year = -1;
 		User.Section section = null;
 
@@ -220,6 +220,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		lastName = req.getParameter("LastName");
 		major = req.getParameter("Major");
 		netid = req.getParameter("NetID");
+		rank = req.getParameter("Rank");
 		String sectionString = req.getParameter("Section");
 		for (Section s : User.Section.values()) {
 			if (sectionString.equals(s.name())) {
@@ -244,7 +245,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		user.setSection(section);
 		user.setFirstName(firstName);
 		user.setLastName(lastName);
-
+		user.setRank(rank);
 		// TODO May throw validation exceptions
 		uc.update(user);
 
@@ -784,7 +785,6 @@ public class DirectorServlet extends AbstractBaseServlet {
 		page.setAttribute("absences", absences);
 		page.setAttribute("threads", messageThreads);
 		page.setAttribute("sections", User.Section.values());
-
 		FormController fc = train.getFormsController();
 
 		// Pass through any success message in the url parameters sent from a
