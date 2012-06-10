@@ -79,7 +79,7 @@ public class FormsServlet extends AbstractBaseServlet {
 			showIndex(req, resp);
 			break;
 		case view:
-			viewForm(req, resp);
+			viewForm(req, resp, new LinkedList<String>());
 			break;
 		case verify:
 			verifyFormD(req, resp);
@@ -125,9 +125,10 @@ public class FormsServlet extends AbstractBaseServlet {
 		
 	}
 
-	private void viewForm(HttpServletRequest req, HttpServletResponse resp)
+	private void viewForm(HttpServletRequest req, HttpServletResponse resp, List<String> errors)
 			throws ServletException, IOException {
 		DataTrain train = DataTrain.getAndStartTrain();
+		User currentUser = train.getAuthController().getCurrentUser(req.getSession());
 		Form form = null;
 		try {
 			long id = Long.parseLong(req.getParameter("id"));
@@ -136,6 +137,8 @@ public class FormsServlet extends AbstractBaseServlet {
 			page.setPageTitle("Form " + form.getType());
 			page.setAttribute("form", form);
 			page.setAttribute("day", form.getDayAsString());
+			page.setAttribute("isDirector", currentUser.getType().isDirector());
+			page.setAttribute("error_messages", errors);
 			page.passOffToJsp(req, resp);
 		} catch (NumberFormatException nfe) {
 			// TODO Log this
@@ -172,9 +175,68 @@ public class FormsServlet extends AbstractBaseServlet {
 			case messages:
 				// TODO
 				break;
+			case view:
+				updateStatus(req, resp);
+				break;
 			default:
 				ErrorServlet.showError(req, resp, 404);
 			}
+	}
+
+	private void updateStatus(HttpServletRequest req, HttpServletResponse resp) 
+			throws ServletException, IOException {
+		DataTrain train = DataTrain.getAndStartTrain();
+		FormController fc = train.getFormsController();
+		
+		List<String> errors = new LinkedList<String>();
+		boolean validForm = true;
+		
+		Form f = null;
+		Form.Status status = null;
+		long id = 0;
+		if (!ValidationUtil.isPost(req)) {
+			validForm = false;
+		}
+		if (validForm) {
+			try {
+				id = Long.parseLong(req.getParameter("id"));
+				f = fc.get(id);
+				String strStat = req.getParameter("status");
+				if (strStat.equalsIgnoreCase("Approved"))
+					status = Form.Status.Approved;
+				else if (strStat.equalsIgnoreCase("Pending"))
+					status = Form.Status.Pending;
+				else if (strStat.equalsIgnoreCase("Denied"))
+					status = Form.Status.Denied;
+				else {
+					validForm = false;
+					errors.add("Invalid form status.");
+				}
+					
+			}
+			catch (NumberFormatException e) {
+				errors.add("Unable to find form.");
+				validForm = false;
+			}
+			catch (NullPointerException e) {
+				errors.add("Unable to find form.");
+				validForm = false;
+			}
+		}
+		
+		if (validForm) {
+			//Send them back to their Form page
+			f.setStatus(status);
+			fc.update(f);
+			String url = "?success_message="
+					+ URLEncoder.encode("Successfully updated form.", "UTF-8");
+			resp.sendRedirect(url);
+		}
+		else {
+			//Send them back to the view page
+			viewForm(req, resp, errors);
+		}
+		
 	}
 
 	private void postFormA(HttpServletRequest req, HttpServletResponse resp)
@@ -579,14 +641,19 @@ public class FormsServlet extends AbstractBaseServlet {
 
 		String removeid = req.getParameter("removeid");
 		if (removeid != null && removeid != "") {
-			long id = Long.parseLong(removeid);
-			if (fc.removeForm(id)) {
-				page.setAttribute("success_message",
-						"Form successfully deleted");
-			} else {
-				page.setAttribute("error_messages",
-						"Form not deleted. If the form was already approved then you can't delete it.");
-				// TODO you might be able to. Check with staub
+			try {
+				long id = Long.parseLong(removeid);
+				if (fc.removeForm(id)) {
+					page.setAttribute("success_message",
+							"Form successfully deleted");
+				} else {
+					page.setAttribute("error_messages",
+							"Form not deleted. If the form was already approved then you can't delete it.");
+					// TODO you might be able to. Check with staub
+				}
+			}
+			catch (NullPointerException e) {
+				page.setAttribute("error_messages", "The form does not exist.");
 			}
 		}
 

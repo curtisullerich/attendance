@@ -14,6 +14,14 @@ public class Form {
 		public String getValue() {
 			return name();
 		}
+		private Status() {
+			mDisplayString = this.toString();
+		}
+		private String mDisplayString;
+		
+		public String getDisplayName() {
+			return mDisplayString;
+		}
 	};
 
 	public static enum Type {
