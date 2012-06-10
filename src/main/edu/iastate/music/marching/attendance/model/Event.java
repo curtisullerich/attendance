@@ -10,6 +10,13 @@ public class Event {
 	public static final String FIELD_START = "start";
 	public static final String FIELD_END = "end";
 	public static final String FIELD_TYPE = "type";
+	
+	/**
+	 * Assuming an event only spans a single day,
+	 * this field is always set to 12am of the day the event happens on.
+	 * 
+	 * This makes it easier to query for events on any given day.
+	 */
 	public static final String FIELD_DATE = "date";
 
 	/**
@@ -28,6 +35,12 @@ public class Event {
 	@Index
 	private Date end;
 
+	/**
+	 * Assuming an event only spans a single day,
+	 * this field is always set to 12am of the day the event happens on.
+	 * 
+	 * This makes it easier to query for events on any given day.
+	 */
 	@Index
 	private Date date;
 
