@@ -178,4 +178,13 @@ public class AbsenceController extends AbstractController {
 				.addFilter(Absence.FIELD_EVENT, FilterOperator.EQUAL, event)
 				.returnAll().now();
 	}
+
+	public void remove(List<Absence> todie) {
+		ObjectDatastore od = this.train.getDataStore();
+		od.deleteAll(todie);
+	}
+	public void remove(Absence todie) {
+		ObjectDatastore od = this.train.getDataStore();
+		od.delete(todie);
+	}
 }
