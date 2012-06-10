@@ -41,7 +41,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 	private static final long serialVersionUID = 6100206975846317440L;
 
 	public enum Page {
-		index, appinfo, attendance, export, forms, unanchored, users, user, stats, info, viewabsence, student, makeevent, delete, studentinfo;
+		index, appinfo, attendance, export, forms, unanchored, users, user, stats, info, viewabsence, student, makeevent, deletestudent, studentinfo, viewevent, deleteevent;
 	}
 
 	private static final String SERVLET_PATH = "director";
@@ -96,15 +96,62 @@ public class DirectorServlet extends AbstractBaseServlet {
 			case makeevent:
 				showMakeevent(req, resp);
 				break;
+			case viewevent:
+				viewEvent(req, resp);
+				break;
 			default:
 				ErrorServlet.showError(req, resp, 404);
 			}
 	}
 
-	private void showMakeevent(HttpServletRequest req, HttpServletResponse resp)
+	private void viewEvent(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		DataTrain train = DataTrain.getAndStartTrain();
+		String sid = req.getParameter("id");
 
+		List<String> errors = new ArrayList<String>();
+		PageBuilder page = new PageBuilder(Page.viewevent, SERVLET_PATH);
+		if (sid != null && !sid.equals("")) {
+			try {
+				Event event = train.getEventController().get(
+						Long.parseLong(sid));
+				page.setAttribute("event", event);
+				AbsenceController ac = train.getAbsenceController();
+				List<Absence> absences = ac.getAll(event);
+				int absent = 0;
+				int tardy = 0;
+				int earlyout = 0;
+				for (Absence a : absences) {
+					switch( a.getType()) {
+						case Absence:
+							absent++;
+							break;
+						case Tardy:
+							tardy++;
+							break;
+						case EarlyCheckOut:
+							earlyout++;
+							break;
+						default:
+							break;
+					}
+				}
+				page.setAttribute("absent", absent);
+				page.setAttribute("tardy", tardy);
+				page.setAttribute("earlyout",earlyout);
+			} catch (NumberFormatException nfe) {
+				errors.add("Invalid event id");
+			}
+		} else {
+			errors.add("Invalid event id");
+			page.setAttribute("errors", errors);
+		}
+		page.setPageTitle("View Event");
+		page.passOffToJsp(req, resp);
+	}
+
+	private void showMakeevent(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
 		PageBuilder page = new PageBuilder(Page.makeevent, SERVLET_PATH);
 		Date today = new Date();// TODO this probably isn't the proper way to do
 								// this
@@ -195,7 +242,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 			case makeevent:
 				postEvent(req, resp);
 				break;
-			case delete:
+			case deletestudent:
 				deleteStudent(req, resp);
 				break;
 			case studentinfo:
@@ -204,10 +251,49 @@ public class DirectorServlet extends AbstractBaseServlet {
 			case info:
 				postDirectorInfo(req, resp);
 				break;
+			case deleteevent:
+				deleteEvent(req, resp);
+				break;
 			default:
 				ErrorServlet.showError(req, resp, 404);
 			}
 
+	}
+
+	private void deleteEvent(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		String sid = req.getParameter("id");
+		List<String> errors = new ArrayList<String>();
+		DataTrain train = DataTrain.getAndStartTrain();
+		PageBuilder page = new PageBuilder(Page.attendance, SERVLET_PATH);
+		String sremoveAnchored = req.getParameter("RemoveAnchored");
+		EventController ec = train.getEventController();
+		if (sid != null && !sid.equals("")) {
+			Event event = null;
+			try {
+				event = ec.get(
+						Long.parseLong(sid));
+			} catch (NumberFormatException nfe) {
+				errors.add("Invalid event id");
+			}
+			if (event != null && sremoveAnchored != null && !sremoveAnchored.equals("")) {
+				page.setAttribute("success_message", "Event deleted");
+				if (sremoveAnchored.equals("true")) {
+					AbsenceController ac = train.getAbsenceController();
+					List<Absence> todie = ac.getAll(event);
+					ac.remove(todie);
+					page.setAttribute("success_message", "Event and associated absences deleted.");
+				}
+				ec.delete(event);
+				page.setAttribute("event", event);
+			}
+			
+		} else {
+			errors.add("Invalid event id");
+			page.setAttribute("errors", errors);
+		}
+		//TODO we should make a way to pass a success message on as well
+		showAttendance(req, resp, null);
 	}
 
 	private void postDirectorInfo(HttpServletRequest req,

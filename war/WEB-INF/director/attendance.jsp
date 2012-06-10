@@ -84,8 +84,8 @@ table.gray tr:nth-child(odd) td.highlight, table.gray tr:nth-child(even) td.high
 				<th>University ID</th>
 				<!-- all events. TODO will need to link this -->
 				<c:forEach items="${events}" var="event">
-					<th title="<fmt:formatDate value="${event.date}" pattern="EEEE"/>"><c:out value="${event.type}" /><br />
-					<fmt:formatDate value="${event.date}" pattern="M/dd/yyyy" /></th>
+						<th title="<fmt:formatDate value="${event.date}" pattern="EEEE"/>"><a href="/director/viewevent?id=${event.id }"><c:out value="${event.type}" /><br />
+						<fmt:formatDate value="${event.date}" pattern="M/dd/yyyy" /></a></th>
 				</c:forEach>
 				<th>Grade</th>
 				<!-- headers are now done -->
