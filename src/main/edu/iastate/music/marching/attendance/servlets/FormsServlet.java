@@ -38,7 +38,7 @@ public class FormsServlet extends AbstractBaseServlet {
 	private static final long serialVersionUID = -4738485557840953303L;
 
 	private enum Page {
-		forma, formb, formc, formd, index, view, remove, messages, verify;
+		forma, formb, formc, formd, index, view, remove, messages;
 	}
 
 	private static final String SERVLET_PATH = "form";
@@ -79,10 +79,7 @@ public class FormsServlet extends AbstractBaseServlet {
 			showIndex(req, resp);
 			break;
 		case view:
-			viewForm(req, resp, new LinkedList<String>());
-			break;
-		case verify:
-			verifyFormD(req, resp);
+			viewForm(req, resp, new LinkedList<String>(), "");
 			break;
 		// case remove:
 		// removeForm(req, resp);
@@ -95,37 +92,7 @@ public class FormsServlet extends AbstractBaseServlet {
 		}
 	}
 
-	private void verifyFormD(HttpServletRequest req, HttpServletResponse resp) {
-		DataTrain train = DataTrain.getAndStartTrain();
-		FormController fc = new FormController(train);
-		List<String> errors = new LinkedList<String>();
-		boolean isValid = true;
-		String status = req.getParameter("s");
-		long hashedId = 0;
-		try {
-			hashedId = Long.parseLong(req.getParameter("i"));
-		}
-		catch (NumberFormatException e) {
-			errors.add("Unable to identify form.");
-			isValid = false;
-		}
-		if (isValid) {
-			Form f = fc.getByHashedId(hashedId);
-			if (status.equals("a")) {
-				f.setStatus(Form.Status.Approved);
-
-			}
-			else {
-				f.setStatus(Form.Status.Denied);
-			}
-			fc.update(f);
-		}
-		//TODO what now? Where do we go from here? Apparently nothing...
-		
-		
-	}
-
-	private void viewForm(HttpServletRequest req, HttpServletResponse resp, List<String> errors)
+	private void viewForm(HttpServletRequest req, HttpServletResponse resp, List<String> errors, String success_message)
 			throws ServletException, IOException {
 		DataTrain train = DataTrain.getAndStartTrain();
 		User currentUser = train.getAuthController().getCurrentUser(req.getSession());
@@ -139,6 +106,7 @@ public class FormsServlet extends AbstractBaseServlet {
 			page.setAttribute("day", form.getDayAsString());
 			page.setAttribute("isDirector", currentUser.getType().isDirector());
 			page.setAttribute("error_messages", errors);
+			page.setAttribute("success_message", success_message);
 			page.passOffToJsp(req, resp);
 		} catch (NumberFormatException nfe) {
 			// TODO Log this
@@ -189,6 +157,7 @@ public class FormsServlet extends AbstractBaseServlet {
 		FormController fc = train.getFormsController();
 		
 		List<String> errors = new LinkedList<String>();
+		String success_message = "";
 		boolean validForm = true;
 		
 		Form f = null;
@@ -228,14 +197,10 @@ public class FormsServlet extends AbstractBaseServlet {
 			//Send them back to their Form page
 			f.setStatus(status);
 			fc.update(f);
-			String url = "?success_message="
-					+ URLEncoder.encode("Successfully updated form.", "UTF-8");
-			resp.sendRedirect(url);
+			success_message = "Successfully updated form.";
 		}
-		else {
-			//Send them back to the view page
-			viewForm(req, resp, errors);
-		}
+
+		viewForm(req, resp, errors, success_message);
 		
 	}
 

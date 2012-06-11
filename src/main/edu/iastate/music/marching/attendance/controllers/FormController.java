@@ -424,8 +424,8 @@ public class FormController extends AbstractController {
 		String msgBody = new StringBuilder().append(student.getFirstName() + " " + student.getLastName())
 			.append(" has requested that you approve their " + minutes + " minutes of time worked ")
 			.append("on " + new SimpleDateFormat("MM/dd/yyyy").format(date) + ".</br></br>")
-			.append("<a href=\"www.isucfvmb-attendance.appspot.com/form/verify?s=a&i=" + hashedId + "\">Click here to Approve</a>")
-			.append("<a href=\"www.isucfvmb-attendance.appspot.com/form/verify?s=d&i=" + hashedId + "\">Click here to Deny</a>")
+			.append("<a href=\"www.isucfvmb-attendance.appspot.com/public/verify?s=a&i=" + hashedId + "\">Click here to Approve</a>")
+			.append("<a href=\"www.isucfvmb-attendance.appspot.com/public/verify?s=d&i=" + hashedId + "\">Click here to Deny</a>")
 			.append("</br>Thanks!").toString();
 		
 

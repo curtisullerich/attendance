@@ -160,6 +160,14 @@
     <servlet-name>admin</servlet-name>
     <url-pattern>/admin/*</url-pattern>
   </servlet-mapping>
+  <servlet>
+      <servlet-name>public</servlet-name>
+      <servlet-class>edu.iastate.music.marching.attendance.servlets.PublicServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+      <servlet-name>public</servlet-name>
+      <url-pattern>/public/*</url-pattern>
+  </servlet-mapping>
   <security-constraint>
     <web-resource-collection>
       <web-resource-name>aname</web-resource-name>

@@ -22,6 +22,10 @@ public class Form {
 		public String getDisplayName() {
 			return mDisplayString;
 		}
+		
+		public boolean isPending() {
+			return this == Pending;
+		}
 	};
 
 	public static enum Type {
