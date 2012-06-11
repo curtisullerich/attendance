@@ -284,4 +284,15 @@ public class Form {
 		this.emailStatus = emailStatus;
 	}
 
+	public long generateHashedId() {
+		// TODO Auto-generated method stub
+		long ret = 23;
+		ret = ret * 31  + startTime.hashCode();
+		ret = ret * 31 + endTime.hashCode();
+		ret = ret * 31 + details.hashCode();
+		ret = ret * 31 + emailTo.hashCode();
+		ret = ret * 31 + minutesWorked;
+		return ret;
+	}
+
 }

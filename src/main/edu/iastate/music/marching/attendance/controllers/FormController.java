@@ -408,11 +408,11 @@ public class FormController extends AbstractController {
 		form.setEmailTo(email);
 		form.setMinutesWorked(minutes);
 
-		form.setHashedId(Long.toString(form.getId()).hashCode());
-
+		form.setHashedId(form.generateHashedId());
 		sendEmail(student, minutes, date, email, form.getHashedId());
 		// Perform store
 		storeForm(form);
+		//The id field isn't stored until the form is persisted so 
 
 		return form;
 	}
