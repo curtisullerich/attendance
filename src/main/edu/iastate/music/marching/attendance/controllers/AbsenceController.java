@@ -10,6 +10,7 @@ import com.google.code.twig.ObjectDatastore;
 
 import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.Event;
+import edu.iastate.music.marching.attendance.model.Form;
 import edu.iastate.music.marching.attendance.model.MessageThread;
 import edu.iastate.music.marching.attendance.model.ModelFactory;
 import edu.iastate.music.marching.attendance.model.User;
@@ -71,7 +72,7 @@ public class AbsenceController extends AbstractController {
 		} else {
 			// else the absence is orphaned, because we can't know which one is
 			// best. It'll show in unanchored and they'll have to fix it.
-			return null;
+			return storeAbsence(absence,student);
 		}
 	}
 
@@ -107,8 +108,8 @@ public class AbsenceController extends AbstractController {
 				remove(one);
 				return two;
 			case EarlyCheckOut:
-				remove(one);
-				return two;
+				remove(two);
+				return one;
 			}
 			break;
 		case Tardy:
@@ -217,6 +218,48 @@ public class AbsenceController extends AbstractController {
 	public void updateAbsence(Absence absence) {
 		this.train.getDataStore().update(absence);
 	}
+	
+	public Absence autoApprove(Absence absence) {
+		//TODO check against forms for auto approval.
+		
+		FormController fc = this.train.getFormsController();
+		if (absence != null ) {
+			if (absence.getStudent() != null) {
+				List<Form> forms = fc.get(absence.getStudent());
+				for (Form f :forms) {
+					autoApprove(absence, f);
+				}
+			} else {
+				throw new IllegalArgumentException("Student was null.");
+			}
+		} else {
+			throw new IllegalArgumentException("Absence was null.");
+		}
+		return absence;
+	}
+	
+	private Absence autoApprove(Absence absence, Form form) {
+		if (form.getStatus() == Form.Status.Approved){
+			switch (form.getType()) {
+			case A:
+				
+				break;
+			case B:
+				
+				break;
+			case C:
+				
+				break;
+			case D:
+				
+				break;
+			}
+		} else {
+			//does not apply!
+		}
+		//TODO check if the form meets a condition that approves this absence
+		return absence;
+	}
 
 	private Absence storeAbsence(Absence absence, User student) {
 		ObjectDatastore od = this.train.getDataStore();
@@ -226,6 +269,9 @@ public class AbsenceController extends AbstractController {
 		od.store(messages);
 		absence.setMessageThread(messages);
 
+		//check against forms to see if this can be autoapproved
+		autoApprove(absence);
+		
 		// Then do actual store
 		od.store(absence);
 		train.getUsersController().updateUserGrade(student);
