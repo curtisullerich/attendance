@@ -29,6 +29,8 @@ public class PageTemplateBean implements java.io.Serializable {
 	
 	private AppData mAppData;
 
+	private String mRequestUri;
+
 	/**
 	 * No-arg constructor always for a bean
 	 * @param appData 
@@ -63,8 +65,15 @@ public class PageTemplateBean implements java.io.Serializable {
 	public void setTitle(String title) {
 		this.title = title;
 	}
+	
+	public String getUri()
+	{
+		return mRequestUri;
+	}
 
 	public void apply(HttpServletRequest request) {
+		
+		this.mRequestUri = request.getRequestURI() + '?' + request.getQueryString();
 
 		// Check if mobile site view is explicitly set
 		if ("true".equals(request.getParameter("mobile")))

@@ -472,4 +472,9 @@ public class FormController extends AbstractController {
 		}
 	}
 
+	public void approve(Form form) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

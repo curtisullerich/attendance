@@ -13,6 +13,7 @@ import edu.iastate.music.marching.attendance.controllers.UserController;
 import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.model.User.Section;
+import edu.iastate.music.marching.attendance.util.PageBuilder;
 
 public class StudentServlet extends AbstractBaseServlet {
 

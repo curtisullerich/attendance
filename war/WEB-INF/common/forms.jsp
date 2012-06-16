@@ -3,10 +3,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setTimeZone value="${pagetemplate.timeZoneID}" />
-
 		<c:choose>
 			<c:when test="${fn:length(forms) > 0}">
-				<div>
+ 				<div>
 					<p>Number of Forms Submitted: ${fn:length(forms)}</p>
 					<br/>
 					<table class="gray full-width gray-hover" style="table-layout:fixed;white-space:nowrap;overflow:hidden;">
@@ -28,12 +27,24 @@
 						</thead>
 						<tbody>
 						<c:forEach items="${forms}" var="form">
+							<c:url var="form_url_view" value="forms/view">
+								<c:param name="id" value="${form.id}"/>
+								<c:param name="redirect" value="${pagetemplate.uri}"/>
+							</c:url>
+							<c:url var="form_url_remove" value="forms">
+								<c:param name="id" value="${form.id}"/>
+							</c:url>
+							<c:url var="form_url_messages" value="messages/viewthread">
+								<c:param name="id" value="${form.id}"/>
+								<c:param name="redirect" value="${pagetemplate.uri}"/>
+							</c:url>
+
 							<tr id="row_form_<c:out value="${form.id}" />">
 						<tr>
 							<%//Note that I did this because the last two columns are buttons. %>
-							<td onclick="window.location='forms/view?id=<c:out value="${form.id}"/>'">${form.type}</td>
-							<td onclick="window.location='forms/view?id=<c:out value="${form.id}"/>'">${form.status}</td>
-							<td onclick="window.location='forms/view?id=<c:out value="${form.id}"/>'">
+							<td onclick="window.location='<c:out value="${form_url_view}" />'">${form.type}</td>
+							<td onclick="window.location='<c:out value="${form_url_view}" />'">${form.status}</td>
+							<td onclick="window.location='<c:out value="${form_url_view}" />'">
 							<p style="overflow:hidden;">								
 								<c:choose>
 									<c:when test="${form.type.a || form.type.c}">							

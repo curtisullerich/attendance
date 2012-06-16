@@ -6,6 +6,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.iastate.music.marching.attendance.util.PageBuilder;
+
 public class ErrorServlet extends AbstractBaseServlet {
 
 	/**

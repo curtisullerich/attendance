@@ -1,4 +1,4 @@
-package edu.iastate.music.marching.attendance.servlets;
+package edu.iastate.music.marching.attendance.util;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -20,6 +20,14 @@ public class PageBuilder {
 	private static final String JSP_PATH_PRE = "/WEB-INF/";
 
 	private static final String JSP_PATH_POST = ".jsp";
+
+	private static final String ATTR_SUCCESS_MESSAGE = "success_message";
+
+	public static final String PARAM_SUCCESS_MESSAGE = "message";
+
+	private static final String ATTR_REDIRECT_URL = "redirect_url";
+
+	public static final String PARAM_REDIRECT_URL = "redirect";
 
 	private String mJSPPath;
 
@@ -71,6 +79,9 @@ public class PageBuilder {
 
 	public void passOffToJsp(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+		
+		// Set some default attributes
+		initialPageSetup(req, resp);
 
 		// Apply all saved attributes
 		for (Entry<String, Object> entry : attribute_map.entrySet())
@@ -85,6 +96,13 @@ public class PageBuilder {
 		// Do actual forward
 		RequestDispatcher d = req.getRequestDispatcher(mJSPPath);
 		d.forward(req, resp);
+	}
+
+	private void initialPageSetup(HttpServletRequest req,
+			HttpServletResponse resp) {
+		// Copy over any success message or redirect url
+		req.setAttribute(ATTR_SUCCESS_MESSAGE, req.getParameter((PARAM_SUCCESS_MESSAGE)));
+		req.setAttribute(ATTR_REDIRECT_URL, req.getParameter((PARAM_REDIRECT_URL)));
 	}
 
 }
