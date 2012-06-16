@@ -72,14 +72,19 @@ public class AbsenceController extends AbstractController {
 		} else {
 			// else the absence is orphaned, because we can't know which one is
 			// best. It'll show in unanchored and they'll have to fix it.
-			return storeAbsence(absence,student);
+			return storeAbsence(absence, student);
 		}
 	}
 
 	/**
+	 * 
+	 * Note! This method causes destructive edits to the database that cannot be
+	 * fixed after releasing a reference to both parameters!
+	 * 
 	 * Given two absences, it checks to make sure that they're linked to the
-	 * same event and have the same student, then applies the ruleset that
-	 * dictates which absence takes precedence and returns it.
+	 * same event and that they have the same student, then applies the ruleset
+	 * that dictates which absence takes precedence and returns it after
+	 * removing the conflicting one.
 	 * 
 	 * If these two absences are not in conflict, it returns null;
 	 * 
@@ -218,15 +223,15 @@ public class AbsenceController extends AbstractController {
 	public void updateAbsence(Absence absence) {
 		this.train.getDataStore().update(absence);
 	}
-	
+
 	public Absence autoApprove(Absence absence) {
-		//TODO check against forms for auto approval.
-		
+		// TODO check against forms for auto approval.
+
 		FormController fc = this.train.getFormsController();
-		if (absence != null ) {
+		if (absence != null) {
 			if (absence.getStudent() != null) {
 				List<Form> forms = fc.get(absence.getStudent());
-				for (Form f :forms) {
+				for (Form f : forms) {
 					autoApprove(absence, f);
 				}
 			} else {
@@ -237,27 +242,27 @@ public class AbsenceController extends AbstractController {
 		}
 		return absence;
 	}
-	
+
 	private Absence autoApprove(Absence absence, Form form) {
-		if (form.getStatus() == Form.Status.Approved){
+		if (form.getStatus() == Form.Status.Approved) {
 			switch (form.getType()) {
 			case A:
-				
+
 				break;
 			case B:
-				
+
 				break;
 			case C:
-				
+
 				break;
 			case D:
-				
+
 				break;
 			}
 		} else {
-			//does not apply!
+			// does not apply!
 		}
-		//TODO check if the form meets a condition that approves this absence
+		// TODO check if the form meets a condition that approves this absence
 		return absence;
 	}
 
@@ -269,9 +274,9 @@ public class AbsenceController extends AbstractController {
 		od.store(messages);
 		absence.setMessageThread(messages);
 
-		//check against forms to see if this can be autoapproved
+		// check against forms to see if this can be autoapproved
 		autoApprove(absence);
-		
+
 		// Then do actual store
 		od.store(absence);
 		train.getUsersController().updateUserGrade(student);
