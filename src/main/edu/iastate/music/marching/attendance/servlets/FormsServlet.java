@@ -2,12 +2,21 @@ package edu.iastate.music.marching.attendance.servlets;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Properties;
 import java.util.TimeZone;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.AddressException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -83,12 +92,10 @@ public class FormsServlet extends AbstractBaseServlet {
 		}
 	}
 
-	private void viewForm(HttpServletRequest req, HttpServletResponse resp,
-			List<String> errors, String success_message)
+	private void viewForm(HttpServletRequest req, HttpServletResponse resp, List<String> errors, String success_message)
 			throws ServletException, IOException {
 		DataTrain train = DataTrain.getAndStartTrain();
-		User currentUser = train.getAuthController().getCurrentUser(
-				req.getSession());
+		User currentUser = train.getAuthController().getCurrentUser(req.getSession());
 		Form form = null;
 		try {
 			long id = Long.parseLong(req.getParameter("id"));
@@ -144,15 +151,15 @@ public class FormsServlet extends AbstractBaseServlet {
 			}
 	}
 
-	private void updateStatus(HttpServletRequest req, HttpServletResponse resp)
+	private void updateStatus(HttpServletRequest req, HttpServletResponse resp) 
 			throws ServletException, IOException {
 		DataTrain train = DataTrain.getAndStartTrain();
 		FormController fc = train.getFormsController();
-
+		
 		List<String> errors = new LinkedList<String>();
 		String success_message = "";
 		boolean validForm = true;
-
+		
 		Form f = null;
 		Form.Status status = null;
 		long id = 0;
@@ -174,25 +181,27 @@ public class FormsServlet extends AbstractBaseServlet {
 					validForm = false;
 					errors.add("Invalid form status.");
 				}
-
-			} catch (NumberFormatException e) {
+					
+			}
+			catch (NumberFormatException e) {
 				errors.add("Unable to find form.");
 				validForm = false;
-			} catch (NullPointerException e) {
+			}
+			catch (NullPointerException e) {
 				errors.add("Unable to find form.");
 				validForm = false;
 			}
 		}
-
+		
 		if (validForm) {
-			// Send them back to their Form page
+			//Send them back to their Form page
 			f.setStatus(status);
 			fc.update(f);
 			success_message = "Successfully updated form.";
 		}
 
 		viewForm(req, resp, errors, success_message);
-
+		
 	}
 
 	private void postFormA(HttpServletRequest req, HttpServletResponse resp)
@@ -511,15 +520,14 @@ public class FormsServlet extends AbstractBaseServlet {
 				errors.add("Invalid Input: The input date is invalid.");
 			}
 		}
-		User student = train.getAuthController().getCurrentUser(
-				req.getSession());
-
+		User student = train.getAuthController().getCurrentUser(req.getSession());
+		
 		if (validForm) {
 			// Store our new form to the data store
 
 			Form form = null;
 			try {
-				// hash the id for use in the accepting and declining forms
+				//hash the id for use in the accepting and declining forms
 				form = train.getFormsController().createFormD(student, email,
 						date, minutes, details);
 			} catch (IllegalArgumentException e) {
@@ -608,7 +616,8 @@ public class FormsServlet extends AbstractBaseServlet {
 							"Form not deleted. If the form was already approved then you can't delete it.");
 					// TODO you might be able to. Check with staub
 				}
-			} catch (NullPointerException e) {
+			}
+			catch (NullPointerException e) {
 				page.setAttribute("error_messages", "The form does not exist.");
 			}
 		}
