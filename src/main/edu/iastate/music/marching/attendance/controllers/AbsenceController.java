@@ -10,7 +10,6 @@ import com.google.code.twig.ObjectDatastore;
 
 import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.Event;
-import edu.iastate.music.marching.attendance.model.Form;
 import edu.iastate.music.marching.attendance.model.MessageThread;
 import edu.iastate.music.marching.attendance.model.ModelFactory;
 import edu.iastate.music.marching.attendance.model.User;
@@ -72,7 +71,11 @@ public class AbsenceController extends AbstractController {
 		} else {
 			// else the absence is orphaned, because we can't know which one is
 			// best. It'll show in unanchored and they'll have to fix it.
+<<<<<<< HEAD
 			return storeAbsence(absence, student);
+=======
+			return null;
+>>>>>>> b1283df6b3a39ae37c1a2e5ace62f1d4cc441dda
 		}
 	}
 
@@ -113,8 +116,8 @@ public class AbsenceController extends AbstractController {
 				remove(one);
 				return two;
 			case EarlyCheckOut:
-				remove(two);
-				return one;
+				remove(one);
+				return two;
 			}
 			break;
 		case Tardy:
@@ -223,6 +226,7 @@ public class AbsenceController extends AbstractController {
 	public void updateAbsence(Absence absence) {
 		this.train.getDataStore().update(absence);
 	}
+<<<<<<< HEAD
 
 	public Absence autoApprove(Absence absence) {
 		// TODO check against forms for auto approval.
@@ -265,6 +269,8 @@ public class AbsenceController extends AbstractController {
 		// TODO check if the form meets a condition that approves this absence
 		return absence;
 	}
+=======
+>>>>>>> b1283df6b3a39ae37c1a2e5ace62f1d4cc441dda
 
 	private Absence storeAbsence(Absence absence, User student) {
 		ObjectDatastore od = this.train.getDataStore();
@@ -274,9 +280,12 @@ public class AbsenceController extends AbstractController {
 		od.store(messages);
 		absence.setMessageThread(messages);
 
+<<<<<<< HEAD
 		// check against forms to see if this can be autoapproved
 		autoApprove(absence);
 
+=======
+>>>>>>> b1283df6b3a39ae37c1a2e5ace62f1d4cc441dda
 		// Then do actual store
 		od.store(absence);
 		train.getUsersController().updateUserGrade(student);
