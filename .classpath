@@ -20,17 +20,5 @@
 	<classpathentry kind="lib" path="lib/appengine-api-labs.jar"/>
 	<classpathentry kind="lib" path="lib/appengine-api-stubs.jar"/>
 	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
-	<classpathentry kind="lib" path="/home/curtis/.eclipse/org.eclipse.platform_3.7.0_155965261/plugins/com.google.gwt.eclipse.sdkbundle_2.4.0.v201205091048-rel-r37/gwt-2.4.0/gwt-user.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="file:/home/curtis/.eclipse/org.eclipse.platform_3.7.0_155965261/plugins/com.google.gwt.eclipse.sdkbundle_2.4.0.v201205091048-rel-r37/gwt-2.4.0/doc/javadoc/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="/home/curtis/.eclipse/org.eclipse.platform_3.7.0_155965261/plugins/com.google.gwt.eclipse.sdkbundle_2.4.0.v201205091048-rel-r37/gwt-2.4.0/gwt-dev.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="file:/home/curtis/.eclipse/org.eclipse.platform_3.7.0_155965261/plugins/com.google.gwt.eclipse.sdkbundle_2.4.0.v201205091048-rel-r37/gwt-2.4.0/doc/javadoc/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="/home/curtis/.eclipse/org.eclipse.platform_3.7.0_155965261/plugins/com.google.gwt.eclipse.sdkbundle_2.4.0.v201205091048-rel-r37/gwt-2.4.0/validation-api-1.0.0.GA.jar" sourcepath="/home/curtis/.eclipse/org.eclipse.platform_3.7.0_155965261/plugins/com.google.gwt.eclipse.sdkbundle_2.4.0.v201205091048-rel-r37/gwt-2.4.0/validation-api-1.0.0.GA-sources.jar"/>
-	<classpathentry kind="lib" path="/home/curtis/.eclipse/org.eclipse.platform_3.7.0_155965261/plugins/com.google.gwt.eclipse.sdkbundle_2.4.0.v201205091048-rel-r37/gwt-2.4.0/validation-api-1.0.0.GA-sources.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
