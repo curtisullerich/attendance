@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.iastate.music.marching.attendance.controllers.AuthController;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.UserController;
 import edu.iastate.music.marching.attendance.model.User;
@@ -79,6 +80,8 @@ public class AdminServlet extends AbstractBaseServlet {
 			throws IOException, ServletException {
 
 		String netID, strType, firstName, lastName;
+		
+		DataTrain train = DataTrain.getAndStartTrain();
 
 		// Grab all the data from the fields
 		netID = req.getParameter("NetID");
@@ -88,7 +91,7 @@ public class AdminServlet extends AbstractBaseServlet {
 		
 		User.Type type = User.Type.valueOf(strType);
 
-		UserController uc = DataTrain.getAndStartTrain().getUsersController();
+		UserController uc = train.getUsersController();
 
 		User localUser = uc.get(netID);
 
@@ -98,6 +101,10 @@ public class AdminServlet extends AbstractBaseServlet {
 
 		// TODO May throw validation exceptions
 		uc.update(localUser);
+		
+		// Update user in session if we just changed the currently logged in user
+		if(localUser.equals(train.getAuthController().getCurrentUser(req.getSession())))
+			AuthController.updateCurrentUser(localUser, req.getSession());
 
 		showUsers(req, resp);
 
