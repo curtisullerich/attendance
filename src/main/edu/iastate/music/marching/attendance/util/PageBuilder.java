@@ -32,7 +32,7 @@ public class PageBuilder {
 	private String mJSPPath;
 
 	private Map<String, Object> attribute_map;
-	private PageTemplateBean mPageBean;
+	private PageTemplateBean mPageTemplateBean;
 
 	private AppData mAppData;
 
@@ -52,9 +52,9 @@ public class PageBuilder {
 		
 		mAppData = mDataTrain.getAppDataController().get();
 
-		mPageBean = new PageTemplateBean(jsp_simple_path, mAppData);
+		mPageTemplateBean = new PageTemplateBean(jsp_simple_path, mAppData, mDataTrain.getAuthController());
 
-		mPageBean.setTitle(mAppData.getTitle());
+		mPageTemplateBean.setTitle(mAppData.getTitle());
 	}
 
 	public <T extends Enum<T>> PageBuilder(T page, String jsp_servlet_path) {
@@ -66,7 +66,7 @@ public class PageBuilder {
 	}
 
 	public PageBuilder setPageTitle(String title) {
-		mPageBean.setTitle(title + " - " + mAppData.getTitle());
+		mPageTemplateBean.setTitle(title + " - " + mAppData.getTitle());
 
 		return this;
 	}
@@ -88,7 +88,7 @@ public class PageBuilder {
 			req.setAttribute(entry.getKey(), entry.getValue());
 
 		// Insert page template data bean
-		mPageBean.apply(req);
+		mPageTemplateBean.apply(req);
 
 		// Insert authentication data bean
 		AuthBean.getBean(req.getSession(), mDataTrain).apply(req);
