@@ -56,7 +56,6 @@ public class AbsenceController extends AbstractController {
 			if (absence.getStart().getTime() - toLink.getStart().getTime() >= 30 * 60 * 1000) {
 				absence.setType(Absence.Type.Absence);
 			}
-			absence = validateAbsence(absence);
 		}
 		return storeAbsence(absence, student);
 	}
@@ -185,9 +184,6 @@ public class AbsenceController extends AbstractController {
 		if (events.size() == 1) {
 			absence.setEvent(events.get(0));
 			// associated with this event for this student
-
-			// check for conflicts with any already-stored Absences
-			absence = validateAbsence(absence);
 		}
 
 		return storeAbsence(absence, student);
@@ -212,9 +208,6 @@ public class AbsenceController extends AbstractController {
 		if (events.size() == 1) {
 			absence.setEvent(events.get(0));
 			// associated with this event for this student
-
-			// check for conflicts with any already-stored Absences
-			absence = validateAbsence(absence);
 		}
 		// else the absence is orphaned
 
@@ -238,8 +231,7 @@ public class AbsenceController extends AbstractController {
 	private Absence validateAbsence(Absence absence) {
 		Event linked = absence.getEvent();
 		if (linked == null) {
-			throw new IllegalArgumentException(
-					"Can't validate an orphaned Absence.");
+			return absence;
 		}
 		User student = absence.getStudent();
 		if (student == null) {
@@ -267,13 +259,14 @@ public class AbsenceController extends AbstractController {
 			}
 		}
 
-		// TODO need to check if there is a form that auto-approves this absence
-
 		return absence;
 	}
 
 	/**
 	 * This does not store any changes in the database!
+	 * 
+	 * Note that this is only valid for forms A, B, and C. Form D has separate
+	 * validation that occurs when a Form D is approved AND verified.
 	 * 
 	 * @param absence
 	 * @return
@@ -301,6 +294,9 @@ public class AbsenceController extends AbstractController {
 
 	/**
 	 * This does not store any changes in the database!
+	 * 
+	 * Note that this is only valid for forms A, B, and C. Form D has separate
+	 * validation that occurs when a Form D is approved AND verified.
 	 * 
 	 * @param absence
 	 * @param form
@@ -448,6 +444,8 @@ public class AbsenceController extends AbstractController {
 	// exception if you're storing an orphaned or student-less Absence
 	// (currently, at least)
 	public void updateAbsence(Absence absence) {
+		absence = validateAbsence(absence);
+		absence = checkForAutoApproval(absence);
 		this.train.getDataStore().update(absence);
 	}
 
@@ -461,6 +459,9 @@ public class AbsenceController extends AbstractController {
 
 		// Then do actual store
 		od.store(absence);
+		absence = validateAbsence(absence);
+		absence = checkForAutoApproval(absence);
+
 		train.getUsersController().updateUserGrade(student);
 
 		return absence;
