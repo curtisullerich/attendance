@@ -6,6 +6,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.iastate.music.marching.attendance.util.PageBuilder;
+
 public class ErrorServlet extends AbstractBaseServlet {
 
 	/**
@@ -18,19 +20,43 @@ public class ErrorServlet extends AbstractBaseServlet {
 	public static final String URL = "/" + SERVLET_PATH;
 
 	public enum Page {
-		index;
+		index, unauthorized;
 	}
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		resp.getOutputStream().println(req.getPathInfo());
+
+		Page page = parsePathInfo(req.getPathInfo(), Page.class);
+		if (page == null) {
+			showError(req, resp, 404);
+			return;
+		}
+
+		switch (page) {
+		case unauthorized:
+			showUnauthorized(req, resp);
+			break;
+		default:
+			showError(req, resp, 404);
+		}
 	}
 
 	public static void showError(HttpServletRequest req,
 			HttpServletResponse resp, int i) throws ServletException,
 			IOException {
-		new PageBuilder(Page.index, SERVLET_PATH).passOffToJsp(req, resp);
+		new PageBuilder(Page.index, SERVLET_PATH).setPageTitle(
+				new Integer(i).toString() + " Error").passOffToJsp(req, resp);
+	}
+
+	public static String getLoginFailedUrl(HttpServletRequest req) {
+		return pageToUrl(Page.unauthorized, SERVLET_PATH);
+	}
+
+	private void showUnauthorized(HttpServletRequest req,
+			HttpServletResponse resp) throws ServletException, IOException {
+		new PageBuilder(Page.unauthorized, SERVLET_PATH).setPageTitle(
+				"Unauthorized").passOffToJsp(req, resp);
 	}
 
 }

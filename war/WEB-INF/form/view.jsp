@@ -13,7 +13,7 @@
 		
 		<h1>Form <c:out value="${form.type.value}" /></h1>
 		
-		<form action="./view" method="post" accept-charset="utf-8">
+		<form method="post" accept-charset="utf-8">
 			<dl class="block-layout">
 				<dt><label></label></dt>
 				<dt><label>Status</label></dt>
@@ -89,4 +89,7 @@
 				</c:if>
 			</dl>
 		</form>
+
+		<jsp:include page="/WEB-INF/template/footer.jsp" />
+	</body>
 </html>

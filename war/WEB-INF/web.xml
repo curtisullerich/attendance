@@ -1,18 +1,6 @@
 <!-- Generated from app.yaml. Do not edit. -->
 <web-app version='2.5' xmlns='http://java.sun.com/xml/ns/javaee' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd'>
   <servlet>
-    <servlet-name>homepage</servlet-name>
-    <servlet-class>edu.iastate.music.marching.attendance.servlets.HomepageServlet</servlet-class>
-    <init-param>
-      <param-name>path</param-name>
-      <param-value>homepage</param-value>
-    </init-param>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>homepage</servlet-name>
-    <url-pattern>/homepage</url-pattern>
-  </servlet-mapping>
-  <servlet>
     <servlet-name>error</servlet-name>
     <servlet-class>edu.iastate.music.marching.attendance.servlets.ErrorServlet</servlet-class>
     <init-param>
@@ -160,14 +148,6 @@
     <servlet-name>admin</servlet-name>
     <url-pattern>/admin/*</url-pattern>
   </servlet-mapping>
-  <servlet>
-      <servlet-name>public</servlet-name>
-      <servlet-class>edu.iastate.music.marching.attendance.servlets.PublicServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-      <servlet-name>public</servlet-name>
-      <url-pattern>/public/*</url-pattern>
-  </servlet-mapping>
   <security-constraint>
     <web-resource-collection>
       <web-resource-name>aname</web-resource-name>
@@ -181,6 +161,6 @@
     </user-data-constraint>
   </security-constraint>
   <welcome-file-list>
-    <welcome-file>homepage</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
 </web-app>

@@ -2,21 +2,12 @@ package edu.iastate.music.marching.attendance.servlets;
 
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Properties;
 import java.util.TimeZone;
 
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,6 +18,7 @@ import edu.iastate.music.marching.attendance.controllers.FormController;
 import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.Form;
 import edu.iastate.music.marching.attendance.model.User;
+import edu.iastate.music.marching.attendance.util.PageBuilder;
 import edu.iastate.music.marching.attendance.util.Util;
 import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
@@ -51,8 +43,12 @@ public class FormsServlet extends AbstractBaseServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		if (!isLoggedIn(req, resp, getServletUserTypes())) {
-			resp.sendRedirect(AuthServlet.URL_LOGIN);
+		
+		if (!isLoggedIn(req, resp)) {
+			resp.sendRedirect(AuthServlet.getLoginUrl(req));
+			return;
+		} else if (!isLoggedIn(req, resp, getServletUserTypes())) {
+			resp.sendRedirect(ErrorServlet.getLoginFailedUrl(req));
 			return;
 		}
 
@@ -119,8 +115,12 @@ public class FormsServlet extends AbstractBaseServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		if (!isLoggedIn(req, resp, getServletUserTypes())) {
-			resp.sendRedirect(AuthServlet.URL_LOGIN);
+		
+		if (!isLoggedIn(req, resp)) {
+			resp.sendRedirect(AuthServlet.getLoginUrl());
+			return;
+		} else if (!isLoggedIn(req, resp, getServletUserTypes())) {
+			resp.sendRedirect(ErrorServlet.getLoginFailedUrl(req));
 			return;
 		}
 

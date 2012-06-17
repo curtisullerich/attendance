@@ -14,15 +14,10 @@ static_files:
 sessions_enabled: true
 
 welcome_files:
-  - homepage
+  - index.jsp
 
 handlers:
-  
-- url: /homepage
-  servlet: edu.iastate.music.marching.attendance.servlets.HomepageServlet
-  init_params:
-    path: "homepage"
-  name: homepage
+
   
 - url: /error/*
   servlet: edu.iastate.music.marching.attendance.servlets.ErrorServlet

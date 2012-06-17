@@ -29,6 +29,7 @@ import edu.iastate.music.marching.attendance.model.Form;
 import edu.iastate.music.marching.attendance.model.MessageThread;
 import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.model.User.Section;
+import edu.iastate.music.marching.attendance.util.PageBuilder;
 import edu.iastate.music.marching.attendance.util.Util;
 import edu.iastate.music.marching.attendance.util.ValidationExceptions;
 import edu.iastate.music.marching.attendance.util.ValidationUtil;
@@ -53,8 +54,11 @@ public class DirectorServlet extends AbstractBaseServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		if (!isLoggedIn(req, resp, User.Type.Director)) {
-			resp.sendRedirect(AuthServlet.URL_LOGIN);
+		if (!isLoggedIn(req, resp)) {
+			resp.sendRedirect(AuthServlet.getLoginUrl(req));
+			return;
+		} else if (!isLoggedIn(req, resp, User.Type.Director)) {
+			resp.sendRedirect(ErrorServlet.getLoginFailedUrl(req));
 			return;
 		}
 
@@ -216,7 +220,13 @@ public class DirectorServlet extends AbstractBaseServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		// Admin login required by web.xml entry
+		if (!isLoggedIn(req, resp)) {
+			resp.sendRedirect(AuthServlet.getLoginUrl());
+			return;
+		} else if (!isLoggedIn(req, resp, User.Type.Director)) {
+			resp.sendRedirect(ErrorServlet.getLoginFailedUrl(req));
+			return;
+		}
 
 		Page page = parsePathInfo(req.getPathInfo(), Page.class);
 

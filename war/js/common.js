@@ -18,6 +18,25 @@ function goBack()
 }
 
 /**
+ * Sends the browser to a specific url after a given delay,
+ * showing a pretty message during the delay
+ * @author Daniel Stiner
+ * @date 6/16/12
+ */
+function redirectWithDelay(url, message, delay)
+{
+	if(!url) return;
+	delay = delay || 3000;
+
+	if(message)
+		$('#loading').text(message);
+
+	$('#loading').fadeIn().delay(3000).fadeOut(function () {
+		window.location = url;
+	});
+}
+
+/**
  * Checks email address validity
  * 
  * http://stackoverflow.com/questions/2855865/jquery-validate-e-mail-address-regex

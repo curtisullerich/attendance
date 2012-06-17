@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.FormController;
 import edu.iastate.music.marching.attendance.model.Form;
+import edu.iastate.music.marching.attendance.util.PageBuilder;
 
 public class PublicServlet extends AbstractBaseServlet {
 

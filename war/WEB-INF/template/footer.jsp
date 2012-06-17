@@ -33,7 +33,6 @@
 		</div>
 	</div>
 
-
 </c:when>
 <c:when test="${pagetemplate.mobileSite}">
 	
@@ -50,3 +49,5 @@
 
 </c:when>
 </c:choose>
+
+	<div id="loading" style="display: none; ">Loading...</div>

@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.UserController;
 import edu.iastate.music.marching.attendance.model.User;
+import edu.iastate.music.marching.attendance.util.PageBuilder;
 
 public class TAServlet extends AbstractBaseServlet {
 
@@ -32,8 +33,11 @@ public class TAServlet extends AbstractBaseServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		if (!isLoggedIn(req, resp, User.Type.TA)) {
-			resp.sendRedirect(AuthServlet.URL_LOGIN);
+		if (!isLoggedIn(req, resp)) {
+			resp.sendRedirect(AuthServlet.getLoginUrl(req));
+			return;
+		} else if (!isLoggedIn(req, resp, User.Type.TA)) {
+			resp.sendRedirect(ErrorServlet.getLoginFailedUrl(req));
 			return;
 		}
 
@@ -59,8 +63,11 @@ public class TAServlet extends AbstractBaseServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		
-		if (!isLoggedIn(req, resp, User.Type.TA)) {
-			resp.sendRedirect(AuthServlet.URL_LOGIN);
+		if (!isLoggedIn(req, resp)) {
+			resp.sendRedirect(AuthServlet.getLoginUrl());
+			return;
+		} else if (!isLoggedIn(req, resp, User.Type.TA)) {
+			resp.sendRedirect(ErrorServlet.getLoginFailedUrl(req));
 			return;
 		}
 
