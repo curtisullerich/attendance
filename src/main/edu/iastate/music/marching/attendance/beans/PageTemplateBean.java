@@ -2,7 +2,9 @@ package edu.iastate.music.marching.attendance.beans;
 
 import javax.servlet.http.HttpServletRequest;
 
+import edu.iastate.music.marching.attendance.controllers.AuthController;
 import edu.iastate.music.marching.attendance.model.AppData;
+import edu.iastate.music.marching.attendance.model.User;
 
 public class PageTemplateBean implements java.io.Serializable {
 
@@ -31,6 +33,14 @@ public class PageTemplateBean implements java.io.Serializable {
 
 	private String mRequestUri;
 
+	private NavigationBean mNavigationBean;
+
+	private String mPath;
+
+	private AuthController mAuth;
+
+	private User mCurrentUser;
+
 	/**
 	 * No-arg constructor always for a bean
 	 * 
@@ -38,9 +48,10 @@ public class PageTemplateBean implements java.io.Serializable {
 	 * 
 	 * @param mJSPPath
 	 */
-	public PageTemplateBean(String jsp_path, AppData appData) {
+	public PageTemplateBean(String jsp_path, AppData appData, AuthController authController) {
 		mJSPPath = jsp_path;
 		mAppData = appData;
+		mAuth = authController;
 	}
 
 	public boolean isMobileDevice() {
@@ -68,14 +79,29 @@ public class PageTemplateBean implements java.io.Serializable {
 	}
 
 	public String getUri() {
-		return mRequestUri;
+		return this.mRequestUri;
+	}
+	
+	public String getPath() {
+		return this.mPath;
+	}
+	
+	public NavigationBean getNavigation()
+	{
+		if(this.mNavigationBean == null)
+			this.mNavigationBean = NavigationBean.getInstance(mCurrentUser);
+		return this.mNavigationBean;
 	}
 
 	public void apply(HttpServletRequest request) {
+		
+		this.mCurrentUser = this.mAuth.getCurrentUser(request.getSession());
 
 		this.mRequestUri = request.getRequestURI()
 				+ ((request.getQueryString() == null) ? "" : "?"
 						+ request.getQueryString());
+		
+		this.mPath = request.getRequestURI();
 
 		// Check if mobile site view is explicitly set
 		if ("true".equals(request.getParameter("mobile")))
