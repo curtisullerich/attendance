@@ -86,7 +86,7 @@ public class ServletAccess extends AbstractTest {
 
 		doGet(DirectorServlet.class, req, resp);
 
-		verifyLoginRedirect(req, resp, "director/index");
+		verifyUnauthorizedRedirect(req, resp, "director/index");
 	}
 
 	@Test
@@ -99,7 +99,7 @@ public class ServletAccess extends AbstractTest {
 
 		doGet(DirectorServlet.class, req, resp);
 
-		verifyLoginRedirect(req, resp, "director/index");
+		verifyUnauthorizedRedirect(req, resp, "director/index");
 	}
 
 	@Test
@@ -112,7 +112,7 @@ public class ServletAccess extends AbstractTest {
 
 		doGet(DirectorServlet.class, req, resp);
 
-		verifyLoginRedirect(req, resp, "director/nonexistant");
+		verifyUnauthorizedRedirect(req, resp, "director/nonexistant");
 	}
 
 	@Test
@@ -154,6 +154,12 @@ public class ServletAccess extends AbstractTest {
 			HttpServletResponse resp, String returnUrl)
 			throws ServletException, IOException {
 		verify(resp).sendRedirect("/auth/login");
+	}
+	
+	private void verifyUnauthorizedRedirect(HttpServletRequest req,
+			HttpServletResponse resp, String returnUrl)
+			throws ServletException, IOException {
+		verify(resp).sendRedirect("/error/unauthorized");
 	}
 
 	private RequestDispatcher setupErrorRedirect(HttpServletRequest req,
