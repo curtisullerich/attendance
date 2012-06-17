@@ -65,22 +65,17 @@ public class AbsenceController extends AbstractController {
 					}
 				}
 			} else {
-				// we're good. Store it.
+				// we're good. Nothing to do here. Store it.
 			}
 			return storeAbsence(absence, student);
 		} else {
 			// else the absence is orphaned, because we can't know which one is
 			// best. It'll show in unanchored and they'll have to fix it.
-<<<<<<< HEAD
 			return storeAbsence(absence, student);
-=======
-			return null;
->>>>>>> b1283df6b3a39ae37c1a2e5ace62f1d4cc441dda
 		}
 	}
 
 	/**
-	 * 
 	 * Note! This method causes destructive edits to the database that cannot be
 	 * fixed after releasing a reference to both parameters!
 	 * 
@@ -180,11 +175,17 @@ public class AbsenceController extends AbstractController {
 
 	public Absence createOrUpdateAbsence(User student, Date start, Date end) {
 
-		if (student == null)
+		if (student == null) {
 			throw new IllegalArgumentException(
 					"Tried to create absence for null user");
-
-		// TODO : Check for exact duplicates
+		}
+		// TODO:Check for exact duplicates--whoever put this here, did you mean
+		// duplicate dates? If so, click here and press ctrl+D. repeat above
+		if (!end.after(start)) {
+			// this should handle the case of equality
+			throw new IllegalArgumentException(
+					"End date was not after start date.");
+		}
 
 		Absence absence = ModelFactory
 				.newAbsence(Absence.Type.Absence, student);
@@ -193,10 +194,25 @@ public class AbsenceController extends AbstractController {
 
 		// Associate with event
 		List<Event> events = train.getEventController().get(start, end);
-		if (events.size() == 1)
+		if (events.size() == 1) {
 			absence.setEvent(events.get(0));
+			// associated with this event for this student
+
+			AbsenceController ac = train.getAbsenceController();
+			List<Absence> conflicts = ac.getAll(events.get(0), student);
+			for (Absence a : conflicts) {
+				Absence temp = resolveConflict(a, absence);
+				if (temp != null) {
+					absence = temp;
+				}
+			}
+		}
+
 		// else the absence is orphaned
 		absence.setStatus(Absence.Status.Pending);
+
+		// TODO need to check if there is a form that auto-approves this absence
+
 		return storeAbsence(absence, student);
 	}
 
@@ -226,51 +242,6 @@ public class AbsenceController extends AbstractController {
 	public void updateAbsence(Absence absence) {
 		this.train.getDataStore().update(absence);
 	}
-<<<<<<< HEAD
-
-	public Absence autoApprove(Absence absence) {
-		// TODO check against forms for auto approval.
-
-		FormController fc = this.train.getFormsController();
-		if (absence != null) {
-			if (absence.getStudent() != null) {
-				List<Form> forms = fc.get(absence.getStudent());
-				for (Form f : forms) {
-					autoApprove(absence, f);
-				}
-			} else {
-				throw new IllegalArgumentException("Student was null.");
-			}
-		} else {
-			throw new IllegalArgumentException("Absence was null.");
-		}
-		return absence;
-	}
-
-	private Absence autoApprove(Absence absence, Form form) {
-		if (form.getStatus() == Form.Status.Approved) {
-			switch (form.getType()) {
-			case A:
-
-				break;
-			case B:
-
-				break;
-			case C:
-
-				break;
-			case D:
-
-				break;
-			}
-		} else {
-			// does not apply!
-		}
-		// TODO check if the form meets a condition that approves this absence
-		return absence;
-	}
-=======
->>>>>>> b1283df6b3a39ae37c1a2e5ace62f1d4cc441dda
 
 	private Absence storeAbsence(Absence absence, User student) {
 		ObjectDatastore od = this.train.getDataStore();
@@ -280,12 +251,6 @@ public class AbsenceController extends AbstractController {
 		od.store(messages);
 		absence.setMessageThread(messages);
 
-<<<<<<< HEAD
-		// check against forms to see if this can be autoapproved
-		autoApprove(absence);
-
-=======
->>>>>>> b1283df6b3a39ae37c1a2e5ace62f1d4cc441dda
 		// Then do actual store
 		od.store(absence);
 		train.getUsersController().updateUserGrade(student);
