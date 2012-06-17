@@ -43,10 +43,6 @@ public class AbsenceController extends AbstractController {
 		// best. It'll show in unanchored and they'll have to fix it.
 		if (events.size() == 1) {
 			Event toLink = events.get(0);
-			// before, linking, need to check other absences that are linked to
-			// this event for this user for states of conflict
-			List<Absence> absences = getAll(events.get(0), student);
-
 			// now link
 			absence.setEvent(toLink);
 
