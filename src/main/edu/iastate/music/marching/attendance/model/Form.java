@@ -14,15 +14,17 @@ public class Form {
 		public String getValue() {
 			return name();
 		}
+
 		private Status() {
 			mDisplayString = this.toString();
 		}
+
 		private String mDisplayString;
-		
+
 		public String getDisplayName() {
 			return mDisplayString;
 		}
-		
+
 		public boolean isPending() {
 			return this == Pending;
 		}
@@ -30,7 +32,7 @@ public class Form {
 
 	public static enum Type {
 		A, B, C, D;
-		
+
 		private String mDisplayString;
 
 		private Type() {
@@ -40,14 +42,15 @@ public class Form {
 		private Type(String display_string) {
 			mDisplayString = display_string;
 		}
-		
+
 		public String getDisplayName() {
 			return mDisplayString;
 		}
-		
+
 		public String getValue() {
 			return name();
 		}
+
 		public boolean isA() {
 			return this == A;
 		}
@@ -114,27 +117,22 @@ public class Form {
 	public void setHashedId(long id) {
 		hashedId = id;
 	}
-	
+
 	public long getHashedId() {
 		return hashedId;
 	}
-	
-	
-	public void setDay(int day)
-	{
+
+	public void setDay(int day) {
 		this.day = day;
 	}
-	
-	public int getDayAsInt()
-	{
+
+	public int getDayAsInt() {
 		return day;
 	}
-	
-	public String getDayAsString()
-	{
+
+	public String getDayAsString() {
 		String ret = "";
-		switch(day)
-		{
+		switch (day) {
 		case 1:
 			ret = "Sunday";
 			break;
@@ -159,6 +157,7 @@ public class Form {
 		}
 		return ret;
 	}
+
 	public String getBuilding() {
 		return building;
 	}
@@ -166,6 +165,7 @@ public class Form {
 	// String to be used by Form D
 	private String emailTo;
 	private int minutesWorked;
+	private int minutesToOrFrom;
 
 	public long getId() {
 		return id;
@@ -195,7 +195,7 @@ public class Form {
 	public String getDetails() {
 		return this.details;
 	}
-	
+
 	public Date getStart() {
 		return this.startTime;
 	}
@@ -287,12 +287,21 @@ public class Form {
 	public long generateHashedId() {
 		// TODO Auto-generated method stub
 		long ret = 23;
-		ret = ret * 31  + startTime.hashCode();
+		ret = ret * 31 + startTime.hashCode();
 		ret = ret * 31 + endTime.hashCode();
 		ret = ret * 31 + details.hashCode();
 		ret = ret * 31 + emailTo.hashCode();
 		ret = ret * 31 + minutesWorked;
 		return ret;
+	}
+
+	public void setMinutesToOrFrom(int minutesToOrFrom) {
+		this.minutesToOrFrom = minutesToOrFrom;
+
+	}
+
+	public int getMinutesToOrFrom() {
+		return this.minutesToOrFrom;
 	}
 
 }
