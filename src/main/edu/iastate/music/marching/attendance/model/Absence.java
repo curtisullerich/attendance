@@ -131,6 +131,10 @@ public class Absence {
 		this.type = type;
 	}
 
+	/**
+	 * The time of a tardy or earlycheckout.
+	 * @return time of a tardy or earlycheckout.
+	 */
 	public Date getDatetime() {
 		return this.start;
 	}

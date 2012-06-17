@@ -208,7 +208,7 @@ public class FormController extends AbstractController {
 
 	public Form createFormB(User student, String department, String course,
 			String section, String building, Date startDate, Date endDate,
-			int day, Date startTime, Date endTime, String details) {
+			int day, Date startTime, Date endTime, String details, int minutesToOrFrom) {
 		// TODO NEEDS MORE PARAMETERS and LOTS OF VALIDATION
 		Calendar calendar = Calendar.getInstance();
 		// calendar.setTime(date);
@@ -266,7 +266,7 @@ public class FormController extends AbstractController {
 		// Set remaining fields
 		form.setDetails(details);
 		form.setStatus(Form.Status.Pending);
-
+		form.setMinutesToOrFrom(minutesToOrFrom);
 		// Perform store
 		storeForm(form);
 

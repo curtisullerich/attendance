@@ -102,6 +102,12 @@
 						<option ${ToAMPM eq 'AM' ? '' : 'selected'}>PM</option>
 					</select>
 				</dd>
+
+				<dt><label class="required">Minutes to travel between class and rehearsal</label></dt>
+				<dd>
+					<input size='5' type='number' name="MinutesToOrFrom" min='00' max='60' step='1' placeholder='MM' value='<c:out value="${MinutesToOrFrom }"/>'/>
+					<br/>This is the time that it will take you to travel from class to band or from band to class. This is used to determine if you checked in or out too late or too soon, so make sure you leave enough time!
+				</dd>
 				
 				<dt><label for="Comments">Comments:</label></dt>
 				<dd>

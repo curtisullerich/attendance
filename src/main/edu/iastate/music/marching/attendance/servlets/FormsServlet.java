@@ -88,10 +88,12 @@ public class FormsServlet extends AbstractBaseServlet {
 		}
 	}
 
-	private void viewForm(HttpServletRequest req, HttpServletResponse resp, List<String> errors, String success_message)
+	private void viewForm(HttpServletRequest req, HttpServletResponse resp,
+			List<String> errors, String success_message)
 			throws ServletException, IOException {
 		DataTrain train = DataTrain.getAndStartTrain();
-		User currentUser = train.getAuthController().getCurrentUser(req.getSession());
+		User currentUser = train.getAuthController().getCurrentUser(
+				req.getSession());
 		Form form = null;
 		try {
 			long id = Long.parseLong(req.getParameter("id"));
@@ -151,15 +153,15 @@ public class FormsServlet extends AbstractBaseServlet {
 			}
 	}
 
-	private void updateStatus(HttpServletRequest req, HttpServletResponse resp) 
+	private void updateStatus(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		DataTrain train = DataTrain.getAndStartTrain();
 		FormController fc = train.getFormsController();
-		
+
 		List<String> errors = new LinkedList<String>();
 		String success_message = "";
 		boolean validForm = true;
-		
+
 		Form f = null;
 		Form.Status status = null;
 		long id = 0;
@@ -181,27 +183,25 @@ public class FormsServlet extends AbstractBaseServlet {
 					validForm = false;
 					errors.add("Invalid form status.");
 				}
-					
-			}
-			catch (NumberFormatException e) {
+
+			} catch (NumberFormatException e) {
 				errors.add("Unable to find form.");
 				validForm = false;
-			}
-			catch (NullPointerException e) {
+			} catch (NullPointerException e) {
 				errors.add("Unable to find form.");
 				validForm = false;
 			}
 		}
-		
+
 		if (validForm) {
-			//Send them back to their Form page
+			// Send them back to their Form page
 			f.setStatus(status);
 			fc.update(f);
 			success_message = "Successfully updated form.";
 		}
 
 		viewForm(req, resp, errors, success_message);
-		
+
 	}
 
 	private void postFormA(HttpServletRequest req, HttpServletResponse resp)
@@ -288,6 +288,7 @@ public class FormsServlet extends AbstractBaseServlet {
 		Date fromTime = null;
 		Date toTime = null;
 		int day = -1;
+		int minutesToOrFrom = 0;
 		// String type = null;
 		String comments = null;
 
@@ -309,6 +310,8 @@ public class FormsServlet extends AbstractBaseServlet {
 			building = req.getParameter("Building");
 			// type = req.getParameter("Type");
 			comments = req.getParameter("Comments");
+			minutesToOrFrom = Integer.parseInt(req
+					.getParameter("MinutesToOrFrom"));
 
 			// this is one-based! Starting on Sunday.
 			day = Integer.parseInt(req.getParameter("DayOfWeek"));
@@ -346,7 +349,8 @@ public class FormsServlet extends AbstractBaseServlet {
 			try {
 				form = train.getFormsController().createFormB(student,
 						department, course, section, building, startDate,
-						endDate, day, fromTime, toTime, comments);
+						endDate, day, fromTime, toTime, comments,
+						minutesToOrFrom);
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add(e.getMessage());
@@ -379,6 +383,7 @@ public class FormsServlet extends AbstractBaseServlet {
 					.getTimeZone());
 			page.setAttribute("Type", Form.Type.B);
 			page.setAttribute("Comments", comments);
+			page.setAttribute("MinutesToOrFrom", minutesToOrFrom);
 
 			page.passOffToJsp(req, resp);
 		}
@@ -520,14 +525,15 @@ public class FormsServlet extends AbstractBaseServlet {
 				errors.add("Invalid Input: The input date is invalid.");
 			}
 		}
-		User student = train.getAuthController().getCurrentUser(req.getSession());
-		
+		User student = train.getAuthController().getCurrentUser(
+				req.getSession());
+
 		if (validForm) {
 			// Store our new form to the data store
 
 			Form form = null;
 			try {
-				//hash the id for use in the accepting and declining forms
+				// hash the id for use in the accepting and declining forms
 				form = train.getFormsController().createFormD(student, email,
 						date, minutes, details);
 			} catch (IllegalArgumentException e) {
@@ -616,8 +622,7 @@ public class FormsServlet extends AbstractBaseServlet {
 							"Form not deleted. If the form was already approved then you can't delete it.");
 					// TODO you might be able to. Check with staub
 				}
-			}
-			catch (NullPointerException e) {
+			} catch (NullPointerException e) {
 				page.setAttribute("error_messages", "The form does not exist.");
 			}
 		}
