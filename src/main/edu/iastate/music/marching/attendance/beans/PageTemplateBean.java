@@ -26,14 +26,15 @@ public class PageTemplateBean implements java.io.Serializable {
 	private boolean mobileBrowser = false;
 
 	private boolean mobileSite = false;
-	
+
 	private AppData mAppData;
 
 	private String mRequestUri;
 
 	/**
 	 * No-arg constructor always for a bean
-	 * @param appData 
+	 * 
+	 * @param appData
 	 * 
 	 * @param mJSPPath
 	 */
@@ -45,7 +46,7 @@ public class PageTemplateBean implements java.io.Serializable {
 	public boolean isMobileDevice() {
 		return mobileBrowser;
 	}
-	
+
 	public boolean isMobileSite() {
 		return mobileSite;
 	}
@@ -53,7 +54,7 @@ public class PageTemplateBean implements java.io.Serializable {
 	public String getJspath() {
 		return mJSPPath;
 	}
-	
+
 	public String getTimeZoneID() {
 		return mAppData.getTimeZone().getID();
 	}
@@ -65,15 +66,16 @@ public class PageTemplateBean implements java.io.Serializable {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	
-	public String getUri()
-	{
+
+	public String getUri() {
 		return mRequestUri;
 	}
 
 	public void apply(HttpServletRequest request) {
-		
-		this.mRequestUri = request.getRequestURI() + '?' + request.getQueryString();
+
+		this.mRequestUri = request.getRequestURI()
+				+ ((request.getQueryString() == null) ? "" : "?"
+						+ request.getQueryString());
 
 		// Check if mobile site view is explicitly set
 		if ("true".equals(request.getParameter("mobile")))
@@ -99,7 +101,8 @@ public class PageTemplateBean implements java.io.Serializable {
 						SESSION_ATTRIBUTE_SHOWMOBILESITE, true);
 		}
 
-		// Based on the now maybe saved preference, decide whether to show the mobile site
+		// Based on the now maybe saved preference, decide whether to show the
+		// mobile site
 		if (Boolean.TRUE.equals(request.getSession().getAttribute(
 				SESSION_ATTRIBUTE_SHOWMOBILESITE)))
 			this.mobileSite = true;
