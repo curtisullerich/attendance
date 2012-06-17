@@ -1,6 +1,7 @@
 package edu.iastate.music.marching.attendance.servlets;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,8 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import edu.iastate.music.marching.attendance.controllers.AuthController;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.model.User;
+import edu.iastate.music.marching.attendance.util.GoogleAccountException;
 import edu.iastate.music.marching.attendance.util.PageBuilder;
-import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
 public class AuthServlet extends AbstractBaseServlet {
 
@@ -31,7 +32,43 @@ public class AuthServlet extends AbstractBaseServlet {
 			SERVLET_PATH);
 
 	private enum Page {
-		index, login, logout, register_pre, register, register_post, login_fail;
+		index, login, login_callback, logout, register_pre, register, register_post, login_fail;
+	}
+
+	public static String getLoginUrl() {
+		return pageToUrl(Page.login, SERVLET_PATH);
+	}
+
+	public static String getLoginUrl(String redirect_url) {
+		String url = pageToUrl(Page.login, SERVLET_PATH);
+		try {
+			if (redirect_url != null && redirect_url != "")
+				url += "?redirect="
+						+ java.net.URLEncoder
+								.encode(redirect_url, "ISO-8859-1");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return url;
+	}
+
+	public static String getLoginUrl(HttpServletRequest request) {
+		return getLoginUrl(request.getRequestURI() + '?'
+				+ request.getQueryString());
+	}
+
+	private static String getLoginCallback(HttpServletRequest request) {
+		String url = pageToUrl(Page.login_callback, SERVLET_PATH);
+		try {
+			if (null != request.getParameter(PageBuilder.PARAM_REDIRECT_URL))
+				url += "?redirect="
+						+ java.net.URLEncoder.encode(request
+								.getParameter(PageBuilder.PARAM_REDIRECT_URL),
+								"ISO-8859-1");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return url;
 	}
 
 	@Override
@@ -48,10 +85,13 @@ public class AuthServlet extends AbstractBaseServlet {
 				resp.sendRedirect(URL_LOGIN);
 				break;
 			case login:
-				doLogin(req, resp);
+				handleLogin(req, resp, true);
 				break;
 			case logout:
 				doLogout(req, resp);
+				break;
+			case login_callback:
+				handleLogin(req, resp, true);
 				break;
 			case register:
 				handleRegistration(req, resp);
@@ -81,46 +121,41 @@ public class AuthServlet extends AbstractBaseServlet {
 
 	}
 
-	private void doLogin(HttpServletRequest req, HttpServletResponse resp)
-			throws IOException, ServletException {
-		
+	private void handleLogin(HttpServletRequest req, HttpServletResponse resp,
+			boolean allow_redirect) throws ServletException, IOException {
+
 		DataTrain train = DataTrain.getAndStartTrain();
 
-		com.google.appengine.api.users.User google_user = AuthController
-				.getGoogleUser();
+		try {
 
-		if (google_user == null) {
-			// No google user logged in at all, try to login
-			resp.sendRedirect(AuthController.getGoogleLoginURL(pageToUrl(
-					Page.login, SERVLET_PATH)));
-		} else {
-			// Some kind of google user logged in, check it is a valid one
-			if (ValidationUtil.validGoogleUser(google_user, train)) {
-
-				// Check if there is a user in the system already for this
-				// google user
-
-				User u = train.getUsersController().get(google_user);
-
-				if (u == null) {
-					// Still need to register
-					resp.sendRedirect(URL_REGISTER);
-				} else {
-					// Did successful login
-					AuthController.updateCurrentUser(u, req.getSession());
-					redirectPostLogin(req, resp);
-				}
+			if (train.getAuthController().login(req.getSession())) {
+				// Successful login
+				redirectPostLogin(req, resp, allow_redirect);
 			} else {
+				// Still need to register
+				resp.sendRedirect(URL_REGISTER);
+			}
+		} catch (GoogleAccountException e) {
+			switch (e.getType()) {
+			case None:
+				// No google user logged in at all, try to login
+				resp.sendRedirect(AuthController
+						.getGoogleLoginURL(getLoginCallback(req)));
+				break;
+			case Invalid:
 				new PageBuilder(Page.login_fail, SERVLET_PATH).setAttribute(
-						"error_message", "Invalid google account")
+						"error_messages", new String[] { e.getMessage() })
 						.passOffToJsp(req, resp);
+				break;
+			default:
+				throw e;
 			}
 		}
 	}
 
 	private void handleRegistration(HttpServletRequest req,
 			HttpServletResponse resp) throws ServletException, IOException {
-		
+
 		DataTrain train = DataTrain.getAndStartTrain();
 
 		if (AuthController.getGoogleUser() != null) {
@@ -132,7 +167,7 @@ public class AuthServlet extends AbstractBaseServlet {
 				showRegistration(req, resp);
 			} else {
 				// Already registered
-				redirectPostLogin(req, resp);
+				redirectPostLogin(req, resp, false);
 			}
 		} else {
 			// No valid google login, show a welcome page prompting them to
@@ -144,7 +179,7 @@ public class AuthServlet extends AbstractBaseServlet {
 
 	private void showRegistration(HttpServletRequest req,
 			HttpServletResponse resp) throws ServletException, IOException {
-		
+
 		DataTrain train = DataTrain.getAndStartTrain();
 
 		PageBuilder page = new PageBuilder(Page.register, SERVLET_PATH);
@@ -238,7 +273,7 @@ public class AuthServlet extends AbstractBaseServlet {
 			page.passOffToJsp(req, resp);
 		} else {
 			// Did create a new user!
-			
+
 			// Log them in
 			resp.sendRedirect(URL_LOGIN);
 		}
@@ -265,12 +300,17 @@ public class AuthServlet extends AbstractBaseServlet {
 	}
 
 	private void redirectPostLogin(HttpServletRequest req,
-			HttpServletResponse resp) throws IOException, ServletException {
-		
-		User user = DataTrain.getAndStartTrain().getAuthController().getCurrentUser(req.getSession());
+			HttpServletResponse resp, boolean redirect) throws IOException,
+			ServletException {
+
+		User user = DataTrain.getAndStartTrain().getAuthController()
+				.getCurrentUser(req.getSession());
 
 		if (user == null)
 			resp.sendRedirect(URL_REGISTER);
+		else if (null != req.getParameter(PageBuilder.PARAM_REDIRECT_URL)
+				&& redirect)
+			resp.sendRedirect(req.getParameter(PageBuilder.PARAM_REDIRECT_URL));
 		else
 			switch (user.getType()) {
 			case Student:

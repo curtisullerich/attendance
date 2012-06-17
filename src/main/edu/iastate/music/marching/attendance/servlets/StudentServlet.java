@@ -34,8 +34,11 @@ public class StudentServlet extends AbstractBaseServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		if (!isLoggedIn(req, resp, User.Type.Student, User.Type.TA)) {
-			resp.sendRedirect(AuthServlet.URL_LOGIN);
+		if (!isLoggedIn(req, resp)) {
+			resp.sendRedirect(AuthServlet.getLoginUrl(req));
+			return;
+		} else if (!isLoggedIn(req, resp, User.Type.Student, User.Type.TA)) {
+			resp.sendRedirect(ErrorServlet.getLoginFailedUrl(req));
 			return;
 		}
 
@@ -90,8 +93,11 @@ public class StudentServlet extends AbstractBaseServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		if (!isLoggedIn(req, resp, User.Type.Student, User.Type.TA)) {
-			resp.sendRedirect(AuthServlet.URL_LOGIN);
+		if (!isLoggedIn(req, resp)) {
+			resp.sendRedirect(AuthServlet.getLoginUrl());
+			return;
+		} else if (!isLoggedIn(req, resp, User.Type.TA, User.Type.Student)) {
+			resp.sendRedirect(ErrorServlet.getLoginFailedUrl(req));
 			return;
 		}
 

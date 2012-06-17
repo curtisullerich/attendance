@@ -6,11 +6,13 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
 import edu.iastate.music.marching.attendance.model.User;
+import edu.iastate.music.marching.attendance.util.GoogleAccountException;
+import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
 public class AuthController {
 
 	private static final String SESSION_USER_ATTRIBUTE = "authenticated_user";
-	
+
 	private DataTrain train;
 
 	private User currentUser = null;
@@ -42,8 +44,8 @@ public class AuthController {
 
 		if (u == null)
 			return false;
-		
-		if(allowed_types == null || allowed_types.length == 0)
+
+		if (allowed_types == null || allowed_types.length == 0)
 			return true;
 
 		for (User.Type type : allowed_types) {
@@ -55,18 +57,16 @@ public class AuthController {
 	}
 
 	public User getCurrentUser(HttpSession session) {
-		
-		if(this.currentUser == null)
-		{
+
+		if (this.currentUser == null) {
 			this.currentUser = getUserFromSession(session);
-		
-			if(this.currentUser != null)
-			{
+
+			if (this.currentUser != null) {
 				train.getDataStore().disassociate(this.currentUser);
 				train.getDataStore().associate(this.currentUser);
 			}
 		}
-		
+
 		return currentUser;
 	}
 
@@ -86,9 +86,35 @@ public class AuthController {
 		session.removeAttribute(SESSION_USER_ATTRIBUTE);
 	}
 
-	public static boolean login(HttpSession session) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean login(HttpSession session) {
+
+		com.google.appengine.api.users.User google_user = getGoogleUser();
+
+		if (google_user == null) {
+			// No google user logged in at all
+			throw new GoogleAccountException("No google user logged in at all",
+					GoogleAccountException.Type.None);
+		} else {
+			// Some kind of google user logged in, check it is a valid one
+			if (ValidationUtil.validGoogleUser(google_user, this.train)) {
+
+				// Check if there is a user in the system already for this
+				// google user
+				User u = train.getUsersController().get(google_user);
+
+				if (u == null) {
+					// Still need to register
+					return false;
+				} else {
+					// Did successful login
+					AuthController.updateCurrentUser(u, session);
+					return true;
+				}
+			} else {
+				throw new GoogleAccountException("Not a valid google account",
+						GoogleAccountException.Type.Invalid);
+			}
+		}
 	}
 
 	public static String getGoogleLoginURL(String redirect_url) {

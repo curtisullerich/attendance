@@ -31,8 +31,12 @@ public class MessagingServlet extends AbstractBaseServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		if (!isLoggedIn(req, resp, getServletUserTypes())) {
-			resp.sendRedirect(AuthServlet.URL_LOGIN);
+		
+		if (!isLoggedIn(req, resp)) {
+			resp.sendRedirect(AuthServlet.getLoginUrl(req));
+			return;
+		} else if (!isLoggedIn(req, resp, getServletUserTypes())) {
+			resp.sendRedirect(ErrorServlet.getLoginFailedUrl(req));
 			return;
 		}
 
@@ -57,8 +61,12 @@ public class MessagingServlet extends AbstractBaseServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		if (!isLoggedIn(req, resp, getServletUserTypes())) {
-			resp.sendRedirect(AuthServlet.URL_LOGIN);
+		
+		if (!isLoggedIn(req, resp)) {
+			resp.sendRedirect(AuthServlet.getLoginUrl());
+			return;
+		} else if (!isLoggedIn(req, resp, getServletUserTypes())) {
+			resp.sendRedirect(ErrorServlet.getLoginFailedUrl(req));
 			return;
 		}
 
