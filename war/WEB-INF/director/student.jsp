@@ -30,7 +30,7 @@
 			<h2 class="msg_head">Student Information </h2>
 			<div class="msg_body">
 			
-			<form method="post" action="/director/studentinfo" accept-charset="utf-8">
+			<form method="post" accept-charset="utf-8">
 				<dl class="block-layout">
 					<dt><label class="required" for="FirstName">First Name</label></dt>
 					<dd><input type="text" name="FirstName" value="<c:out value="${user.firstName}" />" /></dd>
