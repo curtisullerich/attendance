@@ -56,7 +56,23 @@ public class FormController extends AbstractController {
 	}
 
 	public void update(Form f) {
+
 		this.dataTrain.getDataStore().update(f);
+
+		AbsenceController ac = this.dataTrain.getAbsenceController();
+
+		// TODO what if the student is null?
+		for (Absence absence : ac.get(f.getStudent())) {
+			// TODO I wrote a (private) method in Absence controller that could
+			// do this more efficiently because it checks for a specific form
+			// and specific absence. We /could/ expose it as protected, but
+			// that may introduce bugs elsewhere because we're not forced to
+			// call updateAbsence in order to perform checks and thus may forget
+			// to update it or perform all necessary validation. This applies to
+			// all forms.
+			ac.updateAbsence(absence);
+		}
+
 	}
 
 	public Form getByHashedId(long id) {
@@ -83,6 +99,19 @@ public class FormController extends AbstractController {
 
 		// Update grade, it may have changed
 		dataTrain.getUsersController().update(form.getStudent());
+
+		// TODO what if the student is null?
+		AbsenceController ac = this.dataTrain.getAbsenceController();
+		for (Absence absence : ac.get(form.getStudent())) {
+			// TODO I wrote a (private) method in Absence controller that could
+			// do this more efficiently because it checks for a specific form
+			// and specific absence. We /could/ expose it as protected, but
+			// that may introduce bugs elsewhere because we're not forced to
+			// call updateAbsence in order to perform checks and thus may forget
+			// to update it or perform all necessary validation. This applies to
+			// all forms.
+			ac.updateAbsence(absence);
+		}
 
 		// Commit
 		// transaction.bendIronBack();
@@ -183,17 +212,6 @@ public class FormController extends AbstractController {
 		// Perform store
 		storeForm(form);
 
-		AbsenceController ac = this.dataTrain.getAbsenceController();
-		for (Absence absence : ac.get(student)) {
-			// TODO I wrote a (private) method in Absence controller that could
-			// do this more efficiently because it checks for a specific form
-			// and specific absence. We /could/ expose it as protected, but
-			// that may introduce bugs elsewhere because we're not forced to
-			// call updateAbsence in order to perform checks and thus may forget
-			// to update it or perform all necessary validation. This applies to
-			// all forms.
-			ac.updateAbsence(absence);
-		}
 		return form;
 		// return formACHelper(student, date, reason, Form.Type.A);
 	}
@@ -262,10 +280,6 @@ public class FormController extends AbstractController {
 		form.setMinutesToOrFrom(minutesToOrFrom);
 		// Perform store
 		storeForm(form);
-		AbsenceController ac = this.dataTrain.getAbsenceController();
-		for (Absence absence : ac.get(student)) {
-			ac.updateAbsence(absence);
-		}
 
 		return form;
 	}
@@ -354,12 +368,6 @@ public class FormController extends AbstractController {
 
 		// Perform store
 		storeForm(form);
-		AbsenceController ac = this.dataTrain.getAbsenceController();
-		for (Absence absence : ac.get(student)) {
-			// this will cause each of these absences to checked for
-			// autoapproval in the absence controller
-			ac.updateAbsence(absence);
-		}
 
 		return form;
 	}
@@ -498,7 +506,7 @@ public class FormController extends AbstractController {
 
 	public void approve(Form form) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
