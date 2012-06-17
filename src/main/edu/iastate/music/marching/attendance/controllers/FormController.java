@@ -17,7 +17,6 @@ import javax.mail.internet.MimeMessage;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.code.twig.FindCommand.RootFindCommand;
 import com.google.code.twig.ObjectDatastore;
-import com.sun.jmx.mbeanserver.Util;
 
 import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.Form;
@@ -55,16 +54,13 @@ public class FormController extends AbstractController {
 		find = find.addFilter(Form.FIELD_STUDENT, FilterOperator.EQUAL, user);
 		return find.returnAll().now();
 	}
-	
+
 	public void update(Form f) {
 		this.dataTrain.getDataStore().update(f);
 	}
-	
+
 	public Form getByHashedId(long id) {
-		return this.dataTrain
-				.getDataStore()
-				.find()
-				.type(Form.class)
+		return this.dataTrain.getDataStore().find().type(Form.class)
 				.addFilter(Form.HASHED_ID, FilterOperator.EQUAL, id)
 				.returnUnique().now();
 	}
@@ -143,21 +139,6 @@ public class FormController extends AbstractController {
 			exp.getErrors().add("Invalid reason");
 		}
 
-		// TODO can anyone provide a reason why? Otherwise this is cut
-		// // Check date is before cutoff but after today
-		// if (!calendar.after(Calendar.getInstance())) {
-		// exp.getErrors().add("Invalid date, must be after today.");
-		// }
-
-		// TODO this is incorrect. Forms may be submitted FOR any date, but the
-		// must be submitted BY the cutoff
-		//
-		// if (!calendar.before(dataTrain.getAppDataController().get()
-		// .getFormSubmissionCutoff())) {
-		// exp.getErrors().add(
-		// "Invalid date, must before form submission cutoff.");
-		// }
-
 		Calendar cutoff = Calendar.getInstance();
 		cutoff.setTime(dataTrain.getAppDataController().get()
 				.getFormSubmissionCutoff());
@@ -202,13 +183,25 @@ public class FormController extends AbstractController {
 		// Perform store
 		storeForm(form);
 
+		AbsenceController ac = this.dataTrain.getAbsenceController();
+		for (Absence absence : ac.get(student)) {
+			// TODO I wrote a (private) method in Absence controller that could
+			// do this more efficiently because it checks for a specific form
+			// and specific absence. We /could/ expose it as protected, but
+			// that may introduce bugs elsewhere because we're not forced to
+			// call updateAbsence in order to perform checks and thus may forget
+			// to update it or perform all necessary validation. This applies to
+			// all forms.
+			ac.updateAbsence(absence);
+		}
 		return form;
 		// return formACHelper(student, date, reason, Form.Type.A);
 	}
 
 	public Form createFormB(User student, String department, String course,
 			String section, String building, Date startDate, Date endDate,
-			int day, Date startTime, Date endTime, String details, int minutesToOrFrom) {
+			int day, Date startTime, Date endTime, String details,
+			int minutesToOrFrom) {
 		// TODO NEEDS MORE PARAMETERS and LOTS OF VALIDATION
 		Calendar calendar = Calendar.getInstance();
 		// calendar.setTime(date);
@@ -269,6 +262,10 @@ public class FormController extends AbstractController {
 		form.setMinutesToOrFrom(minutesToOrFrom);
 		// Perform store
 		storeForm(form);
+		AbsenceController ac = this.dataTrain.getAbsenceController();
+		for (Absence absence : ac.get(student)) {
+			ac.updateAbsence(absence);
+		}
 
 		return form;
 	}
@@ -357,10 +354,27 @@ public class FormController extends AbstractController {
 
 		// Perform store
 		storeForm(form);
+		AbsenceController ac = this.dataTrain.getAbsenceController();
+		for (Absence absence : ac.get(student)) {
+			// this will cause each of these absences to checked for
+			// autoapproval in the absence controller
+			ac.updateAbsence(absence);
+		}
 
 		return form;
 	}
 
+	/**
+	 * Note that FormD is never approved/verified upon creation, so we don't do
+	 * auto-approval checks here.
+	 * 
+	 * @param student
+	 * @param email
+	 * @param date
+	 * @param minutes
+	 * @param details
+	 * @return
+	 */
 	public Form createFormD(User student, String email, Date date, int minutes,
 			String details) {
 		Calendar calendar = Calendar.getInstance();
@@ -377,7 +391,8 @@ public class FormController extends AbstractController {
 			exp.getErrors().add("Time worked is not positive");
 		}
 
-		if (!ValidationUtil.isValidFormDEmail(email, this.dataTrain.getAppDataController().get())) {
+		if (!ValidationUtil.isValidFormDEmail(email, this.dataTrain
+				.getAppDataController().get())) {
 			exp.getErrors().add("Verification email is not valid");
 		}
 
@@ -412,41 +427,50 @@ public class FormController extends AbstractController {
 		sendEmail(student, minutes, date, email, form.getHashedId());
 		// Perform store
 		storeForm(form);
-		//The id field isn't stored until the form is persisted so 
+		// The id field isn't stored until the form is persisted so
 
 		return form;
 	}
 
-	private boolean sendEmail(User student, int minutes, Date date, String email, long hashedId) {
+	private boolean sendEmail(User student, int minutes, Date date,
+			String email, long hashedId) {
 		Properties props = new Properties();
 		Session session = Session.getDefaultInstance(props, null);
-		
-		String msgBody = new StringBuilder().append(student.getFirstName() + " " + student.getLastName())
-			.append(" has requested that you approve their " + minutes + " minutes of time worked ")
-			.append("on " + new SimpleDateFormat("MM/dd/yyyy").format(date) + ".</br></br>")
-			.append("<a href=\"www.isucfvmb-attendance.appspot.com/public/verify?s=a&i=" + hashedId + "\">Click here to Approve</a>")
-			.append("<a href=\"www.isucfvmb-attendance.appspot.com/public/verify?s=d&i=" + hashedId + "\">Click here to Deny</a>")
-			.append("</br>Thanks!").toString();
-		
+
+		String msgBody = new StringBuilder()
+				.append(student.getFirstName() + " " + student.getLastName())
+				.append(" has requested that you approve their " + minutes
+						+ " minutes of time worked ")
+				.append("on " + new SimpleDateFormat("MM/dd/yyyy").format(date)
+						+ ".</br></br>")
+				.append("<a href=\"www.isucfvmb-attendance.appspot.com/public/verify?s=a&i="
+						+ hashedId + "\">Click here to Approve</a>")
+				.append("<a href=\"www.isucfvmb-attendance.appspot.com/public/verify?s=d&i="
+						+ hashedId + "\">Click here to Deny</a>")
+				.append("</br>Thanks!").toString();
 
 		try {
 			MimeMessage msg = new MimeMessage(session);
 			msg.setFrom(new InternetAddress("mbattendance@iastate.edu"));
-			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(email));
-			
-			msg.setSubject(student.getFirstName() + " " + student.getLastName() + " Requests Time Worked Approval");
+			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
+					email));
+
+			msg.setSubject(student.getFirstName() + " " + student.getLastName()
+					+ " Requests Time Worked Approval");
 			msg.setContent(msgBody, "text/html; charset=UTF-8");
-			
+
 			Transport.send(msg);
 			return true;
 		} catch (AddressException e) {
-			throw new IllegalArgumentException("Internal Error: Could not send Email");
+			throw new IllegalArgumentException(
+					"Internal Error: Could not send Email");
 		} catch (MessagingException e) {
-			throw new IllegalArgumentException("Internal Error: Could not send Email");
+			throw new IllegalArgumentException(
+					"Internal Error: Could not send Email");
 		}
 
 	}
-	
+
 	public Form get(long id) {
 		ObjectDatastore od = this.dataTrain.getDataStore();
 		Form form = od.load(Form.class, id);
