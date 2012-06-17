@@ -5,10 +5,28 @@
 
 	<head>
 		<title>@10dance Mobile App</title>
-		<link rel="stylesheet" type="text/css" href="css/FieldAppCSS.css"></link>
-		<script src="js/script.js"></script>
-		<script src="js/sha.js"></script>
-		<script src="js/jquery.min.js"></script>
+
+		<link href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" media="all" rel="stylesheet">
+		<script type="text/javascript" src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
+		
+		<link href="css/base.mobile.css" media="all" rel="stylesheet">
+		<!--[if lte IE 8]>
+			<script>
+				(function()
+				{
+					var els = 'header,footer,section,aside,nav,article,hgroup,time,figure,figcaption'.split(',');
+					for (var i = 0; i < els.length; i++)
+						document.createElement(els[i]);
+				})();
+			</script>
+		<![endif]--> 
+		<link rel="stylesheet" media="all" type="text/css" href="css/custom.mobile.css">
+		<script type="text/javascript" src="js/common.js"></script>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+
+		<script type="text/javascript" src="js/script.js"></script>
+		<script type="text/javascript" src="js/sha.js"></script>
+		
 		<script>
 			
 			/**
@@ -23,7 +41,7 @@
 				 
 				//enable clear button if debug mode is enabled
 				if(debug){
-					document.getElementById("clear").style.display="inline";
+					document.getElementById("clear").style.display="inherit";
 				}
 				
 				//determine date of latest class list
@@ -322,28 +340,37 @@
 		</script>
 	</head>
 	<body>
-		<div class="box" id="main">
-			<h1>@10dance</h1>
-			<br/>
-			<input class="help button" type="button" id="help" value="Help" onclick="javascript: help();"/>
-			<form onsubmit="return false;" class="centeralign">
-				<input class="button" type="button" id="tardy" value="Tardy Check-In/Early Check-Out" onclick="window.location='/MobileApp/FieldAppTardy.html'"/> 
-				<input class="button" type="button" id="absent" value="Report Absences" onclick="window.location = '/MobileApp/FieldAppAbsent.html'"/>
-				<div>
-					<br/>
-				</div>
-				<input class="button" type="button" id="update" value="Update Class List" onclick="return updateList();"/>
-				<input class="button" type="submit" id="submit" value="Upload Attendance Data" onclick="return loginAndUpload();"/> 
-				<div>
-					<br/>
-				</div>
-			</form>
-			<div id="classList" class="centeralign">Latest Class List: None</div>
-			<br/>
-			<div class="centeralign">
-				<input class="button" type="button" id="clear" value="Clear ALL THE THINGS!!!" onClick="clearAll();" style="display: none"/>
+	
+		<header class="hwrapper"><h1>@10dance</h1>
+			<a class="right" href="javascript: help();">Help</a>
+		</header>
+		
+		<h1>Mobile App Main</h1>
+		
+		<ul class="navigation group drilldown panel">
+			<li class="selected">
+				<a id="tardy" href="/MobileApp/FieldAppTardy.html"><h2>Tardy Check-In/Early Check-Out</h2></a>
+				<a id="absent" href="/MobileApp/FieldAppAbsent.html"><h2>Report Absences</h2></a>
+				<a id="submit" href="javascript: loginAndUpload();"><h2>Upload Attendance Data</h2></a>
+				<a id="clear" href="javascript: clearAll();" class="button" style="display: none"><h2>Clear All Data</h2></a>
+			</li>
+		</ul>
+		
+		<ul class="navigation group drilldown panel">
+			<li class="selected">
+				<a id="clear" href="javascript: clearAll();" style="display: none"><h2>Clear All Data</h2></a>
+				<a id="update" href="javascript: updateList();"><h2>Update Class List</h2></a>
+				<p id="classList">Latest Class List: None</p>
+			</li>
+		</ul>
+		
+		<footer class="fwrapper">
+			<div>
+				<p><strong>Mobile App</strong> | <a href="/">Full Site</a></p>
+				<p class="light">Template &copy; 2012 <a href="http://m.iastate.edu/">Iowa State University</a></p>
 			</div>
-		</div>
+		</footer>
+		
     </body>
 </html>
 
