@@ -24,7 +24,7 @@ Git Instructions - Git Bash
 4) Commit Local Repo to Online Repo
 	
 	git push
-	
+ origin	
 
 
 
