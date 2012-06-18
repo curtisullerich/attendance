@@ -155,7 +155,7 @@ function localStorageContainsEvent(eventType, date, starttime, endtime){
  *
  * @param netID
  *			- netID of desired student
- * @returns true if the specified student netID
+ * @returns true if the specified student netID exists
  * @author Todd Wegter
  * @date 2-10-2012
  */
@@ -170,7 +170,6 @@ function localStorageContainsStudent(netID){
 	}
 	return false;
 }
-
 
 /**
  * Returns the first name associated with the given netID from the localStorage

@@ -1,6 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 	<title>${pagetemplate.title}</title>
+	
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+		
 	<c:choose>
 	<c:when test="${not pagetemplate.mobileSite}">
 	<link href="/css/base.css" media="all" rel="stylesheet">
