@@ -537,8 +537,15 @@ public class AbsenceController extends AbstractController {
 		od.deleteAll(todie);
 	}
 
+	/**
+	 * Note that if the parameter is not in the database, this will not throw an
+	 * exception!
+	 * 
+	 * @param todie
+	 */
 	public void remove(Absence todie) {
 		ObjectDatastore od = this.train.getDataStore();
+		
 		od.delete(todie);
 	}
 }
