@@ -6,6 +6,7 @@
     <include path='/css/**'/>
     <include path='/img/**'/>
     <include path='/js/**'/>
+    <include path='/jquery/**'/>
     <include path='/MobileApp/**'/>
     <include path='/error.html'/>
     <include path='/favicon.ico'/>

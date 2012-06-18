@@ -1,8 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 	<title>${pagetemplate.title}</title>
+	
+	<script type="text/javascript" src="/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="/js/common.js"></script>
+	
 	<c:choose>
 	<c:when test="${not pagetemplate.mobileSite}">
+	
 	<link href="/css/base.css" media="all" rel="stylesheet">
 	<!--[if lt IE 9]>
 		<style>
@@ -11,11 +16,14 @@
 		</style>
 	<![endif]--> 
 	<link rel="stylesheet" media="all" type="text/css" href="/css/custom.css">
+	
 	</c:when>
 	<c:when test="${pagetemplate.mobileSite}">
 	
-	<link href="https://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" media="all" rel="stylesheet">
-	<script type="text/javascript" src="https://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	
+	<link href="/jquery/jquery.mobile.min.css" media="all" rel="stylesheet">
+	<script src="/jquery/jquery.mobile.min.js" type="text/javascript"></script>
 	
 	<link href="/css/base.mobile.css" media="all" rel="stylesheet">
 	<!--[if lte IE 8]>
@@ -29,8 +37,6 @@
 		</script>
 	<![endif]--> 
 	<link rel="stylesheet" media="all" type="text/css" href="/css/custom.mobile.css">
-	</c:when>
-	</c:choose>
-	<script type="text/javascript" src="/js/jquery.min.js"></script>
-	<script type="text/javascript" src="/js/common.js"></script>
 	
+	</c:when>
+	</c:choose>	

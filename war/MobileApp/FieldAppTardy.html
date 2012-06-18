@@ -1,10 +1,36 @@
 <!DOCTYPE html>
-<html> <!-- manifest="FieldAppCache.appcache" -->
+<html manifest="FieldAppCache.appcache">
 	<head>	
-		<title>@10dance Tardy Check-In</title>
-		<link rel="stylesheet" type="text/css" href="/css/FieldAppCSS.css">
-		<script src="js/script.js"></script>
-		<script src="/js/sha.js"></script>
+	
+		<meta name="viewport" content="width=device-width,initial-scale=1"/>
+	    <meta name="apple-mobile-web-app-capable" content="yes" />
+	    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	    <link rel="apple-touch-icon" href="/img/404Cy.png"/>
+	    <link rel="apple-touch-startup-image" href="/img/404Cy.png" />
+	
+		<title>@10dance Mobile App</title>
+	
+<!-- 		<link href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" media="all" rel="stylesheet">		-->
+<!-- 		<script type="text/javascript" src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script> 	-->
+		
+		<link href="/css/base.mobile.css" media="all" rel="stylesheet">
+		<!--[if lte IE 8]>
+			<script>
+				(function()
+				{
+					var els = 'header,footer,section,aside,nav,article,hgroup,time,figure,figcaption'.split(',');
+					for (var i = 0; i < els.length; i++)
+						document.createElement(els[i]);
+				})();
+			</script>
+		<![endif]--> 
+		<link rel="stylesheet" media="all" type="text/css" href="/css/custom.mobile.css">
+		
+		<script type="text/javascript" src="/js/common.js"></script>
+		<script type="text/javascript" src="/js/jquery.min.js"></script>
+		<script type="text/javascript" src="/js/script.js"></script>
+		<script type="text/javascript" src="/js/sha.js"></script>
+		
 		<script>
 			
 			//global variable to determine if tardy list is shown
@@ -19,7 +45,7 @@
 			 */
 			window.onload = function(){
 				if(debug){
-					document.getElementById("clear").style.display="inline";
+					document.getElementById("clear").style.display="inherit";
 				}
 				//clear radio buttons
 				document.getElementById("Late Check-In").checked = 0;
@@ -102,7 +128,10 @@
 				//updates onscreen tardy list if necessary
 				retrieveTardies();
 				//confirm success
-				alert(netID+" has successfully signed in.");
+				if(subType == "tardy")
+					alert(netID+" has successfully signed in.");
+				else
+					alert(netID+" has successfully checked out.");
 				//uncheck radio for type selection
 				document.getElementById("Late Check-In").checked = false;
 				document.getElementById("Early Check-Out").checked = false;
@@ -227,13 +256,13 @@
 				if(debug)
 				{
 					//disable buttons while clearing
-					document.getElementById("clear").disabled = true;
+					document.getElementById("clear").href="javascript: void(0);";
 					document.getElementById("student").disabled = true;
-					document.getElementById("submit").disabled = true;
-					document.getElementById("viewButton").disabled = true;
-					document.getElementById("back").disabled = true;
-					document.getElementById("re-sort").disabled = true;
-					document.getElementById("clear").value = "Clearing...";
+					document.getElementById("submit").href="javascript: void(0);";
+					document.getElementById("viewButton").href="javascript: void(0);";
+					document.getElementById("back").href="javascript: void(0);";
+					document.getElementById("re-sort").href="javascript: void(0);";
+					document.getElementById("clear").innerHTML = "Clearing...";
 					//clear all tardy records
 					clearLocalStoragewithPrepend(tardyPrepend);
 					clearLocalStoragewithPrepend(earlyCheckOutPrepend);
@@ -243,13 +272,13 @@
 					//wait 1 second to show disabled buttons in case operation takes very little time
 					setTimeout(function(){
 						//re-enable buttons
-						document.getElementById("clear").disabled = false;
-						document.getElementById("submit").disabled = false;
-						document.getElementById("viewButton").disabled = false;
-						document.getElementById("back").disabled = false;
-						document.getElementById("re-sort").disabled = false;
+						document.getElementById("clear").href="javascript: clearTardies();";
+						document.getElementById("submit").href="javascript: submitTardy();";
+						document.getElementById("viewButton").href="javascript: tardiesOnOff()";
+						document.getElementById("back").href="javascript: window.location='FieldAppMain.html'";
+						document.getElementById("re-sort").href="javascript: retrieveTardies()";
 						document.getElementById("student").disabled = false;
-						document.getElementById("clear").value = "Clear Tardy List";
+						document.getElementById("clear").innerHTML = "Clear Tardy List";
 					},1000);
 					netIDSelect();
 				}
@@ -273,59 +302,67 @@
 		</script>
 	</head>
 	<body>
-		<div class="box">
-			<h1>Tardy Check-In</h1>
-			</br>
-			<form class="centeralign" id="tardyReport" onsubmit="return submitTardy();">
-				<table  style="margin: auto">
-					<tr>
-						<td>
-							netID <input class="bigText" type="text" id="student" autocomplete="off"/>
-						</td>
-						<td>
-							<input class="button" type="submit" id="submit" value="Submit (Select Type Below)"/>
-						</td>
-					</tr>
-					<tr>
-						<td>
-							<br/>
-						</td>
-					</tr>
-					<tr>
-						<td>
-						</td>
-						<td>
-							<form class="centeralign" id="submissionType">
-								<input type="radio" id="Late Check-In" name="submitType" value="Late Check-In">Late Check-In</input>
-								<input type="radio" id="Early Check-Out" name="submitType" value="Early Check-Out">Early Check-Out</input>
-							</form>
-						</td>
-					</tr>
-				</table>				
-			</form>
-			</br>
-			<hr>
-			</br>
-			<form class="centeralign" id="tardyView">
-				<input class="button" type="button" id="viewButton" value="View Tardies" onclick="javascript: tardiesOnOff();"/>
-				<input class="button" type="button" id="re-sort" value="Re-Sort Tardy List" onclick="javascript: retrieveTardies();"/>
-				<input class="button" type="button" id="clear" value="Clear Tardy List" onclick="javascript: clearTardies();" style="display: none"/>
-				</br>
-			</form>
-			<br/>
-			<form class="centeralign" id="tardySortType">
-				<b>Sort Style</b>
-				<input type="radio" name="sortType" value="Time" checked="">time</input>
-				<input type="radio" name="sortType" value="LastName">last name</input>
-				<input type="radio" name="sortType" value="FirstName">first name</input>
-				</br>
-			</form>
-			<div id="tardies"></div>
-			<Table id="tardyTable" class="table"> <!-- table 0 -->
-				<tbody></tbody>
-			</Table>
-			<input class="back button" type="button" id="back" value="Back" onclick="window.location='/MobileApp/FieldAppMain.html'"/>
-			<input class="help button" type="button" id="help" value="Help" onclick="javascript: help();"/>
-		</div>
+	
+		<header class="hwrapper"><h1>@10dance</h1>
+   			<a class="left" id="back" href="javascript: window.location='FieldAppMain.html'">Back</a>
+			<a class="right" id="help" href="javascript: help();">Help</a>
+		</header>
+	
+		<h1>Tardy Check-In</h1>
+		
+		<form class="centeralign" id="tardyReport" onsubmit="return submitTardy();">
+			<ul class="navigation group drilldown panel">
+				<li class="selected">
+					<a class="flippedButton">
+						<table>
+							<tr>
+								<td>netID: </td>
+								<td><input type="text" id="student" autocomplete="off"/></td>
+							</tr>
+						</table>
+						<form id="submissionType">
+							<input type="radio" id="Late Check-In" name="submitType" value="Late Check-In">Late Check-In</input>
+							<input type="radio" id="Early Check-Out" name="submitType" value="Early Check-Out">Early Check-Out</input>
+						</form>
+					</a>
+					<a id="submit" href="javascript: submitTardy();">Submit</a>
+				</li>
+			</ul>			
+		</form>
+		
+		<form class="centeralign" id="tardyView">
+			<ul class="navigation group drilldown panel">
+				<li class="selected">
+					<a id="viewButton" href="javascript: tardiesOnOff();">View Tardies</a>
+					<a id="re-sort" href="javascript: retrieveTardies();">Re-Sort Tardy List</a>
+					<a id="clear" href="javascript: clearTardies();" style="display: none">Clear Tardy List</a>	
+				</li>
+			</ul>
+		</form>
+		
+		<form class="centeralign" id="tardySortType">
+			<ul class="navigation group drilldown panel">
+				<li class="selected">
+					<a class="button">
+						<b>Sort Style</b>
+						<input type="radio" name="sortType" value="Time" checked="">time</input>
+						<input type="radio" name="sortType" value="LastName">last name</input>
+						<input type="radio" name="sortType" value="FirstName">first name</input>
+						<div id="tardies"></div>
+						<Table id="tardyTable" class="table"> <!-- table 0 -->
+							<tbody></tbody>
+						</Table>
+					</a>
+				</li>
+			</ul>
+		</form>
+		<br/>
+		<footer class="fwrapper">
+			<div>
+				<p><strong>Mobile App</strong> | <a href="/">Full Site</a></p>
+				<p class="light">Template &copy; 2012 <a href="http://m.iastate.edu/">Iowa State University</a></p>
+			</div>
+		</footer>
+			
 	</body>
 </html>

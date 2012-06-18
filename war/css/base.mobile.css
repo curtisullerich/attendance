@@ -126,16 +126,23 @@ input[type="search"]{
 	top: 7px;
 }
 
-.hwrapper > a.right{
-	background-image: -moz-linear-gradient(rgba(0, 0, 0, 0.3), transparent);
-	background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0.3)), to(transparent));
-	border-left: 1px solid rgba(0, 0, 0, 0.2);
-	box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2);
-	-webkit-box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2);
-	height: 43px;
+.hwrapper > a.right{	
+	background-color: rgba(0, 0, 0, 0.2);
+	border: 1px solid rgba(0, 0, 0, 0.1);
+	border-radius: 4px;
+	box-shadow: 0 0 1px rgba(255, 255, 255, 0.4), 0 1px 1px rgba(255, 255, 255, 0.3), 0 8px 8px rgba(255, 255, 255, 0.1) inset, 0 2px 2px rgba(0, 0, 0, 0.15) inset;
+	-webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.4), 0 1px 1px rgba(255, 255, 255, 0.3), 0 8px 8px rgba(255, 255, 255, 0.1) inset, 0 2px 2px rgba(0, 0, 0, 0.15) inset;
+	color: #fff;
+	font-size: 12px;
+	font-weight: bold;
+	line-height: 26px;
+	margin-right: 5px;
+	padding: 0 10px;
+	text-align: center;
+	text-decoration: none;
+	text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.5);
+	top: 7px;
 	right: 0;
-	top: -1px;
-	width: 42px;
 }
 
 .hwrapper > a.right > span{
@@ -219,7 +226,7 @@ body > footer a{
 	-webkit-tap-highlight-color: rgba(236, 200, 56, 0.3);
 }
 
-.panel > li > a, .panel > li > div, .panel > li > article{
+.panel > li > a, .panel > li > div, .panel > li > article, .panel > li > p,  .panel > li > input{
 	background: #f9f9f9;
 	background: #faf9f2;
 	border-top: 1px solid rgba(255, 255, 255, 1);
@@ -237,7 +244,7 @@ body > footer a{
 	background: #f5f4ed;
 }
 
-.panel > li > a.button{
+.panel > li > a.button, .panel > li > table.button{
 	background-image: -moz-linear-gradient(transparent, rgba(0, 0, 0, 0.2)) !important;
 	background-image: -webkit-gradient(linear, left top, left bottom, from(transparent), to(rgba(0, 0, 0, 0.2))) !important;
 	background-size: 100% 100% !important;
@@ -247,6 +254,36 @@ body > footer a{
 	-webkit-box-shadow: 0 0 2px #fff inset;
 	color: #666;
 	text-shadow: 0 1px 0 #fff;
+}
+
+.panel > li > a.flippedButton{
+	background-image: -moz-linear-gradient(transparent, rgba(0, 0, 0, 0.2)) !important;
+	background-image: -webkit-gradient(linear, left bottom, left top, from(transparent), to(rgba(0, 0, 0, 0.2))) !important;
+	background-size: 100% 100% !important;
+	border-bottom-color: rgba(0, 0, 0, 0.3);
+	border-top: 0;
+	box-shadow: 0 0 2px #fff inset;
+	-webkit-box-shadow: 0 0 2px #fff inset;
+	color: #666;
+	text-shadow: 0 1px 0 #fff;
+}
+
+.panel > li > .submit{	
+	background: none;
+	border: 0;
+	text-align: left;
+	width: 100%;
+	height: 100%;
+	background: #f9f9f9;
+	background: #faf9f2;
+	border-top: 1px solid rgba(255, 255, 255, 1);
+	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+	color: #444;
+	padding: 8px 10px;
+	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAYCAYAAADkgu3FAAAAwElEQVRIx2NgGAWjgBAoLy+PKCsrq6W1JZmlpaWbQRhoWR/NLAJa4A21BIQ3AfGsJUuWsNLEsoqKCgc0y5ZMnDiRgyaW1dbWWkAt2wTFK4B8bppYVlVVpYlsGZC9GkgL08oyUzSfraG6JQ0NDZJAg1cjWbK5vr5endqWKCJZALaksbFRhqqWAF2thRZca4GWiFE7tZmjWbKkqalJkOrxAjS4GloygCyZ19bWRpskDS2GMoB44vz585kZRsEoGJIAAMmTgPP8EmwwAAAAAElFTkSuQmCC");
+	background-repeat: no-repeat;
+	background-position: right;
+	background-size: 26px 24px;
 }
 
 .panel a[rel="external"] span.rel{
