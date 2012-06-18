@@ -17,8 +17,8 @@
 	</c:when>
 	<c:when test="${pagetemplate.mobileSite}">
 	
-	<link href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" media="all" rel="stylesheet">
-	<script type="text/javascript" src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
+	<link href="https://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" media="all" rel="stylesheet">
+	<script type="text/javascript" src="https://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script>
 	
 	<link href="/css/base.mobile.css" media="all" rel="stylesheet">
 	<!--[if lte IE 8]>

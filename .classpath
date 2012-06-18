@@ -19,6 +19,7 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/appengine-api-labs.jar"/>
 	<classpathentry kind="lib" path="lib/appengine-api-stubs.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/yamlbeans-1.06.jar"/>
 	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
