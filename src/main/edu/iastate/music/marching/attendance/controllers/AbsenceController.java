@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.code.twig.FindCommand.RootFindCommand;
@@ -20,6 +21,9 @@ import edu.iastate.music.marching.attendance.model.User;
 public class AbsenceController extends AbstractController {
 
 	private DataTrain train;
+
+	private static final Logger LOG = Logger.getLogger(AbsenceController.class
+			.getName());
 
 	public AbsenceController(DataTrain dataTrain) {
 		this.train = dataTrain;
@@ -69,90 +73,99 @@ public class AbsenceController extends AbstractController {
 	 * that dictates which absence takes precedence and returns it after
 	 * removing the conflicting one.
 	 * 
-	 * If these two absences are not in conflict, it returns null;
-	 * 
 	 * The Absence returned will still need to be stored in the database!
 	 * 
-	 * @param one
-	 * @param two
-	 * @return
+	 * @param current
+	 *            New absence, which is being resolved. Could be modified
+	 *            slightly during the resolving process, so if was already in
+	 *            the database it should be updated
+	 * @param contester
+	 *            An existing absence in the database, which could be removed
+	 *            from the database if the current one overrides it
+	 * 
+	 * @return True if current absence is non-conflicting, or could be modified
+	 *         to be non-conflicting, otherwise returns false to indicate the
+	 *         current absence should not be stored in the database
 	 */
-	private Absence resolveConflict(Absence one, Absence two) {
-		if (!one.getEvent().equals(two.getEvent())) {
+	private boolean resolveConflict(Absence current, Absence contester) {
+
+		if (!contester.getEvent().equals(current.getEvent())) {
 			// not a conflict
-			return null;
+			return true;
 		}
-		if (!one.getStudent().equals(two.getStudent())) {
+		if (!contester.getStudent().equals(current.getStudent())) {
 			// not a conflict
-			return null;
+			return true;
 		}
-		switch (one.getType()) {
+
+		// Basic tenants:
+		// - Anything beats an absence
+		// - Later tardy beats an earlier one
+		// - Earlier EarlyCheckOut beats a later one
+		// - An EarlyCheckOut before and Tardy after an event
+		// combines into a new super-powerful being, an absence
+
+		switch (current.getType()) {
 		case Absence:
-			switch (two.getType()) {
-			case Absence:
-				remove(one);
-				return two;
-			case Tardy:
-				remove(one);
-				return two;
-			case EarlyCheckOut:
-				remove(one);
-				return two;
-			}
-			break;
+			// Anything beats an absence
+			return false;
 		case Tardy:
-			switch (two.getType()) {
+			switch (contester.getType()) {
 			case Absence:
-				remove(two);
-				return one;
+				// Absence always loses
+				remove(contester);
+				return true;
 			case Tardy:
-				if (one.getStart().before(two.getStart())) {
-					remove(one);
-					return two;
+				// Later tardy beats an earlier one
+				if (current.getDatetime().before(contester.getDatetime())) {
+					remove(contester);
+					return true;
 				} else {
-					remove(two);
-					return one;
+					return false;
 				}
 			case EarlyCheckOut:
-				// if check IN time is before check OUT time, there's no
-				// conflict
-				if (one.getStart().before(two.getStart())) {
-					// no conflict
-					return null;
-				} else {
-					remove(two);
-					one.setType(Absence.Type.Absence);
-					return one;
+				// if check IN time is after check OUT time,
+				// you're going to have a bad time (completely absent)
+				// Otherwise no conflict
+				if (!current.getDatetime().after(contester.getDatetime())) {
+					// Create a new absence
+					current.setType(Absence.Type.Absence);
+					// remove the old EarlyCheckOut
+					remove(contester);
 				}
+				return true;
 			}
 			break;
 		case EarlyCheckOut:
-			switch (two.getType()) {
+			switch (contester.getType()) {
 			case Absence:
-				remove(two);
-				return one;
+				// Absence always loses
+				remove(contester);
+				return true;
 			case Tardy:
-				// if check OUT time is after check IN time, there's no conflict
-				if (one.getStart().after(two.getStart())) {
-					return null;
-				} else {
-					remove(one);
-					// TODO, does this leave everything else intact? Do I need
-					// to change the start and end times as well?
-					two.setType(Absence.Type.Absence);
-					return two;
+				// if check IN time is after check OUT time,
+				// you're going to have a bad time (completely absent)
+				// Otherwise no conflict
+				if (!contester.getDatetime().after(current.getDatetime())) {
+					// Create a new absence
+					current.setType(Absence.Type.Absence);
+					// remove the old Tardy
+					remove(contester);
 				}
+				return true;
 			case EarlyCheckOut:
-				if (one.getStart().before(two.getStart())) {
-					remove(two);
-					return one;
+				// Earlier EarlyCheckOut beats a later one
+				if (current.getStart().before(contester.getStart())) {
+					remove(contester);
+					return true;
 				} else {
-					remove(one);
-					return two;
+					// We aren't earlier, contester stays
+					return false;
 				}
 			}
 			break;
 		}
+
 		// should never reach this point!
 		throw new IllegalArgumentException(
 				"Types of absences were somehow wrong.");
@@ -215,11 +228,9 @@ public class AbsenceController extends AbstractController {
 	}
 
 	/**
-	 * "Validate" isn't the right word, but this method checks things: It
-	 * ensures that conflicts with existing absences are resolved by removing
-	 * the offending absence(s). It checks for forms that may auto-approve this
-	 * absence. If any other all-Absence checks would be necessary, add them to
-	 * this method and DOCUMENT THEM.
+	 * This method ensures that conflicts with existing absences are resolved by
+	 * removing the offending absence(s) and/or slightly modifing the return
+	 * absence copy
 	 * 
 	 * This will return the updated Absence WITHOUT PUTTING IT IN THE DATABASE.
 	 * Its internal calls to resolveConflict(), however, will potentially remove
@@ -227,36 +238,44 @@ public class AbsenceController extends AbstractController {
 	 * 
 	 * @param absence
 	 * @param student
+	 * @return A copy of the absence, which may be slight different from the
+	 *         passed in absence, if it was modified to resolve conflicts, or
+	 *         null if the absence is not valid to be stored
 	 */
 	private Absence validateAbsence(Absence absence) {
+		// Force a copy to work on
+		try {
+			absence = (Absence) absence.clone();
+		} catch (CloneNotSupportedException e) {
+			LOG.severe("Clone failed, this could have created an inconsistant database");
+			return null;
+		}
+
+		// If no linked event, its not possible to have conflicts
 		Event linked = absence.getEvent();
 		if (linked == null) {
 			return absence;
 		}
+
 		User student = absence.getStudent();
 		if (student == null) {
-			throw new IllegalArgumentException(
-					"Can't validate Absence with null student");
+			LOG.severe("Can't validate Absence with null student");
+			return null;
 		}
 
 		AbsenceController ac = train.getAbsenceController();
 		List<Absence> conflicts = ac.getAll(linked, student);
 
+		if (conflicts.size() > 2)
+			LOG.severe("Absence conflicting with more than two others, this indicates a possibly inconsistant database");
+
 		// this loop should remove any conflicting absences and leave us with
 		// the correct absence to store once we're done
-		for (Absence a : conflicts) {
-			Absence temp = resolveConflict(a, absence);
+		for (Absence other : conflicts) {
 
-			// one case that will occur sometimes is where there are two
-			// absences for the same user for the same event that are both
-			// valid. (A tardy and an early check out.) In this case,
-			// resolveConflict() will return null. We don't reassign the
-			// reference here then, so we still have a reference to the new
-			// Absence. This ensures that we don't end up throwing it away by
-			// accident.
-			if (temp != null) {
-				absence = temp;
-			}
+			// If we are unable to resolve contacts, don't store
+			if (!resolveConflict(absence, other))
+				return null;
 		}
 
 		return absence;
@@ -271,16 +290,18 @@ public class AbsenceController extends AbstractController {
 	 * @param absence
 	 * @return
 	 */
-	private Absence checkForAutoApproval(Absence absence) {
+	private void checkForAutoApproval(Absence absence) {
 		Event linked = absence.getEvent();
 		if (linked == null) {
-			throw new IllegalArgumentException(
-					"Can't validate an orphaned Absence.");
+			return;
+			// throw new IllegalArgumentException(
+			// "Can't validate an orphaned Absence.");
 		}
 		User student = absence.getStudent();
 		if (student == null) {
-			throw new IllegalArgumentException(
-					"Can't validate Absence with null student");
+			return;
+			// throw new IllegalArgumentException(
+			// "Can't validate Absence with null student");
 		}
 
 		List<Form> forms = train.getFormsController().get(student);
@@ -288,8 +309,6 @@ public class AbsenceController extends AbstractController {
 		for (Form form : forms) {
 			checkForAutoApproval(absence, form);
 		}
-
-		return absence;
 	}
 
 	/**
@@ -334,7 +353,7 @@ public class AbsenceController extends AbstractController {
 				// the form assumes a full absence. That cool?
 				// TODO is this the best way to compare that two dates are the
 				// same?
-				SimpleDateFormat fmt = new SimpleDateFormat("yyyyMMdd");
+				SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
 				// TODO verify that event.getDate() gets the date of the event
 				// and that form.getStart() always gets the day on which the
 				// form is applicable. This is relevant for the other types as
@@ -389,7 +408,7 @@ public class AbsenceController extends AbstractController {
 				// nope!
 				return absence;
 			} else {
-				SimpleDateFormat fmt = new SimpleDateFormat("yyyyMMdd");
+				SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
 				// This is a lot of date logic and is probably wrong somehow.
 				// Test it extensively.
 				if (fmt.format(absence.getEvent().getDate()).equals(
@@ -443,28 +462,53 @@ public class AbsenceController extends AbstractController {
 	// here. We could call validateAbsence(absence) but that would throw an
 	// exception if you're storing an orphaned or student-less Absence
 	// (currently, at least)
-	public void updateAbsence(Absence absence) {
-		absence = validateAbsence(absence);
-		absence = checkForAutoApproval(absence);
-		this.train.getDataStore().update(absence);
+	public Absence updateAbsence(Absence absence) {
+
+		// Do some validation
+		Absence resolvedAbsence = validateAbsence(absence);
+		if (resolvedAbsence != null) {
+			// And check for side-effects on the absence
+			checkForAutoApproval(resolvedAbsence);
+
+			// Then do actual store
+			this.train.getDataStore().store(resolvedAbsence);
+
+			// Finally check for side-effects caused by absence
+			train.getUsersController().updateUserGrade(
+					resolvedAbsence.getStudent());
+
+			// Success.
+			return resolvedAbsence;
+		} else
+			// Current absence has been invalidated somehow and removed from the
+			// database, so return null to indicate that
+			return null;
 	}
 
 	private Absence storeAbsence(Absence absence, User student) {
-		ObjectDatastore od = this.train.getDataStore();
-
 		// First build an empty message thread and store it
-		MessageThread messages = ModelFactory.newMessageThread();
-		od.store(messages);
+		MessageThread messages = this.train.getMessagingController()
+				.createMessageThread(student);
 		absence.setMessageThread(messages);
 
-		// Then do actual store
-		od.store(absence);
-		absence = validateAbsence(absence);
-		absence = checkForAutoApproval(absence);
+		// Then do some validation
+		Absence resolvedAbsence = validateAbsence(absence);
+		if (resolvedAbsence != null) {
+			// And check for side-effects on the absence
+			checkForAutoApproval(resolvedAbsence);
 
-		train.getUsersController().updateUserGrade(student);
+			// Then do actual store
+			this.train.getDataStore().store(resolvedAbsence);
 
-		return absence;
+			// Finally check for side-effects caused by absence
+			train.getUsersController().updateUserGrade(student);
+
+			// Done.
+			return resolvedAbsence;
+		}
+
+		// Invalid absence returns null because it doesn't store
+		return null;
 	}
 
 	public List<Absence> get(User student) {
