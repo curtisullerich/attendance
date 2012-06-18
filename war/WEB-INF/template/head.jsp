@@ -4,9 +4,10 @@
 	
 	<script type="text/javascript" src="/jquery/jquery.min.js"></script>
 	<script type="text/javascript" src="/js/common.js"></script>
-
+	
 	<c:choose>
 	<c:when test="${not pagetemplate.mobileSite}">
+	
 	<link href="/css/base.css" media="all" rel="stylesheet">
 	<!--[if lt IE 9]>
 		<style>
@@ -15,8 +16,11 @@
 		</style>
 	<![endif]--> 
 	<link rel="stylesheet" media="all" type="text/css" href="/css/custom.css">
+	
 	</c:when>
 	<c:when test="${pagetemplate.mobileSite}">
+	
+	<meta name="viewport" content="width=device-width,initial-scale=1">
 	
 	<link href="/jquery/jquery.mobile.min.css" media="all" rel="stylesheet">
 	<script src="/jquery/jquery.mobile.min.js" type="text/javascript"></script>
@@ -33,5 +37,6 @@
 		</script>
 	<![endif]--> 
 	<link rel="stylesheet" media="all" type="text/css" href="/css/custom.mobile.css">
+	
 	</c:when>
 	</c:choose>	

@@ -1,10 +1,39 @@
 <!DOCTYPE html>
-<html> <!--  manifest="FieldAppCache.appcache" -->
+<html manifest="FieldAppCache.appcache">
+
+
+
 	<head>
-		<title>@10dance Absence Reporting</title>
-		<link rel="stylesheet" type="text/css" href="/css/FieldAppCSS.css" />
-		<script src="js/script.js"></script>
-		<script src="/js/sha.js"></script>
+	
+		<meta name="viewport" content="width=device-width,initial-scale=1"/>
+	    <meta name="apple-mobile-web-app-capable" content="yes" />
+	    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+	    <link rel="apple-touch-icon" href="/img/404Cy.png"/>
+	    <link rel="apple-touch-startup-image" href="/img/404Cy.png" />
+	
+		<title>@10dance Mobile App</title>
+	
+<!-- 		<link href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" media="all" rel="stylesheet">		-->
+<!-- 		<script type="text/javascript" src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script> 	-->
+		
+		<link href="/css/base.mobile.css" media="all" rel="stylesheet">
+		<!--[if lte IE 8]>
+			<script>
+				(function()
+				{
+					var els = 'header,footer,section,aside,nav,article,hgroup,time,figure,figcaption'.split(',');
+					for (var i = 0; i < els.length; i++)
+						document.createElement(els[i]);
+				})();
+			</script>
+		<![endif]--> 
+		<link rel="stylesheet" media="all" type="text/css" href="/css/custom.mobile.css">
+		
+		<script type="text/javascript" src="/js/common.js"></script>
+		<script type="text/javascript" src="/js/jquery.min.js"></script>
+		<script type="text/javascript" src="/js/script.js"></script>
+		<script type="text/javascript" src="/js/sha.js"></script>
+		
 		<script>
 			
 			//global variables to determine if absence list is shown
@@ -40,7 +69,7 @@
 				netIDSelectTA();
 				//enable clear button if debug is true
 				if(debug){
-					document.getElementById("clear").style.display="inline";
+					document.getElementById("clear").style.display="inherit";
 				}
 				return;
 			}
@@ -90,7 +119,6 @@
 			function listToForm(array) {
 				//define form
 				var form = "<form id='absences' name='absences' method='get'>\n";
-				form += "<br><strong>Mark all students that are absent.</strong></br>\n";
 				//create each checkbox in the form
 				for (var i = 0; i < array.length; i++) {
 					form += '<input type="checkbox" name="student" value="'+array[i][0]+'">'+array[i][1]+'<br>\n';
@@ -586,11 +614,12 @@
 				if(debug)
 				{
 					//disable buttons while clearing
-					document.getElementById("clear").disabled = true;
-					document.getElementById("addOrEditButton").disabled = true;
-					document.getElementById("viewButton").disabled = true;
-					document.getElementById("editMain").disabled = true;
-					document.getElementById("clear").value = "Clearing...";
+					document.getElementById("clear").href="javascript: void(0)";
+					document.getElementById("addOrEditButton").href="javascript: void(0)";
+					document.getElementById("viewButton").href="javascript: void(0)";
+					document.getElementById("editMain").href="javascript: void(0)";
+					document.getElementById("back").href="javascript: void(0)";
+					document.getElementById("clear").innerHTML = "Clearing...";
 					//clear all absence data
 					clearLocalStoragewithPrepend(absentPrependPerformance);
 					clearLocalStoragewithPrepend(absentPrependRehearsal);
@@ -605,11 +634,12 @@
 					//wait some time to show disabled buttons in case operation takes very little time
 					setTimeout(function(){
 						//re-enable buttons
-						document.getElementById("clear").disabled = false;
-						document.getElementById("addOrEditButton").disabled = false;
-						document.getElementById("viewButton").disabled = false;
-						document.getElementById("editMain").disabled = false;
-						document.getElementById("clear").value = "Clear Absence Data";
+						document.getElementById("clear").href="javascript: clearAbsences();";
+						document.getElementById("addOrEditButton").href="javascript: cache();";
+						document.getElementById("viewButton").href="javascript: absencesOnOff();";
+						document.getElementById("editMain").href="javascript: handleEdit(true);";
+						document.getElementById("back").href="javascript: window.location='FieldAppMain.html'";
+						document.getElementById("clear").innerHTML = "Clear Absence Data";
 					},1000);
 				}
 				return false;
@@ -636,94 +666,121 @@
 		</script>
 	</head>
     <body>
-		<div class="box" id="page">
-			<div id="main" style="display: none">
-				<h1><b>Absence Report</b></h1>
-				<br/>
-				<table style="margin: auto"> <!-- table 0 -->
-					<tr>
-						<form id="event" name="event" method="get">
-							<td><strong>Event type </strong></td>
-							<td>
-								<input id="rehearsalRadio" type="radio" name="eventType" value="rehearsal">Rehearsal</input>
-								<input id="performanceRadio" type="radio" name="eventType" value="performance">Performance</input>
-							</td>
-						</form>
-					</tr>
-					<tr>
-						<form id="startAmPm" name="startAmPm" method="get">
-							<td>Start time: </td>
-							<td>
-								<input id="startHour" size="5" type="number" name="startHour" min="01" max="12" value="4"/>
-								<input id="startMinute" size="5" type="number" name="startMinute" min="00" max="50" step="10" value="30"/>
-								<input id="startAM" type="radio" name="startrdio" value="AM">AM</input>
-								<input id="startPM" type="radio" name="startrdio" value="PM" checked="1">PM</input>
-							</td>
-						</form>
-					</tr>
-					<tr>
-						<form id="endAmPm" name="endAmPm" method="get">
-							<td>End time:</td>
-							<td>
-								<input id="endHour" size="5" type="number" name="endHour" min="01" max="12" value="5"/>
-								<input id="endMinute" size="5" type="number" name="endMinute" min="00" max="50" step="10" value="50"/>
-								<input id="endAM" type="radio" name="endrdio" value="AM">AM</input>
-								<input id="endPM" type="radio" name="endrdio" value="PM" checked="1">PM</input>
-							</td>
-						</form> 
-					</tr>
-				</table> 
-				      
-				<br/> 
-				<div class="centeralign">
-					Remove the above event: 
-					<input class="button" id="editMain" type="submit" value="Remove" onClick="handleEdit(true);"/>
-				</div>
-				
-				<hr>
-				
-				<div class="centeralign">
-					<div id="checkboxes" class="checkboxes" > 
-						<form id="absences" name="absences" method="get" style="margin: auto">        
-							<br><strong>Mark all students that are absent.</strong></br>
-						</form>
-					</div>
-					<input class="button" type="submit" id="addOrEditButton" value="Submit" onClick="cache();"/>
-					<input class="button" type="button" id="viewButton" value="View Absences" onclick="absencesOnOff();"/>
-					<div id="eventDiv"></div>
-					<Table id="eventTable" class="table"> <!-- table 1 -->
-						<tbody></tbody>
-					</Table>
-					<div id="absenceDiv"></div>
-					<Table id="absenceTable" class="table"/> <!-- table 2 -->
-						<tbody></tbody>
-					</Table>
-					</br>
-					<input class="button" type="button" id="clear" value="Clear Absence Data" onClick="clearAbsences();" style="display: none"/>
-					</br>
-					<input class="back button" type="submit" id="back" value="Back" onclick="window.location='/MobileApp/FieldAppMain.html'"/>
-					<input class="help button" type="button" id="help" value="Help" onclick="javascript: help();"/>
-				</div>
-			</div>
-			<div class="box" id="login">
-				<h1>TA Absence Login</h1>
-				</br>
-				<form class="centeralign" id="TACredentials" onsubmit="return confirmTACredentials();">
-					<table  style="margin: auto">
-						<tr>
-							<td>TA netID:</td>
-							<td><input type="text" id="TA" placeholder="TA netID"/></td>
-						</tr>
-						<tr>
-							<td>Password:</td>
-							<td><input type="password" id="password" placeholder="password"/></td>
-						</tr>
-					</table>
-					</br>
-					<input class="button" type="submit" id="submit" value="Submit"/>
-					<input class="button" type="button" id="cancel" value="Cancel" onclick="window.location='/MobileApp/FieldAppMain.html'"/>
-				</form>
-			</div>
+    
+   		<header class="hwrapper"><h1>@10dance</h1>
+   			<a class="left" id="back" href="javascript: window.location='FieldAppMain.html'">Back</a>
+			<a class="right" id="help" href="javascript: help();">Help</a>
+		</header>
+		
+		<div id="main" style="display: none">
+			<h1>Absence Report</h1>
+			<ul class="navigation group drilldown panel">
+				<li class="selected">
+					<a class="flippedButton">
+						<table> <!-- table 0 -->
+						
+							<tr>
+								<form id="event" name="event" method="get">
+									<td><strong>Event type </strong></td>
+									<td>
+										<input id="rehearsalRadio" type="radio" name="eventType" value="rehearsal">Rehearsal</input>
+										<input id="performanceRadio" type="radio" name="eventType" value="performance">Performance</input>
+									</td>
+								</form>
+							</tr>
+							<tr>
+								<form id="startAmPm" name="startAmPm" method="get">
+									<td>Start time: </td>
+									<td>
+										<input id="startHour" size="5" type="number" name="startHour" min="01" max="12" value="4"/>
+										<input id="startMinute" size="5" type="number" name="startMinute" min="00" max="50" step="10" value="30"/>
+										<input id="startAM" type="radio" name="startrdio" value="AM">AM</input>
+										<input id="startPM" type="radio" name="startrdio" value="PM" checked="1">PM</input>
+									</td>
+								</form>
+							</tr>
+							<tr>
+								<form id="endAmPm" name="endAmPm" method="get">
+									<td>End time:</td>
+									<td>
+										<input id="endHour" size="5" type="number" name="endHour" min="01" max="12" value="5"/>
+										<input id="endMinute" size="5" type="number" name="endMinute" min="00" max="50" step="10" value="50"/>
+										<input id="endAM" type="radio" name="endrdio" value="AM">AM</input>
+										<input id="endPM" type="radio" name="endrdio" value="PM" checked="1">PM</input>
+									</td>
+								</form> 
+							</tr>
+						</table> 
+					</a>
+					<a id="editMain" href="javascript: handleEdit(true);">Remove</a>
+				</li>
+			</ul>
+			
+			
+			<ul class="navigation group drilldown panel">
+				<li class="selected">
+					<a class="flippedButton">
+					<h2><strong>Mark all students that are absent.</strong></h2></br>
+						<div id="checkboxes" class="checkboxes" > 
+							<form id="absences" name="absences" method="get" style="margin: auto"></form>
+						</div>
+					</a>
+					<a id="addOrEditButton" href="javascript: cache();">Submit</a>
+					<a id="clear" href="javascript: clearAbsences();" style="display: none">Clear Absence Data</a>
+				</li>
+			</ul>
+			
+			
+			<ul class="navigation group drilldown panel">
+				<li class="selected">
+					<a id="viewButton" href="javascript: absencesOnOff();">View Absences</a>
+					<a class="button">
+						<div id="eventDiv"></div>
+						<Table id="eventTable" class="table"> <!-- table 1 -->
+							<tbody></tbody>
+						</Table>
+						<div id="absenceDiv"></div>
+						<Table id="absenceTable" class="table"/> <!-- table 2 -->
+							<tbody></tbody>
+						</Table>
+					</a>
+				</li>
+			</ul>
+			
 		</div>
+						
+		<div class="box" id="login">
+			<h1>TA Absence Login</h1>
+			<form class="centeralign" id="TACredentials" onsubmit="return confirmTACredentials();">
+				<ul class="navigation group drilldown panel">
+					<li class="selected">
+						<a class="flippedButton">
+							<table>
+								<tr>
+									<td>TA netID:</td>
+									<td><input type="text" id="TA" placeholder="TA netID"/></td>
+								</tr>
+								<tr>
+									<td>Password:</td>
+									<td><input type="password" id="password" placeholder="password"/></td>
+								</tr>
+								
+							</table>
+						</a>
+						<input type="submit" class="submit" id="submit"/>
+					</li>
+				</ul>
+			</form>
+		</div>
+		
+		
+		<br/>
+		<footer class="fwrapper">
+			<div>
+				<p><strong>Mobile App</strong> | <a href="/">Full Site</a></p>
+				<p class="light">Template &copy; 2012 <a href="http://m.iastate.edu/">Iowa State University</a></p>
+			</div>
+		</footer>
+		
     </body>
 </html>

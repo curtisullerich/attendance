@@ -235,6 +235,6 @@ public class MobileDataController {
 //		transaction.bendIronBack();
 
 		// TODO return string about what was uploaded here
-		return "TODO: return string about what was uploaded here";
+		return "";
 	}
 }

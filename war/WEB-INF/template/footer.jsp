@@ -40,7 +40,7 @@
 	
 
 	<footer class="fwrapper">
-		<div>
+		<div style="text-align:center">
 			<p><strong>Mobile</strong> | <a href="?mobile=false">Full site</a></p>
 			<p><a href="/feedback/">Feedback</a></p>
 			<p class="light">Template &copy; 2012 <a href="http://m.iastate.edu/">Iowa State University</a></p>
