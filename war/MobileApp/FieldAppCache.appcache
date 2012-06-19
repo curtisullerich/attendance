@@ -1,7 +1,7 @@
 CACHE MANIFEST
 
 # @10dance Appcache
-# 6-17-12 v2.1.0.12
+# 6-18-12 v2.1.0.19
 
 CACHE:
 FieldAppMain.html
@@ -9,11 +9,17 @@ FieldAppTardy.html
 FieldAppAbsent.html
 /js/script.js
 /js/sha.js
-/js/jquery.min.js
 /js/common.js
 /css/base.mobile.css
 /css/custom.mobile.css
 /img/404Cy.png
+/jquery/jquery.min.js
+/jquery/jquery.mobile.min.js
+/jquery/jquery.mobile.min.css
+/jquery/images/ajax-loader.gif
+/jquery/images/ajax-loader.png
+/jquery/images/icons-18-black.png
+/jquery/images/icons-18-white.png
+/jquery/images/icons-36-black.png
+/jquery/images/icons-36-white.png
 
-#css/FieldAppCSS.css
-#img/gradient6.jpg
