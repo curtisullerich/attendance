@@ -19,8 +19,8 @@ public class NavigationBean implements java.io.Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -875480508816984630L;
-	
-	private static Map<String,Object> rootMapSingleton = null;
+
+	private static Map<String, Object> rootMapSingleton = null;
 
 	private Map<String, Object> map;
 
@@ -35,16 +35,16 @@ public class NavigationBean implements java.io.Serializable {
 	public static NavigationBean getInstance(User currentUser) {
 
 		Map<String, Object> map = rootMapSingleton;
-		
-		if(map == null)
-		{
+
+		if (map == null) {
 			YamlReader reader;
 			try {
-				reader = new YamlReader(new FileReader("WEB-INF/navigation.yaml"));
-	
+				reader = new YamlReader(new FileReader(
+						"WEB-INF/navigation.yaml"));
+
 				Object root = reader.read();
 				map = (Map<String, Object>) root;
-	
+
 			} catch (YamlException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -89,8 +89,7 @@ public class NavigationBean implements java.io.Serializable {
 			if (o instanceof Map) {
 				Map<String, Object> map = (Map<String, Object>) o;
 
-				if (!map.containsKey("auth")
-						|| checkAuth(map.get("auth")))
+				if (!map.containsKey("auth") || checkAuth(map.get("auth")))
 					links.add(new NavigationBean(map, this.user));
 
 			}
@@ -113,7 +112,8 @@ public class NavigationBean implements java.io.Serializable {
 				else if ("Admin".equals(auth)) {
 					UserService userService = UserServiceFactory
 							.getUserService();
-					if (userService.isUserAdmin())
+					if (userService.isUserLoggedIn()
+							&& userService.isUserAdmin())
 						return true;
 				}
 			}

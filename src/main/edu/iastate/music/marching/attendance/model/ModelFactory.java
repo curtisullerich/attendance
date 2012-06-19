@@ -31,6 +31,27 @@ public class ModelFactory {
 		a.setStudent(student);
 		return a;
 	}
+	
+	/**
+	 * Returns a shallow copy of the given absence
+	 * @param absence Absence to copy
+	 * @return A new shallow copy
+	 */
+	public static Absence copyAbsence(Absence absence) {
+		
+		if(absence == null)
+			return null;
+		
+		Absence a = newAbsence(absence.getType(), absence.getStudent());
+		a.setDatetime(absence.getDatetime());
+		a.setEnd(absence.getEnd());
+		a.setEvent(absence.getEvent());
+		a.setMessageThread(absence.getMessageThread());
+		a.setStart(absence.getStart());
+		a.setStatus(absence.getStatus());
+		
+		return a;
+	}
 
 	public static AppData newAppData() {
 		return new AppData();

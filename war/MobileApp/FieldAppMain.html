@@ -1,10 +1,6 @@
 <!DOCTYPE html>
 <html manifest="FieldAppCache.appcache">
-
-<!-- UPDATE THE APPCACHE WHENEVER CHANGES ARE MADE!!! -->
-
 	<head>
-	
 		<meta name="viewport" content="width=device-width,initial-scale=1"/>
 	    <meta name="apple-mobile-web-app-capable" content="yes" />
 	    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
@@ -13,9 +9,14 @@
 	
 		<title>@10dance Mobile App</title>
 	
-<!-- 		<link href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" media="all" rel="stylesheet">		-->
-<!-- 		<script type="text/javascript" src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js"></script> 	-->
+		<meta name="viewport" content="width=device-width,initial-scale=1">
 		
+		<script type="text/javascript" src="/jquery/jquery.min.js"></script>
+		<script type="text/javascript" src="/jquery/jquery.mobile.min.js"></script>
+		<script type="text/javascript" src="/js/common.js"></script>
+		<script type="text/javascript" src="/js/script.js"></script>
+		<script type="text/javascript" src="/js/sha.js"></script>
+	
 		<link href="/css/base.mobile.css" media="all" rel="stylesheet">
 		<!--[if lte IE 8]>
 			<script>
@@ -28,11 +29,6 @@
 			</script>
 		<![endif]--> 
 		<link rel="stylesheet" media="all" type="text/css" href="/css/custom.mobile.css">
-		
-		<script type="text/javascript" src="/js/common.js"></script>
-		<script type="text/javascript" src="/js/jquery.min.js"></script>
-		<script type="text/javascript" src="/js/script.js"></script>
-		<script type="text/javascript" src="/js/sha.js"></script>
 		
 		<script>
 			
@@ -75,8 +71,9 @@
 				} else {
 					str="Current class list: " + array[0][0];
 				}
-				
-				$("#classList").text(str);
+				setTimeout(function() {
+					$("#classList").text(str);
+				}, 700);
 			}
 			
 
@@ -111,7 +108,8 @@
                 uncacheClassList();
                 
                 // Disable update button
-                $("#update").attr('disabled', true);
+                $("#classList").text("Updating...");
+                $("#update").hide(1000);
                 
                 $.get("/MobileApp/data/classlist", function(result, errorString) {
                 	
@@ -125,7 +123,7 @@
              	    	if (result.error == "login")
              	    	{
              	    		alert("You must login first as a TA or director to download class data, redirecting you to login.");
-             	    		window.location = "/auth/login";
+             	    		window.location = "/auth/login?redirect=" + window.location;
              	    	}
              	    	else if (result.error == "success")
              	    	{
@@ -219,8 +217,13 @@
 	        
 	        function loginAndUpload(){
 
-				// Disable upload button
-                $("#submit").attr('disabled', true);
+				//check online status
+	            if (!navigator.onLine) {
+	               alert("You're not online. Upload not performed.");
+	               return false;
+	            }
+	            
+	            $("#submit").delay(250).hide(750);
 		    				
 				//create list of data to upload to the server
 				var str = "";
@@ -241,14 +244,14 @@
              	    	alert("Unknown error communicating with server. Data not uploaded.");
              	    	
              	    	// Re-enable upload button
-                		$("#submit").attr('disabled', false);
+                		$("#submit").delay(500).show(1000);
              	    }
              	    else
              	    {
              	    	if (result.error == "login")
              	    	{
              	    		alert("You must login first as a TA to upload data, redirecting you to the login page.");
-             	    		window.location = "/auth/login";
+             	    		window.location = "/auth/login?redirect=" + window.location;
              	    	}
              	    	else if (result.error == "exception")
              	    	{
