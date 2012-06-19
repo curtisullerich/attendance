@@ -255,7 +255,7 @@ public class MobileDataController {
 			errorString += s;
 
 		return "Inserted " + successfulEvents + "/" + eventLines.size() + " events." + "\n"
-			+ "Inserted " + successfulAbscenses + "/" + otherLines.size() + " absences." + "\n"
+			+ "Inserted " + successfulAbscenses + "/" + otherLines.size() + " absences/tardies/early checkouts." + "\n"
 			+ errorString;
 	}
 }

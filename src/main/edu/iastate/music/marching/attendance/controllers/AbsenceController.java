@@ -244,12 +244,7 @@ public class AbsenceController extends AbstractController {
 	 */
 	private Absence validateAbsence(Absence absence) {
 		// Force a copy to work on
-		try {
-			absence = (Absence) absence.clone();
-		} catch (CloneNotSupportedException e) {
-			LOG.severe("Clone failed, this could have created an inconsistant database");
-			return null;
-		}
+		absence = ModelFactory.copyAbsence(absence);
 
 		// If no linked event, its not possible to have conflicts
 		Event linked = absence.getEvent();

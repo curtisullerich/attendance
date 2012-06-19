@@ -11,6 +11,13 @@ static_files:
   - include: /error.html
   - include: /favicon.ico
   - include: /index.html
+
+web_xml: |
+  <!-- Set XML mime-mapping so spreadsheets open properly instead of being sent as an octet/stream --> 
+  <mime-mapping> 
+    <extension>appcache</extension> 
+    <mime-type>text/cache-manifest</mime-type> 
+  </mime-mapping> 
   
 sessions_enabled: true
 
@@ -19,7 +26,6 @@ welcome_files:
 
 handlers:
 
-  
 - url: /error/*
   servlet: edu.iastate.music.marching.attendance.servlets.ErrorServlet
   init_params:
