@@ -94,11 +94,10 @@
 	</div>
 	<div id="container">
 		<div id="container-inner" class="grids-24">
-			<embed src="http://www.youtube.com/v/AA5DsLzSVrk&amp;autoplay=1&amp;hl=en&amp;fs=1&amp;enablejsapi=1&amp;version=3&amp;playerapiid=ytplayer" type="application/x-shockwave-flash" allowscriptaccess="always" wmode="transparent" allowfullscreen="true" style="position:absolute;" width="960" height="720">
-			<div class="grid-5 sidebar" id="left-sidebar" style="position:relative;z-index:50;">
+			<div class="grid-5 sidebar" id="left-sidebar">
 <jsp:include page="/WEB-INF/template/menu.jsp" />
 			</div>
-			<div class="grid-19" id="content" style="position:relative;z-index:50">
+			<div class="grid-19" id="content">
 				<div class="gutter">
 </c:if>
 <c:if test="${pagetemplate.mobileSite}">
