@@ -494,7 +494,14 @@ public class AbsenceController extends AbstractController {
 
 		// Do some validation
 		Absence resolvedAbsence = validateAbsence(absence);
-		if (resolvedAbsence != null) {
+		if (resolvedAbsence == null) {
+			// Null resolved absence means remove from database
+			this.train.getDataStore().delete(absence);
+			
+			// Current absence has been invalidated somehow and removed from the
+			// database, so return null to indicate that
+			return null;
+		} else {
 			// And check for side-effects on the absence
 			checkForAutoApproval(resolvedAbsence);
 
@@ -512,10 +519,7 @@ public class AbsenceController extends AbstractController {
 
 			// Success.
 			return resolvedAbsence;
-		} else
-			// Current absence has been invalidated somehow and removed from the
-			// database, so return null to indicate that
-			return null;
+		}
 	}
 
 	private Absence storeAbsence(Absence absence, User student) {
@@ -545,12 +549,14 @@ public class AbsenceController extends AbstractController {
 	}
 
 	public List<Absence> get(User student) {
-		return this.train
+		List<Absence> absences = this.train
 				.getDataStore()
 				.find()
 				.type(Absence.class)
 				.addFilter(Absence.FIELD_STUDENT, FilterOperator.EQUAL, student)
 				.returnAll().now();
+		this.train.getDataStore().activateAll(absences);
+		return absences;
 	}
 
 	public Absence get(long id) {
