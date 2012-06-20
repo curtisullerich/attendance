@@ -555,7 +555,11 @@ public class AbsenceController extends AbstractController {
 				.type(Absence.class)
 				.addFilter(Absence.FIELD_STUDENT, FilterOperator.EQUAL, student)
 				.returnAll().now();
-		this.train.getDataStore().activateAll(absences);
+		// Manually activate student fields
+		for(Absence a : absences)
+		{
+			this.train.getDataStore().activate(a.getStudent());
+		}
 		return absences;
 	}
 

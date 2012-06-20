@@ -2,9 +2,11 @@ package edu.iastate.music.marching.attendance.model;
 
 import java.io.Serializable;
 
+import com.google.code.twig.annotation.Activate;
 import com.google.code.twig.annotation.Id;
 import com.google.code.twig.annotation.Index;
 
+@Activate
 public class User implements Serializable {
 
 	/**
@@ -231,6 +233,13 @@ public class User implements Serializable {
 		
 		if (o instanceof User) {
 			User u = (User) o;
+			
+			if(this.netID == null)
+				throw new IllegalStateException("Null netid on this user");
+			
+			if(u.netID == null)
+				throw new IllegalArgumentException("Null netid on compared user");
+			
 			if (this.netID.equals(u.netID))
 				return true;
 		}
