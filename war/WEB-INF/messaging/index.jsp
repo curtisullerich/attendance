@@ -10,23 +10,23 @@
 		<jsp:include page="/WEB-INF/template/header.jsp" />
 		<h1>Message Inbox</h1>
 		<br/>
-		<h2>Unresolved Messages</h2>
 		<c:choose>
 		<c:when test="${empty unresolved}">
-			<p><strong><i>No unresolved messages.</i></strong></p>
+			<p><i>No unresolved messages.</i></p>
 		</c:when>
 		<c:otherwise>
+			<h2>Unresolved Messages</h2>
 			<c:set var="threads" value="${unresolved}" scope="request"/>
 			<jsp:include page="/WEB-INF/common/threadtable.jsp" />
 		</c:otherwise>
 		</c:choose>
 		
-		<h2>Resolved Messages</h2>
 		<c:choose>
 		<c:when test="${empty resolved}">
 			<p><i>No resolved messages.</i></p>
 		</c:when>
 		<c:otherwise>
+			<h2>Resolved Messages</h2>
 			<c:set var="threads" value="${resolved}" scope="request"/>
 			<jsp:include page="/WEB-INF/common/threadtable.jsp" />
 		</c:otherwise>
