@@ -167,6 +167,7 @@ public class AbsenceController extends AbstractController {
 				"Types of absences were somehow wrong.");
 	}
 
+	@Deprecated
 	public Absence createOrUpdateAbsence(User student, Date start, Date end) {
 
 		if (student == null) {
@@ -193,6 +194,37 @@ public class AbsenceController extends AbstractController {
 		if (events.size() == 1) {
 			absence.setEvent(events.get(0));
 			// associated with this event for this student
+		}
+
+		return storeAbsence(absence, student);
+	}
+
+	/**
+	 * Note that this does not store the event parameter in the database! That
+	 * is the caller's responsibility!
+	 * 
+	 * @param student
+	 * @param e
+	 * @return
+	 */
+	public Absence createOrUpdateAbsence(User student, Event e) {
+
+		if (student == null) {
+			throw new IllegalArgumentException(
+					"Tried to create absence for null user");
+		}
+
+		Absence absence = ModelFactory
+				.newAbsence(Absence.Type.Absence, student);
+		absence.setStatus(Absence.Status.Pending);
+
+		if (e != null && e.getStart() != null && e.getEnd() != null) {
+			absence.setEvent(e);
+			absence.setStart(e.getStart());
+			absence.setEnd(e.getEnd());
+			// associated with this event for this student
+		} else {
+			// the absence is orphaned if there's no event for it
 		}
 
 		return storeAbsence(absence, student);
@@ -584,7 +616,7 @@ public class AbsenceController extends AbstractController {
 	 */
 	public void remove(Absence todie) {
 		ObjectDatastore od = this.train.getDataStore();
-		
+
 		od.delete(todie);
 	}
 }
