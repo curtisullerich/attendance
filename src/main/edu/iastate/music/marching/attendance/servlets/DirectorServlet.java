@@ -286,7 +286,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 			} catch (NumberFormatException nfe) {
 				errors.add("Invalid event id");
 			}
-			if (event != null && sremoveAnchored != null && !sremoveAnchored.equals("")) {
+			if (event != null && sremoveAnchored != null) {
 				page.setAttribute("success_message", "Event deleted");
 				if (sremoveAnchored.equals("true")) {
 					AbsenceController ac = train.getAbsenceController();
@@ -862,8 +862,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 				}
 				if (e != null && student != null) {
 					checkedAbsence = train.getAbsenceController()
-							.createOrUpdateAbsence(student, e.getStart(),
-									e.getEnd());
+							.createOrUpdateAbsence(student, e);
 					page.setAttribute("new", true);
 				} else {
 					validInput = false;
