@@ -286,15 +286,19 @@ public class DirectorServlet extends AbstractBaseServlet {
 			} catch (NumberFormatException nfe) {
 				errors.add("Invalid event id");
 			}
-			if (event != null && sremoveAnchored != null) {
+			if (event != null) {
 				page.setAttribute("success_message", "Event deleted");
-				if (sremoveAnchored.equals("true")) {
-					AbsenceController ac = train.getAbsenceController();
-					List<Absence> todie = ac.getAll(event);
-					ac.remove(todie);
-					page.setAttribute("success_message", "Event and associated absences deleted.");
+				if (sremoveAnchored != null) {
+					if (sremoveAnchored.equals("true")) {
+						AbsenceController ac = train.getAbsenceController();
+						List<Absence> todie = ac.getAll(event);
+						ac.remove(todie);
+						page.setAttribute("success_message", "Event and associated absences deleted.");
+					}
 				}
 				ec.delete(event);
+				
+				//this is set just in case we go back to the page with errors.
 				page.setAttribute("event", event);
 			}
 			
