@@ -544,7 +544,9 @@ public class AbsenceController extends AbstractController {
 	}
 
 	public Absence get(long id) {
-		return this.train.getDataStore().load(Absence.class, id);
+		Absence a = this.train.getDataStore().load(Absence.class, id);
+		this.train.getDataStore().activate(a.getStudent());
+		return a;
 	}
 
 	public List<Absence> get(Absence.Type... types) {
