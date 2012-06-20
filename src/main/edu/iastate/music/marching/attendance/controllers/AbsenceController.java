@@ -85,6 +85,11 @@ public class AbsenceController extends AbstractController {
 	 */
 	private boolean resolveConflict(Absence current, Absence contester) {
 
+		if (current.equals(contester)) {
+			return true;
+			// not a conflict
+		}
+
 		if (!contester.getEvent().equals(current.getEvent())) {
 			// not a conflict
 			return true;
@@ -272,7 +277,7 @@ public class AbsenceController extends AbstractController {
 	 */
 	private Absence validateAbsence(Absence absence) {
 		// Force a copy to work on
-		absence = ModelFactory.copyAbsence(absence);
+		// absence = ModelFactory.copyAbsence(absence);
 
 		// If no linked event, its not possible to have conflicts
 		Event linked = absence.getEvent();
@@ -494,7 +499,12 @@ public class AbsenceController extends AbstractController {
 			checkForAutoApproval(resolvedAbsence);
 
 			// Then do actual store
-			this.train.getDataStore().store(resolvedAbsence);
+			// TODO this was changd by curtis at 21:33 on 6/19/12. If it's
+			// incorrect, talk to him. It was throwing illegal argument
+			// exceptions because absences that are already in the database can
+			// make it in here.
+			this.train.getDataStore().storeOrUpdate(resolvedAbsence);
+			// this.train.getDataStore().store(resolvedAbsence);
 
 			// Finally check for side-effects caused by absence
 			train.getUsersController().updateUserGrade(
