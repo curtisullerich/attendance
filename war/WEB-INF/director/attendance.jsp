@@ -31,17 +31,17 @@ td .show-absence-onhover {
 	display:none;
 }
 td:hover .show-absence-onhover {
-	display:block;
+	visibility:visible;
 }
 td:hover .show-absence-onhover a {
 	color:#333;
 }
 td .show-add-onhover {
 	color:#aaa;
-	display:none;
+	visibility:hidden;
 }
 td:hover .show-add-onhover {
-	display:block;
+	visibility:visible;
 }
 td:hover .show-add-onhover a {
 	color:#aaa;
