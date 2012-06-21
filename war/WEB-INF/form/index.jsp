@@ -15,16 +15,16 @@
 	<body>
 		<jsp:include page="/WEB-INF/template/header.jsp" />
 	
-		<h1>View Forms</h1>
+		<h1>Forms</h1>
 		
 		<c:if test="${auth.user.type.student or auth.user.type.ta}">
-			<!-- p>
+			<p>
 				Create a new form:
 				<a href="/student/forms/forma" title="Performance Absence Request">Form A</a>
 				| <a href="/student/forms/formb" title="Class Conflict Request">Form B</a>
 				| <a href="/student/forms/formc" title="Request for Excuse from Rehearsal">Form C</a>
 				| <a href="/student/forms/formd" title="Time Worked">Form D</a>
-			</p-->
+			</p>
 		</c:if>
 		
 		<jsp:include page="/WEB-INF/common/forms.jsp" />

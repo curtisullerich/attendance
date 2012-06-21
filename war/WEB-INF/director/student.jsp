@@ -30,7 +30,7 @@
 			<h2 class="msg_head">Student Information </h2>
 			<div class="msg_body">
 			
-			<form method="post" accept-charset="utf-8">
+			<form method="post" action="/director/studentinfo" accept-charset="utf-8">
 				<dl class="block-layout">
 					<dt><label class="required" for="FirstName">First Name</label></dt>
 					<dd><input type="text" name="FirstName" value="<c:out value="${user.firstName}" />" /></dd>
@@ -47,6 +47,10 @@
 	
 					<dt><label for="UniversityID">University ID</label></dt>
 					<dd><input type="text" name="UniversityID" value="<c:out value="${user.universityID}" />" disabled readonly/></dd>
+					
+					<dt><label for="MinutesAvailable">Minutes Available from Form D Submissions</label></dt>
+					<dd><input type="number" name="MinutesAvailable" value="<c:out value="${user.minutesAvailable}" />"/></dd>
+						
 					
 					<dt><label for="Section">Section</label></dt>
 					<dd>

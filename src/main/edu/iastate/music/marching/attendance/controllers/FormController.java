@@ -55,8 +55,23 @@ public class FormController extends AbstractController {
 		return find.returnAll().now();
 	}
 
-	public void update(Form f) {
+	private void updateFormD(Form f) {
+		User student = f.getStudent();
+		if (f.getType() == Form.Type.D && student != null) {
+			if (!f.isApplied()) {
+				if (f.getStatus() == Form.Status.Approved
+						&& f.getEmailStatus() == Form.Status.Approved) {
+					student.setMinutesAvailable(student.getMinutesAvailable()
+							+ f.getMinutesWorked());
+					this.dataTrain.getUsersController().update(student);
+					f.setApplied(true);
+				}
+			}
+		}
+	}
 
+	public void update(Form f) {
+		updateFormD(f);
 		this.dataTrain.getDataStore().update(f);
 
 		AbsenceController ac = this.dataTrain.getAbsenceController();
@@ -93,6 +108,8 @@ public class FormController extends AbstractController {
 		MessageThread messages = dataTrain.getMessagingController()
 				.createMessageThread(form.getStudent());
 		form.setMessageThread(messages);
+
+		updateFormD(form);
 
 		// Store
 		dataTrain.getDataStore().store(form);

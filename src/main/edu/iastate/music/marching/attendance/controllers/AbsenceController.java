@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -53,7 +54,7 @@ public class AbsenceController extends AbstractController {
 			// well, stack overflow says this works :)
 			// this changes the type from Tardy to Absence if there's a tardy
 			// that's 30 or more minutes late. Per request from Mr. Staub.
-			if (absence.getStart().getTime() - toLink.getStart().getTime() >= 30 * 60 * 1000) {
+			if (absence.getDatetime().getTime() - toLink.getStart().getTime() >= 30 * 60 * 1000) {
 				absence.setType(Absence.Type.Absence);
 			}
 		}
@@ -172,6 +173,16 @@ public class AbsenceController extends AbstractController {
 				"Types of absences were somehow wrong.");
 	}
 
+	/**
+	 * This is deprecated because the start and end date are not sufficient to
+	 * identify a single event. Type must also be specified. This is needed in
+	 * the current implementation of the mobile app, though.
+	 * 
+	 * @param student
+	 * @param start
+	 * @param end
+	 * @return
+	 */
 	@Deprecated
 	public Absence createOrUpdateAbsence(User student, Date start, Date end) {
 
@@ -320,6 +331,10 @@ public class AbsenceController extends AbstractController {
 	 */
 	private void checkForAutoApproval(Absence absence) {
 		Event linked = absence.getEvent();
+		if (absence.getStatus() != Absence.Status.Pending) {
+			//only pending absences can be autoapproved
+			return;
+		}
 		if (linked == null) {
 			return;
 			// throw new IllegalArgumentException(
@@ -353,6 +368,10 @@ public class AbsenceController extends AbstractController {
 
 		if (form.getStatus() != Form.Status.Approved) {
 			// must be approved!
+			return absence;
+		}
+		if (absence.getStatus() != Absence.Status.Pending) {
+			//only pending absences can be autoapproved
 			return absence;
 		}
 
@@ -492,12 +511,19 @@ public class AbsenceController extends AbstractController {
 	// (currently, at least)
 	public Absence updateAbsence(Absence absence) {
 
+		Event linked = absence.getEvent();
+		if (linked != null && absence.getType() == Absence.Type.Tardy) {
+			if (absence.getDatetime().getTime() - linked.getStart().getTime() >= 30 * 60 * 1000) {
+				absence.setType(Absence.Type.Absence);
+			}
+		}
+
 		// Do some validation
 		Absence resolvedAbsence = validateAbsence(absence);
 		if (resolvedAbsence == null) {
 			// Null resolved absence means remove from database
 			this.train.getDataStore().delete(absence);
-			
+
 			// Current absence has been invalidated somehow and removed from the
 			// database, so return null to indicate that
 			return null;
@@ -556,8 +582,7 @@ public class AbsenceController extends AbstractController {
 				.addFilter(Absence.FIELD_STUDENT, FilterOperator.EQUAL, student)
 				.returnAll().now();
 		// Manually activate student fields
-		for(Absence a : absences)
-		{
+		for (Absence a : absences) {
 			this.train.getDataStore().activate(a.getStudent());
 		}
 		return absences;
@@ -628,6 +653,15 @@ public class AbsenceController extends AbstractController {
 	public void remove(List<Absence> todie) {
 		ObjectDatastore od = this.train.getDataStore();
 		od.deleteAll(todie);
+		HashSet<User> users = new HashSet<User>();
+		for (Absence a : todie) {
+			User u = a.getStudent();
+			// Finally check for side-effects caused by absence
+			if (!users.contains(u)) {
+				train.getUsersController().updateUserGrade(u);
+			}
+			users.add(u);
+		}
 	}
 
 	/**
@@ -640,5 +674,9 @@ public class AbsenceController extends AbstractController {
 		ObjectDatastore od = this.train.getDataStore();
 
 		od.delete(todie);
+
+		// TODO, right?
+		// Finally check for side-effects caused by absence
+		train.getUsersController().updateUserGrade(todie.getStudent());
 	}
 }
