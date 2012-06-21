@@ -23,7 +23,7 @@ public class PageBuilder {
 
 	private static final String ATTR_SUCCESS_MESSAGE = "success_message";
 
-	public static final String PARAM_SUCCESS_MESSAGE = "message";
+	public static final String PARAM_SUCCESS_MESSAGE = "success_message";
 
 	private static final String ATTR_REDIRECT_URL = "redirect_url";
 

@@ -98,7 +98,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 			case student:
 				showStudent(req, resp);
 			case makeevent:
-				showMakeevent(req, resp);
+				showMakeEvent(req, resp);
 				break;
 			case viewevent:
 				viewEvent(req, resp);
@@ -154,16 +154,13 @@ public class DirectorServlet extends AbstractBaseServlet {
 		page.passOffToJsp(req, resp);
 	}
 
-	private void showMakeevent(HttpServletRequest req, HttpServletResponse resp)
+	private void showMakeEvent(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		PageBuilder page = new PageBuilder(Page.makeevent, SERVLET_PATH);
-		Date today = new Date();// TODO this probably isn't the proper way to do
-								// this
+		Date today = new Date();
 		page.setAttribute("today", today);
-		page.setAttribute("arst", Calendar.getInstance().get(Calendar.YEAR));
 		page.setAttribute("types", Event.Type.values());
 		page.setPageTitle("Make Event");
-
 		page.passOffToJsp(req, resp);
 	}
 
