@@ -20,7 +20,7 @@
 		
 		<p>First year members are only allowed one conflict.</p>
 		
-		<form action="./formb" method="post" accept-charset="utf-8">
+		<form method="post" accept-charset="utf-8">
 		
 			<dl class="block-layout">
 

@@ -12,7 +12,7 @@
 		
 		<h1>Make a New Event</h1>
 		
-		<form action="./makeevent" method="post" accept-charset="utf-8">
+		<form method="post" accept-charset="utf-8">
 			<dl class="block-layout">
 			<dt><label></label></dt>
 

@@ -59,7 +59,7 @@ table.gray tr:nth-child(odd) td.highlight, table.gray tr:nth-child(even) td.high
 
 <%-- 	<button id="show" onClick="showApproved();"><c:out value="${showApproved ? 'Hide Approved' :'Show Approved' }"/></button> --%>
 	<div class="threadresolved">
-		<form id="showapprovedform" action="./attendance" method="post" accept-charset="utf-8">
+		<form id="showapprovedform" method="post" accept-charset="utf-8">
 			<input id="approved_radio" name="approved" value="true" type="radio" onclick="$('#showapprovedform').submit();" ${showApproved ?'checked="checked"':''} />
 			<label for="approved_radio">Show Approved</label>
 			

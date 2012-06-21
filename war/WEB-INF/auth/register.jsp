@@ -18,7 +18,7 @@
 	<h1>ISU Cyclone Football "Varsity" Marching Band <fmt:formatDate value="${date}" pattern="yyyy" /></h1>
 	<h2>Registration</h2>
 	
-	<form action="/auth/register" method="post" accept-charset="utf-8">
+	<form method="post" accept-charset="utf-8">
 		<dl class="block-layout">
 			<dt><label></label></dt>
 				

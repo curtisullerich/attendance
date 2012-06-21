@@ -14,7 +14,7 @@
 	<h1>${pagetemplate.title}</h1>
 	<br />
 
-	<form action="./setranks" method="POST">
+	<form method="POST">
 		<table class="gray full-width">
 			<!-- start headers -->
 			<thead>

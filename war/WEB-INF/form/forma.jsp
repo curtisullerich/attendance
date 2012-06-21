@@ -22,7 +22,7 @@
 		ending January 30, ${year+1}, and it must be submitted by <fmt:formatDate value="${cutoff}" pattern="hh:mm a 'on' E, MMMMM d, yyyy" />.
 		Documentation must be submitted to the director for all absences (doctor's note, obituary, wedding program, etc.).</p>
 		
-		<form action="./forma" method="post" accept-charset="utf-8">
+		<form method="post" accept-charset="utf-8">
 		
 			<dl class="block-layout">
 	

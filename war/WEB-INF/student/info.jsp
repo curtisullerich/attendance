@@ -8,7 +8,7 @@
 	<jsp:include page="/WEB-INF/template/header.jsp" />
 
 	<h1>Edit your information</h1>
-	<form action="/student/info" method="post" accept-charset="utf-8">
+	<form method="post" accept-charset="utf-8">
 
 		<dl class="block-layout">
 			<dt><label class="required" for="FirstName">First Name</label></dt>

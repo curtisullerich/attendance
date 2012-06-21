@@ -23,7 +23,7 @@
 		<!-- TODO:enforce the three-day submission policy. -->
 		
 		<br/>		
-		<form action="./formc" method="post" accept-charset="utf-8">
+		<form method="post" accept-charset="utf-8">
 		
 			<dl class="block-layout">
 

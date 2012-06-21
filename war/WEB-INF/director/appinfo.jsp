@@ -63,7 +63,7 @@
 		</dl>
 		
 		<%//Put the form down here so the MobilePassword wasn't getting posted in the form %>
-		<form action="./appinfo" method="post" accept-charset="utf-8">	
+		<form method="post" accept-charset="utf-8">	
 		<dl class="block-layout">
 <!-- 			<dt><label for="Timezone" class="required">Timezone</label></dt> -->
 <!-- 			<dd> -->

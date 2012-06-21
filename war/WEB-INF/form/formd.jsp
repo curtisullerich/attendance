@@ -18,7 +18,7 @@
 	
 		<h1>Time Worked | Form D</h1>
 				
-		<form action="./formd" method="post" accept-charset="utf-8">
+		<form method="post" accept-charset="utf-8">
 		
 			<dl class="block-layout">
 	

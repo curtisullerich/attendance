@@ -12,7 +12,7 @@
 		
 		<h1>Absence Info For: <c:out value="${absence.student.name}" /></h1>
 		
-		<form action="./viewabsence" method="post" accept-charset="utf-8">
+		<form method="post" accept-charset="utf-8">
 			<fmt:formatDate var="arst" value="${absence.start}" pattern="yyyy"/> 
 			<dl class="block-layout">
 			<dt><label></label></dt>

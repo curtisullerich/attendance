@@ -10,7 +10,7 @@
 		<jsp:include page="/WEB-INF/template/header.jsp" />
 	
 		<h1>User: <c:out value="${user.netID}" /></h1>
-		<form action="/admin/users" method="post" accept-charset="utf-8">
+		<form method="post" accept-charset="utf-8">
 		
 		<dl class="block-layout">
 			<dt><label for="Type">Type</label></dt>

@@ -17,7 +17,7 @@
 
 		<c:if test="${empty absences }">
 		<p>Seeing a lot of unanchored items from the same day? You're probably missing an event. <a href="./makeevent">Create one.</a></p>
-		<form action="./unanchored" method="post" accept-charset="utf-8">
+		<form method="post" accept-charset="utf-8">
 		<table class="gray full-width gray-hover">
 			<thead>
 				<tr class="dark-title">
