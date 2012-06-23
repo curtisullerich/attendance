@@ -96,6 +96,19 @@ public class Form {
 
 	private Status status;
 
+	public boolean isApplied() {
+		return applied;
+	}
+
+	public void setApplied(boolean applied) {
+		if (this.applied){
+			throw new IllegalArgumentException("Once a Form D has been applied, it can never change again.");
+		}
+		this.applied = applied;
+	}
+
+	private boolean applied;
+	
 	private Status emailStatus;
 
 	@Activate(1)

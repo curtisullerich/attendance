@@ -126,23 +126,23 @@ public class DirectorServlet extends AbstractBaseServlet {
 				int tardy = 0;
 				int earlyout = 0;
 				for (Absence a : absences) {
-					switch( a.getType()) {
-						case Absence:
-							absent++;
-							break;
-						case Tardy:
-							tardy++;
-							break;
-						case EarlyCheckOut:
-							earlyout++;
-							break;
-						default:
-							break;
+					switch (a.getType()) {
+					case Absence:
+						absent++;
+						break;
+					case Tardy:
+						tardy++;
+						break;
+					case EarlyCheckOut:
+						earlyout++;
+						break;
+					default:
+						break;
 					}
 				}
 				page.setAttribute("absent", absent);
 				page.setAttribute("tardy", tardy);
-				page.setAttribute("earlyout",earlyout);
+				page.setAttribute("earlyout", earlyout);
 			} catch (NumberFormatException nfe) {
 				errors.add("Invalid event id");
 			}
@@ -278,8 +278,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		if (sid != null && !sid.equals("")) {
 			Event event = null;
 			try {
-				event = ec.get(
-						Long.parseLong(sid));
+				event = ec.get(Long.parseLong(sid));
 			} catch (NumberFormatException nfe) {
 				errors.add("Invalid event id");
 			}
@@ -290,20 +289,21 @@ public class DirectorServlet extends AbstractBaseServlet {
 						AbsenceController ac = train.getAbsenceController();
 						List<Absence> todie = ac.getAll(event);
 						ac.remove(todie);
-						page.setAttribute("success_message", "Event and associated absences deleted.");
+						page.setAttribute("success_message",
+								"Event and associated absences deleted.");
 					}
 				}
 				ec.delete(event);
-				
-				//this is set just in case we go back to the page with errors.
+
+				// this is set just in case we go back to the page with errors.
 				page.setAttribute("event", event);
 			}
-			
+
 		} else {
 			errors.add("Invalid event id");
 			page.setAttribute("errors", errors);
 		}
-		//TODO we should make a way to pass a success message on as well
+		// TODO we should make a way to pass a success message on as well
 		showAttendance(req, resp, null);
 	}
 
@@ -338,6 +338,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		String firstName, lastName, major, netid, rank;
 		int year = -1;
+		int minutesAvailable = -1;
 		User.Section section = null;
 
 		// Grab all the data from the fields
@@ -354,17 +355,21 @@ public class DirectorServlet extends AbstractBaseServlet {
 		}
 
 		try {
+			minutesAvailable = Integer.parseInt(req
+					.getParameter("MinutesAvailable"));
 			year = Integer.parseInt(req.getParameter("Year"));
 		} catch (NumberFormatException nfe) {
 			// TODO create a list of errors
 			nfe.printStackTrace();
 		}
-		// TODO section, year
 
 		UserController uc = DataTrain.getAndStartTrain().getUsersController();
 
 		User user = uc.get(netid);
 
+		if (minutesAvailable > -1) {
+			user.setMinutesAvailable(minutesAvailable);
+		}
 		user.setYear(year);
 		user.setMajor(major);
 		user.setSection(section);
@@ -902,29 +907,33 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		PageBuilder page = new PageBuilder(Page.student, SERVLET_PATH);
 
+		FormController fc = train.getFormsController();
 		String netid = req.getParameter("id");
 
-		User currentUser = train.getUsersController().get(netid);
+		if (netid == null || netid.equals("")) {
+			// TODO add error message
+		} else {
+			User student = train.getUsersController().get(netid);
 
-		List<MessageThread> messageThreads = train.getMessagingController()
-				.get(currentUser);
+			List<MessageThread> messageThreads = train.getMessagingController()
+					.get(student);
 
-		page.setPageTitle("Attendance");
+			page.setPageTitle("Attendance");
 
-		List<Absence> absences = train.getAbsenceController().get(currentUser);
+			List<Absence> absences = train.getAbsenceController().get(student);
 
-		page.setAttribute("user", currentUser);
-		page.setAttribute("forms", train.getFormsController().get(currentUser));
-		page.setAttribute("absences", absences);
-		page.setAttribute("threads", messageThreads);
-		page.setAttribute("sections", User.Section.values());
-		FormController fc = train.getFormsController();
+			page.setAttribute("user", student);
+			page.setAttribute("forms", train.getFormsController().get(student));
+			page.setAttribute("absences", absences);
+			page.setAttribute("threads", messageThreads);
+			page.setAttribute("sections", User.Section.values());
 
-		// Pass through any success message in the url parameters sent from a
-		// new form being created or deleted
-		page.setAttribute("success_message",
-				req.getParameter("success_message"));
-
+			// Pass through any success message in the url parameters sent from
+			// a
+			// new form being created or deleted
+			page.setAttribute("success_message",
+					req.getParameter("success_message"));
+		}
 		String removeid = req.getParameter("removeid");
 		if (removeid != null && removeid != "") {
 			long id = Long.parseLong(removeid);

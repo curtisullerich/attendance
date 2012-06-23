@@ -120,6 +120,16 @@ public class User implements Serializable {
 	
 	private boolean showApproved;
 
+	private int minutesAvailable;
+	
+	public int getMinutesAvailable() {
+		return minutesAvailable;
+	}
+
+	public void setMinutesAvailable(int minutesAvailable) {
+		this.minutesAvailable = minutesAvailable;
+	}
+
 	public String getFirstName() {
 		return firstName;
 	}

@@ -43,7 +43,7 @@ public class FormsServlet extends AbstractBaseServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		
+
 		if (!isLoggedIn(req, resp)) {
 			resp.sendRedirect(AuthServlet.getLoginUrl(req));
 			return;
@@ -115,7 +115,7 @@ public class FormsServlet extends AbstractBaseServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		
+
 		if (!isLoggedIn(req, resp)) {
 			resp.sendRedirect(AuthServlet.getLoginUrl());
 			return;
@@ -610,28 +610,33 @@ public class FormsServlet extends AbstractBaseServlet {
 		page.setAttribute("success_message",
 				req.getParameter("success_message"));
 
+		User currentUser = train.getAuthController().getCurrentUser(
+				req.getSession());
+		// HACK: @Daniel
+		currentUser = train.getUsersController().get(currentUser.getNetID());
+
 		String removeid = req.getParameter("removeid");
 		if (removeid != null && removeid != "") {
 			try {
 				long id = Long.parseLong(removeid);
-				if (fc.removeForm(id)) {
-					page.setAttribute("success_message",
-							"Form successfully deleted");
-				} else {
+				if (currentUser.getType() == User.Type.Student
+						&& fc.get(id).getStatus() != Form.Status.Pending) {
 					page.setAttribute("error_messages",
-							"Form not deleted. If the form was already approved then you can't delete it.");
-					// TODO you might be able to. Check with staub
+							"Students cannot delete any non-pending form.");
+				} else {
+					if (fc.removeForm(id)) {
+						page.setAttribute("success_message",
+								"Form successfully deleted");
+					} else {
+						page.setAttribute("error_messages",
+								"Form not deleted. If the form was already approved then you can't delete it.");
+						// TODO you might be able to. Check with staub
+					}
 				}
 			} catch (NullPointerException e) {
 				page.setAttribute("error_messages", "The form does not exist.");
 			}
 		}
-
-		User currentUser = train.getAuthController().getCurrentUser(
-				req.getSession());
-
-		// HACK: @Daniel
-		currentUser = train.getUsersController().get(currentUser.getNetID());
 
 		// Handle students and director differently
 		List<Form> forms = null;

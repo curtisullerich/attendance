@@ -65,15 +65,15 @@
 										<c:when test="${auth.user.type.student || auth.user.type.ta}">
 											<c:choose>
 												<c:when test="${form.status.value eq 'Pending'}">
-													<button onClick="window.location='/student/forms?removeid=${form.id}'">Delete</button>
+													<button onclick="window.location='/student/forms?removeid=${form.id}'">Delete</button>
 												</c:when>
 												<c:when test="${form.status ne 'Pending'}">
-													<button onClick="alert('You can't delete a form unless it's pending.);">Delete</button>
+													<button onclick="alert('You cannot delete a form unless it is pending.');">Delete</button>
 												</c:when>
 											</c:choose>
 										</c:when>
 										<c:when test="${auth.user.type.director}">
-											<button onClick="window.location='/director/forms?removeid=${form.id}'">Delete</button>
+											<button onclick="window.location='/director/forms?removeid=${form.id}'">Delete</button>
 										</c:when>
 									</c:choose>
 								</td>
