@@ -11,8 +11,27 @@
 			<div class="clear"></div>
 		</div>
 	</div>
+	<script type="text/javascript">
+	$(document).ready(function()
+		{
+		  //hide the all of the element with class msg_body
+		  $(".msg_body").hide();
+		  //toggle the componenet with class msg_body
+		  $(".msg_head").click(function()
+		  {
+		    $(this).next(".msg_body").slideToggle(200);
+		  });
+		});
+	</script>
+
 
 	<div class="fwrapper grids-24">
+		<div class="msg_list">
+			<h2 class="msg_head"><strong>Submit a Bug Report</strong></h2>
+			<div class="msg_body">
+				<jsp:include page="/WEB-INF/common/bugreport.jsp"/>
+			</div>
+		</div>
 		<div class="grids-24" id="footer">
 			<div class="grid-3 first">
 				<a class="nameplate" href="/"><img alt="Iowa State University" src="/img/sprite.png"></a>

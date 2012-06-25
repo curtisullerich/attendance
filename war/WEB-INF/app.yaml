@@ -26,6 +26,12 @@ welcome_files:
 
 handlers:
 
+- url: /public/*
+  servlet: edu.iastate.music.marching.attendance.servlets.PublicServlet
+  init_params:
+    path: "public"
+  name: public
+
 - url: /error/*
   servlet: edu.iastate.music.marching.attendance.servlets.ErrorServlet
   init_params:

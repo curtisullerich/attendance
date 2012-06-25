@@ -1,6 +1,5 @@
 package edu.iastate.music.marching.attendance.servlets;
 
-import java.io.IOError;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,39 +15,72 @@ import edu.iastate.music.marching.attendance.util.PageBuilder;
 
 public class PublicServlet extends AbstractBaseServlet {
 
-
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 9184644423443871525L;
 
 	private enum Page {
-		verify;
+		verify, bugreport;
 	}
-	
+
 	private static final String SERVLET_PATH = "public";
-	
-	@Override 
+
+	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-		throws ServletException, IOException {
-		
+			throws ServletException, IOException {
+
 		Page page = parsePathInfo(req.getPathInfo(), Page.class);
 		if (page == null) {
 			show404(req, resp);
 			return;
 		}
-		
+
 		switch (page) {
 		case verify:
 			verifyFormD(req, resp);
-			break;	
+			break;
 		default:
 			ErrorServlet.showError(req, resp, 404);
 		}
-		
+
 	}
-	
-	private void verifyFormD(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		Page page = parsePathInfo(req.getPathInfo(), Page.class);
+		if (page == null) {
+			show404(req, resp);
+			return;
+		}
+
+		switch (page) {
+		case bugreport:
+			reportBug(req, resp);
+			break;
+		default:
+			ErrorServlet.showError(req, resp, 404);
+		}
+
+	}
+
+	private void reportBug(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+
+		String severity = req.getParameter("Severity");
+		String message = req.getParameter("Message");
+
+		// TODO probably shouldn't have put that in the appdatacontroller
+		DataTrain.getAndStartTrain().getAppDataController()
+				.sendBugReportEmail(severity, message);
+		PageBuilder page = new PageBuilder(Page.bugreport, SERVLET_PATH);
+		page.setAttribute("success_message", "Bug report submitted. Thanks!");
+		page.passOffToJsp(req, resp);
+	}
+
+	private void verifyFormD(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
 		DataTrain train = DataTrain.getAndStartTrain();
 		FormController fc = new FormController(train);
 		List<String> errors = new LinkedList<String>();
@@ -58,8 +90,7 @@ public class PublicServlet extends AbstractBaseServlet {
 		long hashedId = 0;
 		try {
 			hashedId = Long.parseLong(req.getParameter("i"));
-		}
-		catch (NumberFormatException e) {
+		} catch (NumberFormatException e) {
 			errors.add("Unable to identify form.");
 			isValid = false;
 		}
@@ -68,25 +99,23 @@ public class PublicServlet extends AbstractBaseServlet {
 			if (f != null && f.getStatus().isPending()) {
 				if (status.equals("a")) {
 					f.setStatus(Form.Status.Approved);
-	
-				}
-				else {
+
+				} else {
 					f.setStatus(Form.Status.Denied);
 				}
 				successes.add("Successfully updated form.");
 				fc.update(f);
-			}
-			else {
+			} else {
 				if (f == null)
-				errors.add("Unable to identify form."); 
+					errors.add("Unable to identify form.");
 				else {
 					errors.add("Once a form is approved or denied it cannot be changed.");
 					errors.add("If you made a mistake you should contact the directors.");
 				}
-				
+
 			}
 		}
-		
+
 		PageBuilder page = new PageBuilder(Page.verify, SERVLET_PATH);
 		page.setPageTitle("Form D Validation");
 		page.setAttribute("error_messages", errors);
