@@ -8,9 +8,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -737,7 +739,17 @@ public class DirectorServlet extends AbstractBaseServlet {
 		PageBuilder page = new PageBuilder(Page.unanchored, SERVLET_PATH);
 		List<Event> events = train.getEventController().readAll();
 		page.setAttribute("events", events);
-		page.setAttribute("absences", train.getAbsenceController().getAll());
+
+		List<Absence> unanchored = train.getAbsenceController().getAll();
+		Set<Absence> set = new HashSet<Absence>();
+		for (Absence a : unanchored) {
+			if (a.getEvent() != null) {
+				set.add(a);
+			}
+		}
+		unanchored.removeAll(set);
+
+		page.setAttribute("absences", unanchored);
 		page.setPageTitle("Unanchored");
 		page.setAttribute("error_messages", errors);
 
