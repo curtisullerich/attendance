@@ -69,11 +69,11 @@ public class PublicServlet extends AbstractBaseServlet {
 			throws ServletException, IOException {
 
 		String severity = req.getParameter("Severity");
-		String message = req.getParameter("Message");
+		String description = req.getParameter("Description");
 
 		// TODO probably shouldn't have put that in the appdatacontroller
 		DataTrain.getAndStartTrain().getAppDataController()
-				.sendBugReportEmail(severity, message);
+				.sendBugReportEmail(severity, description);
 		PageBuilder page = new PageBuilder(Page.bugreport, SERVLET_PATH);
 		page.setAttribute("success_message", "Bug report submitted. Thanks!");
 		page.passOffToJsp(req, resp);
