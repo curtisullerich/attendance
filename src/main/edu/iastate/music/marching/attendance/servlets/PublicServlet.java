@@ -74,9 +74,7 @@ public class PublicServlet extends AbstractBaseServlet {
 		// TODO probably shouldn't have put that in the appdatacontroller
 		DataTrain.getAndStartTrain().getAppDataController()
 				.sendBugReportEmail(severity, message);
-		PageBuilder page = new PageBuilder(Page.bugreport, SERVLET_PATH);
-		page.setAttribute("success_message", "Bug report submitted. Thanks!");
-		page.passOffToJsp(req, resp);
+		resp.sendRedirect(req.getParameter("redirect"));
 	}
 
 	private void verifyFormD(HttpServletRequest req, HttpServletResponse resp)

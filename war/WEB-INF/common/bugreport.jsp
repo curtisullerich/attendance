@@ -22,5 +22,6 @@
 	<br/>
 	<textarea rows="6" cols="50" name="Description"></textarea>
 	<br/>
+	<input type="hidden" name="redirect" value="${pagetemplate.uri}" />
 	<input type="submit" value="Submit" name="Submit"/>
 </form>
