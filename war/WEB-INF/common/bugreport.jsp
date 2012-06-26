@@ -7,10 +7,7 @@
 
 
 <form method='post' action='/public/bugreport'>
-
-	<c:url var="bug_url" value="/public/bugreport">
-		<c:param name="redirect" value="${pagetemplate.uri }"/>
-	</c:url>
+	
 	<!-- We could include hidden field and dump any data we want here on page load as well. -->
 	<label for="Severity">Severity</label>
 	<select name="Severity">
@@ -26,5 +23,6 @@
 	<br/>
 	<textarea rows="6" cols="50" name="Description"></textarea>
 	<br/>
+	<input type="hidden" name="Redirect" value="${pagetemplate.uri }"/>
 	<input type="submit" value="Submit" name="Submit"/>
 </form>
