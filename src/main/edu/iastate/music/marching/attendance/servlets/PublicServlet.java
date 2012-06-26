@@ -69,12 +69,15 @@ public class PublicServlet extends AbstractBaseServlet {
 			throws ServletException, IOException {
 
 		String severity = req.getParameter("Severity");
-		String message = req.getParameter("Message");
+		String description = req.getParameter("Description");
 
 		// TODO probably shouldn't have put that in the appdatacontroller
 		DataTrain.getAndStartTrain().getAppDataController()
-				.sendBugReportEmail(severity, message);
-		resp.sendRedirect(req.getParameter("redirect"));
+				.sendBugReportEmail(severity, description);
+		
+		// TODO Check redirect url is valid, also try to append a success message to it if possible
+		String redirect_url = req.getParameter("redirect");
+		resp.sendRedirect(redirect_url);
 	}
 
 	private void verifyFormD(HttpServletRequest req, HttpServletResponse resp)
