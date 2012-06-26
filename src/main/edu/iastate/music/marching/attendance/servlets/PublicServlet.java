@@ -40,26 +40,10 @@ public class PublicServlet extends AbstractBaseServlet {
 		case verify:
 			verifyFormD(req, resp);
 			break;
-		case bugreport:
-			showbugreport(req, resp);
-			break;
 		default:
 			ErrorServlet.showError(req, resp, 404);
 		}
 
-	}
-
-	private void showbugreport(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		String severity = req.getParameter("Severity");
-		String description = req.getParameter("Description");
-
-		// TODO probably shouldn't have put that in the appdatacontroller
-		DataTrain.getAndStartTrain().getAppDataController()
-				.sendBugReportEmail(severity, description);
-		PageBuilder page = new PageBuilder(Page.bugreport, SERVLET_PATH);
-		page.setAttribute("success_message", "Bug report submitted. Thanks!");
-		page.passOffToJsp(req, resp);
 	}
 
 	@Override
@@ -91,7 +75,7 @@ public class PublicServlet extends AbstractBaseServlet {
 		DataTrain.getAndStartTrain().getAppDataController()
 				.sendBugReportEmail(severity, description);
 		String redir = req.getParameter("Redirect");
-		resp.sendRedirect(req.getParameter(redir));
+		resp.sendRedirect(redir);
 		// PageBuilder page = new PageBuilder(Page.bugreport, SERVLET_PATH);
 		// page.setAttribute("success_message",
 		// "Bug report submitted. Thanks!");
