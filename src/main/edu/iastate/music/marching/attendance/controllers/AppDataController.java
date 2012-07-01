@@ -83,14 +83,15 @@ public class AppDataController extends AbstractController {
 		String email = "mbattendance@iastate.edu";
 		String msgBody = new StringBuilder()
 				.append("Severity: ")
-				.append("severity\n")
+				.append(severity)
+				.append("<br/><br/>")
 				.append("Message: \n")
 				.append(message)
 				.toString();
 
 		try {
 			MimeMessage msg = new MimeMessage(session);
-			msg.setFrom(new InternetAddress("mbattendance@iastate.edu"));
+			msg.setFrom(new InternetAddress("mbattendance@gmail.com"));
 			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
 					email));
 

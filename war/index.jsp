@@ -17,7 +17,7 @@
 		<h1>Homepage</h1>
 		
 		<p>
-		TODO
+		Welcome to the ISUCF"V"MB online attendance system! Login or register using the links above to start managing your attendance. 
 		</p>
 		
 		<jsp:include page="/WEB-INF/template/footer.jsp" />
