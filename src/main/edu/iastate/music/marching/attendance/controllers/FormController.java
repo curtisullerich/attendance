@@ -476,7 +476,7 @@ public class FormController extends AbstractController {
 
 		try {
 			MimeMessage msg = new MimeMessage(session);
-			msg.setFrom(new InternetAddress("mbattendance@iastate.edu"));
+			msg.setFrom(new InternetAddress("mbattendance@gmail.com"));
 			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
 					email));
 
