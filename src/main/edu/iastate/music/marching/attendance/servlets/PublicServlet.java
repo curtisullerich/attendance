@@ -87,7 +87,7 @@ public class PublicServlet extends AbstractBaseServlet {
 		DataTrain train = DataTrain.getAndStartTrain();
 		FormController fc = new FormController(train);
 		List<String> errors = new LinkedList<String>();
-		List<String> successes = new LinkedList<String>();
+		String success_message = null;
 		boolean isValid = true;
 		String status = req.getParameter("s");
 		long hashedId = 0;
@@ -106,7 +106,7 @@ public class PublicServlet extends AbstractBaseServlet {
 				} else {
 					f.setStatus(Form.Status.Denied);
 				}
-				successes.add("Successfully updated form.");
+				success_message = "Successfully updated form.";
 				fc.update(f);
 			} else {
 				if (f == null)
@@ -122,7 +122,7 @@ public class PublicServlet extends AbstractBaseServlet {
 		PageBuilder page = new PageBuilder(Page.verify, SERVLET_PATH);
 		page.setPageTitle("Form D Validation");
 		page.setAttribute("error_messages", errors);
-		page.setAttribute("success_message", successes);
+		page.setAttribute("success_message", success_message);
 		page.passOffToJsp(req, resp);
 	}
 }
