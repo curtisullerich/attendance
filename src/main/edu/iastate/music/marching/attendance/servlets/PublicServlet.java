@@ -75,7 +75,16 @@ public class PublicServlet extends AbstractBaseServlet {
 		DataTrain.getAndStartTrain().getAppDataController()
 				.sendBugReportEmail(severity, description);
 		String redir = req.getParameter("Redirect");
-		resp.sendRedirect(redir);
+
+		String append = "?";
+		if (redir.contains("?")) {
+			append = "&";
+		}
+		if (redir.equals("")) {
+			redir = "/";
+		}
+		
+		resp.sendRedirect(redir+append+"success_message=Bug+report+submitted+successfully.+Thanks!");
 		// PageBuilder page = new PageBuilder(Page.bugreport, SERVLET_PATH);
 		// page.setAttribute("success_message",
 		// "Bug report submitted. Thanks!");
