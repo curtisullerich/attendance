@@ -496,7 +496,7 @@ public class FormController extends AbstractController {
 
 			msg.setSubject(student.getFirstName() + " " + student.getLastName()
 					+ " Requests Time Worked Approval");
-			msg.setContent(msgBody, "text/html; charset=UTF-8");
+			msg.setContent(msgBody, "text/html");
 
 			Transport.send(msg);
 			return true;
