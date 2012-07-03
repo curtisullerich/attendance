@@ -935,14 +935,13 @@ public class DirectorServlet extends AbstractBaseServlet {
 			List<Absence> absences = train.getAbsenceController().get(student);
 
 			page.setAttribute("user", student);
-			page.setAttribute("forms", train.getFormsController().get(student));
+			page.setAttribute("forms", fc.get(student));
 			page.setAttribute("absences", absences);
 			page.setAttribute("threads", messageThreads);
 			page.setAttribute("sections", User.Section.values());
 
 			// Pass through any success message in the url parameters sent from
-			// a
-			// new form being created or deleted
+			// a new form being created or deleted
 			page.setAttribute("success_message",
 					req.getParameter("success_message"));
 		}
@@ -959,9 +958,12 @@ public class DirectorServlet extends AbstractBaseServlet {
 			}
 		}
 
-		// Handle students and director differently
-		List<Form> forms = fc.getAll();
-		page.setAttribute("forms", forms);
+		// This was commented because this is the method that shows the forms
+		// for ONE student. This should never be used for this case, right?
+		//
+		// // Handle students and director differently
+		// List<Form> forms = fc.getAll();
+		// page.setAttribute("forms", forms);
 
 		page.passOffToJsp(req, resp);
 	}
