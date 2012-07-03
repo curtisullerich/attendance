@@ -512,7 +512,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 			if (validForm) {
 				// How about update the absence huh?
 				ac.updateAbsence(toUpdate);
-				showAttendance(req, resp, null);
+				resp.sendRedirect(pageToUrl(Page.attendance, SERVLET_PATH));
 			} else {
 				viewAbsence(req, resp, errors);
 			}
