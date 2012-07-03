@@ -332,7 +332,7 @@ public class AbsenceController extends AbstractController {
 	private void checkForAutoApproval(Absence absence) {
 		Event linked = absence.getEvent();
 		if (absence.getStatus() != Absence.Status.Pending) {
-			//only pending absences can be autoapproved
+			// only pending absences can be autoapproved
 			return;
 		}
 		if (linked == null) {
@@ -371,7 +371,7 @@ public class AbsenceController extends AbstractController {
 			return absence;
 		}
 		if (absence.getStatus() != Absence.Status.Pending) {
-			//only pending absences can be autoapproved
+			// only pending absences can be autoapproved
 			return absence;
 		}
 
@@ -540,8 +540,7 @@ public class AbsenceController extends AbstractController {
 			// this.train.getDataStore().store(resolvedAbsence);
 
 			// Finally check for side-effects caused by absence
-			train.getUsersController().updateUserGrade(
-					resolvedAbsence.getStudent());
+			train.getUsersController().update(resolvedAbsence.getStudent());
 
 			// Success.
 			return resolvedAbsence;
