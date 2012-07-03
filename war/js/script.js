@@ -646,7 +646,7 @@ function confirmTACredentials(){
 				//if this is the right netid, then hash the plaintext password and check it
 				if(stringContains(loginPrepend, key)){
 					if (keyDelimiter(key,"netID") == name) {
-						if (localStorage[key] == Sha1.hash(password,true).toUpperCase()) {
+						if (localStorage[key].toUpperCase() == Sha1.hash(password,true).toUpperCase()) {
 							document.getElementById("login").style.display="none";
 							document.getElementById("main").style.display="inline";
 							//removes dummy TA value if loginDebug is true
