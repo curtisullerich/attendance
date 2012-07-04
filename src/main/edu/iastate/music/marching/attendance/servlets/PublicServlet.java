@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.iastate.music.marching.attendance.beans.PageTemplateBean;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.FormController;
 import edu.iastate.music.marching.attendance.model.Form;
@@ -74,10 +75,11 @@ public class PublicServlet extends AbstractBaseServlet {
 		String description = req.getParameter("Description");
 		String redir = req.getParameter("Redirect");
 		User user = datatrain.getAuthController().getCurrentUser(req.getSession());
-		
+		String userAgent = req.getHeader("User-Agent");
+		boolean mobileSite = PageTemplateBean.onMobileSite(req.getSession());
 
 		datatrain.getDataController()
-				.sendBugReportEmail(user, severity, redir, description);
+				.sendBugReportEmail(user, severity, redir, userAgent, mobileSite, description);
 
 		String append = "?";
 		if (redir.contains("?")) {

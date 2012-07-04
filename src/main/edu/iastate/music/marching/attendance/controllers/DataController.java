@@ -26,7 +26,7 @@ public class DataController extends AbstractController {
 	}
 
 	public boolean sendBugReportEmail(User user, String severity, String url,
-			String message) {
+			String userAgent, boolean mobileSite, String message) {
 
 		Properties props = new Properties();
 		Session session = Session.getDefaultInstance(props, null);
@@ -40,6 +40,8 @@ public class DataController extends AbstractController {
 		}
 		msgBody += "<br/><br/>";
 		msgBody += "Url: " + StringEscapeUtils.escapeHtml4(url) + "<br/><br/>";
+		msgBody += "UserAgent: " + userAgent + "<br/><br/>";
+		msgBody += "On mobile site: " + new Boolean(mobileSite).toString() + "<br/><br/>";
 		msgBody += "Message: \n" + StringEscapeUtils.escapeHtml4(message);
 
 		try {

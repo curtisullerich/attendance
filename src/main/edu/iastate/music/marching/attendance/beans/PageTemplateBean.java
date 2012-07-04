@@ -1,6 +1,7 @@
 package edu.iastate.music.marching.attendance.beans;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import edu.iastate.music.marching.attendance.controllers.AuthController;
 import edu.iastate.music.marching.attendance.model.AppData;
@@ -48,10 +49,16 @@ public class PageTemplateBean implements java.io.Serializable {
 	 * 
 	 * @param mJSPPath
 	 */
-	public PageTemplateBean(String jsp_path, AppData appData, AuthController authController) {
+	public PageTemplateBean(String jsp_path, AppData appData,
+			AuthController authController) {
 		mJSPPath = jsp_path;
 		mAppData = appData;
 		mAuth = authController;
+	}
+
+	public static boolean onMobileSite(HttpSession session) {
+		return Boolean.TRUE.equals(session
+				.getAttribute(SESSION_ATTRIBUTE_SHOWMOBILESITE));
 	}
 
 	public boolean isMobileDevice() {
@@ -81,26 +88,25 @@ public class PageTemplateBean implements java.io.Serializable {
 	public String getUri() {
 		return this.mRequestUri;
 	}
-	
+
 	public String getPath() {
 		return this.mPath;
 	}
-	
-	public NavigationBean getNavigation()
-	{
-		if(this.mNavigationBean == null)
+
+	public NavigationBean getNavigation() {
+		if (this.mNavigationBean == null)
 			this.mNavigationBean = NavigationBean.getInstance(mCurrentUser);
 		return this.mNavigationBean;
 	}
 
 	public void apply(HttpServletRequest request) {
-		
+
 		this.mCurrentUser = this.mAuth.getCurrentUser(request.getSession());
 
 		this.mRequestUri = request.getRequestURI()
 				+ ((request.getQueryString() == null) ? "" : "?"
 						+ request.getQueryString());
-		
+
 		this.mPath = request.getRequestURI();
 
 		// Check if mobile site view is explicitly set
@@ -129,13 +135,8 @@ public class PageTemplateBean implements java.io.Serializable {
 
 		// Based on the now maybe saved preference, decide whether to show the
 		// mobile site
-		if (Boolean.TRUE.equals(request.getSession().getAttribute(
-				SESSION_ATTRIBUTE_SHOWMOBILESITE)))
-			this.mobileSite = true;
-		else
-			this.mobileSite = false;
+		this.mobileSite = onMobileSite(request.getSession());
 
-		if (request != null)
-			request.setAttribute(ATTRIBUTE_NAME, this);
+		request.setAttribute(ATTRIBUTE_NAME, this);
 	}
 }
