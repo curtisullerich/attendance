@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.FormController;
 import edu.iastate.music.marching.attendance.model.Form;
+import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.util.PageBuilder;
 
 public class PublicServlet extends AbstractBaseServlet {
@@ -67,14 +68,16 @@ public class PublicServlet extends AbstractBaseServlet {
 
 	private void reportBug(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+		DataTrain datatrain = DataTrain.getAndStartTrain();
 
 		String severity = req.getParameter("Severity");
 		String description = req.getParameter("Description");
-
-		// TODO probably shouldn't have put that in the appdatacontroller
-		DataTrain.getAndStartTrain().getAppDataController()
-				.sendBugReportEmail(severity, description);
 		String redir = req.getParameter("Redirect");
+		User user = datatrain.getAuthController().getCurrentUser(req.getSession());
+		
+
+		datatrain.getDataController()
+				.sendBugReportEmail(user, severity, redir, description);
 
 		String append = "?";
 		if (redir.contains("?")) {
@@ -83,12 +86,9 @@ public class PublicServlet extends AbstractBaseServlet {
 		if (redir.equals("")) {
 			redir = "/";
 		}
-		
-		resp.sendRedirect(redir+append+"success_message=Bug+report+submitted+successfully.+Thanks!");
-		// PageBuilder page = new PageBuilder(Page.bugreport, SERVLET_PATH);
-		// page.setAttribute("success_message",
-		// "Bug report submitted. Thanks!");
-		// page.passOffToJsp(req, resp);
+
+		resp.sendRedirect(redir + append
+				+ "success_message=Bug+report+submitted+successfully.+Thanks!");
 	}
 
 	private void verifyFormD(HttpServletRequest req, HttpServletResponse resp)
