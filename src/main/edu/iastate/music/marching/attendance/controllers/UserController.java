@@ -36,7 +36,7 @@ public class UserController extends AbstractController {
 
 		return find.returnAll().now();
 	}
-	
+
 	public int getCount(Type type) {
 		RootFindCommand<User> find = this.datatrain.getDataStore().find()
 				.type(User.class);
@@ -82,7 +82,8 @@ public class UserController extends AbstractController {
 			throw new IllegalArgumentException("Invalid user");
 
 		// Check google user
-		if (!ValidationUtil.validGoogleUser(user.getGoogleUser(), this.datatrain))
+		if (!ValidationUtil.validGoogleUser(user.getGoogleUser(),
+				this.datatrain))
 			throw new IllegalArgumentException("Invalid google user");
 
 		// Check name
@@ -177,7 +178,12 @@ public class UserController extends AbstractController {
 	}
 
 	public void update(User u) {
-		validateUser(u);
+		validateUser(u);// TODO do we need to check for updates to absences
+						// here? I don't think so.
+
+		// I make this redundant call because the call chain in updateUserGrade
+		// wipes the changes from the User
+		this.datatrain.getDataStore().update(u);
 		updateUserGrade(u);
 		this.datatrain.getDataStore().update(u);
 	}
@@ -270,14 +276,14 @@ public class UserController extends AbstractController {
 		int count = 0;
 		List<User> students = this.get(User.Type.Student, User.Type.TA);
 		for (User s : students) {
-			//if(s.getGrade() != null)
+			// if(s.getGrade() != null)
 			{
 				total += s.getGrade().ordinal();
 				count += 1;
 			}
 		}
-	
-		if(count == 0)
+
+		if (count == 0)
 			return null;
 		else
 			return intToGrade((int) total / count);

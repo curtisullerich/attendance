@@ -11,9 +11,9 @@
 		<div class="">
 			<table class="gray full-width gray-hover" style="table-layout:fixed;white-space:nowrap;overflow:hidden;">
 				<colgroup>
-					<col width="15%" />
+					<col width="20%" />
 					<col width="23%" />
-					<col width="52%" />
+					<col width="47%" />
 					<col width="10%" />
 				</colgroup>
 				<thead>
@@ -51,19 +51,23 @@
 						<td style="text-align:right;">
 							<c:if test="${!thread.resolved}"><strong></c:if>
 							<p>
-								<fmt:formatDate var="fmtDate" value="${thread.messages[0].timestamp}" pattern="yyyy-MM-dd"/>
+								<fmt:formatDate var="fmtDate" value="${thread.messages[0].timestamp}" pattern="yyyy-M-d"/>
 								<fmt:formatDate var="fmtYear" value="${thread.messages[0].timestamp}" pattern="yyyy"/>
 								<c:choose>
 									<c:when test="${(fmtDate eq fmtCurrentDate)}">
 										<fmt:formatDate value="${thread.messages[0].timestamp}" pattern="h:mm a" />
 									</c:when>
 									<c:when test="${!(fmtYear eq fmtCurrentYear)}">
-										<fmt:formatDate value="${thread.messages[0].timestamp}" pattern="MM/dd/YY" />
+										<fmt:formatDate value="${thread.messages[0].timestamp}" pattern="M/d/YY" />
 									</c:when>
 									<c:otherwise>
 										<fmt:formatDate value="${thread.messages[0].timestamp}" pattern="MMM d" />
 									</c:otherwise>
 								</c:choose>
+								<c:if test="${empty thread.messages }">
+									-
+								</c:if>
+								
 							</p>
 							<c:if test="${!thread.resolved}"></strong></c:if>
 						</td>

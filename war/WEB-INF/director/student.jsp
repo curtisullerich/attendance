@@ -26,7 +26,7 @@
 		<h1>Student Info for <c:out value="${user.name}" /> (<c:out value="${user.id}" />)</h1>
 
 		Click to expand categories.
-		<%//Note that this is a near-duplicate of /student/info.jsp %>
+		<%--Note that this is a near-duplicate of /student/info.jsp --%>
 		<div class="msg_list">
 			<h2 class="msg_head">Student Information </h2>
 			<div class="msg_body">

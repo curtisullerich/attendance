@@ -365,7 +365,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 			nfe.printStackTrace();
 		}
 
-		UserController uc = DataTrain.getAndStartTrain().getUsersController();
+		UserController uc = train.getUsersController();
 
 		User user = uc.get(netid);
 
@@ -385,7 +385,6 @@ public class DirectorServlet extends AbstractBaseServlet {
 		// so the user can get it
 		req.setAttribute("id", netid.toString());
 		req.setAttribute("success_message", "Info successfully updated.");
-
 		showStudent(req, resp);
 	}
 
@@ -969,6 +968,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 	private void showStudent(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
+		List<String> errors = new ArrayList<String>();
 		DataTrain train = DataTrain.getAndStartTrain();
 
 		PageBuilder page = new PageBuilder(Page.student, SERVLET_PATH);
@@ -977,7 +977,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		String netid = req.getParameter("id");
 
 		if (netid == null || netid.equals("")) {
-			// TODO add error message
+			errors.add("The netID was missing.");
 		} else {
 			User student = train.getUsersController().get(netid);
 
@@ -1006,18 +1006,11 @@ public class DirectorServlet extends AbstractBaseServlet {
 				page.setAttribute("success_message",
 						"Form successfully deleted");
 			} else {
-				page.setAttribute("error_messages",
-						"Form not deleted. If the form was already approved then you can't delete it.");
+				errors.add("Form not deleted. If the form was already approved then you can't delete it.");
 				// TODO you might be able to. Check with staub
 			}
 		}
-
-		// This was commented because this is the method that shows the forms
-		// for ONE student. This should never be used for this case, right?
-		//
-		// // Handle students and director differently
-		// List<Form> forms = fc.getAll();
-		// page.setAttribute("forms", forms);
+		page.setAttribute("error_messages", errors);
 
 		page.passOffToJsp(req, resp);
 	}

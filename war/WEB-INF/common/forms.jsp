@@ -11,13 +11,15 @@
 					<table class="gray full-width gray-hover" style="table-layout:fixed;white-space:nowrap;overflow:hidden;">
 						<colgroup>
 							<col width="12%" />
-							<col width="12%" />
-							<col width="51%" />
+							<col width="7%" />
+							<col width="12%"/>
+							<col width="44%" />
 							<col width="10%" />
 							<col width="15%" />
 						</colgroup>
 						<thead>
 							<tr class="dark-title">
+								<th>netID</th>
 								<th>Type</th>
 								<th>Status</th>
 								<th>About</th>
@@ -41,7 +43,8 @@
 
 							<tr id="row_form_<c:out value="${form.id}" />">
 						<tr>
-							<%//Note that I did this because the last two columns are buttons. %>
+							<%--Note that I did this because the last two columns are buttons. --%>
+							<td onclick="window.location='<c:out value="${form_url_view}" />'">${form.student.id}</td>
 							<td onclick="window.location='<c:out value="${form_url_view}" />'">${form.type}</td>
 							<td onclick="window.location='<c:out value="${form_url_view}" />'">${form.status}</td>
 							<td onclick="window.location='<c:out value="${form_url_view}" />'">

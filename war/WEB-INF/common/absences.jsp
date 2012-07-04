@@ -58,7 +58,7 @@
 					<c:choose>
 						<c:when test="${(absence.type.tardy) || (absence.type.earlyCheckOut)}">
 						<td onclick="window.location='${absence_url_view}'">
-							<fmt:formatDate value="${absence.start}" pattern="hh:mm a" />
+							<fmt:formatDate value="${absence.start}" pattern="h:mm a" />
 						</td>
 						</c:when>
 						<c:when test="${(absence.type.absence) && (empty absence.event)}">

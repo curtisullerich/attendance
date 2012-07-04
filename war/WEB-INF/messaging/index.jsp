@@ -27,7 +27,7 @@
 		</c:when>
 		<c:otherwise>
 			<h2>Resolved Messages</h2>
-			<c:set var="threads" value="${resolved}" scope="request"/>
+			<c:set var="threads" value="${resolved}" scope="request" />
 			<jsp:include page="/WEB-INF/common/threadtable.jsp" />
 		</c:otherwise>
 		</c:choose>

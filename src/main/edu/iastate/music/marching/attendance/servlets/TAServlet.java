@@ -120,7 +120,6 @@ public class TAServlet extends AbstractBaseServlet {
 		UserController uc = train.getUsersController();
 
 		List<User> students = uc.get(User.Type.Student);
-		students.addAll(uc.get(User.Type.TA));
 
 		List<String> errors = new LinkedList<String>();
 

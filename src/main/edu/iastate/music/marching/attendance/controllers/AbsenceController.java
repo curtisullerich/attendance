@@ -672,8 +672,8 @@ public class AbsenceController extends AbstractController {
 
 		od.delete(todie);
 
-		// TODO, right?
 		// Finally check for side-effects caused by absence
-		train.getUsersController().updateUserGrade(todie.getStudent());
+		//this also checks the students grade
+		train.getUsersController().update(todie.getStudent());
 	}
 }
