@@ -36,7 +36,7 @@ public class DataController extends AbstractController {
 		if (user == null) {
 			msgBody += "From: Anonymous";
 		} else {
-			msgBody += "From: " + user.getName() + " " + user.getNetID();
+			msgBody += "From: " + user.getName() + " (" + user.getNetID() + ")";
 		}
 		msgBody += "<br/>\n";
 		msgBody += "Url: " + StringEscapeUtils.escapeHtml4(url) + "<br/>\n";
