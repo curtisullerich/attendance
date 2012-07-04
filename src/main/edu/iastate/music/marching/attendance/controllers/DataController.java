@@ -31,17 +31,18 @@ public class DataController extends AbstractController {
 		Properties props = new Properties();
 		Session session = Session.getDefaultInstance(props, null);
 		String msgBody = "Severity: " + StringEscapeUtils.escapeHtml4(severity)
-				+ "<br/><br/>";
+				+ "<br/>\n";
 
 		if (user == null) {
 			msgBody += "From: Anonymous";
 		} else {
 			msgBody += "From: " + user.getName() + " " + user.getNetID();
 		}
-		msgBody += "<br/><br/>";
-		msgBody += "Url: " + StringEscapeUtils.escapeHtml4(url) + "<br/><br/>";
-		msgBody += "UserAgent: " + userAgent + "<br/><br/>";
-		msgBody += "On mobile site: " + new Boolean(mobileSite).toString() + "<br/><br/>";
+		msgBody += "<br/>\n";
+		msgBody += "Url: " + StringEscapeUtils.escapeHtml4(url) + "<br/>\n";
+		msgBody += "User Agent: " + userAgent + "<br/>\n";
+		msgBody += "On mobile site: " + new Boolean(mobileSite).toString() + "<br/>\n";
+		msgBody += "<br/>\n";
 		msgBody += "Message: \n" + StringEscapeUtils.escapeHtml4(message);
 
 		try {
