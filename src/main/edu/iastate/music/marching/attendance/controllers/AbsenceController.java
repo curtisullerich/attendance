@@ -216,8 +216,6 @@ public class AbsenceController extends AbstractController {
 	}
 
 	/**
-	 * Note that this does not store the event parameter in the database! That
-	 * is the caller's responsibility!
 	 * 
 	 * @param student
 	 * @param e

@@ -58,11 +58,11 @@ public class TAServlet extends AbstractBaseServlet {
 			}
 
 	}
-	
+
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		
+
 		if (!isLoggedIn(req, resp)) {
 			resp.sendRedirect(AuthServlet.getLoginUrl());
 			return;
@@ -82,85 +82,85 @@ public class TAServlet extends AbstractBaseServlet {
 				break;
 			default:
 				ErrorServlet.showError(req, resp, 404);
-		}
+			}
 
 	}
 
 	private void showIndex(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		PageBuilder page = new PageBuilder(Page.index, SERVLET_PATH);
-		
-		page.setAttribute("success_message", req.getParameter("success_message"));
+
+		page.setAttribute("success_message",
+				req.getParameter("success_message"));
 
 		page.setPageTitle("Staff");
 
 		page.passOffToJsp(req, resp);
 	}
-	
+
 	private void showSetRanks(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		
+
 		DataTrain train = DataTrain.getAndStartTrain();
 		PageBuilder page = new PageBuilder(Page.setranks, SERVLET_PATH);
-		
+
 		List<User> students = train.getUsersController().get(User.Type.Student);
 		page.setAttribute("students", students);
-		
+
 		page.setPageTitle("Set Ranks");
-		
+
 		page.passOffToJsp(req, resp);
 	}
-	
+
 	private void postSetRanks(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		
+
 		DataTrain train = DataTrain.getAndStartTrain();
-		
+
 		UserController uc = train.getUsersController();
-		
+
 		List<User> students = uc.get(User.Type.Student);
-		
+		students.addAll(uc.get(User.Type.TA));
+
 		List<String> errors = new LinkedList<String>();
-		
-		for(User s:students){
-			try{
+
+		for (User s : students) {
+			try {
 				String rank = req.getParameter(s.getId());
-				if(rank != null && !rank.equals("")){
+				if (rank != null && !rank.equals("")) {
 					s.setRank(rank);
 					uc.update(s);
-				}
-				else if(rank == null){
+				} else if (rank == null) {
 					throw new Exception("User not listed");
 				}
-			}
-			catch (Exception e){
-				errors.add(e.getMessage()+": "+s.getNetID()+" - rank not updated");
+			} catch (Exception e) {
+				errors.add(e.getMessage() + ": " + s.getNetID()
+						+ " - rank not updated");
 			}
 		}
-		
-		if(errors.size() == 0){
-			String url = getIndexURL() + "?success_message="+URLEncoder.encode("All ranks set successfully", "UTF-8");
+
+		if (errors.size() == 0) {
+			String url = getIndexURL() + "?success_message="
+					+ URLEncoder.encode("All ranks set successfully", "UTF-8");
 			url = resp.encodeRedirectURL(url);
 			resp.sendRedirect(url);
-		}
-		else{
+		} else {
 			PageBuilder page = new PageBuilder(Page.setranks, SERVLET_PATH);
-			
+
 			page.setAttribute("error_messages", errors);
-			
+
 			page.setAttribute("students", students);
-			
+
 			page.setPageTitle("Set Ranks");
-			
+
 			page.passOffToJsp(req, resp);
-			
+
 		}
-		
+
 	}
-	
+
 	private String getIndexURL() {
 		return pageToUrl(Page.index, getInitParameter("path"));
 	}
-	
 
 }

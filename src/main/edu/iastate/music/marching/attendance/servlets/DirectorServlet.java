@@ -27,8 +27,8 @@ import edu.iastate.music.marching.attendance.controllers.UserController;
 import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.AppData;
 import edu.iastate.music.marching.attendance.model.Event;
-import edu.iastate.music.marching.attendance.model.Form;
 import edu.iastate.music.marching.attendance.model.MessageThread;
+import edu.iastate.music.marching.attendance.model.ModelFactory;
 import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.model.User.Section;
 import edu.iastate.music.marching.attendance.util.PageBuilder;
@@ -472,14 +472,52 @@ public class DirectorServlet extends AbstractBaseServlet {
 			validForm = false;
 		} else {
 			String absid = req.getParameter("absenceid");
-			long id;
+			long aid;
 			Absence toUpdate = null;
 			if (absid != null) {
-				id = Long.parseLong(absid);
-				toUpdate = ac.get(id);
+				String type = req.getParameter("Type");
+				String status = req.getParameter("Status");
+				String eventid = req.getParameter("eventid");
+				Event event = null;
+				try {
+					long eid = Long.parseLong(eventid);
+					event = train.getEventController().get(eid);
+				} catch (NumberFormatException nfe) {
+					errors.add("No event to add. Can't create absence.");
+				}
+				if (absid.equals("new")) {
+					String sid = req.getParameter("studentid");
+					User student = train.getUsersController().get(sid);
+					Absence.Type atype = Absence.Type.valueOf(type);
+					if (student != null) {
+						Date time = Util.parseDate(
+								req.getParameter("StartMonth"),
+								req.getParameter("StartDay"),
+								req.getParameter("StartYear"),
+								req.getParameter("StartHour"),
+								req.getParameter("StartAMPM"),
+								req.getParameter("StartMinute"), train
+										.getAppDataController().get()
+										.getTimeZone());
+						switch (atype) {
+						case Absence:
+							toUpdate = ac.createOrUpdateAbsence(student, event);
+							break;
+						case Tardy:
+							toUpdate = ac.createOrUpdateTardy(student, time);
+							break;
+						case EarlyCheckOut:
+							toUpdate = ac.createOrUpdateEarlyCheckout(student,
+									time);
+							break;
+						}
+					}
+				} else {
+
+					aid = Long.parseLong(absid);
+					toUpdate = ac.get(aid);
+				}
 				if (toUpdate != null) {
-					String type = req.getParameter("Type");
-					String status = req.getParameter("Status");
 
 					try {
 						toUpdate.setDatetime(Util.parseDate(
@@ -879,8 +917,24 @@ public class DirectorServlet extends AbstractBaseServlet {
 					student = train.getUsersController().get(sstudentid);
 				}
 				if (e != null && student != null) {
-					checkedAbsence = train.getAbsenceController()
-							.createOrUpdateAbsence(student, e);
+					// have to create the absence without storing it, or there
+					// will automatically be an absence created without clicking
+					// submit
+					// checkedAbsence = train.getAbsenceController()
+					// .createOrUpdateAbsence(student, e);
+					Absence absence = ModelFactory.newAbsence(
+							Absence.Type.Absence, student);
+					absence.setStatus(Absence.Status.Pending);
+
+					if (e != null && e.getStart() != null && e.getEnd() != null) {
+						absence.setEvent(e);
+						absence.setStart(e.getStart());
+						absence.setEnd(e.getEnd());
+						// associated with this event for this student
+					} else {
+						// the absence is orphaned if there's no event for it
+					}
+					checkedAbsence = absence;
 					page.setAttribute("new", true);
 				} else {
 					validInput = false;
