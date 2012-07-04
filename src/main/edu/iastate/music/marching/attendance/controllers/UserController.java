@@ -5,8 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.google.appengine.api.datastore.Query.FilterOperator;
-import com.google.code.twig.ObjectDatastore;
 import com.google.code.twig.FindCommand.RootFindCommand;
+import com.google.code.twig.ObjectDatastore;
 
 import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.ModelFactory;
