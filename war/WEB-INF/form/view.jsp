@@ -84,7 +84,7 @@
 				<dd>${form.details}<dd>
 				
 				<c:if test="${auth.user.type.director}">
-					<input type="submit" name="submit" id="submit" value="Submit Current Status">
+					<input type="submit" name="submit" id="submit" value="Submit">
 					<input type="hidden" name="id" id="formid" value="${form.id}">
 				</c:if>
 			</dl>

@@ -160,6 +160,9 @@ public class DirectorServlet extends AbstractBaseServlet {
 			throws ServletException, IOException {
 		PageBuilder page = new PageBuilder(Page.makeevent, SERVLET_PATH);
 		Date today = new Date();
+		
+		
+		page.setAttribute("arst", today.getYear()+1900);
 		page.setAttribute("today", today);
 		page.setAttribute("types", Event.Type.values());
 		page.setPageTitle("Make Event");
@@ -398,6 +401,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 			uc.delete(todie);
 		}
 
+		//resp.sendRedirect("/director/attendance?success_message=Student+deleted.");
 		// TODO add a success or error message
 		showAttendance(req, resp, null);
 	}

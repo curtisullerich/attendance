@@ -101,9 +101,9 @@
 		</div>
 		<h2 class="msg_head">Delete</h2>
 		<div class="msg_body">
-			<form method="post" action="/director/delete" accept-charset="utf-8">
+			<form method="post" action="/director/deletestudent" accept-charset="utf-8">
 				<input type="hidden" name="deleteid" value="${user.id }"/>
-				<input type="submit" value="Delete this student" onclick="confirm('Do you really want to delete this student?')"/>
+				<input type="submit" value="Delete this student" onclick="return confirm('Do you really want to delete this student?')"/>
 			</form>
 		</div>		
 		</div>
