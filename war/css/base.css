@@ -27,12 +27,12 @@ body{
 
 a{
 	color: #900;
-	text-decoration: underline;
+	text-decoration: none;
 }
 
 a:hover {
 	color: #4169e1;
-	text-decoration: underline;
+	text-decoration: none;
 }
 
 a img{
@@ -845,7 +845,7 @@ body.grid-layout-720 .hwrapper{
 }
 
 #content .toolbar .button:hover{
-	text-decoration: underline;
+	text-decoration: none;
 }
 
 #content .toolbar .button.active{

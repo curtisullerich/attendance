@@ -19,7 +19,7 @@
 }
 
 .userbox a:hover {
-	text-decoration: underline;
+/*	text-decoration: underline;*/
 }
 
 table.gray-hover tbody tr:hover td,td.gray-hover:hover {
