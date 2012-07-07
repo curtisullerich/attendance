@@ -62,13 +62,12 @@
 								</c:choose>
 								</p>
 								</td>								
-								<!-- Make the delete button and messages link. -->
 								<td>
 									<c:choose>
 										<c:when test="${auth.user.type.student || auth.user.type.ta}">
 											<c:choose>
 												<c:when test="${form.status.value eq 'Pending'}">
-													<button onclick="window.location='/student/forms?removeid=${form.id}'">Delete</button>
+													<button onclick="deleteForm(${form.id}, 'student')">Delete</button>
 												</c:when>
 												<c:when test="${form.status ne 'Pending'}">
 													<button onclick="alert('You cannot delete a form unless it is pending.');">Delete</button>
@@ -76,7 +75,7 @@
 											</c:choose>
 										</c:when>
 										<c:when test="${auth.user.type.director}">
-											<button onclick="window.location='/director/forms?removeid=${form.id}'">Delete</button>
+											<button onclick="deleteForm(${form.id}, 'director')">Delete</button>
 										</c:when>
 									</c:choose>
 								</td>
@@ -115,3 +114,13 @@
 				<p>No forms submitted yet!</p>
 			</c:otherwise>
 		</c:choose>
+		<script>
+			function deleteForm(id, type) {
+				var answer = confirm("Really delete the form?");
+				if (answer) {
+					window.location='/' + type + '/forms?removeid=' + id
+				}
+			}
+		
+		</script>
+		
