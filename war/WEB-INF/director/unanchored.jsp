@@ -13,10 +13,8 @@
 
 		<h1>${pagetemplate.title}</h1>
 		<p>Unanchored absences are absences, tardies, or early checkouts that are not associated with an event in the database. You need to either anchor or delete all of these to make sure grades are being calculated properly.</p>
-		<br/>
-
-		<c:if test="${not empty absences }">
 		<p>Seeing a lot of unanchored items from the same day? You're probably missing an event. <a href="./makeevent">Create one.</a></p>
+		<c:if test="${not empty absences }">
 		<form method="post" accept-charset="utf-8">
 		<table class="gray full-width gray-hover">
 			<thead>
