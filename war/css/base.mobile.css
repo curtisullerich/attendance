@@ -83,6 +83,10 @@ input[type="search"]{
 	text-align: center;
 }
 
+.fwrapper{
+	text-align: center;
+}
+
 /*=============================================*/
 
 .hwrapper{
@@ -243,8 +247,8 @@ body > footer a{
 	background: #f2f2f2;
 	background: #f5f4ed;
 }
-
-.panel > li > a.button, .panel > li > table.button{
+/* Curtis added the .panel > li > div.button so forms in the mobile app could be happy, same with flippedButton*/
+.panel > li > a.button, .panel > li > table.button, .panel > li > div.button{
 	background-image: -moz-linear-gradient(transparent, rgba(0, 0, 0, 0.2)) !important;
 	background-image: -webkit-gradient(linear, left top, left bottom, from(transparent), to(rgba(0, 0, 0, 0.2))) !important;
 	background-size: 100% 100% !important;
@@ -256,7 +260,7 @@ body > footer a{
 	text-shadow: 0 1px 0 #fff;
 }
 
-.panel > li > a.flippedButton{
+.panel > li > a.flippedButton, .panel > li > div.flippedButton{
 	background-image: -moz-linear-gradient(transparent, rgba(0, 0, 0, 0.2)) !important;
 	background-image: -webkit-gradient(linear, left bottom, left top, from(transparent), to(rgba(0, 0, 0, 0.2))) !important;
 	background-size: 100% 100% !important;

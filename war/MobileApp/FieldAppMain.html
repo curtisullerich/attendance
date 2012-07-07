@@ -55,7 +55,7 @@
 			    'cached',
 			    function(){
 			        console.log('swap cache has been called');
-					alert("Attendance app downloaded. \n Add it to Home Screen.");
+// 					alert("Attendance app downloaded. \n Add it to Home Screen.");
 			    },
 			    false
 			);
@@ -368,16 +368,18 @@
 		
 		<ul class="navigation group drilldown panel">
 			<li class="selected">
-				<a id="tardy" href="javascript: window.location='FieldAppTardy.html'"><h2>Tardy Check-In/Early Check-Out</h2></a>
-				<a id="absent" href="javascript: window.location='FieldAppAbsent.html'"><h2>Report Absences</h2></a>
-				<a id="submit" href="javascript: loginAndUpload();"><h2>Upload Attendance Data</h2></a>
-				<a id="clear" href="javascript: clearAll();" style="display: none"><h2>Clear All Data</h2></a>
+<!-- 				<div class="flippedButton"> -->
+					<a id="tardy" href="javascript: window.location='FieldAppTardy.html'"><b>Tardy Check-In/Early Check-Out</b></a>
+					<a id="absent" href="javascript: window.location='FieldAppAbsent.html'"><b>Report Absences</b></a>
+					<a id="submit" href="javascript: loginAndUpload();"><b>Upload Attendance Data</b></a>
+					<a id="clear" href="javascript: clearAll();" style="display: none"><b>Clear All Data</b></a>
+<!-- 				</div> -->
 			</li>
 		</ul>
 		
 		<ul class="navigation group drilldown panel">
 			<li class="selected">
-				<a id="update" href="javascript: updateList();"><h2>Update Class List</h2></a>
+				<a id="update" href="javascript: updateList();"><b>Update Class List</b></a>
 				<a class="button" id="classList">Latest Class List: None</a>
 			</li>
 		</ul>

@@ -512,7 +512,7 @@
 				//if there were absence records, sort them and add them to the table
 				if(array3.length > 0){
 					array3.sort();
-					document.getElementById("absenceDiv").innerHTML = "<br>These people have been recorded as absent:</br></br>";
+					document.getElementById("absenceDiv").innerHTML = "<br/><b>These people have been recorded as absent</b><br/><br/>";
 					for (var i = 0; i < array3.length; i++) {
 						addRowToTable("2",array3[i][1]);
 					}
@@ -538,7 +538,7 @@
 				var array3 = array.concat(array2);
 				//if there were event records, sort them and add them to the table
 				if(array3.length > 0){
-					document.getElementById("eventDiv").innerHTML = "<br>Events currently cached:</br></br>";
+					document.getElementById("eventDiv").innerHTML = "<br/><b>Events currently cached</b><br/><br/>";
 					array3.sort();
 					for (var i = 0; i < array3.length; i++) {
 						addRowToTable("1",array3[i][1]);
@@ -546,7 +546,7 @@
 				}
 				//if no event records were found, say so
 				else{
-					document.getElementById("eventDiv").innerHTML = "<br>No events have been cached.</br>";
+					document.getElementById("eventDiv").innerHTML = "<br/><b>No events have been cached.</b><br/>";
 				}
 				return true;
 			}
@@ -564,7 +564,7 @@
 					if(cacheEvent() && cacheAbsences() && retrieveAbsences()){
 						viewAbsencesOn = true;
 						retrieveAbsences();
-						alert("Absence Data Successful Cached Locally");
+					//alert("Absence Data Successful Cached Locally");
 					}
 					//if caching was unsuccessful, say so
 					else{
@@ -661,87 +661,83 @@
 		</script>
 	</head>
     <body>
-    
+
    		<header class="hwrapper"><h1>Attendance</h1>
    			<a class="left" id="back" href="javascript: window.location='FieldAppMain.html'">Back</a>
 			<a class="right" id="help" href="javascript: help();">Help</a>
 		</header>
-		
+
 		<div id="main" style="display: none">
 			<h1>Absence Report</h1>
 			<ul class="navigation group drilldown panel">
 				<li class="selected">
-					<a class="flippedButton">
+					<div class="flippedButton">
 						<table> <!-- table 0 -->
-						
 							<tr>
-								<form id="event" name="event" method="get">
-									<td><strong>Event type </strong></td>
-									<td>
-										<input id="rehearsalRadio" type="radio" name="eventType" value="rehearsal">Rehearsal</input>
-										<input id="performanceRadio" type="radio" name="eventType" value="performance">Performance</input>
-									</td>
-								</form>
+								<td><strong>Event type </strong></td>
+								<td>
+									<form id="event" name="event" method="get">
+										<input id="rehearsalRadio" type="radio" name="eventType" value="rehearsal"/>Rehearsal
+										<input id="performanceRadio" type="radio" name="eventType" value="performance"/>Performance
+									</form>
+								</td>
 							</tr>
 							<tr>
-								<form id="startAmPm" name="startAmPm" method="get">
-									<td>Start time: </td>
-									<td>
+								<td>Start time: </td>
+								<td>
+									<form id="startAmPm" name="startAmPm" method="get">
 										<input id="startHour" size="5" type="number" name="startHour" min="01" max="12" value="4"/>
 										<input id="startMinute" size="5" type="number" name="startMinute" min="00" max="50" step="10" value="30"/>
-										<input id="startAM" type="radio" name="startrdio" value="AM">AM</input>
-										<input id="startPM" type="radio" name="startrdio" value="PM" checked="1">PM</input>
-									</td>
-								</form>
+										<input id="startAM" type="radio" name="startrdio" value="AM"/>AM
+										<input id="startPM" type="radio" name="startrdio" value="PM" checked/>PM
+									</form>
+								</td>
 							</tr>
 							<tr>
-								<form id="endAmPm" name="endAmPm" method="get">
-									<td>End time:</td>
-									<td>
+								<td>End time:</td>
+								<td>
+									<form id="endAmPm" name="endAmPm" method="get">
 										<input id="endHour" size="5" type="number" name="endHour" min="01" max="12" value="5"/>
 										<input id="endMinute" size="5" type="number" name="endMinute" min="00" max="50" step="10" value="50"/>
-										<input id="endAM" type="radio" name="endrdio" value="AM">AM</input>
-										<input id="endPM" type="radio" name="endrdio" value="PM" checked="1">PM</input>
-									</td>
-								</form> 
+										<input id="endAM" type="radio" name="endrdio" value="AM"/>AM
+										<input id="endPM" type="radio" name="endrdio" value="PM" checked/>PM
+									</form> 
+								</td>
 							</tr>
 						</table> 
-					</a>
+					</div>
 					<a id="editMain" href="javascript: handleEdit(true);">Remove</a>
 				</li>
 			</ul>
 			
-			
 			<ul class="navigation group drilldown panel">
 				<li class="selected">
-					<a class="flippedButton">
-					<h2><strong>Mark all students that are absent.</strong></h2></br>
+					<div class="flippedButton">
+						<b>Mark all students that are absent.</b><br/>
 						<div id="checkboxes" class="checkboxes" > 
 							<form id="absences" name="absences" method="get" style="margin: auto"></form>
 						</div>
-					</a>
+					</div>
 					<a id="addOrEditButton" href="javascript: cache();">Submit</a>
 					<a id="clear" href="javascript: clearAbsences();" style="display: none">Clear Absence Data</a>
 				</li>
 			</ul>
 			
-			
 			<ul class="navigation group drilldown panel">
 				<li class="selected">
-					<a id="viewButton" href="javascript: absencesOnOff();">View Absences</a>
-					<a class="button">
+					<a id="viewButton" href="javascript: absencesOnOff();"><b>View Absences</b></a>
+					<div class="button">
 						<div id="eventDiv"></div>
-						<Table id="eventTable" class="table"> <!-- table 1 -->
+						<table id="eventTable" class="table"> <!-- table 1 -->
 							<tbody></tbody>
-						</Table>
+						</table>
 						<div id="absenceDiv"></div>
-						<Table id="absenceTable" class="table"/> <!-- table 2 -->
+						<table id="absenceTable" class="table"> <!-- table 2 -->
 							<tbody></tbody>
-						</Table>
-					</a>
+						</table>
+					</div>
 				</li>
 			</ul>
-			
 		</div>
 						
 		<div class="box" id="login">
@@ -749,7 +745,7 @@
 			<form class="centeralign" id="TACredentials" onsubmit="return confirmTACredentials();">
 				<ul class="navigation group drilldown panel">
 					<li class="selected">
-						<a class="flippedButton">
+						<div class="flippedButton">
 							<table>
 								<tr>
 									<td>TA netID:</td>
@@ -759,15 +755,13 @@
 									<td>Password:</td>
 									<td><input type="password" id="password" placeholder="password"/></td>
 								</tr>
-								
 							</table>
-						</a>
+						</div>
 						<input type="submit" class="submit" id="submit"/>
 					</li>
 				</ul>
 			</form>
 		</div>
-		
 		
 		<br/>
 		<footer class="fwrapper">
@@ -776,6 +770,5 @@
 				<p class="light">Template &copy; 2012 <a href="http://m.iastate.edu/">Iowa State University</a></p>
 			</div>
 		</footer>
-		
     </body>
 </html>

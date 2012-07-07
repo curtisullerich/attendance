@@ -206,14 +206,14 @@
 				if(array.length > 0){
 					//sort array - first column takes precedence, sorted by ascii
 					array.sort();
-					document.getElementById("tardies").innerHTML = "<br>The Following Students Reported Being Tardy:</br></br>";
+					document.getElementById("tardies").innerHTML = "<br/><b>Currently Stored Check-Ins/Outs</b><br/><br/>";
 					//add a new row for each record
 					for (var i = 0; i < array.length; i++) {
 						addRowToTable("1",array[i][1]);
 					}
 				}
 				else{
-					document.getElementById("tardies").innerHTML = "<br>No students were tardy.</br>";
+					document.getElementById("tardies").innerHTML = "<br/><b>No students have checked in or out.</b><br/><br/>";
 				}
 			}
 			
@@ -302,28 +302,30 @@
 	</head>
 	<body>
 	
-		<header class="hwrapper"><h1>Attendance</h1>
+		<header class="hwrapper">
+			<h1>Attendance</h1>
    			<a class="left" id="back" href="javascript: window.location='FieldAppMain.html'">Back</a>
 			<a class="right" id="help" href="javascript: help();">Help</a>
 		</header>
 	
-		<h1>Tardy Check-In</h1>
+		<h1>Check In/Out</h1>
 		
 		<form class="centeralign" id="tardyReport" onsubmit="return submitTardy();">
 			<ul class="navigation group drilldown panel">
 				<li class="selected">
-					<a class="flippedButton">
+					<div class="flippedButton">
+						netID:<input type="text" id="student" autocomplete="off"/>
+<!-- 					<form id="submissionType"> -->
 						<table>
 							<tr>
-								<td>netID: </td>
-								<td><input type="text" id="student" autocomplete="off"/></td>
+								<td><input type="radio" id="Late Check-In" name="submitType" value="Late Check-In"/></td><td>Late Check-In</td>
 							</tr>
+							<tr>
+								<td><input type="radio" id="Early Check-Out" name="submitType" value="Early Check-Out"/></td><td>Early Check-Out</td>
+							</tr>
+<!-- 						</form> -->
 						</table>
-						<form id="submissionType">
-							<input type="radio" id="Late Check-In" name="submitType" value="Late Check-In">Late Check-In</input>
-							<input type="radio" id="Early Check-Out" name="submitType" value="Early Check-Out">Early Check-Out</input>
-						</form>
-					</a>
+					</div>
 					<a id="submit" href="javascript: submitTardy();">Submit</a>
 				</li>
 			</ul>			
@@ -342,20 +344,21 @@
 		<form class="centeralign" id="tardySortType">
 			<ul class="navigation group drilldown panel">
 				<li class="selected">
-					<a class="button">
+					<div class="button">
 						<b>Sort Style</b>
-						<input type="radio" name="sortType" value="Time" checked="">time</input>
-						<input type="radio" name="sortType" value="LastName">last name</input>
-						<input type="radio" name="sortType" value="FirstName">first name</input>
+						<input type="radio" name="sortType" value="Time" checked/>time
+						<input type="radio" name="sortType" value="LastName"/>last name
+						<input type="radio" name="sortType" value="FirstName"/>first name
 						<div id="tardies"></div>
-						<Table id="tardyTable" class="table"> <!-- table 0 -->
+						<table id="tardyTable" class="table"> <!-- table 0 -->
 							<tbody></tbody>
-						</Table>
-					</a>
+						</table>
+					</div>
 				</li>
 			</ul>
 		</form>
 		<br/>
+
 		<footer class="fwrapper">
 			<div>
 				<p><strong>Mobile App</strong> | <a href="/">Full Site</a></p>
