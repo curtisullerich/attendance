@@ -897,7 +897,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		List<String> errors = new LinkedList<String>();
 
 		String sabsenceid = req.getParameter("absenceid");
-
+		
 		Absence checkedAbsence = null;
 
 		long absenceid;

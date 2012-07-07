@@ -59,8 +59,8 @@ public class AbsenceController extends AbstractController {
 			}
 		}
 		return storeAbsence(absence, student);
-	}
-
+	}	
+	
 	/**
 	 * Note! This method causes destructive edits to the database that cannot be
 	 * fixed after releasing a reference to both parameters!

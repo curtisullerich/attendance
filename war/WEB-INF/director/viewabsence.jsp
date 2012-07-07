@@ -24,7 +24,7 @@
 					<input size='5' type='hidden' name='StartDay' min='01' max='31' value='<fmt:formatDate value="${absence.start}" pattern="d"/>'/>
 					<input size='5' type='hidden' name='StartYear' min='${arst}' max='${arst+1}' value='<fmt:formatDate value="${absence.start}" pattern="yyyy"/>'/>
 					at   
-					<input size='5' type='number' name='StartHour' min='01' max='12' value='<fmt:formatDate value="${absence.start}" pattern="hh"/>'/>
+					<input size='5' type='number' name='StartHour' min='01' max='12' value='<fmt:formatDate value="${absence.start}" pattern="h"/>'/>
 					:
 					<input size='5' type='number' name='StartMinute' min='00' max='59' value='<fmt:formatDate value="${absence.start}" pattern="mm"/>'/>
 					
@@ -58,15 +58,16 @@
 				</dd>
 				<dt><label for="Event" class="required">Event</label></dt>
 					<dd>
-						Start Time: <input type="text" name="Event" value='<fmt:formatDate value="${absence.event.start}" pattern="MM/dd/yyyy 'at' hh:mm a"/>' disabled readonly/> 
+						Start Time: <input type="text" name="Event" value='<fmt:formatDate value="${absence.event.start}" pattern="MM/dd/yyyy 'at' h:mm a"/>' disabled readonly/> 
 					</dd>
 					<dd>
-						End Time: <input type="text" name="Event" value='<fmt:formatDate value="${absence.event.end}" pattern="MM/dd/yyyy 'at' hh:mm a"/>' disabled readonly/>
+						End Time: <input type="text" name="Event" value='<fmt:formatDate value="${absence.event.end}" pattern="MM/dd/yyyy 'at' h:mm a"/>' disabled readonly/>
 					</dd>		
 			</dl>
 			
 			<input type="hidden" value="${absence.id}" name="absenceid"/>
-			<input type="submit" value="Submit Changes" name="SubmitChanges" />
+			<input type="hidden" value="${absence.event.id}" name="eventid"/>
+			<input type="submit" value="Submit" name="SubmitChanges" />
 			<input type="button" value="Cancel" name="Cancel" onclick="window.location = '/director/attendance'"/>
 			<c:if test="${not new}">
 				<input type="button" value="Messages" name="Message" onclick="window.location = '/director/messages/viewthread?id=${absence.messageThread.id}'"/>
