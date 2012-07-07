@@ -4,8 +4,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setTimeZone value="${pagetemplate.timeZoneID}" />
 
-
-
 <form method='post' action='/public/bugreport'>
 	
 	<!-- We could include hidden field and dump any data we want here on page load as well. -->
