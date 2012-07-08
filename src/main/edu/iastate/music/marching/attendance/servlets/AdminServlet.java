@@ -1,12 +1,14 @@
 package edu.iastate.music.marching.attendance.servlets;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.OutputStreamWriter;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.omg.CORBA_2_3.portable.OutputStream;
 
 import edu.iastate.music.marching.attendance.controllers.AuthController;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
@@ -25,15 +27,24 @@ public class AdminServlet extends AbstractBaseServlet {
 
 	public static final String INDEX_URL = pageToUrl(Page.index, SERVLET_PATH);
 
+	private static final String CONTENT_TYPE_JSON = "application/json";
+
 	private enum Page {
-		index, users, user;
+		index, users, user, data, export, load
 	}
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		// Admin login required by web.xml entry
+		if (!isLoggedIn(req, resp)) {
+			resp.sendRedirect(AuthServlet.getLoginUrl(req));
+			return;
+		} else if (!(isLoggedIn(req, resp, User.Type.Director) || AuthController
+				.isAdminLoggedIn())) {
+			resp.sendRedirect(ErrorServlet.getLoginFailedUrl(req));
+			return;
+		}
 
 		Page page = parsePathInfo(req.getPathInfo(), Page.class);
 
@@ -50,6 +61,12 @@ public class AdminServlet extends AbstractBaseServlet {
 			case user:
 				showUserInfo(req, resp);
 				break;
+			case export:
+				downloadExportData(req, resp);
+				break;
+			case data:
+				showDataPage(req, resp);
+				break;
 			default:
 				ErrorServlet.showError(req, resp, 404);
 			}
@@ -60,7 +77,14 @@ public class AdminServlet extends AbstractBaseServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		// Admin login required by web.xml entry
+		if (!isLoggedIn(req, resp)) {
+			resp.sendRedirect(AuthServlet.getLoginUrl(req));
+			return;
+		} else if (!(isLoggedIn(req, resp, User.Type.Director) || AuthController
+				.isAdminLoggedIn())) {
+			resp.sendRedirect(ErrorServlet.getLoginFailedUrl(req));
+			return;
+		}
 
 		Page page = parsePathInfo(req.getPathInfo(), Page.class);
 
@@ -70,6 +94,9 @@ public class AdminServlet extends AbstractBaseServlet {
 			switch (page) {
 			case users:
 				postUserInfo(req, resp);
+				break;
+			case load:
+				postImportData(req, resp);
 				break;
 			default:
 				ErrorServlet.showError(req, resp, 404);
@@ -81,7 +108,7 @@ public class AdminServlet extends AbstractBaseServlet {
 			throws IOException, ServletException {
 
 		String netID, strType, firstName, lastName;
-		
+
 		DataTrain train = DataTrain.getAndStartTrain();
 
 		// Grab all the data from the fields
@@ -89,7 +116,7 @@ public class AdminServlet extends AbstractBaseServlet {
 		strType = req.getParameter("Type");
 		firstName = req.getParameter("FirstName");
 		lastName = req.getParameter("LastName");
-		
+
 		User.Type type = User.Type.valueOf(strType);
 
 		UserController uc = train.getUsersController();
@@ -102,9 +129,11 @@ public class AdminServlet extends AbstractBaseServlet {
 
 		// TODO May throw validation exceptions
 		uc.update(localUser);
-		
-		// Update user in session if we just changed the currently logged in user
-		if(localUser.equals(train.getAuthController().getCurrentUser(req.getSession())))
+
+		// Update user in session if we just changed the currently logged in
+		// user
+		if (localUser.equals(train.getAuthController().getCurrentUser(
+				req.getSession())))
 			AuthController.updateCurrentUser(localUser, req.getSession());
 
 		showUsers(req, resp);
@@ -154,34 +183,6 @@ public class AdminServlet extends AbstractBaseServlet {
 		page.passOffToJsp(req, resp);
 	}
 
-	/**
-	 * Parses path info as: /key1/value1/key2/value2
-	 * 
-	 * @param pathInfo
-	 * @return Map of keys to values
-	 */
-	private Map<String, String> parsePathInfoParameters(String pathInfo) {
-
-		Map<String, String> map = new HashMap<String, String>();
-
-		if (pathInfo == null)
-			return map;
-
-		String[] parts = pathInfo.split("/");
-
-		for (int i = 2; i <= parts.length; i += 2) {
-			String key = parts[i - 1];
-			String value = parts[i];
-
-			map.put(key, value);
-		}
-
-		// Could end up with an odd part that is not put in the map
-		// map.put(null, parts.length-1)
-
-		return map;
-	}
-
 	private void showIndex(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
@@ -192,4 +193,37 @@ public class AdminServlet extends AbstractBaseServlet {
 		page.passOffToJsp(req, resp);
 	}
 
+	private void showDataPage(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+
+		PageBuilder page = new PageBuilder(Page.data, SERVLET_PATH);
+
+		page.setPageTitle("Data Export/Import");
+
+		page.passOffToJsp(req, resp);
+	}
+
+	private void downloadExportData(HttpServletRequest req,
+			HttpServletResponse resp) throws ServletException, IOException {
+
+		resp.setContentType(CONTENT_TYPE_JSON);
+
+		DataTrain train = DataTrain.getAndStartTrain();
+		
+		OutputStreamWriter osw = new OutputStreamWriter(resp.getOutputStream());
+
+		train.getDataController().dumpDatabaseAsJSON(osw);
+		
+		osw.flush();
+	}
+
+	private void postImportData(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+
+		PageBuilder page = new PageBuilder(Page.data, SERVLET_PATH);
+
+		page.setPageTitle("Data Export/Import");
+
+		page.passOffToJsp(req, resp);
+	}
 }

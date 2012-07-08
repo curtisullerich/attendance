@@ -124,4 +124,9 @@ public class EventController extends AbstractController {
 		return e;
 	}
 
+	public List<Event> getAll() {
+		ObjectDatastore od = this.train.getDataStore();
+		return od.find().type(Event.class).returnAll().now();
+	}
+
 }

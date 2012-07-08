@@ -13,7 +13,7 @@ static_files:
   - include: /index.html
 
 web_xml: |
-  <!-- Set XML mime-mapping so spreadsheets open properly instead of being sent as an octet/stream --> 
+  <!-- Set XML mime-mapping so appcaches open properly instead of being sent as an octet/stream --> 
   <mime-mapping> 
     <extension>appcache</extension> 
     <mime-type>text/cache-manifest</mime-type> 
@@ -98,8 +98,6 @@ handlers:
 
 - url: /admin/*
   servlet: edu.iastate.music.marching.attendance.servlets.AdminServlet
-  secure: always
-  login: admin
   init_params:
     path: "admin"
   name: admin

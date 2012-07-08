@@ -5,6 +5,7 @@ import java.util.concurrent.Future;
 import com.google.appengine.api.datastore.Transaction;
 import com.google.code.twig.annotation.AnnotationObjectDatastore;
 import com.google.code.twig.standard.StandardObjectDatastore;
+import com.google.gson.Gson;
 
 import edu.iastate.music.marching.attendance.model.ModelFactory;
 

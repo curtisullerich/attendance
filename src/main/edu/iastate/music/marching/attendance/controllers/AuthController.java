@@ -135,9 +135,9 @@ public class AuthController {
 		return userService.createLogoutURL(redirect_url);
 	}
 
-	public static boolean validGoogleUser() {
-		// TODO Auto-generated method stub
-		return false;
+	public static boolean isAdminLoggedIn() {
+		UserService userService = UserServiceFactory.getUserService();
+		return userService.isUserAdmin();
 	}
 
 }

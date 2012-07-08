@@ -11,10 +11,12 @@
 	
 		<h1>Administrative Data Export/Import</h1>
 		
-		<p>For backups, restores, manually removing or adding users, etc</p>
+		<p>For backups and restores</p>
 		
-		<p>Access functionality through links in the left navigation menu</p>
-	
+		<p>
+			<a href="export/data.json">Export entire database</a> (Useful as a backup)
+		</p>
+		
 		<jsp:include page="/WEB-INF/template/footer.jsp" />
 	</body>
 

@@ -592,6 +592,9 @@ public class AbsenceController extends AbstractController {
 	}
 
 	public List<Absence> get(Absence.Type... types) {
+		
+		if(types == null || types.length  == 0)
+			throw new IllegalArgumentException("Must pass at least one type to get by type");
 
 		RootFindCommand<Absence> find = this.train.getDataStore().find()
 				.type(Absence.class);

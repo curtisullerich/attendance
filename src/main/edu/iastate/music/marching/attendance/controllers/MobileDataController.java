@@ -7,6 +7,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import com.google.appengine.api.datastore.QueryResultIterator;
+import com.google.code.twig.ObjectDatastore;
+
 import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.Event;
 import edu.iastate.music.marching.attendance.model.MobileDataUpload;
@@ -257,5 +260,17 @@ public class MobileDataController {
 		return "Inserted " + successfulEvents + "/" + eventLines.size() + " events." + "\n"
 			+ "Inserted " + successfulAbscenses + "/" + otherLines.size() + " absences/tardies/early checkouts." + "\n"
 			+ errorString;
+	}
+
+	List<MobileDataUpload> getAllUploads() {
+		ObjectDatastore od = this.train.getDataStore();
+		List<MobileDataUpload> uploads = new ArrayList<MobileDataUpload>();
+		QueryResultIterator<MobileDataUpload> results = od.find(MobileDataUpload.class);
+		
+		while(results.hasNext())
+		{
+			uploads.add(results.next());
+		}
+		return uploads;
 	}
 }
