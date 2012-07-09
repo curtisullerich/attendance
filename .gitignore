@@ -1,4 +1,5 @@
 Thumbs.db
+*~
 appengine*.jar
 .settings/*
 .project
