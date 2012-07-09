@@ -2,6 +2,7 @@ package edu.iastate.music.marching.attendance.model;
 
 import java.io.Serializable;
 
+import com.google.appengine.api.datastore.Email;
 import com.google.code.twig.annotation.Activate;
 import com.google.code.twig.annotation.Id;
 import com.google.code.twig.annotation.Index;
@@ -12,13 +13,15 @@ public class User implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1421557192976557705L;
+	private static final long serialVersionUID = 1421557192976557704L;
 
 	public static final String FIELD_TYPE = "type";
 
-	public static final String FIELD_NETID = "netID";
+	public static final String FIELD_ID = "id";
 
-	public static final String FIELD_GOOGLEUSER = "google_user";
+	public static final String FIELD_PRIMARY_EMAIL = "email";
+
+	public static final String FIELD_SECONDARY_EMAIL = "secondEmail";
 
 	public enum Type {
 		Student, TA, Director;
@@ -35,19 +38,24 @@ public class User implements Serializable {
 			return this.equals(Director);
 		}
 	}
-	
+
 	public enum Grade {
-		A, Aminus("A-"), Bplus("B+"), B, Bminus("B-"), Cplus("C+"), C, Cminus("C-"), Dplus("D+"), D, Dminus("D-"), F;
+		A, Aminus("A-"), Bplus("B+"), B, Bminus("B-"), Cplus("C+"), C, Cminus(
+				"C-"), Dplus("D+"), D, Dminus("D-"), F;
 		private String mDisplayString;
+
 		private Grade() {
 			mDisplayString = this.toString();
 		}
+
 		private Grade(String display_string) {
 			mDisplayString = display_string;
 		}
+
 		public String getDisplayName() {
 			return mDisplayString;
 		}
+
 		public String getValue() {
 			return name();
 		}
@@ -85,26 +93,26 @@ public class User implements Serializable {
 
 	}
 
+	private Type type;
+
+	private Grade grade;
+
 	@Id
 	private String id;
 
 	@Index
-	private com.google.appengine.api.users.User google_user;
+	private Email email;
 
-	private Type type;
-
-	private Grade grade;
-	
 	@Index
-	private String netID;
+	private Email secondEmail;
 
 	private int universityID;
 
-//	@Activate(0)
-//	private List<Absence> absences;
-//
-//	@Activate(0)
-//	private List<Form> forms;
+	// @Activate(0)
+	// private List<Absence> absences;
+	//
+	// @Activate(0)
+	// private List<Form> forms;
 
 	private Section section;
 
@@ -117,11 +125,11 @@ public class User implements Serializable {
 	private String major;
 
 	private String rank;
-	
+
 	private boolean showApproved;
 
 	private int minutesAvailable;
-	
+
 	public int getMinutesAvailable() {
 		return minutesAvailable;
 	}
@@ -145,30 +153,17 @@ public class User implements Serializable {
 	public boolean isShowApproved() {
 		return this.showApproved;
 	}
-	
+
 	public void setShowApproved(boolean show) {
 		this.showApproved = show;
 	}
-	
+
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
 
 	public String getName() {
 		return this.getFirstName() + " " + this.getLastName();
-	}
-
-	public String getNetID() {
-		return this.netID;
-	}
-
-	public void setNetID(String netID) {
-		this.netID = netID;
-		this.id = netID;
-	}
-	
-	public String getId(){
-		return id;
 	}
 
 	public Type getType() {
@@ -182,12 +177,12 @@ public class User implements Serializable {
 	public void setGrade(Grade grade) {
 		this.grade = grade;
 	}
-	
+
 	public Grade getGrade() {
-		
+
 		return this.grade;
 	}
-	
+
 	public int getYear() {
 		return year;
 	}
@@ -228,29 +223,54 @@ public class User implements Serializable {
 		this.rank = rank;
 	}
 
-	public void setGoogleUser(com.google.appengine.api.users.User google_user) {
-		this.google_user = google_user;
+	public String getId() {
+		return this.id;
 	}
 
-	public com.google.appengine.api.users.User getGoogleUser() {
-		return this.google_user;
+	/**
+	 * Iowa State specific, instead use getId()
+	 * 
+	 * @return net id of the user
+	 */
+	@Deprecated
+	public String getNetID() {
+		return this.id;
+	}
+
+	public void setPrimaryEmail(Email email) {
+		this.email = email;
+		this.id = email.getEmail().substring(0, email.getEmail().indexOf('@'));
+	}
+
+	public Email getPrimaryEmail() {
+		return this.email;
+	}
+
+	public void setSecondaryEmail(Email email) {
+		this.secondEmail = email;
+	}
+
+	public Email getSecondaryEmail() {
+		return this.secondEmail;
 	}
 
 	@Override
 	public boolean equals(Object o) {
-		if(o == null)
+		if (o == null)
 			return false;
-		
+
+		// Emails are unique, so compare based on them
 		if (o instanceof User) {
 			User u = (User) o;
-			
-			if(this.netID == null)
-				throw new IllegalStateException("Null netid on this user");
-			
-			if(u.netID == null)
-				throw new IllegalArgumentException("Null netid on compared user");
-			
-			if (this.netID.equals(u.netID))
+
+			if (this.email == null || this.email.getEmail() == null)
+				throw new IllegalStateException("Null email for this user");
+
+			if (u.email == null || u.email.getEmail() == null)
+				throw new IllegalArgumentException(
+						"Null email on compared user");
+
+			if (this.email.equals(u.email))
 				return true;
 		}
 		return false;

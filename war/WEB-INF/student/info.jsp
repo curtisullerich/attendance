@@ -25,6 +25,13 @@
 			<dt><label for="UniversityID">University ID</label></dt>
 			<dd><input type="text" name="UniversityID" value="<c:out value="${user.universityID}" />" disabled readonly/></dd>
 			
+			<dt><label for="SecondEmail">Secondary Email</label></dt>
+			<dd>
+				<input type="email" name="SecondEmail" value="<c:out value="${user.secondaryEmail.email}" />" />
+				<br/>
+				Optional. If a google email is entered, you will be able to login with that or your CyMail email.
+			</dd>
+			
 			<dt><label for="Section">Section</label></dt>
 			<dd>
 				<select name="Section" id="Section">

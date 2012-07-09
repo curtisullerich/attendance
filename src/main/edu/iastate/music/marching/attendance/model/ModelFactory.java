@@ -3,6 +3,7 @@ package edu.iastate.music.marching.attendance.model;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.google.appengine.api.datastore.Email;
 import com.google.code.twig.annotation.AnnotationObjectDatastore;
 
 public class ModelFactory {
@@ -15,48 +16,25 @@ public class ModelFactory {
 		return e;
 	}
 
-	public static User newUser(User.Type type, com.google.appengine.api.users.User google_user, String netID, int univID) {
+	public static User newUser(User.Type type, Email email, int univID) {
 		User u = new User();
 		u.setType(type);
-		u.setGoogleUser(google_user);
-		u.setNetID(netID);
+		u.setPrimaryEmail(email);
 		u.setUniversityID(univID);
 		return u;
 	}
 
-	public static Absence newAbsence(
-			Absence.Type type, User student) {
+	public static Absence newAbsence(Absence.Type type, User student) {
 		Absence a = new Absence();
 		a.setType(type);
 		a.setStudent(student);
-		return a;
-	}
-	
-	/**
-	 * Returns a shallow copy of the given absence
-	 * @param absence Absence to copy
-	 * @return A new shallow copy
-	 */
-	public static Absence copyAbsence(Absence absence) {
-		
-		if(absence == null)
-			return null;
-		
-		Absence a = newAbsence(absence.getType(), absence.getStudent());
-		a.setDatetime(absence.getDatetime());
-		a.setEnd(absence.getEnd());
-		a.setEvent(absence.getEvent());
-		a.setMessageThread(absence.getMessageThread());
-		a.setStart(absence.getStart());
-		a.setStatus(absence.getStatus());
-		
 		return a;
 	}
 
 	public static AppData newAppData() {
 		return new AppData();
 	}
-	
+
 	public static Form newForm(Form.Type type, User student) {
 		Form form = new Form();
 		form.setType(type);
@@ -65,7 +43,8 @@ public class ModelFactory {
 		return form;
 	}
 
-	public static MobileDataUpload newMobileDataUpload(User uploader, Date uploadTime, String uploadData) {
+	public static MobileDataUpload newMobileDataUpload(User uploader,
+			Date uploadTime, String uploadData) {
 		MobileDataUpload upload = new MobileDataUpload();
 		upload.setUploader(uploader);
 		upload.setTimestamp(uploadTime);
@@ -77,7 +56,7 @@ public class ModelFactory {
 		MessageThread m = new MessageThread();
 		return m;
 	}
-	
+
 	public static AnnotationObjectDatastore newObjectDatastore() {
 		return new ObjectDatastore();
 	}

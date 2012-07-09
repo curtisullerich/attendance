@@ -42,9 +42,9 @@ public class MessagingControllerTest extends AbstractTest {
 		MessageThread result_student = results_student.get(0);
 		assertNotNull(result_student);
 		assertEquals(1, result_student.getParticipants().size());
-		assertEquals(student.getGoogleUser(), result_student.getParticipants().iterator().next().getGoogleUser());
+		assertEquals(student, result_student.getParticipants().iterator().next());
 		assertEquals(1, result_student.getMessages().size());
-		assertEquals(student.getGoogleUser(), result_student.getMessages().get(0).getAuthor().getGoogleUser());
+		assertEquals(student, result_student.getMessages().get(0).getAuthor());
 		assertEquals("S", result_student.getMessages().get(0).getText());
 		assertNotNull(result_student.getMessages().get(0).getTimestamp());
 		// TODO more checks

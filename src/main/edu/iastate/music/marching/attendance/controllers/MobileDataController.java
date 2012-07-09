@@ -45,7 +45,7 @@ public class MobileDataController {
 			} else if (next.getType() == User.Type.TA) {
 				sb.append("TA");
 				sb.append(SEPARATOR);
-				sb.append(next.getNetID());
+				sb.append(next.getId());
 				sb.append(SEPARATOR);
 				sb.append(next.getFirstName());
 				sb.append(SEPARATOR);
@@ -58,7 +58,7 @@ public class MobileDataController {
 			} else if (next.getType() == User.Type.Student) {
 				sb.append("Student");
 				sb.append(SEPARATOR);
-				sb.append(next.getNetID());
+				sb.append(next.getId());
 				sb.append(SEPARATOR);
 				sb.append(next.getFirstName());
 				sb.append(SEPARATOR);

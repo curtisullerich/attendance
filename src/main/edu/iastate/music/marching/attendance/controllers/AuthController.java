@@ -2,6 +2,7 @@ package edu.iastate.music.marching.attendance.controllers;
 
 import javax.servlet.http.HttpSession;
 
+import com.google.appengine.api.datastore.Email;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
@@ -94,26 +95,39 @@ public class AuthController {
 			// No google user logged in at all
 			throw new GoogleAccountException("No google user logged in at all",
 					GoogleAccountException.Type.None);
+		}
+
+		Email google_users_email = new Email(google_user.getEmail());
+		
+		User matchedUser = null;
+
+		// Some kind of google user logged in, check it against the
+		// primary email's of all users
+		if (ValidationUtil.validPrimaryEmail(google_users_email, this.train)) {
+
+			// Check if there is a user in the system already for this
+			// google user
+			matchedUser = train.getUsersController().get(google_users_email);
+			
+		} else if (ValidationUtil.validSecondaryEmail(google_users_email,
+				this.train)) {
+			// Maybe the secondary email will match a user in the database
+
+			// Check if there is a user in the system already for this
+			// google user
+			matchedUser = train.getUsersController().getSecondary(google_users_email);
 		} else {
-			// Some kind of google user logged in, check it is a valid one
-			if (ValidationUtil.validGoogleUser(google_user, this.train)) {
-
-				// Check if there is a user in the system already for this
-				// google user
-				User u = train.getUsersController().get(google_user);
-
-				if (u == null) {
-					// Still need to register
-					return false;
-				} else {
-					// Did successful login
-					AuthController.updateCurrentUser(u, session);
-					return true;
-				}
-			} else {
-				throw new GoogleAccountException("Not a valid google account",
-						GoogleAccountException.Type.Invalid);
-			}
+			throw new GoogleAccountException("Not a valid google account",
+					GoogleAccountException.Type.Invalid);
+		}
+		
+		if (matchedUser == null) {
+			// Still need to register
+			return false;
+		} else {
+			// Did successful login
+			AuthController.updateCurrentUser(matchedUser, session);
+			return true;
 		}
 	}
 

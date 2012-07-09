@@ -18,6 +18,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.appengine.api.datastore.Email;
+
 import edu.iastate.music.marching.attendance.controllers.AbsenceController;
 import edu.iastate.music.marching.attendance.controllers.AppDataController;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
@@ -160,9 +162,8 @@ public class DirectorServlet extends AbstractBaseServlet {
 			throws ServletException, IOException {
 		PageBuilder page = new PageBuilder(Page.makeevent, SERVLET_PATH);
 		Date today = new Date();
-		
-		
-		page.setAttribute("arst", today.getYear()+1900);
+
+		page.setAttribute("arst", today.getYear() + 1900);
 		page.setAttribute("today", today);
 		page.setAttribute("types", Event.Type.values());
 		page.setPageTitle("Make Event");
@@ -401,7 +402,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 			uc.delete(todie);
 		}
 
-		//resp.sendRedirect("/director/attendance?success_message=Student+deleted.");
+		// resp.sendRedirect("/director/attendance?success_message=Student+deleted.");
 		// TODO add a success or error message
 		showAttendance(req, resp, null);
 	}
@@ -809,12 +810,14 @@ public class DirectorServlet extends AbstractBaseServlet {
 			throws IOException, ServletException {
 
 		String netID, strType, firstName, lastName;
+		Email secondEmail;
 
 		// Grab all the data from the fields
 		netID = req.getParameter("NetID");
 		strType = req.getParameter("Type");
 		firstName = req.getParameter("FirstName");
 		lastName = req.getParameter("LastName");
+		secondEmail = new Email(req.getParameter("SecondEmail"));
 
 		User.Type type = User.Type.valueOf(strType);
 
@@ -825,6 +828,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		localUser.setType(type);
 		localUser.setFirstName(firstName);
 		localUser.setLastName(lastName);
+		localUser.setSecondaryEmail(secondEmail);
 
 		// TODO May throw validation exceptions
 		uc.update(localUser);
@@ -897,7 +901,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		List<String> errors = new LinkedList<String>();
 
 		String sabsenceid = req.getParameter("absenceid");
-		
+
 		Absence checkedAbsence = null;
 
 		long absenceid;

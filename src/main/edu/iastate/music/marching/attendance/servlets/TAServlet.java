@@ -133,7 +133,7 @@ public class TAServlet extends AbstractBaseServlet {
 					throw new Exception("User not listed");
 				}
 			} catch (Exception e) {
-				errors.add(e.getMessage() + ": " + s.getNetID()
+				errors.add(e.getMessage() + ": " + s.getId()
 						+ " - rank not updated");
 			}
 		}

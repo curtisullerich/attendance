@@ -7,18 +7,54 @@ import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.google.appengine.api.datastore.Email;
+
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.model.AppData;
 
 public class ValidationUtil {
 
-	private static final Pattern PATTERN_NAME = Pattern.compile("[\\w\\. -]+");
+	private static final Pattern PATTERN_NAME = Pattern
+			.compile("^[\\w\\. -]+$");
+
+	private static final Pattern PATTERN_EMAIL = Pattern
+			.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$");
 
 	public static boolean isValidName(String name) {
 		// Names are composed of characters (\w) and dashes
 		return PATTERN_NAME.matcher(name).matches();
 	}
 
+	public static boolean validPrimaryEmail(Email email, DataTrain train) {
+
+		if (email == null | email.getEmail() == null)
+			return false;
+
+		if (!PATTERN_EMAIL.matcher(email.getEmail()).matches())
+			return false;
+
+		String[] email_parts = email.getEmail().split("@");
+
+		if (email_parts.length == 2 && validEmailDomain(email_parts[1], train)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public static boolean validSecondaryEmail(Email email, DataTrain train) {
+
+		if (email == null)
+			return false;
+		
+		// Null or empty emails are okay for the secondary
+		if(email.getEmail() == null || email.getEmail() == "")
+			return true;
+
+		return PATTERN_EMAIL.matcher(email.getEmail()).matches();
+	}
+
+	@Deprecated
 	public static boolean validGoogleUser(
 			com.google.appengine.api.users.User google_user, DataTrain train) {
 

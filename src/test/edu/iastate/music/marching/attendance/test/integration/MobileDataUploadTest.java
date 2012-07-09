@@ -25,12 +25,14 @@ import org.junit.Test;
 import com.google.code.twig.ObjectDatastore;
 
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
+import edu.iastate.music.marching.attendance.controllers.UserController;
 import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.Event;
 import edu.iastate.music.marching.attendance.model.ModelFactory;
 import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.servlets.MobileAppDataServlet;
 import edu.iastate.music.marching.attendance.test.AbstractTest;
+import edu.iastate.music.marching.attendance.test.TestConfig;
 
 public class MobileDataUploadTest extends AbstractTest {
 
@@ -113,14 +115,15 @@ public class MobileDataUploadTest extends AbstractTest {
 		verify(os)
 				.print("{\"error\":\"exception\",\"message\":\"Tried to create absence for null user\"}");
 
-		//ObjectDatastore datastore = getObjectDataStore();
+		// ObjectDatastore datastore = getObjectDataStore();
 
 		// Verify insertion lengths
 		// When transactional support is re-added, uncomment this
-//		assertEquals(0, datastore.find().type(Event.class).returnCount().now()
-//				.intValue());
-//		assertEquals(0, datastore.find().type(Absence.class).returnCount()
-//				.now().intValue());
+		// assertEquals(0,
+		// datastore.find().type(Event.class).returnCount().now()
+		// .intValue());
+		// assertEquals(0, datastore.find().type(Absence.class).returnCount()
+		// .now().intValue());
 	}
 
 	private void simpleAbsenceInsertionVerification() {
@@ -163,12 +166,14 @@ public class MobileDataUploadTest extends AbstractTest {
 			// Check parent relation
 			assertEquals(a.getEvent(), event);
 
-			if (a.getStudent().getNetID().equals("s")) {
+			if (a.getStudent().getPrimaryEmail().getEmail()
+					.equals("s@" + TestConfig.getEmailDomain())) {
 				assertFalse("There should only be one abscence for user s",
 						foundS);
 				foundS = true;
 				// TODO assert information about inserted absence
-			} else if (a.getStudent().getNetID().equals("zf")) {
+			} else if (a.getStudent().getPrimaryEmail().getEmail()
+					.equals("zf@" + TestConfig.getEmailDomain())) {
 				// TODO assert information about inserted absence
 			} else
 				fail("Found an absence we didn't insert");
@@ -177,22 +182,20 @@ public class MobileDataUploadTest extends AbstractTest {
 
 	@Test
 	public void simpleTardyInsertionThroughController() {
-
 		ObjectDatastore datastore = getObjectDataStore();
 
 		DataTrain train = DataTrain.getAndStartTrain();
 
-		User s = ModelFactory.newUser(User.Type.Student, null, "s", 1);
-		datastore.store(s);
+		UserController uc = train.getUsersController();
 
-		User z = ModelFactory.newUser(User.Type.Student, null, "zf", 2);
-		datastore.store(z);
-
-		User b = ModelFactory.newUser(User.Type.Student, null, "b", 3);
-		datastore.store(b);
-
-		User ta = ModelFactory.newUser(User.Type.TA, null, "ta", 4);
-		datastore.store(ta);
+		createStudent(uc, "s", 1, "test1", "tester", 0, null,
+				User.Section.AltoSax);
+		createStudent(uc, "zf", 2, "test1", "tester", 0, null,
+				User.Section.AltoSax);
+		createStudent(uc, "b", 3, "test1", "tester", 0, null,
+				User.Section.AltoSax);
+		User ta = createTA(uc, "ta", 4, "test1", "tester", 0, null,
+				User.Section.AltoSax);
 
 		train.getMobileDataController().pushMobileData(SIMPLE_TARDY_TESTDATA,
 				ta);

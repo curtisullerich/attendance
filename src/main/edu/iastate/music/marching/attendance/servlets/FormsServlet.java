@@ -612,8 +612,6 @@ public class FormsServlet extends AbstractBaseServlet {
 
 		User currentUser = train.getAuthController().getCurrentUser(
 				req.getSession());
-		// HACK: @Daniel
-		currentUser = train.getUsersController().get(currentUser.getNetID());
 
 		String removeid = req.getParameter("removeid");
 		if (removeid != null && removeid != "") {
@@ -647,11 +645,6 @@ public class FormsServlet extends AbstractBaseServlet {
 		page.setAttribute("forms", forms);
 
 		page.passOffToJsp(req, resp);
-	}
-
-	private void removeForm(HttpServletRequest req, HttpServletResponse resp) {
-		// TODO Auto-generated method stub
-
 	}
 
 	/**

@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import com.google.appengine.api.datastore.Email;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.code.twig.FindCommand.RootFindCommand;
 import com.google.code.twig.ObjectDatastore;
@@ -47,27 +48,27 @@ public class UserController extends AbstractController {
 
 	public User createStudent(com.google.appengine.api.users.User google_user,
 			int univID, String firstName, String lastName, int year,
-			String major, User.Section section) throws IllegalArgumentException {
+			String major, User.Section section, Email secondaryEmail) throws IllegalArgumentException {
 
 		// Check google user
 		if (google_user == null)
 			throw new IllegalArgumentException("Must give a google user");
 
-		// Extract net id
-		String netID = google_user.getEmail().split("@")[0];
+		// Extract email
+		Email email = new Email(google_user.getEmail());
 
 		// Check no duplicate users exist
-		if (get(google_user) != null)
+		if (get(email) != null)
 			throw new IllegalArgumentException(
 					"User already exists in the system");
 
-		User user = ModelFactory.newUser(User.Type.Student, google_user, netID,
-				univID);
+		User user = ModelFactory.newUser(User.Type.Student, email, univID);
 		user.setFirstName(firstName);
 		user.setLastName(lastName);
 		user.setYear(year);
 		user.setMajor(major);
 		user.setSection(section);
+		user.setSecondaryEmail(secondaryEmail);
 
 		validateUser(user);
 
@@ -81,10 +82,10 @@ public class UserController extends AbstractController {
 		if (user == null)
 			throw new IllegalArgumentException("Invalid user");
 
-		// Check google user
-		if (!ValidationUtil.validGoogleUser(user.getGoogleUser(),
+		// Check primary email
+		if (!ValidationUtil.validPrimaryEmail(user.getPrimaryEmail(),
 				this.datatrain))
-			throw new IllegalArgumentException("Invalid google user");
+			throw new IllegalArgumentException("Invalid primary email");
 
 		// Check name
 		if (!ValidationUtil.isValidName(user.getFirstName()))
@@ -95,6 +96,11 @@ public class UserController extends AbstractController {
 		// Check university id
 		// TODO
 		user.getUniversityID();
+		
+		// Check secondary email
+		if (!ValidationUtil.validSecondaryEmail(user.getSecondaryEmail(),
+				this.datatrain))
+			throw new IllegalArgumentException("Invalid primary email");
 
 		// Check student specific things
 		if (user.getType() == User.Type.Student) {
@@ -107,26 +113,26 @@ public class UserController extends AbstractController {
 
 	}
 
-	public User createDirector(com.google.appengine.api.users.User google_user,
+	public User createDirector(String schoolEmail, String loginEmail,
 			int univID, String firstName, String lastName)
 			throws IllegalArgumentException {
 
-		// Check google user
-		if (google_user == null)
-			throw new IllegalArgumentException("Must give a google user");
-
-		// Extract net id
-		String netID = google_user.getEmail().split("@")[0];
+		// Validate email
+		Email primaryEmail = new Email(schoolEmail);
+		Email secondaryEmail = new Email(loginEmail);
+		ValidationUtil.validPrimaryEmail(primaryEmail, this.datatrain);
+		ValidationUtil.validSecondaryEmail(secondaryEmail, this.datatrain);
 
 		// Check no duplicate users exist
-		if (get(google_user) != null)
+		if (get(primaryEmail) != null)
 			throw new IllegalArgumentException(
 					"User already exists in the system");
 
-		User user = ModelFactory.newUser(User.Type.Director, google_user,
-				netID, univID);
+		User user = ModelFactory.newUser(User.Type.Director, primaryEmail,
+				univID);
 		user.setFirstName(firstName);
 		user.setLastName(lastName);
+		user.setSecondaryEmail(secondaryEmail);
 
 		validateUser(user);
 
@@ -147,23 +153,26 @@ public class UserController extends AbstractController {
 
 	/**
 	 * 
-	 * @param googleUser
-	 *            Google user object from AuthController
+	 * @param email
+	 *            Primary email of a user
 	 * @return
 	 */
-	public User get(com.google.appengine.api.users.User googleUser) {
+	public User get(Email primaryEmail) {
 
 		User u;
 
-		if (googleUser == null)
+		if (primaryEmail == null)
+			return null;
+
+		if (primaryEmail.getEmail() == null)
 			return null;
 
 		Iterator<User> users = this.datatrain
 				.getDataStore()
 				.find()
 				.type(User.class)
-				.addFilter(User.FIELD_GOOGLEUSER, FilterOperator.EQUAL,
-						googleUser).now();
+				.addFilter(User.FIELD_PRIMARY_EMAIL, FilterOperator.EQUAL,
+						primaryEmail.getEmail()).fetchMaximum(2).now();
 
 		if (users.hasNext())
 			u = users.next();
@@ -172,7 +181,44 @@ public class UserController extends AbstractController {
 
 		if (users.hasNext())
 			throw new IllegalStateException(
-					"Found more than one user corresponding to a google user");
+					"Found more than one user corresponding to primary email "
+							+ primaryEmail);
+
+		return u;
+	}
+
+	/**
+	 * 
+	 * @param email
+	 *            Secondary email of a user
+	 * @return
+	 */
+	public User getSecondary(Email secondaryEmail) {
+
+		User u;
+
+		if (secondaryEmail == null)
+			return null;
+
+		if (secondaryEmail.getEmail() == null)
+			return null;
+
+		Iterator<User> users = this.datatrain
+				.getDataStore()
+				.find()
+				.type(User.class)
+				.addFilter(User.FIELD_SECONDARY_EMAIL, FilterOperator.EQUAL,
+						secondaryEmail.getEmail()).fetchMaximum(2).now();
+
+		if (users.hasNext())
+			u = users.next();
+		else
+			return null;
+
+		if (users.hasNext())
+			throw new IllegalStateException(
+					"Found more than one user corresponding to secondary email "
+							+ secondaryEmail);
 
 		return u;
 	}

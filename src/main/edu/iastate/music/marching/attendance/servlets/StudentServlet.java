@@ -7,6 +7,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.appengine.api.datastore.Email;
+
 import edu.iastate.music.marching.attendance.controllers.AuthController;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.UserController;
@@ -75,9 +77,6 @@ public class StudentServlet extends AbstractBaseServlet {
 
 		User currentUser = train.getAuthController().getCurrentUser(req.getSession());
 
-		// HACK: @Daniel
-		currentUser = train.getUsersController().get(currentUser.getNetID());
-
 		page.setPageTitle("Attendance");
 
 		List<Absence> a = train.getAbsenceController().get(currentUser);
@@ -124,11 +123,13 @@ public class StudentServlet extends AbstractBaseServlet {
 		String firstName, lastName, major;
 		int year = -1;
 		User.Section section = null;
+		Email secondEmail;
 
 		// Grab all the data from the fields
 		firstName = req.getParameter("FirstName");
 		lastName = req.getParameter("LastName");
 		major = req.getParameter("Major");
+		secondEmail = new Email(req.getParameter("SecondEmail"));
 
 		String sectionString = req.getParameter("Section");
 		for (Section s : User.Section.values()) {
@@ -145,17 +146,16 @@ public class StudentServlet extends AbstractBaseServlet {
 		}
 		// TODO section, year
 
-		User u = train.getAuthController().getCurrentUser(req.getSession());
+		User localUser = train.getAuthController().getCurrentUser(req.getSession());
 
 		UserController uc = DataTrain.getAndStartTrain().getUsersController();
-
-		User localUser = uc.get(u.getGoogleUser());
 
 		localUser.setYear(year);
 		localUser.setMajor(major);
 		localUser.setSection(section);
 		localUser.setFirstName(firstName);
 		localUser.setLastName(lastName);
+		localUser.setSecondaryEmail(secondEmail);
 
 		// TODO May throw validation exceptions
 		uc.update(localUser);

@@ -9,11 +9,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.appengine.api.datastore.Email;
+
 import edu.iastate.music.marching.attendance.controllers.AuthController;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.util.GoogleAccountException;
 import edu.iastate.music.marching.attendance.util.PageBuilder;
+import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
 public class AuthServlet extends AbstractBaseServlet {
 
@@ -206,6 +209,7 @@ public class AuthServlet extends AbstractBaseServlet {
 		String firstName;
 		String lastName;
 		String major;
+		Email secondEmail;
 		int univID = -1;
 		int year = -1;
 		User.Section section = null;
@@ -219,6 +223,7 @@ public class AuthServlet extends AbstractBaseServlet {
 		firstName = req.getParameter("FirstName");
 		lastName = req.getParameter("LastName");
 		major = req.getParameter("Major");
+		secondEmail = new Email(req.getParameter("SecondEmail"));
 
 		try {
 			univID = Integer.parseInt(req.getParameter("UniversityID"));
@@ -240,14 +245,26 @@ public class AuthServlet extends AbstractBaseServlet {
 			errors.add("Invalid section");
 		}
 
-		try {
-			new_user = train.getUsersController().createStudent(google_user,
-					univID, firstName, lastName, year, major, section);
+		if (!ValidationUtil.validPrimaryEmail(
+				new Email(google_user.getEmail()), train)) {
+			errors.add("Invalid primary email, try logging out and then registering under your school email account");
+		}
 
-		} catch (IllegalArgumentException e) {
-			// Save validation errors
-			errors.add(e.getMessage());
+		if (!ValidationUtil.validSecondaryEmail(secondEmail, train)) {
+			errors.add("Invalid secondary email");
+		}
 
+		if (errors.size() == 0) {
+			try {
+				new_user = train.getUsersController().createStudent(
+						google_user, univID, firstName, lastName, year, major,
+						section, secondEmail);
+
+			} catch (IllegalArgumentException e) {
+				// Save validation errors
+				errors.add(e.getMessage());
+
+			}
 		}
 
 		if (new_user == null) {
@@ -262,12 +279,13 @@ public class AuthServlet extends AbstractBaseServlet {
 			page.setAttribute("Major", major);
 			page.setAttribute("UniversityID", (univID > 0) ? univID : "");
 			page.setAttribute("Year", year);
+			page.setAttribute("SecondEmail", secondEmail.getEmail());
 			page.setAttribute("Section",
 					(section == null) ? null : section.getValue());
 
 			page.setAttribute("sections", User.Section.values());
 
-			page.setAttribute("errors", errors);
+			page.setAttribute("error_messages", errors);
 			page.setPageTitle("Failed Registration");
 
 			page.passOffToJsp(req, resp);

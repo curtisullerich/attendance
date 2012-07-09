@@ -25,6 +25,12 @@
 			<dt><label for="UniversityID">University ID</label></dt>
 			<dd><input type="text" name="UniversityID" value="<c:out value="${user.universityID}" />" disabled readonly/></dd>
 			
+			<dt><label class="required" for="SecondEmail">Login Email</label></dt>
+			<dd>
+				<input type="email" name="SecondEmail" value="<c:out value="${SecondEmail}" />" />
+				<br/>
+				Enter the Google email you wish to use to login to the application.
+			</dd>
 		</dl>
 
 		<input type="submit" value="Save Info" name="SaveInfo"/>

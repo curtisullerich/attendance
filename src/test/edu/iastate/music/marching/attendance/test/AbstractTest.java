@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.junit.After;
 import org.junit.Before;
 
+import com.google.appengine.api.datastore.Email;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.appengine.tools.development.testing.LocalUserServiceTestConfig;
@@ -23,8 +24,7 @@ import edu.iastate.music.marching.attendance.controllers.UserController;
 import edu.iastate.music.marching.attendance.model.User;
 
 public class AbstractTest {
-
-	private static final String EMAIL_DOMAIN = "iastate.edu";
+	;
 
 	private final LocalServiceTestHelper helper = new LocalServiceTestHelper(
 			new LocalDatastoreServiceTestConfig(),
@@ -52,11 +52,11 @@ public class AbstractTest {
 	protected static final User createDirector(UserController uc,
 			String email_firstpart, int univID, String firstName,
 			String lastName) {
-
-		com.google.appengine.api.users.User google_user = new com.google.appengine.api.users.User(
-				email_firstpart + "@" + EMAIL_DOMAIN, "gmail.com");
-
-		return uc.createDirector(google_user, univID, firstName, lastName);
+		return uc.createDirector(
+				email_firstpart + "@" + TestConfig.getEmailDomain(),
+				email_firstpart + ".secondemail" + "@"
+						+ TestConfig.getEmailDomain(), univID, firstName,
+				lastName);
 	}
 
 	protected static final User createStudent(UserController uc,
@@ -64,10 +64,11 @@ public class AbstractTest {
 			String lastName, int year, String major, User.Section section) {
 
 		com.google.appengine.api.users.User google_user = new com.google.appengine.api.users.User(
-				email_firstpart + "@" + EMAIL_DOMAIN, "gmail.com");
+				email_firstpart + "@" + TestConfig.getEmailDomain(),
+				"gmail.com");
 
 		return uc.createStudent(google_user, univID, firstName, lastName, year,
-				major, section);
+				major, section, new Email(""));
 	}
 
 	protected static final User createTA(UserController uc,
@@ -75,10 +76,11 @@ public class AbstractTest {
 			String lastName, int year, String major, User.Section section) {
 
 		com.google.appengine.api.users.User google_user = new com.google.appengine.api.users.User(
-				email_firstpart + "@" + EMAIL_DOMAIN, "gmail.com");
+				email_firstpart + "@" + TestConfig.getEmailDomain(),
+				"gmail.com");
 
 		User u = uc.createStudent(google_user, univID, firstName, lastName,
-				year, major, section);
+				year, major, section, new Email(""));
 		u.setType(User.Type.TA);
 		uc.update(u);
 		return u;
