@@ -17,6 +17,14 @@
 			<a href="export/data.json">Export entire database</a> (Useful as a backup)
 		</p>
 		
+		<br/>
+		
+		<p>
+			<a href="export/data.json">Try upgrading database</a> <br/>
+			Database is at version: <c:out value="${AppDatastoreVersion}" /><br/>
+			Code expects version: <c:out value="${ObjectDatastoreVersion}" />
+		</p>
+		
 		<jsp:include page="/WEB-INF/template/footer.jsp" />
 	</body>
 

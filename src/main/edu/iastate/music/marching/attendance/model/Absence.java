@@ -58,6 +58,7 @@ public class Absence {
 		public String getValue() {
 			return name();
 		}
+
 		public boolean isPending() {
 			return this == Pending;
 		}
@@ -133,6 +134,7 @@ public class Absence {
 
 	/**
 	 * The time of a tardy or earlycheckout.
+	 * 
 	 * @return time of a tardy or earlycheckout.
 	 */
 	public Date getDatetime() {

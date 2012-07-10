@@ -23,6 +23,8 @@ public class AppData {
 	private String hashedMobilePassword;
 
 	private String timeZoneID;
+	
+	private int datastoreVersion;
 
 	public boolean isDirectorRegistered() {
 		return this.directorRegistered;
@@ -70,5 +72,13 @@ public class AppData {
 	
 	public void setTimeZone(TimeZone timezone) {
 		this.timeZoneID = timezone.getID();
+	}
+
+	public int getDatastoreVersion() {
+		return this.datastoreVersion;
+	}
+	
+	public void setDatastoreVersion(int version) {
+		this.datastoreVersion = version;
 	}
 }

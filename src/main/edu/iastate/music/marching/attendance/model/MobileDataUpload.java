@@ -4,7 +4,9 @@ import java.util.Date;
 
 import com.google.appengine.api.datastore.Text;
 import com.google.code.twig.annotation.Type;
+import com.google.code.twig.annotation.Version;
 
+@Version(2)
 public class MobileDataUpload {
 	
 	private User uploader;

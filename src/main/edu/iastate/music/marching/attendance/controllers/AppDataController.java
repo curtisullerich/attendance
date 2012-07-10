@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.TimeZone;
 
 import edu.iastate.music.marching.attendance.model.AppData;
+import edu.iastate.music.marching.attendance.model.AttendanceDatastore;
 import edu.iastate.music.marching.attendance.model.ModelFactory;
 
 public class AppDataController extends AbstractController {
@@ -35,6 +36,8 @@ public class AppDataController extends AbstractController {
 			appData.setTitle("Band Attendance");
 			
 			appData.setTimeZone(TimeZone.getDefault());
+			
+			appData.setDatastoreVersion(AttendanceDatastore.VERSION);
 			
 			// Default form cutoff is the end of august
 			Calendar calendar = Calendar.getInstance(appData.getTimeZone());

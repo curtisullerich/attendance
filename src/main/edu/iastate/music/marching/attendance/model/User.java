@@ -92,6 +92,14 @@ public class User implements Serializable {
 	User() {
 
 	}
+	
+	@Index
+	@Deprecated
+	private com.google.appengine.api.users.User google_user;
+	
+	@Index
+	@Deprecated
+	private String netID;
 
 	private Type type;
 

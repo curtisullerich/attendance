@@ -4,15 +4,14 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.omg.CORBA_2_3.portable.OutputStream;
 
 import edu.iastate.music.marching.attendance.controllers.AuthController;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.UserController;
+import edu.iastate.music.marching.attendance.model.AppData;
+import edu.iastate.music.marching.attendance.model.AttendanceDatastore;
 import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.util.PageBuilder;
 
@@ -195,11 +194,17 @@ public class AdminServlet extends AbstractBaseServlet {
 
 	private void showDataPage(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
+		
+		DataTrain train = DataTrain.getAndStartTrain();
+		AppData appData = train.getAppDataController().get();
 
 		PageBuilder page = new PageBuilder(Page.data, SERVLET_PATH);
 
-		page.setPageTitle("Data Export/Import");
+		page.setPageTitle("Data Export/Import/Update");
 
+		page.setAttribute("AppDatastoreVersion", appData.getDatastoreVersion());
+		page.setAttribute("ObjectDatastoreVersion", AttendanceDatastore.VERSION);
+		
 		page.passOffToJsp(req, resp);
 	}
 

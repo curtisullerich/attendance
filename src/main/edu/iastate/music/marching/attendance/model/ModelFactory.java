@@ -58,7 +58,7 @@ public class ModelFactory {
 	}
 
 	public static AnnotationObjectDatastore newObjectDatastore() {
-		return new ObjectDatastore();
+		return new AttendanceDatastore();
 	}
 
 	public static Message newMessage(User sender, String message) {
