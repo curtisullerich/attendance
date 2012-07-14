@@ -8,6 +8,8 @@ import com.google.code.twig.annotation.Id;
 import com.google.code.twig.annotation.Index;
 
 public class Form {
+	
+	static final int VERSION = 0;
 
 	public static enum Status {
 		Pending, Approved, Denied;

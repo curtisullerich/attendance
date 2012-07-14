@@ -7,6 +7,7 @@ public abstract class AbstractController {
 		
 	}
 	
+	@Deprecated
 	protected AbstractController(DataTrain dataTrain) {
 		// TODO Auto-generated constructor stub
 	}

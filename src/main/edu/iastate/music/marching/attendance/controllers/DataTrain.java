@@ -2,6 +2,8 @@ package edu.iastate.music.marching.attendance.controllers;
 
 import java.util.concurrent.Future;
 
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Transaction;
 import com.google.code.twig.annotation.AnnotationObjectDatastore;
 import com.google.code.twig.standard.StandardObjectDatastore;
@@ -36,7 +38,7 @@ public class DataTrain {
 	public AuthController getAuthController() {
 		return new AuthController(this);
 	}
-	
+
 	public DataController getDataController() {
 		return new DataController(this);
 	}
@@ -56,13 +58,35 @@ public class DataTrain {
 	public UserController getUsersController() {
 		return new UserController(this);
 	}
-	
+
 	public MessagingController getMessagingController() {
 		return new MessagingController(this);
 	}
 
+	public VersionController getVersionController() {
+		return new VersionController(this);
+	}
+
 	StandardObjectDatastore getDataStore() {
 		return this.datastore;
+	}
+
+	Object getAncestor() {
+		return getVersionController().getCurrent();
+	}
+
+	Key getTie(java.lang.reflect.Type type, long id) {
+		return new KeyFactory.Builder(
+				this.datastore.associatedKey(getAncestor())).addChild(
+				this.datastore.getConfiguration().typeToKind(type), id)
+				.getKey();
+	}
+
+	Key getTie(java.lang.reflect.Type type, String id) {
+		return new KeyFactory.Builder(
+				this.datastore.associatedKey(getAncestor())).addChild(
+				this.datastore.getConfiguration().typeToKind(type), id)
+				.getKey();
 	}
 
 	/**
@@ -195,5 +219,4 @@ public class DataTrain {
 		}
 
 	}
-
 }

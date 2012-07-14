@@ -7,6 +7,8 @@ import com.google.code.twig.annotation.Id;
 import com.google.code.twig.annotation.Index;
 
 public class Absence {
+	
+	static final int VERSION = 0;
 
 	public enum Type {
 		Absence, Tardy, EarlyCheckOut;

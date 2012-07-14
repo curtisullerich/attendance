@@ -162,7 +162,7 @@ public class MobileDataController {
 		for (String s : otherLines) {
 
 			String[] parts = s.split(SEPARATOR);
-			
+
 			Absence a = null;
 
 			if (s.contains("tardy")) {
@@ -232,12 +232,12 @@ public class MobileDataController {
 				User student = uc.get(netid);
 
 				a = ac.createOrUpdateEarlyCheckout(student, time);
-				
+
 			} else {
 				// WE HAVE SOMETHING INCORRECT HERE, JIM.
 				// The null check will catch it though
 			}
-			
+
 			if (a == null) {
 				errors.add("Insert of absence failed: " + s);
 			} else {
@@ -252,25 +252,20 @@ public class MobileDataController {
 		//
 		// // Must have all worked
 		// transaction.bendIronBack();
-		
+
 		String errorString = "";
-		for(String s : errors)
+		for (String s : errors)
 			errorString += s;
 
-		return "Inserted " + successfulEvents + "/" + eventLines.size() + " events." + "\n"
-			+ "Inserted " + successfulAbscenses + "/" + otherLines.size() + " absences/tardies/early checkouts." + "\n"
-			+ errorString;
+		return "Inserted " + successfulEvents + "/" + eventLines.size()
+				+ " events." + "\n" + "Inserted " + successfulAbscenses + "/"
+				+ otherLines.size() + " absences/tardies/early checkouts."
+				+ "\n" + errorString;
 	}
 
 	List<MobileDataUpload> getAllUploads() {
 		ObjectDatastore od = this.train.getDataStore();
-		List<MobileDataUpload> uploads = new ArrayList<MobileDataUpload>();
-		QueryResultIterator<MobileDataUpload> results = od.find(MobileDataUpload.class);
-		
-		while(results.hasNext())
-		{
-			uploads.add(results.next());
-		}
-		return uploads;
+		return od.find().type(MobileDataUpload.class)
+				.ancestor(this.train.getAncestor()).returnAll().now();
 	}
 }

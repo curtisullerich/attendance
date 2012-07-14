@@ -59,8 +59,8 @@ public class AbsenceController extends AbstractController {
 			}
 		}
 		return storeAbsence(absence, student);
-	}	
-	
+	}
+
 	/**
 	 * Note! This method causes destructive edits to the database that cannot be
 	 * fixed after releasing a reference to both parameters!
@@ -576,6 +576,7 @@ public class AbsenceController extends AbstractController {
 				.getDataStore()
 				.find()
 				.type(Absence.class)
+				.ancestor(this.train.getAncestor())
 				.addFilter(Absence.FIELD_STUDENT, FilterOperator.EQUAL, student)
 				.returnAll().now();
 		// Manually activate student fields
@@ -586,18 +587,18 @@ public class AbsenceController extends AbstractController {
 	}
 
 	public Absence get(long id) {
-		Absence a = this.train.getDataStore().load(Absence.class, id);
-		this.train.getDataStore().activate(a.getStudent());
-		return a;
+		return this.train.getDataStore().load(
+				this.train.getTie(Absence.class, id));
 	}
 
 	public List<Absence> get(Absence.Type... types) {
-		
-		if(types == null || types.length  == 0)
-			throw new IllegalArgumentException("Must pass at least one type to get by type");
+
+		if (types == null || types.length == 0)
+			throw new IllegalArgumentException(
+					"Must pass at least one type to get by type");
 
 		RootFindCommand<Absence> find = this.train.getDataStore().find()
-				.type(Absence.class);
+				.type(Absence.class).ancestor(this.train.getAncestor());
 		find.addFilter(Absence.FIELD_TYPE, FilterOperator.IN,
 				Arrays.asList(types));
 
@@ -607,7 +608,7 @@ public class AbsenceController extends AbstractController {
 	public Integer getCount(Absence.Type type) {
 
 		RootFindCommand<Absence> find = this.train.getDataStore().find()
-				.type(Absence.class);
+				.type(Absence.class).ancestor(this.train.getAncestor());
 		find.addFilter(Absence.FIELD_TYPE, FilterOperator.EQUAL, type);
 
 		return find.returnCount().now();
@@ -616,13 +617,14 @@ public class AbsenceController extends AbstractController {
 	// TODO doesn't work
 	public List<Absence> getUnanchored() {
 		return this.train.getDataStore().find().type(Absence.class)
+				.ancestor(this.train.getAncestor())
 				.addFilter(Absence.FIELD_STUDENT, FilterOperator.EQUAL, null)
 				.returnAll().now();
 	}
 
 	public List<Absence> getAll() {
-		return this.train.getDataStore().find().type(Absence.class).returnAll()
-				.now();
+		return this.train.getDataStore().find().type(Absence.class)
+				.ancestor(this.train.getAncestor()).returnAll().now();
 	}
 
 	/**
@@ -635,6 +637,7 @@ public class AbsenceController extends AbstractController {
 	public List<Absence> getAll(Event event) {
 
 		return this.train.getDataStore().find().type(Absence.class)
+				.ancestor(this.train.getAncestor())
 				.addFilter(Absence.FIELD_EVENT, FilterOperator.EQUAL, event)
 				.returnAll().now();
 	}
@@ -645,6 +648,7 @@ public class AbsenceController extends AbstractController {
 				.getDataStore()
 				.find()
 				.type(Absence.class)
+				.ancestor(this.train.getAncestor())
 				.addFilter(Absence.FIELD_STUDENT, FilterOperator.EQUAL, student)
 				.addFilter(Absence.FIELD_EVENT, FilterOperator.EQUAL, event)
 				.returnAll().now();
@@ -652,15 +656,18 @@ public class AbsenceController extends AbstractController {
 
 	public void remove(List<Absence> todie) {
 		ObjectDatastore od = this.train.getDataStore();
-		od.deleteAll(todie);
+
 		HashSet<User> users = new HashSet<User>();
 		for (Absence a : todie) {
 			User u = a.getStudent();
-			// Finally check for side-effects caused by absence
-			if (!users.contains(u)) {
-				train.getUsersController().updateUserGrade(u);
-			}
 			users.add(u);
+		}
+		od.deleteAll(todie);
+
+		// Finally check for side-effects caused by absence
+		for (User u : users)
+		{
+			train.getUsersController().updateUserGrade(u);
 		}
 	}
 
@@ -676,7 +683,7 @@ public class AbsenceController extends AbstractController {
 		od.delete(todie);
 
 		// Finally check for side-effects caused by absence
-		//this also checks the students grade
+		// this also checks the students grade
 		train.getUsersController().update(todie.getStudent());
 	}
 }

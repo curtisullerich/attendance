@@ -10,6 +10,8 @@ import com.google.code.twig.annotation.Index;
 import com.google.code.twig.annotation.Type;
 
 public class MessageThread {
+	
+	static final int VERSION = 0;
 
 	public static final String FIELD_PARTICIPANTS = "participants";
 

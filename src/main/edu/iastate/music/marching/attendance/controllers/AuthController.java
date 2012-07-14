@@ -78,8 +78,6 @@ public class AuthController {
 	}
 
 	public static void updateCurrentUser(User user, HttpSession session) {
-		// TODO
-		// if(user.getKey().equals(getUserFromSession(session).getKey()))
 		putUserInSession(user, session);
 	}
 
@@ -98,7 +96,7 @@ public class AuthController {
 		}
 
 		Email google_users_email = new Email(google_user.getEmail());
-		
+
 		User matchedUser = null;
 
 		// Some kind of google user logged in, check it against the
@@ -108,19 +106,20 @@ public class AuthController {
 			// Check if there is a user in the system already for this
 			// google user
 			matchedUser = train.getUsersController().get(google_users_email);
-			
+
 		} else if (ValidationUtil.validSecondaryEmail(google_users_email,
 				this.train)) {
 			// Maybe the secondary email will match a user in the database
 
 			// Check if there is a user in the system already for this
 			// google user
-			matchedUser = train.getUsersController().getSecondary(google_users_email);
+			matchedUser = train.getUsersController().getSecondary(
+					google_users_email);
 		} else {
 			throw new GoogleAccountException("Not a valid google account",
 					GoogleAccountException.Type.Invalid);
 		}
-		
+
 		if (matchedUser == null) {
 			// Still need to register
 			return false;

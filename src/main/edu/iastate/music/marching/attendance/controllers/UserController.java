@@ -26,13 +26,13 @@ public class UserController extends AbstractController {
 
 	public List<User> getAll() {
 		return this.datatrain.getDataStore().find().type(User.class)
-				.returnAll().now();
+				.ancestor(this.datatrain.getAncestor()).returnAll().now();
 	}
 
 	public List<User> get(User.Type... types) {
 
 		RootFindCommand<User> find = this.datatrain.getDataStore().find()
-				.type(User.class);
+				.type(User.class).ancestor(this.datatrain.getAncestor());
 		find.addFilter(User.FIELD_TYPE, FilterOperator.IN, Arrays.asList(types));
 
 		return find.returnAll().now();
@@ -40,7 +40,7 @@ public class UserController extends AbstractController {
 
 	public int getCount(Type type) {
 		RootFindCommand<User> find = this.datatrain.getDataStore().find()
-				.type(User.class);
+				.type(User.class).ancestor(this.datatrain.getAncestor());
 		find.addFilter(User.FIELD_TYPE, FilterOperator.EQUAL, type);
 
 		return find.returnCount().now();
@@ -48,7 +48,8 @@ public class UserController extends AbstractController {
 
 	public User createStudent(com.google.appengine.api.users.User google_user,
 			int univID, String firstName, String lastName, int year,
-			String major, User.Section section, Email secondaryEmail) throws IllegalArgumentException {
+			String major, User.Section section, Email secondaryEmail)
+			throws IllegalArgumentException {
 
 		// Check google user
 		if (google_user == null)
@@ -96,7 +97,7 @@ public class UserController extends AbstractController {
 		// Check university id
 		// TODO
 		user.getUniversityID();
-		
+
 		// Check secondary email
 		if (!ValidationUtil.validSecondaryEmail(user.getSecondaryEmail(),
 				this.datatrain))
@@ -148,7 +149,8 @@ public class UserController extends AbstractController {
 	 */
 	public User get(String netid) {
 
-		return this.datatrain.getDataStore().load(User.class, netid);
+		return this.datatrain.getDataStore().load(
+				this.datatrain.getTie(User.class, netid));
 	}
 
 	/**
@@ -171,6 +173,7 @@ public class UserController extends AbstractController {
 				.getDataStore()
 				.find()
 				.type(User.class)
+				.ancestor(this.datatrain.getAncestor())
 				.addFilter(User.FIELD_PRIMARY_EMAIL, FilterOperator.EQUAL,
 						primaryEmail.getEmail()).fetchMaximum(2).now();
 
@@ -206,7 +209,7 @@ public class UserController extends AbstractController {
 		Iterator<User> users = this.datatrain
 				.getDataStore()
 				.find()
-				.type(User.class)
+				.type(User.class).ancestor(this.datatrain.getAncestor())
 				.addFilter(User.FIELD_SECONDARY_EMAIL, FilterOperator.EQUAL,
 						secondaryEmail.getEmail()).fetchMaximum(2).now();
 

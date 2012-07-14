@@ -68,4 +68,10 @@ public class ModelFactory {
 		m.setTimestamp(Calendar.getInstance().getTime());
 		return m;
 	}
+
+	public static DatastoreVersion newDatastoreVersion(int version) {
+		DatastoreVersion v = new DatastoreVersion();
+		v.setVersion(version);
+		return v;
+	}
 }

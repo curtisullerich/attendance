@@ -6,6 +6,8 @@ import com.google.code.twig.annotation.Id;
 import com.google.code.twig.annotation.Index;
 
 public class Event {
+	
+	static final int VERSION = 0;
 
 	public static final String FIELD_START = "start";
 	public static final String FIELD_END = "end";

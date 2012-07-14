@@ -28,14 +28,13 @@ public class MessagingController extends AbstractController {
 
 		MessageThread thread = ModelFactory.newMessageThread();
 
-		if (initial_participants != null){
+		if (initial_participants != null) {
 			thread.setParticipants(Sets.newHashSet(initial_participants));
 		}
-		
+
 		// Default to resolved, no messages yet
 		thread.setResolved(true);
-		
-		
+
 		train.getDataStore().store(thread);
 
 		return thread;
@@ -65,7 +64,7 @@ public class MessagingController extends AbstractController {
 			thread.setMessages(messages);
 		}
 		messages.add(0, ModelFactory.newMessage(sender, message));
-		
+
 		// Always unresolved after adding a message
 		thread.setResolved(false);
 
@@ -87,6 +86,7 @@ public class MessagingController extends AbstractController {
 				.getDataStore()
 				.find()
 				.type(MessageThread.class)
+				.ancestor(this.train.getAncestor())
 				.addFilter(MessageThread.FIELD_PARTICIPANTS, FilterOperator.IN,
 						Arrays.asList(new Key[] { k })).returnAll().now();
 	}
@@ -100,6 +100,7 @@ public class MessagingController extends AbstractController {
 				.getDataStore()
 				.find()
 				.type(MessageThread.class)
+				.ancestor(this.train.getAncestor())
 				.addFilter(MessageThread.FIELD_PARTICIPANTS, FilterOperator.IN,
 						Arrays.asList(new Key[] { k }))
 				.addFilter(MessageThread.FIELD_RESOLVED, FilterOperator.EQUAL,
@@ -111,19 +112,21 @@ public class MessagingController extends AbstractController {
 				.getDataStore()
 				.find()
 				.type(MessageThread.class)
+				.ancestor(this.train.getAncestor())
 				.addFilter(MessageThread.FIELD_RESOLVED, FilterOperator.EQUAL,
 						resolved).returnAll().now();
 	}
 
 	public MessageThread get(long id) {
-		return this.train.getDataStore().load(MessageThread.class, id);
+		return this.train.getDataStore().load(
+				this.train.getTie(MessageThread.class, id));
 	}
 
 	public List<MessageThread> getAll() {
 		return this.train.getDataStore().find().type(MessageThread.class)
-				.returnAll().now();
+				.ancestor(this.train.getAncestor()).returnAll().now();
 	}
-	
+
 	/**
 	 * Returns the most recent message added to this MessageThread.
 	 * 
@@ -132,17 +135,16 @@ public class MessagingController extends AbstractController {
 	 */
 	public Message getMostRecent(MessageThread mt) {
 		List<Message> messages = mt.getMessages();
-		if (messages.size() == 0 ) {
+		if (messages.size() == 0) {
 			return null;
 		}
 		Message mostRecent = messages.get(0);
 		for (Message m : messages) {
-			if(m.getTimestamp().after(mostRecent.getTimestamp())) {
+			if (m.getTimestamp().after(mostRecent.getTimestamp())) {
 				mostRecent = m;
 			}
 		}
 		return mostRecent;
 	}
-
 
 }

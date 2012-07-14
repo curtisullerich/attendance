@@ -1,18 +1,18 @@
-package edu.iastate.music.marching.attendance.model;
+package edu.iastate.music.marching.attendance.model.legacy;
 
 import java.io.Serializable;
 
 import com.google.appengine.api.datastore.Email;
 import com.google.code.twig.annotation.Activate;
+import com.google.code.twig.annotation.Entity;
 import com.google.code.twig.annotation.Id;
 import com.google.code.twig.annotation.Index;
 import com.google.code.twig.annotation.Version;
 
 @Activate
-@Version(User.VERSION)
-public class User implements Serializable {
-	
-	static final int VERSION = 1;
+@Version(0)
+@Entity(kind="edu.iastate.music.marching.attendance.model.User", allocateIdsBy = 10)
+public class User_V0 implements Serializable {
 
 	/**
 	 * 
@@ -22,10 +22,6 @@ public class User implements Serializable {
 	public static final String FIELD_TYPE = "type";
 
 	public static final String FIELD_ID = "id";
-
-	public static final String FIELD_PRIMARY_EMAIL = "email";
-
-	public static final String FIELD_SECONDARY_EMAIL = "secondEmail";
 
 	public enum Type {
 		Student, TA, Director;
@@ -93,9 +89,15 @@ public class User implements Serializable {
 	/**
 	 * Create users through UserController (DataModel.users().create(...)
 	 */
-	User() {
+	User_V0() {
 
 	}
+	
+	@Index
+	private com.google.appengine.api.users.User google_user;
+	
+	@Index
+	private String netID;
 
 	private Type type;
 
@@ -111,6 +113,12 @@ public class User implements Serializable {
 	private Email secondEmail;
 
 	private int universityID;
+
+	// @Activate(0)
+	// private List<Absence> absences;
+	//
+	// @Activate(0)
+	// private List<Form> forms;
 
 	private Section section;
 
@@ -225,53 +233,7 @@ public class User implements Serializable {
 		return this.id;
 	}
 
-	/**
-	 * Iowa State specific, instead use getId()
-	 * 
-	 * @return net id of the user
-	 */
-	@Deprecated
 	public String getNetID() {
-		return this.id;
+		return this.netID;
 	}
-
-	public void setPrimaryEmail(Email email) {
-		this.email = email;
-		this.id = email.getEmail().substring(0, email.getEmail().indexOf('@'));
-	}
-
-	public Email getPrimaryEmail() {
-		return this.email;
-	}
-
-	public void setSecondaryEmail(Email email) {
-		this.secondEmail = email;
-	}
-
-	public Email getSecondaryEmail() {
-		return this.secondEmail;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		if (o == null)
-			return false;
-
-		// emails are unique, so compare based on them
-		if (o instanceof User) {
-			User u = (User) o;
-
-			if (this.email == null || this.email.getEmail() == null)
-				throw new IllegalStateException("Null email for this user");
-
-			if (u.email == null || u.email.getEmail() == null)
-				throw new IllegalArgumentException(
-						"Null email on compared user");
-
-			if (this.email.equals(u.email))
-				return true;
-		}
-		return false;
-	}
-
 }

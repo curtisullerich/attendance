@@ -36,7 +36,7 @@ public class FormController extends AbstractController {
 
 	public List<Form> getAll() {
 		return this.dataTrain.getDataStore().find().type(Form.class)
-				.returnAll().now();
+				.ancestor(this.dataTrain.getAncestor()).returnAll().now();
 	}
 
 	/**
@@ -47,7 +47,8 @@ public class FormController extends AbstractController {
 	 */
 	public List<Form> get(User user) {
 		ObjectDatastore od = this.dataTrain.getDataStore();
-		RootFindCommand<Form> find = od.find().type(Form.class);
+		RootFindCommand<Form> find = od.find().type(Form.class)
+				.ancestor(this.dataTrain.getAncestor());
 
 		// Set the ancestor for this form, automatically limits results to be
 		// forms of the user
@@ -92,6 +93,7 @@ public class FormController extends AbstractController {
 
 	public Form getByHashedId(long id) {
 		return this.dataTrain.getDataStore().find().type(Form.class)
+				.ancestor(this.dataTrain.getAncestor())
 				.addFilter(Form.HASHED_ID, FilterOperator.EQUAL, id)
 				.returnUnique().now();
 	}
@@ -512,13 +514,13 @@ public class FormController extends AbstractController {
 
 	public Form get(long id) {
 		ObjectDatastore od = this.dataTrain.getDataStore();
-		Form form = od.load(Form.class, id);
+		Form form = od.load(this.dataTrain.getTie(Form.class, id));
 		return form;
 	}
 
 	public boolean removeForm(Long id) {
 		ObjectDatastore od = this.dataTrain.getDataStore();
-		Form form = od.load(Form.class, id);
+		Form form = od.load(this.dataTrain.getTie(Form.class, id));
 		if (form.getStatus() == Form.Status.Approved) {
 			// you can't remove an approved form.
 			// TODO you might be able to. check with staub

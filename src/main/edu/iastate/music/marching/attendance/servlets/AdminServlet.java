@@ -13,7 +13,7 @@ import edu.iastate.music.marching.attendance.controllers.AuthController;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.UserController;
 import edu.iastate.music.marching.attendance.model.AttendanceDatastore;
-import edu.iastate.music.marching.attendance.model.IUser;
+import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.util.PageBuilder;
 
 public class AdminServlet extends AbstractBaseServlet {
@@ -40,7 +40,7 @@ public class AdminServlet extends AbstractBaseServlet {
 		if (!isLoggedIn(req, resp)) {
 			resp.sendRedirect(AuthServlet.getLoginUrl(req));
 			return;
-		} else if (!(isLoggedIn(req, resp, IUser.Type.Director) || AuthController
+		} else if (!(isLoggedIn(req, resp, User.Type.Director) || AuthController
 				.isAdminLoggedIn())) {
 			resp.sendRedirect(ErrorServlet.getLoginFailedUrl(req));
 			return;
@@ -80,7 +80,7 @@ public class AdminServlet extends AbstractBaseServlet {
 		if (!isLoggedIn(req, resp)) {
 			resp.sendRedirect(AuthServlet.getLoginUrl(req));
 			return;
-		} else if (!(isLoggedIn(req, resp, IUser.Type.Director) || AuthController
+		} else if (!(isLoggedIn(req, resp, User.Type.Director) || AuthController
 				.isAdminLoggedIn())) {
 			resp.sendRedirect(ErrorServlet.getLoginFailedUrl(req));
 			return;
@@ -120,11 +120,11 @@ public class AdminServlet extends AbstractBaseServlet {
 		firstName = req.getParameter("FirstName");
 		lastName = req.getParameter("LastName");
 
-		IUser.Type type = IUser.Type.valueOf(strType);
+		User.Type type = User.Type.valueOf(strType);
 
 		UserController uc = train.getUsersController();
 
-		IUser localUser = uc.get(netID);
+		User localUser = uc.get(netID);
 
 		localUser.setType(type);
 		localUser.setFirstName(firstName);
@@ -165,7 +165,7 @@ public class AdminServlet extends AbstractBaseServlet {
 
 		// Grab the second part of the url as the user's netid
 		String[] parts = req.getPathInfo().split("/");
-		IUser u = null;
+		User u = null;
 
 		if (parts.length >= 3) {
 			String netid = parts[2];
@@ -179,9 +179,9 @@ public class AdminServlet extends AbstractBaseServlet {
 
 		page.setPageTitle("User Info");
 
-		page.setAttribute("sections", IUser.Section.values());
+		page.setAttribute("sections", User.Section.values());
 
-		page.setAttribute("types", IUser.Type.values());
+		page.setAttribute("types", User.Type.values());
 
 		page.passOffToJsp(req, resp);
 	}
@@ -205,7 +205,7 @@ public class AdminServlet extends AbstractBaseServlet {
 
 		page.setPageTitle("Data Export/Import/Update");
 
-		page.setAttribute("AppData", Lists.reverse(train.getAppDataController().getAll()));
+		page.setAttribute("AppData", Lists.reverse(train.getVersionController().getAll()));
 		page.setAttribute("ObjectDatastoreVersion", AttendanceDatastore.VERSION);
 		
 		page.passOffToJsp(req, resp);

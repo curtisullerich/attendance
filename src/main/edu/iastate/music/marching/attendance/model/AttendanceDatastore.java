@@ -5,41 +5,12 @@ import com.google.code.twig.conversion.CombinedConverter;
 import com.google.code.twig.conversion.SpecificConverter;
 
 public class AttendanceDatastore extends AnnotationObjectDatastore {
-	
-	public static final int VERSION = 1;
-	
+
+	public static final int VERSION = Absence.VERSION + AppData.VERSION
+			+ Event.VERSION + Form.VERSION + MessageThread.VERSION
+			+ User.VERSION;
+
 	AttendanceDatastore() {
 		super(true, VERSION);
-	}
-
-	@Override
-	protected CombinedConverter createTypeConverter() {
-		// start with the default converter which we will add to
-		CombinedConverter converter = super.createTypeConverter();
-
-		// register a new converter for storing null Events as plain object
-//		converter.append(new SpecificConverter<Event, Object>() {
-//
-//			@Override
-//			public Object convert(Event source) {
-//				if (source == null)
-//					return new Object();
-//				else
-//					return source;
-//			}
-//		});
-//
-//		// register the reverse converter for reading instances back again
-//		converter.append(new SpecificConverter<Object, Event>() {
-//			@Override
-//			public Event convert(Object source) {
-//				if (source instanceof Event)
-//					return (Event) source;
-//				else
-//					return null;
-//			}
-//		});
-
-		return converter;
 	}
 }

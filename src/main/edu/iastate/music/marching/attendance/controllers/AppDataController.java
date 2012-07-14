@@ -21,7 +21,8 @@ public class AppDataController extends AbstractController {
 	 */
 	public AppData get() {
 		// TODO Caching
-		AppData appData = dataTrain.getDataStore().find().type(AppData.class).returnUnique().now();
+		AppData appData = dataTrain.getDataStore().find().type(AppData.class)
+				.ancestor(this.dataTrain.getAncestor()).returnUnique().now();
 		
 		if(appData == null)
 		{
@@ -36,8 +37,6 @@ public class AppDataController extends AbstractController {
 			appData.setTitle("Band Attendance");
 			
 			appData.setTimeZone(TimeZone.getDefault());
-			
-			appData.setDatastoreVersion(AttendanceDatastore.VERSION);
 			
 			// Default form cutoff is the end of august
 			Calendar calendar = Calendar.getInstance(appData.getTimeZone());
@@ -54,7 +53,7 @@ public class AppDataController extends AbstractController {
 			// Defaults to "password"
 			appData.setHashedMobilePassword("5BAA61E4C9B93F3F0682250B6CF8331B7EE68FD8");
 			
-			appData = save(appData);
+			dataTrain.getDataStore().store(appData);
 		}
 		
 		// We have some app data from the store
@@ -62,8 +61,7 @@ public class AppDataController extends AbstractController {
 	}
 
 	//TODO made this public. Is that okay?
-	public AppData save(AppData appData) {
-		dataTrain.getDataStore().storeOrUpdate(appData);
-		return appData;
+	public void save(AppData appData) {
+		dataTrain.getDataStore().update(appData);
 	}
 }

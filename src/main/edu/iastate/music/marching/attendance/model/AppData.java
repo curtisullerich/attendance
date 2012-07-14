@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.TimeZone;
 
 public class AppData {
+	
+	static final int VERSION = 0;
+	
 	/**
 	 * Get app data through datatrain:
 	 * DataTrain.get().getAppDataController.get()

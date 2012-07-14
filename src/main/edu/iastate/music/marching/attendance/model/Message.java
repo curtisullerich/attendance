@@ -8,6 +8,11 @@ import com.google.code.twig.annotation.Type;
 
 public class Message implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7053270580375162117L;
+
 	Message() {
 
 	}
