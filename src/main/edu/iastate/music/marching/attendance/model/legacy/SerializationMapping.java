@@ -15,8 +15,8 @@ public class SerializationMapping {
 		map = new HashMap<SerializationMapping.SerializationInfo, Class<?>>();
 
 		map.put(new SerializationInfo(
-				"edu.iastate.music.marching.attendance.model.User",
-				1421557192976557705L), User_V0.class);
+				User_V0.NAME,
+				User_V0.serialVersionUID), User_V0.class);
 		map.put(new SerializationInfo(
 				"edu.iastate.music.marching.attendance.model.User$Type",
 				0L), User_V0.Type.class);
@@ -27,8 +27,8 @@ public class SerializationMapping {
 				"edu.iastate.music.marching.attendance.model.User$Section",
 				0L), User_V0.Section.class);
 		map.put(new SerializationInfo(
-				"edu.iastate.music.marching.attendance.model.Message",
-				-7053270580375162117L), Message_V0.class);
+				Message_V0.NAME,
+				Message_V0.serialVersionUID), Message_V0.class);
 	}
 
 	public static ObjectStreamClass get(ObjectStreamClass desc)

@@ -15,7 +15,7 @@ public class Message implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -7053270580375162117L;
+	private static final long serialVersionUID = -7053273580635162117L;
 
 	Message() {
 

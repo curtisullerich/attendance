@@ -1,6 +1,5 @@
 package edu.iastate.music.marching.attendance.model.legacy;
 
-import java.io.ObjectInputStream;
 import java.io.Serializable;
 
 import com.google.appengine.api.users.User;
@@ -12,13 +11,12 @@ import com.google.code.twig.annotation.Version;
 
 @Activate
 @Version(0)
-@Entity(kind = "edu.iastate.music.marching.attendance.model.User", allocateIdsBy = 10)
+@Entity(kind = User_V0.NAME, allocateIdsBy = 10)
 public class User_V0 implements Serializable {
+	
+	public static final String NAME = "edu.iastate.music.marching.attendance.model.User";
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1421557192976557705L;
+	public static final long serialVersionUID = 1421557192976557705L;
 
 	public static final String FIELD_TYPE = "type";
 

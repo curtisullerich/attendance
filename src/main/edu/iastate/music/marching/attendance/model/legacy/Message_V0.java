@@ -10,10 +10,9 @@ import com.google.code.twig.annotation.Version;
 @Version(0)
 public class Message_V0 implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7053270580375162117L;
+	public static final long serialVersionUID = -7053270580375162117L;
+
+	public static final String NAME = "edu.iastate.music.marching.attendance.model.Message";
 
 	Message_V0() {
 
