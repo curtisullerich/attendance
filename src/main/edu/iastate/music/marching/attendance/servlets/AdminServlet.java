@@ -2,6 +2,8 @@ package edu.iastate.music.marching.attendance.servlets;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -9,6 +11,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.appengine.api.datastore.Email;
 import com.google.common.collect.Lists;
 
 import edu.iastate.music.marching.attendance.controllers.AuthController;
@@ -18,6 +21,7 @@ import edu.iastate.music.marching.attendance.model.AttendanceDatastore;
 import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.model.migration.MigrationException;
 import edu.iastate.music.marching.attendance.util.PageBuilder;
+import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
 public class AdminServlet extends AbstractBaseServlet {
 
@@ -36,7 +40,7 @@ public class AdminServlet extends AbstractBaseServlet {
 			.getName());
 
 	private enum Page {
-		index, users, user, data, export, load, data_migrate, data_delete
+		index, users, user, data, export, load, data_migrate, data_delete, register
 	}
 
 	@Override
@@ -77,6 +81,8 @@ public class AdminServlet extends AbstractBaseServlet {
 			case data_migrate:
 				showDataMigratePage(req, resp);
 				break;
+			case register:
+				showDirectorRegistrationPage(req, resp);
 			default:
 				ErrorServlet.showError(req, resp, 404);
 			}
@@ -111,6 +117,9 @@ public class AdminServlet extends AbstractBaseServlet {
 				break;
 			case data_migrate:
 				doDataMigration(req, resp);
+				break;
+			case register:
+				doDirectorRegistration(req, resp);
 				break;
 			default:
 				ErrorServlet.showError(req, resp, 404);
@@ -262,6 +271,77 @@ public class AdminServlet extends AbstractBaseServlet {
 		page.setAttribute("version", req.getParameter("version"));
 
 		page.passOffToJsp(req, resp);
+	}
+
+	private void showDirectorRegistrationPage(HttpServletRequest req,
+			HttpServletResponse resp) throws ServletException, IOException {
+		PageBuilder page = new PageBuilder(Page.register, SERVLET_PATH);
+
+		page.setPageTitle("Director Registration");
+
+		page.passOffToJsp(req, resp);
+	}
+
+	private void doDirectorRegistration(HttpServletRequest req,
+			HttpServletResponse resp) throws ServletException, IOException {
+
+		DataTrain train = DataTrain.getAndStartTrain();
+
+		String firstName;
+		String lastName;
+		Email primaryEmail;
+		Email secondEmail;
+		User new_user = null;
+		List<String> errors = new LinkedList<String>();
+
+		firstName = req.getParameter("FirstName");
+		lastName = req.getParameter("LastName");
+		primaryEmail = new Email(req.getParameter("NetID"));
+		secondEmail = new Email(req.getParameter("SecondEmail"));
+
+		if (!ValidationUtil.validPrimaryEmail(primaryEmail, train)) {
+			errors.add("Invalid primary (school) email");
+		}
+
+		if (!ValidationUtil.validSecondaryEmail(secondEmail, train)) {
+			errors.add("Invalid secondary (google) email");
+		}
+
+		if (errors.size() == 0) {
+			try {
+				new_user = train.getUsersController().createDirector(
+						primaryEmail.getEmail(), secondEmail.getEmail(),
+						firstName, lastName);
+
+			} catch (IllegalArgumentException e) {
+				// Save validation errors
+				errors.add(e.getMessage());
+			}
+		}
+
+		if (new_user == null) {
+			PageBuilder page = new PageBuilder(Page.register, SERVLET_PATH);
+
+			page.setPageTitle("Director Registration");
+
+			page.setAttribute("FirstName", req.getParameter("FirstName"));
+			page.setAttribute("LastName", req.getParameter("LastName"));
+			page.setAttribute("NetID", req.getParameter("NetID"));
+			page.setAttribute("SecondEmail", req.getParameter("SecondEmail"));
+
+			page.setAttribute("error_messages", errors);
+
+			page.passOffToJsp(req, resp);
+		} else {
+			PageBuilder page = new PageBuilder(Page.register, SERVLET_PATH);
+
+			page.setPageTitle("Director Registration");
+
+			page.setAttribute("success_message",
+					"Successfully registered Director " + new_user.getName());
+
+			page.passOffToJsp(req, resp);
+		}
 	}
 
 	private void downloadExportData(HttpServletRequest req,

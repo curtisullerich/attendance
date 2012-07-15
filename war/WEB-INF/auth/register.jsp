@@ -15,7 +15,7 @@
   	<jsp:include page="/WEB-INF/template/header.jsp" />
 	
   	
-	<h1>ISU Cyclone Football "Varsity" Marching Band <fmt:formatDate value="${date}" pattern="yyyy" /></h1>
+	<h1><c:out value="${pagetemplate.siteTitle}" /> <fmt:formatDate value="${date}" pattern="yyyy" /></h1>
 	<h2>Registration</h2>
 	
 	<form method="post" accept-charset="utf-8">

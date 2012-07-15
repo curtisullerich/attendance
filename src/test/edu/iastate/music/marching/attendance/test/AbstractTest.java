@@ -55,8 +55,7 @@ public class AbstractTest {
 		return uc.createDirector(
 				email_firstpart + "@" + TestConfig.getEmailDomain(),
 				email_firstpart + ".secondemail" + "@"
-						+ TestConfig.getEmailDomain(), univID, firstName,
-				lastName);
+						+ TestConfig.getEmailDomain(), firstName, lastName);
 	}
 
 	protected static final User createStudent(UserController uc,

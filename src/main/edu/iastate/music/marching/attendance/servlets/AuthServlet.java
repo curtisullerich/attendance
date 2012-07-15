@@ -195,8 +195,9 @@ public class AuthServlet extends AbstractBaseServlet {
 
 		// If no director
 		if (!train.getAppDataController().get().isDirectorRegistered())
-			page.setAttribute("error_message",
-					"There is no director registered. You cannot register for an account yet.");
+			page.setAttribute(
+					"error_messages",
+					new String[] { "There is no director registered. You cannot register for an account yet." });
 
 		page.passOffToJsp(req, resp);
 	}

@@ -111,8 +111,7 @@ public class UserController extends AbstractController {
 	}
 
 	public User createDirector(String schoolEmail, String loginEmail,
-			int univID, String firstName, String lastName)
-			throws IllegalArgumentException {
+			String firstName, String lastName) throws IllegalArgumentException {
 
 		// Validate email
 		Email primaryEmail = new Email(schoolEmail);
@@ -125,8 +124,7 @@ public class UserController extends AbstractController {
 			throw new IllegalArgumentException(
 					"User already exists in the system");
 
-		User user = ModelFactory.newUser(User.Type.Director, primaryEmail,
-				univID);
+		User user = ModelFactory.newUser(User.Type.Director, primaryEmail, 0);
 		user.setFirstName(firstName);
 		user.setLastName(lastName);
 		user.setSecondaryEmail(secondaryEmail);
@@ -165,7 +163,8 @@ public class UserController extends AbstractController {
 		if (primaryEmail.getEmail() == null)
 			return null;
 
-		Iterator<User> users = this.datatrain.find(User.class)
+		Iterator<User> users = this.datatrain
+				.find(User.class)
 				.addFilter(User.FIELD_PRIMARY_EMAIL, FilterOperator.EQUAL,
 						primaryEmail.getEmail()).fetchMaximum(2).now();
 
@@ -198,7 +197,8 @@ public class UserController extends AbstractController {
 		if (secondaryEmail.getEmail() == null)
 			return null;
 
-		Iterator<User> users = this.datatrain.find(User.class)
+		Iterator<User> users = this.datatrain
+				.find(User.class)
 				.addFilter(User.FIELD_SECONDARY_EMAIL, FilterOperator.EQUAL,
 						secondaryEmail.getEmail()).fetchMaximum(2).now();
 

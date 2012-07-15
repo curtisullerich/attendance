@@ -60,6 +60,9 @@ links:
       auth: [Director,Admin]
       text: Administrative
       links:
+        - href: /admin/register
+          text: Add a director
+
         - href: /admin/data
           text: Data Backup/Restore
 
