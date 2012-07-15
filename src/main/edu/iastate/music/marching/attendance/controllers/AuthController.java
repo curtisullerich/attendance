@@ -61,9 +61,10 @@ public class AuthController {
 
 		if (this.currentUser == null) {
 			this.currentUser = getUserFromSession(session);
-			
-			if(null == train.getDataStore().associatedKey(this.currentUser))
-			{
+
+			if (this.currentUser != null
+					&& null == train.getDataStore().associatedKey(
+							this.currentUser)) {
 				train.getDataStore().associate(this.currentUser);
 			}
 		}
