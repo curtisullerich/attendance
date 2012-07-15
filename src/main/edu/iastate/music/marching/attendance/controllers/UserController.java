@@ -97,7 +97,7 @@ public class UserController extends AbstractController {
 		// Check secondary email
 		if (!ValidationUtil.validSecondaryEmail(user.getSecondaryEmail(),
 				this.datatrain))
-			throw new IllegalArgumentException("Invalid primary email");
+			throw new IllegalArgumentException("Invalid secondary email");
 
 		// Check student specific things
 		if (user.getType() == User.Type.Student) {

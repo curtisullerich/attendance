@@ -41,6 +41,7 @@ public class Migrate_0to1_EmailsOnUsers extends DefaultMigrationStrategy {
 		TYPE_MAP.put(MessageThread_V0.class, MessageThread.class);
 		TYPE_MAP.put(MobileDataUpload_V0.class, MobileDataUpload.class);
 		TYPE_MAP.put(User_V0.class, User.class);
+		TYPE_MAP.put(Message_V0.class, Message.class);
 	}
 
 	public Migrate_0to1_EmailsOnUsers() {
