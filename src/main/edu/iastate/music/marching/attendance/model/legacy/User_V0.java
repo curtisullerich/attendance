@@ -17,7 +17,7 @@ public class User_V0 implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1421557192976557704L;
+	private static final long serialVersionUID = 1421557192976557705L;
 
 	public static final String FIELD_TYPE = "type";
 

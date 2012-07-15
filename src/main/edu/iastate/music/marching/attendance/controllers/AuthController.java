@@ -96,7 +96,7 @@ public class AuthController {
 					GoogleAccountException.Type.None);
 		}
 
-		Email google_users_email = new Email(google_user.getEmail());
+		Email google_users_email = new Email(google_user.getEmail().toLowerCase());
 
 		User matchedUser = null;
 

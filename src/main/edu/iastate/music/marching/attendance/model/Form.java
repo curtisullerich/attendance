@@ -117,7 +117,6 @@ public class Form {
 	
 	private Status emailStatus;
 
-	@Activate(1)
 	private MessageThread messages;
 
 	@com.google.code.twig.annotation.Type(Text.class)

@@ -93,15 +93,12 @@ public class Absence_V0 {
 
 	private Status status;
 
-	@Activate(1)
 	@Index
 	private Event_V0 event;
 
-	@Activate(1)
 	@Index
 	private User_V0 student;
 
-	@Activate(1)
 	private MessageThread_V0 messages;
 
 	private Date start;

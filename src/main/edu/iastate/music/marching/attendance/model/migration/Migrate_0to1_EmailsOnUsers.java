@@ -81,6 +81,12 @@ public class Migrate_0to1_EmailsOnUsers extends DefaultMigrationStrategy {
 	}
 
 	private User upgrade(User_V0 oldUser) {
+		
+		if(null == oldUser.getType())
+		{
+			throw new IllegalArgumentException("");
+		}
+		
 		User.Type type = User.Type.valueOf(oldUser.getType().name());
 		Email email = new Email(oldUser.getGoogleUser().getEmail());
 
@@ -88,7 +94,12 @@ public class Migrate_0to1_EmailsOnUsers extends DefaultMigrationStrategy {
 				.newUser(type, email, oldUser.getUniversityID());
 		user.setFirstName(oldUser.getFirstName());
 		user.setLastName(oldUser.getLastName());
-		user.setGrade(User.Grade.valueOf(oldUser.getGrade().name()));
+		if(oldUser.getGrade() == null)
+		{
+			user.setGrade(null);
+		} else {
+			user.setGrade(User.Grade.valueOf(oldUser.getGrade().name()));
+		}
 		user.setMajor(oldUser.getMajor());
 		user.setMinutesAvailable(oldUser.getMinutesAvailable());
 		user.setRank(oldUser.getRank());
