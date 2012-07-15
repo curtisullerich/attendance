@@ -148,7 +148,7 @@ public class StudentServlet extends AbstractBaseServlet {
 
 		User localUser = train.getAuthController().getCurrentUser(req.getSession());
 
-		UserController uc = DataTrain.getAndStartTrain().getUsersController();
+		UserController uc = train.getUsersController();
 
 		localUser.setYear(year);
 		localUser.setMajor(major);
