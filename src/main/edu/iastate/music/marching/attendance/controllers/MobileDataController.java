@@ -264,8 +264,6 @@ public class MobileDataController {
 	}
 
 	List<MobileDataUpload> getAllUploads() {
-		ObjectDatastore od = this.train.getDataStore();
-		return od.find().type(MobileDataUpload.class)
-				.ancestor(this.train.getAncestor()).returnAll().now();
+		return this.train.find(MobileDataUpload.class).returnAll().now();
 	}
 }

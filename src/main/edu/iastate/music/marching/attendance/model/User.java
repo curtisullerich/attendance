@@ -4,16 +4,16 @@ import java.io.Serializable;
 
 import com.google.appengine.api.datastore.Email;
 import com.google.code.twig.annotation.Activate;
+import com.google.code.twig.annotation.Entity;
 import com.google.code.twig.annotation.Id;
 import com.google.code.twig.annotation.Index;
 import com.google.code.twig.annotation.Version;
 
 @Activate
-@Version(User.VERSION)
+@Version(AttendanceDatastore.VERSION)
+@Entity(kind="User", allocateIdsBy=10)
 public class User implements Serializable {
 	
-	static final int VERSION = 1;
-
 	/**
 	 * 
 	 */

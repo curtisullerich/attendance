@@ -1,4 +1,4 @@
-package edu.iastate.music.marching.attendance.model;
+package edu.iastate.music.marching.attendance.model.legacy;
 
 import java.util.Date;
 
@@ -8,9 +8,9 @@ import com.google.code.twig.annotation.Id;
 import com.google.code.twig.annotation.Index;
 import com.google.code.twig.annotation.Version;
 
-@Version(AttendanceDatastore.VERSION)
-@Entity(kind="Absence", allocateIdsBy=10)
-public class Absence {
+@Version(0)
+@Entity(kind="edu.iastate.music.marching.attendance.model.Absence", allocateIdsBy=10)
+public class Absence_V0 {
 
 	public enum Type {
 		Absence, Tardy, EarlyCheckOut;
@@ -83,7 +83,7 @@ public class Absence {
 	/**
 	 * Create absence through AbsenceController (DataModel.absence().create(...)
 	 */
-	Absence() {
+	Absence_V0() {
 	}
 
 	@Id
@@ -95,14 +95,14 @@ public class Absence {
 
 	@Activate(1)
 	@Index
-	private Event event;
+	private Event_V0 event;
 
 	@Activate(1)
 	@Index
-	private User student;
+	private User_V0 student;
 
 	@Activate(1)
-	private MessageThread messages;
+	private MessageThread_V0 messages;
 
 	private Date start;
 
@@ -112,19 +112,19 @@ public class Absence {
 		return id;
 	}
 
-	public User getStudent() {
+	public User_V0 getStudent() {
 		return student;
 	}
 
-	public void setStudent(User student) {
+	public void setStudent(User_V0 student) {
 		this.student = student;
 	}
 
-	public Event getEvent() {
+	public Event_V0 getEvent() {
 		return event;
 	}
 
-	public void setEvent(Event event) {
+	public void setEvent(Event_V0 event) {
 		this.event = event;
 	}
 
@@ -173,11 +173,11 @@ public class Absence {
 		this.status = status;
 	}
 
-	public MessageThread getMessageThread() {
+	public MessageThread_V0 getMessageThread() {
 		return this.messages;
 	}
 
-	public void setMessageThread(MessageThread messageThread) {
+	public void setMessageThread(MessageThread_V0 messageThread) {
 		this.messages = messageThread;
 	}
 }

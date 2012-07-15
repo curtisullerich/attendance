@@ -1,4 +1,4 @@
-package edu.iastate.music.marching.attendance.model;
+package edu.iastate.music.marching.attendance.model.legacy;
 
 import java.util.Date;
 
@@ -7,9 +7,9 @@ import com.google.code.twig.annotation.Id;
 import com.google.code.twig.annotation.Index;
 import com.google.code.twig.annotation.Version;
 
-@Version(AttendanceDatastore.VERSION)
-@Entity(kind="Event", allocateIdsBy=10)
-public class Event {
+@Version(0)
+@Entity(kind="edu.iastate.music.marching.attendance.model.Event", allocateIdsBy=10)
+public class Event_V0 {
 
 	public static final String FIELD_START = "start";
 	public static final String FIELD_END = "end";
@@ -26,7 +26,7 @@ public class Event {
 	/**
 	 * No-args constructor for datastore
 	 */
-	Event() {
+	Event_V0() {
 
 	}
 
@@ -116,7 +116,7 @@ public class Event {
 
 	}
 
-	public void setType(Event.Type type) {
+	public void setType(Event_V0.Type type) {
 		this.type = type;
 	}
 

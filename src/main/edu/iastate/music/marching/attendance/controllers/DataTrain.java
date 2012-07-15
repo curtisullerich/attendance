@@ -5,22 +5,27 @@ import java.util.concurrent.Future;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.Transaction;
-import com.google.code.twig.annotation.AnnotationObjectDatastore;
+import com.google.code.twig.FindCommand.RootFindCommand;
 import com.google.code.twig.standard.StandardObjectDatastore;
-import com.google.gson.Gson;
 
 import edu.iastate.music.marching.attendance.model.ModelFactory;
 
 public class DataTrain {
 
-	private AnnotationObjectDatastore datastore = null;
+	private StandardObjectDatastore datastore = null;
 	/**
 	 * Current transaction
 	 */
 	private Track track = null;
 
 	public static DataTrain getAndStartTrain() {
-		return new DataTrain();
+		DataTrain train = new DataTrain();
+		
+		// HACK @Daniel - Force version model object to
+		// be created any time we interact with the datastore
+		train.getVersionController().getCurrent();
+		
+		return train;
 	}
 
 	public DataTrain() {
@@ -66,27 +71,32 @@ public class DataTrain {
 	public VersionController getVersionController() {
 		return new VersionController(this);
 	}
+	
+	public MigrationController getMigrationController() {
+		return new MigrationController(this);
+	}
 
 	StandardObjectDatastore getDataStore() {
 		return this.datastore;
 	}
 
-	Object getAncestor() {
-		return getVersionController().getCurrent();
+	// TODO: For implementing transaction support
+	// Object getAncestor() {
+	// return getVersionController().getCurrent();
+	// }
+	
+	<T> RootFindCommand<T> find(Class<T> type) {
+		return getDataStore().find().type(type);
 	}
 
 	Key getTie(java.lang.reflect.Type type, long id) {
-		return new KeyFactory.Builder(
-				this.datastore.associatedKey(getAncestor())).addChild(
-				this.datastore.getConfiguration().typeToKind(type), id)
-				.getKey();
+		return new KeyFactory.Builder(this.datastore.getConfiguration()
+				.typeToKind(type), id).getKey();
 	}
 
 	Key getTie(java.lang.reflect.Type type, String id) {
-		return new KeyFactory.Builder(
-				this.datastore.associatedKey(getAncestor())).addChild(
-				this.datastore.getConfiguration().typeToKind(type), id)
-				.getKey();
+		return new KeyFactory.Builder(this.datastore.getConfiguration()
+				.typeToKind(type), id).getKey();
 	}
 
 	/**

@@ -36,7 +36,7 @@ public class FormController extends AbstractController {
 
 	public List<Form> getAll() {
 		return this.dataTrain.getDataStore().find().type(Form.class)
-				.ancestor(this.dataTrain.getAncestor()).returnAll().now();
+				.returnAll().now();
 	}
 
 	/**
@@ -47,8 +47,7 @@ public class FormController extends AbstractController {
 	 */
 	public List<Form> get(User user) {
 		ObjectDatastore od = this.dataTrain.getDataStore();
-		RootFindCommand<Form> find = od.find().type(Form.class)
-				.ancestor(this.dataTrain.getAncestor());
+		RootFindCommand<Form> find = od.find().type(Form.class);
 
 		// Set the ancestor for this form, automatically limits results to be
 		// forms of the user
@@ -93,7 +92,6 @@ public class FormController extends AbstractController {
 
 	public Form getByHashedId(long id) {
 		return this.dataTrain.getDataStore().find().type(Form.class)
-				.ancestor(this.dataTrain.getAncestor())
 				.addFilter(Form.HASHED_ID, FilterOperator.EQUAL, id)
 				.returnUnique().now();
 	}

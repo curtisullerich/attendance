@@ -2,6 +2,8 @@ package edu.iastate.music.marching.attendance.servlets;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +16,7 @@ import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.UserController;
 import edu.iastate.music.marching.attendance.model.AttendanceDatastore;
 import edu.iastate.music.marching.attendance.model.User;
+import edu.iastate.music.marching.attendance.model.migration.MigrationException;
 import edu.iastate.music.marching.attendance.util.PageBuilder;
 
 public class AdminServlet extends AbstractBaseServlet {
@@ -28,6 +31,9 @@ public class AdminServlet extends AbstractBaseServlet {
 	public static final String INDEX_URL = pageToUrl(Page.index, SERVLET_PATH);
 
 	private static final String CONTENT_TYPE_JSON = "application/json";
+
+	private static final Logger log = Logger.getLogger(AdminServlet.class
+			.getName());
 
 	private enum Page {
 		index, users, user, data, export, load, data_migrate, data_delete
@@ -67,6 +73,9 @@ public class AdminServlet extends AbstractBaseServlet {
 			case data:
 				showDataPage(req, resp);
 				break;
+			case data_migrate:
+				showDataMigratePage(req, resp);
+				break;
 			default:
 				ErrorServlet.showError(req, resp, 404);
 			}
@@ -99,7 +108,7 @@ public class AdminServlet extends AbstractBaseServlet {
 				postImportData(req, resp);
 				break;
 			case data_migrate:
-				showDataMigratePage(req, resp);
+				doDataMigration(req, resp);
 				break;
 			default:
 				ErrorServlet.showError(req, resp, 404);
@@ -198,28 +207,58 @@ public class AdminServlet extends AbstractBaseServlet {
 
 	private void showDataPage(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		
+
 		DataTrain train = DataTrain.getAndStartTrain();
 
 		PageBuilder page = new PageBuilder(Page.data, SERVLET_PATH);
 
 		page.setPageTitle("Data Export/Import/Update");
 
-		page.setAttribute("AppData", Lists.reverse(train.getVersionController().getAll()));
+		page.setAttribute("DatastoreVersions",
+				Lists.reverse(train.getVersionController().getAll()));
 		page.setAttribute("ObjectDatastoreVersion", AttendanceDatastore.VERSION);
-		
+
 		page.passOffToJsp(req, resp);
 	}
-	
-	private void showDataMigratePage(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		
-		DataTrain train = DataTrain.getAndStartTrain();
+
+	private void showDataMigratePage(HttpServletRequest req,
+			HttpServletResponse resp) throws ServletException, IOException {
 
 		PageBuilder page = new PageBuilder(Page.data_migrate, SERVLET_PATH);
 
 		page.setPageTitle("Data Migration");
-		
+
+		page.setAttribute("version", req.getParameter("version"));
+
+		page.setAttribute("ObjectDatastoreVersion", AttendanceDatastore.VERSION);
+
+		page.passOffToJsp(req, resp);
+	}
+
+	private void doDataMigration(HttpServletRequest req,
+			HttpServletResponse resp) throws ServletException, IOException {
+
+		int fromVersion = new Integer(req.getParameter("version"));
+
+		DataTrain train = DataTrain.getAndStartTrain();
+
+		PageBuilder page = new PageBuilder(Page.data_migrate, SERVLET_PATH);
+
+		try {
+			train.getMigrationController().upgrade(fromVersion);
+			
+			page.setAttribute("success_message",
+					"Successfully migrated data from version " + fromVersion);
+		} catch (MigrationException e) {
+			log.log(Level.WARNING, "Could not migrate from version "
+					+ fromVersion, e);
+			page.setAttribute("error_messages", new String[] { e.toString() });
+		}
+
+		page.setPageTitle("Data Migration");
+
+		page.setAttribute("version", req.getParameter("version"));
+
 		page.passOffToJsp(req, resp);
 	}
 
@@ -229,11 +268,11 @@ public class AdminServlet extends AbstractBaseServlet {
 		resp.setContentType(CONTENT_TYPE_JSON);
 
 		DataTrain train = DataTrain.getAndStartTrain();
-		
+
 		OutputStreamWriter osw = new OutputStreamWriter(resp.getOutputStream());
 
 		train.getDataController().dumpDatabaseAsJSON(osw);
-		
+
 		osw.flush();
 	}
 

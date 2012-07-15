@@ -79,28 +79,22 @@ public class MessagingController extends AbstractController {
 
 	public List<MessageThread> get(User involved) {
 		ObjectDatastore od = this.train.getDataStore();
-		// HACK: Daniel: Have to use Key types for an IN filter for now,
+		// TODO: Daniel: Have to use Key types for an IN filter for now,
 		// newer versions of twig-persist support using actual objects however
 		Key k = od.associatedKey(involved);
 		return this.train
-				.getDataStore()
-				.find()
-				.type(MessageThread.class)
-				.ancestor(this.train.getAncestor())
+				.find(MessageThread.class)
 				.addFilter(MessageThread.FIELD_PARTICIPANTS, FilterOperator.IN,
 						Arrays.asList(new Key[] { k })).returnAll().now();
 	}
 
 	public List<MessageThread> get(User involved, boolean resolved) {
 		ObjectDatastore od = this.train.getDataStore();
-		// HACK: Daniel: Have to use Key types for an IN filter for now,
+		// TODO: Daniel: Have to use Key types for an IN filter for now,
 		// newer versions of twig-persist support using actual objects however
 		Key k = od.associatedKey(involved);
 		return this.train
-				.getDataStore()
-				.find()
-				.type(MessageThread.class)
-				.ancestor(this.train.getAncestor())
+				.find(MessageThread.class)
 				.addFilter(MessageThread.FIELD_PARTICIPANTS, FilterOperator.IN,
 						Arrays.asList(new Key[] { k }))
 				.addFilter(MessageThread.FIELD_RESOLVED, FilterOperator.EQUAL,
@@ -109,10 +103,7 @@ public class MessagingController extends AbstractController {
 
 	public List<MessageThread> get(boolean resolved) {
 		return this.train
-				.getDataStore()
-				.find()
-				.type(MessageThread.class)
-				.ancestor(this.train.getAncestor())
+				.find(MessageThread.class)
 				.addFilter(MessageThread.FIELD_RESOLVED, FilterOperator.EQUAL,
 						resolved).returnAll().now();
 	}
@@ -123,8 +114,7 @@ public class MessagingController extends AbstractController {
 	}
 
 	public List<MessageThread> getAll() {
-		return this.train.getDataStore().find().type(MessageThread.class)
-				.ancestor(this.train.getAncestor()).returnAll().now();
+		return this.train.find(MessageThread.class).returnAll().now();
 	}
 
 	/**

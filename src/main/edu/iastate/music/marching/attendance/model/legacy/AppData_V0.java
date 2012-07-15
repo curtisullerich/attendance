@@ -1,22 +1,21 @@
-package edu.iastate.music.marching.attendance.model;
+package edu.iastate.music.marching.attendance.model.legacy;
 
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
 import com.google.code.twig.annotation.Entity;
-import com.google.code.twig.annotation.Id;
 import com.google.code.twig.annotation.Version;
 
-@Version(AttendanceDatastore.VERSION)
-@Entity(kind="AppData", allocateIdsBy=10)
-public class AppData {
+@Version(0)
+@Entity(kind="edu.iastate.music.marching.attendance.model.AppData", allocateIdsBy=10)
+public class AppData_V0 {
 	
 	/**
 	 * Get app data through datatrain:
 	 * DataTrain.get().getAppDataController.get()
 	 */
-	AppData() {
+	AppData_V0() {
 	}
 
 	private boolean directorRegistered;
@@ -30,9 +29,6 @@ public class AppData {
 	private String hashedMobilePassword;
 
 	private String timeZoneID;
-	
-	@Id
-	private int datastoreVersion;
 
 	public boolean isDirectorRegistered() {
 		return this.directorRegistered;
@@ -80,13 +76,5 @@ public class AppData {
 	
 	public void setTimeZone(TimeZone timezone) {
 		this.timeZoneID = timezone.getID();
-	}
-
-	public int getDatastoreVersion() {
-		return this.datastoreVersion;
-	}
-	
-	public void setDatastoreVersion(int version) {
-		this.datastoreVersion = version;
 	}
 }

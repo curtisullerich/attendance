@@ -1,4 +1,4 @@
-package edu.iastate.music.marching.attendance.model;
+package edu.iastate.music.marching.attendance.model.legacy;
 
 import java.util.Date;
 
@@ -9,11 +9,9 @@ import com.google.code.twig.annotation.Id;
 import com.google.code.twig.annotation.Index;
 import com.google.code.twig.annotation.Version;
 
-@Version(AttendanceDatastore.VERSION)
-@Entity(kind="Form", allocateIdsBy=10)
-public class Form {
-	
-	static final int VERSION = 0;
+@Version(0)
+@Entity(kind="edu.iastate.music.marching.attendance.model.Form", allocateIdsBy=10)
+public class Form_V0 {
 
 	public static enum Status {
 		Pending, Approved, Denied;
@@ -81,7 +79,7 @@ public class Form {
 	 * Create users through FormController
 	 * (DataTrain.get().getFormsController().createFormA(...)
 	 */
-	Form() {
+	Form_V0() {
 	}
 
 	@Id
@@ -92,10 +90,10 @@ public class Form {
 	 * Owning student
 	 * 
 	 */
-	private User owner;
+	private User_V0 owner;
 
 	@Index
-	private User student;
+	private User_V0 student;
 
 	@Index
 	private Type type;
@@ -118,7 +116,7 @@ public class Form {
 	private Status emailStatus;
 
 	@Activate(1)
-	private MessageThread messages;
+	private MessageThread_V0 messages;
 
 	@com.google.code.twig.annotation.Type(Text.class)
 	private String details;
@@ -198,12 +196,12 @@ public class Form {
 		this.type = type;
 	}
 
-	public void setStudent(User student) {
+	public void setStudent(User_V0 student) {
 		this.owner = student;
 		this.student = student;
 	}
 
-	public User getStudent() {
+	public User_V0 getStudent() {
 		return this.student;
 	}
 
@@ -275,11 +273,11 @@ public class Form {
 		this.status = status;
 	}
 
-	public MessageThread getMessageThread() {
+	public MessageThread_V0 getMessageThread() {
 		return this.messages;
 	}
 
-	public void setMessageThread(MessageThread messageThread) {
+	public void setMessageThread(MessageThread_V0 messageThread) {
 		this.messages = messageThread;
 	}
 

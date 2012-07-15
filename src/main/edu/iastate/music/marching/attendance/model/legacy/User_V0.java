@@ -2,7 +2,7 @@ package edu.iastate.music.marching.attendance.model.legacy;
 
 import java.io.Serializable;
 
-import com.google.appengine.api.datastore.Email;
+import com.google.appengine.api.users.User;
 import com.google.code.twig.annotation.Activate;
 import com.google.code.twig.annotation.Entity;
 import com.google.code.twig.annotation.Id;
@@ -105,13 +105,7 @@ public class User_V0 implements Serializable {
 
 	@Id
 	private String id;
-
-	@Index
-	private Email email;
-
-	@Index
-	private Email secondEmail;
-
+	
 	private int universityID;
 
 	// @Activate(0)
@@ -235,5 +229,9 @@ public class User_V0 implements Serializable {
 
 	public String getNetID() {
 		return this.netID;
+	}
+	
+	public User getGoogleUser() {
+		return this.google_user;
 	}
 }

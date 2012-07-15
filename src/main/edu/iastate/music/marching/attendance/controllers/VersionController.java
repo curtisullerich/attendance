@@ -15,7 +15,7 @@ public class VersionController {
 
 	public DatastoreVersion getCurrent() {
 		DatastoreVersion version = this.datatrain.getDataStore().load(DatastoreVersion.class,
-				DatastoreVersion.CURRENT);
+				DatastoreVersion.CURRENT + 1);
 		
 		if(version == null)
 		{

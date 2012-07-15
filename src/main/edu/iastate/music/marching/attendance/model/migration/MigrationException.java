@@ -11,4 +11,8 @@ public class MigrationException extends Exception {
 		super(message, cause);
 	}
 
+	public MigrationException(String message) {
+		super(message);
+	}
+
 }

@@ -1,28 +1,26 @@
-package edu.iastate.music.marching.attendance.model;
+package edu.iastate.music.marching.attendance.model.legacy;
 
 import java.io.Serializable;
 import java.util.Date;
 
 import com.google.appengine.api.datastore.Text;
-import com.google.code.twig.annotation.Entity;
 import com.google.code.twig.annotation.Type;
 import com.google.code.twig.annotation.Version;
 
-@Version(AttendanceDatastore.VERSION)
-@Entity(kind="Message", allocateIdsBy=10)
-public class Message implements Serializable {
+@Version(0)
+public class Message_V0 implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -7053270580375162117L;
 
-	Message() {
+	Message_V0() {
 
 	}
 
 	//the author. Either a director or a student.
-	private User author;
+	private User_V0 author;
 	
 	@Type(Text.class)
 	private String text;
@@ -30,11 +28,11 @@ public class Message implements Serializable {
 	//the time at which the message was sent
 	private Date timestamp;
 
-	public User getAuthor() {
+	public User_V0 getAuthor() {
 		return this.author;
 	}
 
-	public void setAuthor(User author) {
+	public void setAuthor(User_V0 author) {
 		this.author = author;
 	}
 

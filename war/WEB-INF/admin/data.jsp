@@ -36,34 +36,34 @@
 			Application code uses database version: v<c:out value="${ObjectDatastoreVersion}" /><br/>
 			The following versions are available:<br/>
 			<ul>
-			<c:forEach items="${AppData}" var="SingleAppData" varStatus="loopStatus">
+			<c:forEach items="${DatastoreVersions}" var="DatastoreVersion" varStatus="loopStatus">
 				<li>
 					<c:choose>
-						<c:when test="${SingleAppData.datastoreVersion == ObjectDatastoreVersion}">
+						<c:when test="${DatastoreVersion.version == ObjectDatastoreVersion}">
 							Current version:
 						</c:when>
-						<c:when test="${SingleAppData.datastoreVersion > ObjectDatastoreVersion}">
+						<c:when test="${DatastoreVersion.version > ObjectDatastoreVersion}">
 							Future version:
 						</c:when>
-						<c:when test="${SingleAppData.datastoreVersion < ObjectDatastoreVersion}">
+						<c:when test="${DatastoreVersion.version < ObjectDatastoreVersion}">
 							Past version:
 						</c:when>
 					</c:choose>
-					v<c:out value="${SingleAppData.datastoreVersion}" />
+					v<c:out value="${DatastoreVersion.version}" />
 				
 					<ul>
 					<c:choose>
-						<c:when test="${SingleAppData.datastoreVersion < ObjectDatastoreVersion}">
+						<c:when test="${DatastoreVersion.version < ObjectDatastoreVersion}">
 							<li>
 								<form action="data_migrate" method="GET" style="display:inline">
 									<input type="submit" value="Migrate" title="Copy this data to current application version" />
-									<input type="hidden" name="version" value="<c:out value="${SingleAppData.datastoreVersion}" />"/>
+									<input type="hidden" name="version" value="<c:out value="${DatastoreVersion.version}" />"/>
 								</form>
 							</li>
 							<li>
 								<form action="data_delete" method="POST" style="display:inline">
 									<input type="submit" value="Delete" title="Delete this data" />
-									<input type="hidden" name="version" value="<c:out value="${SingleAppData.datastoreVersion}" />"/>
+									<input type="hidden" name="version" value="<c:out value="${DatastoreVersion.version}" />"/>
 								</form>
 							</li>
 						</c:when>

@@ -50,13 +50,13 @@ public class EventController extends AbstractController {
 	}
 
 	public List<Event> readAll() {
-		return this.train.getDataStore().find().type(Event.class)
-				.ancestor(this.train.getAncestor()).returnAll().now();
+		return this.train.getDataStore().find().type(Event.class).returnAll()
+				.now();
 	}
 
 	public Integer getCount() {
-		return this.train.getDataStore().find().type(Event.class)
-				.ancestor(this.train.getAncestor()).returnCount().now();
+		return this.train.getDataStore().find().type(Event.class).returnCount()
+				.now();
 	}
 
 	/**
@@ -74,7 +74,7 @@ public class EventController extends AbstractController {
 		// and end fields,
 		// so match date and them manually filter results
 		RootFindCommand<Event> find = this.train.getDataStore().find()
-				.type(Event.class).ancestor(this.train.getAncestor());
+				.type(Event.class);
 		find.addFilter(Event.FIELD_DATE, FilterOperator.EQUAL,
 				datetimeToJustDate(time));
 		Iterator<Event> iter = find.now();
@@ -99,7 +99,7 @@ public class EventController extends AbstractController {
 	 */
 	public List<Event> get(Date start, Date end) {
 		RootFindCommand<Event> find = this.train.getDataStore().find()
-				.type(Event.class).ancestor(this.train.getAncestor());
+				.type(Event.class);
 
 		find.addFilter(Event.FIELD_START, FilterOperator.EQUAL, start);
 		find.addFilter(Event.FIELD_END, FilterOperator.EQUAL, end);
@@ -126,8 +126,7 @@ public class EventController extends AbstractController {
 
 	public List<Event> getAll() {
 		ObjectDatastore od = this.train.getDataStore();
-		return od.find().type(Event.class).ancestor(this.train.getAncestor())
-				.returnAll().now();
+		return od.find().type(Event.class).returnAll().now();
 	}
 
 }

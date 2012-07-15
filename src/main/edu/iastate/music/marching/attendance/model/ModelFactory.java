@@ -4,7 +4,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import com.google.appengine.api.datastore.Email;
-import com.google.code.twig.annotation.AnnotationObjectDatastore;
+import com.google.code.twig.standard.StandardObjectDatastore;
 
 public class ModelFactory {
 
@@ -57,7 +57,7 @@ public class ModelFactory {
 		return m;
 	}
 
-	public static AnnotationObjectDatastore newObjectDatastore() {
+	public static StandardObjectDatastore newObjectDatastore() {
 		return new AttendanceDatastore();
 	}
 
@@ -73,5 +73,10 @@ public class ModelFactory {
 		DatastoreVersion v = new DatastoreVersion();
 		v.setVersion(version);
 		return v;
+	}
+
+	public static Object newInstance(Class<?> toType)
+			throws InstantiationException, IllegalAccessException {
+		return toType.newInstance();
 	}
 }

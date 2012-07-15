@@ -573,10 +573,7 @@ public class AbsenceController extends AbstractController {
 
 	public List<Absence> get(User student) {
 		List<Absence> absences = this.train
-				.getDataStore()
-				.find()
-				.type(Absence.class)
-				.ancestor(this.train.getAncestor())
+				.find(Absence.class)
 				.addFilter(Absence.FIELD_STUDENT, FilterOperator.EQUAL, student)
 				.returnAll().now();
 		// Manually activate student fields
@@ -597,8 +594,7 @@ public class AbsenceController extends AbstractController {
 			throw new IllegalArgumentException(
 					"Must pass at least one type to get by type");
 
-		RootFindCommand<Absence> find = this.train.getDataStore().find()
-				.type(Absence.class).ancestor(this.train.getAncestor());
+		RootFindCommand<Absence> find = this.train.find(Absence.class);
 		find.addFilter(Absence.FIELD_TYPE, FilterOperator.IN,
 				Arrays.asList(types));
 
@@ -607,8 +603,7 @@ public class AbsenceController extends AbstractController {
 
 	public Integer getCount(Absence.Type type) {
 
-		RootFindCommand<Absence> find = this.train.getDataStore().find()
-				.type(Absence.class).ancestor(this.train.getAncestor());
+		RootFindCommand<Absence> find = this.train.find(Absence.class);
 		find.addFilter(Absence.FIELD_TYPE, FilterOperator.EQUAL, type);
 
 		return find.returnCount().now();
@@ -616,15 +611,13 @@ public class AbsenceController extends AbstractController {
 
 	// TODO doesn't work
 	public List<Absence> getUnanchored() {
-		return this.train.getDataStore().find().type(Absence.class)
-				.ancestor(this.train.getAncestor())
+		return this.train.find(Absence.class)
 				.addFilter(Absence.FIELD_STUDENT, FilterOperator.EQUAL, null)
 				.returnAll().now();
 	}
 
 	public List<Absence> getAll() {
-		return this.train.getDataStore().find().type(Absence.class)
-				.ancestor(this.train.getAncestor()).returnAll().now();
+		return this.train.find(Absence.class).returnAll().now();
 	}
 
 	/**
@@ -636,8 +629,7 @@ public class AbsenceController extends AbstractController {
 	 */
 	public List<Absence> getAll(Event event) {
 
-		return this.train.getDataStore().find().type(Absence.class)
-				.ancestor(this.train.getAncestor())
+		return this.train.find(Absence.class)
 				.addFilter(Absence.FIELD_EVENT, FilterOperator.EQUAL, event)
 				.returnAll().now();
 	}
@@ -645,10 +637,7 @@ public class AbsenceController extends AbstractController {
 	public List<Absence> getAll(Event event, User student) {
 
 		return this.train
-				.getDataStore()
-				.find()
-				.type(Absence.class)
-				.ancestor(this.train.getAncestor())
+				.find(Absence.class)
 				.addFilter(Absence.FIELD_STUDENT, FilterOperator.EQUAL, student)
 				.addFilter(Absence.FIELD_EVENT, FilterOperator.EQUAL, event)
 				.returnAll().now();
@@ -665,8 +654,7 @@ public class AbsenceController extends AbstractController {
 		od.deleteAll(todie);
 
 		// Finally check for side-effects caused by absence
-		for (User u : users)
-		{
+		for (User u : users) {
 			train.getUsersController().updateUserGrade(u);
 		}
 	}

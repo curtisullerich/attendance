@@ -20,27 +20,23 @@ public class UserController extends AbstractController {
 	DataTrain datatrain;
 
 	public UserController(DataTrain dataTrain) {
-		super(dataTrain);
 		this.datatrain = dataTrain;
 	}
 
 	public List<User> getAll() {
-		return this.datatrain.getDataStore().find().type(User.class)
-				.ancestor(this.datatrain.getAncestor()).returnAll().now();
+		return this.datatrain.find(User.class).returnAll().now();
 	}
 
 	public List<User> get(User.Type... types) {
 
-		RootFindCommand<User> find = this.datatrain.getDataStore().find()
-				.type(User.class).ancestor(this.datatrain.getAncestor());
+		RootFindCommand<User> find = this.datatrain.find(User.class);
 		find.addFilter(User.FIELD_TYPE, FilterOperator.IN, Arrays.asList(types));
 
 		return find.returnAll().now();
 	}
 
 	public int getCount(Type type) {
-		RootFindCommand<User> find = this.datatrain.getDataStore().find()
-				.type(User.class).ancestor(this.datatrain.getAncestor());
+		RootFindCommand<User> find = this.datatrain.find(User.class);
 		find.addFilter(User.FIELD_TYPE, FilterOperator.EQUAL, type);
 
 		return find.returnCount().now();
@@ -169,11 +165,7 @@ public class UserController extends AbstractController {
 		if (primaryEmail.getEmail() == null)
 			return null;
 
-		Iterator<User> users = this.datatrain
-				.getDataStore()
-				.find()
-				.type(User.class)
-				.ancestor(this.datatrain.getAncestor())
+		Iterator<User> users = this.datatrain.find(User.class)
 				.addFilter(User.FIELD_PRIMARY_EMAIL, FilterOperator.EQUAL,
 						primaryEmail.getEmail()).fetchMaximum(2).now();
 
@@ -206,10 +198,7 @@ public class UserController extends AbstractController {
 		if (secondaryEmail.getEmail() == null)
 			return null;
 
-		Iterator<User> users = this.datatrain
-				.getDataStore()
-				.find()
-				.type(User.class).ancestor(this.datatrain.getAncestor())
+		Iterator<User> users = this.datatrain.find(User.class)
 				.addFilter(User.FIELD_SECONDARY_EMAIL, FilterOperator.EQUAL,
 						secondaryEmail.getEmail()).fetchMaximum(2).now();
 
