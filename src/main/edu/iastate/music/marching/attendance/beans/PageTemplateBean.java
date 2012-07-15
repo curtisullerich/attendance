@@ -76,6 +76,10 @@ public class PageTemplateBean implements java.io.Serializable {
 	public String getTimeZoneID() {
 		return mAppData.getTimeZone().getID();
 	}
+	
+	public String getSiteTitle() {
+		return mAppData.getTitle();
+	}
 
 	public String getTitle() {
 		return title;

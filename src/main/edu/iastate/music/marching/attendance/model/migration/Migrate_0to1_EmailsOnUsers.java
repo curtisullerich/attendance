@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.google.appengine.api.datastore.Email;
+import com.google.code.twig.standard.StandardObjectDatastore;
 
 import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.AppData;
@@ -48,21 +49,21 @@ public class Migrate_0to1_EmailsOnUsers extends DefaultMigrationStrategy {
 
 	@Override
 	protected Object upgrade(Object object, Class<?> fromType, Class<?> toType,
-			Type fromGenericType, Type toGenericType) throws MigrationException {
+			Type fromGenericType, Type toGenericType, StandardObjectDatastore datastore) throws MigrationException {
 
 		if (object == null)
 			return null;
 
 		// handle users specially
 		if (object instanceof User_V0)
-			return upgrade((User_V0) object);
+			return upgrade((User_V0) object, datastore);
 
 		// also app data, so we don't get multiple copies
 		if (object instanceof AppData_V0)
 			return upgrade((AppData_V0) object);
 
 		return super.upgrade(object, fromType, toType, fromGenericType,
-				toGenericType);
+				toGenericType, datastore);
 	}
 
 	private AppData upgrade(AppData_V0 oldAppData) {
@@ -80,11 +81,17 @@ public class Migrate_0to1_EmailsOnUsers extends DefaultMigrationStrategy {
 		return appData;
 	}
 
-	private User upgrade(User_V0 oldUser) {
+	private User upgrade(User_V0 oldUser, StandardObjectDatastore datastore) {
 		
 		if(null == oldUser.getType())
 		{
-			throw new IllegalArgumentException("");
+			// Have not yet activated this instance
+			datastore.activate(oldUser);
+			
+			if(null == oldUser.getType())
+			{
+				throw new IllegalStateException("Activation error");
+			}
 		}
 		
 		User.Type type = User.Type.valueOf(oldUser.getType().name());

@@ -87,13 +87,14 @@ public class AdminServlet extends AbstractBaseServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		if (!isLoggedIn(req, resp)) {
-			resp.sendRedirect(AuthServlet.getLoginUrl(req));
-			return;
-		} else if (!(isLoggedIn(req, resp, User.Type.Director) || AuthController
-				.isAdminLoggedIn())) {
-			resp.sendRedirect(ErrorServlet.getLoginFailedUrl(req));
-			return;
+		if (!AuthController.isAdminLoggedIn()) {
+			if (!isLoggedIn(req, resp)) {
+				resp.sendRedirect(AuthServlet.getLoginUrl(req));
+				return;
+			} else if (!(isLoggedIn(req, resp, User.Type.Director))) {
+				resp.sendRedirect(ErrorServlet.getLoginFailedUrl(req));
+				return;
+			}
 		}
 
 		Page page = parsePathInfo(req.getPathInfo(), Page.class);

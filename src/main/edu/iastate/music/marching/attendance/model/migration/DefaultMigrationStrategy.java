@@ -1,11 +1,15 @@
 package edu.iastate.music.marching.attendance.model.migration;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectStreamClass;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -13,14 +17,16 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import javax.transaction.NotSupportedException;
-
+import com.google.appengine.api.datastore.Blob;
 import com.google.appengine.api.datastore.QueryResultIterator;
 import com.google.code.twig.annotation.Entity;
+import com.google.code.twig.conversion.CombinedConverter;
+import com.google.code.twig.conversion.TypeConverter;
 import com.google.code.twig.standard.StandardObjectDatastore;
 import com.google.code.twig.util.generic.GenericTypeReflector;
 
 import edu.iastate.music.marching.attendance.model.ModelFactory;
+import edu.iastate.music.marching.attendance.model.legacy.SerializationMapping;
 
 /**
  * Copies all data on upgrade, throws on downgrade
@@ -62,7 +68,8 @@ public class DefaultMigrationStrategy implements IMigrationStrategy {
 
 			while (iterator.hasNext()) {
 				Object translated = upgrade(iterator.next(), entry.getKey(),
-						entry.getValue(), entry.getKey(), entry.getValue());
+						entry.getValue(), entry.getKey(), entry.getValue(),
+						datastore);
 				datastore.storeOrUpdate(translated);
 			}
 		}
@@ -71,11 +78,12 @@ public class DefaultMigrationStrategy implements IMigrationStrategy {
 	@Override
 	public void doDowngrade() throws MigrationException {
 		throw new MigrationException("Not supported",
-				new NotSupportedException());
+				new UnsupportedOperationException());
 	}
 
 	protected Object upgrade(Object object, Class<?> fromType, Class<?> toType,
-			Type fromGenericType, Type toGenericType) throws MigrationException {
+			Type fromGenericType, Type toGenericType,
+			StandardObjectDatastore datastore) throws MigrationException {
 
 		if (object == null) {
 			return null;
@@ -85,27 +93,29 @@ public class DefaultMigrationStrategy implements IMigrationStrategy {
 			return upgradeEnum(object, fromType, toType);
 
 		if (fromType.isAnnotationPresent(Entity.class)) {
-			return upgradeEntity(object, fromType, toType);
+			return upgradeEntity(object, fromType, toType, datastore);
 		}
 
 		if (List.class.isAssignableFrom(fromType)) {
-			return upgradeList((List<?>) object, fromGenericType, toGenericType);
+			return upgradeList((List<?>) object, fromGenericType,
+					toGenericType, datastore);
 		}
 
 		if (Set.class.isAssignableFrom(fromType)) {
-			return upgradeSet((Set<?>) object, fromGenericType, toGenericType);
+			return upgradeSet((Set<?>) object, fromGenericType, toGenericType,
+					datastore);
 		}
 
 		if (Map.class.isAssignableFrom(fromType)) {
 			return upgradeMap((Map<?, ?>) object, fromGenericType,
-					toGenericType);
+					toGenericType, datastore);
 		}
 
 		return object;
 	}
 
-	private Object upgradeMap(Map<?, ?> map, Type fromType, Type toType)
-			throws MigrationException {
+	private Object upgradeMap(Map<?, ?> map, Type fromType, Type toType,
+			StandardObjectDatastore datastore) throws MigrationException {
 		HashMap<Object, Object> newCollection;
 
 		// handles the tricky task of finding what type of map we have
@@ -129,11 +139,11 @@ public class DefaultMigrationStrategy implements IMigrationStrategy {
 			Object key = upgrade(entry.getKey(),
 					(Class<?>) componentFromKeyType,
 					(Class<?>) componentToKeyType, componentFromKeyType,
-					componentToKeyType);
+					componentToKeyType, datastore);
 			Object value = upgrade(entry.getValue(),
 					(Class<?>) componentFromValueType,
 					(Class<?>) componentToValueType, componentFromValueType,
-					componentToValueType);
+					componentToValueType, datastore);
 
 			newCollection.put(key, value);
 		}
@@ -141,8 +151,8 @@ public class DefaultMigrationStrategy implements IMigrationStrategy {
 		return newCollection;
 	}
 
-	private Object upgradeSet(Set<?> set, Type fromType, Type toType)
-			throws MigrationException {
+	private Object upgradeSet(Set<?> set, Type fromType, Type toType,
+			StandardObjectDatastore datastore) throws MigrationException {
 		HashSet<Object> newCollection;
 
 		// handles the tricky task of finding what type of set we have
@@ -160,7 +170,7 @@ public class DefaultMigrationStrategy implements IMigrationStrategy {
 		for (Object item : set) {
 			Object transformed = upgrade(item, (Class<?>) componentFromType,
 					(Class<?>) componentToType, componentFromType,
-					componentToType);
+					componentToType, datastore);
 
 			newCollection.add(transformed);
 		}
@@ -168,8 +178,8 @@ public class DefaultMigrationStrategy implements IMigrationStrategy {
 		return newCollection;
 	}
 
-	private Object upgradeList(List<?> list, Type fromType, Type toType)
-			throws MigrationException {
+	private Object upgradeList(List<?> list, Type fromType, Type toType,
+			StandardObjectDatastore datastore) throws MigrationException {
 		List<Object> newCollection;
 
 		// handles the tricky task of finding what type of list we have
@@ -187,7 +197,7 @@ public class DefaultMigrationStrategy implements IMigrationStrategy {
 		for (Object item : list) {
 			Object transformed = upgrade(item, (Class<?>) componentFromType,
 					(Class<?>) componentToType, componentFromType,
-					componentToType);
+					componentToType, datastore);
 
 			newCollection.add(transformed);
 		}
@@ -196,7 +206,8 @@ public class DefaultMigrationStrategy implements IMigrationStrategy {
 	}
 
 	protected Object upgradeEntity(Object object, Class<?> fromType,
-			Class<?> toType) throws MigrationException {
+			Class<?> toType, StandardObjectDatastore datastore)
+			throws MigrationException {
 		Object newObject;
 
 		try {
@@ -227,7 +238,7 @@ public class DefaultMigrationStrategy implements IMigrationStrategy {
 						Object value = upgrade(fromField.get(object),
 								fromField.getType(), toField.getType(),
 								fromField.getGenericType(),
-								toField.getGenericType());
+								toField.getGenericType(), datastore);
 						toField.set(newObject, value);
 					} catch (IllegalArgumentException e) {
 						throw new MigrationException(
@@ -266,6 +277,56 @@ public class DefaultMigrationStrategy implements IMigrationStrategy {
 
 	protected Object downgrade(Object object) throws MigrationException {
 		throw new MigrationException("Not supported",
-				new NotSupportedException());
+				new UnsupportedOperationException());
+	}
+
+	@Override
+	public void registerConverters(CombinedConverter converter) {
+		converter.prepend(new BlobToLegacy());
+	}
+
+	private class BlobToLegacy implements TypeConverter {
+		public Object convert(Blob blob) {
+			try {
+				ByteArrayInputStream bais = new ByteArrayInputStream(
+						blob.getBytes());
+				ObjectInputStream stream = createObjectInputStream(bais);
+				return stream.readObject();
+			} catch (Exception e) {
+				throw new IllegalStateException(e);
+			}
+		}
+
+		protected ObjectInputStream createObjectInputStream(
+				ByteArrayInputStream bais) throws IOException {
+			return new LegacyObjectInputStream(bais);
+		}
+
+		@SuppressWarnings("unchecked")
+		public <T> T convert(Object source, Type type) {
+			if (source != null && source.getClass() == Blob.class) {
+				return (T) convert((Blob) source);
+			}
+			return null;
+		}
+	}
+
+	private class LegacyObjectInputStream extends ObjectInputStream {
+
+		public LegacyObjectInputStream(InputStream in) throws IOException {
+			super(in);
+		}
+
+		protected ObjectStreamClass readClassDescriptor() throws IOException,
+				ClassNotFoundException {
+			ObjectStreamClass read = super.readClassDescriptor();
+
+			try {
+				return SerializationMapping.get(read);
+			} catch (ClassNotFoundException ex) {
+				return read;
+			}
+
+		}
 	}
 }

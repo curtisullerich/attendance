@@ -1,5 +1,6 @@
 package edu.iastate.music.marching.attendance.model.legacy;
 
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 
 import com.google.appengine.api.users.User;
@@ -11,7 +12,7 @@ import com.google.code.twig.annotation.Version;
 
 @Activate
 @Version(0)
-@Entity(kind="edu.iastate.music.marching.attendance.model.User", allocateIdsBy = 10)
+@Entity(kind = "edu.iastate.music.marching.attendance.model.User", allocateIdsBy = 10)
 public class User_V0 implements Serializable {
 
 	/**
@@ -92,10 +93,10 @@ public class User_V0 implements Serializable {
 	User_V0() {
 
 	}
-	
+
 	@Index
 	private com.google.appengine.api.users.User google_user;
-	
+
 	@Index
 	private String netID;
 
@@ -105,7 +106,7 @@ public class User_V0 implements Serializable {
 
 	@Id
 	private String id;
-	
+
 	private int universityID;
 
 	// @Activate(0)
@@ -230,8 +231,31 @@ public class User_V0 implements Serializable {
 	public String getNetID() {
 		return this.netID;
 	}
-	
+
 	public User getGoogleUser() {
 		return this.google_user;
 	}
+
+//	private void writeObject(ObjectOutputStream oos) throws IOException {
+//		// default serialization
+//		oos.defaultWriteObject();
+//		// write the object
+//		List loc = new ArrayList();
+//		loc.add(location.x);
+//		loc.add(location.y);
+//		loc.add(location.z);
+//		loc.add(location.uid);
+//		oos.writeObject(loc);
+//	}
+//
+//	private void readObject(ObjectInputStream ois)
+//			throws ClassNotFoundException, IOException {
+//		// default deserialization
+//		ois.
+//		ois.defaultReadObject();
+//		List loc = (List) ois.readObject(); // Replace with real deserialization
+//		location = new Location(loc.get(0), loc.get(1), loc.get(2), loc.get(3));
+//		// ... more code
+//
+//	}
 }

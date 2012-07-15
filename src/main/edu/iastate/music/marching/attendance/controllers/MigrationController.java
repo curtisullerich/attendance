@@ -2,6 +2,8 @@ package edu.iastate.music.marching.attendance.controllers;
 
 import javax.transaction.NotSupportedException;
 
+import com.google.code.twig.standard.StandardObjectDatastore;
+
 import edu.iastate.music.marching.attendance.model.AttendanceDatastore;
 import edu.iastate.music.marching.attendance.model.migration.AbstractMigrationConfiguration;
 import edu.iastate.music.marching.attendance.model.migration.IMigrationStrategy;
@@ -28,7 +30,12 @@ public class MigrationController {
 							+ " to current version",
 					new NotSupportedException());
 		}
+		
+		// Prepend a converter for legacy models to a separate datastore
+		StandardObjectDatastore datastore = DataTrain.getAndStartTrain().getDataStore();
+		
+		strategy.registerConverters(datastore.getConverter());		
 
-		strategy.doUpgrade(this.train.getDataStore());
+		strategy.doUpgrade(datastore);
 	}
 }

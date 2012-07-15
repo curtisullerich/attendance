@@ -84,7 +84,7 @@
 			</div>
 			<div class="grids-24">
 				<div class="grid-12">
-					<h2 class="site-title"><a href="/">ISU Cyclone Football "Varsity" Marching Band Attendance</a></h2>
+					<h2 class="site-title"><a href="/"><c:out value="${pagetemplate.siteTitle}" /></a></h2>
 				</div>
 				<div class="grid-12">
 					<h2 class="site-tagline"></h2>
