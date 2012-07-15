@@ -96,7 +96,8 @@ public class AuthController {
 					GoogleAccountException.Type.None);
 		}
 
-		Email google_users_email = new Email(google_user.getEmail().toLowerCase());
+		Email google_users_email = new Email(google_user.getEmail()
+				.toLowerCase());
 
 		User matchedUser = null;
 
@@ -150,8 +151,12 @@ public class AuthController {
 	}
 
 	public static boolean isAdminLoggedIn() {
-		UserService userService = UserServiceFactory.getUserService();
-		return userService.isUserAdmin();
+		try {
+			UserService userService = UserServiceFactory.getUserService();
+			return userService.isUserAdmin();
+		} catch (IllegalStateException e) {
+			return false;
+		}
 	}
 
 }
