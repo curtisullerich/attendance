@@ -216,6 +216,14 @@ public class UserController extends AbstractController {
 	}
 
 	public void update(User u) {
+
+		// Force user's secondary email to be lowercase
+		if (u.getSecondaryEmail() != null
+				&& u.getSecondaryEmail().getEmail() != null) {
+			u.setSecondaryEmail(new Email(u.getSecondaryEmail().getEmail()
+					.toLowerCase()));
+		}
+
 		validateUser(u);// TODO do we need to check for updates to absences
 						// here? I don't think so.
 
