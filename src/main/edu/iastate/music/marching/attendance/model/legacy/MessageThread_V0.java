@@ -12,7 +12,7 @@ import com.google.code.twig.annotation.Type;
 import com.google.code.twig.annotation.Version;
 
 @Version(0)
-@Entity(kind="edu.iastate.music.marching.attendance.model.MessageThread", allocateIdsBy=10)
+@Entity(kind="edu.iastate.music.marching.attendance.model.MessageThread", allocateIdsBy=0)
 public class MessageThread_V0 {
 
 	public static final String FIELD_PARTICIPANTS = "participants";

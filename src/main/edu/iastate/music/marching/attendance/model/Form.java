@@ -10,7 +10,7 @@ import com.google.code.twig.annotation.Index;
 import com.google.code.twig.annotation.Version;
 
 @Version(AttendanceDatastore.VERSION)
-@Entity(kind="Form", allocateIdsBy=10)
+@Entity(kind="Form", allocateIdsBy=0)
 public class Form {
 	
 	static final int VERSION = 0;

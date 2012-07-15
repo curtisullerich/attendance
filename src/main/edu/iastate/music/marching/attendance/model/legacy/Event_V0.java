@@ -8,7 +8,7 @@ import com.google.code.twig.annotation.Index;
 import com.google.code.twig.annotation.Version;
 
 @Version(0)
-@Entity(kind="edu.iastate.music.marching.attendance.model.Event", allocateIdsBy=10)
+@Entity(kind="edu.iastate.music.marching.attendance.model.Event", allocateIdsBy=0)
 public class Event_V0 {
 
 	public static final String FIELD_START = "start";

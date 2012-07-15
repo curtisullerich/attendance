@@ -9,7 +9,7 @@ import com.google.code.twig.annotation.Type;
 import com.google.code.twig.annotation.Version;
 
 @Version(AttendanceDatastore.VERSION)
-@Entity(kind="Message", allocateIdsBy=10)
+@Entity(kind="Message", allocateIdsBy=0)
 public class Message implements Serializable {
 
 	/**

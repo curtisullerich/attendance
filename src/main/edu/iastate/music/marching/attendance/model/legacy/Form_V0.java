@@ -10,7 +10,7 @@ import com.google.code.twig.annotation.Index;
 import com.google.code.twig.annotation.Version;
 
 @Version(0)
-@Entity(kind="edu.iastate.music.marching.attendance.model.Form", allocateIdsBy=10)
+@Entity(kind="edu.iastate.music.marching.attendance.model.Form", allocateIdsBy=0)
 public class Form_V0 {
 
 	public static enum Status {

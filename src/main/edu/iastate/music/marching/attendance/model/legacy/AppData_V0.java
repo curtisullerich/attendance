@@ -8,7 +8,7 @@ import com.google.code.twig.annotation.Entity;
 import com.google.code.twig.annotation.Version;
 
 @Version(0)
-@Entity(kind="edu.iastate.music.marching.attendance.model.AppData", allocateIdsBy=10)
+@Entity(kind="edu.iastate.music.marching.attendance.model.AppData", allocateIdsBy=0)
 public class AppData_V0 {
 	
 	/**

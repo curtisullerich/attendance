@@ -9,7 +9,7 @@ import com.google.code.twig.annotation.Index;
 import com.google.code.twig.annotation.Version;
 
 @Version(0)
-@Entity(kind="edu.iastate.music.marching.attendance.model.Absence", allocateIdsBy=10)
+@Entity(kind="edu.iastate.music.marching.attendance.model.Absence", allocateIdsBy=0)
 public class Absence_V0 {
 
 	public enum Type {

@@ -8,7 +8,7 @@ import com.google.code.twig.annotation.Type;
 import com.google.code.twig.annotation.Version;
 
 @Version(AttendanceDatastore.VERSION)
-@Entity(kind="MobileDataUpload", allocateIdsBy=10)
+@Entity(kind="MobileDataUpload", allocateIdsBy=0)
 public class MobileDataUpload {
 
 	public MobileDataUpload() {

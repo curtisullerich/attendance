@@ -8,7 +8,7 @@ import com.google.code.twig.annotation.Index;
 import com.google.code.twig.annotation.Version;
 
 @Version(AttendanceDatastore.VERSION)
-@Entity(kind="Event", allocateIdsBy=10)
+@Entity(kind="Event", allocateIdsBy=0)
 public class Event {
 
 	public static final String FIELD_START = "start";

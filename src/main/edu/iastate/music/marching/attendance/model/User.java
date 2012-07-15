@@ -11,7 +11,7 @@ import com.google.code.twig.annotation.Version;
 
 @Activate
 @Version(AttendanceDatastore.VERSION)
-@Entity(kind="User", allocateIdsBy=10)
+@Entity(kind="User", allocateIdsBy=0)
 public class User implements Serializable {
 	
 	/**

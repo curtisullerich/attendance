@@ -12,7 +12,7 @@ import com.google.code.twig.annotation.Type;
 import com.google.code.twig.annotation.Version;
 
 @Version(AttendanceDatastore.VERSION)
-@Entity(kind="MessageThread", allocateIdsBy=10)
+@Entity(kind="MessageThread", allocateIdsBy=0)
 public class MessageThread {
 
 	public static final String FIELD_PARTICIPANTS = "participants";

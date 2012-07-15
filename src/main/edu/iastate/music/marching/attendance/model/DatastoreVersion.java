@@ -5,7 +5,7 @@ import com.google.code.twig.annotation.Id;
 import com.google.code.twig.annotation.Version;
 
 @Version(0)
-@Entity(kind="DatastoreVersion", allocateIdsBy=10)
+@Entity(kind="DatastoreVersion", allocateIdsBy=0)
 public class DatastoreVersion {
 
 	public static final int CURRENT = AttendanceDatastore.VERSION;

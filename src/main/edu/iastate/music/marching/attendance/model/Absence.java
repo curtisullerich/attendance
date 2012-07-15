@@ -9,7 +9,7 @@ import com.google.code.twig.annotation.Index;
 import com.google.code.twig.annotation.Version;
 
 @Version(AttendanceDatastore.VERSION)
-@Entity(kind="Absence", allocateIdsBy=10)
+@Entity(kind="Absence", allocateIdsBy=0)
 public class Absence {
 
 	public enum Type {

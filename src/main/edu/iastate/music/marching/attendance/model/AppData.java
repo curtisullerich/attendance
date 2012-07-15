@@ -9,7 +9,7 @@ import com.google.code.twig.annotation.Id;
 import com.google.code.twig.annotation.Version;
 
 @Version(AttendanceDatastore.VERSION)
-@Entity(kind="AppData", allocateIdsBy=10)
+@Entity(kind="AppData", allocateIdsBy=0)
 public class AppData {
 	
 	/**
