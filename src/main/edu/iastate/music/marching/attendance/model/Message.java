@@ -12,10 +12,7 @@ import com.google.code.twig.annotation.Version;
 @Entity(kind="Message", allocateIdsBy=0)
 public class Message implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7053273580635162117L;
+	public static final long serialVersionUID = -6053273580635162117L;
 
 	Message() {
 

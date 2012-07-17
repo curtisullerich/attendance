@@ -4,10 +4,12 @@ import java.io.Serializable;
 import java.util.Date;
 
 import com.google.appengine.api.datastore.Text;
+import com.google.code.twig.annotation.Entity;
 import com.google.code.twig.annotation.Type;
 import com.google.code.twig.annotation.Version;
 
 @Version(0)
+@Entity(kind = Message_V0.NAME, allocateIdsBy = 0)
 public class Message_V0 implements Serializable {
 
 	public static final long serialVersionUID = -7053270580375162117L;
@@ -18,13 +20,13 @@ public class Message_V0 implements Serializable {
 
 	}
 
-	//the author. Either a director or a student.
+	// the author. Either a director or a student.
 	private User_V0 author;
-	
+
 	@Type(Text.class)
 	private String text;
-	
-	//the time at which the message was sent
+
+	// the time at which the message was sent
 	private Date timestamp;
 
 	public User_V0 getAuthor() {

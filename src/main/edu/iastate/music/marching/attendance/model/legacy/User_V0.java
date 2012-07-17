@@ -22,7 +22,7 @@ public class User_V0 implements Serializable {
 
 	public static final String FIELD_ID = "id";
 
-	public enum Type {
+	public enum Type implements Serializable {
 		Student, TA, Director;
 
 		public boolean isStudent() {
@@ -36,9 +36,11 @@ public class User_V0 implements Serializable {
 		public boolean isDirector() {
 			return this.equals(Director);
 		}
+		
+		public static final long serialVersionUID = 1421345719296557705L;
 	}
 
-	public enum Grade {
+	public enum Grade implements Serializable {
 		A, Aminus("A-"), Bplus("B+"), B, Bminus("B-"), Cplus("C+"), C, Cminus(
 				"C-"), Dplus("D+"), D, Dminus("D-"), F;
 		private String mDisplayString;
@@ -58,9 +60,11 @@ public class User_V0 implements Serializable {
 		public String getValue() {
 			return name();
 		}
+		
+		public static final long serialVersionUID = 1421345452345705L;
 	}
 
-	public enum Section {
+	public enum Section implements Serializable {
 		Piccolo, Clarinet, AltoSax("Alto Sax"), TenorSax("Tenor Sax"), Trumpet, Trombone, Mellophone, Baritone, Sousaphone, Guard, DrumMajor(
 				"Drum Major"), Staff, Drumline_Cymbals("Drumline: Cymbals"), Drumline_Tenors(
 				"Drumline: Tenors"), Drumline_Snare("Drumline: Snare"), Drumline_Bass(
@@ -83,6 +87,8 @@ public class User_V0 implements Serializable {
 		public String getValue() {
 			return name();
 		}
+		
+		public static final long serialVersionUID = 142192342345705L;
 	}
 
 	/**
