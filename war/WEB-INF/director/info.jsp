@@ -27,7 +27,7 @@
 			
 			<dt><label class="required" for="SecondEmail">Login Email</label></dt>
 			<dd>
-				<input type="email" name="SecondEmail" value="<c:out value="${user.secondEmail.email}" />" />
+				<input type="email" name="SecondEmail" value="<c:out value="${user.secondaryEmail.email}" />" />
 				<br/>
 				Enter the Google email you wish to use to login to the application.
 			</dd>
