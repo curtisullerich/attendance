@@ -79,7 +79,7 @@
 		$.post(window.location, {'id':threadid, 'resolved':resolved});
 		
 		if(resolved == "false")
-			$("#newmessagepreview").html("Click here to send a reply <strong>un-resolve</strong> the thread");
+			$("#newmessagepreview").html("Click here to send a reply and <strong>un-resolve</strong> the thread");
 		else
 			$("#newmessagepreview").text("Click here to send a reply");
 		
