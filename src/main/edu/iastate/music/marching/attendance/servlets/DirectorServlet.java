@@ -1,6 +1,7 @@
 package edu.iastate.music.marching.attendance.servlets;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -33,6 +34,7 @@ import edu.iastate.music.marching.attendance.model.MessageThread;
 import edu.iastate.music.marching.attendance.model.ModelFactory;
 import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.model.User.Section;
+import edu.iastate.music.marching.attendance.util.GradeExport;
 import edu.iastate.music.marching.attendance.util.PageBuilder;
 import edu.iastate.music.marching.attendance.util.Util;
 import edu.iastate.music.marching.attendance.util.ValidationExceptions;
@@ -107,6 +109,8 @@ public class DirectorServlet extends AbstractBaseServlet {
 			case viewevent:
 				viewEvent(req, resp);
 				break;
+			case export:
+				showGradeExport(req, resp);
 			default:
 				ErrorServlet.showError(req, resp, 404);
 			}
@@ -385,7 +389,6 @@ public class DirectorServlet extends AbstractBaseServlet {
 		// TODO May throw validation exceptions
 		uc.update(user);
 
-		String lenetid = netid.toString();
 		// so the user can get it
 		req.setAttribute("id", netid.toString());
 		req.setAttribute("success_message", "Info successfully updated.");
@@ -730,7 +733,6 @@ public class DirectorServlet extends AbstractBaseServlet {
 		// print in the order of creation, NOT date order.
 		Collections.sort(students, studentComparator);
 		Collections.sort(events, eventComparator);
-		UserController uc = train.getUsersController();
 		AbsenceController ac = train.getAbsenceController();
 		Map<User, Map<Event, List<Absence>>> absenceMap = new HashMap<User, Map<Event, List<Absence>>>();
 		for (User s : students) {
@@ -890,6 +892,26 @@ public class DirectorServlet extends AbstractBaseServlet {
 		page.passOffToJsp(req, resp);
 	}
 
+	private void showGradeExport(HttpServletRequest req,
+			HttpServletResponse resp) throws ServletException, IOException {
+
+		String suggestedBaseFileName = "grades-"
+				+ new SimpleDateFormat("yyyy.MM.dd").format(new Date());
+
+		if ("csv".equals(req.getParameter("type"))) {
+
+			resp.addHeader("Content-Disposition", "attachment; filename="
+					+ suggestedBaseFileName + ".csv");
+
+			resp.setContentType(GradeExport.CONTENT_TYPE_CSV);
+			GradeExport.exportCSV(DataTrain.getAndStartTrain(),
+					resp.getOutputStream());
+		} else {
+			new PageBuilder(Page.export, SERVLET_PATH).setPageTitle(
+					"Grade Export").passOffToJsp(req, resp);
+		}
+	}
+
 	private void viewAbsence(HttpServletRequest req, HttpServletResponse resp,
 			List<String> incomingErrors) throws ServletException, IOException {
 		DataTrain train = DataTrain.getAndStartTrain();
@@ -905,7 +927,8 @@ public class DirectorServlet extends AbstractBaseServlet {
 		Absence checkedAbsence = null;
 
 		long absenceid;
-		PageBuilder page = new PageBuilder(Page.viewabsence, SERVLET_PATH);
+		PageBuilder page = new PageBuilder(Page.viewabsence, SERVLET_PATH,
+				train);
 
 		if (sabsenceid != null) {
 
