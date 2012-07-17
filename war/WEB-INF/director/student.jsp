@@ -99,13 +99,13 @@
 		<div class="msg_body">
 			<jsp:include page="/WEB-INF/common/threadtable.jsp"/>		
 		</div>
-		<h2 class="msg_head">Delete</h2>
-		<div class="msg_body">
-			<form method="post" action="/director/deletestudent" accept-charset="utf-8">
-				<input type="hidden" name="deleteid" value="${user.id }"/>
-				<input type="submit" value="Delete this student" onclick="return confirm('Do you really want to delete this student?')"/>
-			</form>
-		</div>		
+<!-- 		<h2 class="msg_head">Delete</h2> -->
+<!-- 		<div class="msg_body"> -->
+<!-- 			<form method="post" action="/director/deletestudent" accept-charset="utf-8"> -->
+<%-- 				<input type="hidden" name="deleteid" value="${user.id }"/> --%>
+<!-- 				<input type="submit" value="Delete this student" onclick="return confirm('Do you really want to delete this student?')"/> -->
+<!-- 			</form> -->
+<!-- 		</div>		 -->
 		</div>
 		<jsp:include page="/WEB-INF/template/footer.jsp" />
 	</body>
