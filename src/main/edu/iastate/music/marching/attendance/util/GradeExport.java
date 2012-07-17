@@ -17,11 +17,12 @@ public class GradeExport {
 		PrintWriter writer = new PrintWriter(out);
 
 		// Header
-		writer.println("Email Id" + "\t" + "University ID" + "\t" + "Grade");
+		writer.println("Email" + "\t" + "UniversityID" + "\t" + "Grade");
 
 		for (User student : train.getUsersController().get(User.Type.Student)) {
+			
 			String line = "";
-			line += student.getPrimaryEmail();
+			line += student.getPrimaryEmail().getEmail();
 			line += "\t";
 			line += student.getUniversityID();
 			line += "\t";
