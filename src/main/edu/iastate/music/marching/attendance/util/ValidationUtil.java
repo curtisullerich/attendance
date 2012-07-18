@@ -45,7 +45,7 @@ public class ValidationUtil {
 	public static boolean validSecondaryEmail(Email email, DataTrain train) {
 
 		// Null or empty emails are okay for the secondary
-		if(email == null || email.getEmail() == null || email.getEmail() == "")
+		if(email == null || email.getEmail() == null || email.getEmail().equals(""))
 			return true;
 
 		return PATTERN_EMAIL.matcher(email.getEmail()).matches();
