@@ -54,9 +54,12 @@ public class AbsenceController extends AbstractController {
 			// well, stack overflow says this works :)
 			// this changes the type from Tardy to Absence if there's a tardy
 			// that's 30 or more minutes late. Per request from Mr. Staub.
-			if (absence.getDatetime().getTime() - toLink.getStart().getTime() >= 30 * 60 * 1000) {
-				absence.setType(Absence.Type.Absence);
-			}
+			// TODO this causes a lot of other bugs, so I highly suggest NOT
+			// supporting it -curtis
+			// if (absence.getDatetime().getTime() - toLink.getStart().getTime()
+			// >= 30 * 60 * 1000) {
+			// absence.setType(Absence.Type.Absence);
+			// }
 		}
 		return storeAbsence(absence, student);
 	}
@@ -129,7 +132,7 @@ public class AbsenceController extends AbstractController {
 				// if check IN time is after check OUT time,
 				// you're going to have a bad time (completely absent)
 				// Otherwise no conflict
-				if (!current.getDatetime().after(contester.getDatetime())) {
+				if (current.getDatetime().after(contester.getDatetime())) {
 					// Create a new absence
 					current.setType(Absence.Type.Absence);
 					// remove the old EarlyCheckOut
@@ -148,7 +151,7 @@ public class AbsenceController extends AbstractController {
 				// if check IN time is after check OUT time,
 				// you're going to have a bad time (completely absent)
 				// Otherwise no conflict
-				if (!contester.getDatetime().after(current.getDatetime())) {
+				if (contester.getDatetime().after(current.getDatetime())) {
 					// Create a new absence
 					current.setType(Absence.Type.Absence);
 					// remove the old Tardy
@@ -511,9 +514,9 @@ public class AbsenceController extends AbstractController {
 
 		Event linked = absence.getEvent();
 		if (linked != null && absence.getType() == Absence.Type.Tardy) {
-			if (absence.getDatetime().getTime() - linked.getStart().getTime() >= 30 * 60 * 1000) {
-				absence.setType(Absence.Type.Absence);
-			}
+//			if (absence.getDatetime().getTime() - linked.getStart().getTime() >= 30 * 60 * 1000) {
+//				absence.setType(Absence.Type.Absence);
+//			}
 		}
 
 		// Do some validation

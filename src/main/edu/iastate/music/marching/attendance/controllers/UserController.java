@@ -265,6 +265,7 @@ public class UserController extends AbstractController {
 							break;
 						case EarlyCheckOut:
 							// no penalty? TODO
+							count += 2;
 							break;
 						}
 						break;
@@ -278,6 +279,7 @@ public class UserController extends AbstractController {
 							break;
 						case EarlyCheckOut:
 							// no penalty? TODO
+							count += 1;
 							break;
 						}
 						break;

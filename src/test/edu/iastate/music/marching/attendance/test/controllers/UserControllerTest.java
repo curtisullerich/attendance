@@ -141,8 +141,6 @@ public class UserControllerTest extends AbstractTest {
 
 	}
 
-	private static final Date ABSOLUTE_DATE = new Date();
-
 	@Test
 	public void testGrade() {
 		ObjectDatastore datastore = getObjectDataStore();
@@ -164,42 +162,42 @@ public class UserControllerTest extends AbstractTest {
 		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
 
 		Calendar start = Calendar.getInstance();
-		start.setTime(ABSOLUTE_DATE);
+		start.set(2012, 7, 18, 16, 30);
 		Calendar end = Calendar.getInstance();
-		end.setTime(ABSOLUTE_DATE);
-		end.roll(Calendar.MINUTE, 50);
+		end.set(2012, 7, 18, 17, 20);
+
 		Event e1 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
 				end.getTime());
 		Absence a1 = ac.createOrUpdateAbsence(s1, e1);
 		uc.update(s1);
 		assertEquals(User.Grade.B, uc.get(s1.getId()).getGrade());
 
-		start.roll(Calendar.HOUR, 1);
-		end.roll(Calendar.HOUR, 1);
+		start.roll(Calendar.DATE, 1);
+		end.roll(Calendar.DATE, 1);
 		Event e2 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
 				end.getTime());
 		Absence a2 = ac.createOrUpdateAbsence(s1, e2);
 		uc.update(s1);
 		assertEquals(User.Grade.C, uc.get(s1.getId()).getGrade());
 
-		start.roll(Calendar.HOUR, 1);
-		end.roll(Calendar.HOUR, 1);
+		start.roll(Calendar.DATE, 1);
+		end.roll(Calendar.DATE, 1);
 		Event e3 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
 				end.getTime());
 		Absence a3 = ac.createOrUpdateAbsence(s1, e3);
 		uc.update(s1);
 		assertEquals(User.Grade.D, uc.get(s1.getId()).getGrade());
 
-		start.roll(Calendar.HOUR, 1);
-		end.roll(Calendar.HOUR, 1);
+		start.roll(Calendar.DATE, 1);
+		end.roll(Calendar.DATE, 1);
 		Event e4 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
 				end.getTime());
 		Absence a4 = ac.createOrUpdateAbsence(s1, e4);
 		uc.update(s1);
 		assertEquals(User.Grade.F, uc.get(s1.getId()).getGrade());
 
-		start.roll(Calendar.HOUR, 1);
-		end.roll(Calendar.HOUR, 1);
+		start.roll(Calendar.DATE, 1);
+		end.roll(Calendar.DATE, 1);
 		Event e5 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
 				end.getTime());
 		Absence a5 = ac.createOrUpdateAbsence(s1, e5);
@@ -228,34 +226,40 @@ public class UserControllerTest extends AbstractTest {
 		a2.setStatus(Absence.Status.Denied);
 		ac.updateAbsence(a2);
 		assertEquals(User.Grade.Bminus, uc.get(s1.getId()).getGrade());
-		
-		start.roll(Calendar.HOUR, 1);
-		end.roll(Calendar.HOUR, 1);
-		Calendar middle = (Calendar) start.clone();
-		middle.roll(Calendar.MINUTE, 10);
 
-		//creating an un-anchored tardy
-		Absence a6 = ac.createOrUpdateTardy(s1, middle.getTime());
+		start.roll(Calendar.DATE, 1);
+		end.roll(Calendar.DATE, 1);
+		Calendar tardyTime = (Calendar) start.clone();
+		tardyTime.roll(Calendar.MINUTE, 10);
+		Calendar outTime = (Calendar) start.clone();
+
+		// creating an un-anchored tardy
+		Absence a6 = ac.createOrUpdateTardy(s1, tardyTime.getTime());
 		ac.updateAbsence(a6);
 		assertEquals(User.Grade.Bminus, uc.get(s1.getId()).getGrade());
-		
-		middle.roll(Calendar.MINUTE,10);
-		Absence a7 = ac.createOrUpdateEarlyCheckout(s1, middle.getTime());
-		ac.updateAbsence(a7);
+
+		outTime.roll(Calendar.MINUTE, 20);
+		Absence a7 = ac.createOrUpdateEarlyCheckout(s1, outTime.getTime());
+		a7 = ac.updateAbsence(a7);
+		assertEquals(Absence.Type.EarlyCheckOut, a7.getType());
 		assertEquals(User.Grade.Bminus, uc.get(s1.getId()).getGrade());
-		
-		Event e6 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(), end.getTime());
+
+		Event e6 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
+				end.getTime());
 		a6.setEvent(e6);
-		ac.updateAbsence(a6);
+		a6= ac.updateAbsence(a6);
+		assertEquals(Absence.Type.Tardy,a6.getType());
 		assertEquals(User.Grade.Cplus, uc.get(s1.getId()).getGrade());
 
 		a7.setEvent(e6);
-		ac.updateAbsence(a7);
+		a7 = ac.updateAbsence(a7);
+		assertEquals(Absence.Type.EarlyCheckOut, a7.getType());
 		assertEquals(User.Grade.C, uc.get(s1.getId()).getGrade());
-		
+		//TODO test with earlycheckout and tardies
+		//TODO test that grade is fixed after approving things
+		//TODO test that grade is affected after linking, but not before
 	}
-	
-	
+
 	@Test
 	public void nonOverLappingAbsencesTest() {
 		ObjectDatastore datastore = getObjectDataStore();
@@ -274,10 +278,9 @@ public class UserControllerTest extends AbstractTest {
 		uc.update(s1);
 
 		Calendar start = Calendar.getInstance();
-		start.setTime(ABSOLUTE_DATE);
+		start.set(2012, 7, 18, 16, 30);
 		Calendar end = Calendar.getInstance();
-		end.setTime(ABSOLUTE_DATE);
-		end.roll(Calendar.MINUTE, 50);
+		end.set(2012, 7, 18, 17, 50);
 
 		Calendar tardy = (Calendar) start.clone();
 		Calendar early = (Calendar) start.clone();
@@ -285,23 +288,24 @@ public class UserControllerTest extends AbstractTest {
 		tardy.roll(Calendar.MINUTE, 10);
 		early.roll(Calendar.MINUTE, 30);
 
-		//creating an un-anchored tardy
+		// creating an un-anchored tardy
 		Absence a6 = ac.createOrUpdateTardy(s1, tardy.getTime());
 		ac.updateAbsence(a6);
-		
+
 		Absence a7 = ac.createOrUpdateEarlyCheckout(s1, early.getTime());
 		ac.updateAbsence(a7);
-		
-		Event e6 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(), end.getTime());
+
+		Event e6 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
+				end.getTime());
 		a6.setEvent(e6);
 		a6 = ac.updateAbsence(a6);
-		assertEquals(a6.getType(), Absence.Type.Tardy);
+		assertEquals(Absence.Type.Tardy, a6.getType());
 
 		a7.setEvent(e6);
 		a7 = ac.updateAbsence(a7);
-		assertEquals(a7.getType(), Absence.Type.EarlyCheckOut);
+		assertEquals(Absence.Type.EarlyCheckOut, a7.getType());
 	}
-	
+
 	@Test
 	public void overLappingAbsencesTest() {
 		ObjectDatastore datastore = getObjectDataStore();
@@ -320,32 +324,34 @@ public class UserControllerTest extends AbstractTest {
 		uc.update(s1);
 
 		Calendar start = Calendar.getInstance();
-		start.setTime(ABSOLUTE_DATE);
+		start.set(2012, 7, 18, 16, 30);
 		Calendar end = Calendar.getInstance();
-		end.setTime(ABSOLUTE_DATE);
-		end.roll(Calendar.MINUTE, 50);
+		end.set(2012, 7, 18, 17, 50);
 
 		Calendar tardy = (Calendar) start.clone();
 		Calendar early = (Calendar) start.clone();
 
-		tardy.roll(Calendar.MINUTE, 30);
+		// so the check IN is AFTER the check OUT (shouldn't happen in real
+		// life)
+		tardy.roll(Calendar.MINUTE, 20);
 		early.roll(Calendar.MINUTE, 10);
 
-		//creating an un-anchored tardy
+		// creating an un-anchored tardy
 		Absence a6 = ac.createOrUpdateTardy(s1, tardy.getTime());
 		ac.updateAbsence(a6);
-		
+
 		Absence a7 = ac.createOrUpdateEarlyCheckout(s1, early.getTime());
 		ac.updateAbsence(a7);
-		
-		Event e6 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(), end.getTime());
+
+		Event e6 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
+				end.getTime());
 		a6.setEvent(e6);
 		a6 = ac.updateAbsence(a6);
-		assertEquals(a6.getType(), Absence.Type.Tardy);
+		assertEquals(Absence.Type.Tardy, a6.getType());
 
 		a7.setEvent(e6);
 		a7 = ac.updateAbsence(a7);
-		assertEquals(a7.getType(), Absence.Type.Absence);
+		assertEquals(Absence.Type.Absence, a7.getType());
 	}
 
 }
