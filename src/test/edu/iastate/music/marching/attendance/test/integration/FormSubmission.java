@@ -14,6 +14,7 @@ import edu.iastate.music.marching.attendance.model.Event;
 import edu.iastate.music.marching.attendance.model.Form;
 import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.test.AbstractTest;
+import edu.iastate.music.marching.attendance.test.util.Users;
 
 public class FormSubmission extends AbstractTest {
 
@@ -271,16 +272,16 @@ public class FormSubmission extends AbstractTest {
 	private void createUsersHelper() {
 		UserController uc = DataTrain.getAndStartTrain().getUsersController();
 
-		student1 = createStudent(uc, "student1", 55055050, "First", "Last", 1,
+		student1 = Users.createStudent(uc, "student1", 55055050, "First", "Last", 1,
 				"major", User.Section.AltoSax);
 
-		student2 = createStudent(uc, "student2", 55055052, "First", "Last", 2,
+		student2 = Users.createStudent(uc, "student2", 55055052, "First", "Last", 2,
 				"major", User.Section.AltoSax);
 
-		student3 = createStudent(uc, "student3", 55055053, "First", "Last", 3,
+		student3 = Users.createStudent(uc, "student3", 55055053, "First", "Last", 3,
 				"major", User.Section.AltoSax);
 
-		ta = createTA(uc, "ta", 55050050, "Fisrt", "Last", 4, "major",
+		ta = Users.createTA(uc, "ta", 55050050, "Fisrt", "Last", 4, "major",
 				User.Section.AltoSax);
 	}
 

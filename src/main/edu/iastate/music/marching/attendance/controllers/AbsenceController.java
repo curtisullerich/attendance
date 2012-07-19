@@ -609,6 +609,10 @@ public class AbsenceController extends AbstractController {
 		return find.returnCount().now();
 	}
 
+	public Integer getCount() {
+		return this.train.find(Absence.class).returnCount().now();
+	}
+
 	// TODO doesn't work
 	public List<Absence> getUnanchored() {
 		return this.train.find(Absence.class)

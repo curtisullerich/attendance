@@ -1,4 +1,4 @@
-package edu.iastate.music.marching.attendance.test.controllers;
+package edu.iastate.music.marching.attendance.test.unit.controllers;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -12,6 +12,7 @@ import edu.iastate.music.marching.attendance.controllers.UserController;
 import edu.iastate.music.marching.attendance.model.MessageThread;
 import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.test.AbstractTest;
+import edu.iastate.music.marching.attendance.test.util.Users;
 
 public class MessagingControllerTest extends AbstractTest {
 
@@ -22,8 +23,8 @@ public class MessagingControllerTest extends AbstractTest {
 
 		// Setup two users
 		UserController uc = train.getUsersController();
-		User director = createDirector(uc, "director", 123, "I am", "The Director");
-		User student = createStudent(uc, "studenttt", 121, "First", "last", 2, "major", User.Section.AltoSax);
+		User director = Users.createDirector(uc, "director", 123, "I am", "The Director");
+		User student = Users.createStudent(uc, "studenttt", 121, "First", "last", 2, "major", User.Section.AltoSax);
 
 		MessageThread mts = train.getMessagingController()
 				.createMessageThread();
@@ -65,8 +66,8 @@ public class MessagingControllerTest extends AbstractTest {
 
 		// Setup two users
 		UserController uc = train.getUsersController();
-		User director = createDirector(uc, "director", 123, "I am", "The Director");
-		User student = createStudent(uc, "studenttt", 121, "First", "last", 2, "major", User.Section.AltoSax);
+		User director = Users.createDirector(uc, "director", 123, "I am", "The Director");
+		User student = Users.createStudent(uc, "studenttt", 121, "First", "last", 2, "major", User.Section.AltoSax);
 
 		MessageThread mts = train.getMessagingController()
 				.createMessageThread();
@@ -104,8 +105,8 @@ public class MessagingControllerTest extends AbstractTest {
 
 		// Setup two users
 		UserController uc = train.getUsersController();
-		User director = createDirector(uc, "director", 123, "I am", "The Director");
-		User student = createStudent(uc, "studenttt", 121, "First", "last", 2, "major", User.Section.AltoSax);
+		User director = Users.createDirector(uc, "director", 123, "I am", "The Director");
+		User student = Users.createStudent(uc, "studenttt", 121, "First", "last", 2, "major", User.Section.AltoSax);
 
 		MessageThread mt = train.getMessagingController().createMessageThread();
 
@@ -115,8 +116,7 @@ public class MessagingControllerTest extends AbstractTest {
 		train.getMessagingController().addMessage(mt, student, "End");
 
 		// Load from datastore and compare
-		MessageThread result = getObjectDataStore().load(MessageThread.class,
-				mt.getId());
+		MessageThread result = train.getMessagingController().get(mt.getId());
 
 		// Check returned object
 		assertNotNull(result);
@@ -135,8 +135,8 @@ public class MessagingControllerTest extends AbstractTest {
 
 		// Setup two users
 		UserController uc = train.getUsersController();
-		User director = createDirector(uc, "director", 123, "I am", "The Director");
-		User student = createStudent(uc, "studenttt", 121, "First", "last", 2, "major", User.Section.AltoSax);
+		User director = Users.createDirector(uc, "director", 123, "I am", "The Director");
+		User student = Users.createStudent(uc, "studenttt", 121, "First", "last", 2, "major", User.Section.AltoSax);
 
 		MessageThread mt = train.getMessagingController().createMessageThread();
 
@@ -145,10 +145,8 @@ public class MessagingControllerTest extends AbstractTest {
 		train.getMessagingController().addMessage(mt, student, "Middle");
 		train.getMessagingController().addMessage(mt, student, "End");
 
-		// Load from datastore and compare
-		MessageThread result = getObjectDataStore().load(MessageThread.class,
-				mt.getId());
-		result = getDataTrain().getMessagingController().get(mt.getId());
+		// Load again and compare
+		MessageThread result = train.getMessagingController().get(mt.getId());
 
 		// Check returned object
 		assertNotNull(result);

@@ -1,4 +1,4 @@
-package edu.iastate.music.marching.attendance.test.controllers;
+package edu.iastate.music.marching.attendance.test.unit.controllers;
 
 import static org.junit.Assert.fail;
 

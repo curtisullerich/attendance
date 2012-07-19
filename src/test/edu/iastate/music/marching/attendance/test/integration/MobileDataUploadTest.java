@@ -9,7 +9,6 @@ import static org.mockito.Mockito.when;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Calendar;
 import java.util.List;
 
@@ -22,17 +21,17 @@ import javax.servlet.http.HttpSession;
 
 import org.junit.Test;
 
-import com.google.code.twig.ObjectDatastore;
-
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.UserController;
 import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.Event;
-import edu.iastate.music.marching.attendance.model.ModelFactory;
 import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.servlets.MobileAppDataServlet;
 import edu.iastate.music.marching.attendance.test.AbstractTest;
 import edu.iastate.music.marching.attendance.test.TestConfig;
+import edu.iastate.music.marching.attendance.test.mock.MockServletInputStream;
+import edu.iastate.music.marching.attendance.test.util.ServletMock;
+import edu.iastate.music.marching.attendance.test.util.Users;
 
 public class MobileDataUploadTest extends AbstractTest {
 
@@ -52,12 +51,12 @@ public class MobileDataUploadTest extends AbstractTest {
 
 		DataTrain train = DataTrain.getAndStartTrain();
 
-		User ta = createTA(train.getUsersController(), "ta", 3, "first",
+		User ta = Users.createTA(train.getUsersController(), "ta", 3, "first",
 				"last", 2, "major", null);
-		createStudent(train.getUsersController(), "s", 2, "first", "last", 1,
-				"major", null);
-		createStudent(train.getUsersController(), "zf", 1, "first", "last", 1,
-				"major", null);
+		Users.createStudent(train.getUsersController(), "s", 2, "first",
+				"last", 1, "major", null);
+		Users.createStudent(train.getUsersController(), "zf", 1, "first",
+				"last", 1, "major", null);
 
 		train.getMobileDataController().pushMobileData(SIMPLE_ABSENCE_TESTDATA,
 				ta);
@@ -72,10 +71,10 @@ public class MobileDataUploadTest extends AbstractTest {
 
 		DataTrain train = getDataTrain();
 
-		createStudent(train.getUsersController(), "s", 2, "first", "last", 1,
-				"major", null);
-		createStudent(train.getUsersController(), "zf", 1, "first", "last", 1,
-				"major", null);
+		Users.createStudent(train.getUsersController(), "s", 2, "first",
+				"last", 1, "major", null);
+		Users.createStudent(train.getUsersController(), "zf", 1, "first",
+				"last", 1, "major", null);
 
 		HttpServletRequest req = mock(HttpServletRequest.class);
 		HttpServletResponse resp = mock(HttpServletResponse.class);
@@ -87,7 +86,7 @@ public class MobileDataUploadTest extends AbstractTest {
 		ServletOutputStream os = mock(ServletOutputStream.class);
 		when(resp.getOutputStream()).thenReturn(os);
 
-		doPost(MobileAppDataServlet.class, req, resp);
+		ServletMock.doPost(MobileAppDataServlet.class, req, resp);
 
 		verify(os)
 				.print("{\"error\":\"success\",\"message\":\"TODO: return string about what was uploaded here\"}");
@@ -110,7 +109,7 @@ public class MobileDataUploadTest extends AbstractTest {
 		ServletOutputStream os = mock(ServletOutputStream.class);
 		when(resp.getOutputStream()).thenReturn(os);
 
-		doPost(MobileAppDataServlet.class, req, resp);
+		ServletMock.doPost(MobileAppDataServlet.class, req, resp);
 
 		verify(os)
 				.print("{\"error\":\"exception\",\"message\":\"Tried to create absence for null user\"}");
@@ -128,18 +127,14 @@ public class MobileDataUploadTest extends AbstractTest {
 
 	private void simpleAbsenceInsertionVerification() {
 		Event event;
-
-		ObjectDatastore datastore = getObjectDataStore();
+		DataTrain train = getDataTrain();
 
 		// Verify insertion lengths
-		assertEquals(1, datastore.find().type(Event.class).returnCount().now()
-				.intValue());
-		assertEquals(2, datastore.find().type(Absence.class).returnCount()
-				.now().intValue());
+		assertEquals(1, train.getEventController().getCount().intValue());
+		assertEquals(2, train.getAbsenceController().getCount().intValue());
 
 		// Verify event
-		List<Event> events = datastore.find().type(Event.class).returnAll()
-				.now();
+		List<Event> events = train.getEventController().getAll();
 		assertEquals(1, events.size());
 
 		event = events.get(0);
@@ -156,8 +151,7 @@ public class MobileDataUploadTest extends AbstractTest {
 		assertEquals(Event.Type.Rehearsal, event.getType());
 
 		// Verify absences
-		List<Absence> absences = datastore.find().type(Absence.class)
-				.returnAll().now();
+		List<Absence> absences = train.getAbsenceController().getAll();
 		assertEquals(2, absences.size());
 
 		boolean foundS = false;
@@ -182,30 +176,26 @@ public class MobileDataUploadTest extends AbstractTest {
 
 	@Test
 	public void simpleTardyInsertionThroughController() {
-		ObjectDatastore datastore = getObjectDataStore();
-
-		DataTrain train = DataTrain.getAndStartTrain();
+		DataTrain train = getDataTrain();
 
 		UserController uc = train.getUsersController();
 
-		createStudent(uc, "s", 1, "test1", "tester", 0, null,
+		Users.createStudent(uc, "s", 1, "test1", "tester", 0, null,
 				User.Section.AltoSax);
-		createStudent(uc, "zf", 2, "test1", "tester", 0, null,
+		Users.createStudent(uc, "zf", 2, "test1", "tester", 0, null,
 				User.Section.AltoSax);
-		createStudent(uc, "b", 3, "test1", "tester", 0, null,
+		Users.createStudent(uc, "b", 3, "test1", "tester", 0, null,
 				User.Section.AltoSax);
-		User ta = createTA(uc, "ta", 4, "test1", "tester", 0, null,
+		User ta = Users.createTA(uc, "ta", 4, "test1", "tester", 0, null,
 				User.Section.AltoSax);
 
 		train.getMobileDataController().pushMobileData(SIMPLE_TARDY_TESTDATA,
 				ta);
 
 		// Verify insertion lengths
-		assertEquals(0, datastore.find().type(Event.class).returnCount().now()
-				.intValue());
+		assertEquals(0, train.getEventController().getCount().intValue());
 
-		assertEquals(6, datastore.find().type(Absence.class).returnCount()
-				.now().intValue());
+		assertEquals(6, train.getAbsenceController().getCount().intValue());
 
 		// TODO: Check actual data returned
 	}
@@ -214,8 +204,8 @@ public class MobileDataUploadTest extends AbstractTest {
 		HttpSession session = mock(HttpSession.class);
 		when(session.getAttribute("authenticated_user"))
 				.thenReturn(
-						createTA(getDataTrain().getUsersController(), "ta",
-								121, "I am", "A TA", 10, "Being Silly",
+						Users.createTA(getDataTrain().getUsersController(),
+								"ta", 121, "I am", "A TA", 10, "Being Silly",
 								User.Section.AltoSax));
 		when(req.getSession()).thenReturn(session);
 		return req;
@@ -228,20 +218,4 @@ public class MobileDataUploadTest extends AbstractTest {
 		ServletInputStream mockStream = new MockServletInputStream(realStream);
 		when(req.getInputStream()).thenReturn(mockStream);
 	}
-
-	private class MockServletInputStream extends ServletInputStream {
-
-		private InputStream mocked;
-
-		public MockServletInputStream(InputStream from) {
-			mocked = from;
-		}
-
-		@Override
-		public int read() throws IOException {
-			return mocked.read();
-		}
-
-	}
-
 }

@@ -1,4 +1,4 @@
-package edu.iastate.music.marching.attendance.test.controllers;
+package edu.iastate.music.marching.attendance.test.unit.controllers;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -20,6 +20,7 @@ import edu.iastate.music.marching.attendance.model.Event;
 import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.test.AbstractTest;
 import edu.iastate.music.marching.attendance.test.TestConfig;
+import edu.iastate.music.marching.attendance.test.util.Users;
 
 public class UserControllerTest extends AbstractTest {
 
@@ -31,7 +32,7 @@ public class UserControllerTest extends AbstractTest {
 
 		UserController uc = train.getUsersController();
 
-		createDirector(uc, "director", 123, "I am", "The Director");
+		Users.createDirector(uc, "director", 123, "I am", "The Director");
 
 		// Verify
 		List<User> users = uc.getAll();
@@ -58,7 +59,7 @@ public class UserControllerTest extends AbstractTest {
 
 		UserController uc = train.getUsersController();
 
-		createStudent(uc, "studenttt", 121, "I am", "A Student", 10,
+		Users.createStudent(uc, "studenttt", 121, "I am", "A Student", 10,
 				"Being Silly", User.Section.AltoSax);
 
 		// Verify
@@ -85,35 +86,23 @@ public class UserControllerTest extends AbstractTest {
 	@Test
 	public void averageGrade() {
 
-		ObjectDatastore datastore = getObjectDataStore();
-
 		DataTrain train = getDataTrain();
 
 		UserController uc = train.getUsersController();
 
-		User s1 = createStudent(uc, "student1", 121, "First", "last", 2,
+		User s1 = Users.createStudent(uc, "student1", 121, "First", "last", 2,
 				"major", User.Section.AltoSax);
-		User s2 = createStudent(uc, "student2", 122, "First", "Last", 2,
+		User s2 = Users.createStudent(uc, "student2", 122, "First", "Last", 2,
 				"major", User.Section.AltoSax);
-		User s3 = createStudent(uc, "student3", 123, "First", "Last", 2,
+		User s3 = Users.createStudent(uc, "student3", 123, "First", "Last", 2,
 				"major", User.Section.AltoSax);
-		User s4 = createStudent(uc, "stiner", 34234, "ars", "l", 3, "astart",
+		User s4 = Users.createStudent(uc, "stiner", 34234, "ars", "l", 3, "astart",
 				User.Section.AltoSax);
-
-		// To use separate data store, users need to be associated with it
-		datastore.associate(s1);
-		datastore.associate(s2);
-		datastore.associate(s3);
-		datastore.associate(s4);
 
 		s1.setGrade(User.Grade.A);
 		s2.setGrade(User.Grade.A);
 		s3.setGrade(User.Grade.A);
 		s4.setGrade(User.Grade.A);
-		datastore.update(s1);
-		datastore.update(s2);
-		datastore.update(s3);
-		datastore.update(s4);
 
 		assertEquals(User.Grade.A, uc.averageGrade());
 
@@ -121,10 +110,6 @@ public class UserControllerTest extends AbstractTest {
 		s2.setGrade(User.Grade.B);
 		s3.setGrade(User.Grade.C);
 		s4.setGrade(User.Grade.D);
-		datastore.update(s1);
-		datastore.update(s2);
-		datastore.update(s3);
-		datastore.update(s4);
 
 		assertEquals(User.Grade.Bminus, uc.averageGrade());
 
@@ -132,10 +117,6 @@ public class UserControllerTest extends AbstractTest {
 		s2.setGrade(User.Grade.Aminus);
 		s3.setGrade(User.Grade.A);
 		s4.setGrade(User.Grade.Aminus);
-		datastore.update(s1);
-		datastore.update(s2);
-		datastore.update(s3);
-		datastore.update(s4);
 
 		assertEquals(User.Grade.A, uc.averageGrade());
 
@@ -145,20 +126,14 @@ public class UserControllerTest extends AbstractTest {
 
 	@Test
 	public void testGrade() {
-		ObjectDatastore datastore = getObjectDataStore();
-
 		DataTrain train = getDataTrain();
 
 		UserController uc = train.getUsersController();
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
 
-		User s1 = createStudent(uc, "student1", 121, "John", "Cox", 2, "major",
+		User s1 = Users.createStudent(uc, "student1", 121, "John", "Cox", 2, "major",
 				User.Section.AltoSax);
-
-		// To use separate data store, users need to be associated with it
-		datastore.associate(s1);
-		uc.update(s1);
 
 		// should be A initially
 		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
@@ -258,20 +233,14 @@ public class UserControllerTest extends AbstractTest {
 	
 	@Test
 	public void nonOverLappingAbsencesTest() {
-		ObjectDatastore datastore = getObjectDataStore();
-
 		DataTrain train = getDataTrain();
 
 		UserController uc = train.getUsersController();
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
 
-		User s1 = createStudent(uc, "student1", 121, "John", "Cox", 2, "major",
+		User s1 = Users.createStudent(uc, "student1", 121, "John", "Cox", 2, "major",
 				User.Section.AltoSax);
-
-		// To use separate data store, users need to be associated with it
-		datastore.associate(s1);
-		uc.update(s1);
 
 		Calendar start = Calendar.getInstance();
 		start.setTime(ABSOLUTE_DATE);
@@ -304,20 +273,14 @@ public class UserControllerTest extends AbstractTest {
 	
 	@Test
 	public void overLappingAbsencesTest() {
-		ObjectDatastore datastore = getObjectDataStore();
-
 		DataTrain train = getDataTrain();
 
 		UserController uc = train.getUsersController();
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
 
-		User s1 = createStudent(uc, "student1", 121, "John", "Cox", 2, "major",
+		User s1 = Users.createStudent(uc, "student1", 121, "John", "Cox", 2, "major",
 				User.Section.AltoSax);
-
-		// To use separate data store, users need to be associated with it
-		datastore.associate(s1);
-		uc.update(s1);
 
 		Calendar start = Calendar.getInstance();
 		start.setTime(ABSOLUTE_DATE);
