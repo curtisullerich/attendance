@@ -19,6 +19,8 @@ import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.servlets.DirectorServlet;
 import edu.iastate.music.marching.attendance.servlets.MobileAppDataServlet;
 import edu.iastate.music.marching.attendance.test.AbstractTest;
+import edu.iastate.music.marching.attendance.test.util.ServletMock;
+import edu.iastate.music.marching.attendance.test.util.Users;
 
 public class ServletAccess extends AbstractTest {
 
@@ -36,7 +38,7 @@ public class ServletAccess extends AbstractTest {
 		
 		when(resp.getOutputStream()).thenReturn(sos);
 
-		doGet(MobileAppDataServlet.class, req, resp);
+		ServletMock.doGet(MobileAppDataServlet.class, req, resp);
 		
 		// Verify data is written to the servlet output stream
 		verify(sos).print("{\"error\":\"success\",\"data\":\"\"}");
@@ -56,7 +58,7 @@ public class ServletAccess extends AbstractTest {
 		
 		when(resp.getOutputStream()).thenReturn(sos);
 
-		doGet(MobileAppDataServlet.class, req, resp);
+		ServletMock.doGet(MobileAppDataServlet.class, req, resp);
 	}
 
 	@Test
@@ -73,7 +75,7 @@ public class ServletAccess extends AbstractTest {
 		
 		when(resp.getOutputStream()).thenReturn(sos);
 
-		doGet(MobileAppDataServlet.class, req, resp);
+		ServletMock.doGet(MobileAppDataServlet.class, req, resp);
 	}
 
 	@Test
@@ -84,7 +86,7 @@ public class ServletAccess extends AbstractTest {
 
 		setStudentSession(req);
 
-		doGet(DirectorServlet.class, req, resp);
+		ServletMock.doGet(DirectorServlet.class, req, resp);
 
 		verifyUnauthorizedRedirect(req, resp, "director/index");
 	}
@@ -97,7 +99,7 @@ public class ServletAccess extends AbstractTest {
 
 		setTASession(req);
 
-		doGet(DirectorServlet.class, req, resp);
+		ServletMock.doGet(DirectorServlet.class, req, resp);
 
 		verifyUnauthorizedRedirect(req, resp, "director/index");
 	}
@@ -110,7 +112,7 @@ public class ServletAccess extends AbstractTest {
 
 		setTASession(req);
 
-		doGet(DirectorServlet.class, req, resp);
+		ServletMock.doGet(DirectorServlet.class, req, resp);
 
 		verifyUnauthorizedRedirect(req, resp, "director/nonexistant");
 	}
@@ -128,7 +130,7 @@ public class ServletAccess extends AbstractTest {
 		RequestDispatcher dispatcher = setupForwardTo(req, resp,
 				"/WEB-INF/director/index.jsp");
 
-		doGet(DirectorServlet.class, req, resp);
+		ServletMock.doGet(DirectorServlet.class, req, resp);
 
 		verifyForwardTo(dispatcher, req, resp);
 	}
@@ -145,7 +147,7 @@ public class ServletAccess extends AbstractTest {
 
 		RequestDispatcher dispatcher = setupErrorRedirect(req, resp, 404);
 
-		doGet(DirectorServlet.class, req, resp);
+		ServletMock.doGet(DirectorServlet.class, req, resp);
 
 		verifyErrorRedirect(dispatcher, req, resp, 404);
 	}
@@ -195,7 +197,7 @@ public class ServletAccess extends AbstractTest {
 	private HttpServletRequest setStudentSession(HttpServletRequest req) {
 		HttpSession session = mock(HttpSession.class);
 		when(session.getAttribute("authenticated_user")).thenReturn(
-				createStudent(getDataTrain().getUsersController(), "studenttt",
+				Users.createStudent(getDataTrain().getUsersController(), "studenttt",
 						121, "I am", "A Student", 10, "Being Silly",
 						User.Section.AltoSax));
 		when(req.getSession()).thenReturn(session);
@@ -205,7 +207,7 @@ public class ServletAccess extends AbstractTest {
 	private HttpServletRequest setDirectorSession(HttpServletRequest req) {
 		HttpSession session = mock(HttpSession.class);
 		when(session.getAttribute("authenticated_user")).thenReturn(
-				createDirector(getDataTrain().getUsersController(), "director",
+				Users.createDirector(getDataTrain().getUsersController(), "director",
 						123, "I am", "The Director"));
 		when(req.getSession()).thenReturn(session);
 		return req;
@@ -214,7 +216,7 @@ public class ServletAccess extends AbstractTest {
 	private HttpServletRequest setTASession(HttpServletRequest req) {
 		HttpSession session = mock(HttpSession.class);
 		when(session.getAttribute("authenticated_user")).thenReturn(
-				createTA(getDataTrain().getUsersController(), "ta", 121,
+				Users.createTA(getDataTrain().getUsersController(), "ta", 121,
 						"I am", "A TA", 10, "Being Silly",
 						User.Section.AltoSax));
 		when(req.getSession()).thenReturn(session);

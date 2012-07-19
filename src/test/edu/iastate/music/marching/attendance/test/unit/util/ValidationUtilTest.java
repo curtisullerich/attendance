@@ -1,4 +1,4 @@
-package edu.iastate.music.marching.attendance.test.util;
+package edu.iastate.music.marching.attendance.test.unit.util;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

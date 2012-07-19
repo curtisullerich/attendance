@@ -1,4 +1,4 @@
-package edu.iastate.music.marching.attendance.test.controllers;
+package edu.iastate.music.marching.attendance.test.unit.controllers;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -17,6 +17,7 @@ import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.Event;
 import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.test.AbstractTest;
+import edu.iastate.music.marching.attendance.test.util.Users;
 
 public class AbsenceControllerTest extends AbstractTest {
 
@@ -26,7 +27,7 @@ public class AbsenceControllerTest extends AbstractTest {
 		DataTrain train = getDataTrain();
 		
 		UserController uc = train.getUsersController();
-		User student = createStudent(uc, "studenttt", 121, "First", "last", 2, "major", User.Section.AltoSax);
+		User student = Users.createStudent(uc, "studenttt", 121, "First", "last", 2, "major", User.Section.AltoSax);
 		
 		Date eventStart = null;
 		Date eventEnd = null;
@@ -56,7 +57,7 @@ public class AbsenceControllerTest extends AbstractTest {
 		DataTrain train = getDataTrain();
 		
 		UserController uc = train.getUsersController();
-		User student = createStudent(uc, "studenttt", 121, "First", "last", 2, "major", User.Section.AltoSax);
+		User student = Users.createStudent(uc, "studenttt", 121, "First", "last", 2, "major", User.Section.AltoSax);
 		
 		Date eventStart = null;
 		Date eventEnd = null;
@@ -92,7 +93,7 @@ public class AbsenceControllerTest extends AbstractTest {
 		DataTrain train = getDataTrain();
 		
 		UserController uc = train.getUsersController();
-		User student = createStudent(uc, "studenttt", 121, "First", "last", 2, "major", User.Section.AltoSax);
+		User student = Users.createStudent(uc, "studenttt", 121, "First", "last", 2, "major", User.Section.AltoSax);
 		
 		Date eventStart = null;
 		Date eventEnd = null;
