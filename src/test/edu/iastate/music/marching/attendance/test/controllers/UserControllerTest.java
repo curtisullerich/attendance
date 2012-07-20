@@ -172,32 +172,32 @@ public class UserControllerTest extends AbstractTest {
 		uc.update(s1);
 		assertEquals(User.Grade.B, uc.get(s1.getId()).getGrade());
 
-		start.roll(Calendar.DATE, 1);
-		end.roll(Calendar.DATE, 1);
+		start.add(Calendar.DATE, 1);
+		end.add(Calendar.DATE, 1);
 		Event e2 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
 				end.getTime());
 		Absence a2 = ac.createOrUpdateAbsence(s1, e2);
 		uc.update(s1);
 		assertEquals(User.Grade.C, uc.get(s1.getId()).getGrade());
 
-		start.roll(Calendar.DATE, 1);
-		end.roll(Calendar.DATE, 1);
+		start.add(Calendar.DATE, 1);
+		end.add(Calendar.DATE, 1);
 		Event e3 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
 				end.getTime());
 		Absence a3 = ac.createOrUpdateAbsence(s1, e3);
 		uc.update(s1);
 		assertEquals(User.Grade.D, uc.get(s1.getId()).getGrade());
 
-		start.roll(Calendar.DATE, 1);
-		end.roll(Calendar.DATE, 1);
+		start.add(Calendar.DATE, 1);
+		end.add(Calendar.DATE, 1);
 		Event e4 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
 				end.getTime());
 		Absence a4 = ac.createOrUpdateAbsence(s1, e4);
 		uc.update(s1);
 		assertEquals(User.Grade.F, uc.get(s1.getId()).getGrade());
 
-		start.roll(Calendar.DATE, 1);
-		end.roll(Calendar.DATE, 1);
+		start.add(Calendar.DATE, 1);
+		end.add(Calendar.DATE, 1);
 		Event e5 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
 				end.getTime());
 		Absence a5 = ac.createOrUpdateAbsence(s1, e5);
@@ -227,10 +227,10 @@ public class UserControllerTest extends AbstractTest {
 		ac.updateAbsence(a2);
 		assertEquals(User.Grade.Bminus, uc.get(s1.getId()).getGrade());
 
-		start.roll(Calendar.DATE, 1);
-		end.roll(Calendar.DATE, 1);
+		start.add(Calendar.DATE, 1);
+		end.add(Calendar.DATE, 1);
 		Calendar tardyTime = (Calendar) start.clone();
-		tardyTime.roll(Calendar.MINUTE, 10);
+		tardyTime.add(Calendar.MINUTE, 10);
 		Calendar outTime = (Calendar) start.clone();
 
 		// creating an un-anchored tardy
@@ -238,7 +238,7 @@ public class UserControllerTest extends AbstractTest {
 		ac.updateAbsence(a6);
 		assertEquals(User.Grade.Bminus, uc.get(s1.getId()).getGrade());
 
-		outTime.roll(Calendar.MINUTE, 20);
+		outTime.add(Calendar.MINUTE, 20);
 		Absence a7 = ac.createOrUpdateEarlyCheckout(s1, outTime.getTime());
 		a7 = ac.updateAbsence(a7);
 		assertEquals(Absence.Type.EarlyCheckOut, a7.getType());
@@ -247,17 +247,17 @@ public class UserControllerTest extends AbstractTest {
 		Event e6 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
 				end.getTime());
 		a6.setEvent(e6);
-		a6= ac.updateAbsence(a6);
-		assertEquals(Absence.Type.Tardy,a6.getType());
+		a6 = ac.updateAbsence(a6);
+		assertEquals(Absence.Type.Tardy, a6.getType());
 		assertEquals(User.Grade.Cplus, uc.get(s1.getId()).getGrade());
 
 		a7.setEvent(e6);
 		a7 = ac.updateAbsence(a7);
 		assertEquals(Absence.Type.EarlyCheckOut, a7.getType());
 		assertEquals(User.Grade.C, uc.get(s1.getId()).getGrade());
-		//TODO test with earlycheckout and tardies
-		//TODO test that grade is fixed after approving things
-		//TODO test that grade is affected after linking, but not before
+		// TODO test with earlycheckout and tardies
+		// TODO test that grade is fixed after approving things
+		// TODO test that grade is affected after linking, but not before
 	}
 
 	@Test
@@ -284,10 +284,14 @@ public class UserControllerTest extends AbstractTest {
 
 		Calendar tardy = (Calendar) start.clone();
 		Calendar early = (Calendar) start.clone();
-
-		tardy.roll(Calendar.MINUTE, 10);
-		early.roll(Calendar.MINUTE, 30);
-
+		System.out.println("tardy: " + tardy.getTime());
+		System.out.println("early: " + early.getTime());
+		tardy.add(Calendar.MINUTE, 10);
+		System.out.println("tardy: " + tardy.getTime());
+		System.out.println("early: " + early.getTime());
+		early.add(Calendar.MINUTE, 30);
+		System.out.println("tardy: " + tardy.getTime());
+		System.out.println("early: " + early.getTime());
 		// creating an un-anchored tardy
 		Absence a6 = ac.createOrUpdateTardy(s1, tardy.getTime());
 		ac.updateAbsence(a6);
@@ -333,8 +337,8 @@ public class UserControllerTest extends AbstractTest {
 
 		// so the check IN is AFTER the check OUT (shouldn't happen in real
 		// life)
-		tardy.roll(Calendar.MINUTE, 20);
-		early.roll(Calendar.MINUTE, 10);
+		tardy.add(Calendar.MINUTE, 20);
+		early.add(Calendar.MINUTE, 10);
 
 		// creating an un-anchored tardy
 		Absence a6 = ac.createOrUpdateTardy(s1, tardy.getTime());
