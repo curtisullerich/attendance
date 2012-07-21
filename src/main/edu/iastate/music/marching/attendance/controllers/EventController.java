@@ -5,6 +5,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.code.twig.FindCommand.RootFindCommand;
@@ -17,6 +19,9 @@ import edu.iastate.music.marching.attendance.model.ModelFactory;
 public class EventController extends AbstractController {
 
 	DataTrain train;
+	
+	private static final Logger log = Logger
+			.getLogger(EventController.class.getName());
 
 	public EventController(DataTrain dataTrain) {
 		this.train = dataTrain;
@@ -30,15 +35,36 @@ public class EventController extends AbstractController {
 	// }
 
 	public Event createOrUpdate(Type type, Date start, Date end) {
-		Event event = ModelFactory.newEvent(type, start, end);
+		Event event = null;
 
-		// Check that start and end are on the same day
-		// TODO
+		List<Event> similarEvents = get(start, end);
 
+		for (Event e : similarEvents) {
+			if (e.getType().equals(type)) {
+				if (event != null) {
+					// Already found an event for this time and type
+					log.log(Level.WARNING, "Duplicate " + e.getType()
+							+ "events found for time period " + start + " to "
+							+ end);
+				}
+				event = e;
+			}
+		}
+		
+		if(event != null)
+		{
+			return event;
+		}
+		
+		// Safe to create a new event
+		event = ModelFactory.newEvent(type, start, end);
+
+		// TODO https://github.com/curtisullerich/attendance/issues/63
+		// Needs to be changed for events that span multiple days
 		event.setDate(datetimeToJustDate(start));
 
-		ObjectDatastore od = this.train.getDataStore();
-		od.storeOrUpdate(event);
+		this.train.getDataStore().store(event);
+		
 		return event;
 	}
 
