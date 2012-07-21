@@ -9,15 +9,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.google.appengine.api.datastore.QueryResultIterator;
-import com.google.code.twig.ObjectDatastore;
-
 import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.Event;
 import edu.iastate.music.marching.attendance.model.MobileDataUpload;
 import edu.iastate.music.marching.attendance.model.ModelFactory;
 import edu.iastate.music.marching.attendance.model.User;
-import edu.iastate.music.marching.attendance.servlets.AdminServlet;
 
 public class MobileDataController {
 
@@ -92,9 +88,33 @@ public class MobileDataController {
 						.getTime(), data);
 		this.train.getDataStore().store(upload);
 
+		try {
+		
+			return uploadMobileDataImplementation(data, uploader);
+		
+		} catch(IllegalArgumentException e) {
+			// Log exception
+			log.log(Level.WARNING, "Parse exception for uploaded mobile app data", e);
+			
+			// Store exception message in upload object
+			upload.setErrorMessage(e.toString());
+			
+			throw e;
+		} catch(IllegalStateException e) {
+			// Log exception
+			log.log(Level.WARNING, "Exception while uploading mobile app data", e);
+			
+			// Store exception message in upload object
+			upload.setErrorMessage(e.toString());
+			
+			throw e;
+		}
+	}
+
+	private String uploadMobileDataImplementation(String data, User uploader)
+			throws IllegalArgumentException {
 		// Check we actually have something to work with
-		if (data == null || "".equals(data.trim()))
-		{
+		if (data == null || "".equals(data.trim())) {
 			log.log(Level.INFO, "Empty data upload by " + uploader.getId());
 			throw new IllegalArgumentException("Empty data uploaded");
 		}

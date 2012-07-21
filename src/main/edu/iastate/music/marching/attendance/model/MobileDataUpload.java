@@ -20,6 +20,9 @@ public class MobileDataUpload {
 
 	@Type(Text.class)
 	private String data;
+	
+	@Type(Text.class)
+	private String error;
 
 	public void setUploader(User uploader) {
 		this.uploader = uploader;
@@ -43,5 +46,13 @@ public class MobileDataUpload {
 
 	public String getData() {
 		return this.data;
+	}
+
+	public void setErrorMessage(String message) {
+		this.error = message;
+	}
+	
+	public String getErrorMessage() {
+		return this.error;
 	}
 }
