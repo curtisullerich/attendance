@@ -5,7 +5,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -138,6 +140,8 @@ public class MobileDataController {
 		int successfulAbscenses = 0;
 		int successfulEvents = 0;
 		List<String> errors = new ArrayList<String>();
+		
+		Set<User> updatedStudents = new HashSet<User>();
 
 		// Do everything in a transaction so entire upload goes as a single
 		// unit, rolling back if anything fails
@@ -215,6 +219,9 @@ public class MobileDataController {
 				User student = uc.get(netid);
 
 				a = ac.createOrUpdateTardy(student, time);
+				
+				updatedStudents.add(student);
+				
 			} else if (s.contains("absent")) {
 
 				String firstName = parts[1];
@@ -244,6 +251,9 @@ public class MobileDataController {
 				User student = uc.get(netid);
 
 				a = ac.createOrUpdateAbsence(student, start, end);
+				
+				updatedStudents.add(student);
+				
 			} else if (s.toLowerCase().contains("earlycheckout")) {
 				String firstName = parts[1];
 				String lastName = parts[2];
@@ -263,6 +273,8 @@ public class MobileDataController {
 				User student = uc.get(netid);
 
 				a = ac.createOrUpdateEarlyCheckout(student, time);
+				
+				updatedStudents.add(student);
 
 			} else {
 				// WE HAVE SOMETHING INCORRECT HERE, JIM.
@@ -274,6 +286,12 @@ public class MobileDataController {
 			} else {
 				successfulAbscenses++;
 			}
+		}
+		
+		// Update grades
+		for(User student : updatedStudents)
+		{
+			uc.updateUserGrade(student);
 		}
 
 		// } catch (RuntimeException ex) {
