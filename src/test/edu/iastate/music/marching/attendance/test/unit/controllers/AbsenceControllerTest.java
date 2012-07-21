@@ -89,7 +89,7 @@ public class AbsenceControllerTest extends AbstractTest {
 	}
 	
 	@Test
-	public void testAbsenceVsTardy() {
+	public void testAbsenceVsTardy() throws ParseException {
 		DataTrain train = getDataTrain();
 		
 		UserController uc = train.getUsersController();
@@ -97,17 +97,12 @@ public class AbsenceControllerTest extends AbstractTest {
 		
 		Date eventStart = null;
 		Date eventEnd = null;
-		
 		Date tardy = null;
-		try {
-			eventStart = new SimpleDateFormat("yyyy-MM-dd HHmm").parse("2012-06-16 0500");
-			eventEnd = new SimpleDateFormat("yyyy-MM-dd HHmm").parse("2012-06-16 0700");
-			
-			tardy = new SimpleDateFormat("yyyy-MM-dd HHmm").parse("2012-06-16 0515");
-		} catch (ParseException e) {
-			e.printStackTrace();
-			return;
-		}
+		
+		eventStart = new SimpleDateFormat("yyyy-MM-dd HHmm").parse("2012-06-16 0500");
+		eventEnd = new SimpleDateFormat("yyyy-MM-dd HHmm").parse("2012-06-16 0700");
+		
+		tardy = new SimpleDateFormat("yyyy-MM-dd HHmm").parse("2012-06-16 0515");
 		
 		createAbsence(train, student, eventStart, eventEnd);
 		createTardy(train, student, eventStart, eventEnd, tardy);
