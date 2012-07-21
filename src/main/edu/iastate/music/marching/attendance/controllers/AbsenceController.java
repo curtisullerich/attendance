@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.google.appengine.api.datastore.Query.FilterOperator;
@@ -20,6 +21,9 @@ import edu.iastate.music.marching.attendance.model.ModelFactory;
 import edu.iastate.music.marching.attendance.model.User;
 
 public class AbsenceController extends AbstractController {
+
+	private static final Logger log = Logger.getLogger(AbsenceController.class
+			.getName());
 
 	private DataTrain train;
 
@@ -60,6 +64,9 @@ public class AbsenceController extends AbstractController {
 			// >= 30 * 60 * 1000) {
 			// absence.setType(Absence.Type.Absence);
 			// }
+		} else {
+			log.log(Level.WARNING, "Orphaned tardy being created at time: "
+					+ time);
 		}
 		return storeAbsence(absence, student);
 	}
@@ -213,6 +220,10 @@ public class AbsenceController extends AbstractController {
 		if (events.size() == 1) {
 			absence.setEvent(events.get(0));
 			// associated with this event for this student
+		} else {
+			log.log(Level.WARNING,
+					"Orphaned absence being created for timespan: " + start
+							+ " to " + end);
 		}
 
 		return storeAbsence(absence, student);
@@ -241,7 +252,9 @@ public class AbsenceController extends AbstractController {
 			absence.setEnd(e.getEnd());
 			// associated with this event for this student
 		} else {
-			// the absence is orphaned if there's no event for it
+			log.log(Level.SEVERE,
+					"Orphaned absence being created, bad event passed in, its id was "
+							+ ((e == null) ? "null-event" : e.getId()));
 		}
 
 		return storeAbsence(absence, student);
@@ -266,8 +279,9 @@ public class AbsenceController extends AbstractController {
 		if (events.size() == 1) {
 			absence.setEvent(events.get(0));
 			// associated with this event for this student
+		} else {
+			log.log(Level.WARNING, "Orphaned early checkout being created for time: " + time);
 		}
-		// else the absence is orphaned
 
 		return storeAbsence(absence, student);
 	}
@@ -514,9 +528,10 @@ public class AbsenceController extends AbstractController {
 
 		Event linked = absence.getEvent();
 		if (linked != null && absence.getType() == Absence.Type.Tardy) {
-//			if (absence.getDatetime().getTime() - linked.getStart().getTime() >= 30 * 60 * 1000) {
-//				absence.setType(Absence.Type.Absence);
-//			}
+			// if (absence.getDatetime().getTime() - linked.getStart().getTime()
+			// >= 30 * 60 * 1000) {
+			// absence.setType(Absence.Type.Absence);
+			// }
 		}
 
 		// Do some validation
