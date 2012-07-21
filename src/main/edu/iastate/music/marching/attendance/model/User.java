@@ -249,6 +249,14 @@ public class User implements Serializable {
 	public Email getSecondaryEmail() {
 		return this.secondEmail;
 	}
+	
+	@Override
+	public int hashCode() {
+		if (this.email == null || this.email.getEmail() == null)
+			return 0;
+		else
+			return this.email.hashCode();
+	}
 
 	@Override
 	public boolean equals(Object o) {
