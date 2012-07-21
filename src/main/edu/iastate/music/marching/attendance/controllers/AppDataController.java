@@ -34,8 +34,6 @@ public class AppDataController extends AbstractController {
 			// Defaults
 			//
 			appData.setDatastoreVersion(AttendanceDatastore.VERSION);
-			
-			appData.setDirectorRegistered(false);
 
 			appData.setTitle("Band Attendance");
 

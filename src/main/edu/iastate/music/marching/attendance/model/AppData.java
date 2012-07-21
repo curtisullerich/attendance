@@ -19,8 +19,6 @@ public class AppData {
 	AppData() {
 	}
 
-	private boolean directorRegistered;
-
 	private String title;
 
 	private Date formCutoff;
@@ -33,14 +31,6 @@ public class AppData {
 	
 	@Id
 	private int datastoreVersion;
-
-	public boolean isDirectorRegistered() {
-		return this.directorRegistered;
-	}
-
-	public void setDirectorRegistered(boolean directorRegistered) {
-		this.directorRegistered = directorRegistered;
-	}
 
 	public String getTitle() {
 		return this.title;

@@ -72,7 +72,6 @@ public class Migrate_0to1_EmailsOnUsers extends DefaultMigrationStrategy {
 
 		appData.setDatastoreVersion(1);
 
-		appData.setDirectorRegistered(oldAppData.isDirectorRegistered());
 		appData.setFormSubmissionCutoff(oldAppData.getFormSubmissionCutoff());
 		appData.setHashedMobilePassword(oldAppData.getHashedMobilePassword());
 		appData.setTimeWorkedEmails(oldAppData.getTimeWorkedEmails());

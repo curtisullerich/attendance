@@ -183,8 +183,6 @@ public class AuthServlet extends AbstractBaseServlet {
 	private void showRegistration(HttpServletRequest req,
 			HttpServletResponse resp) throws ServletException, IOException {
 
-		DataTrain train = DataTrain.getAndStartTrain();
-
 		PageBuilder page = new PageBuilder(Page.register, SERVLET_PATH);
 
 		page.setAttribute("NetID", AuthController.getGoogleUser().getEmail());
@@ -192,12 +190,6 @@ public class AuthServlet extends AbstractBaseServlet {
 		page.setAttribute("sections", User.Section.values());
 
 		page.setPageTitle("Register");
-
-		// If no director
-		if (!train.getAppDataController().get().isDirectorRegistered())
-			page.setAttribute(
-					"error_messages",
-					new String[] { "There is no director registered. You cannot register for an account yet." });
 
 		page.passOffToJsp(req, resp);
 	}
