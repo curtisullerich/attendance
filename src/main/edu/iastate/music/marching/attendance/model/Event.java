@@ -21,6 +21,7 @@ public class Event {
 	 * 
 	 * This makes it easier to query for events on any given day.
 	 */
+	@Deprecated
 	public static final String FIELD_DATE = "date";
 
 	/**
@@ -45,7 +46,9 @@ public class Event {
 	 * 
 	 * This makes it easier to query for events on any given day.
 	 */
+	@SuppressWarnings("unused")
 	@Index
+	@Deprecated
 	private Date date;
 
 	private Type type;

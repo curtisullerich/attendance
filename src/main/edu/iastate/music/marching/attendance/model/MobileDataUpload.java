@@ -8,7 +8,7 @@ import com.google.code.twig.annotation.Type;
 import com.google.code.twig.annotation.Version;
 
 @Version(AttendanceDatastore.VERSION)
-@Entity(kind="MobileDataUpload", allocateIdsBy=0)
+@Entity(kind = "MobileDataUpload", allocateIdsBy = 0)
 public class MobileDataUpload {
 
 	public MobileDataUpload() {
@@ -24,13 +24,24 @@ public class MobileDataUpload {
 	public void setUploader(User uploader) {
 		this.uploader = uploader;
 	}
+	
+	public User getUploader() {
+		return this.uploader;
+	}
 
 	public void setTimestamp(Date uploadTime) {
 		this.timestamp = uploadTime;
+	}
+	
+	public Date getTimestamp() {
+		return this.timestamp;
 	}
 
 	public void setData(String uploadData) {
 		this.data = uploadData;
 	}
 
+	public String getData() {
+		return this.data;
+	}
 }

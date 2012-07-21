@@ -3,7 +3,6 @@ package edu.iastate.music.marching.attendance.model;
 import java.util.Date;
 
 import com.google.appengine.api.datastore.Text;
-import com.google.code.twig.annotation.Activate;
 import com.google.code.twig.annotation.Entity;
 import com.google.code.twig.annotation.Id;
 import com.google.code.twig.annotation.Index;
@@ -88,11 +87,6 @@ public class Form {
 	private long id;
 
 	private long hashedId;
-	/**
-	 * Owning student
-	 * 
-	 */
-	private User owner;
 
 	@Index
 	private User student;
@@ -198,7 +192,6 @@ public class Form {
 	}
 
 	public void setStudent(User student) {
-		this.owner = student;
 		this.student = student;
 	}
 
