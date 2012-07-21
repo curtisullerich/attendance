@@ -1,6 +1,6 @@
 Thumbs.db
 *~
-appengine*.jar
+war/WEB-INF/lib/appengine*.jar
 .settings/*
 .project
 .classpath
