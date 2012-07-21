@@ -66,6 +66,7 @@ public class UserController extends AbstractController {
 		user.setMajor(major);
 		user.setSection(section);
 		user.setSecondaryEmail(secondaryEmail);
+		user.setGrade(User.Grade.A);
 
 		validateUser(user);
 
