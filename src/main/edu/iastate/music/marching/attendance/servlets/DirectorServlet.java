@@ -103,6 +103,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 				break;
 			case student:
 				showStudent(req, resp);
+				break;
 			case makeevent:
 				showMakeEvent(req, resp);
 				break;
