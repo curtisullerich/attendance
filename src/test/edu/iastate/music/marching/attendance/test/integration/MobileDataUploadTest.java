@@ -30,7 +30,7 @@ import edu.iastate.music.marching.attendance.servlets.MobileAppDataServlet;
 import edu.iastate.music.marching.attendance.test.AbstractTest;
 import edu.iastate.music.marching.attendance.test.TestConfig;
 import edu.iastate.music.marching.attendance.test.mock.MockServletInputStream;
-import edu.iastate.music.marching.attendance.test.util.ServletMock;
+import edu.iastate.music.marching.attendance.test.mock.ServletMock;
 import edu.iastate.music.marching.attendance.test.util.Users;
 
 public class MobileDataUploadTest extends AbstractTest {

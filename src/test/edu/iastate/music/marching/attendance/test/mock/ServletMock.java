@@ -1,4 +1,4 @@
-package edu.iastate.music.marching.attendance.test.util;
+package edu.iastate.music.marching.attendance.test.mock;
 
 import static org.mockito.Mockito.when;
 

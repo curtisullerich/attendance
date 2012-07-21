@@ -19,7 +19,7 @@ import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.servlets.DirectorServlet;
 import edu.iastate.music.marching.attendance.servlets.MobileAppDataServlet;
 import edu.iastate.music.marching.attendance.test.AbstractTest;
-import edu.iastate.music.marching.attendance.test.util.ServletMock;
+import edu.iastate.music.marching.attendance.test.mock.ServletMock;
 import edu.iastate.music.marching.attendance.test.util.Users;
 
 public class ServletAccess extends AbstractTest {
