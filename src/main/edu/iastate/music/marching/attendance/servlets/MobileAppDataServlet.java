@@ -68,15 +68,21 @@ public class MobileAppDataServlet extends AbstractBaseServlet {
 		    } catch (java.util.NoSuchElementException e) {
 		    	data = "";
 		    }
-
-			// Optimistically set a success type
-			result.error = ResultErrorType.success;
 			
-			try {
-				result.message = mdc.pushMobileData(data, train.getAuthController().getCurrentUser(req.getSession()));
-			} catch (IllegalArgumentException e) {
-				result.error = ResultErrorType.exception;
-				result.message = e.getMessage();
+			if(data.trim().equals(""))
+			{
+				// Empty data uploaded
+				result.error = ResultErrorType.empty;
+			} else {
+				// Optimistically set a success type
+				result.error = ResultErrorType.success;
+				
+				try {
+					result.message = mdc.pushMobileData(data, train.getAuthController().getCurrentUser(req.getSession()));
+				} catch (IllegalArgumentException e) {
+					result.error = ResultErrorType.exception;
+					result.message = e.getMessage();
+				}
 			}
 
 		}
@@ -87,7 +93,7 @@ public class MobileAppDataServlet extends AbstractBaseServlet {
 	}
 
 	private enum ResultErrorType {
-		success, login, exception
+		success, login, exception, empty
 	}
 
 	private class UploadResult {

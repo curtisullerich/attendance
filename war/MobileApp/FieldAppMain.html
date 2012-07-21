@@ -251,9 +251,13 @@
              	    		alert("You must login first as a TA to upload data, redirecting you to the login page.");
              	    		window.location = "/auth/login?redirect=" + window.location;
              	    	}
+             	    	else if (result.error == "empty")
+             	    	{
+             	    		alert("Nothing was uploaded, have you created any tardies / absences?");
+             	    	}
              	    	else if (result.error == "exception")
              	    	{
-             	    		alert("Encountered exception while uploading data, error has been logged and will be reported to the director. Still removing data from local storage.\n" + result.message);
+             	    		alert("A problem occurred with the upload, and it has been logged.\n\n" + result.message);
              	    		
              	    		// Wipe local data store
              	    		//clear all absence and tardy data
