@@ -237,9 +237,17 @@ public class FormController extends AbstractController {
 			String section, String building, Date startDate, Date endDate,
 			int day, Date startTime, Date endTime, String details,
 			int minutesToOrFrom) {
+		
+		Calendar startDateTime = Calendar.getInstance();
+		Calendar endDateTime = Calendar.getInstance();
+		
+		Calendar startTimeCalendar = Calendar.getInstance();
+		Calendar endTimeCalendar = Calendar.getInstance();
+		
+		startTimeCalendar.setTime(startTime);
+		endTimeCalendar.setTime(endTime);
+		
 		// TODO NEEDS MORE PARAMETERS and LOTS OF VALIDATION
-		Calendar calendar = Calendar.getInstance();
-		// calendar.setTime(date);
 
 		// Simple validation first
 		ValidationExceptions exp = new ValidationExceptions();
@@ -254,18 +262,17 @@ public class FormController extends AbstractController {
 		}
 
 		Form form = ModelFactory.newForm(Form.Type.B, student);
+		
+		startDateTime.setTime(startDate);
+		startDateTime.set(Calendar.HOUR_OF_DAY, startTimeCalendar.get(Calendar.HOUR_OF_DAY));
+		startDateTime.set(Calendar.MINUTE, startTimeCalendar.get(Calendar.MINUTE));
+		
+		endDateTime.setTime(endDate);
+		endDateTime.set(Calendar.HOUR_OF_DAY, endTimeCalendar.get(Calendar.HOUR_OF_DAY));
+		endDateTime.set(Calendar.MINUTE, endTimeCalendar.get(Calendar.MINUTE));
 
-		// TODO: This was a quick fix just to get the startTime and endTime to
-		// actually do something
-
-		startDate.setHours(startTime.getHours());
-		startDate.setMinutes(startTime.getMinutes());
-
-		endDate.setHours(endTime.getHours());
-		endDate.setMinutes(endTime.getMinutes());
-
-		form.setStart(startDate);
-		form.setEnd(endDate);
+		form.setStart(startDateTime.getTime());
+		form.setEnd(endDateTime.getTime());
 		// TODO form.set(All the other things)
 		if (ValidationUtil.isValidText(department, false)) {
 			form.setDept(department);
