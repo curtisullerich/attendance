@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.google.appengine.api.datastore.QueryResultIterator;
 import com.google.code.twig.ObjectDatastore;
@@ -15,8 +17,12 @@ import edu.iastate.music.marching.attendance.model.Event;
 import edu.iastate.music.marching.attendance.model.MobileDataUpload;
 import edu.iastate.music.marching.attendance.model.ModelFactory;
 import edu.iastate.music.marching.attendance.model.User;
+import edu.iastate.music.marching.attendance.servlets.AdminServlet;
 
 public class MobileDataController {
+
+	private static final Logger log = Logger
+			.getLogger(MobileDataController.class.getName());
 
 	private static final String NEWLINE = "&newline&";
 	private static final String SEPARATOR = "&split&";
@@ -88,7 +94,10 @@ public class MobileDataController {
 
 		// Check we actually have something to work with
 		if (data == null || "".equals(data.trim()))
+		{
+			log.log(Level.INFO, "Empty data upload by " + uploader.getId());
 			throw new IllegalArgumentException("Empty data uploaded");
+		}
 
 		String[] fullLines = data.split(NEWLINE);
 
@@ -123,7 +132,9 @@ public class MobileDataController {
 		// List<Event> localEvents = new LinkedList<Event>();
 
 		for (String s : eventLines) {
-			// TODO, this is all really a mock up.
+			// TODO: https://github.com/curtisullerich/attendance/issues/62
+			// This is all really a mock-up, and should be re-written when
+			// the mobile app is re-done
 			String[] event = s.split(SEPARATOR);
 			String strType = event[1].toLowerCase().trim();
 			String strDate = event[4];
