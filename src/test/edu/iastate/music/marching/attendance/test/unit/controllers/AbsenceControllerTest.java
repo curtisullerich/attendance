@@ -107,7 +107,10 @@ public class AbsenceControllerTest extends AbstractTest {
 		createAbsence(train, student, eventStart, eventEnd);
 		createTardy(train, student, eventStart, eventEnd, tardy);
 		
+		List<Event> events = train.getEventController().getAll();
 		List<Absence> studentAbsences = train.getAbsenceController().get(student);
+		
+		assertEquals(1, events.size());
 		
 		assertEquals(1, studentAbsences.size());
 		Absence absence = studentAbsences.get(0);
