@@ -20,6 +20,10 @@ public class ValidationUtil {
 	private static final Pattern PATTERN_EMAIL = Pattern
 			.compile("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$");
 
+	private static final int MAX_STRING_LENGTH = 500;
+
+	private static final int MAX_TEXT_LENGTH = 50000;
+
 	public static boolean isValidName(String name) {
 		// Names are composed of characters (\w) and dashes
 		return PATTERN_NAME.matcher(name).matches();
@@ -45,7 +49,8 @@ public class ValidationUtil {
 	public static boolean validSecondaryEmail(Email email, DataTrain train) {
 
 		// Null or empty emails are okay for the secondary
-		if(email == null || email.getEmail() == null || email.getEmail().equals(""))
+		if (email == null || email.getEmail() == null
+				|| email.getEmail().equals(""))
 			return true;
 
 		return PATTERN_EMAIL.matcher(email.getEmail()).matches();
@@ -74,7 +79,19 @@ public class ValidationUtil {
 	}
 
 	public static boolean isValidText(String text, boolean canBeEmpty) {
-		// TODO Auto-generated method stub
+
+		if (text == null) {
+			return false;
+		}
+
+		if ("".equals(text.trim())) {
+			return canBeEmpty;
+		}
+
+		if (text.length() > MAX_TEXT_LENGTH) {
+			return false;
+		}
+
 		return true;
 	}
 
