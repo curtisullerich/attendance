@@ -89,7 +89,7 @@ public class MobileDataUploadTest extends AbstractTest {
 		ServletMock.doPost(MobileAppDataServlet.class, req, resp);
 
 		verify(os)
-				.print("{\"error\":\"success\",\"message\":\"TODO: return string about what was uploaded here\"}");
+				.print("{\"error\":\"success\",\"message\":\"Inserted 1/1 events.\\nInserted 2/2 absences/tardies/early checkouts.\\n\"}");
 
 		simpleAbsenceInsertionVerification();
 	}
