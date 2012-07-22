@@ -46,10 +46,8 @@ public class NavigationBean implements java.io.Serializable {
 				map = (Map<String, Object>) root;
 
 			} catch (YamlException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

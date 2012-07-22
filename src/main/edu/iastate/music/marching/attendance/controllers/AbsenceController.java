@@ -40,7 +40,6 @@ public class AbsenceController extends AbstractController {
 			throw new IllegalArgumentException(
 					"Tried to create absence for null user");
 		}
-		// TODO : Check for exact duplicates
 
 		Absence absence = ModelFactory.newAbsence(Absence.Type.Tardy, student);
 		absence.setDatetime(time);
@@ -55,11 +54,10 @@ public class AbsenceController extends AbstractController {
 			// now link
 			absence.setEvent(toLink);
 
+			// TODO https://github.com/curtisullerich/attendance/issues/91
 			// well, stack overflow says this works :)
 			// this changes the type from Tardy to Absence if there's a tardy
 			// that's 30 or more minutes late. Per request from Mr. Staub.
-			// TODO this causes a lot of other bugs, so I highly suggest NOT
-			// supporting it -curtis
 			// if (absence.getDatetime().getTime() - toLink.getStart().getTime()
 			// >= 30 * 60 * 1000) {
 			// absence.setType(Absence.Type.Absence);
@@ -269,8 +267,6 @@ public class AbsenceController extends AbstractController {
 		if (student == null)
 			throw new IllegalArgumentException(
 					"Tried to create absence for null user");
-
-		// TODO : Check for exact duplicates
 
 		Absence absence = ModelFactory.newAbsence(Absence.Type.EarlyCheckOut,
 				student);
@@ -524,7 +520,8 @@ public class AbsenceController extends AbstractController {
 				.get(Calendar.DAY_OF_YEAR)) % 7 == 0;
 	}
 
-	// TODO I don't like that this is public. There's no validation going on
+	// TODO https://github.com/curtisullerich/attendance/issues/90
+	// I don't like that this is public. There's no validation going on
 	// here. We could call validateAbsence(absence) but that would throw an
 	// exception if you're storing an orphaned or student-less Absence
 	// (currently, at least)
@@ -631,7 +628,7 @@ public class AbsenceController extends AbstractController {
 		return this.train.find(Absence.class).returnCount().now();
 	}
 
-	// TODO doesn't work
+	// TODO https://github.com/curtisullerich/attendance/issues/89
 	public List<Absence> getUnanchored() {
 		return this.train.find(Absence.class)
 				.addFilter(Absence.FIELD_STUDENT, FilterOperator.EQUAL, null)
