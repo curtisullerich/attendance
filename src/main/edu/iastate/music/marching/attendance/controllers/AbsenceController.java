@@ -129,7 +129,7 @@ public class AbsenceController extends AbstractController {
 				return true;
 			case Tardy:
 				// Later tardy beats an earlier one
-				if (current.getDatetime().before(contester.getDatetime())) {
+				if (!current.getDatetime().before(contester.getDatetime())) {
 					remove(contester);
 					return true;
 				} else {
@@ -142,6 +142,8 @@ public class AbsenceController extends AbstractController {
 				if (current.getDatetime().after(contester.getDatetime())) {
 					// Create a new absence
 					current.setType(Absence.Type.Absence);
+					current.setStart(current.getEvent().getStart());
+					current.setEnd(current.getEvent().getEnd());
 					// remove the old EarlyCheckOut
 					remove(contester);
 				}
@@ -161,6 +163,8 @@ public class AbsenceController extends AbstractController {
 				if (contester.getDatetime().after(current.getDatetime())) {
 					// Create a new absence
 					current.setType(Absence.Type.Absence);
+					current.setStart(current.getEvent().getStart());
+					current.setEnd(current.getEvent().getEnd());
 					// remove the old Tardy
 					remove(contester);
 				}
