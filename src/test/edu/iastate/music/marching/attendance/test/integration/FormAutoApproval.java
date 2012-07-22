@@ -21,7 +21,7 @@ public class FormSubmission extends AbstractTest {
 	private static final Date ABSOLUTE_DATE = new Date();
 
 	@Test
-	public void AutoApproveAbsence_FromFormA() {
+	public void AutoApproveAbsence_Succeeds_FromFormA() {
 		createUsersHelper();
 		DataTrain train = DataTrain.getAndStartTrain();
 
@@ -51,7 +51,7 @@ public class FormSubmission extends AbstractTest {
 	}
 
 	@Test
-	public void AutoApproveAbsence_FromFormB() {
+	public void AutoApproveAbsence_Succeeds_FromFormB() {
 		createUsersHelper();
 		DataTrain train = DataTrain.getAndStartTrain();
 
@@ -111,7 +111,7 @@ public class FormSubmission extends AbstractTest {
 	}
 
 	@Test
-	public void AutoApproveAbsence_FromFormD() {
+	public void AutoApproveAbsence_Succeeds_FromFormD() {
 		createUsersHelper();
 		DataTrain train = DataTrain.getAndStartTrain();
 
@@ -141,7 +141,7 @@ public class FormSubmission extends AbstractTest {
 	}
 
 	@Test
-	public void ApproveDeniedAbsence_FromFormA() {
+	public void ApproveDeniedAbsence_Fails_FromFormA() {
 		createUsersHelper();
 		DataTrain train = DataTrain.getAndStartTrain();
 
@@ -172,7 +172,7 @@ public class FormSubmission extends AbstractTest {
 	}
 
 	@Test
-	public void ApproveDeniedAbsence_FromFormB() {
+	public void ApproveDeniedAbsence_Fails_FromFormB() {
 		createUsersHelper();
 		DataTrain train = DataTrain.getAndStartTrain();
 
@@ -201,7 +201,7 @@ public class FormSubmission extends AbstractTest {
 	}
 
 	@Test
-	public void ApproveDeniedAbsence_FromFormC() {
+	public void ApproveDeniedAbsence_Fails_FromFormC() {
 		createUsersHelper();
 		DataTrain train = DataTrain.getAndStartTrain();
 
@@ -230,7 +230,7 @@ public class FormSubmission extends AbstractTest {
 	}
 
 	@Test
-	public void ApproveDeniedAbsence_FromFormD() {
+	public void ApproveDeniedAbsence_Fails_FromFormD() {
 		createUsersHelper();
 		DataTrain train = DataTrain.getAndStartTrain();
 
