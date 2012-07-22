@@ -32,7 +32,7 @@ public class UserControllerTest extends AbstractTest {
 
 		UserController uc = train.getUsersController();
 
-		Users.createDirector(uc, "director", 123, "I am", "The Director");
+		Users.createDirector(uc, "director", "I am", "The Director");
 
 		// Verify
 		List<User> users = uc.getAll();
@@ -47,7 +47,6 @@ public class UserControllerTest extends AbstractTest {
 		assertEquals(User.Type.Director, d.getType());
 		assertEquals("director@" + TestConfig.getEmailDomain(), d
 				.getPrimaryEmail().getEmail());
-		assertEquals(123, d.getUniversityID());
 		assertEquals("I am", d.getFirstName());
 		assertEquals("The Director", d.getLastName());
 	}
@@ -96,8 +95,8 @@ public class UserControllerTest extends AbstractTest {
 				"major", User.Section.AltoSax);
 		User s3 = Users.createStudent(uc, "student3", 123, "First", "Last", 2,
 				"major", User.Section.AltoSax);
-		User s4 = Users.createStudent(uc, "stiner", 34234, "ars", "l", 3, "astart",
-				User.Section.AltoSax);
+		User s4 = Users.createStudent(uc, "stiner", 34234, "ars", "l", 3,
+				"astart", User.Section.AltoSax);
 
 		s1.setGrade(User.Grade.A);
 		s2.setGrade(User.Grade.A);
@@ -130,8 +129,8 @@ public class UserControllerTest extends AbstractTest {
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
 
-		User s1 = Users.createStudent(uc, "student1", 121, "John", "Cox", 2, "major",
-				User.Section.AltoSax);
+		User s1 = Users.createStudent(uc, "student1", 121, "John", "Cox", 2,
+				"major", User.Section.AltoSax);
 
 		// should be A initially
 		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
@@ -243,8 +242,8 @@ public class UserControllerTest extends AbstractTest {
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
 
-		User s1 = Users.createStudent(uc, "student1", 121, "John", "Cox", 2, "major",
-				User.Section.AltoSax);
+		User s1 = Users.createStudent(uc, "student1", 121, "John", "Cox", 2,
+				"major", User.Section.AltoSax);
 
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 18, 16, 30);
@@ -287,8 +286,8 @@ public class UserControllerTest extends AbstractTest {
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
 
-		User s1 = Users.createStudent(uc, "student1", 121, "John", "Cox", 2, "major",
-				User.Section.AltoSax);
+		User s1 = Users.createStudent(uc, "student1", 121, "John", "Cox", 2,
+				"major", User.Section.AltoSax);
 
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 18, 16, 30);

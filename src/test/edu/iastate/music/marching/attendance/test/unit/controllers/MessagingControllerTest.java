@@ -23,8 +23,10 @@ public class MessagingControllerTest extends AbstractTest {
 
 		// Setup two users
 		UserController uc = train.getUsersController();
-		User director = Users.createDirector(uc, "director", 123, "I am", "The Director");
-		User student = Users.createStudent(uc, "studenttt", 121, "First", "last", 2, "major", User.Section.AltoSax);
+		User director = Users.createDirector(uc, "director", "I am",
+				"The Director");
+		User student = Users.createStudent(uc, "studenttt", 121, "First",
+				"last", 2, "major", User.Section.AltoSax);
 
 		MessageThread mts = train.getMessagingController()
 				.createMessageThread();
@@ -34,16 +36,17 @@ public class MessagingControllerTest extends AbstractTest {
 		train.getMessagingController().addMessage(mtd, director, "D");
 		train.getMessagingController().addMessage(mts, student, "S");
 
-		List<MessageThread> results_student = train.getMessagingController().get(
-				student);
+		List<MessageThread> results_student = train.getMessagingController()
+				.get(student);
 		// Check resulting list
 		assertEquals(1, results_student.size());
-		
+
 		// Check returned object
 		MessageThread result_student = results_student.get(0);
 		assertNotNull(result_student);
 		assertEquals(1, result_student.getParticipants().size());
-		assertEquals(student, result_student.getParticipants().iterator().next());
+		assertEquals(student, result_student.getParticipants().iterator()
+				.next());
 		assertEquals(1, result_student.getMessages().size());
 		assertEquals(student, result_student.getMessages().get(0).getAuthor());
 		assertEquals("S", result_student.getMessages().get(0).getText());
@@ -66,8 +69,10 @@ public class MessagingControllerTest extends AbstractTest {
 
 		// Setup two users
 		UserController uc = train.getUsersController();
-		User director = Users.createDirector(uc, "director", 123, "I am", "The Director");
-		User student = Users.createStudent(uc, "studenttt", 121, "First", "last", 2, "major", User.Section.AltoSax);
+		User director = Users.createDirector(uc, "director", "I am",
+				"The Director");
+		User student = Users.createStudent(uc, "studenttt", 121, "First",
+				"last", 2, "major", User.Section.AltoSax);
 
 		MessageThread mts = train.getMessagingController()
 				.createMessageThread();
@@ -105,8 +110,10 @@ public class MessagingControllerTest extends AbstractTest {
 
 		// Setup two users
 		UserController uc = train.getUsersController();
-		User director = Users.createDirector(uc, "director", 123, "I am", "The Director");
-		User student = Users.createStudent(uc, "studenttt", 121, "First", "last", 2, "major", User.Section.AltoSax);
+		User director = Users.createDirector(uc, "director", "I am",
+				"The Director");
+		User student = Users.createStudent(uc, "studenttt", 121, "First",
+				"last", 2, "major", User.Section.AltoSax);
 
 		MessageThread mt = train.getMessagingController().createMessageThread();
 
@@ -124,9 +131,10 @@ public class MessagingControllerTest extends AbstractTest {
 		assertEquals(4, result.getMessages().size());
 		// TODO more checks
 	}
-	
+
 	/**
-	 * Rational: jstl in the JSP assumes messages[0] is the latest message in a thread
+	 * Rational: jstl in the JSP assumes messages[0] is the latest message in a
+	 * thread
 	 */
 	@Test
 	public void testMostRecentMessage() {
@@ -135,8 +143,10 @@ public class MessagingControllerTest extends AbstractTest {
 
 		// Setup two users
 		UserController uc = train.getUsersController();
-		User director = Users.createDirector(uc, "director", 123, "I am", "The Director");
-		User student = Users.createStudent(uc, "studenttt", 121, "First", "last", 2, "major", User.Section.AltoSax);
+		User director = Users.createDirector(uc, "director", "I am",
+				"The Director");
+		User student = Users.createStudent(uc, "studenttt", 121, "First",
+				"last", 2, "major", User.Section.AltoSax);
 
 		MessageThread mt = train.getMessagingController().createMessageThread();
 

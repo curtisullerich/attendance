@@ -36,7 +36,7 @@ public class Users {
 	}
 
 	public static final User createDirector(UserController uc,
-			String email_firstpart, int univID, String firstName,
+			String email_firstpart, String firstName,
 			String lastName) {
 		return uc.createDirector(
 				email_firstpart + "@" + TestConfig.getEmailDomain(),

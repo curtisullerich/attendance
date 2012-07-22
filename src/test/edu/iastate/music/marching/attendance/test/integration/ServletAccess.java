@@ -25,21 +25,22 @@ import edu.iastate.music.marching.attendance.test.util.Users;
 public class ServletAccess extends AbstractTest {
 
 	@Test
-	public void DirectorServlet_Student_ClassList_Test() throws ServletException, IOException,
-			InstantiationException, IllegalAccessException {
+	public void DirectorServlet_Student_ClassList_Test()
+			throws ServletException, IOException, InstantiationException,
+			IllegalAccessException {
 		HttpServletRequest req = mock(HttpServletRequest.class);
 		HttpServletResponse resp = mock(HttpServletResponse.class);
 
 		setDirectorSession(req);
 
 		when(req.getPathInfo()).thenReturn("/classlist");
-		
+
 		ServletOutputStream sos = mock(ServletOutputStream.class);
-		
+
 		when(resp.getOutputStream()).thenReturn(sos);
 
 		ServletMock.doGet(MobileAppDataServlet.class, req, resp);
-		
+
 		// Verify data is written to the servlet output stream
 		verify(sos).print("{\"error\":\"success\",\"data\":\"\"}");
 	}
@@ -53,26 +54,27 @@ public class ServletAccess extends AbstractTest {
 		setDirectorSession(req);
 
 		when(req.getPathInfo()).thenReturn("/classlist");
-		
+
 		ServletOutputStream sos = mock(ServletOutputStream.class);
-		
+
 		when(resp.getOutputStream()).thenReturn(sos);
 
 		ServletMock.doGet(MobileAppDataServlet.class, req, resp);
 	}
 
 	@Test
-	public void MobileDataServlet_Director_ClassList_Test() throws ServletException,
-			IOException, InstantiationException, IllegalAccessException {
+	public void MobileDataServlet_Director_ClassList_Test()
+			throws ServletException, IOException, InstantiationException,
+			IllegalAccessException {
 		HttpServletRequest req = mock(HttpServletRequest.class);
 		HttpServletResponse resp = mock(HttpServletResponse.class);
 
 		setDirectorSession(req);
 
 		when(req.getPathInfo()).thenReturn("/classlist");
-		
+
 		ServletOutputStream sos = mock(ServletOutputStream.class);
-		
+
 		when(resp.getOutputStream()).thenReturn(sos);
 
 		ServletMock.doGet(MobileAppDataServlet.class, req, resp);
@@ -157,7 +159,7 @@ public class ServletAccess extends AbstractTest {
 			throws ServletException, IOException {
 		verify(resp).sendRedirect("/auth/login");
 	}
-	
+
 	private void verifyUnauthorizedRedirect(HttpServletRequest req,
 			HttpServletResponse resp, String returnUrl)
 			throws ServletException, IOException {
@@ -197,9 +199,9 @@ public class ServletAccess extends AbstractTest {
 	private HttpServletRequest setStudentSession(HttpServletRequest req) {
 		HttpSession session = mock(HttpSession.class);
 		when(session.getAttribute("authenticated_user")).thenReturn(
-				Users.createStudent(getDataTrain().getUsersController(), "studenttt",
-						121, "I am", "A Student", 10, "Being Silly",
-						User.Section.AltoSax));
+				Users.createStudent(getDataTrain().getUsersController(),
+						"studenttt", 121, "I am", "A Student", 10,
+						"Being Silly", User.Section.AltoSax));
 		when(req.getSession()).thenReturn(session);
 		return req;
 	}
@@ -207,18 +209,19 @@ public class ServletAccess extends AbstractTest {
 	private HttpServletRequest setDirectorSession(HttpServletRequest req) {
 		HttpSession session = mock(HttpSession.class);
 		when(session.getAttribute("authenticated_user")).thenReturn(
-				Users.createDirector(getDataTrain().getUsersController(), "director",
-						123, "I am", "The Director"));
+				Users.createDirector(getDataTrain().getUsersController(),
+						"director", "I am", "The Director"));
 		when(req.getSession()).thenReturn(session);
 		return req;
 	}
 
 	private HttpServletRequest setTASession(HttpServletRequest req) {
 		HttpSession session = mock(HttpSession.class);
-		when(session.getAttribute("authenticated_user")).thenReturn(
-				Users.createTA(getDataTrain().getUsersController(), "ta", 121,
-						"I am", "A TA", 10, "Being Silly",
-						User.Section.AltoSax));
+		when(session.getAttribute("authenticated_user"))
+				.thenReturn(
+						Users.createTA(getDataTrain().getUsersController(),
+								"ta", 121, "I am", "A TA", 10, "Being Silly",
+								User.Section.AltoSax));
 		when(req.getSession()).thenReturn(session);
 		return req;
 	}
