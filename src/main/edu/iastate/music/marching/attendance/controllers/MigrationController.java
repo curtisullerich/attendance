@@ -1,7 +1,5 @@
 package edu.iastate.music.marching.attendance.controllers;
 
-import javax.transaction.NotSupportedException;
-
 import com.google.code.twig.standard.StandardObjectDatastore;
 
 import edu.iastate.music.marching.attendance.model.AttendanceDatastore;
@@ -28,7 +26,7 @@ public class MigrationController {
 			throw new MigrationException(
 					"No migration strategy found from version " + fromVersion
 							+ " to current version",
-					new NotSupportedException());
+					new IllegalArgumentException());
 		}
 		
 		// Prepend a converter for legacy models to a separate datastore

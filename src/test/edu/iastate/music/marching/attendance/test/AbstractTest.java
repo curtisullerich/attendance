@@ -2,6 +2,7 @@ package edu.iastate.music.marching.attendance.test;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
@@ -9,6 +10,7 @@ import com.google.appengine.tools.development.testing.LocalUserServiceTestConfig
 
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 
+@Ignore
 public class AbstractTest {
 	
 	private DataTrain datatrain = null;
