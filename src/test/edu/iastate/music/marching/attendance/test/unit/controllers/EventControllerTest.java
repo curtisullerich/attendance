@@ -84,7 +84,7 @@ public class EventControllerTest extends AbstractTest {
 		assertEquals(eventEnd, e.getEnd());
 		assertEquals(Event.Type.Performance, e.getType());
 	}
-	
+
 	@Test
 	public void testAutomaticLinking() {
 		DataTrain train = getDataTrain();
@@ -105,18 +105,24 @@ public class EventControllerTest extends AbstractTest {
 		end.set(2012, 9, 18, 17, 50);
 
 		Calendar tardy = Calendar.getInstance();
-		tardy.set(2012,9,18,16,40);
-		Absence a1 = ac.createOrUpdateTardy(s1, tardy.getTime());
-		
+		tardy.set(2012, 9, 18, 16, 40);
+		Absence a1 = ac.createOrUpdateEarlyCheckout(s1, tardy.getTime());
+
 		uc.update(s1);
-		
-		//there's a tardy, but it's not linked
+
+		// there's a tardy, but it's not linked
 		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
 		Event e1 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
 				end.getTime());
 
-		//now that there's a matching event, it should link
+		// now that there's a matching event, it should link
 		assertEquals(User.Grade.Aminus, uc.get(s1.getId()).getGrade());
+
+		tardy.set(2012, 9, 18, 16, 35);
+		ac.createOrUpdateTardy(s1, tardy.getTime());
+		uc.update(s1);
+		assertEquals(User.Grade.Bplus, uc.get(s1.getId()).getGrade());
+
 	}
 
 }

@@ -35,20 +35,20 @@ public class EventController extends AbstractController {
 	// return true;
 	// }
 
-//	/**
-//	 * Checks if two date ranges intersect at all.
-//	 * 
-//	 * @param e1
-//	 * @param e2
-//	 * @return
-//	 */
-//	private boolean overlaps(Event e1, Event e2) {
-//		boolean a = e1.getStart().after(e2.getEnd());
-//		boolean b = e1.getEnd().before(e2.getStart());
-//		// if a and b are both true, then no instant in time is found in both
-//		// date ranges.
-//		return !(a || b);
-//	}
+	// /**
+	// * Checks if two date ranges intersect at all.
+	// *
+	// * @param e1
+	// * @param e2
+	// * @return
+	// */
+	// private boolean overlaps(Event e1, Event e2) {
+	// boolean a = e1.getStart().after(e2.getEnd());
+	// boolean b = e1.getEnd().before(e2.getStart());
+	// // if a and b are both true, then no instant in time is found in both
+	// // date ranges.
+	// return !(a || b);
+	// }
 
 	public Event createOrUpdate(Type type, Date start, Date end) {
 		Event event = null;
@@ -79,6 +79,10 @@ public class EventController extends AbstractController {
 		// TODO https://github.com/curtisullerich/attendance/issues/63
 		// Needs to be changed for events that span multiple days
 		event.setDate(datetimeToJustDate(start));
+
+		// store it, and then we'll check for linking and refresh it in the
+		// database before returning
+		this.train.getDataStore().store(event);
 
 		// we need get the subset of events that have any overlap with the new
 		// event so we can send them into the battle royale to try and anchor
@@ -133,17 +137,22 @@ public class EventController extends AbstractController {
 					break;
 				}
 			}
-			// we've compared all unanchored absences to all events now
+			// we've compared this unanchored absence to all events now
 			if (one != null) {
 				a.setEvent(one);
 
 				// LINK IT
 				ac.updateAbsence(a);
+
+				// TODO doing this every time is probably horrible for
+				// performance. Another possible solution is keeping a list of
+				// all students and updating each one before returning
+				this.train.getDataStore().refresh(event);
+				this.train.getUsersController().update(a.getStudent());
 			}
 		}
 
-		this.train.getDataStore().store(event);
-
+		this.train.getDataStore().refresh(event);
 		return event;
 	}
 
