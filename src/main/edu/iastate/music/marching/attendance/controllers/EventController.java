@@ -19,9 +19,9 @@ import edu.iastate.music.marching.attendance.model.ModelFactory;
 public class EventController extends AbstractController {
 
 	DataTrain train;
-	
-	private static final Logger log = Logger
-			.getLogger(EventController.class.getName());
+
+	private static final Logger log = Logger.getLogger(EventController.class
+			.getName());
 
 	public EventController(DataTrain dataTrain) {
 		this.train = dataTrain;
@@ -34,11 +34,26 @@ public class EventController extends AbstractController {
 	// return true;
 	// }
 
+	/**
+	 * Checks if two date ranges intersect at all.
+	 * 
+	 * @param e1
+	 * @param e2
+	 * @return
+	 */
+	private boolean overlaps(Event e1, Event e2) {
+		boolean a = e1.getStart().after(e2.getEnd());
+		boolean b = e1.getEnd().before(e2.getStart());
+		// if a and b are both true, then no instant in time is found in both
+		// date ranges.
+		return !(a || b);
+	}
+
 	public Event createOrUpdate(Type type, Date start, Date end) {
 		Event event = null;
 
 		List<Event> similarEvents = get(start, end);
-
+		List<Event> overlapping = new ArrayList<Event>();
 		for (Event e : similarEvents) {
 			if (e.getType().equals(type)) {
 				if (event != null) {
@@ -50,12 +65,13 @@ public class EventController extends AbstractController {
 				event = e;
 			}
 		}
-		
-		if(event != null)
-		{
+
+		if (event != null) {
+			// this means that we found an event already in the datastore that
+			// matches all fields of this one. We don't need to add the new one.
 			return event;
 		}
-		
+
 		// Safe to create a new event
 		event = ModelFactory.newEvent(type, start, end);
 
@@ -63,8 +79,20 @@ public class EventController extends AbstractController {
 		// Needs to be changed for events that span multiple days
 		event.setDate(datetimeToJustDate(start));
 
-		this.train.getDataStore().store(event);
+		// we need get the subset of events that have any overlap with the new
+		// event so we can send them into the battle royale to try and anchor
+		// absences
+		List<Event> all = getAll();
+		for (Event e : all) {
+			if (overlaps(event, e)) {
+				overlapping.add(e);
+			}
+		}
+
 		
+		
+		this.train.getDataStore().store(event);
+
 		return event;
 	}
 

@@ -280,7 +280,8 @@ public class AbsenceController extends AbstractController {
 			absence.setEvent(events.get(0));
 			// associated with this event for this student
 		} else {
-			log.log(Level.WARNING, "Orphaned early checkout being created for time: " + time);
+			log.log(Level.WARNING,
+					"Orphaned early checkout being created for time: " + time);
 		}
 
 		return storeAbsence(absence, student);

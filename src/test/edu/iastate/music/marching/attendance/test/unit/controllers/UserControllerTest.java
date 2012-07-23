@@ -249,16 +249,29 @@ public class UserControllerTest extends AbstractTest {
 		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
 
 		Calendar start = Calendar.getInstance();
-		start.set(2012, 7, 18, 16, 30);
+		start.set(2012, 9, 18, 16, 30);
 		Calendar end = Calendar.getInstance();
-		end.set(2012, 7, 18, 17, 20);
+		end.set(2012, 9, 18, 17, 50);
 
+		Calendar tardy = Calendar.getInstance();
+		tardy.set(2012,9,18,16,40);
+		Absence a1 = ac.createOrUpdateTardy(s1, tardy.getTime());
+		
+		uc.update(s1);
+		
+		//there's a tardy, but it's not linked
+		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
 		Event e1 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
 				end.getTime());
-		Absence a1 = ac.createOrUpdateAbsence(s1, e1);
-		uc.update(s1);
-		assertEquals(User.Grade.B, uc.get(s1.getId()).getGrade());
 
+		//now that there's a matching event, it should link
+		assertEquals(User.Grade.Aminus, uc.get(s1.getId()).getGrade());
+		
+		start.add(Calendar.DATE, 1);
+		end.add(Calendar.DATE, 1);
+		tardy.add(Calendar.DATE, 1);
+		assertEquals(User.Grade.Bplus, uc.get(s1.getId()).getGrade());
+		
 	}
 
 	@Test
