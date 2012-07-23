@@ -12,6 +12,7 @@ import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.code.twig.FindCommand.RootFindCommand;
 import com.google.code.twig.ObjectDatastore;
 
+import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.Event;
 import edu.iastate.music.marching.attendance.model.Event.Type;
 import edu.iastate.music.marching.attendance.model.ModelFactory;
@@ -34,26 +35,26 @@ public class EventController extends AbstractController {
 	// return true;
 	// }
 
-	/**
-	 * Checks if two date ranges intersect at all.
-	 * 
-	 * @param e1
-	 * @param e2
-	 * @return
-	 */
-	private boolean overlaps(Event e1, Event e2) {
-		boolean a = e1.getStart().after(e2.getEnd());
-		boolean b = e1.getEnd().before(e2.getStart());
-		// if a and b are both true, then no instant in time is found in both
-		// date ranges.
-		return !(a || b);
-	}
+//	/**
+//	 * Checks if two date ranges intersect at all.
+//	 * 
+//	 * @param e1
+//	 * @param e2
+//	 * @return
+//	 */
+//	private boolean overlaps(Event e1, Event e2) {
+//		boolean a = e1.getStart().after(e2.getEnd());
+//		boolean b = e1.getEnd().before(e2.getStart());
+//		// if a and b are both true, then no instant in time is found in both
+//		// date ranges.
+//		return !(a || b);
+//	}
 
 	public Event createOrUpdate(Type type, Date start, Date end) {
 		Event event = null;
 
 		List<Event> similarEvents = get(start, end);
-		List<Event> overlapping = new ArrayList<Event>();
+		// List<Event> overlapping = new ArrayList<Event>();
 		for (Event e : similarEvents) {
 			if (e.getType().equals(type)) {
 				if (event != null) {
@@ -82,15 +83,65 @@ public class EventController extends AbstractController {
 		// we need get the subset of events that have any overlap with the new
 		// event so we can send them into the battle royale to try and anchor
 		// absences
+		// List<Event> all = getAll();
+		// for (Event e : all) {
+		// if (overlaps(event, e)) {
+		// overlapping.add(e);
+		// }
+		// }
+		AbsenceController ac = train.getAbsenceController();
+		List<Absence> unanchored = ac.getUnanchored();
+
 		List<Event> all = getAll();
-		for (Event e : all) {
-			if (overlaps(event, e)) {
-				overlapping.add(e);
+		for (Absence a : unanchored) {
+			boolean foundOne = false;
+			Event one = null;
+			for (Event e : all) {
+				// tardies/earlycheckouts are easy.
+				// absences.... need to match start and end times.
+				switch (a.getType()) {
+				case Absence:
+					if (a.getStart().compareTo(e.getStart()) == 0
+							&& a.getEnd().compareTo(e.getEnd()) == 0) {
+						// match!
+						if (foundOne) {
+							// we can't link it, because there are multiple
+							// choices
+							one = null;
+						} else {
+							foundOne = true;
+							one = e;
+						}
+					}
+					break;
+				case Tardy:
+					// break omitted intentionally so we fall through to the EOC
+					// logic!
+				case EarlyCheckOut:
+					if (!a.getDatetime().after(e.getEnd())
+							&& !a.getDatetime().before(e.getStart())) {
+						// must be within the event
+						if (foundOne) {
+							one = null;
+						} else {
+							foundOne = true;
+							one = e;
+						}
+					}
+					break;
+				default:
+					break;
+				}
+			}
+			// we've compared all unanchored absences to all events now
+			if (one != null) {
+				a.setEvent(one);
+
+				// LINK IT
+				ac.updateAbsence(a);
 			}
 		}
 
-		
-		
 		this.train.getDataStore().store(event);
 
 		return event;

@@ -69,6 +69,15 @@ public class AbsenceController extends AbstractController {
 		return storeAbsence(absence, student);
 	}
 
+	// TODO TEST THIS! probably by getting all and making sure there aren't any
+	// other unanchoreds running around somewhere
+	public List<Absence> getUnanchored() {
+		List<Absence> absences = this.train.find(Absence.class)
+				.addFilter(Absence.FIELD_EVENT, FilterOperator.EQUAL, null)
+				.returnAll().now();
+		return absences;
+	}
+
 	/**
 	 * Note! This method causes destructive edits to the database that cannot be
 	 * fixed after releasing a reference to both parameters!
