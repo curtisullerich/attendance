@@ -60,26 +60,33 @@ public class MobileAppDataServlet extends AbstractBaseServlet {
 
 			MobileDataController mdc = train.getMobileDataController();
 
-			// data here is the posted content delimited by "&newline&". Those values in turn are
-			// delimited by "&split&"	
+			// data here is the posted content delimited by "&newline&". Those
+			// values in turn are
+			// delimited by "&split&"
 			String data;
 			try {
-				data = new java.util.Scanner(req.getInputStream()).useDelimiter("\\A").next();
-		    } catch (java.util.NoSuchElementException e) {
-		    	data = "";
-		    }
-			
-			if(data.trim().equals(""))
-			{
+				data = new java.util.Scanner(req.getInputStream())
+						.useDelimiter("\\A").next();
+			} catch (java.util.NoSuchElementException e) {
+				data = "";
+			}
+
+			if (data.trim().equals("")) {
 				// Empty data uploaded
 				result.error = ResultErrorType.empty;
 			} else {
 				// Optimistically set a success type
 				result.error = ResultErrorType.success;
-				
+
 				try {
-					result.message = mdc.pushMobileData(data, train.getAuthController().getCurrentUser(req.getSession()));
+					result.message = mdc.pushMobileData(
+							data,
+							train.getAuthController().getCurrentUser(
+									req.getSession()));
 				} catch (IllegalArgumentException e) {
+					result.error = ResultErrorType.exception;
+					result.message = e.getMessage();
+				} catch (IllegalStateException e) {
 					result.error = ResultErrorType.exception;
 					result.message = e.getMessage();
 				}
