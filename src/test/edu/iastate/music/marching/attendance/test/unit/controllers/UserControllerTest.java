@@ -229,9 +229,36 @@ public class UserControllerTest extends AbstractTest {
 		a7 = ac.updateAbsence(a7);
 		assertEquals(Absence.Type.EarlyCheckOut, a7.getType());
 		assertEquals(User.Grade.C, uc.get(s1.getId()).getGrade());
+	}
+
+	@Test
+	public void testGrade2() {
 		// TODO test with earlycheckout and tardies
 		// TODO test that grade is fixed after approving things
 		// TODO test that grade is affected after linking, but not before
+		DataTrain train = getDataTrain();
+
+		UserController uc = train.getUsersController();
+		EventController ec = train.getEventController();
+		AbsenceController ac = train.getAbsenceController();
+
+		User s1 = Users.createStudent(uc, "student1", 121, "John", "Cox", 2,
+				"major", User.Section.AltoSax);
+
+		// should be A initially
+		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
+
+		Calendar start = Calendar.getInstance();
+		start.set(2012, 7, 18, 16, 30);
+		Calendar end = Calendar.getInstance();
+		end.set(2012, 7, 18, 17, 20);
+
+		Event e1 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
+				end.getTime());
+		Absence a1 = ac.createOrUpdateAbsence(s1, e1);
+		uc.update(s1);
+		assertEquals(User.Grade.B, uc.get(s1.getId()).getGrade());
+
 	}
 
 	@Test
