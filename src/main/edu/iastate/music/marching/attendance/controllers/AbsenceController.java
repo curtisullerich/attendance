@@ -628,13 +628,6 @@ public class AbsenceController extends AbstractController {
 		return this.train.find(Absence.class).returnCount().now();
 	}
 
-	// TODO https://github.com/curtisullerich/attendance/issues/89
-	public List<Absence> getUnanchored() {
-		return this.train.find(Absence.class)
-				.addFilter(Absence.FIELD_STUDENT, FilterOperator.EQUAL, null)
-				.returnAll().now();
-	}
-
 	public List<Absence> getAll() {
 		return this.train.find(Absence.class).returnAll().now();
 	}
