@@ -147,6 +147,14 @@
 			 */
 			function tardiesOnOff(){
 				viewTardiesOn = !viewTardiesOn;
+
+				if(viewTardiesOn)
+				{
+					$("#viewButton").text("View Tardies");
+				} else {
+					$("#viewButton").text("Hide Tardies");
+				}
+
 				retrieveTardies();
 			}
 		

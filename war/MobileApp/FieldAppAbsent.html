@@ -459,6 +459,14 @@
 			 */
 			function absencesOnOff(){
 				viewAbsencesOn = !viewAbsencesOn;
+
+				if(viewTardiesOn)
+				{
+					$("#viewButton").text("View Absences");
+				} else {
+					$("#viewButton").text("Hide Absences");
+				}
+				
 				retrieveAbsences();
 				return;
 			}
