@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.google.appengine.api.datastore.Query.FilterOperator;
 import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.Event;
 import edu.iastate.music.marching.attendance.model.MobileDataUpload;
@@ -91,24 +92,26 @@ public class MobileDataController {
 		this.train.getDataStore().store(upload);
 
 		try {
-		
+
 			return uploadMobileDataImplementation(data, uploader);
-		
-		} catch(IllegalArgumentException e) {
+
+		} catch (IllegalArgumentException e) {
 			// Log exception
-			log.log(Level.WARNING, "Parse exception for uploaded mobile app data", e);
-			
+			log.log(Level.WARNING,
+					"Parse exception for uploaded mobile app data", e);
+
 			// Store exception message in upload object
 			upload.setErrorMessage(e.toString());
-			
+
 			throw e;
-		} catch(IllegalStateException e) {
+		} catch (IllegalStateException e) {
 			// Log exception
-			log.log(Level.WARNING, "Exception while uploading mobile app data", e);
-			
+			log.log(Level.WARNING, "Exception while uploading mobile app data",
+					e);
+
 			// Store exception message in upload object
 			upload.setErrorMessage(e.toString());
-			
+
 			throw e;
 		}
 	}
@@ -140,7 +143,7 @@ public class MobileDataController {
 		int successfulAbscenses = 0;
 		int successfulEvents = 0;
 		List<String> errors = new ArrayList<String>();
-		
+
 		Set<User> updatedStudents = new HashSet<User>();
 
 		// Do everything in a transaction so entire upload goes as a single
@@ -219,9 +222,9 @@ public class MobileDataController {
 				User student = uc.get(netid);
 
 				a = ac.createOrUpdateTardy(student, time);
-				
+
 				updatedStudents.add(student);
-				
+
 			} else if (s.contains("absent")) {
 
 				String firstName = parts[1];
@@ -251,9 +254,9 @@ public class MobileDataController {
 				User student = uc.get(netid);
 
 				a = ac.createOrUpdateAbsence(student, start, end);
-				
+
 				updatedStudents.add(student);
-				
+
 			} else if (s.toLowerCase().contains("earlycheckout")) {
 				String firstName = parts[1];
 				String lastName = parts[2];
@@ -273,7 +276,7 @@ public class MobileDataController {
 				User student = uc.get(netid);
 
 				a = ac.createOrUpdateEarlyCheckout(student, time);
-				
+
 				updatedStudents.add(student);
 
 			} else {
@@ -287,10 +290,9 @@ public class MobileDataController {
 				successfulAbscenses++;
 			}
 		}
-		
+
 		// Update grades
-		for(User student : updatedStudents)
-		{
+		for (User student : updatedStudents) {
 			uc.updateUserGrade(student);
 		}
 
@@ -312,7 +314,24 @@ public class MobileDataController {
 				+ "\n" + errorString;
 	}
 
-	List<MobileDataUpload> getAllUploads() {
+	public List<MobileDataUpload> getUploads() {
 		return this.train.find(MobileDataUpload.class).returnAll().now();
+	}
+
+	public List<MobileDataUpload> getUploads(User uploader) {
+		return this.train
+				.find(MobileDataUpload.class)
+				.addFilter(MobileDataUpload.FIELD_UPLOADER,
+						FilterOperator.EQUAL, uploader).returnAll().now();
+	}
+
+	public void scrubUploader(User uploader) {
+		List<MobileDataUpload> uploads = getUploads(uploader);
+		
+		for(MobileDataUpload upload : uploads)
+		{
+			upload.setUploader(null);
+			this.train.getDataStore().update(upload);
+		}
 	}
 }

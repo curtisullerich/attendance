@@ -94,7 +94,7 @@ public class DataController extends AbstractController {
 
 		dump.messages = dataTrain.getMessagingController().getAll();
 
-		dump.mobileData = dataTrain.getMobileDataController().getAllUploads();
+		dump.mobileData = dataTrain.getMobileDataController().getUploads();
 
 		dump.users = dataTrain.getUsersController().getAll();
 

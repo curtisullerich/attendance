@@ -237,16 +237,16 @@ public class FormController extends AbstractController {
 			String section, String building, Date startDate, Date endDate,
 			int day, Date startTime, Date endTime, String details,
 			int minutesToOrFrom) {
-		
+
 		Calendar startDateTime = Calendar.getInstance();
 		Calendar endDateTime = Calendar.getInstance();
-		
+
 		Calendar startTimeCalendar = Calendar.getInstance();
 		Calendar endTimeCalendar = Calendar.getInstance();
-		
+
 		startTimeCalendar.setTime(startTime);
 		endTimeCalendar.setTime(endTime);
-		
+
 		// TODO NEEDS MORE PARAMETERS and LOTS OF VALIDATION
 
 		// Simple validation first
@@ -262,13 +262,16 @@ public class FormController extends AbstractController {
 		}
 
 		Form form = ModelFactory.newForm(Form.Type.B, student);
-		
+
 		startDateTime.setTime(startDate);
-		startDateTime.set(Calendar.HOUR_OF_DAY, startTimeCalendar.get(Calendar.HOUR_OF_DAY));
-		startDateTime.set(Calendar.MINUTE, startTimeCalendar.get(Calendar.MINUTE));
-		
+		startDateTime.set(Calendar.HOUR_OF_DAY,
+				startTimeCalendar.get(Calendar.HOUR_OF_DAY));
+		startDateTime.set(Calendar.MINUTE,
+				startTimeCalendar.get(Calendar.MINUTE));
+
 		endDateTime.setTime(endDate);
-		endDateTime.set(Calendar.HOUR_OF_DAY, endTimeCalendar.get(Calendar.HOUR_OF_DAY));
+		endDateTime.set(Calendar.HOUR_OF_DAY,
+				endTimeCalendar.get(Calendar.HOUR_OF_DAY));
 		endDateTime.set(Calendar.MINUTE, endTimeCalendar.get(Calendar.MINUTE));
 
 		form.setStart(startDateTime.getTime());
@@ -546,6 +549,20 @@ public class FormController extends AbstractController {
 		// TODO Auto-generated method stub
 		form.setStatus(Form.Status.Approved);
 		this.update(form);
+	}
+
+	void delete(User user) {
+		MessagingController mc = this.dataTrain.getMessagingController();
+		List<Form> forms = this.get(user);
+
+		for (Form form : forms) {
+			MessageThread mt = form.getMessageThread();
+
+			if (mt != null) {
+				mc.delete(mt);
+			}
+		}
+		this.dataTrain.getDataStore().deleteAll(forms);
 	}
 
 }

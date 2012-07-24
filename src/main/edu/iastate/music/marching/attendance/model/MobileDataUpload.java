@@ -11,6 +11,8 @@ import com.google.code.twig.annotation.Version;
 @Entity(kind = "MobileDataUpload", allocateIdsBy = 0)
 public class MobileDataUpload {
 
+	public static final String FIELD_UPLOADER = "uploader";
+
 	public MobileDataUpload() {
 	}
 

@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
@@ -11,15 +12,23 @@ import org.junit.Test;
 import edu.iastate.music.marching.attendance.controllers.AbsenceController;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.EventController;
+import edu.iastate.music.marching.attendance.controllers.FormController;
+import edu.iastate.music.marching.attendance.controllers.MessagingController;
+import edu.iastate.music.marching.attendance.controllers.MobileDataController;
 import edu.iastate.music.marching.attendance.controllers.UserController;
 import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.Event;
+import edu.iastate.music.marching.attendance.model.Form;
 import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.test.AbstractTest;
 import edu.iastate.music.marching.attendance.test.TestConfig;
 import edu.iastate.music.marching.attendance.test.util.Users;
 
 public class UserControllerTest extends AbstractTest {
+
+	public static final String SINGLE_ABSENCE_STUDENT1_TESTDATA = "tardyStudent&split&el&split&Starster&split&studenttt&split&2012-05-03&split&0109&split&|&split&null&newline&";
+
+	public static final String SINGLE_ABSENCE_STUDENT2_TESTDATA = "tardyStudent&split&el&split&Starster&split&studenttt2&split&2012-05-03&split&0109&split&|&split&null&newline&";
 
 	@Test
 	public void testCreateSingleDirector() {
@@ -77,6 +86,95 @@ public class UserControllerTest extends AbstractTest {
 		assertEquals(10, s.getYear());
 		assertEquals("Being Silly", s.getMajor());
 		assertEquals(User.Section.AltoSax, s.getSection());
+	}
+
+	/**
+	 * Ensure full cleanup of user happens without affecting other things in the
+	 * datastore
+	 * 
+	 * This includes:
+	 * 
+	 * Absences, Forms, MessageThreads, mobile data uploads
+	 * 
+	 * @author Daniel Stiner <daniel.stiner@gmail.com>
+	 */
+	@Test
+	public void testDeleteSingleStudent() {
+
+		DataTrain train = getDataTrain();
+
+		UserController uc = train.getUsersController();
+		AbsenceController ac = train.getAbsenceController();
+		FormController fc = train.getFormsController();
+		MessagingController mc = train.getMessagingController();
+		MobileDataController mdc = train.getMobileDataController();
+
+		// Student 1 setup, the user to be deleted
+		User student1 = Users.createStudent(uc, "studenttt", 121, "I am",
+				"A Student", 10, "Being Silly", User.Section.AltoSax);
+
+		ac.createOrUpdateAbsence(student1, null);
+		ac.createOrUpdateAbsence(student1, null);
+
+		Form student1Form = fc.createFormA(student1, new Date(), "Some reason");
+
+		mc.addMessage(student1Form.getMessageThread(), student1,
+				"test message!");
+
+		mdc.pushMobileData(SINGLE_ABSENCE_STUDENT1_TESTDATA, student1);
+
+		// Student 2 setup, the user to keep
+		User student2 = Users.createStudent(uc, "studenttt2", 122, "I am2",
+				"A Student2", 10, "Being Silly2", User.Section.AltoSax);
+		ac.createOrUpdateAbsence(student2, null);
+
+		Form student2Form = fc.createFormA(student2, new Date(),
+				"Some other reason");
+
+		mc.addMessage(student2Form.getMessageThread(), student2,
+				"test message!");
+
+		mdc.pushMobileData(SINGLE_ABSENCE_STUDENT2_TESTDATA, student2);
+
+		// Shared state
+		mc.addMessage(student1Form.getMessageThread(), student2,
+				"test message!");
+		mc.addMessage(student2Form.getMessageThread(), student1,
+				"test message!");
+
+		// Act
+		uc.delete(student1);
+
+		// Assert
+		List<User> users = uc.getAll();
+
+		assertNotNull(users);
+		assertEquals(1, users.size());
+
+		User survivingStudent = users.get(0);
+
+		// Check student
+		assertNotNull(survivingStudent);
+		assertEquals(122, survivingStudent.getUniversityID());
+
+		// Check only student2 absences remain
+		assertEquals(2, ac.getAll().size());
+		assertEquals(2, ac.get(survivingStudent).size());
+
+		// Check only student2's form remains
+		assertEquals(1, fc.getAll().size());
+		assertEquals(1, fc.get(survivingStudent).size());
+
+		// Check shared message thread owned by student1 was deleted
+		assertEquals(3, mc.getAll().size());
+		assertEquals(3, mc.get(survivingStudent).size());
+
+		// Check mobile data upload from student2 remains
+		assertEquals(2, mdc.getUploads().size());
+		assertEquals(1, mdc.getUploads(survivingStudent).size());
+
+		// And that un-assigned one still exists from student 1
+		assertEquals(1, mdc.getUploads(null).size());
 	}
 
 	@Test

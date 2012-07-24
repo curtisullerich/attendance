@@ -693,4 +693,20 @@ public class AbsenceController extends AbstractController {
 		// this also checks the students grade
 		train.getUsersController().update(todie.getStudent());
 	}
+
+	void delete(User student) {
+		MessagingController mc = this.train.getMessagingController();
+		List<Absence> absences = this.get(student);
+		
+		for(Absence a : absences)
+		{
+			MessageThread mt = a.getMessageThread();
+			
+			if(mt != null)
+			{
+				mc.delete(mt);
+			}
+		}
+		train.getDataStore().deleteAll(absences);
+	}
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Set;
 
 import com.google.appengine.api.datastore.Key;
@@ -135,6 +136,28 @@ public class MessagingController extends AbstractController {
 			}
 		}
 		return mostRecent;
+	}
+
+	void scrubParticipant(User participant) {
+		List<MessageThread> involved = this.get(participant);
+
+		for (MessageThread thread : involved) {
+			ListIterator<Message> iter = thread.getMessages().listIterator();
+
+			while (iter.hasNext()) {
+				Message message = iter.next();
+
+				if (message != null && message.getAuthor() == participant) {
+					iter.remove();
+				}
+			}
+
+			thread.getParticipants().remove(participant);
+		}
+	}
+
+	void delete(MessageThread mt) {
+		this.train.getDataStore().delete(mt);
 	}
 
 }
