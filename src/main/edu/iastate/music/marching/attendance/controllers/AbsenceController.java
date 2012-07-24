@@ -54,14 +54,6 @@ public class AbsenceController extends AbstractController {
 			// now link
 			absence.setEvent(toLink);
 
-			// TODO https://github.com/curtisullerich/attendance/issues/91
-			// well, stack overflow says this works :)
-			// this changes the type from Tardy to Absence if there's a tardy
-			// that's 30 or more minutes late. Per request from Mr. Staub.
-			// if (absence.getDatetime().getTime() - toLink.getStart().getTime()
-			// >= 30 * 60 * 1000) {
-			// absence.setType(Absence.Type.Absence);
-			// }
 		} else {
 			log.log(Level.WARNING, "Orphaned tardy being created at time: "
 					+ time);
@@ -541,10 +533,6 @@ public class AbsenceController extends AbstractController {
 
 		Event linked = absence.getEvent();
 		if (linked != null && absence.getType() == Absence.Type.Tardy) {
-			// if (absence.getDatetime().getTime() - linked.getStart().getTime()
-			// >= 30 * 60 * 1000) {
-			// absence.setType(Absence.Type.Absence);
-			// }
 		}
 
 		// Do some validation
