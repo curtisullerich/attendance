@@ -127,6 +127,8 @@ public class AbsenceController extends AbstractController {
 		switch (current.getType()) {
 		case Absence:
 			// Anything beats an absence
+			// TODO uhhhhhh is it possible to have two absences with different
+			// start/end times at this point?
 			return false;
 		case Tardy:
 			switch (contester.getType()) {
@@ -549,7 +551,14 @@ public class AbsenceController extends AbstractController {
 		Absence resolvedAbsence = validateAbsence(absence);
 		if (resolvedAbsence == null) {
 			// Null resolved absence means remove from database
-			this.train.getDataStore().delete(absence);
+
+			try {
+				this.train.getDataStore().delete(absence);
+			} catch (IllegalArgumentException e) {
+				LOG.severe("Attempted to delete absence that wasn't associated.");
+				// TODO not really sure how bad of an idea it was to swallow the
+				// exception here --curtis
+			}
 
 			// Current absence has been invalidated somehow and removed from the
 			// database, so return null to indicate that

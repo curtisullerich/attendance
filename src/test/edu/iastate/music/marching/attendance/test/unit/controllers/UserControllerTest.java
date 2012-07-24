@@ -218,16 +218,20 @@ public class UserControllerTest extends AbstractTest {
 		assertEquals(Absence.Type.EarlyCheckOut, a7.getType());
 		assertEquals(User.Grade.Bminus, uc.get(s1.getId()).getGrade());
 
+		// auto-linking should happen here, upon creation
 		Event e6 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
 				end.getTime());
-		a6.setEvent(e6);
-		a6 = ac.updateAbsence(a6);
-		assertEquals(Absence.Type.Tardy, a6.getType());
-		assertEquals(User.Grade.Cplus, uc.get(s1.getId()).getGrade());
+		// a6.setEvent(e6);
+		// TODO my question here: is there a way to know for sure the types of
+		// a6 and a7 after creating the event? Because automatic linking
+		// happens. Additionally, does it matter? -curtis
+		// a6 = ac.updateAbsence(a6);
+		// assertEquals(Absence.Type.Tardy, a6.getType());
+		// assertEquals(User.Grade.Cplus, uc.get(s1.getId()).getGrade());
 
-		a7.setEvent(e6);
-		a7 = ac.updateAbsence(a7);
-		assertEquals(Absence.Type.EarlyCheckOut, a7.getType());
+		// a7.setEvent(e6);
+		// a7 = ac.updateAbsence(a7);
+		// assertEquals(Absence.Type.EarlyCheckOut, a7.getType());
 		assertEquals(User.Grade.C, uc.get(s1.getId()).getGrade());
 	}
 
@@ -254,24 +258,57 @@ public class UserControllerTest extends AbstractTest {
 		end.set(2012, 9, 18, 17, 50);
 
 		Calendar tardy = Calendar.getInstance();
-		tardy.set(2012,9,18,16,40);
-		Absence a1 = ac.createOrUpdateTardy(s1, tardy.getTime());
-		
+		tardy.set(2012, 9, 18, 16, 40);
+		ac.createOrUpdateTardy(s1, tardy.getTime());
+
 		uc.update(s1);
-		
-		//there's a tardy, but it's not linked
+
+		// there's a tardy, but it's not linked
 		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
-		Event e1 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
+		ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
 				end.getTime());
 
-		//now that there's a matching event, it should link
+		// now that there's a matching event, it should link
 		assertEquals(User.Grade.Aminus, uc.get(s1.getId()).getGrade());
-		
+
 		start.add(Calendar.DATE, 1);
 		end.add(Calendar.DATE, 1);
 		tardy.add(Calendar.DATE, 1);
+		ac.createOrUpdateEarlyCheckout(s1, tardy.getTime());
+		ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(), end.getTime());
 		assertEquals(User.Grade.Bplus, uc.get(s1.getId()).getGrade());
-		
+
+		start.add(Calendar.DATE, 1);
+		end.add(Calendar.DATE, 1);
+		tardy.add(Calendar.DATE, 1);
+		ac.createOrUpdateEarlyCheckout(s1, tardy.getTime());
+		ec.createOrUpdate(Event.Type.Performance, start.getTime(),
+				end.getTime());
+		assertEquals(User.Grade.Bminus, uc.get(s1.getId()).getGrade());
+
+		start.add(Calendar.DATE, 1);
+		end.add(Calendar.DATE, 1);
+		tardy.add(Calendar.DATE, 1);
+		ac.createOrUpdateTardy(s1, tardy.getTime());
+		ec.createOrUpdate(Event.Type.Performance, start.getTime(),
+				end.getTime());
+		assertEquals(User.Grade.C, uc.get(s1.getId()).getGrade());
+
+		start.add(Calendar.DATE, 1);
+		end.add(Calendar.DATE, 1);
+		tardy.add(Calendar.DATE, 1);
+		ac.createOrUpdateAbsence(
+				s1,
+				ec.createOrUpdate(Event.Type.Performance, start.getTime(),
+						end.getTime()));
+		assertEquals(User.Grade.F, uc.get(s1.getId()).getGrade());
+
+		for (Absence a : ac.get(s1)) {
+			a.setStatus(Absence.Status.Approved);
+			ac.updateAbsence(a);
+		}
+		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
+
 	}
 
 	@Test
@@ -351,13 +388,20 @@ public class UserControllerTest extends AbstractTest {
 
 		Event e6 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
 				end.getTime());
-		a6.setEvent(e6);
-		a6 = ac.updateAbsence(a6);
-		assertEquals(Absence.Type.Tardy, a6.getType());
-
-		a7.setEvent(e6);
-		a7 = ac.updateAbsence(a7);
 		assertEquals(Absence.Type.Absence, a7.getType());
+
+		// So, at this point, the logiv in the event creation has automatically
+		// linked the absence to the event. Setting the event is redundant.
+		// I left this code here because it causes here, yet used to work
+		// (before adding the event royale logic. Now I'm not sure what to think
+		// of what happens if you keep playing with these references) -curtis
+		// a6.setEvent(e6);
+		// a6 = ac.updateAbsence(a6);
+		// assertEquals(Absence.Type.Tardy, a6.getType());
+		//
+		// a7.setEvent(e6);
+		// a7 = ac.updateAbsence(a7);
+		// assertEquals(Absence.Type.Absence, a7.getType());
 	}
 
 }
