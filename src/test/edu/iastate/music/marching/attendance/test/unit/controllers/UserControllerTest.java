@@ -4,12 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
-
-import com.google.code.twig.ObjectDatastore;
 
 import edu.iastate.music.marching.attendance.controllers.AbsenceController;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
@@ -265,8 +262,7 @@ public class UserControllerTest extends AbstractTest {
 
 		// there's a tardy, but it's not linked
 		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
-		ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
-				end.getTime());
+		ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(), end.getTime());
 
 		// now that there's a matching event, it should link
 		assertEquals(User.Grade.Aminus, uc.get(s1.getId()).getGrade());
