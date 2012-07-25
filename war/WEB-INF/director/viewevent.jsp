@@ -34,7 +34,7 @@
 			</dl>
 	<form method="post" action="/director/deleteevent" accept-charset="utf-8">
 		<input type="hidden" value="${event.id }" name="id"/>
-		<input type="submit" value="Delete this event" />
+		<input type="submit" value="Delete this event" onClick="confirm('Really delete?')" />
 		Also remove all absences linked to this event?<input type="checkbox" name="RemoveAnchored" value="true"/>
 	</form>
 	<br/>

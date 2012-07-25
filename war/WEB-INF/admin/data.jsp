@@ -63,7 +63,7 @@
 							<li>
 								<form action="data_delete" method="POST" style="display:inline">
 									<input type="submit" value="Delete" title="Delete this data" />
-									<input type="hidden" name="version" value="<c:out value="${DatastoreVersion.version}" />"/>
+									<input type="hidden" onClick="confirm('Really delete?')" name="version" value="<c:out value="${DatastoreVersion.version}" />"/>
 								</form>
 							</li>
 						</c:when>
