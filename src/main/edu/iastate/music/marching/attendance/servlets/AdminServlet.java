@@ -83,6 +83,7 @@ public class AdminServlet extends AbstractBaseServlet {
 				break;
 			case register:
 				showDirectorRegistrationPage(req, resp);
+				break;
 			default:
 				ErrorServlet.showError(req, resp, 404);
 			}
