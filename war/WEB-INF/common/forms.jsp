@@ -114,11 +114,15 @@
 				<p>No forms submitted yet!</p>
 			</c:otherwise>
 		</c:choose>
+		<form method="POST" id="deleteForm">
+			<hidden id="deleteFormId" name="removeid" value="" />
+		</form>
 		<script>
 			function deleteForm(id, type) {
 				var answer = confirm("Really delete the form?");
 				if (answer) {
-					window.location='/' + type + '/forms?removeid=' + id
+					$("#deleteFormId").val(id);
+					$("#deleteForm").submit();
 				}
 			}
 		

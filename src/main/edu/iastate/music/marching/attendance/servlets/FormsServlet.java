@@ -130,6 +130,9 @@ public class FormsServlet extends AbstractBaseServlet {
 			ErrorServlet.showError(req, resp, 404);
 		else
 			switch (page) {
+			case index:
+				showIndex(req, resp);
+				break;
 			case forma:
 				postFormA(req, resp);
 				break;
