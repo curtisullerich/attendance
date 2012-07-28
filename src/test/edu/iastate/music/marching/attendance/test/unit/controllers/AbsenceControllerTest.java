@@ -370,8 +370,7 @@ public class AbsenceControllerTest extends AbstractTest {
 		train.getAbsenceController().createOrUpdateTardy(student1, tardy);
 		train.getAbsenceController().createOrUpdateTardy(student1, tardyLate);
 
-		List<Absence> studentAbsences = train.getAbsenceController().get(
-				student1);
+		List<Absence> studentAbsences = train.getAbsenceController().get(student1);
 
 		assertEquals(1, studentAbsences.size());
 		Absence absence = studentAbsences.get(0);
@@ -383,8 +382,7 @@ public class AbsenceControllerTest extends AbstractTest {
 		train.getAbsenceController().createOrUpdateTardy(student2, tardyLate);
 		train.getAbsenceController().createOrUpdateTardy(student2, tardy);
 
-		List<Absence> student2Absences = train.getAbsenceController().get(
-				student1);
+		List<Absence> student2Absences = train.getAbsenceController().get(student2);
 
 		assertEquals(1, studentAbsences.size());
 		Absence absence2 = student2Absences.get(0);
@@ -400,7 +398,6 @@ public class AbsenceControllerTest extends AbstractTest {
 		UserController uc = train.getUsersController();
 		User student1 = Users.createStudent(uc, "student1", "123456789",
 				"First", "last", 2, "major", User.Section.AltoSax);
-		;
 
 		Date event1Start = makeDate("2012-06-16 0500");
 		Date event1End = makeDate("2012-06-16 0700");
@@ -419,8 +416,7 @@ public class AbsenceControllerTest extends AbstractTest {
 		train.getAbsenceController().createOrUpdateTardy(student1, tardy);
 		train.getAbsenceController().createOrUpdateTardy(student1, otherTardy);
 
-		List<Absence> studentAbsences = train.getAbsenceController().get(
-				student1);
+		List<Absence> studentAbsences = train.getAbsenceController().get(student1);
 
 		assertEquals(2, studentAbsences.size());
 		Absence absence = studentAbsences.get(0);
@@ -495,8 +491,7 @@ public class AbsenceControllerTest extends AbstractTest {
 		train.getAbsenceController().createOrUpdateTardy(nonOverEarlyFirst,
 				tardyDate);
 
-		List<Absence> nonOverEarlyFirstAbsences = train.getAbsenceController()
-				.get(nonOverEarlyFirst);
+		List<Absence> nonOverEarlyFirstAbsences = train.getAbsenceController().get(nonOverEarlyFirst);
 
 		assertEquals(2, nonOverEarlyFirstAbsences.size());
 		tardy = (nonOverEarlyFirstAbsences.get(0).getType() == Absence.Type.Tardy) ? nonOverEarlyFirstAbsences
@@ -511,13 +506,10 @@ public class AbsenceControllerTest extends AbstractTest {
 		assertTrue(earlyCheckOut.getStart().equals(earlyNon));
 
 		// Case 2.a
-		train.getAbsenceController().createOrUpdateTardy(overlapTardyFirst,
-				tardyDate);
-		train.getAbsenceController().createOrUpdateEarlyCheckout(
-				overlapTardyFirst, earlyOverlap);
+		train.getAbsenceController().createOrUpdateTardy(overlapTardyFirst, tardyDate);
+		train.getAbsenceController().createOrUpdateEarlyCheckout(overlapTardyFirst, earlyOverlap);
 
-		List<Absence> overlapTardyFirstAbsences = train.getAbsenceController()
-				.get(overlapTardyFirst);
+		List<Absence> overlapTardyFirstAbsences = train.getAbsenceController().get(overlapTardyFirst);
 
 		assertEquals(1, overlapTardyFirstAbsences.size());
 		Absence createdAbsence = overlapTardyFirstAbsences.get(0);
@@ -527,13 +519,10 @@ public class AbsenceControllerTest extends AbstractTest {
 		assertEquals(eventEnd, createdAbsence.getEnd());
 
 		// Case 2.b
-		train.getAbsenceController().createOrUpdateEarlyCheckout(
-				overlapEarlyFirst, earlyOverlap);
-		train.getAbsenceController().createOrUpdateTardy(overlapEarlyFirst,
-				tardyDate);
+		train.getAbsenceController().createOrUpdateEarlyCheckout(overlapEarlyFirst, earlyOverlap);
+		train.getAbsenceController().createOrUpdateTardy(overlapEarlyFirst, tardyDate);
 
-		List<Absence> overlapEarlyFirstAbsences = train.getAbsenceController()
-				.get(overlapEarlyFirst);
+		List<Absence> overlapEarlyFirstAbsences = train.getAbsenceController().get(overlapEarlyFirst);
 
 		assertEquals(1, overlapEarlyFirstAbsences.size());
 		createdAbsence = overlapEarlyFirstAbsences.get(0);
@@ -624,7 +613,7 @@ public class AbsenceControllerTest extends AbstractTest {
 				early);
 
 		List<Absence> student2Absences = train.getAbsenceController().get(
-				student1);
+				student2);
 
 		assertEquals(1, studentAbsences.size());
 		Absence absence2 = student2Absences.get(0);
@@ -737,7 +726,7 @@ public class AbsenceControllerTest extends AbstractTest {
 		abs.setStatus(Absence.Status.Approved);
 		train.getAbsenceController().updateAbsence(abs);
 		
-		studentAbs = train.getAbsenceController().get(student);
+		studentAbs = train.getAbsenceController().get(student1);
 		assertEquals(1, studentAbs.size());
 		
 		absence = studentAbs.get(0);
@@ -778,12 +767,12 @@ public class AbsenceControllerTest extends AbstractTest {
 		assertTrue(absence.getStatus() == Absence.Status.Approved);	
 		
 		//Approved saved second
-		train.getAbsenceController().createOrUpdateTardy(student, tardyStart);
+		train.getAbsenceController().createOrUpdateTardy(student1, tardyStart);
 		abs = train.getAbsenceController().createOrUpdateAbsence(student1, start, end);
 		abs.setStatus(Absence.Status.Approved);
 		train.getAbsenceController().updateAbsence(abs);
 		
-		studentAbs = train.getAbsenceController().get(student);
+		studentAbs = train.getAbsenceController().get(student1);
 		assertEquals(1, studentAbs.size());
 		
 		absence = studentAbs.get(0);
@@ -824,12 +813,12 @@ public class AbsenceControllerTest extends AbstractTest {
 		assertTrue(absence.getStatus() == Absence.Status.Approved);	
 		
 		//Approved saved second
-		train.getAbsenceController().createOrUpdateEarlyCheckout(student, tardyStart);
+		train.getAbsenceController().createOrUpdateEarlyCheckout(student1, tardyStart);
 		abs = train.getAbsenceController().createOrUpdateAbsence(student1, start, end);
 		abs.setStatus(Absence.Status.Approved);
 		train.getAbsenceController().updateAbsence(abs);
 		
-		studentAbs = train.getAbsenceController().get(student);
+		studentAbs = train.getAbsenceController().get(student1);
 		assertEquals(1, studentAbs.size());
 		
 		absence = studentAbs.get(0);
@@ -881,7 +870,7 @@ public class AbsenceControllerTest extends AbstractTest {
 
 	
 	@Test
-	public void testApprovedTardyDominatesTardy() {
+	public void testApprovedTardyDominatesTardySameTime() {
 		DataTrain train = getDataTrain();
 		
 		UserController uc = train.getUsersController();
@@ -914,13 +903,69 @@ public class AbsenceControllerTest extends AbstractTest {
 		abs.setStatus(Absence.Status.Approved);
 		train.getAbsenceController().updateAbsence(abs);
 		
-		studentAbs = train.getAbsenceController().get(student);
+		studentAbs = train.getAbsenceController().get(student1);
 		assertEquals(1, studentAbs.size());
 		
 		absence = studentAbs.get(0);
 		assertTrue(absence.getStart().equals(start));
 		assertTrue(absence.getType() == Absence.Type.Tardy);
 		assertTrue(absence.getStatus() == Absence.Status.Approved);
+	}
+	
+	@Test
+	public void testApprovedTardyDominatesTardyDiffTime() {
+		DataTrain train = getDataTrain();
+
+		UserController uc = train.getUsersController();
+		EventController ec = train.getEventController();
+		AbsenceController ac = train.getAbsenceController();
+		
+		User student1 = Users.createStudent(uc, "student1", "123456789",
+				"First", "last", 2, "major", User.Section.AltoSax);
+		User student2 = Users.createStudent(uc, "student2", "123456782",
+				"First", "last", 2, "major", User.Section.AltoSax);
+
+		Date eventStart = makeDate("2012-06-16 0500");
+		Date eventEnd = makeDate("2012-06-16 0700");
+
+		Date tardy = makeDate("2012-06-16 0515");
+		Date tardyLate = makeDate("2012-06-16 0520");
+
+		ec.createOrUpdate(Event.Type.Performance,
+				eventStart, eventEnd);
+		
+		//Approving the early tardy
+		Absence t = ac.createOrUpdateTardy(student1, tardy);
+		t.setStatus(Absence.Status.Approved);
+		ac.updateAbsence(t);
+		
+		ac.createOrUpdateTardy(student1, tardyLate);
+
+		List<Absence> studentAbsences = ac.get(student1);
+
+		//Should be the approved tardy values
+		assertEquals(1, studentAbsences.size());
+		Absence absence = studentAbsences.get(0);
+
+		assertTrue(absence.getStart().equals(tardy));
+		assertTrue(absence.getStatus() == Absence.Status.Approved);
+		assertTrue(absence.getType() == Absence.Type.Tardy);
+
+		// Approving the later tardy
+		t = ac.createOrUpdateTardy(student2, tardyLate);
+		t.setStatus(Absence.Status.Approved);
+		ac.updateAbsence(t);
+		ac.createOrUpdateTardy(student2, tardy);
+
+		List<Absence> student2Absences = ac.get(student2);
+
+		//Should still be the approved values
+		assertEquals(1, student2Absences.size());
+		Absence absence2 = student2Absences.get(0);
+
+		assertTrue(absence2.getStart().equals(tardyLate));
+		assertTrue(absence2.getStatus() == Absence.Status.Approved);
+		assertTrue(absence2.getType() == Absence.Type.Tardy);
 	}
 	
 	@Test
@@ -1019,7 +1064,7 @@ public class AbsenceControllerTest extends AbstractTest {
 		Absence createdAbsence = overlapTardyFirstAbsences.get(0);
 
 		assertTrue(createdAbsence.getType() == Absence.Type.Absence);
-		//TODO assertTrue(createdAbsence.getStatus() == Absence.Status.?);
+		assertTrue(createdAbsence.getStatus() == Absence.Status.Pending);
 		assertEquals(eventStart, createdAbsence.getStart());
 		assertEquals(eventEnd, createdAbsence.getEnd());
 
@@ -1033,7 +1078,7 @@ public class AbsenceControllerTest extends AbstractTest {
 		createdAbsence = overlapEarlyFirstAbsences.get(0);
 
 		assertTrue(createdAbsence.getType() == Absence.Type.Absence);
-		//TODO assertTrue(createdAbsence.getStatus() == Absence.Status.?);
+		assertTrue(createdAbsence.getStatus() == Absence.Status.Pending);
 		assertEquals(eventStart, createdAbsence.getStart());
 		assertEquals(eventEnd, createdAbsence.getEnd());
 	}
@@ -1053,11 +1098,10 @@ public class AbsenceControllerTest extends AbstractTest {
 		Date end = makeDate("2012-06-16 0600");		
 		
 		//Approved saved first
-		Event e = train.getEventController().createOrUpdate(Event.Type.Performance, start, end);
+		train.getEventController().createOrUpdate(Event.Type.Performance, start, end);
 		Absence abs = train.getAbsenceController().createOrUpdateEarlyCheckout(student, checkout);
 		abs.setStatus(Absence.Status.Approved);
 		train.getAbsenceController().updateAbsence(abs);
-		System.out.println(e);
 		train.getAbsenceController().createOrUpdateEarlyCheckout(student, checkout);
 		
 		List<Absence> studentAbs = train.getAbsenceController().get(student);
@@ -1069,12 +1113,12 @@ public class AbsenceControllerTest extends AbstractTest {
 		assertTrue(absence.getStatus() == Absence.Status.Approved);	
 		
 		//Approved saved second
-		train.getAbsenceController().createOrUpdateTardy(student1, checkout);
-		abs = train.getAbsenceController().createOrUpdateTardy(student1, checkout);
+		train.getAbsenceController().createOrUpdateEarlyCheckout(student1, checkout);
+		abs = train.getAbsenceController().createOrUpdateEarlyCheckout(student1, checkout);
 		abs.setStatus(Absence.Status.Approved);
 		train.getAbsenceController().updateAbsence(abs);
 		
-		studentAbs = train.getAbsenceController().get(student);
+		studentAbs = train.getAbsenceController().get(student1);
 		assertEquals(1, studentAbs.size());
 		
 		absence = studentAbs.get(0);

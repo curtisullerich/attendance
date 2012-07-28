@@ -125,15 +125,29 @@ public class AbsenceController extends AbstractController {
 		case Tardy:
 			switch (contester.getType()) {
 			case Absence:
-				// Absence always loses
-				remove(contester);
-				return true;
+				// Absence always loses, unless it is approved
+				if (contester.getStatus() != Absence.Status.Approved) {
+					remove(contester);
+					return true;
+				}
+				else {
+					return false;
+				}
 			case Tardy:
 				// Later tardy beats an earlier one
 				if (!current.getDatetime().before(contester.getDatetime())) {
-					remove(contester);
+					if (contester.getStatus() != Absence.Status.Approved) {
+						remove(contester);
+						return true;
+					}
+					else {
+						return false;
+					}
+				} 
+				else if (contester.getStatus() != Absence.Status.Approved) {
 					return true;
-				} else {
+				}
+				else {
 					return false;
 				}
 			case EarlyCheckOut:
@@ -154,9 +168,14 @@ public class AbsenceController extends AbstractController {
 		case EarlyCheckOut:
 			switch (contester.getType()) {
 			case Absence:
-				// Absence always loses
-				remove(contester);
-				return true;
+				// Absence always loses, unless the absence is approved
+				if (contester.getStatus() != Absence.Status.Approved) {
+					remove(contester);
+					return true;
+				}
+				else {
+					return false;
+				}
 			case Tardy:
 				// if check IN time is after check OUT time,
 				// you're going to have a bad time (completely absent)
@@ -169,7 +188,12 @@ public class AbsenceController extends AbstractController {
 					// remove the old Tardy
 					remove(contester);
 				}
-				return true;
+//				else if (contester.getStatus() == Absence.Status.Approved) {
+//					return false;
+//				}
+//				else {
+					return true;
+//				}
 			case EarlyCheckOut:
 				// Earlier EarlyCheckOut beats a later one
 				if (current.getStart().before(contester.getStart())) {
