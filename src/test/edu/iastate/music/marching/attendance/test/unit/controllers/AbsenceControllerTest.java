@@ -574,6 +574,255 @@ public class AbsenceControllerTest extends AbstractTest {
 		assertTrue(absence.getType() == Absence.Type.EarlyCheckOut);
 	}
 	
+	@Test
+	public void testApproveAbsence() {
+		DataTrain train = getDataTrain();
+		
+		UserController uc = train.getUsersController();
+		User student = Users.createStudent(uc, "student1", 121, "First", "last", 2, "major", User.Section.AltoSax);
+
+		Date start = makeDate("2012-06-16 0500");
+		Date end = makeDate("2012-06-16 0700");
+		
+		train.getEventController().createOrUpdate(Event.Type.Performance, start, end);
+		Absence abs = train.getAbsenceController().createOrUpdateAbsence(student, start, end);
+		abs.setStatus(Absence.Status.Approved);
+		train.getAbsenceController().updateAbsence(abs);
+		
+		List<Absence> studentAbs = train.getAbsenceController().get(student);
+		assertEquals(1, studentAbs.size());
+		
+		Absence absence = studentAbs.get(0);
+		assertTrue(absence.getStart().equals(start));
+		assertTrue(absence.getEnd().equals(end));
+		assertTrue(absence.getType() == Absence.Type.Absence);
+		assertTrue(absence.getStatus() == Absence.Status.Approved);		
+	}
+	
+	@Test
+	public void testApprovedAbsenceDominatesAbsence() {
+		DataTrain train = getDataTrain();
+		
+		UserController uc = train.getUsersController();
+		User student = Users.createStudent(uc, "student", 121, "First", "last", 2, "major", User.Section.AltoSax);
+		User student1 = Users.createStudent(uc, "student1", 121, "First", "last", 2, "major", User.Section.AltoSax);
+
+		
+		Date start = makeDate("2012-06-16 0500");
+		Date end = makeDate("2012-06-16 0600");		
+		
+		//Approved saved first
+		train.getEventController().createOrUpdate(Event.Type.Performance, start, end);
+		Absence abs = train.getAbsenceController().createOrUpdateAbsence(student, start, end);
+		abs.setStatus(Absence.Status.Approved);
+		train.getAbsenceController().updateAbsence(abs);
+		
+		train.getAbsenceController().createOrUpdateAbsence(student, start, end);
+		
+		List<Absence> studentAbs = train.getAbsenceController().get(student);
+		assertEquals(1, studentAbs.size());
+		
+		Absence absence = studentAbs.get(0);
+		assertTrue(absence.getStart().equals(start));
+		assertTrue(absence.getEnd().equals(end));
+		assertTrue(absence.getType() == Absence.Type.Absence);
+		assertTrue(absence.getStatus() == Absence.Status.Approved);	
+		
+		//Approved saved second
+		train.getAbsenceController().createOrUpdateAbsence(student1, start, end);
+		abs = train.getAbsenceController().createOrUpdateAbsence(student1, start, end);
+		abs.setStatus(Absence.Status.Approved);
+		train.getAbsenceController().updateAbsence(abs);
+		
+		studentAbs = train.getAbsenceController().get(student);
+		assertEquals(1, studentAbs.size());
+		
+		absence = studentAbs.get(0);
+		assertTrue(absence.getStart().equals(start));
+		assertTrue(absence.getEnd().equals(end));
+		assertTrue(absence.getType() == Absence.Type.Absence);
+		assertTrue(absence.getStatus() == Absence.Status.Approved);
+	}
+	
+	@Test
+	public void testApprovedAbsenceDominatesTardy() {
+		DataTrain train = getDataTrain();
+		
+		UserController uc = train.getUsersController();
+		User student = Users.createStudent(uc, "student", 121, "First", "last", 2, "major", User.Section.AltoSax);
+		User student1 = Users.createStudent(uc, "student1", 121, "First", "last", 2, "major", User.Section.AltoSax);
+
+		
+		Date start = makeDate("2012-06-16 0500");
+		Date tardyStart = makeDate("2012-06-16 0515");
+		Date end = makeDate("2012-06-16 0600");		
+		
+		//Approved saved first
+		train.getEventController().createOrUpdate(Event.Type.Performance, start, end);
+		Absence abs = train.getAbsenceController().createOrUpdateAbsence(student, start, end);
+		abs.setStatus(Absence.Status.Approved);
+		train.getAbsenceController().updateAbsence(abs);
+		
+		train.getAbsenceController().createOrUpdateTardy(student, tardyStart);
+		
+		List<Absence> studentAbs = train.getAbsenceController().get(student);
+		assertEquals(1, studentAbs.size());
+		
+		Absence absence = studentAbs.get(0);
+		assertTrue(absence.getStart().equals(start));
+		assertTrue(absence.getEnd().equals(end));
+		assertTrue(absence.getType() == Absence.Type.Absence);
+		assertTrue(absence.getStatus() == Absence.Status.Approved);	
+		
+		//Approved saved second
+		train.getAbsenceController().createOrUpdateTardy(student, tardyStart);
+		abs = train.getAbsenceController().createOrUpdateAbsence(student1, start, end);
+		abs.setStatus(Absence.Status.Approved);
+		train.getAbsenceController().updateAbsence(abs);
+		
+		studentAbs = train.getAbsenceController().get(student);
+		assertEquals(1, studentAbs.size());
+		
+		absence = studentAbs.get(0);
+		assertTrue(absence.getStart().equals(start));
+		assertTrue(absence.getEnd().equals(end));
+		assertTrue(absence.getType() == Absence.Type.Absence);
+		assertTrue(absence.getStatus() == Absence.Status.Approved);
+	}
+	
+	@Test
+	public void testApprovedAbsenceDominatesEarly() {
+		DataTrain train = getDataTrain();
+		
+		UserController uc = train.getUsersController();
+		User student = Users.createStudent(uc, "student", 121, "First", "last", 2, "major", User.Section.AltoSax);
+		User student1 = Users.createStudent(uc, "student1", 121, "First", "last", 2, "major", User.Section.AltoSax);
+
+		
+		Date start = makeDate("2012-06-16 0500");
+		Date tardyStart = makeDate("2012-06-16 0515");
+		Date end = makeDate("2012-06-16 0600");		
+		
+		//Approved saved first
+		train.getEventController().createOrUpdate(Event.Type.Performance, start, end);
+		Absence abs = train.getAbsenceController().createOrUpdateAbsence(student, start, end);
+		abs.setStatus(Absence.Status.Approved);
+		train.getAbsenceController().updateAbsence(abs);
+		
+		train.getAbsenceController().createOrUpdateEarlyCheckout(student, tardyStart);
+		
+		List<Absence> studentAbs = train.getAbsenceController().get(student);
+		assertEquals(1, studentAbs.size());
+		
+		Absence absence = studentAbs.get(0);
+		assertTrue(absence.getStart().equals(start));
+		assertTrue(absence.getEnd().equals(end));
+		assertTrue(absence.getType() == Absence.Type.Absence);
+		assertTrue(absence.getStatus() == Absence.Status.Approved);	
+		
+		//Approved saved second
+		train.getAbsenceController().createOrUpdateEarlyCheckout(student, tardyStart);
+		abs = train.getAbsenceController().createOrUpdateAbsence(student1, start, end);
+		abs.setStatus(Absence.Status.Approved);
+		train.getAbsenceController().updateAbsence(abs);
+		
+		studentAbs = train.getAbsenceController().get(student);
+		assertEquals(1, studentAbs.size());
+		
+		absence = studentAbs.get(0);
+		assertTrue(absence.getStart().equals(start));
+		assertTrue(absence.getEnd().equals(end));
+		assertTrue(absence.getType() == Absence.Type.Absence);
+		assertTrue(absence.getStatus() == Absence.Status.Approved);
+	}
+	
+	@Test
+	public void testApprovedTardyDominatesTardy() {
+		DataTrain train = getDataTrain();
+		
+		UserController uc = train.getUsersController();
+		User student = Users.createStudent(uc, "student", 121, "First", "last", 2, "major", User.Section.AltoSax);
+		User student1 = Users.createStudent(uc, "student1", 121, "First", "last", 2, "major", User.Section.AltoSax);
+
+		
+		Date start = makeDate("2012-06-16 0500");
+		Date end = makeDate("2012-06-16 0600");		
+		
+		//Approved saved first
+		train.getEventController().createOrUpdate(Event.Type.Performance, start, end);
+		Absence abs = train.getAbsenceController().createOrUpdateTardy(student, start);
+		abs.setStatus(Absence.Status.Approved);
+		train.getAbsenceController().updateAbsence(abs);
+		
+		train.getAbsenceController().createOrUpdateTardy(student, start);
+		
+		List<Absence> studentAbs = train.getAbsenceController().get(student);
+		assertEquals(1, studentAbs.size());
+		
+		Absence absence = studentAbs.get(0);
+		assertTrue(absence.getStart().equals(start));
+		assertTrue(absence.getType() == Absence.Type.Tardy);
+		assertTrue(absence.getStatus() == Absence.Status.Approved);	
+		
+		//Approved saved second
+		train.getAbsenceController().createOrUpdateTardy(student1, start);
+		abs = train.getAbsenceController().createOrUpdateTardy(student1, start);
+		abs.setStatus(Absence.Status.Approved);
+		train.getAbsenceController().updateAbsence(abs);
+		
+		studentAbs = train.getAbsenceController().get(student);
+		assertEquals(1, studentAbs.size());
+		
+		absence = studentAbs.get(0);
+		assertTrue(absence.getStart().equals(start));
+		assertTrue(absence.getType() == Absence.Type.Tardy);
+		assertTrue(absence.getStatus() == Absence.Status.Approved);
+	}
+	
+	@Test
+	public void testApprovedEarlyDominatesEarly() {
+		DataTrain train = getDataTrain();
+		
+		UserController uc = train.getUsersController();
+		User student = Users.createStudent(uc, "student", 121, "First", "last", 2, "major", User.Section.AltoSax);
+		User student1 = Users.createStudent(uc, "student1", 121, "First", "last", 2, "major", User.Section.AltoSax);
+
+		
+		Date start = makeDate("2012-06-16 0500");
+		Date checkout = makeDate("2012-06-16 0550");
+		Date end = makeDate("2012-06-16 0600");		
+		
+		//Approved saved first
+		Event e = train.getEventController().createOrUpdate(Event.Type.Performance, start, end);
+		Absence abs = train.getAbsenceController().createOrUpdateEarlyCheckout(student, checkout);
+		abs.setStatus(Absence.Status.Approved);
+		train.getAbsenceController().updateAbsence(abs);
+		System.out.println(e);
+		train.getAbsenceController().createOrUpdateEarlyCheckout(student, checkout);
+		
+		List<Absence> studentAbs = train.getAbsenceController().get(student);
+		assertEquals(1, studentAbs.size());
+		
+		Absence absence = studentAbs.get(0);
+		assertTrue(absence.getStart().equals(checkout));
+		assertTrue(absence.getType() == Absence.Type.EarlyCheckOut);
+		assertTrue(absence.getStatus() == Absence.Status.Approved);	
+		
+		//Approved saved second
+		train.getAbsenceController().createOrUpdateTardy(student1, checkout);
+		abs = train.getAbsenceController().createOrUpdateTardy(student1, checkout);
+		abs.setStatus(Absence.Status.Approved);
+		train.getAbsenceController().updateAbsence(abs);
+		
+		studentAbs = train.getAbsenceController().get(student);
+		assertEquals(1, studentAbs.size());
+		
+		absence = studentAbs.get(0);
+		assertTrue(absence.getStart().equals(checkout));
+		assertTrue(absence.getType() == Absence.Type.EarlyCheckOut);
+		assertTrue(absence.getStatus() == Absence.Status.Approved);
+	}
+	
 	private Date makeDate(String sDate) {
 		//Private method to make dates out of strings following the format I always use
 		try {
