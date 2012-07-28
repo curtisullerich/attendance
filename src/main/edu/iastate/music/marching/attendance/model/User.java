@@ -108,7 +108,7 @@ public class User implements Serializable {
 	@Index
 	private Email secondEmail;
 
-	private int universityID;
+	private String universityID;
 
 	private Section section;
 
@@ -203,11 +203,11 @@ public class User implements Serializable {
 		this.section = section;
 	}
 
-	public void setUniversityID(int new_universityID) {
+	public void setUniversityID(String new_universityID) {
 		this.universityID = new_universityID;
 	}
 
-	public int getUniversityID() {
+	public String getUniversityID() {
 		return universityID;
 	}
 

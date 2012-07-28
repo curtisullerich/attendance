@@ -200,7 +200,7 @@ public class ServletAccess extends AbstractTest {
 		HttpSession session = mock(HttpSession.class);
 		when(session.getAttribute("authenticated_user")).thenReturn(
 				Users.createStudent(getDataTrain().getUsersController(),
-						"studenttt", 121, "I am", "A Student", 10,
+						"studenttt", "123456789", "I am", "A Student", 10,
 						"Being Silly", User.Section.AltoSax));
 		when(req.getSession()).thenReturn(session);
 		return req;
@@ -217,11 +217,10 @@ public class ServletAccess extends AbstractTest {
 
 	private HttpServletRequest setTASession(HttpServletRequest req) {
 		HttpSession session = mock(HttpSession.class);
-		when(session.getAttribute("authenticated_user"))
-				.thenReturn(
-						Users.createTA(getDataTrain().getUsersController(),
-								"ta", 121, "I am", "A TA", 10, "Being Silly",
-								User.Section.AltoSax));
+		when(session.getAttribute("authenticated_user")).thenReturn(
+				Users.createTA(getDataTrain().getUsersController(), "ta",
+						"123456789", "I am", "A TA", 10, "Being Silly",
+						User.Section.AltoSax));
 		when(req.getSession()).thenReturn(session);
 		return req;
 	}

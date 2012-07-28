@@ -203,7 +203,7 @@ public class AuthServlet extends AbstractBaseServlet {
 		String lastName;
 		String major;
 		Email secondEmail;
-		int univID = -1;
+		String univID;
 		int year = -1;
 		User.Section section = null;
 		User new_user = null;
@@ -216,10 +216,18 @@ public class AuthServlet extends AbstractBaseServlet {
 		firstName = req.getParameter("FirstName");
 		lastName = req.getParameter("LastName");
 		major = req.getParameter("Major");
+		univID = req.getParameter("UniversityID");
 		secondEmail = new Email(req.getParameter("SecondEmail"));
 
 		try {
-			univID = Integer.parseInt(req.getParameter("UniversityID"));
+			if (univID.length() != 9) {
+				errors.add("University ID was not nine digits");
+			}
+
+			// just makes sure it's parseable as an int. we don't JUST do this,
+			// because leading zeroes are valid
+			Integer.parseInt(univID);
+
 		} catch (NumberFormatException e) {
 			errors.add("University ID entered was not a number");
 		}
@@ -270,7 +278,7 @@ public class AuthServlet extends AbstractBaseServlet {
 			page.setAttribute("LastName", lastName);
 			page.setAttribute("NetID", google_user.getEmail());
 			page.setAttribute("Major", major);
-			page.setAttribute("UniversityID", (univID > 0) ? univID : "");
+			page.setAttribute("UniversityID", univID);
 			page.setAttribute("Year", year);
 			page.setAttribute("SecondEmail", secondEmail.getEmail());
 			page.setAttribute("Section",

@@ -43,7 +43,7 @@ public class UserController extends AbstractController {
 	}
 
 	public User createStudent(com.google.appengine.api.users.User google_user,
-			int univID, String firstName, String lastName, int year,
+			String univID, String firstName, String lastName, int year,
 			String major, User.Section section, Email secondaryEmail)
 			throws IllegalArgumentException {
 
@@ -125,7 +125,7 @@ public class UserController extends AbstractController {
 			throw new IllegalArgumentException(
 					"User already exists in the system");
 
-		User user = ModelFactory.newUser(User.Type.Director, primaryEmail, 0);
+		User user = ModelFactory.newUser(User.Type.Director, primaryEmail, "000000000");
 		user.setFirstName(firstName);
 		user.setLastName(lastName);
 		user.setSecondaryEmail(secondaryEmail);

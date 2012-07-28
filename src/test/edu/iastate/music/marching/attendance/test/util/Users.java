@@ -9,25 +9,25 @@ import edu.iastate.music.marching.attendance.test.TestConfig;
 public class Users {
 
 	public static final User createStudent(UserController uc,
-			String email_firstpart, int univID, String firstName,
+			String email_firstpart, String univID, String firstName,
 			String lastName, int year, String major, User.Section section) {
-	
+
 		com.google.appengine.api.users.User google_user = new com.google.appengine.api.users.User(
 				email_firstpart + "@" + TestConfig.getEmailDomain(),
 				"gmail.com");
-	
+
 		return uc.createStudent(google_user, univID, firstName, lastName, year,
 				major, section, new Email(""));
 	}
 
 	public static final User createTA(UserController uc,
-			String email_firstpart, int univID, String firstName,
+			String email_firstpart, String univID, String firstName,
 			String lastName, int year, String major, User.Section section) {
-	
+
 		com.google.appengine.api.users.User google_user = new com.google.appengine.api.users.User(
 				email_firstpart + "@" + TestConfig.getEmailDomain(),
 				"gmail.com");
-	
+
 		User u = uc.createStudent(google_user, univID, firstName, lastName,
 				year, major, section, new Email(""));
 		u.setType(User.Type.TA);
@@ -36,8 +36,7 @@ public class Users {
 	}
 
 	public static final User createDirector(UserController uc,
-			String email_firstpart, String firstName,
-			String lastName) {
+			String email_firstpart, String firstName, String lastName) {
 		return uc.createDirector(
 				email_firstpart + "@" + TestConfig.getEmailDomain(),
 				email_firstpart + ".secondemail" + "@"

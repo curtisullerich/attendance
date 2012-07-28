@@ -51,12 +51,12 @@ public class MobileDataUploadTest extends AbstractTest {
 
 		DataTrain train = DataTrain.getAndStartTrain();
 
-		User ta = Users.createTA(train.getUsersController(), "ta", 3, "first",
-				"last", 2, "major", null);
-		Users.createStudent(train.getUsersController(), "s", 2, "first",
-				"last", 1, "major", null);
-		Users.createStudent(train.getUsersController(), "zf", 1, "first",
-				"last", 1, "major", null);
+		User ta = Users.createTA(train.getUsersController(), "ta", "123456780",
+				"first", "last", 2, "major", null);
+		Users.createStudent(train.getUsersController(), "s", "123456719",
+				"first", "last", 1, "major", null);
+		Users.createStudent(train.getUsersController(), "zf", "123456782",
+				"first", "last", 1, "major", null);
 
 		train.getMobileDataController().pushMobileData(SIMPLE_ABSENCE_TESTDATA,
 				ta);
@@ -71,10 +71,10 @@ public class MobileDataUploadTest extends AbstractTest {
 
 		DataTrain train = getDataTrain();
 
-		Users.createStudent(train.getUsersController(), "s", 2, "first",
-				"last", 1, "major", null);
-		Users.createStudent(train.getUsersController(), "zf", 1, "first",
-				"last", 1, "major", null);
+		Users.createStudent(train.getUsersController(), "s", "123456789",
+				"first", "last", 1, "major", null);
+		Users.createStudent(train.getUsersController(), "zf", "123456782",
+				"first", "last", 1, "major", null);
 
 		HttpServletRequest req = mock(HttpServletRequest.class);
 		HttpServletResponse resp = mock(HttpServletResponse.class);
@@ -180,14 +180,14 @@ public class MobileDataUploadTest extends AbstractTest {
 
 		UserController uc = train.getUsersController();
 
-		Users.createStudent(uc, "s", 1, "test1", "tester", 0, null,
+		Users.createStudent(uc, "s", "123456780", "test1", "tester", 0, null,
 				User.Section.AltoSax);
-		Users.createStudent(uc, "zf", 2, "test1", "tester", 0, null,
+		Users.createStudent(uc, "zf", "123456781", "test1", "tester", 0, null,
 				User.Section.AltoSax);
-		Users.createStudent(uc, "b", 3, "test1", "tester", 0, null,
+		Users.createStudent(uc, "b", "123456782", "test1", "tester", 0, null,
 				User.Section.AltoSax);
-		User ta = Users.createTA(uc, "ta", 4, "test1", "tester", 0, null,
-				User.Section.AltoSax);
+		User ta = Users.createTA(uc, "ta", "123456783", "test1", "tester", 0,
+				null, User.Section.AltoSax);
 
 		train.getMobileDataController().pushMobileData(SIMPLE_TARDY_TESTDATA,
 				ta);
@@ -202,11 +202,10 @@ public class MobileDataUploadTest extends AbstractTest {
 
 	private HttpServletRequest setTASession(HttpServletRequest req) {
 		HttpSession session = mock(HttpSession.class);
-		when(session.getAttribute("authenticated_user"))
-				.thenReturn(
-						Users.createTA(getDataTrain().getUsersController(),
-								"ta", 121, "I am", "A TA", 10, "Being Silly",
-								User.Section.AltoSax));
+		when(session.getAttribute("authenticated_user")).thenReturn(
+				Users.createTA(getDataTrain().getUsersController(), "ta",
+						"123456789", "I am", "A TA", 10, "Being Silly",
+						User.Section.AltoSax));
 		when(req.getSession()).thenReturn(session);
 		return req;
 	}

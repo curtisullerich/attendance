@@ -16,7 +16,7 @@ public class ModelFactory {
 		return e;
 	}
 
-	public static User newUser(User.Type type, Email email, int univID) {
+	public static User newUser(User.Type type, Email email, String univID) {
 		User u = new User();
 		u.setType(type);
 		u.setPrimaryEmail(email);

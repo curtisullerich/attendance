@@ -298,16 +298,16 @@ public class FormAutoApproval extends AbstractTest {
 	private void createUsersHelper() {
 		UserController uc = DataTrain.getAndStartTrain().getUsersController();
 
-		student1 = Users.createStudent(uc, "student1", 55055050, "First",
+		student1 = Users.createStudent(uc, "student1", "123456789", "First",
 				"Last", 1, "major", User.Section.AltoSax);
 
-		student2 = Users.createStudent(uc, "student2", 55055052, "First",
+		student2 = Users.createStudent(uc, "student2", "123456781", "First",
 				"Last", 2, "major", User.Section.AltoSax);
 
-		student3 = Users.createStudent(uc, "student3", 55055053, "First",
+		student3 = Users.createStudent(uc, "student3", "123456782", "First",
 				"Last", 3, "major", User.Section.AltoSax);
 
-		ta = Users.createTA(uc, "ta", 55050050, "Fisrt", "Last", 4, "major",
+		ta = Users.createTA(uc, "ta", "123456783", "Fisrt", "Last", 4, "major",
 				User.Section.AltoSax);
 	}
 
