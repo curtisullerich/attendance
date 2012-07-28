@@ -379,7 +379,7 @@ public class FormController extends AbstractController {
 			end = calendar.getTime();
 
 		} else {
-
+			throw new IllegalArgumentException("Invalid Absence type");
 		}
 
 		Form form = ModelFactory.newForm(Form.Type.C, student);
@@ -392,6 +392,7 @@ public class FormController extends AbstractController {
 		// Set remaining fields
 		form.setDetails(reason);
 		form.setStatus(Form.Status.Pending);
+		form.setAbsenceType(type);
 
 		// Perform store
 		storeForm(form);

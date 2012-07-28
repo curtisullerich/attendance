@@ -481,17 +481,38 @@ public class AbsenceController extends AbstractController {
 						fmt.format(form.getStart()))) {
 					if (absence.getType() == Absence.Type.Absence) {
 						// the dates matched above, so it's approved
-						absence.setStatus(Absence.Status.Approved);
+						if (form.getAbsenceType() == Absence.Type.Absence) {
+							absence.setStatus(Absence.Status.Approved);
+						} else {
+							// throw new IllegalArgumentException(
+							// "Wrong form type!");
+						}
 					} else if (absence.getType() == Absence.Type.Tardy) {
 						if (!absence.getDatetime().after(form.getEnd())
 								&& !absence.getDatetime().before(
 										form.getStart())) {
-							absence.setStatus(Absence.Status.Approved);
+
+							// absence forms autoapprove tardies
+							if (form.getAbsenceType() == Absence.Type.Tardy
+									|| form.getAbsenceType() == Absence.Type.Absence) {
+								absence.setStatus(Absence.Status.Approved);
+							} else {
+								// throw new IllegalArgumentException(
+								// "Wrong form type!");
+							}
 						}
 					} else if (absence.getType() == Absence.Type.EarlyCheckOut) {
 						if (!absence.getDatetime().before(form.getStart())
 								&& !absence.getDatetime().after(form.getEnd())) {
-							absence.setStatus(Absence.Status.Approved);
+
+							// absence forms autoapprove earlycheckouts
+							if (form.getAbsenceType() == Absence.Type.EarlyCheckOut
+									|| form.getAbsenceType() == Absence.Type.Absence) {
+								absence.setStatus(Absence.Status.Approved);
+							} else {
+								// throw new IllegalArgumentException(
+								// "Wrong form type!");
+							}
 						}
 					}
 				}
@@ -524,11 +545,6 @@ public class AbsenceController extends AbstractController {
 				.get(Calendar.DAY_OF_YEAR)) % 7 == 0;
 	}
 
-	// TODO https://github.com/curtisullerich/attendance/issues/90
-	// I don't like that this is public. There's no validation going on
-	// here. We could call validateAbsence(absence) but that would throw an
-	// exception if you're storing an orphaned or student-less Absence
-	// (currently, at least)
 	public Absence updateAbsence(Absence absence) {
 
 		Event linked = absence.getEvent();
@@ -697,13 +713,11 @@ public class AbsenceController extends AbstractController {
 	void delete(User student) {
 		MessagingController mc = this.train.getMessagingController();
 		List<Absence> absences = this.get(student);
-		
-		for(Absence a : absences)
-		{
+
+		for (Absence a : absences) {
 			MessageThread mt = a.getMessageThread();
-			
-			if(mt != null)
-			{
+
+			if (mt != null) {
 				mc.delete(mt);
 			}
 		}

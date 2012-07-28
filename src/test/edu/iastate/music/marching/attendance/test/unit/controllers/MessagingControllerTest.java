@@ -25,8 +25,8 @@ public class MessagingControllerTest extends AbstractTest {
 		UserController uc = train.getUsersController();
 		User director = Users.createDirector(uc, "director", "I am",
 				"The Director");
-		User student = Users.createStudent(uc, "studenttt", 121, "First",
-				"last", 2, "major", User.Section.AltoSax);
+		User student = Users.createStudent(uc, "studenttt", "123456789",
+				"First", "last", 2, "major", User.Section.AltoSax);
 
 		MessageThread mts = train.getMessagingController()
 				.createMessageThread();
@@ -71,8 +71,8 @@ public class MessagingControllerTest extends AbstractTest {
 		UserController uc = train.getUsersController();
 		User director = Users.createDirector(uc, "director", "I am",
 				"The Director");
-		User student = Users.createStudent(uc, "studenttt", 121, "First",
-				"last", 2, "major", User.Section.AltoSax);
+		User student = Users.createStudent(uc, "studenttt", "123456789",
+				"First", "last", 2, "major", User.Section.AltoSax);
 
 		MessageThread mts = train.getMessagingController()
 				.createMessageThread();
@@ -112,8 +112,8 @@ public class MessagingControllerTest extends AbstractTest {
 		UserController uc = train.getUsersController();
 		User director = Users.createDirector(uc, "director", "I am",
 				"The Director");
-		User student = Users.createStudent(uc, "studenttt", 121, "First",
-				"last", 2, "major", User.Section.AltoSax);
+		User student = Users.createStudent(uc, "studenttt", "123456789",
+				"First", "last", 2, "major", User.Section.AltoSax);
 
 		MessageThread mt = train.getMessagingController().createMessageThread();
 
@@ -145,8 +145,8 @@ public class MessagingControllerTest extends AbstractTest {
 		UserController uc = train.getUsersController();
 		User director = Users.createDirector(uc, "director", "I am",
 				"The Director");
-		User student = Users.createStudent(uc, "studenttt", 121, "First",
-				"last", 2, "major", User.Section.AltoSax);
+		User student = Users.createStudent(uc, "studenttt", "123456789",
+				"First", "last", 2, "major", User.Section.AltoSax);
 
 		MessageThread mt = train.getMessagingController().createMessageThread();
 

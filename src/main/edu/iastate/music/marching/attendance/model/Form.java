@@ -109,6 +109,8 @@ public class Form {
 
 	private boolean applied;
 	
+	private Absence.Type absenceType;
+	
 	private Status emailStatus;
 
 	private MessageThread messages;
@@ -313,6 +315,14 @@ public class Form {
 
 	public int getMinutesToOrFrom() {
 		return this.minutesToOrFrom;
+	}
+
+	public Absence.Type getAbsenceType() {
+		return absenceType;
+	}
+
+	public void setAbsenceType(Absence.Type absenceType) {
+		this.absenceType = absenceType;
 	}
 
 }

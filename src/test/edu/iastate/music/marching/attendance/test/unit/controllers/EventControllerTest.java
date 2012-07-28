@@ -91,8 +91,8 @@ public class EventControllerTest extends AbstractTest {
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
 
-		User s1 = Users.createStudent(uc, "student1", 121, "John", "Cox", 2,
-				"major", User.Section.AltoSax);
+		User s1 = Users.createStudent(uc, "student1", "123456789", "John",
+				"Cox", 2, "major", User.Section.AltoSax);
 
 		// should be A initially
 		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
@@ -130,8 +130,8 @@ public class EventControllerTest extends AbstractTest {
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
 
-		User s1 = Users.createStudent(uc, "student1", 121, "John", "Cox", 2,
-				"major", User.Section.AltoSax);
+		User s1 = Users.createStudent(uc, "student1", "123456789", "John",
+				"Cox", 2, "major", User.Section.AltoSax);
 
 		// should be A initially
 		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
