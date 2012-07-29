@@ -70,15 +70,15 @@ public class ValidationUtilTest {
 		Calendar calendar = getFixedCalendarOnMonday();
 		// Last Monday
 		calendar.roll(Calendar.WEEK_OF_YEAR, -2);
-		assertFalse(ValidationUtil.dateIsWeekdaysFrom(now, calendar.getTime(),
+		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now, calendar.getTime(),
 				3, TIMEZONE));
 		// Last Month
 		calendar.roll(Calendar.MONTH, -1);
-		assertFalse(ValidationUtil.dateIsWeekdaysFrom(now, calendar.getTime(),
+		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now, calendar.getTime(),
 				3, TIMEZONE));
 		// Last Year
 		calendar.roll(Calendar.YEAR, -1);
-		assertFalse(ValidationUtil.dateIsWeekdaysFrom(now, calendar.getTime(),
+		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now, calendar.getTime(),
 				3, TIMEZONE));
 	}
 
@@ -88,15 +88,15 @@ public class ValidationUtilTest {
 		Calendar calendar = getFixedCalendarOnMonday();
 		// Next next Monday
 		calendar.roll(Calendar.WEEK_OF_YEAR, 2);
-		assertTrue(ValidationUtil.dateIsWeekdaysFrom(now, calendar.getTime(),
+		assertFalse(ValidationUtil.isOrLessThanWeekdaysAfter(now, calendar.getTime(),
 				3, TIMEZONE));
 		// Next Month
 		calendar.roll(Calendar.MONTH, 1);
-		assertTrue(ValidationUtil.dateIsWeekdaysFrom(now, calendar.getTime(),
+		assertFalse(ValidationUtil.isOrLessThanWeekdaysAfter(now, calendar.getTime(),
 				3, TIMEZONE));
 		// Next Year
 		calendar.roll(Calendar.YEAR, 1);
-		assertTrue(ValidationUtil.dateIsWeekdaysFrom(now, calendar.getTime(),
+		assertFalse(ValidationUtil.isOrLessThanWeekdaysAfter(now, calendar.getTime(),
 				3, TIMEZONE));
 	}
 
@@ -105,35 +105,35 @@ public class ValidationUtilTest {
 		Date now = getFixedCalendarOnMonday().getTime();
 		Calendar calendar = getFixedCalendarOnMonday();
 		// Monday
-		assertTrue(ValidationUtil.dateIsWeekdaysFrom(now, calendar.getTime(),
+		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now, calendar.getTime(),
 				3, TIMEZONE));
 		// Sunday
 		calendar.roll(Calendar.DATE, -1);
-		assertTrue(ValidationUtil.dateIsWeekdaysFrom(now, calendar.getTime(),
+		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now, calendar.getTime(),
 				3, TIMEZONE));
 		// Saturday
 		calendar.roll(Calendar.DATE, -1);
-		assertTrue(ValidationUtil.dateIsWeekdaysFrom(now, calendar.getTime(),
+		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now, calendar.getTime(),
 				3, TIMEZONE));
 		// Friday
 		calendar.roll(Calendar.DATE, -1);
-		assertTrue(ValidationUtil.dateIsWeekdaysFrom(now, calendar.getTime(),
+		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now, calendar.getTime(),
 				3, TIMEZONE));
 		// Thursday
 		calendar.roll(Calendar.DATE, -1);
-		assertTrue(ValidationUtil.dateIsWeekdaysFrom(now, calendar.getTime(),
+		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now, calendar.getTime(),
 				3, TIMEZONE));
 		// Wednesday
 		calendar.roll(Calendar.DATE, -1);
-		assertTrue(ValidationUtil.dateIsWeekdaysFrom(now, calendar.getTime(),
+		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now, calendar.getTime(),
 				3, TIMEZONE));
 		// Tuesday
 		calendar.roll(Calendar.DATE, -1);
-		assertFalse(ValidationUtil.dateIsWeekdaysFrom(now, calendar.getTime(),
+		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now, calendar.getTime(),
 				3, TIMEZONE));
 		// Last Monday
 		calendar.roll(Calendar.DATE, -1);
-		assertFalse(ValidationUtil.dateIsWeekdaysFrom(now, calendar.getTime(),
+		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now, calendar.getTime(),
 				3, TIMEZONE));
 	}
 
@@ -143,42 +143,42 @@ public class ValidationUtilTest {
 		Calendar calendar = getFixedCalendarOnFriday();
 		System.out.println(calendar.getTime().toString());
 		// Friday
-		assertTrue(ValidationUtil.dateIsWeekdaysFrom(now, calendar.getTime(),
+		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now, calendar.getTime(),
 				3, TIMEZONE));
 		// Thursday
 		calendar.roll(Calendar.DATE, -1);
-		assertTrue(ValidationUtil.dateIsWeekdaysFrom(now, calendar.getTime(),
+		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now, calendar.getTime(),
 				3, TIMEZONE));
 		// Wednesday
 		calendar.roll(Calendar.DATE, -1);
-		assertTrue(ValidationUtil.dateIsWeekdaysFrom(now, calendar.getTime(),
+		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now, calendar.getTime(),
 				3, TIMEZONE));
 		// Tuesday
 		calendar.roll(Calendar.DATE, -1);
-		assertTrue(ValidationUtil.dateIsWeekdaysFrom(now, calendar.getTime(),
+		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now, calendar.getTime(),
 				3, TIMEZONE));
 		// Monday
 		calendar.roll(Calendar.DATE, -1);
-		assertFalse(ValidationUtil.dateIsWeekdaysFrom(now, calendar.getTime(),
+		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now, calendar.getTime(),
 				3, TIMEZONE));
 		// Sunday
 		calendar.roll(Calendar.DATE, -1);
-		assertFalse(ValidationUtil.dateIsWeekdaysFrom(now, calendar.getTime(),
+		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now, calendar.getTime(),
 				3, TIMEZONE));
 		// Saturday
 		calendar.roll(Calendar.DATE, -1);
-		assertFalse(ValidationUtil.dateIsWeekdaysFrom(now, calendar.getTime(),
+		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now, calendar.getTime(),
 				3, TIMEZONE));
 		// Last Friday
 		calendar.roll(Calendar.DATE, -1);
-		assertFalse(ValidationUtil.dateIsWeekdaysFrom(now, calendar.getTime(),
+		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now, calendar.getTime(),
 				3, TIMEZONE));
 	}
 
 	@Test
 	public void testDateIsWeekdaysFrom_Today() {
 		Date now = getFixedCalendarOnMonday().getTime();
-		assertTrue(ValidationUtil.dateIsWeekdaysFrom(now, now, 3, TIMEZONE));
+		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now, now, 3, TIMEZONE));
 	}
 
 	@Test
@@ -186,64 +186,64 @@ public class ValidationUtilTest {
 		Date now = getFixedCalendarOnMonday().getTime();
 		Calendar calendar = getFixedCalendarOnMonday();
 		// Monday
-		assertTrue(ValidationUtil.dateIsWeekdaysFrom(now, calendar.getTime(),
+		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now, calendar.getTime(),
 				3, TIMEZONE));
 		// Tuesday
 		calendar.roll(Calendar.DATE, 1);
-		assertTrue(ValidationUtil.dateIsWeekdaysFrom(now, calendar.getTime(),
+		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now, calendar.getTime(),
 				3, TIMEZONE));
 		// Wednesday
 		calendar.roll(Calendar.DATE, 1);
-		assertTrue(ValidationUtil.dateIsWeekdaysFrom(now, calendar.getTime(),
+		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now, calendar.getTime(),
 				3, TIMEZONE));
 		// Thursday
 		calendar.roll(Calendar.DATE, 1);
-		assertTrue(ValidationUtil.dateIsWeekdaysFrom(now, calendar.getTime(),
+		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now, calendar.getTime(),
 				3, TIMEZONE));
 		// Friday
 		calendar.roll(Calendar.DATE, 1);
-		assertTrue(ValidationUtil.dateIsWeekdaysFrom(now, calendar.getTime(),
+		assertFalse(ValidationUtil.isOrLessThanWeekdaysAfter(now, calendar.getTime(),
 				3, TIMEZONE));
 		// Saturday
 		calendar.roll(Calendar.DATE, 1);
-		assertTrue(ValidationUtil.dateIsWeekdaysFrom(now, calendar.getTime(),
+		assertFalse(ValidationUtil.isOrLessThanWeekdaysAfter(now, calendar.getTime(),
 				3, TIMEZONE));
 		// Sunday
 		calendar.roll(Calendar.DATE, 1);
-		assertTrue(ValidationUtil.dateIsWeekdaysFrom(now, calendar.getTime(),
+		assertFalse(ValidationUtil.isOrLessThanWeekdaysAfter(now, calendar.getTime(),
 				3, TIMEZONE));
 	}
 
 	@Test
 	public void testDateIsWeekdaysFrom_ForwardAWeek_OverWeekend() {
-		Date now = getFixedCalendarOnMonday().getTime();
-		Calendar calendar = getFixedCalendarOnFriday();
-		// Monday
-		assertTrue(ValidationUtil.dateIsWeekdaysFrom(now, calendar.getTime(),
-				3, TIMEZONE));
-		// Tuesday
-		calendar.roll(Calendar.DATE, 1);
-		assertTrue(ValidationUtil.dateIsWeekdaysFrom(now, calendar.getTime(),
-				3, TIMEZONE));
-		// Wednesday
-		calendar.roll(Calendar.DATE, 1);
-		assertTrue(ValidationUtil.dateIsWeekdaysFrom(now, calendar.getTime(),
-				3, TIMEZONE));
-		// Thursday
-		calendar.roll(Calendar.DATE, 1);
-		assertTrue(ValidationUtil.dateIsWeekdaysFrom(now, calendar.getTime(),
-				3, TIMEZONE));
+		Date from = getFixedCalendarOnFriday().getTime();
+		Calendar toCalendar = getFixedCalendarOnFriday();
 		// Friday
-		calendar.roll(Calendar.DATE, 1);
-		assertFalse(ValidationUtil.dateIsWeekdaysFrom(now, calendar.getTime(),
+		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(from, toCalendar.getTime(),
 				3, TIMEZONE));
 		// Saturday
-		calendar.roll(Calendar.DATE, 1);
-		assertFalse(ValidationUtil.dateIsWeekdaysFrom(now, calendar.getTime(),
+		toCalendar.roll(Calendar.DATE, 1);
+		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(from, toCalendar.getTime(),
 				3, TIMEZONE));
 		// Sunday
-		calendar.roll(Calendar.DATE, 1);
-		assertFalse(ValidationUtil.dateIsWeekdaysFrom(now, calendar.getTime(),
+		toCalendar.roll(Calendar.DATE, 1);
+		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(from, toCalendar.getTime(),
+				3, TIMEZONE));
+		// Monday
+		toCalendar.roll(Calendar.DATE, 1);
+		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(from, toCalendar.getTime(),
+				3, TIMEZONE));
+		// Tuesday
+		toCalendar.roll(Calendar.DATE, 1);
+		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(from, toCalendar.getTime(),
+				3, TIMEZONE));
+		// Wednesday
+		toCalendar.roll(Calendar.DATE, 1);
+		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(from, toCalendar.getTime(),
+				3, TIMEZONE));
+		// Thursday
+		toCalendar.roll(Calendar.DATE, 1);
+		assertFalse(ValidationUtil.isOrLessThanWeekdaysAfter(from, toCalendar.getTime(),
 				3, TIMEZONE));
 	}
 
@@ -252,16 +252,16 @@ public class ValidationUtilTest {
 		Calendar calendar = Calendar.getInstance(TIMEZONE);
 		// Next week
 		calendar.roll(Calendar.WEEK_OF_YEAR, 2);
-		assertTrue(ValidationUtil.dateIsAtLeastThreeWeekdaysFresh(
+		assertTrue(ValidationUtil.isThreeOrLessWeekdaysAgo(
 				calendar.getTime(), TIMEZONE));
 		calendar.roll(Calendar.WEEK_OF_YEAR, 1);
-		assertTrue(ValidationUtil.dateIsAtLeastThreeWeekdaysFresh(
+		assertTrue(ValidationUtil.isThreeOrLessWeekdaysAgo(
 				calendar.getTime(), TIMEZONE));
 		calendar.roll(Calendar.MONTH, 1);
-		assertTrue(ValidationUtil.dateIsAtLeastThreeWeekdaysFresh(
+		assertTrue(ValidationUtil.isThreeOrLessWeekdaysAgo(
 				calendar.getTime(), TIMEZONE));
 		calendar.roll(Calendar.YEAR, 1);
-		assertTrue(ValidationUtil.dateIsAtLeastThreeWeekdaysFresh(
+		assertTrue(ValidationUtil.isThreeOrLessWeekdaysAgo(
 				calendar.getTime(), TIMEZONE));
 	}
 
@@ -269,37 +269,37 @@ public class ValidationUtilTest {
 	public void testDateIsAtLeastThreeWeekdaysFresh_Now() {
 		Calendar calendar = Calendar.getInstance(TIMEZONE);
 		// Now
-		assertTrue(ValidationUtil.dateIsAtLeastThreeWeekdaysFresh(
+		assertTrue(ValidationUtil.isThreeOrLessWeekdaysAgo(
 				calendar.getTime(), TIMEZONE));
 	}
 
 	@Test
 	public void testDateIsAtLeastThreeWeekdaysFresh_FarPast() {
-		Calendar calendar = getFixedCalendarOnMonday();
-		// Next week
+		Calendar calendar = Calendar.getInstance(TIMEZONE);
+		// Last week
 		calendar.roll(Calendar.WEEK_OF_YEAR, -1);
-		assertFalse(ValidationUtil.dateIsAtLeastThreeWeekdaysFresh(
+		assertFalse(ValidationUtil.isThreeOrLessWeekdaysAgo(
 				calendar.getTime(), TIMEZONE));
 		calendar.roll(Calendar.WEEK_OF_YEAR, -1);
-		assertFalse(ValidationUtil.dateIsAtLeastThreeWeekdaysFresh(
+		assertFalse(ValidationUtil.isThreeOrLessWeekdaysAgo(
 				calendar.getTime(), TIMEZONE));
 		calendar.roll(Calendar.MONTH, -1);
-		assertFalse(ValidationUtil.dateIsAtLeastThreeWeekdaysFresh(
+		assertFalse(ValidationUtil.isThreeOrLessWeekdaysAgo(
 				calendar.getTime(), TIMEZONE));
 		calendar.roll(Calendar.YEAR, -1);
-		assertFalse(ValidationUtil.dateIsAtLeastThreeWeekdaysFresh(
+		assertFalse(ValidationUtil.isThreeOrLessWeekdaysAgo(
 				calendar.getTime(), TIMEZONE));
 	}
 
 	private Calendar getFixedCalendarOnMonday() {
-		Calendar c = Calendar.getInstance();
+		Calendar c = Calendar.getInstance(TIMEZONE);
 		c.set(2004, 8, 20, 17, 42, 51);
 		c.set(Calendar.MILLISECOND, 555);
 		return c;
 	}
 
 	private Calendar getFixedCalendarOnFriday() {
-		Calendar c = Calendar.getInstance();
+		Calendar c = Calendar.getInstance(TIMEZONE);
 		c.set(2004, 8, 24, 17, 42, 51);
 		c.set(Calendar.MILLISECOND, 555);
 		return c;
