@@ -446,39 +446,109 @@ public class AbsenceController extends AbstractController {
 			break;
 		case B:
 
+			Calendar formTimeStart = Calendar.getInstance();
+			formTimeStart.setTime(absence.getStart());
+			Calendar formstarttmp = Calendar.getInstance();
+			formstarttmp.setTime(form.getStart());
+			formTimeStart.set(Calendar.HOUR, formstarttmp.get(Calendar.HOUR));
+			formTimeStart.set(Calendar.HOUR_OF_DAY,
+					formstarttmp.get(Calendar.HOUR_OF_DAY));
+			formTimeStart.set(Calendar.MINUTE,
+					formstarttmp.get(Calendar.MINUTE));
+			formTimeStart.set(Calendar.SECOND,
+					formstarttmp.get(Calendar.SECOND));
+			formTimeStart.set(Calendar.MILLISECOND,
+					formstarttmp.get(Calendar.MILLISECOND));
+			// TODO add instead of roll?
+			formTimeStart.roll(Calendar.MINUTE, form.getMinutesToOrFrom() * -1);
+
+			Calendar formTimeEnd = Calendar.getInstance();
+
+			// this just sets the fields to lock into the necessary DATE. For
+			// the current implementation, this should always be the same
+			// result, because we don't support multi-day events
+			if (absence.getEnd() == null) {
+				formTimeEnd.setTime(absence.getStart());
+			} else {
+				formTimeEnd.setTime(absence.getEnd());
+			}
+
+			Calendar formendtmp = Calendar.getInstance();
+			formendtmp.setTime(form.getEnd());
+			formTimeEnd.set(Calendar.HOUR, formendtmp.get(Calendar.HOUR));
+			formTimeEnd.set(Calendar.HOUR_OF_DAY,
+					formendtmp.get(Calendar.HOUR_OF_DAY));
+			formTimeEnd.set(Calendar.MINUTE, formendtmp.get(Calendar.MINUTE));
+			formTimeEnd.set(Calendar.SECOND, formendtmp.get(Calendar.SECOND));
+			formTimeEnd.set(Calendar.MILLISECOND,
+					formendtmp.get(Calendar.MILLISECOND));
+			// TODO add instead of roll?
+			formTimeEnd.roll(Calendar.MINUTE, form.getMinutesToOrFrom());
+
+			Calendar formDateStart = Calendar.getInstance();
+			formDateStart.setTime(form.getStart());
+			formDateStart.set(Calendar.HOUR, 0);
+			formDateStart.set(Calendar.HOUR_OF_DAY, 0);
+			formDateStart.set(Calendar.MINUTE, 0);
+			formDateStart.set(Calendar.SECOND, 0);
+			formDateStart.set(Calendar.MILLISECOND, 0);
+
+			Calendar formDateEnd = Calendar.getInstance();
+			formDateEnd.setTime(form.getEnd());
+			formDateEnd.setTime(form.getStart());
+			formDateEnd.set(Calendar.HOUR, 0);
+			formDateEnd.set(Calendar.HOUR_OF_DAY, 0);
+			formDateEnd.set(Calendar.MINUTE, 0);
+			formDateEnd.set(Calendar.SECOND, 0);
+			formDateEnd.set(Calendar.MILLISECOND, 0);
+
 			// absence date must fall on a valid form date repetition
 			if (dateFallsOnRepetition(absence.getDatetime(), form.getStart())) {
 				if (absence.getType() == Absence.Type.Absence) {
-					if (!form.getStart().after(absence.getStart())
-							&& !form.getEnd().before(absence.getEnd())
+					if (formTimeEnd != null
+							&& !formTimeStart.getTime().after(
+									absence.getStart())
+							&& !formTimeEnd.getTime().before(absence.getEnd())
 							&& form.getAbsenceType() == Absence.Type.Absence) {
 						absence.setStatus(Absence.Status.Approved);
 					}
 				} else if (absence.getType() == Absence.Type.Tardy) {
-					Calendar tardyTime = Calendar.getInstance();
-					tardyTime.setTime(absence.getDatetime());
+					// Calendar tardyTime = Calendar.getInstance();
+					// tardyTime.setTime(absence.getDatetime());
 
-					Calendar formEnd = Calendar.getInstance();
-					formEnd.setTime(form.getEnd());
-					formEnd.add(Calendar.MINUTE, form.getMinutesToOrFrom());
+					// Calendar formEnd = Calendar.getInstance();
+					// formEnd.setTime(form.getEnd());
+					// formEnd.add(Calendar.MINUTE, form.getMinutesToOrFrom());
 
-					if (!absence.getDatetime().before(form.getStart())
-							&& !absence.getDatetime().after(formEnd.getTime())
+					// Date d1 = absence.getDatetime();
+					// Date d2 = form.getStart();
+					// Date d3 = form.getEnd();
+					// Date d4 = tardyTime.getTime();
+					// Date d5 = formEnd.getTime();
+
+					if (formTimeEnd != null
+							&& !absence.getDatetime().before(
+									formTimeStart.getTime())
+							&& !absence.getDatetime().after(
+									formTimeEnd.getTime())
 							&& (form.getAbsenceType() == Absence.Type.Absence || form
 									.getAbsenceType() == Absence.Type.Tardy)) {
 						absence.setStatus(Absence.Status.Approved);
 					}
 				} else if (absence.getType() == Absence.Type.EarlyCheckOut) {
-					Calendar outTime = Calendar.getInstance();
-					outTime.setTime(absence.getDatetime());
+					// Calendar outTime = Calendar.getInstance();
+					// outTime.setTime(absence.getDatetime());
 
-					Calendar formStart = Calendar.getInstance();
-					formStart.setTime(form.getEnd());
-					formStart.add(Calendar.MINUTE, form.getMinutesToOrFrom()
-							* -1);
+					// Calendar formStart = Calendar.getInstance();
+					// formStart.setTime(form.getEnd());
+					// formStart.add(Calendar.MINUTE, form.getMinutesToOrFrom()
+					// * -1);
 
-					if (!absence.getDatetime().before(formStart.getTime())
-							&& !absence.getDatetime().before(form.getEnd())
+					if (formTimeEnd != null
+							&& !absence.getDatetime().before(
+									formTimeStart.getTime())
+							&& !absence.getDatetime().before(
+									formTimeEnd.getTime())
 							&& (form.getAbsenceType() == Absence.Type.Absence || form
 									.getAbsenceType() == Absence.Type.EarlyCheckOut)) {
 						absence.setStatus(Absence.Status.Approved);
