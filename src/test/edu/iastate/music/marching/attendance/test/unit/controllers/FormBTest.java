@@ -61,9 +61,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 17, 8, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -109,9 +109,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 40, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -157,9 +157,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 27, 17, 10, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -205,9 +205,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 17, 30, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -253,9 +253,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 15, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -301,9 +301,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 8, 15, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -349,9 +349,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 45, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -397,9 +397,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 10, 29, 13, 15, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -445,9 +445,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 8, 15, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -493,9 +493,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 20, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -541,9 +541,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -589,9 +589,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 10, 22, 16, 30, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -637,9 +637,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 17, 0, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -685,9 +685,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 17, 5, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -733,9 +733,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 17, 10, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -781,9 +781,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 17, 15, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -830,9 +830,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 25, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -878,9 +878,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 30, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -926,9 +926,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 40, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -974,9 +974,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -1022,9 +1022,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 18, 10, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -1071,9 +1071,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 35, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -1119,9 +1119,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 55, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -1167,9 +1167,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 17, 10, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -1215,9 +1215,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 17, 23, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -1263,9 +1263,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 17, 40, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -1311,9 +1311,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 18, 10, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -1360,9 +1360,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 10, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -1408,9 +1408,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -1457,9 +1457,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 40, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -1505,9 +1505,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 17, 10, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -1553,9 +1553,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 17, 55, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -1602,9 +1602,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 10, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -1651,9 +1651,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 28, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -1699,9 +1699,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 30, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -1748,9 +1748,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 40, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -1796,9 +1796,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -1845,9 +1845,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 17, 52, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -1894,9 +1894,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -1943,9 +1943,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 17, 53, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -1991,9 +1991,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 18, 10, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -2040,9 +2040,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 8, 15, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -2089,9 +2089,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 45, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -2138,9 +2138,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 13, 15, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -2187,9 +2187,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 8, 15, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -2236,9 +2236,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 20, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -2285,9 +2285,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -2334,9 +2334,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 11, 26, 16, 30, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -2383,9 +2383,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 17, 0, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -2432,9 +2432,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 12, 17, 17, 5, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -2481,9 +2481,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 17, 10, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -2530,9 +2530,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 17, 15, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -2580,9 +2580,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 25, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -2629,9 +2629,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 30, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -2678,9 +2678,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 40, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -2727,9 +2727,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -2776,9 +2776,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 18, 10, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -2826,9 +2826,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 35, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -2875,9 +2875,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 55, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -2924,9 +2924,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 17, 10, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -2973,9 +2973,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 17, 23, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -3022,9 +3022,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 17, 40, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -3071,9 +3071,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 18, 10, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -3121,9 +3121,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 10, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -3170,9 +3170,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -3220,9 +3220,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 40, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -3269,9 +3269,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 17, 10, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -3318,9 +3318,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 17, 55, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -3368,9 +3368,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 10, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -3418,9 +3418,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 28, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -3467,9 +3467,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 30, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -3517,9 +3517,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 40, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -3566,9 +3566,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -3616,9 +3616,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 17, 52, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -3666,9 +3666,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -3716,9 +3716,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 17, 53, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -3765,9 +3765,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 18, 10, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -3812,9 +3812,9 @@ public class FormBTest extends AbstractTest {
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Absence);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -3857,9 +3857,9 @@ public class FormBTest extends AbstractTest {
 		eventend.set(2012, 12, 17, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Absence);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -3902,9 +3902,9 @@ public class FormBTest extends AbstractTest {
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Absence);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -3947,9 +3947,9 @@ public class FormBTest extends AbstractTest {
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Absence);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -3992,9 +3992,9 @@ public class FormBTest extends AbstractTest {
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Absence);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -4037,9 +4037,9 @@ public class FormBTest extends AbstractTest {
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Absence);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -4082,9 +4082,9 @@ public class FormBTest extends AbstractTest {
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Absence);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -4128,9 +4128,9 @@ public class FormBTest extends AbstractTest {
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Absence);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -4175,9 +4175,9 @@ public class FormBTest extends AbstractTest {
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Absence);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -4221,9 +4221,9 @@ public class FormBTest extends AbstractTest {
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Absence);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -4267,9 +4267,9 @@ public class FormBTest extends AbstractTest {
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Absence);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -4313,9 +4313,9 @@ public class FormBTest extends AbstractTest {
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Absence);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -4359,9 +4359,9 @@ public class FormBTest extends AbstractTest {
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Absence);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -4405,9 +4405,9 @@ public class FormBTest extends AbstractTest {
 		eventend.set(2012, 9, 10, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Absence);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -4455,9 +4455,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 3,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.TUESDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -4503,9 +4503,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 17, 15, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 3,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.TUESDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -4551,9 +4551,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 20, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 5,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.THURSDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -4600,9 +4600,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 2,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.SUNDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -4646,9 +4646,9 @@ public class FormBTest extends AbstractTest {
 		eventend.set(2012, 12, 17, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 0,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Absence);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.SATURDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -4691,9 +4691,9 @@ public class FormBTest extends AbstractTest {
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 6,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Absence);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.FRIDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -4736,9 +4736,9 @@ public class FormBTest extends AbstractTest {
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 4,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Absence);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.WEDNESDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -4782,9 +4782,9 @@ public class FormBTest extends AbstractTest {
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 5,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Absence);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.THURSDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -4832,9 +4832,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 13, 8, 15, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -4880,9 +4880,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2011, 7, 18, 16, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -4928,9 +4928,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 13, 16, 45, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -4977,9 +4977,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2011, 7, 25, 16, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -5023,9 +5023,9 @@ public class FormBTest extends AbstractTest {
 		eventend.set(2011, 7, 25, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Absence);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -5068,9 +5068,9 @@ public class FormBTest extends AbstractTest {
 		eventend.set(2012, 7, 6, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Absence);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -5113,9 +5113,9 @@ public class FormBTest extends AbstractTest {
 		eventend.set(2001, 7, 30, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Absence);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -5159,9 +5159,9 @@ public class FormBTest extends AbstractTest {
 		eventend.set(2012, 6, 18, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Absence);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -5209,9 +5209,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2013, 7, 22, 16, 30, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -5257,9 +5257,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 12, 27, 16, 25, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -5305,9 +5305,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 12, 24, 16, 30, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -5354,9 +5354,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2013, 7, 29, 17, 15, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -5400,9 +5400,9 @@ public class FormBTest extends AbstractTest {
 		eventend.set(2013, 1, 9, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Absence);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -5445,9 +5445,9 @@ public class FormBTest extends AbstractTest {
 		eventend.set(2014, 7, 14, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Absence);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -5490,9 +5490,9 @@ public class FormBTest extends AbstractTest {
 		eventend.set(2037, 7, 20, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Absence);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -5537,9 +5537,9 @@ public class FormBTest extends AbstractTest {
 		eventend.set(2012, 12, 31, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Absence);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -5587,9 +5587,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 30, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Performance,
 				eventstart.getTime(), eventend.getTime());
@@ -5635,9 +5635,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 18, 10, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Performance,
 				eventstart.getTime(), eventend.getTime());
@@ -5683,9 +5683,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 25, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Performance,
 				eventstart.getTime(), eventend.getTime());
@@ -5732,9 +5732,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 30, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Performance,
 				eventstart.getTime(), eventend.getTime());
@@ -5778,9 +5778,9 @@ public class FormBTest extends AbstractTest {
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Absence);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
 
 		Event e = ec.createOrUpdate(Event.Type.Performance,
 				eventstart.getTime(), eventend.getTime());
@@ -5823,9 +5823,9 @@ public class FormBTest extends AbstractTest {
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Absence);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
 
 		Event e = ec.createOrUpdate(Event.Type.Performance,
 				eventstart.getTime(), eventend.getTime());
@@ -5868,9 +5868,9 @@ public class FormBTest extends AbstractTest {
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Absence);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
 
 		Event e = ec.createOrUpdate(Event.Type.Performance,
 				eventstart.getTime(), eventend.getTime());
@@ -5914,9 +5914,9 @@ public class FormBTest extends AbstractTest {
 		eventend.set(2012, 9, 10, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Absence);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
 
 		Event e = ec.createOrUpdate(Event.Type.Performance,
 				eventstart.getTime(), eventend.getTime());
@@ -5964,9 +5964,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 35, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -6012,9 +6012,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 55, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -6060,9 +6060,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 16, 40, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -6109,9 +6109,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 18, 10, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -6155,9 +6155,9 @@ public class FormBTest extends AbstractTest {
 		eventend.set(2012, 12, 17, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Absence);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -6200,9 +6200,9 @@ public class FormBTest extends AbstractTest {
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Absence);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -6245,9 +6245,9 @@ public class FormBTest extends AbstractTest {
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Absence);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -6291,9 +6291,9 @@ public class FormBTest extends AbstractTest {
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Absence);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -6341,9 +6341,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 17, 10, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -6389,9 +6389,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 17, 40, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Tardy);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Tardy);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -6437,9 +6437,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 17, 23, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -6486,9 +6486,9 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 17, 40, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.EarlyCheckOut);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.EarlyCheckOut);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -6532,9 +6532,9 @@ public class FormBTest extends AbstractTest {
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Absence);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -6577,9 +6577,9 @@ public class FormBTest extends AbstractTest {
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Absence);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -6622,9 +6622,9 @@ public class FormBTest extends AbstractTest {
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Absence);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
@@ -6669,9 +6669,9 @@ public class FormBTest extends AbstractTest {
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startdate.getTime(), enddate.getTime(), 1,
-				startdate.getTime(), enddate.getTime(), "details", 10,
-				Absence.Type.Absence);
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
 				eventend.getTime());
