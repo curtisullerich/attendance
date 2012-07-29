@@ -215,7 +215,7 @@ public class FormBTest extends AbstractTest {
 
 		form.setStatus(Form.Status.Approved);
 		fc.update(form);
-
+		
 		assertEquals(Absence.Status.Pending, a.getStatus());
 	}
 
