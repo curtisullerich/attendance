@@ -101,7 +101,8 @@ public class FormAutoApproval extends AbstractTest {
 		int day = c.get(Calendar.DAY_OF_WEEK);
 		Form form = train.getFormsController().createFormB(student1,
 				"department", "course", "section", "building", ABSOLUTE_DATE,
-				ABSOLUTE_DATE, day, ABSOLUTE_DATE, c.getTime(), "details", 0);
+				ABSOLUTE_DATE, day, ABSOLUTE_DATE, c.getTime(), "details", 0,
+				Absence.Type.Absence);
 		train.getFormsController().approve(form);
 
 		// Verify both form and absence are now approved
