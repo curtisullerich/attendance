@@ -485,7 +485,7 @@ public class UserControllerTest extends AbstractTest {
 				end.getTime());
 		assertEquals(Absence.Type.Absence, a7.getType());
 
-		// So, at this point, the logiv in the event creation has automatically
+		// So, at this point, the logic in the event creation has automatically
 		// linked the absence to the event. Setting the event is redundant.
 		// I left this code here because it causes here, yet used to work
 		// (before adding the event royale logic. Now I'm not sure what to think
