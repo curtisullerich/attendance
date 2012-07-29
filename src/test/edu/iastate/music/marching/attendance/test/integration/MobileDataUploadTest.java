@@ -165,10 +165,12 @@ public class MobileDataUploadTest extends AbstractTest {
 				assertFalse("There should only be one abscence for user s",
 						foundS);
 				foundS = true;
-				// TODO assert information about inserted absence
+				// TODO https://github.com/curtisullerich/attendance/issues/123
+				//assert information about inserted absence
 			} else if (a.getStudent().getPrimaryEmail().getEmail()
 					.equals("zf@" + TestConfig.getEmailDomain())) {
-				// TODO assert information about inserted absence
+				// TODO https://github.com/curtisullerich/attendance/issues/123
+				//assert information about inserted absence
 			} else
 				fail("Found an absence we didn't insert");
 		}
@@ -197,7 +199,8 @@ public class MobileDataUploadTest extends AbstractTest {
 
 		assertEquals(6, train.getAbsenceController().getCount().intValue());
 
-		// TODO: Check actual data returned
+		// TODO: https://github.com/curtisullerich/attendance/issues/123
+		//Check actual data returned
 	}
 
 	private HttpServletRequest setTASession(HttpServletRequest req) {

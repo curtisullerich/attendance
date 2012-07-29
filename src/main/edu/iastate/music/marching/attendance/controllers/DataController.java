@@ -109,8 +109,6 @@ public class DataController extends AbstractController {
 			throw new IllegalStateException(
 					"Tried to import out-of-date dump not compatible with current database structure");
 		}
-
-		// TODO
 	}
 
 	private class Dump {

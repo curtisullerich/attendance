@@ -144,7 +144,8 @@ public class EventController extends AbstractController {
 				// LINK IT
 				ac.updateAbsence(a);
 
-				// TODO doing this every time is probably horrible for
+				// TODO https://github.com/curtisullerich/attendance/issues/105
+				//doing this every time is probably horrible for
 				// performance. Another possible solution is keeping a list of
 				// all students and updating each one before returning
 				this.train.getDataStore().refresh(event);

@@ -80,7 +80,8 @@ public class MessagingController extends AbstractController {
 
 	public List<MessageThread> get(User involved) {
 		ObjectDatastore od = this.train.getDataStore();
-		// TODO: Daniel: Have to use Key types for an IN filter for now,
+		// TODO https://github.com/curtisullerich/attendance/issues/112
+		//Daniel: Have to use Key types for an IN filter for now,
 		// newer versions of twig-persist support using actual objects however
 		Key k = od.associatedKey(involved);
 		return this.train
@@ -91,7 +92,8 @@ public class MessagingController extends AbstractController {
 
 	public List<MessageThread> get(User involved, boolean resolved) {
 		ObjectDatastore od = this.train.getDataStore();
-		// TODO: Daniel: Have to use Key types for an IN filter for now,
+		// TODO https://github.com/curtisullerich/attendance/issues/112
+		//Daniel: Have to use Key types for an IN filter for now,
 		// newer versions of twig-persist support using actual objects however
 		Key k = od.associatedKey(involved);
 		return this.train

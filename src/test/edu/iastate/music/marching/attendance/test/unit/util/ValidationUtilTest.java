@@ -15,35 +15,14 @@ public class ValidationUtilTest {
 
 	private final static TimeZone TIMEZONE = TimeZone.getTimeZone("UTC");
 
-	// TODO: Most of the remaining methods are unused, don't test unused
-	// methods, delete them
-	// @Test
-	// public void testIsValidName() {
-	// fail("Not yet implemented");
-	// }
-	//
-	// @Test
-	// public void testValidGoogleUser() {
-	// fail("Not yet implemented");
-	// }
-	//
-	// @Test
-	// public void testIsValidText() {
-	// fail("Not yet implemented");
-	// }
-	//
-	// @Test
-	// public void testIsValidFormDEmail() {
-	// fail("Not yet implemented");
-	// }
-
 	@Test
 	public void testIsValidName()
 	{
 		assertTrue(ValidationUtil.isValidName("Test Name-Complicated"));
 		assertTrue(ValidationUtil.isValidName("Test Name"));
 		
-		// TODO: Should we allow non-ascii characters in names?
+		// TODO: https://github.com/curtisullerich/attendance/issues/125 
+		//Should we allow non-ascii characters in names?
 		//assertTrue(ValidationUtil.isValidName("" + '\u4E2D' + '\u56FD' + '\u8BDD' + '\u4E0D' + '\u7528' + ' ' + '\u7528' + '\u5F41' + '\u5B57' + '\u3002'));
 		//assertFalse(ValidationUtil.isValidName("1234567890"));
 	}

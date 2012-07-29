@@ -151,7 +151,8 @@ public class AdminServlet extends AbstractBaseServlet {
 		localUser.setFirstName(firstName);
 		localUser.setLastName(lastName);
 
-		// TODO May throw validation exceptions
+		// TODO https://github.com/curtisullerich/attendance/issues/118
+		//May throw validation exceptions
 		uc.update(localUser);
 
 		// Update user in session if we just changed the currently logged in

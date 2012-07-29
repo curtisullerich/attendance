@@ -73,7 +73,8 @@ public class ValidationUtil {
 	}
 
 	private static boolean validEmailDomain(String domain, DataTrain train) {
-		// TODO This should be an application setting
+		// TODO https://github.com/curtisullerich/attendance/issues/122
+		//This should be an application setting
 		AppData app = train.getAppDataController().get();
 		return "iastate.edu".equals(domain);
 	}

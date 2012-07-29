@@ -61,8 +61,9 @@ public class AbsenceController extends AbstractController {
 		return storeAbsence(absence, student);
 	}
 
-	// TODO TEST THIS! probably by getting all and making sure there aren't any
-	// other unanchoreds running around somewhere
+	// TODO https://github.com/curtisullerich/attendance/issues/109
+	//TEST THIS! probably by getting all and making sure there aren't any
+	// other unanchoreds running around somewher
 	public List<Absence> getUnanchored() {
 		List<Absence> absences = this.train.find(Absence.class)
 				.addFilter(Absence.FIELD_EVENT, FilterOperator.EQUAL, null)
@@ -119,8 +120,6 @@ public class AbsenceController extends AbstractController {
 		switch (current.getType()) {
 		case Absence:
 			// Anything beats an absence
-			// TODO uhhhhhh is it possible to have two absences with different
-			// start/end times at this point?
 			return false;
 		case Tardy:
 			switch (contester.getType()) {
@@ -229,8 +228,6 @@ public class AbsenceController extends AbstractController {
 			throw new IllegalArgumentException(
 					"Tried to create absence for null user");
 		}
-		// TODO:Check for exact duplicates--whoever put this here, did you mean
-		// duplicate dates? If so, click here and press ctrl+D. repeat above
 		if (!end.after(start)) {
 			// this should handle the case of equality
 			throw new IllegalArgumentException(
@@ -439,18 +436,12 @@ public class AbsenceController extends AbstractController {
 				// nope!
 				return absence;
 			} else {
-				// TODO this approves all three types of absences, even though
-				// the form assumes a full absence. That cool?
-				// TODO is this the best way to compare that two dates are the
-				// same?
 				SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-				// TODO verify that event.getDate() gets the date of the event
-				// and that form.getStart() always gets the day on which the
-				// form is applicable. This is relevant for the other types as
-				// well.
+
 				if (fmt.format(absence.getEvent().getDate()).equals(
 						fmt.format(form.getStart()))) {
-					// TODO it wouldn't be hard to implement an AutoApproved
+					//TODO https://github.com/curtisullerich/attendance/issues/107
+					//it wouldn't be hard to implement an AutoApproved
 					// type for documentation purposes, since this and the form
 					// controller are the only places it should happen
 					absence.setStatus(Absence.Status.Approved);
@@ -564,7 +555,8 @@ public class AbsenceController extends AbstractController {
 		absenceCal.setTime(absenceDate);
 		formCal.setTime(formDate);
 
-		// TODO this logic assumes that both dates are in the same year!
+		// TODO https://github.com/curtisullerich/attendance/issues/110
+		//Handle changing year
 		return (formCal.get(Calendar.DAY_OF_YEAR) - absenceCal
 				.get(Calendar.DAY_OF_YEAR)) % 7 == 0;
 	}
@@ -584,8 +576,6 @@ public class AbsenceController extends AbstractController {
 				this.train.getDataStore().delete(absence);
 			} catch (IllegalArgumentException e) {
 				LOG.severe("Attempted to delete absence that wasn't associated.");
-				// TODO not really sure how bad of an idea it was to swallow the
-				// exception here --curtis
 			}
 
 			// Current absence has been invalidated somehow and removed from the
@@ -596,10 +586,6 @@ public class AbsenceController extends AbstractController {
 			checkForAutoApproval(resolvedAbsence);
 
 			// Then do actual store
-			// TODO this was changd by curtis at 21:33 on 6/19/12. If it's
-			// incorrect, talk to him. It was throwing illegal argument
-			// exceptions because absences that are already in the database can
-			// make it in here.
 			this.train.getDataStore().storeOrUpdate(resolvedAbsence);
 			// this.train.getDataStore().store(resolvedAbsence);
 

@@ -22,7 +22,8 @@ public class AppDataController extends AbstractController {
 	 * @return
 	 */
 	public AppData get() {
-		// TODO Caching
+		//TODO https://github.com/curtisullerich/attendance/issues/104
+		// Caching
 		AppData appData = dataTrain.getDataStore().find().type(AppData.class)
 				.returnUnique().now();
 
@@ -61,7 +62,6 @@ public class AppDataController extends AbstractController {
 		return appData;
 	}
 
-	// TODO made this public. Is that okay?
 	public void save(AppData appData) {
 		dataTrain.getDataStore().update(appData);
 	}

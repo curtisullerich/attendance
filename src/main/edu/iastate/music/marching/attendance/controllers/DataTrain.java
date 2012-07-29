@@ -80,7 +80,7 @@ public class DataTrain {
 		return this.datastore;
 	}
 
-	// TODO: For implementing transaction support
+	//For implementing transaction support
 	// Object getAncestor() {
 	// return getVersionController().getCurrent();
 	// }

@@ -76,15 +76,17 @@ public class FormController extends AbstractController {
 
 		AbsenceController ac = this.dataTrain.getAbsenceController();
 
-		// TODO what if the student is null?
+		// TODO https://github.com/curtisullerich/attendance/issues/106
+		// what if the student is null?
 		for (Absence absence : ac.get(f.getStudent())) {
-			// TODO I wrote a (private) method in Absence controller that could
+			//TODO https://github.com/curtisullerich/attendance/issues/106
+			//I wrote a (private) method in Absence controller that could
 			// do this more efficiently because it checks for a specific form
 			// and specific absence. We /could/ expose it as protected, but
 			// that may introduce bugs elsewhere because we're not forced to
 			// call updateAbsence in order to perform checks and thus may forget
 			// to update it or perform all necessary validation. This applies to
-			// all forms.
+			// all forms
 			ac.updateAbsence(absence);
 		}
 
@@ -97,8 +99,7 @@ public class FormController extends AbstractController {
 	}
 
 	private void storeForm(Form form) {
-		// TODO: Reintroduce transactions
-
+		// TODO: https://github.com/curtisullerich/attendance/issues/114
 		// Perform store of this new form and update of student's grade in a
 		// transaction to prevent inconsistent states
 		// Track transaction = dataTrain.switchTracksInternal();
@@ -117,16 +118,18 @@ public class FormController extends AbstractController {
 		// Update grade, it may have changed
 		dataTrain.getUsersController().update(form.getStudent());
 
-		// TODO what if the student is null?
+		// TODO https://github.com/curtisullerich/attendance/issues/106
+		// what if the student is null?
 		AbsenceController ac = this.dataTrain.getAbsenceController();
 		for (Absence absence : ac.get(form.getStudent())) {
-			// TODO I wrote a (private) method in Absence controller that could
+			// TODO https://github.com/curtisullerich/attendance/issues/106
+			//I wrote a (private) method in Absence controller that could
 			// do this more efficiently because it checks for a specific form
 			// and specific absence. We /could/ expose it as protected, but
 			// that may introduce bugs elsewhere because we're not forced to
 			// call updateAbsence in order to perform checks and thus may forget
 			// to update it or perform all necessary validation. This applies to
-			// all forms.
+			// all forms
 			ac.updateAbsence(absence);
 		}
 
@@ -163,7 +166,7 @@ public class FormController extends AbstractController {
 	// if (endDate == null)
 	// throw new IllegalArgumentException("Null endDate given for form");
 	//
-	// // TODO more validation of start/end dates
+	// more validation of start/end dates
 	// Form form = ModelFactory.newForm(type, student);
 	//
 	// form.setStart(startDate);
@@ -173,7 +176,6 @@ public class FormController extends AbstractController {
 	// return form;
 	// }
 
-	// TODO perform form a-specific validation
 	public Form createFormA(User student, Date date, String reason) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
@@ -189,7 +191,8 @@ public class FormController extends AbstractController {
 		cutoff.setTime(dataTrain.getAppDataController().get()
 				.getFormSubmissionCutoff());
 
-		// TODO is timezone correct?
+		//TODO https://github.com/curtisullerich/attendance/issues/103
+		//is timezone correct?
 		if (!Calendar.getInstance().before(cutoff)) {
 			exp.getErrors().add(
 					"Sorry, it's past the deadline for submitting Form A.");
@@ -209,7 +212,8 @@ public class FormController extends AbstractController {
 		temp.set(Calendar.MILLISECOND, 0);
 		Date startDate = temp.getTime();
 
-		// TODO app engine stores this as midnight on August 9th. This should
+		//TODO https://github.com/curtisullerich/attendance/issues/103
+		// app engine stores this as midnight on August 9th. This should
 		// never cause an error, but should we fix it? Probably. Maybe the
 		// resolution of time on app engine doesn't go to milliseconds?
 		// End exactly one time unit before the next day starts
@@ -247,7 +251,8 @@ public class FormController extends AbstractController {
 		startTimeCalendar.setTime(startTime);
 		endTimeCalendar.setTime(endTime);
 
-		// TODO NEEDS MORE PARAMETERS and LOTS OF VALIDATION
+		//TODO https://github.com/curtisullerich/attendance/issues/108
+		// NEEDS MORE PARAMETERS and LOTS OF VALIDATION
 
 		// Simple validation first
 		ValidationExceptions exp = new ValidationExceptions();
@@ -256,7 +261,6 @@ public class FormController extends AbstractController {
 			exp.getErrors().add("Invalid details");
 		}
 
-		// TODO MORE VALIDATION
 		if (exp.getErrors().size() > 0) {
 			throw exp;
 		}
@@ -276,7 +280,7 @@ public class FormController extends AbstractController {
 
 		form.setStart(startDateTime.getTime());
 		form.setEnd(endDateTime.getTime());
-		// TODO form.set(All the other things)
+		
 		if (ValidationUtil.isValidText(department, false)) {
 			form.setDept(department);
 		} else {
@@ -311,11 +315,8 @@ public class FormController extends AbstractController {
 		return form;
 	}
 
-	// TODO perform form c-specific validation
 	public Form createFormC(User student, Date date, Absence.Type type,
 			String reason) {
-		// TODO I think I might be breaking a paradigm by doing it this way (not
-		// passing in explicit start and end dates)
 
 		// Simple validation first
 		ValidationExceptions exp = new ValidationExceptions();
@@ -384,7 +385,8 @@ public class FormController extends AbstractController {
 
 		Form form = ModelFactory.newForm(Form.Type.C, student);
 
-		// TODO what's the best way to indicate that something went wrong? Which
+		// TODO https://github.com/curtisullerich/attendance/issues/111
+		//what's the best way to indicate that something went wrong? Which
 		// is what it means if either start or end are null at this point.
 		form.setStart(start);
 		form.setEnd(end);
@@ -531,8 +533,7 @@ public class FormController extends AbstractController {
 		ObjectDatastore od = this.dataTrain.getDataStore();
 		Form form = od.load(this.dataTrain.getTie(Form.class, id));
 		if (form.getStatus() == Form.Status.Approved) {
-			// you can't remove an approved form.
-			// TODO you might be able to. check with staub
+			// Only Directors can remove forms
 			return false;
 		} else {
 			User student = form.getStudent();
@@ -547,7 +548,6 @@ public class FormController extends AbstractController {
 	}
 
 	public void approve(Form form) {
-		// TODO Auto-generated method stub
 		form.setStatus(Form.Status.Approved);
 		this.update(form);
 	}

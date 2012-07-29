@@ -19,7 +19,6 @@ public class MobileDataUpload_V0 {
 	
 	private Date timestamp;
 	
-	// TODO Change to blob
 	@Type(Text.class)
 	private String data;
 

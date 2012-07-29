@@ -74,7 +74,8 @@ public class UserController extends AbstractController {
 
 		return user;
 	}
-
+	//TODO https://github.com/curtisullerich/attendance/issues/102
+	//Validation of major, rank, section, year, universtiy id
 	private void validateUser(User user) throws IllegalArgumentException {
 
 		if (user == null)
@@ -91,8 +92,6 @@ public class UserController extends AbstractController {
 		if (!ValidationUtil.isValidName(user.getLastName()))
 			throw new IllegalArgumentException("Invalid last name");
 
-		// Check university id
-		// TODO
 		user.getUniversityID();
 
 		// Check secondary email
@@ -102,7 +101,6 @@ public class UserController extends AbstractController {
 
 		// Check student specific things
 		if (user.getType() == User.Type.Student) {
-			// TODO validation
 			user.getMajor();
 			user.getRank();
 			user.getSection();
@@ -225,8 +223,7 @@ public class UserController extends AbstractController {
 					.toLowerCase()));
 		}
 
-		validateUser(u);// TODO do we need to check for updates to absences
-						// here? I don't think so.
+		validateUser(u);
 
 		// I make this redundant call because the call chain in updateUserGrade
 		// wipes the changes from the User
@@ -265,7 +262,6 @@ public class UserController extends AbstractController {
 							count += 2;
 							break;
 						case EarlyCheckOut:
-							// no penalty? TODO
 							count += 2;
 							break;
 						}
@@ -279,7 +275,6 @@ public class UserController extends AbstractController {
 							count += 1;
 							break;
 						case EarlyCheckOut:
-							// no penalty? TODO
 							count += 1;
 							break;
 						}

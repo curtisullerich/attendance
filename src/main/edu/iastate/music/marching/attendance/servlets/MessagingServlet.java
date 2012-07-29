@@ -104,7 +104,6 @@ public class MessagingServlet extends AbstractBaseServlet {
 				mt.setResolved(false);
 				mc.update(mt);
 			} else {
-				//?TODO
 			}
 		} else if (message != null && !message.equals("")) {//add a message
 			MessagingController mc = train.getMessagingController();
@@ -113,7 +112,6 @@ public class MessagingServlet extends AbstractBaseServlet {
 			mc.addMessage(mt, sender, message);
 			
 		} else {
-			//?TODO 
 		}
 		showThread(req, resp, longid, train);
 	}
@@ -123,16 +121,18 @@ public class MessagingServlet extends AbstractBaseServlet {
 		long threadId = Long.parseLong(req.getParameter("Id"));
 		String message = req.getParameter("Message");
 		
-		// TODO sanitize message?
+		// TODO https://github.com/curtisullerich/attendance/issues/119
+		//sanitize message?
 		
 		DataTrain train = DataTrain.getAndStartTrain();
 
-		// TODO Handle exceptions maybe for invalid thread id's?
+		// TODO https://github.com/curtisullerich/attendance/issues/116
+		//Handle exceptions maybe for invalid thread id's?
 		MessageThread thread = train.getMessagingController().get(threadId);
 
-		// TODO Verify currently logged in user is a participant in the
-		// conversation,
-		// or is a director
+		// TODO https://github.com/curtisullerich/attendance/issues/120
+		//Verify currently logged in user is a participant in the
+		// conversation, or is a director
 		
 		train.getMessagingController().addMessage(thread, train.getAuthController().getCurrentUser(req.getSession()), message);
 
@@ -143,7 +143,8 @@ public class MessagingServlet extends AbstractBaseServlet {
 			throws ServletException, IOException {
 		DataTrain train = DataTrain.getAndStartTrain();
 
-		// TODO Handle exceptions maybe for invalid thread id's?
+		// TODO https://github.com/curtisullerich/attendance/issues/116
+		//Handle exceptions maybe for invalid thread id's?
 		List<MessageThread> resolved;
 		List<MessageThread> unresolved;
 		if(train.getAuthController().getCurrentUser(req.getSession()).getType().equals(User.Type.Director))
@@ -157,9 +158,9 @@ public class MessagingServlet extends AbstractBaseServlet {
 			unresolved =  train.getMessagingController().get(train.getAuthController().getCurrentUser(req.getSession()), false);
 		}
 		
-		// TODO Verify currently logged in user is a participant in the
-		// conversation,
-		// or is a director
+		// TODO https://github.com/curtisullerich/attendance/issues/120
+		//Verify currently logged in user is a participant in the
+		// conversation, or is a director
 		
 		List<MessageThread> nonempty_resolved = new ArrayList<MessageThread>();
 		List<MessageThread> nonempty_unresolved = new ArrayList<MessageThread>();
@@ -199,12 +200,13 @@ public class MessagingServlet extends AbstractBaseServlet {
 			long threadId, DataTrain train) throws ServletException,
 			IOException {
 
-		// TODO Handle exceptions maybe for invalid thread id's?
+		// TODO https://github.com/curtisullerich/attendance/issues/116
+		//Handle exceptions maybe for invalid thread id's?
 		MessageThread thread = train.getMessagingController().get(threadId);
 
-		// TODO Verify currently logged in user is a participant in the
-		// conversation,
-		// or is a director
+		// TODO https://github.com/curtisullerich/attendance/issues/120
+		//Verify currently logged in user is a participant in the
+		// conversation, or is a director
 
 		PageBuilder builder = new PageBuilder(Page.viewthread, SERVLET_JSP_PATH);
 

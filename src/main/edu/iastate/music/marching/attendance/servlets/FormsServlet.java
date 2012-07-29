@@ -81,7 +81,6 @@ public class FormsServlet extends AbstractBaseServlet {
 		// removeForm(req, resp);
 		// break;
 		case messages:
-			// TODO
 			break;
 		default:
 			ErrorServlet.showError(req, resp, 404);
@@ -107,7 +106,6 @@ public class FormsServlet extends AbstractBaseServlet {
 			page.setAttribute("success_message", success_message);
 			page.passOffToJsp(req, resp);
 		} catch (NumberFormatException nfe) {
-			// TODO Log this
 			ErrorServlet.showError(req, resp, 500);
 		}
 	}
@@ -146,7 +144,6 @@ public class FormsServlet extends AbstractBaseServlet {
 				handleFormD(req, resp);
 				break;
 			case messages:
-				// TODO
 				break;
 			case view:
 				updateStatus(req, resp);
@@ -631,7 +628,6 @@ public class FormsServlet extends AbstractBaseServlet {
 					} else {
 						page.setAttribute("error_messages",
 								"Form not deleted. If the form was already approved then you can't delete it.");
-						// TODO you might be able to. Check with staub
 					}
 				}
 			} catch (NullPointerException e) {

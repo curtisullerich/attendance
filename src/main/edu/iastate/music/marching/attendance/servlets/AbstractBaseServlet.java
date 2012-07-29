@@ -38,7 +38,8 @@ public abstract class AbstractBaseServlet extends HttpServlet {
 			// Normal access to a page of the servlet
 			String[] path_parts = pathInfo.split("/");
 
-			// TODO What if more than two parts
+			// TODO https://github.com/curtisullerich/attendance/issues/121
+			//What if more than two parts
 
 			String path = path_parts[1];
 

@@ -51,7 +51,8 @@ public class MessagingControllerTest extends AbstractTest {
 		assertEquals(student, result_student.getMessages().get(0).getAuthor());
 		assertEquals("S", result_student.getMessages().get(0).getText());
 		assertNotNull(result_student.getMessages().get(0).getTimestamp());
-		// TODO more checks
+		// TODO https://github.com/curtisullerich/attendance/issues/124
+		//more checks
 
 		MessageThread resultd = getDataTrain().getMessagingController().get(
 				mtd.getId());
@@ -59,7 +60,8 @@ public class MessagingControllerTest extends AbstractTest {
 		assertNotNull(resultd);
 		assertEquals(1, resultd.getParticipants().size());
 		assertEquals(1, resultd.getMessages().size());
-		// TODO more checks
+		// TODO https://github.com/curtisullerich/attendance/issues/124
+		//more checks
 	}
 
 	@Test
@@ -92,7 +94,8 @@ public class MessagingControllerTest extends AbstractTest {
 		assertEquals(student, results.getMessages().get(0).getAuthor());
 		assertEquals("S", results.getMessages().get(0).getText());
 		assertNotNull(results.getMessages().get(0).getTimestamp());
-		// TODO more checks
+		// TODO https://github.com/curtisullerich/attendance/issues/124
+		//more checks
 
 		MessageThread resultd = getDataTrain().getMessagingController().get(
 				mtd.getId());
@@ -100,7 +103,8 @@ public class MessagingControllerTest extends AbstractTest {
 		assertNotNull(resultd);
 		assertEquals(1, resultd.getParticipants().size());
 		assertEquals(1, resultd.getMessages().size());
-		// TODO more checks
+		// TODO https://github.com/curtisullerich/attendance/issues/124
+		//more checks
 	}
 
 	@Test
@@ -129,7 +133,8 @@ public class MessagingControllerTest extends AbstractTest {
 		assertNotNull(result);
 		assertEquals(2, result.getParticipants().size());
 		assertEquals(4, result.getMessages().size());
-		// TODO more checks
+		// TODO https://github.com/curtisullerich/attendance/issues/124
+		//more checks
 	}
 
 	/**
@@ -162,7 +167,8 @@ public class MessagingControllerTest extends AbstractTest {
 		assertNotNull(result);
 		assertEquals(2, result.getParticipants().size());
 		assertEquals(4, result.getMessages().size());
-		// TODO more checks
+		// TODO https://github.com/curtisullerich/attendance/issues/124
+		//more checks
 		assertEquals("End", result.getMessages().get(0).getText());
 	}
 

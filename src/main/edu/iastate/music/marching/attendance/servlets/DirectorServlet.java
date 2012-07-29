@@ -314,7 +314,8 @@ public class DirectorServlet extends AbstractBaseServlet {
 			errors.add("Invalid event id");
 			page.setAttribute("errors", errors);
 		}
-		// TODO we should make a way to pass a success message on as well
+		// TODO https://github.com/curtisullerich/attendance/issues/115 
+		//we should make a way to pass a success message on as well
 		showAttendance(req, resp, null);
 	}
 
@@ -370,7 +371,6 @@ public class DirectorServlet extends AbstractBaseServlet {
 					.getParameter("MinutesAvailable"));
 			year = Integer.parseInt(req.getParameter("Year"));
 		} catch (NumberFormatException nfe) {
-			// TODO create a list of errors
 			nfe.printStackTrace();
 		}
 
@@ -387,7 +387,8 @@ public class DirectorServlet extends AbstractBaseServlet {
 		user.setFirstName(firstName);
 		user.setLastName(lastName);
 		user.setRank(rank);
-		// TODO May throw validation exceptions
+		// TODO https://github.com/curtisullerich/attendance/issues/118
+		//May throw validation exceptions
 		uc.update(user);
 
 		// so the user can get it
@@ -407,7 +408,8 @@ public class DirectorServlet extends AbstractBaseServlet {
 		}
 
 		// resp.sendRedirect("/director/attendance?success_message=Student+deleted.");
-		// TODO add a success or error message
+		// TODO https://github.com/curtisullerich/attendance/issues/115 
+		//add a success or error message
 		showAttendance(req, resp, null);
 	}
 
@@ -438,7 +440,8 @@ public class DirectorServlet extends AbstractBaseServlet {
 		} catch (IllegalArgumentException e) {
 			errors.add("Invalid Input: The input date is invalid.");
 		}
-		// TODO show success message?
+		// TODO https://github.com/curtisullerich/attendance/issues/115 
+		//show success message?
 		showUnanchored(req, resp, errors);
 	}
 
@@ -462,7 +465,8 @@ public class DirectorServlet extends AbstractBaseServlet {
 				}
 			}
 		}
-		// TODO show success message and add error messages?
+		// TODO https://github.com/curtisullerich/attendance/issues/115
+		//show success message and add error messages?
 		showUnanchored(req, resp, new LinkedList<String>());
 	}
 
@@ -730,7 +734,8 @@ public class DirectorServlet extends AbstractBaseServlet {
 				}
 			}
 		};
-		// TODO is there better way to do this? Note that otherwise, events
+		// TODO https://github.com/curtisullerich/attendance/issues/117 
+		//is there better way to do this? Note that otherwise, events
 		// print in the order of creation, NOT date order.
 		Collections.sort(students, studentComparator);
 		Collections.sort(events, eventComparator);
@@ -833,7 +838,8 @@ public class DirectorServlet extends AbstractBaseServlet {
 		localUser.setLastName(lastName);
 		localUser.setSecondaryEmail(secondEmail);
 
-		// TODO May throw validation exceptions
+		// TODO https://github.com/curtisullerich/attendance/issues/115
+		//May throw validation exceptions
 		uc.update(localUser);
 
 		showUsers(req, resp);
@@ -1039,7 +1045,6 @@ public class DirectorServlet extends AbstractBaseServlet {
 						"Form successfully deleted");
 			} else {
 				errors.add("Form not deleted. If the form was already approved then you can't delete it.");
-				// TODO you might be able to. Check with staub
 			}
 		}
 		page.setAttribute("error_messages", errors);

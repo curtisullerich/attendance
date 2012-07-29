@@ -57,7 +57,6 @@ public class StudentServlet extends AbstractBaseServlet {
 				showAttendance(req, resp);
 				break;
 			case forms:
-				// TODO
 				break;
 			case messages:
 				showIndex(req, resp);
@@ -141,10 +140,8 @@ public class StudentServlet extends AbstractBaseServlet {
 		try {
 			year = Integer.parseInt(req.getParameter("Year"));
 		} catch (NumberFormatException nfe) {
-			// TODO create a list of errors
 			nfe.printStackTrace();
 		}
-		// TODO section, year
 
 		User localUser = train.getAuthController().getCurrentUser(req.getSession());
 
@@ -157,7 +154,8 @@ public class StudentServlet extends AbstractBaseServlet {
 		localUser.setLastName(lastName);
 		localUser.setSecondaryEmail(secondEmail);
 
-		// TODO May throw validation exceptions
+		// TODO https://github.com/curtisullerich/attendance/issues/118
+		//May throw validation exceptions
 		uc.update(localUser);
 
 		AuthController.updateCurrentUser(localUser, req.getSession());
