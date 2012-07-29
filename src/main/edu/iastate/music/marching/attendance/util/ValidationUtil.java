@@ -11,6 +11,7 @@ import com.google.appengine.api.datastore.Email;
 
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.model.AppData;
+import edu.iastate.music.marching.attendance.model.User;
 
 public class ValidationUtil {
 
@@ -165,6 +166,49 @@ public class ValidationUtil {
 
 		// now we should just be comparing weekend-agnostic DAYS.
 		return other.compareTo(today) >= 0;
+	}
+
+	public static boolean isValidUniversityID(String uId) {
+		if (uId.length() != 9) {
+			return false;
+		}
+		else {
+			try {
+				Integer.parseInt(uId);
+				return true;
+			}
+			catch (NumberFormatException e) {
+				return false;
+			}
+		}
+	}
+
+	public static boolean isValidMajor(String major) {
+		return isValidText(major, false);
+	}
+
+	public static boolean isValidRank(String rank) {
+		return true;
+	}
+
+	public static boolean isValidSection(User.Section section) {
+		boolean ret = false;
+		for (User.Section sect : User.Section.values()) {
+			if (section == sect) {
+				ret = true;
+			}
+		}
+		return ret;
+	}
+
+	public static boolean isValidYear(int year) {
+		boolean ret = false;
+		for (int i = 1; i <= 10; ++i) {
+			if (year == i) {
+				ret = true;
+			}
+		}
+		return ret;
 	}
 
 }
