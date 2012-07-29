@@ -50,7 +50,8 @@ public class Migrate_0to1_EmailsOnUsers extends DefaultMigrationStrategy {
 
 	@Override
 	protected Object upgrade(Object object, Class<?> fromType, Class<?> toType,
-			Type fromGenericType, Type toGenericType, StandardObjectDatastore datastore) throws MigrationException {
+			Type fromGenericType, Type toGenericType,
+			StandardObjectDatastore datastore) throws MigrationException {
 
 		if (object == null)
 			return null;
@@ -82,27 +83,24 @@ public class Migrate_0to1_EmailsOnUsers extends DefaultMigrationStrategy {
 	}
 
 	private User upgrade(User_V0 oldUser, StandardObjectDatastore datastore) {
-		
-		if(null == oldUser.getType())
-		{
+
+		if (null == oldUser.getType()) {
 			// Have not yet activated this instance
 			datastore.activate(oldUser);
-			
-			if(null == oldUser.getType())
-			{
+
+			if (null == oldUser.getType()) {
 				throw new IllegalStateException("Activation error");
 			}
 		}
-		
+
 		User.Type type = User.Type.valueOf(oldUser.getType().name());
 		Email email = new Email(oldUser.getGoogleUser().getEmail());
 
-		User user = ModelFactory
-				.newUser(type, email, oldUser.getUniversityID());
+		User user = ModelFactory.newUser(type, email,
+				"" + oldUser.getUniversityID());
 		user.setFirstName(oldUser.getFirstName());
 		user.setLastName(oldUser.getLastName());
-		if(oldUser.getGrade() == null)
-		{
+		if (oldUser.getGrade() == null) {
 			user.setGrade(null);
 		} else {
 			user.setGrade(User.Grade.valueOf(oldUser.getGrade().name()));
