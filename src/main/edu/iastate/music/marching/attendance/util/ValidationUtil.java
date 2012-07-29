@@ -110,61 +110,77 @@ public class ValidationUtil {
 	 * @param date
 	 * @return
 	 */
-	public static boolean dateIsAtLeastThreeWeekdaysFresh(Date date,
+	public static boolean isThreeOrLessWeekdaysAgo(Date date,
 			TimeZone timezone) {
 		int weekdays = 3;
 
-		Date to = date;
 		Date now = Calendar.getInstance(timezone).getTime();
-		return dateIsWeekdaysFrom(now, to, weekdays, timezone);
+		
+		return isOrLessThanWeekdaysAfter(date, now, weekdays, timezone);
 	}
 
 	/**
 	 * Compares dates to see if the second date is no more than the given number
 	 * of weekdays after the first
 	 * 
-	 * @param from
+	 * @param start
 	 *            Start date
-	 * @param to
+	 * @param end
 	 *            To date
 	 * @param days
 	 *            maximum difference in days
 	 * @return True if from.date - to.date <= days and from < to
 	 */
-	public static boolean dateIsWeekdaysFrom(Date from, Date to, int days,
+	public static boolean isOrLessThanWeekdaysAfter(Date start, Date end, int days,
 			TimeZone timezone) {
-		Calendar today = Calendar.getInstance(timezone);
-		today.setTime(from);
-		today.set(Calendar.HOUR_OF_DAY, 0);
-		today.set(Calendar.MINUTE, 0);
-		today.set(Calendar.SECOND, 0);
-		today.set(Calendar.MILLISECOND, 0);
-
-		if (today.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
-			today.roll(Calendar.DATE, 2);
-		} else if (today.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-			today.roll(Calendar.DATE, 1);
+		
+		if(days < 0)
+		{
+			throw new IllegalArgumentException("Only support positive weekday counts");
 		}
-		// now if it was a weekend, it's Monday for the comparison
+		
+		Calendar startCal = Calendar.getInstance(timezone);
+		startCal.setTime(start);
+		startCal.set(Calendar.HOUR_OF_DAY, 0);
+		startCal.set(Calendar.MINUTE, 0);
+		startCal.set(Calendar.SECOND, 0);
+		startCal.set(Calendar.MILLISECOND, 0);
 
-		Calendar other = Calendar.getInstance(timezone);
-		other.setTime(to);
-		other.set(Calendar.HOUR_OF_DAY, 0);
-		other.set(Calendar.MINUTE, 0);
-		other.set(Calendar.SECOND, 0);
-		other.set(Calendar.MILLISECOND, 0);
-
-		other.roll(Calendar.DATE, days);
-
-		if (other.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
-			other.roll(Calendar.DATE, 2);
-		} else if (other.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-			other.roll(Calendar.DATE, 1);
+		if (startCal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
+			startCal.roll(Calendar.DATE, -1);
+		} else if (startCal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+			startCal.roll(Calendar.DATE, -2);
 		}
-		// now if it was a weekend, it's Monday for the comparison
+		// now if it was a weekend, it's Friday for the comparison
 
-		// now we should just be comparing weekend-agnostic DAYS.
-		return other.compareTo(today) >= 0;
+		Calendar endCal = Calendar.getInstance(timezone);
+		endCal.setTime(end);
+		endCal.set(Calendar.HOUR_OF_DAY, 0);
+		endCal.set(Calendar.MINUTE, 0);
+		endCal.set(Calendar.SECOND, 0);
+		endCal.set(Calendar.MILLISECOND, 0);
+		
+		if (endCal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
+			endCal.roll(Calendar.DATE, -1);
+		} else if (endCal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+			endCal.roll(Calendar.DATE, -2);
+		}
+		// now if it was a weekend, it's Friday for the comparison
+
+		for(int day = 0; day < Math.abs(days); day++)
+		{
+			endCal.roll(Calendar.DATE, -1);
+			
+			if (endCal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
+				endCal.roll(Calendar.DATE, -1);
+			} else if (endCal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+				endCal.roll(Calendar.DATE, -2);
+			}
+			// now if it was a weekend, it's Friday for the comparison
+		}
+		
+		// now we should just be comparing weekend-agnostic WEEK DAYS.
+		return endCal.compareTo(startCal) <= 0;
 	}
 
 }

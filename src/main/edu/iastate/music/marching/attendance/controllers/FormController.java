@@ -346,7 +346,7 @@ public class FormController extends AbstractController {
 		}
 
 		// Check date is before cutoff but after today
-		if (!ValidationUtil.dateIsAtLeastThreeWeekdaysFresh(date,
+		if (ValidationUtil.isThreeOrLessWeekdaysAgo(date,
 				this.dataTrain.getAppDataController().get().getTimeZone())) {
 			exp.getErrors().add("Invalid date, submitted too late");
 		}
