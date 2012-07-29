@@ -108,6 +108,17 @@
 					<input size='5' type='number' name="MinutesToOrFrom" min='00' max='60' step='1' placeholder='MM' value='<c:out value="${MinutesToOrFrom }"/>'/>
 					<br/>This is the time that it will take you to travel from class to band or from band to class. This is used to determine if you checked in or out too late or too soon, so make sure you leave enough time!
 				</dd>
+
+				<dt><label for="Type" class="required">Type</label></dt>
+				<dd>
+					<select name="Type">
+						<c:forEach items="${types}" var="s" varStatus="loop">
+							<option value="<c:out value="${s.value}" />"
+								${absence.type==s.value ? 'selected="true"' : ''}
+								><c:out value="${s.displayName}" /></option>
+						</c:forEach>
+					</select>
+				</dd>
 				
 				<dt><label for="Comments">Comments:</label></dt>
 				<dd>

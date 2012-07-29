@@ -79,8 +79,8 @@ public class FormController extends AbstractController {
 		// TODO https://github.com/curtisullerich/attendance/issues/106
 		// what if the student is null?
 		for (Absence absence : ac.get(f.getStudent())) {
-			//TODO https://github.com/curtisullerich/attendance/issues/106
-			//I wrote a (private) method in Absence controller that could
+			// TODO https://github.com/curtisullerich/attendance/issues/106
+			// I wrote a (private) method in Absence controller that could
 			// do this more efficiently because it checks for a specific form
 			// and specific absence. We /could/ expose it as protected, but
 			// that may introduce bugs elsewhere because we're not forced to
@@ -123,7 +123,7 @@ public class FormController extends AbstractController {
 		AbsenceController ac = this.dataTrain.getAbsenceController();
 		for (Absence absence : ac.get(form.getStudent())) {
 			// TODO https://github.com/curtisullerich/attendance/issues/106
-			//I wrote a (private) method in Absence controller that could
+			// I wrote a (private) method in Absence controller that could
 			// do this more efficiently because it checks for a specific form
 			// and specific absence. We /could/ expose it as protected, but
 			// that may introduce bugs elsewhere because we're not forced to
@@ -191,8 +191,8 @@ public class FormController extends AbstractController {
 		cutoff.setTime(dataTrain.getAppDataController().get()
 				.getFormSubmissionCutoff());
 
-		//TODO https://github.com/curtisullerich/attendance/issues/103
-		//is timezone correct?
+		// TODO https://github.com/curtisullerich/attendance/issues/103
+		// is timezone correct?
 		if (!Calendar.getInstance().before(cutoff)) {
 			exp.getErrors().add(
 					"Sorry, it's past the deadline for submitting Form A.");
@@ -212,7 +212,7 @@ public class FormController extends AbstractController {
 		temp.set(Calendar.MILLISECOND, 0);
 		Date startDate = temp.getTime();
 
-		//TODO https://github.com/curtisullerich/attendance/issues/103
+		// TODO https://github.com/curtisullerich/attendance/issues/103
 		// app engine stores this as midnight on August 9th. This should
 		// never cause an error, but should we fix it? Probably. Maybe the
 		// resolution of time on app engine doesn't go to milliseconds?
@@ -240,7 +240,7 @@ public class FormController extends AbstractController {
 	public Form createFormB(User student, String department, String course,
 			String section, String building, Date startDate, Date endDate,
 			int day, Date startTime, Date endTime, String details,
-			int minutesToOrFrom) {
+			int minutesToOrFrom, Absence.Type absenceType) {
 
 		Calendar startDateTime = Calendar.getInstance();
 		Calendar endDateTime = Calendar.getInstance();
@@ -251,7 +251,7 @@ public class FormController extends AbstractController {
 		startTimeCalendar.setTime(startTime);
 		endTimeCalendar.setTime(endTime);
 
-		//TODO https://github.com/curtisullerich/attendance/issues/108
+		// TODO https://github.com/curtisullerich/attendance/issues/108
 		// NEEDS MORE PARAMETERS and LOTS OF VALIDATION
 
 		// Simple validation first
@@ -280,7 +280,7 @@ public class FormController extends AbstractController {
 
 		form.setStart(startDateTime.getTime());
 		form.setEnd(endDateTime.getTime());
-		
+		form.setAbsenceType(absenceType);
 		if (ValidationUtil.isValidText(department, false)) {
 			form.setDept(department);
 		} else {
@@ -386,7 +386,7 @@ public class FormController extends AbstractController {
 		Form form = ModelFactory.newForm(Form.Type.C, student);
 
 		// TODO https://github.com/curtisullerich/attendance/issues/111
-		//what's the best way to indicate that something went wrong? Which
+		// what's the best way to indicate that something went wrong? Which
 		// is what it means if either start or end are null at this point.
 		form.setStart(start);
 		form.setEnd(end);

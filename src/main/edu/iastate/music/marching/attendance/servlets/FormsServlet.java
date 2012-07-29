@@ -291,6 +291,7 @@ public class FormsServlet extends AbstractBaseServlet {
 		int minutesToOrFrom = 0;
 		// String type = null;
 		String comments = null;
+		Absence.Type absenceType = null;
 
 		DataTrain train = DataTrain.getAndStartTrain();
 
@@ -312,6 +313,19 @@ public class FormsServlet extends AbstractBaseServlet {
 			comments = req.getParameter("Comments");
 			minutesToOrFrom = Integer.parseInt(req
 					.getParameter("MinutesToOrFrom"));
+
+			String stype = req.getParameter("Type");
+			if (stype != null && !stype.equals("")) {
+				if (stype.equals(Absence.Type.Absence.getValue())) {
+					absenceType = Absence.Type.Absence;
+				} else if (stype.equals(Absence.Type.Tardy.getValue())) {
+					absenceType = Absence.Type.Tardy;
+				} else if (stype.equals(Absence.Type.EarlyCheckOut.getValue())) {
+					absenceType = Absence.Type.EarlyCheckOut;
+				}
+			} else {
+				errors.add("Invalid type.");
+			}
 
 			// this is one-based! Starting on Sunday.
 			day = Integer.parseInt(req.getParameter("DayOfWeek"));
@@ -350,7 +364,7 @@ public class FormsServlet extends AbstractBaseServlet {
 				form = train.getFormsController().createFormB(student,
 						department, course, section, building, startDate,
 						endDate, day, fromTime, toTime, comments,
-						minutesToOrFrom);
+						minutesToOrFrom, absenceType);
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add(e.getMessage());
@@ -384,6 +398,8 @@ public class FormsServlet extends AbstractBaseServlet {
 			page.setAttribute("Type", Form.Type.B);
 			page.setAttribute("Comments", comments);
 			page.setAttribute("MinutesToOrFrom", minutesToOrFrom);
+			page.setAttribute("Type", absenceType);
+			page.setAttribute("types", Absence.Type.values());
 
 			page.passOffToJsp(req, resp);
 		}

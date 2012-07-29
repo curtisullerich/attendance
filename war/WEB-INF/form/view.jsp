@@ -37,6 +37,8 @@
 					<dd>
 						<fmt:formatDate value="${form.start}" pattern="M/d/yyyy"/>
 					</dd>
+					<dt><label>Absence Type</label>
+					<dd>${form.absenceType}</dd>
 				</c:if>
 				<c:if test="${form.type.displayName eq 'B'}">
 					<dt><label>Department</label></dt>
@@ -65,6 +67,9 @@
 					
 					<dt><label>To</label>
 					<dd><fmt:formatDate value="${form.end}" pattern="hh:mm a"/></dd>
+
+					<dt><label>Absence Type</label>
+					<dd>${form.absenceType}</dd>
 				</c:if>
 				
 				<c:if test="${form.type.displayName eq 'D'}">
