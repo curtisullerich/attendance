@@ -719,21 +719,6 @@ public class AbsenceControllerTest extends AbstractTest {
 		assertTrue(absence.getEnd().equals(end));
 		assertTrue(absence.getType() == Absence.Type.Absence);
 		assertTrue(absence.getStatus() == Absence.Status.Approved);	
-		
-		//Approved saved second
-		train.getAbsenceController().createOrUpdateAbsence(student1, start, end);
-		abs = train.getAbsenceController().createOrUpdateAbsence(student1, start, end);
-		abs.setStatus(Absence.Status.Approved);
-		train.getAbsenceController().updateAbsence(abs);
-		
-		studentAbs = train.getAbsenceController().get(student1);
-		assertEquals(1, studentAbs.size());
-		
-		absence = studentAbs.get(0);
-		assertTrue(absence.getStart().equals(start));
-		assertTrue(absence.getEnd().equals(end));
-		assertTrue(absence.getType() == Absence.Type.Absence);
-		assertTrue(absence.getStatus() == Absence.Status.Approved);
 	}
 	
 	@Test
@@ -765,21 +750,6 @@ public class AbsenceControllerTest extends AbstractTest {
 		assertTrue(absence.getEnd().equals(end));
 		assertTrue(absence.getType() == Absence.Type.Absence);
 		assertTrue(absence.getStatus() == Absence.Status.Approved);	
-		
-		//Approved saved second
-		train.getAbsenceController().createOrUpdateTardy(student1, tardyStart);
-		abs = train.getAbsenceController().createOrUpdateAbsence(student1, start, end);
-		abs.setStatus(Absence.Status.Approved);
-		train.getAbsenceController().updateAbsence(abs);
-		
-		studentAbs = train.getAbsenceController().get(student1);
-		assertEquals(1, studentAbs.size());
-		
-		absence = studentAbs.get(0);
-		assertTrue(absence.getStart().equals(start));
-		assertTrue(absence.getEnd().equals(end));
-		assertTrue(absence.getType() == Absence.Type.Absence);
-		assertTrue(absence.getStatus() == Absence.Status.Approved);
 	}
 	
 	@Test
@@ -811,21 +781,6 @@ public class AbsenceControllerTest extends AbstractTest {
 		assertTrue(absence.getEnd().equals(end));
 		assertTrue(absence.getType() == Absence.Type.Absence);
 		assertTrue(absence.getStatus() == Absence.Status.Approved);	
-		
-		//Approved saved second
-		train.getAbsenceController().createOrUpdateEarlyCheckout(student1, tardyStart);
-		abs = train.getAbsenceController().createOrUpdateAbsence(student1, start, end);
-		abs.setStatus(Absence.Status.Approved);
-		train.getAbsenceController().updateAbsence(abs);
-		
-		studentAbs = train.getAbsenceController().get(student1);
-		assertEquals(1, studentAbs.size());
-		
-		absence = studentAbs.get(0);
-		assertTrue(absence.getStart().equals(start));
-		assertTrue(absence.getEnd().equals(end));
-		assertTrue(absence.getType() == Absence.Type.Absence);
-		assertTrue(absence.getStatus() == Absence.Status.Approved);
 	}
 	
 	@Test
@@ -1111,20 +1066,6 @@ public class AbsenceControllerTest extends AbstractTest {
 		assertTrue(absence.getStart().equals(checkout));
 		assertTrue(absence.getType() == Absence.Type.EarlyCheckOut);
 		assertTrue(absence.getStatus() == Absence.Status.Approved);	
-		
-		//Approved saved second
-		train.getAbsenceController().createOrUpdateEarlyCheckout(student1, checkout);
-		abs = train.getAbsenceController().createOrUpdateEarlyCheckout(student1, checkout);
-		abs.setStatus(Absence.Status.Approved);
-		train.getAbsenceController().updateAbsence(abs);
-		
-		studentAbs = train.getAbsenceController().get(student1);
-		assertEquals(1, studentAbs.size());
-		
-		absence = studentAbs.get(0);
-		assertTrue(absence.getStart().equals(checkout));
-		assertTrue(absence.getType() == Absence.Type.EarlyCheckOut);
-		assertTrue(absence.getStatus() == Absence.Status.Approved);
 	}
 	
 	private Date makeDate(String sDate) {
