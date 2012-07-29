@@ -289,7 +289,6 @@ public class FormsServlet extends AbstractBaseServlet {
 		Date toTime = null;
 		int day = -1;
 		int minutesToOrFrom = 0;
-		// String type = null;
 		String comments = null;
 		Absence.Type absenceType = null;
 
@@ -309,7 +308,6 @@ public class FormsServlet extends AbstractBaseServlet {
 			course = req.getParameter("Course");
 			section = req.getParameter("Section");
 			building = req.getParameter("Building");
-			// type = req.getParameter("Type");
 			comments = req.getParameter("Comments");
 			minutesToOrFrom = Integer.parseInt(req
 					.getParameter("MinutesToOrFrom"));
@@ -329,6 +327,9 @@ public class FormsServlet extends AbstractBaseServlet {
 
 			// this is one-based! Starting on Sunday.
 			day = Integer.parseInt(req.getParameter("DayOfWeek"));
+			if (day < 1 || day > 7) {
+				errors.add("Value of " + day + " for day was not valid.");
+			}
 
 			try {
 				startDate = Util.parseDate(req.getParameter("StartMonth"),
@@ -355,7 +356,7 @@ public class FormsServlet extends AbstractBaseServlet {
 		}
 
 		if (validForm) {
-			// Store our new form to the data store
+			// Store our new form to the datastore
 			User student = train.getAuthController().getCurrentUser(
 					req.getSession());
 
@@ -372,7 +373,7 @@ public class FormsServlet extends AbstractBaseServlet {
 
 			if (form == null) {
 				validForm = false;
-				errors.add("Internal Error: Failed to create form and store in database");
+				errors.add("Internal Error: Failed to create form and store in database. Please submit a bug report through the form at the bottom of this page.");
 			}
 		}
 		if (validForm) {

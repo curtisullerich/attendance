@@ -253,16 +253,23 @@ public class FormController extends AbstractController {
 
 		// TODO https://github.com/curtisullerich/attendance/issues/108
 		// NEEDS MORE PARAMETERS and LOTS OF VALIDATION
-
+		// do we need to do more date/time validation than just
+		// before/after? I don't think it's wise to exclude date ranges outside
+		// of this year, just because, but is there anything else to consider?
+		
 		// Simple validation first
 		ValidationExceptions exp = new ValidationExceptions();
 
-		if (!ValidationUtil.isValidText(details, true)) {
-			exp.getErrors().add("Invalid details");
+		if (endTimeCalendar.before(startTimeCalendar)) {
+			exp.getErrors().add("End time was before start time.");
 		}
 
-		if (exp.getErrors().size() > 0) {
-			throw exp;
+		if (!ValidationUtil.isValidText(details, true)) {
+			exp.getErrors().add("Invalid details.");
+		}
+
+		if (day < 1 || day > 7) {
+			exp.getErrors().add("Day with value of " + day + " is not valid.");
 		}
 
 		Form form = ModelFactory.newForm(Form.Type.B, student);
@@ -278,9 +285,18 @@ public class FormController extends AbstractController {
 				endTimeCalendar.get(Calendar.HOUR_OF_DAY));
 		endDateTime.set(Calendar.MINUTE, endTimeCalendar.get(Calendar.MINUTE));
 
+		if (endDateTime.before(startDateTime)) {
+			exp.getErrors().add("End date time was before start date time.");
+		}
+
 		form.setStart(startDateTime.getTime());
 		form.setEnd(endDateTime.getTime());
-		form.setAbsenceType(absenceType);
+		if (absenceType != null) {
+			form.setAbsenceType(absenceType);
+		} else {
+			exp.getErrors().add("Absence type was null.");
+		}
+
 		if (ValidationUtil.isValidText(department, false)) {
 			form.setDept(department);
 		} else {
@@ -290,26 +306,30 @@ public class FormController extends AbstractController {
 		if (ValidationUtil.isValidText(course, false)) {
 			form.setCourse(course);
 		} else {
-			exp.getErrors().add("Invalid department.");
+			exp.getErrors().add("Invalid course.");
 		}
 
 		if (ValidationUtil.isValidText(section, false)) {
 			form.setSection(section);
 		} else {
-			exp.getErrors().add("Invalid department.");
+			exp.getErrors().add("Invalid section.");
 		}
 
 		if (ValidationUtil.isValidText(building, false)) {
 			form.setBuilding(building);
 		} else {
-			exp.getErrors().add("Invalid department.");
+			exp.getErrors().add("Invalid building.");
 		}
+
+		if (exp.getErrors().size() > 0) {
+			throw exp;
+		}
+
 		form.setDay(day);
-		// Set remaining fields
 		form.setDetails(details);
 		form.setStatus(Form.Status.Pending);
 		form.setMinutesToOrFrom(minutesToOrFrom);
-		// Perform store
+
 		storeForm(form);
 
 		return form;

@@ -6,8 +6,8 @@ import java.util.TimeZone;
 
 public class Util {
 
-
-	public static Date parseDate(String sMonth, String sDay, String sYear, String hour, String AMPM, String minute, TimeZone timeZone) {
+	public static Date parseDate(String sMonth, String sDay, String sYear,
+			String hour, String AMPM, String minute, TimeZone timeZone) {
 		int year = 0, month = 0, day = 0;
 		Calendar calendar = Calendar.getInstance(timeZone);
 
@@ -38,7 +38,7 @@ public class Util {
 			exp.getErrors().add("Invalid year given:" + e.getMessage() + '.');
 		}
 		try {
-			calendar.set(Calendar.MONTH, month-1);
+			calendar.set(Calendar.MONTH, month - 1);
 		} catch (ArrayIndexOutOfBoundsException e) {
 			exp.getErrors().add("Invalid month given:" + e.getMessage() + '.');
 		}
@@ -48,21 +48,15 @@ public class Util {
 			exp.getErrors().add("Invalid day given:" + e.getMessage() + '.');
 		}
 
-		try
-		{
+		try {
 			calendar.set(Calendar.HOUR, Integer.parseInt(hour));
-		}
-		catch (NumberFormatException e)
-		{
+		} catch (NumberFormatException e) {
 			exp.getErrors().add("Invalid hour, not a number");
 		}
-		
-		try
-		{
+
+		try {
 			calendar.set(Calendar.MINUTE, Integer.parseInt(minute));
-		}
-		catch (NumberFormatException e)
-		{
+		} catch (NumberFormatException e) {
 			exp.getErrors().add("Invalid minute, not a number");
 		}
 		int timeOfDay = 0;
@@ -70,21 +64,19 @@ public class Util {
 			timeOfDay = Calendar.AM;
 		else if ("PM".equals(AMPM.toUpperCase()))
 			timeOfDay = Calendar.PM;
-		else
-		{
+		else {
 			exp.getErrors().add("Invalid input for AM/PM");
 		}
-		
+
 		try {
 			calendar.set(Calendar.AM_PM, timeOfDay);
 		} catch (ArrayIndexOutOfBoundsException e) {
 			exp.getErrors().add("Invalid time of day given:" + e.getMessage());
 		}
-		
-		
 
-		if (exp.getErrors().size() > 0)
+		if (exp.getErrors().size() > 0) {
 			throw exp;
+		}
 
 		return calendar.getTime();
 	}

@@ -62,7 +62,7 @@ public class AbsenceController extends AbstractController {
 	}
 
 	// TODO https://github.com/curtisullerich/attendance/issues/109
-	//TEST THIS! probably by getting all and making sure there aren't any
+	// TEST THIS! probably by getting all and making sure there aren't any
 	// other unanchoreds running around somewher
 	public List<Absence> getUnanchored() {
 		List<Absence> absences = this.train.find(Absence.class)
@@ -128,8 +128,7 @@ public class AbsenceController extends AbstractController {
 				if (contester.getStatus() != Absence.Status.Approved) {
 					remove(contester);
 					return true;
-				}
-				else {
+				} else {
 					return false;
 				}
 			case Tardy:
@@ -138,15 +137,12 @@ public class AbsenceController extends AbstractController {
 					if (contester.getStatus() != Absence.Status.Approved) {
 						remove(contester);
 						return true;
-					}
-					else {
+					} else {
 						return false;
 					}
-				} 
-				else if (contester.getStatus() != Absence.Status.Approved) {
+				} else if (contester.getStatus() != Absence.Status.Approved) {
 					return true;
-				}
-				else {
+				} else {
 					return false;
 				}
 			case EarlyCheckOut:
@@ -171,8 +167,7 @@ public class AbsenceController extends AbstractController {
 				if (contester.getStatus() != Absence.Status.Approved) {
 					remove(contester);
 					return true;
-				}
-				else {
+				} else {
 					return false;
 				}
 			case Tardy:
@@ -187,12 +182,12 @@ public class AbsenceController extends AbstractController {
 					// remove the old Tardy
 					remove(contester);
 				}
-//				else if (contester.getStatus() == Absence.Status.Approved) {
-//					return false;
-//				}
-//				else {
-					return true;
-//				}
+				// else if (contester.getStatus() == Absence.Status.Approved) {
+				// return false;
+				// }
+				// else {
+				return true;
+				// }
 			case EarlyCheckOut:
 				// Earlier EarlyCheckOut beats a later one
 				if (current.getStart().before(contester.getStart())) {
@@ -440,8 +435,9 @@ public class AbsenceController extends AbstractController {
 
 				if (fmt.format(absence.getEvent().getDate()).equals(
 						fmt.format(form.getStart()))) {
-					//TODO https://github.com/curtisullerich/attendance/issues/107
-					//it wouldn't be hard to implement an AutoApproved
+					// TODO
+					// https://github.com/curtisullerich/attendance/issues/107
+					// it wouldn't be hard to implement an AutoApproved
 					// type for documentation purposes, since this and the form
 					// controller are the only places it should happen
 					absence.setStatus(Absence.Status.Approved);
@@ -449,11 +445,13 @@ public class AbsenceController extends AbstractController {
 			}
 			break;
 		case B:
+
 			// absence date must fall on a valid form date repetition
 			if (dateFallsOnRepetition(absence.getDatetime(), form.getStart())) {
 				if (absence.getType() == Absence.Type.Absence) {
 					if (!form.getStart().after(absence.getStart())
-							&& !form.getEnd().before(absence.getEnd())) {
+							&& !form.getEnd().before(absence.getEnd())
+							&& form.getAbsenceType() == Absence.Type.Absence) {
 						absence.setStatus(Absence.Status.Approved);
 					}
 				} else if (absence.getType() == Absence.Type.Tardy) {
@@ -465,7 +463,9 @@ public class AbsenceController extends AbstractController {
 					formEnd.add(Calendar.MINUTE, form.getMinutesToOrFrom());
 
 					if (!absence.getDatetime().before(form.getStart())
-							&& !absence.getDatetime().after(formEnd.getTime())) {
+							&& !absence.getDatetime().after(formEnd.getTime())
+							&& (form.getAbsenceType() == Absence.Type.Absence || form
+									.getAbsenceType() == Absence.Type.Tardy)) {
 						absence.setStatus(Absence.Status.Approved);
 					}
 				} else if (absence.getType() == Absence.Type.EarlyCheckOut) {
@@ -478,7 +478,9 @@ public class AbsenceController extends AbstractController {
 							* -1);
 
 					if (!absence.getDatetime().before(formStart.getTime())
-							&& !absence.getDatetime().before(form.getEnd())) {
+							&& !absence.getDatetime().before(form.getEnd())
+							&& (form.getAbsenceType() == Absence.Type.Absence || form
+									.getAbsenceType() == Absence.Type.EarlyCheckOut)) {
 						absence.setStatus(Absence.Status.Approved);
 					}
 				}
@@ -556,7 +558,7 @@ public class AbsenceController extends AbstractController {
 		formCal.setTime(formDate);
 
 		// TODO https://github.com/curtisullerich/attendance/issues/110
-		//Handle changing year
+		// Handle changing year
 		return (formCal.get(Calendar.DAY_OF_YEAR) - absenceCal
 				.get(Calendar.DAY_OF_YEAR)) % 7 == 0;
 	}
