@@ -256,7 +256,7 @@ public class FormController extends AbstractController {
 		// do we need to do more date/time validation than just
 		// before/after? I don't think it's wise to exclude date ranges outside
 		// of this year, just because, but is there anything else to consider?
-		
+
 		// Simple validation first
 		ValidationExceptions exp = new ValidationExceptions();
 
@@ -337,6 +337,11 @@ public class FormController extends AbstractController {
 
 	public Form createFormC(User student, Date date, Absence.Type type,
 			String reason) {
+		return createFormC(student, date, type, reason, true);
+	}
+
+	public Form createFormC(User student, Date date, Absence.Type type,
+			String reason, boolean validateDate) {
 
 		// Simple validation first
 		ValidationExceptions exp = new ValidationExceptions();
@@ -346,8 +351,9 @@ public class FormController extends AbstractController {
 		}
 
 		// Check date is before cutoff but after today
-		if (ValidationUtil.isThreeOrLessWeekdaysAgo(date,
-				this.dataTrain.getAppDataController().get().getTimeZone())) {
+		if (validateDate
+				&& ValidationUtil.isThreeOrLessWeekdaysAgo(date, this.dataTrain
+						.getAppDataController().get().getTimeZone())) {
 			exp.getErrors().add("Invalid date, submitted too late");
 		}
 
