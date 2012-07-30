@@ -6759,33 +6759,79 @@ public class FormBTest extends AbstractTest {
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
 		FormController fc = train.getFormsController();
-
+		
 		User student = Users.createStudent(uc, "student4", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
-
-		Calendar date = Calendar.getInstance();
-		date.set(2012, 7, 7, 0, 0, 0);
-		Calendar start = Calendar.getInstance();
-		start.set(2012, 7, 7, 16, 30, 0);
-		Calendar end = Calendar.getInstance();
-		end.set(2012, 7, 7, 17, 50, 0);
+		
+		String sDate = "2012-09-21 0600";
+		String eDate = "2012-09-21 0700";
+		Date startDate = null;
+		Date endDate = null;
+		try {
+			startDate = new SimpleDateFormat("yyyy-MM-dd HHmm").parse(sDate);
+			endDate = new SimpleDateFormat("yyyy-MM-dd HHmm").parse(eDate);
+			
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		ec.createOrUpdate(Event.Type.Rehearsal, startDate, endDate);
+		Absence abs = ac.createOrUpdateAbsence(student, startDate, endDate);
+		abs.setStatus(Absence.Status.Denied);
+		ac.updateAbsence(abs);
 		
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", date.getTime(), date.getTime(),
-				date.get(Calendar.DAY_OF_WEEK), start.getTime(), end.getTime(),
+				"building", startDate, endDate,
+				Calendar.MONDAY, startDate, endDate,
 				"details", 10, Absence.Type.Absence);
-
-		Event e = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
-				end.getTime());
-		Absence a = ac.createOrUpdateAbsence(student, e);
-
-		a.setStatus(Absence.Status.Pending);
-		a = ac.updateAbsence(a);
-
 		form.setStatus(Form.Status.Approved);
 		fc.update(form);
+		
+		List<Absence> absences = ac.get(student);
+		
+		assertEquals(Absence.Status.Denied, absences.get(0).getStatus());
+	}
+	
+	@Test
+	public void testNonAutoApproveOnDeniedAbsenceFormFirst() {
+		DataTrain train = getDataTrain();
 
-		assertEquals(Absence.Status.Approved, a.getStatus());
+		UserController uc = train.getUsersController();
+		EventController ec = train.getEventController();
+		AbsenceController ac = train.getAbsenceController();
+		FormController fc = train.getFormsController();
+		
+		User student = Users.createStudent(uc, "student4", "123456789", "John",
+				"Cox", 2, "major", User.Section.AltoSax);
+		
+		String sDate = "2012-09-21 0600";
+		String eDate = "2012-09-21 0700";
+		Date startDate = null;
+		Date endDate = null;
+		try {
+			startDate = new SimpleDateFormat("yyyy-MM-dd HHmm").parse(sDate);
+			endDate = new SimpleDateFormat("yyyy-MM-dd HHmm").parse(eDate);
+			
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		ec.createOrUpdate(Event.Type.Rehearsal, startDate, endDate);
+		Form form = fc.createFormB(student, "department", "course", "section",
+				"building", startDate, endDate,
+				Calendar.MONDAY, startDate, endDate,
+				"details", 10, Absence.Type.Absence);
+		
+		Absence abs = ac.createOrUpdateAbsence(student, startDate, endDate);
+		abs.setStatus(Absence.Status.Denied);
+		ac.updateAbsence(abs);
+		
+		form.setStatus(Form.Status.Approved);
+		fc.update(form);
+		
+		List<Absence> absences = ac.get(student);
+		
+		assertEquals(Absence.Status.Denied, absences.get(0).getStatus());
 	}
 
 	/**
