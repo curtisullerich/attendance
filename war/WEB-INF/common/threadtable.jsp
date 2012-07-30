@@ -38,7 +38,12 @@
 						</td>
 						<td>
 							<c:if test="${!thread.resolved}"><strong></c:if>
-							<p>event / form info</p>
+							<c:if test="${not empty thread.formParent}">
+								<p>Form</p>
+							</c:if>
+							<c:if test="${not empty thread.absenceParent}">
+								<p>Absence</p>
+							</c:if>
 							<c:if test="${!thread.resolved}"></strong></c:if>
 						</td>
 						<td>

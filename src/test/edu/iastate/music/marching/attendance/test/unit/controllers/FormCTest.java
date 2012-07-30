@@ -62,7 +62,6 @@ public class FormCTest extends AbstractTest {
 		Form form = fc.createFormC(student, date.getTime(),
 				Absence.Type.Absence, "reason", false);
 
-
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
 				end.getTime());
 		Absence a = ac.createOrUpdateAbsence(student, e);
@@ -2240,10 +2239,12 @@ public class FormCTest extends AbstractTest {
 
 		Calendar tardy = Calendar.getInstance();
 		tardy.set(2012, 7, 7, 16, 30, 0);
+		tardy.set(Calendar.MILLISECOND, 0);
 		Calendar formtime = Calendar.getInstance();
 		formtime.set(2012, 7, 7, 16, 30, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
+		start.set(Calendar.MILLISECOND, 0);
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
@@ -2805,7 +2806,7 @@ public class FormCTest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 		end.set(Calendar.MILLISECOND, 0);
-		
+
 		Form form = fc.createFormC(student, formtime.getTime(),
 				Absence.Type.EarlyCheckOut, "reason", false);
 
