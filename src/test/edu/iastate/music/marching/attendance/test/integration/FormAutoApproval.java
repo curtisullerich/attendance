@@ -87,7 +87,7 @@ public class FormAutoApproval extends AbstractTest {
 		c.roll(Calendar.HOUR, 1);
 
 		// Create a 1 hour event for absence
-		train.getEventController().createOrUpdate(Event.Type.Performance,
+		train.getEventController().createOrUpdate(Event.Type.Rehearsal,
 				getFixedCalendar().getTime(), c.getTime());
 
 		// Create a 1 hour absence

@@ -45,7 +45,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -93,7 +93,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -141,7 +141,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -189,7 +189,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -237,7 +237,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -285,7 +285,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 13, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -333,7 +333,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 13, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -381,7 +381,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 13, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -389,12 +389,12 @@ public class FormBTest extends AbstractTest {
 
 		// a normal rehearsal
 		Calendar eventstart = Calendar.getInstance();
-		eventstart.set(2012, 10, 29, 16, 30, 0);
+		eventstart.set(2012, 9, 29, 16, 30, 0);
 		Calendar eventend = Calendar.getInstance();
-		eventend.set(2012, 10, 29, 17, 50, 0);
+		eventend.set(2012, 9, 29, 17, 50, 0);
 
 		Calendar tardytime = Calendar.getInstance();
-		tardytime.set(2012, 10, 29, 13, 15, 0);
+		tardytime.set(2012, 9, 29, 13, 15, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
@@ -429,7 +429,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -477,7 +477,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -525,7 +525,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -571,9 +571,9 @@ public class FormBTest extends AbstractTest {
 				"Cox", 2, "major", User.Section.AltoSax);
 
 		Calendar startdate = Calendar.getInstance();
-		startdate.set(2012, 7, 20, 0, 0, 0);
+		startdate.set(2012, 7, 6, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -581,12 +581,14 @@ public class FormBTest extends AbstractTest {
 
 		// a normal rehearsal
 		Calendar eventstart = Calendar.getInstance();
-		eventstart.set(2012, 8, 6, 16, 30, 0);
+		eventstart.set(2012, 7, 6, 16, 30, 0);
+		eventstart.set(Calendar.MILLISECOND, 0);
 		Calendar eventend = Calendar.getInstance();
-		eventend.set(2012, 8, 6, 17, 50, 0);
+		eventend.set(2012, 7, 6, 17, 50, 0);
 
 		Calendar tardytime = Calendar.getInstance();
-		tardytime.set(2012, 8, 6, 16, 30, 0);
+		tardytime.set(2012, 7, 6, 16, 30, 0);
+		tardytime.set(Calendar.MILLISECOND, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
@@ -621,7 +623,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -669,7 +671,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -716,21 +718,28 @@ public class FormBTest extends AbstractTest {
 
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
+		startdate.set(Calendar.MILLISECOND, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
+		enddate.set(Calendar.MILLISECOND, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 10, 0);
+		starttime.set(Calendar.MILLISECOND, 0);
 		Calendar endtime = Calendar.getInstance();
 		endtime.set(0, 0, 0, 17, 0, 0);
+		endtime.set(Calendar.MILLISECOND, 0);
 
 		// a normal rehearsal
 		Calendar eventstart = Calendar.getInstance();
 		eventstart.set(2012, 7, 20, 16, 30, 0);
+		eventstart.set(Calendar.MILLISECOND, 0);
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2012, 7, 20, 17, 50, 0);
+		eventend.set(Calendar.MILLISECOND, 0);
 
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 17, 10, 0);
+		tardytime.set(Calendar.MILLISECOND, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
@@ -765,7 +774,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -814,7 +823,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 30, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -862,7 +871,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 30, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -910,7 +919,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 30, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -958,7 +967,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 30, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -1006,7 +1015,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 30, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -1055,7 +1064,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 17, 0, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -1103,7 +1112,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 17, 0, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -1151,7 +1160,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 17, 0, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -1199,7 +1208,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 17, 0, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -1247,7 +1256,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 17, 0, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -1295,7 +1304,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 17, 0, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -1344,7 +1353,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 0, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -1392,7 +1401,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 0, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -1441,7 +1450,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 17, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -1489,7 +1498,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 17, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -1537,7 +1546,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 17, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -1586,7 +1595,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 35, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -1635,7 +1644,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 35, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -1683,7 +1692,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 35, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -1732,7 +1741,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 35, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -1780,7 +1789,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 35, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -1829,7 +1838,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 35, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -1878,7 +1887,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 35, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -1927,7 +1936,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 35, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -1975,7 +1984,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 35, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -2024,7 +2033,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 13, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -2073,7 +2082,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 13, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -2122,7 +2131,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 13, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -2171,7 +2180,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -2220,7 +2229,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -2269,7 +2278,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -2318,7 +2327,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -2326,12 +2335,12 @@ public class FormBTest extends AbstractTest {
 
 		// a normal rehearsal
 		Calendar eventstart = Calendar.getInstance();
-		eventstart.set(2012, 11, 26, 16, 30, 0);
+		eventstart.set(2012, 10, 26, 16, 30, 0);
 		Calendar eventend = Calendar.getInstance();
-		eventend.set(2012, 11, 26, 17, 50, 0);
+		eventend.set(2012, 10, 26, 17, 50, 0);
 
 		Calendar tardytime = Calendar.getInstance();
-		tardytime.set(2012, 11, 26, 16, 30, 0);
+		tardytime.set(2012, 10, 26, 16, 30, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
@@ -2367,7 +2376,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -2416,7 +2425,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -2424,12 +2433,12 @@ public class FormBTest extends AbstractTest {
 
 		// a normal rehearsal
 		Calendar eventstart = Calendar.getInstance();
-		eventstart.set(2012, 12, 17, 16, 30, 0);
+		eventstart.set(2012, 11, 17, 16, 30, 0);
 		Calendar eventend = Calendar.getInstance();
-		eventend.set(2012, 12, 17, 17, 50, 0);
+		eventend.set(2012, 11, 17, 17, 50, 0);
 
 		Calendar tardytime = Calendar.getInstance();
-		tardytime.set(2012, 12, 17, 17, 5, 0);
+		tardytime.set(2012, 11, 17, 17, 5, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
@@ -2465,7 +2474,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -2479,6 +2488,7 @@ public class FormBTest extends AbstractTest {
 
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 17, 10, 0);
+		tardytime.set(Calendar.MILLISECOND, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
@@ -2514,7 +2524,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -2564,7 +2574,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 30, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -2613,7 +2623,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 30, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -2662,7 +2672,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 30, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -2711,7 +2721,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 30, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -2760,7 +2770,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 30, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -2810,7 +2820,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 17, 0, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -2859,7 +2869,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 17, 0, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -2908,7 +2918,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 17, 0, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -2957,7 +2967,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 17, 0, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -3006,7 +3016,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 17, 0, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -3055,7 +3065,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 17, 0, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -3105,7 +3115,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 0, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -3154,7 +3164,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 0, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -3204,7 +3214,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 17, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -3253,7 +3263,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 17, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -3302,7 +3312,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 17, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -3352,7 +3362,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 35, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -3402,7 +3412,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 35, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -3451,7 +3461,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 35, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -3501,7 +3511,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 35, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -3550,7 +3560,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 35, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -3600,7 +3610,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 35, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -3650,7 +3660,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 35, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -3700,7 +3710,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 35, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -3749,7 +3759,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 35, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -3799,7 +3809,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 13, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -3844,7 +3854,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -3852,9 +3862,9 @@ public class FormBTest extends AbstractTest {
 
 		// a normal rehearsal
 		Calendar eventstart = Calendar.getInstance();
-		eventstart.set(2012, 12, 17, 16, 30, 0);
+		eventstart.set(2012, 11, 17, 16, 30, 0);
 		Calendar eventend = Calendar.getInstance();
-		eventend.set(2012, 12, 17, 17, 50, 0);
+		eventend.set(2012, 11, 17, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
@@ -3889,7 +3899,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 30, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -3934,7 +3944,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 50, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -3979,7 +3989,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -4024,7 +4034,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 17, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -4069,7 +4079,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 35, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -4115,7 +4125,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 13, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -4162,7 +4172,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -4208,7 +4218,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 30, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -4254,7 +4264,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 50, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -4300,7 +4310,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -4346,7 +4356,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 17, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -4392,7 +4402,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 35, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -4400,9 +4410,9 @@ public class FormBTest extends AbstractTest {
 
 		// a normal rehearsal
 		Calendar eventstart = Calendar.getInstance();
-		eventstart.set(2012, 9, 10, 16, 30, 0);
+		eventstart.set(2012, 8, 10, 16, 30, 0);
 		Calendar eventend = Calendar.getInstance();
-		eventend.set(2012, 9, 10, 17, 50, 0);
+		eventend.set(2012, 8, 10, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
@@ -4439,7 +4449,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -4487,7 +4497,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -4535,7 +4545,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -4584,7 +4594,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -4633,7 +4643,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -4641,9 +4651,9 @@ public class FormBTest extends AbstractTest {
 
 		// a normal rehearsal
 		Calendar eventstart = Calendar.getInstance();
-		eventstart.set(2012, 12, 17, 16, 30, 0);
+		eventstart.set(2012, 11, 17, 16, 30, 0);
 		Calendar eventend = Calendar.getInstance();
-		eventend.set(2012, 12, 17, 17, 50, 0);
+		eventend.set(2012, 11, 17, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
@@ -4678,7 +4688,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 30, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -4723,7 +4733,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 30, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -4769,7 +4779,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 50, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -4816,7 +4826,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 13, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -4824,12 +4834,12 @@ public class FormBTest extends AbstractTest {
 
 		// a normal rehearsal
 		Calendar eventstart = Calendar.getInstance();
-		eventstart.set(2012, 7, 13, 16, 30, 0);
+		eventstart.set(2012, 6, 13, 16, 30, 0);
 		Calendar eventend = Calendar.getInstance();
-		eventend.set(2012, 7, 13, 17, 50, 0);
+		eventend.set(2012, 6, 13, 17, 50, 0);
 
 		Calendar tardytime = Calendar.getInstance();
-		tardytime.set(2012, 7, 13, 8, 15, 0);
+		tardytime.set(2012, 6, 13, 8, 15, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
@@ -4864,7 +4874,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -4912,7 +4922,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 13, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -4920,12 +4930,12 @@ public class FormBTest extends AbstractTest {
 
 		// a normal rehearsal
 		Calendar eventstart = Calendar.getInstance();
-		eventstart.set(2012, 7, 13, 16, 30, 0);
+		eventstart.set(2012, 6, 13, 16, 30, 0);
 		Calendar eventend = Calendar.getInstance();
-		eventend.set(2012, 7, 13, 17, 50, 0);
+		eventend.set(2012, 6, 13, 17, 50, 0);
 
 		Calendar tardytime = Calendar.getInstance();
-		tardytime.set(2012, 7, 13, 16, 45, 0);
+		tardytime.set(2012, 6, 13, 16, 45, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
@@ -4961,7 +4971,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -5010,7 +5020,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 13, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -5055,7 +5065,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 30, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -5063,9 +5073,9 @@ public class FormBTest extends AbstractTest {
 
 		// a normal rehearsal
 		Calendar eventstart = Calendar.getInstance();
-		eventstart.set(2012, 7, 6, 16, 30, 0);
+		eventstart.set(2012, 6, 6, 16, 30, 0);
 		Calendar eventend = Calendar.getInstance();
-		eventend.set(2012, 7, 6, 17, 50, 0);
+		eventend.set(2012, 6, 6, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
@@ -5100,7 +5110,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 50, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -5146,7 +5156,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -5154,9 +5164,9 @@ public class FormBTest extends AbstractTest {
 
 		// a normal rehearsal
 		Calendar eventstart = Calendar.getInstance();
-		eventstart.set(2012, 6, 18, 16, 30, 0);
+		eventstart.set(2012, 5, 18, 16, 30, 0);
 		Calendar eventend = Calendar.getInstance();
-		eventend.set(2012, 6, 18, 17, 50, 0);
+		eventend.set(2012, 5, 18, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
@@ -5193,7 +5203,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -5241,7 +5251,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 30, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -5249,12 +5259,12 @@ public class FormBTest extends AbstractTest {
 
 		// a normal rehearsal
 		Calendar eventstart = Calendar.getInstance();
-		eventstart.set(2012, 12, 27, 16, 30, 0);
+		eventstart.set(2012, 11, 27, 16, 30, 0);
 		Calendar eventend = Calendar.getInstance();
-		eventend.set(2012, 12, 27, 17, 50, 0);
+		eventend.set(2012, 11, 27, 17, 50, 0);
 
 		Calendar tardytime = Calendar.getInstance();
-		tardytime.set(2012, 12, 27, 16, 25, 0);
+		tardytime.set(2012, 11, 27, 16, 25, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
@@ -5287,9 +5297,9 @@ public class FormBTest extends AbstractTest {
 				"Cox", 2, "major", User.Section.AltoSax);
 
 		Calendar startdate = Calendar.getInstance();
-		startdate.set(2012, 12, 20, 0, 0, 0);
+		startdate.set(2012, 11, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -5297,12 +5307,12 @@ public class FormBTest extends AbstractTest {
 
 		// a normal rehearsal
 		Calendar eventstart = Calendar.getInstance();
-		eventstart.set(2012, 12, 24, 16, 30, 0);
+		eventstart.set(2012, 11, 24, 16, 30, 0);
 		Calendar eventend = Calendar.getInstance();
-		eventend.set(2012, 12, 24, 17, 50, 0);
+		eventend.set(2012, 11, 24, 17, 50, 0);
 
 		Calendar tardytime = Calendar.getInstance();
-		tardytime.set(2012, 12, 24, 16, 30, 0);
+		tardytime.set(2012, 11, 24, 16, 30, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
@@ -5338,7 +5348,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -5387,7 +5397,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 50, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -5432,7 +5442,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -5477,7 +5487,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 13, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -5524,7 +5534,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 30, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -5532,9 +5542,9 @@ public class FormBTest extends AbstractTest {
 
 		// a normal rehearsal
 		Calendar eventstart = Calendar.getInstance();
-		eventstart.set(2012, 12, 31, 16, 30, 0);
+		eventstart.set(2012, 11, 31, 16, 30, 0);
 		Calendar eventend = Calendar.getInstance();
-		eventend.set(2012, 12, 31, 17, 50, 0);
+		eventend.set(2012, 11, 31, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
@@ -5571,7 +5581,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 30, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -5619,7 +5629,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 30, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -5667,7 +5677,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 30, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -5716,7 +5726,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 30, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -5765,7 +5775,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 17, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -5810,7 +5820,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 35, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -5855,7 +5865,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 17, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -5901,7 +5911,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 35, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -5909,9 +5919,9 @@ public class FormBTest extends AbstractTest {
 
 		// a normal rehearsal
 		Calendar eventstart = Calendar.getInstance();
-		eventstart.set(2012, 9, 10, 16, 30, 0);
+		eventstart.set(2012, 8, 10, 16, 30, 0);
 		Calendar eventend = Calendar.getInstance();
-		eventend.set(2012, 9, 10, 17, 50, 0);
+		eventend.set(2012, 8, 10, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
@@ -5948,7 +5958,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 17, 0, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -5996,7 +6006,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 17, 0, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -6044,7 +6054,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 30, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -6093,7 +6103,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 30, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -6142,7 +6152,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -6150,9 +6160,9 @@ public class FormBTest extends AbstractTest {
 
 		// a normal rehearsal
 		Calendar eventstart = Calendar.getInstance();
-		eventstart.set(2012, 12, 17, 16, 30, 0);
+		eventstart.set(2012, 11, 17, 16, 30, 0);
 		Calendar eventend = Calendar.getInstance();
-		eventend.set(2012, 12, 17, 17, 50, 0);
+		eventend.set(2012, 11, 17, 17, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
@@ -6187,7 +6197,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 30, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -6232,7 +6242,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 50, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -6278,7 +6288,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -6325,7 +6335,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 17, 0, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -6373,7 +6383,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 17, 0, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -6421,7 +6431,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 17, 0, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -6470,7 +6480,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 17, 0, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -6519,7 +6529,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 17, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -6564,7 +6574,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 35, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -6609,7 +6619,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 13, 10, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -6656,7 +6666,7 @@ public class FormBTest extends AbstractTest {
 		Calendar startdate = Calendar.getInstance();
 		startdate.set(2012, 7, 20, 0, 0, 0);
 		Calendar enddate = Calendar.getInstance();
-		enddate.set(2012, 12, 20, 0, 0, 0);
+		enddate.set(2012, 11, 20, 0, 0, 0);
 		Calendar starttime = Calendar.getInstance();
 		starttime.set(0, 0, 0, 16, 30, 0);
 		Calendar endtime = Calendar.getInstance();
@@ -6683,4 +6693,51 @@ public class FormBTest extends AbstractTest {
 
 		assertEquals(Absence.Status.Pending, a.getStatus());
 	}
+
+	/**
+	 * make sure final day of form range still works
+	 */
+	@Test
+	public void testDeprecatedAbsenceOnFinalDay() {
+		DataTrain train = getDataTrain();
+
+		UserController uc = train.getUsersController();
+		EventController ec = train.getEventController();
+		AbsenceController ac = train.getAbsenceController();
+		FormController fc = train.getFormsController();
+
+		User student = Users.createStudent(uc, "student1", "123456789", "John",
+				"Cox", 2, "major", User.Section.AltoSax);
+
+		Calendar startdate = Calendar.getInstance();
+		startdate.set(2012, 7, 20, 0, 0, 0);
+		Calendar enddate = Calendar.getInstance();
+		enddate.set(2012, 11, 17, 0, 0, 0);
+		Calendar starttime = Calendar.getInstance();
+		starttime.set(0, 0, 0, 16, 30, 0);
+		Calendar endtime = Calendar.getInstance();
+		endtime.set(0, 0, 0, 17, 50, 0);
+
+		// a normal rehearsal
+		Calendar eventstart = Calendar.getInstance();
+		eventstart.set(2012, 11, 17, 16, 30, 0);
+		Calendar eventend = Calendar.getInstance();
+		eventend.set(2012, 11, 17, 17, 50, 0);
+
+		Form form = fc.createFormB(student, "department", "course", "section",
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
+
+		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
+				eventend.getTime());
+		Absence a = ac.createOrUpdateAbsence(student, eventstart.getTime(),
+				eventend.getTime());
+
+		form.setStatus(Form.Status.Approved);
+		fc.update(form);
+
+		assertEquals(Absence.Status.Approved, a.getStatus());
+	}
+
 }

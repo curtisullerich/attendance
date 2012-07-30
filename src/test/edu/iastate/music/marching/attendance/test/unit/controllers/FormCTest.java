@@ -2791,13 +2791,17 @@ public class FormCTest extends AbstractTest {
 
 		Calendar eco = Calendar.getInstance();
 		eco.set(2012, 7, 7, 16, 50, 0);
+		eco.set(Calendar.MILLISECOND, 0);
 		Calendar formtime = Calendar.getInstance();
 		formtime.set(2012, 7, 7, 16, 50, 0);
+		formtime.set(Calendar.MILLISECOND, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
+		start.set(Calendar.MILLISECOND, 0);
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
-
+		end.set(Calendar.MILLISECOND, 0);
+		
 		Form form = fc.createFormC(student, formtime.getTime(),
 				Absence.Type.EarlyCheckOut, "reason", false);
 

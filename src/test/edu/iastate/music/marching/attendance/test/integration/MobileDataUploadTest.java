@@ -52,11 +52,11 @@ public class MobileDataUploadTest extends AbstractTest {
 		DataTrain train = DataTrain.getAndStartTrain();
 
 		User ta = Users.createTA(train.getUsersController(), "ta", "123456780",
-				"first", "last", 2, "major", null);
+				"first", "last", 2, "major", User.Section.Staff);
 		Users.createStudent(train.getUsersController(), "s", "123456719",
-				"first", "last", 1, "major", null);
+				"first", "last", 1, "major", User.Section.Baritone);
 		Users.createStudent(train.getUsersController(), "zf", "123456782",
-				"first", "last", 1, "major", null);
+				"first", "last", 1, "major", User.Section.Drumline_Bass);
 
 		train.getMobileDataController().pushMobileData(SIMPLE_ABSENCE_TESTDATA,
 				ta);
@@ -72,9 +72,9 @@ public class MobileDataUploadTest extends AbstractTest {
 		DataTrain train = getDataTrain();
 
 		Users.createStudent(train.getUsersController(), "s", "123456789",
-				"first", "last", 1, "major", null);
+				"first", "last", 1, "major", User.Section.Clarinet);
 		Users.createStudent(train.getUsersController(), "zf", "123456782",
-				"first", "last", 1, "major", null);
+				"first", "last", 1, "major", User.Section.TenorSax);
 
 		HttpServletRequest req = mock(HttpServletRequest.class);
 		HttpServletResponse resp = mock(HttpServletResponse.class);
@@ -166,11 +166,11 @@ public class MobileDataUploadTest extends AbstractTest {
 						foundS);
 				foundS = true;
 				// TODO https://github.com/curtisullerich/attendance/issues/123
-				//assert information about inserted absence
+				// assert information about inserted absence
 			} else if (a.getStudent().getPrimaryEmail().getEmail()
 					.equals("zf@" + TestConfig.getEmailDomain())) {
 				// TODO https://github.com/curtisullerich/attendance/issues/123
-				//assert information about inserted absence
+				// assert information about inserted absence
 			} else
 				fail("Found an absence we didn't insert");
 		}
@@ -182,14 +182,14 @@ public class MobileDataUploadTest extends AbstractTest {
 
 		UserController uc = train.getUsersController();
 
-		Users.createStudent(uc, "s", "123456780", "test1", "tester", 0, null,
-				User.Section.AltoSax);
-		Users.createStudent(uc, "zf", "123456781", "test1", "tester", 0, null,
-				User.Section.AltoSax);
-		Users.createStudent(uc, "b", "123456782", "test1", "tester", 0, null,
-				User.Section.AltoSax);
-		User ta = Users.createTA(uc, "ta", "123456783", "test1", "tester", 0,
-				null, User.Section.AltoSax);
+		Users.createStudent(uc, "s", "123456780", "test1", "tester", 1,
+				"major", User.Section.AltoSax);
+		Users.createStudent(uc, "zf", "123456781", "test1", "tester", 1,
+				"major", User.Section.AltoSax);
+		Users.createStudent(uc, "b", "123456782", "test1", "tester", 1,
+				"major", User.Section.AltoSax);
+		User ta = Users.createTA(uc, "ta", "123456783", "test1", "tester", 1,
+				"major", User.Section.AltoSax);
 
 		train.getMobileDataController().pushMobileData(SIMPLE_TARDY_TESTDATA,
 				ta);
@@ -200,7 +200,7 @@ public class MobileDataUploadTest extends AbstractTest {
 		assertEquals(6, train.getAbsenceController().getCount().intValue());
 
 		// TODO: https://github.com/curtisullerich/attendance/issues/123
-		//Check actual data returned
+		// Check actual data returned
 	}
 
 	private HttpServletRequest setTASession(HttpServletRequest req) {
