@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -1045,9 +1046,7 @@ public class AbsenceControllerTest extends AbstractTest {
 		
 		UserController uc = train.getUsersController();
 		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 2, "major", User.Section.AltoSax);
-		User student1 = Users.createStudent(uc, "student1", "123456780", "First", "last", 2, "major", User.Section.AltoSax);
-
-		
+			
 		Date start = makeDate("2012-06-16 0500");
 		Date checkout = makeDate("2012-06-16 0550");
 		Date end = makeDate("2012-06-16 0600");		
@@ -1109,5 +1108,82 @@ public class AbsenceControllerTest extends AbstractTest {
 				end.getTime());
 		Absence a = ac.createOrUpdateAbsence(student, e);
 		assertEquals(Absence.Status.Approved, a.getStatus());
+	}
+	
+	@Test
+	public void testGettingUnanchored() {
+		DataTrain train = getDataTrain();
+
+		UserController uc = train.getUsersController();
+		EventController ec = train.getEventController();
+		AbsenceController ac = train.getAbsenceController();
+		FormController fc = train.getFormsController();
+		
+		List<Absence> unanchored = new ArrayList<Absence>();
+		
+		User student1 = Users.createStudent(uc, "student1", "123456789", "First", "last", 
+				2, "major", User.Section.AltoSax);
+		User student2 = Users.createStudent(uc, "student2", "123456789", "First", "last", 
+				2, "major", User.Section.AltoSax);
+		User student3 = Users.createStudent(uc, "student3", "123456789", "First", "last", 
+				2, "major", User.Section.AltoSax);
+
+		Date unanchoredStart = makeDate("2012-09-21 0600");
+		Date unanchoredEnd = makeDate("2012-09-21 0700");
+		
+		Date anchoredStart = makeDate("2012-09-22 0600");
+		Date anchoredEnd = makeDate("2012-09-22 0700");
+		
+		unanchored.add(ac.createOrUpdateAbsence(student1, unanchoredStart, unanchoredEnd));
+		unanchored.add(ac.createOrUpdateTardy(student2, unanchoredStart));
+		unanchored.add(ac.createOrUpdateEarlyCheckout(student3, unanchoredStart));
+		
+		ec.createOrUpdate(Event.Type.Rehearsal, anchoredStart, anchoredEnd);
+		ac.createOrUpdateAbsence(student1, anchoredStart, anchoredEnd);
+		ac.createOrUpdateTardy(student2, anchoredStart);
+		ac.createOrUpdateEarlyCheckout(student3, anchoredStart);
+		
+		List<Absence> allUnanchored = ac.getUnanchored();
+		assertEquals(unanchored.size(), allUnanchored.size());
+		
+		boolean absenceWorked = false;
+		boolean tardyWorked = false;
+		boolean earlyWorked = false;
+		
+		for (Absence known: unanchored) {
+			for (Absence toCheck: allUnanchored) {
+				if (known.equals(toCheck)) {
+					if (known.getType() == Absence.Type.Absence) {
+						absenceWorked = true;
+					}
+					else if (known.getType() == Absence.Type.Tardy) {
+						tardyWorked = true;
+					}
+					else if (known.getType() == Absence.Type.EarlyCheckOut){
+						earlyWorked = true;
+					}
+				}
+			}
+		}
+		
+		assertTrue(absenceWorked);
+		assertTrue(tardyWorked);
+		assertTrue(earlyWorked);
+		
+		List<Absence> allAbs = ac.getAll();
+		
+		assertEquals(6, allAbs.size());
+		int numAnchored = 0;
+		int numUnanchored = 0;
+		for (Absence e: allAbs) {
+			if (e.getEvent() == null) {
+				++numUnanchored;
+			}
+			else {
+				++numAnchored;
+			}
+		}
+		assertEquals(3, numUnanchored);
+		assertEquals(3, numAnchored);
 	}
 }
