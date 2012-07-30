@@ -1,6 +1,12 @@
 package edu.iastate.music.marching.attendance.controllers;
 
+import java.util.Collections;
 import java.util.concurrent.Future;
+
+import net.sf.jsr107cache.Cache;
+import net.sf.jsr107cache.CacheException;
+import net.sf.jsr107cache.CacheFactory;
+import net.sf.jsr107cache.CacheManager;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
@@ -13,6 +19,9 @@ import edu.iastate.music.marching.attendance.model.ModelFactory;
 public class DataTrain {
 
 	private StandardObjectDatastore datastore = null;
+	
+	private Cache cache = null;
+	
 	/**
 	 * Current transaction
 	 */
@@ -78,6 +87,63 @@ public class DataTrain {
 
 	StandardObjectDatastore getDataStore() {
 		return this.datastore;
+	}
+	
+	@SuppressWarnings("unchecked")
+	<CachedType> CachedType loadFromCache(Class<CachedType> clazz, int id) {
+		Cache cache = getMemCache();
+		
+		if(cache != null)
+			return (CachedType)cache.get(new CacheKey(clazz, id));
+		else
+			return null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	<CachedType> boolean updateCache(int id, CachedType object) {
+		
+		if(object == null)
+		{
+			return false;
+		}
+		
+		Class<?> clazz = object.getClass();
+		
+		Cache cache = getMemCache();
+		
+		if(cache != null)
+		{
+			cache.put(new CacheKey(clazz, id), object);
+			
+			return true;
+		}
+		
+		return false;
+	}
+	
+	private class CacheKey {
+		
+		public CacheKey(Class<?> clazz, int id) {
+			this.clazz = clazz;
+			this.id = id;
+		}
+		
+		public Class<?> clazz;
+		public int id;
+	}
+	
+	private Cache getMemCache() {
+		if(this.cache == null)
+		{
+			try {
+	            CacheFactory cacheFactory = CacheManager.getInstance().getCacheFactory();
+	            this.cache = cacheFactory.createCache(Collections.emptyMap());
+	        } catch (CacheException e) {
+	        	return null;
+	        }
+		}
+		
+		return this.cache;
 	}
 
 	//For implementing transaction support

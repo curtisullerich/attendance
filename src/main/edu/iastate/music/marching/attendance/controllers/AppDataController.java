@@ -5,6 +5,7 @@ import java.util.TimeZone;
 
 import edu.iastate.music.marching.attendance.model.AppData;
 import edu.iastate.music.marching.attendance.model.AttendanceDatastore;
+import edu.iastate.music.marching.attendance.model.DatastoreVersion;
 import edu.iastate.music.marching.attendance.model.ModelFactory;
 
 public class AppDataController extends AbstractController {
@@ -22,10 +23,18 @@ public class AppDataController extends AbstractController {
 	 * @return
 	 */
 	public AppData get() {
-		//TODO https://github.com/curtisullerich/attendance/issues/104
-		// Caching
-		AppData appData = dataTrain.getDataStore().find().type(AppData.class)
-				.returnUnique().now();
+
+		int id = this.dataTrain.getVersionController().getCurrent()
+				.getVersion();
+
+		// Try cache first
+		AppData appData = this.dataTrain.loadFromCache(AppData.class, id);
+
+		if (appData == null) {
+			appData = dataTrain.getDataStore().find().type(AppData.class)
+					.returnUnique().now();
+			this.dataTrain.updateCache(id, appData);
+		}
 
 		if (appData == null) {
 			// No AppData in the data store, so make a new default one
@@ -55,7 +64,8 @@ public class AppDataController extends AbstractController {
 			// Defaults to "password"
 			appData.setHashedMobilePassword("5BAA61E4C9B93F3F0682250B6CF8331B7EE68FD8");
 
-			dataTrain.getDataStore().store(appData);
+			this.dataTrain.getDataStore().store(appData);
+			this.dataTrain.updateCache(id, appData);
 		}
 
 		// We have some app data from the store
