@@ -2,7 +2,11 @@ package edu.iastate.music.marching.attendance.test.unit.controllers;
 
 import static org.junit.Assert.assertEquals;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -3147,5 +3151,82 @@ public class FormCTest extends AbstractTest {
 		fc.update(form);
 
 		assertEquals(Absence.Status.Pending, a.getStatus());
+	}
+	
+	@Test
+	public void testNonAutoApproveOnDeniedAbsenceFormSecond() {
+		DataTrain train = getDataTrain();
+
+		UserController uc = train.getUsersController();
+		EventController ec = train.getEventController();
+		AbsenceController ac = train.getAbsenceController();
+		FormController fc = train.getFormsController();
+		
+		User student = Users.createStudent(uc, "student1", "123456789", "John",
+				"Cox", 2, "major", User.Section.AltoSax);
+		
+		String sDate = "2012-09-21 0600";
+		String eDate = "2012-09-21 0700";
+		Date startDate = null;
+		Date endDate = null;
+		try {
+			startDate = new SimpleDateFormat("yyyy-MM-dd HHmm").parse(sDate);
+			endDate = new SimpleDateFormat("yyyy-MM-dd HHmm").parse(eDate);
+			
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		ec.createOrUpdate(Event.Type.Performance, startDate, endDate);
+		Absence a = ac.createOrUpdateAbsence(student, startDate, endDate);
+		a.setStatus(Absence.Status.Denied);
+		ac.updateAbsence(a);
+	
+		Form form = fc.createFormC(student, startDate, Absence.Type.EarlyCheckOut, "reason", false);
+		form.setStatus(Form.Status.Approved);
+		fc.update(form);
+		
+		List<Absence> abs = ac.get(student);
+		
+		assertEquals(Absence.Status.Denied, abs.get(0).getStatus());
+	}
+	
+	@Test
+	public void testNonAutoApproveOnDeniedAbsenceFormFirst() {
+		DataTrain train = getDataTrain();
+
+		UserController uc = train.getUsersController();
+		EventController ec = train.getEventController();
+		AbsenceController ac = train.getAbsenceController();
+		FormController fc = train.getFormsController();
+		
+		User student = Users.createStudent(uc, "student1", "123456789", "John",
+				"Cox", 2, "major", User.Section.AltoSax);
+		
+		String sDate = "2012-09-21 0600";
+		String eDate = "2012-09-21 0700";
+		Date startDate = null;
+		Date endDate = null;
+		try {
+			startDate = new SimpleDateFormat("yyyy-MM-dd HHmm").parse(sDate);
+			endDate = new SimpleDateFormat("yyyy-MM-dd HHmm").parse(eDate);
+			
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		ec.createOrUpdate(Event.Type.Performance, startDate, endDate);
+		Form form = fc.createFormC(student, startDate, Absence.Type.EarlyCheckOut, "reason", false);
+		
+		Absence a = ac.createOrUpdateAbsence(student, startDate, endDate);
+		a.setStatus(Absence.Status.Denied);
+		ac.updateAbsence(a);
+	
+		form.setStatus(Form.Status.Approved);
+		fc.update(form);
+		
+		List<Absence> abs = ac.get(student);
+		
+		assertEquals(Absence.Status.Denied, abs.get(0).getStatus());
 	}
 }

@@ -78,16 +78,16 @@ public class DirectorServlet extends AbstractBaseServlet {
 				showIndex(req, resp);
 				break;
 			case viewabsence:
-				viewAbsence(req, resp, new LinkedList<String>());
+				viewAbsence(req, resp, new ArrayList<String>());
 				break;
 			case attendance:
-				showAttendance(req, resp, new LinkedList<String>());
+				showAttendance(req, resp, null, null);
 				break;
 			case appinfo:
-				showAppInfo(req, resp, new LinkedList<String>());
+				showAppInfo(req, resp, new ArrayList<String>());
 				break;
 			case unanchored:
-				showUnanchored(req, resp, new LinkedList<String>());
+				showUnanchored(req, resp, null, null);
 				break;
 			case users:
 				showUsers(req, resp);
@@ -252,7 +252,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 				postAbsenceInfo(req, resp);
 				break;
 			case attendance:
-				showAttendance(req, resp, new LinkedList<String>());
+				showAttendance(req, resp, null, null);
 				break;
 			case unanchored:
 				postUnanchored(req, resp);
@@ -282,6 +282,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 			throws ServletException, IOException {
 		String sid = req.getParameter("id");
 		List<String> errors = new ArrayList<String>();
+		String success = "";
 		DataTrain train = DataTrain.getAndStartTrain();
 		PageBuilder page = new PageBuilder(Page.attendance, SERVLET_PATH);
 		String sremoveAnchored = req.getParameter("RemoveAnchored");
@@ -294,14 +295,15 @@ public class DirectorServlet extends AbstractBaseServlet {
 				errors.add("Invalid event id");
 			}
 			if (event != null) {
-				page.setAttribute("success_message", "Event deleted");
+				//page.setAttribute("success_message", "Event deleted");
+				success = "Event deleted";
 				if (sremoveAnchored != null) {
 					if (sremoveAnchored.equals("true")) {
 						AbsenceController ac = train.getAbsenceController();
 						List<Absence> todie = ac.getAll(event);
 						ac.remove(todie);
-						page.setAttribute("success_message",
-								"Event and associated absences deleted.");
+//						page.setAttribute("success_message","Event and associated absences deleted.");
+						success = "Event and associated absences deleted.";
 					}
 				}
 				ec.delete(event);
@@ -312,11 +314,10 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		} else {
 			errors.add("Invalid event id");
-			page.setAttribute("errors", errors);
+			//page.setAttribute("errors", errors);
 		}
-		// TODO https://github.com/curtisullerich/attendance/issues/115 
-		//we should make a way to pass a success message on as well
-		showAttendance(req, resp, null);
+
+		showAttendance(req, resp, errors, success);
 	}
 
 	private void postDirectorInfo(HttpServletRequest req,
@@ -400,17 +401,21 @@ public class DirectorServlet extends AbstractBaseServlet {
 	private void deleteStudent(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		String sid = req.getParameter("deleteid");
+		String success = "";
+		List<String> errors = new ArrayList<String>();
 		if (sid != null) {
 			UserController uc = DataTrain.getAndStartTrain()
 					.getUsersController();
 			User todie = uc.get(sid);
 			uc.delete(todie);
+			success = "Student successfully deleted.";
+		}
+		else {
+			errors.add("Unable to delete student.");
 		}
 
-		// resp.sendRedirect("/director/attendance?success_message=Student+deleted.");
-		// TODO https://github.com/curtisullerich/attendance/issues/115 
 		//add a success or error message
-		showAttendance(req, resp, null);
+		showAttendance(req, resp, errors, success);
 	}
 
 	private void postEvent(HttpServletRequest req, HttpServletResponse resp)
@@ -418,7 +423,8 @@ public class DirectorServlet extends AbstractBaseServlet {
 		DataTrain train = DataTrain.getAndStartTrain();
 		EventController ec = train.getEventController();
 		List<String> errors = new LinkedList<String>();
-
+		String success = "";
+		
 		try {
 			Date start = Util.parseDate(req.getParameter("Month"),
 					req.getParameter("Day"), req.getParameter("Year"),
@@ -435,14 +441,14 @@ public class DirectorServlet extends AbstractBaseServlet {
 					Event.Type.Rehearsal.getDisplayName()) ? Event.Type.Rehearsal
 					: Event.Type.Performance;
 			ec.createOrUpdate(type, start, end);
+			success = "Event created.";
 		} catch (ValidationExceptions e) {
 			errors.add("Invalid Input: The input date was invalid.");
 		} catch (IllegalArgumentException e) {
 			errors.add("Invalid Input: The input date is invalid.");
-		}
-		// TODO https://github.com/curtisullerich/attendance/issues/115 
+		} 
 		//show success message?
-		showUnanchored(req, resp, errors);
+		showUnanchored(req, resp, errors, success);
 	}
 
 	private void postUnanchored(HttpServletRequest req, HttpServletResponse resp)
@@ -451,7 +457,8 @@ public class DirectorServlet extends AbstractBaseServlet {
 		AbsenceController ac = train.getAbsenceController();
 		EventController ec = train.getEventController();
 		int count = Integer.parseInt(req.getParameter("UnanchoredCount"));
-
+		
+		int numLinked = 0;
 		for (int i = 0; i <= count; i++) {
 			String eventID = req.getParameter("EventID" + i);
 			String absenceID = req.getParameter("AbsenceID" + i);
@@ -462,12 +469,12 @@ public class DirectorServlet extends AbstractBaseServlet {
 					Absence a = ac.get(Long.parseLong(absenceID));
 					a.setEvent(e);
 					ac.updateAbsence(a);
+					++numLinked;
 				}
 			}
 		}
-		// TODO https://github.com/curtisullerich/attendance/issues/115
 		//show success message and add error messages?
-		showUnanchored(req, resp, new LinkedList<String>());
+		showUnanchored(req, resp, null, numLinked + ((numLinked == 1) ? " absence " : " absences ") + "linked.");
 	}
 
 	private void postAbsenceInfo(HttpServletRequest req,
@@ -695,7 +702,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 	}
 
 	private void showAttendance(HttpServletRequest req,
-			HttpServletResponse resp, List<String> errors)
+			HttpServletResponse resp, List<String> errors, String success)
 			throws ServletException, IOException {
 
 		DataTrain train = DataTrain.getAndStartTrain();
@@ -764,6 +771,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		page.setAttribute("events", events);
 		page.setPageTitle("Attendance");
 		page.setAttribute("error_messages", errors);
+		page.setAttribute("success_message", success);
 		// so if the page arrives with ?=showApproved=true then we display them
 		User me = train.getAuthController().getCurrentUser(req.getSession());
 		if (ValidationUtil.isPost(req)) {
@@ -778,7 +786,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 	}
 
 	private void showUnanchored(HttpServletRequest req,
-			HttpServletResponse resp, List<String> errors)
+			HttpServletResponse resp, List<String> errors, String success)
 			throws ServletException, IOException {
 
 		DataTrain train = DataTrain.getAndStartTrain();
@@ -799,7 +807,8 @@ public class DirectorServlet extends AbstractBaseServlet {
 		page.setAttribute("absences", unanchored);
 		page.setPageTitle("Unanchored");
 		page.setAttribute("error_messages", errors);
-
+		page.setAttribute("success_message", success);
+		
 		page.passOffToJsp(req, resp);
 	}
 
@@ -999,7 +1008,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 			page.setAttribute("error_messages", incomingErrors);
 			page.passOffToJsp(req, resp);
 		} else {
-			showAttendance(req, resp, errors);
+			showAttendance(req, resp, errors, null);
 		}
 	}
 
