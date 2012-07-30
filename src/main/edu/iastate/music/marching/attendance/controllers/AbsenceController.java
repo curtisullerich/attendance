@@ -340,13 +340,13 @@ public class AbsenceController extends AbstractController {
 		AbsenceController ac = train.getAbsenceController();
 		List<Absence> conflicts = ac.getAll(linked, student);
 
-		if (conflicts.size() > 2)
+		if (conflicts.size() > 2) {
 			LOG.severe("Absence conflicting with more than two others, this indicates a possibly inconsistant database");
+		}
 
 		// this loop should remove any conflicting absences and leave us with
 		// the correct absence to store once we're done
 		for (Absence other : conflicts) {
-
 			// If we are unable to resolve contacts, don't store
 			if (!resolveConflict(absence, other))
 				return null;
@@ -616,26 +616,6 @@ public class AbsenceController extends AbstractController {
 		return absence;
 	}
 
-	/**
-	 * Used to check that the absence date falls on a weekly repetition of the
-	 * form date. Needs to be tested.
-	 * 
-	 * @param absenceDate
-	 * @param formDate
-	 * @return
-	 */
-	private boolean dateFallsOnRepetition(Date absenceDate, Date formDate) {
-		Calendar absenceCal = Calendar.getInstance();
-		Calendar formCal = Calendar.getInstance();
-		absenceCal.setTime(absenceDate);
-		formCal.setTime(formDate);
-
-		// TODO https://github.com/curtisullerich/attendance/issues/110
-		// Handle changing year
-		return (formCal.get(Calendar.DAY_OF_YEAR) - absenceCal
-				.get(Calendar.DAY_OF_YEAR)) % 7 == 0;
-	}
-
 	public Absence updateAbsence(Absence absence) {
 
 		Event linked = absence.getEvent();
@@ -677,6 +657,7 @@ public class AbsenceController extends AbstractController {
 		MessageThread messages = this.train.getMessagingController()
 				.createMessageThread(student);
 		absence.setMessageThread(messages);
+		absence.getMessageThread().setAbsenceParent(absence);
 
 		// Then do some validation
 		Absence resolvedAbsence = validateAbsence(absence);

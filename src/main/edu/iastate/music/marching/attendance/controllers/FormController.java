@@ -79,14 +79,6 @@ public class FormController extends AbstractController {
 		// TODO https://github.com/curtisullerich/attendance/issues/106
 		// what if the student is null?
 		for (Absence absence : ac.get(f.getStudent())) {
-			// TODO https://github.com/curtisullerich/attendance/issues/106
-			// I wrote a (private) method in Absence controller that could
-			// do this more efficiently because it checks for a specific form
-			// and specific absence. We /could/ expose it as protected, but
-			// that may introduce bugs elsewhere because we're not forced to
-			// call updateAbsence in order to perform checks and thus may forget
-			// to update it or perform all necessary validation. This applies to
-			// all forms
 			ac.updateAbsence(absence);
 		}
 
@@ -109,6 +101,8 @@ public class FormController extends AbstractController {
 		MessageThread messages = dataTrain.getMessagingController()
 				.createMessageThread(form.getStudent());
 		form.setMessageThread(messages);
+		form.getMessageThread().setFormParent(form);
+		
 
 		updateFormD(form);
 
@@ -411,9 +405,6 @@ public class FormController extends AbstractController {
 
 		Form form = ModelFactory.newForm(Form.Type.C, student);
 
-		// TODO https://github.com/curtisullerich/attendance/issues/111
-		// what's the best way to indicate that something went wrong? Which
-		// is what it means if either start or end are null at this point.
 		form.setStart(start);
 		form.setEnd(end);
 

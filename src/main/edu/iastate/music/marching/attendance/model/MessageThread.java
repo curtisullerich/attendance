@@ -12,7 +12,7 @@ import com.google.code.twig.annotation.Type;
 import com.google.code.twig.annotation.Version;
 
 @Version(AttendanceDatastore.VERSION)
-@Entity(kind="MessageThread", allocateIdsBy=0)
+@Entity(kind = "MessageThread", allocateIdsBy = 0)
 public class MessageThread {
 
 	public static final String FIELD_PARTICIPANTS = "participants";
@@ -20,8 +20,8 @@ public class MessageThread {
 	public static final String FIELD_RESOLVED = "resolved";
 
 	/**
-	 * Sorts by the latest message in the thread in descending order,
-	 * meaning that threads with new messages will come first in a sortr
+	 * Sorts by the latest message in the thread in descending order, meaning
+	 * that threads with new messages will come first in a sortr
 	 * 
 	 * Does not attempt to sort empty threads with no messages.
 	 */
@@ -31,16 +31,19 @@ public class MessageThread {
 		public int compare(MessageThread o1, MessageThread o2) {
 			List<Message> m1 = o1.getMessages();
 			List<Message> m2 = o2.getMessages();
-			
-			if(m1 == null || m2 == null)
+
+			if (m1 == null || m2 == null)
 				return 0;
-			
-			if(m1.size() < 1 || m2.size() < 1)
+
+			if (m1.size() < 1 || m2.size() < 1)
 				return 0;
-			
+
 			return m2.get(0).getTimestamp().compareTo(m1.get(0).getTimestamp());
 		}
 	};
+
+	private Form formParent;
+	private Absence absenceParent;
 
 	/**
 	 * Create users through UserController (DataModel.users().create(...)
@@ -70,7 +73,7 @@ public class MessageThread {
 	public long getId() {
 		return id;
 	}
-	
+
 	public boolean isResolved() {
 		return resolved;
 	}
@@ -97,6 +100,22 @@ public class MessageThread {
 
 	public void addParticipant(User u) {
 		this.participants.add(u);
-		
+
+	}
+
+	public Form getFormParent() {
+		return formParent;
+	}
+
+	public void setFormParent(Form formParent) {
+		this.formParent = formParent;
+	}
+
+	public Absence getAbsenceParent() {
+		return absenceParent;
+	}
+
+	public void setAbsenceParent(Absence absenceParent) {
+		this.absenceParent = absenceParent;
 	}
 }
