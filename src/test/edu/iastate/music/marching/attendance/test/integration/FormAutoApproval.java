@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 import org.junit.Test;
 
@@ -17,32 +18,31 @@ import edu.iastate.music.marching.attendance.test.AbstractTest;
 import edu.iastate.music.marching.attendance.test.util.Users;
 
 public class FormAutoApproval extends AbstractTest {
-
-	private static final Date ABSOLUTE_DATE = new Date();
+	
+	private final static TimeZone TIMEZONE = TimeZone.getTimeZone("UTC");
 
 	@Test
 	public void AutoApproveAbsence_Succeeds_FormA_FormSecond() {
 		createUsersHelper();
 		DataTrain train = DataTrain.getAndStartTrain();
 
-		Calendar c = Calendar.getInstance();
-		c.setTime(ABSOLUTE_DATE);
+		Calendar c = getFixedCalendar();
 		c.roll(Calendar.HOUR, 1);
 
 		// Create a 1 hour event for absence
 		train.getEventController().createOrUpdate(Event.Type.Performance,
-				ABSOLUTE_DATE, c.getTime());
+				getFixedCalendar().getTime(), c.getTime());
 
 		// Create a 1 hour absence
 		Absence a = train.getAbsenceController().createOrUpdateAbsence(
-				student1, ABSOLUTE_DATE, c.getTime());
+				student1, getFixedCalendar().getTime(), c.getTime());
 
 		// Verify absence is pending and able to be approved
 		assertEquals(Absence.Status.Pending, a.getStatus());
 
 		// Create and approve form to excuse absence
 		Form form = train.getFormsController().createFormA(student1,
-				ABSOLUTE_DATE, "reason");
+				getFixedCalendar().getTime(), "reason");
 		train.getFormsController().approve(form);
 
 		// Verify both form and absence are now approved
@@ -56,21 +56,21 @@ public class FormAutoApproval extends AbstractTest {
 		DataTrain train = DataTrain.getAndStartTrain();
 
 		Calendar c = Calendar.getInstance();
-		c.setTime(ABSOLUTE_DATE);
+		c.setTime(getFixedCalendar().getTime());
 		c.roll(Calendar.HOUR, 1);
 
 		// Create and approve form to excuse absence
 		Form form = train.getFormsController().createFormA(student1,
-				ABSOLUTE_DATE, "reason");
+				getFixedCalendar().getTime(), "reason");
 		train.getFormsController().approve(form);
 
 		// Create a 1 hour event for absence
 		train.getEventController().createOrUpdate(Event.Type.Performance,
-				ABSOLUTE_DATE, c.getTime());
+				getFixedCalendar().getTime(), c.getTime());
 
 		// Create a 1 hour absence
 		Absence a = train.getAbsenceController().createOrUpdateAbsence(
-				student1, ABSOLUTE_DATE, c.getTime());
+				student1, getFixedCalendar().getTime(), c.getTime());
 
 		// Verify both form and absence are now approved
 		assertEquals(Form.Status.Approved, form.getStatus());
@@ -83,16 +83,16 @@ public class FormAutoApproval extends AbstractTest {
 		DataTrain train = DataTrain.getAndStartTrain();
 
 		Calendar c = Calendar.getInstance();
-		c.setTime(ABSOLUTE_DATE);
+		c.setTime(getFixedCalendar().getTime());
 		c.roll(Calendar.HOUR, 1);
 
 		// Create a 1 hour event for absence
 		train.getEventController().createOrUpdate(Event.Type.Performance,
-				ABSOLUTE_DATE, c.getTime());
+				getFixedCalendar().getTime(), c.getTime());
 
 		// Create a 1 hour absence
 		Absence a = train.getAbsenceController().createOrUpdateAbsence(
-				student1, ABSOLUTE_DATE, c.getTime());
+				student1, getFixedCalendar().getTime(), c.getTime());
 
 		// Verify absence is pending and able to be approved
 		assertEquals(Absence.Status.Pending, a.getStatus());
@@ -100,8 +100,8 @@ public class FormAutoApproval extends AbstractTest {
 		// Create and approve form to excuse absence
 		int day = c.get(Calendar.DAY_OF_WEEK);
 		Form form = train.getFormsController().createFormB(student1,
-				"department", "course", "section", "building", ABSOLUTE_DATE,
-				ABSOLUTE_DATE, day, ABSOLUTE_DATE, c.getTime(), "details", 0,
+				"department", "course", "section", "building", getFixedCalendar().getTime(),
+				getFixedCalendar().getTime(), day, getFixedCalendar().getTime(), c.getTime(), "details", 0,
 				Absence.Type.Absence);
 		train.getFormsController().approve(form);
 
@@ -116,23 +116,23 @@ public class FormAutoApproval extends AbstractTest {
 		DataTrain train = DataTrain.getAndStartTrain();
 
 		Calendar c = Calendar.getInstance();
-		c.setTime(ABSOLUTE_DATE);
+		c.setTime(getFixedCalendar().getTime());
 		c.roll(Calendar.HOUR, 1);
 
 		// Create a 1 hour event for absence
 		train.getEventController().createOrUpdate(Event.Type.Performance,
-				ABSOLUTE_DATE, c.getTime());
+				getFixedCalendar().getTime(), c.getTime());
 
 		// Create a 1 hour absence
 		Absence a = train.getAbsenceController().createOrUpdateAbsence(
-				student1, ABSOLUTE_DATE, c.getTime());
+				student1, getFixedCalendar().getTime(), c.getTime());
 
 		// Verify absence is pending and able to be approved
 		assertEquals(Absence.Status.Pending, a.getStatus());
 
 		// Create and approve form to excuse absence
 		Form form = train.getFormsController().createFormA(student1,
-				ABSOLUTE_DATE, "reason");
+				getFixedCalendar().getTime(), "reason");
 		train.getFormsController().approve(form);
 
 		// Verify both form and absence are now approved
@@ -146,23 +146,23 @@ public class FormAutoApproval extends AbstractTest {
 		DataTrain train = DataTrain.getAndStartTrain();
 
 		Calendar c = Calendar.getInstance();
-		c.setTime(ABSOLUTE_DATE);
+		c.setTime(getFixedCalendar().getTime());
 		c.roll(Calendar.HOUR, 1);
 
 		// Create a 1 hour event for absence
 		train.getEventController().createOrUpdate(Event.Type.Performance,
-				ABSOLUTE_DATE, c.getTime());
+				getFixedCalendar().getTime(), c.getTime());
 
 		// Create a 1 hour absence
 		Absence a = train.getAbsenceController().createOrUpdateAbsence(
-				student1, ABSOLUTE_DATE, c.getTime());
+				student1, getFixedCalendar().getTime(), c.getTime());
 
 		// Verify absence is pending and able to be approved
 		assertEquals(Absence.Status.Pending, a.getStatus());
 
 		// Create and approve form to excuse absence
 		Form form = train.getFormsController().createFormA(student1,
-				ABSOLUTE_DATE, "reason");
+				getFixedCalendar().getTime(), "reason");
 		train.getFormsController().approve(form);
 
 		// Verify both form and absence are now approved
@@ -176,16 +176,16 @@ public class FormAutoApproval extends AbstractTest {
 		DataTrain train = DataTrain.getAndStartTrain();
 
 		Calendar c = Calendar.getInstance();
-		c.setTime(ABSOLUTE_DATE);
+		c.setTime(getFixedCalendar().getTime());
 		c.roll(Calendar.HOUR, 1);
 
 		// Create a 1 hour event for absence
 		train.getEventController().createOrUpdate(Event.Type.Performance,
-				ABSOLUTE_DATE, c.getTime());
+				getFixedCalendar().getTime(), c.getTime());
 
 		// Create a 1 hour absence
 		Absence a = train.getAbsenceController().createOrUpdateAbsence(
-				student1, ABSOLUTE_DATE, c.getTime());
+				student1, getFixedCalendar().getTime(), c.getTime());
 		a.setStatus(Absence.Status.Denied);
 
 		// Verify absence is denied and unable to be approved
@@ -193,7 +193,7 @@ public class FormAutoApproval extends AbstractTest {
 
 		// Create and approve form to excuse absence
 		Form form = train.getFormsController().createFormA(student1,
-				ABSOLUTE_DATE, "reason");
+				getFixedCalendar().getTime(), "reason");
 		train.getFormsController().approve(form);
 
 		// Verify only form is now approved
@@ -207,22 +207,22 @@ public class FormAutoApproval extends AbstractTest {
 		DataTrain train = DataTrain.getAndStartTrain();
 
 		Calendar c = Calendar.getInstance();
-		c.setTime(ABSOLUTE_DATE);
+		c.setTime(getFixedCalendar().getTime());
 		c.roll(Calendar.HOUR, 1);
 
 		// Create a 1 hour event for absence
 		train.getEventController().createOrUpdate(Event.Type.Performance,
-				ABSOLUTE_DATE, c.getTime());
+				getFixedCalendar().getTime(), c.getTime());
 
 		// Create a 1 hour absence
 		Absence a = train.getAbsenceController().createOrUpdateAbsence(
-				student1, ABSOLUTE_DATE, c.getTime());
+				student1, getFixedCalendar().getTime(), c.getTime());
 
 		a.setStatus(Absence.Status.Denied);
 
 		// Create and approve form to excuse absence
 		Form form = train.getFormsController().createFormA(student1,
-				ABSOLUTE_DATE, "reason");
+				getFixedCalendar().getTime(), "reason");
 		train.getFormsController().approve(form);
 
 		// Verify only form is now approved
@@ -236,22 +236,22 @@ public class FormAutoApproval extends AbstractTest {
 		DataTrain train = DataTrain.getAndStartTrain();
 
 		Calendar c = Calendar.getInstance();
-		c.setTime(ABSOLUTE_DATE);
+		c.setTime(getFixedCalendar().getTime());
 		c.roll(Calendar.HOUR, 1);
 
 		// Create a 1 hour event for absence
 		train.getEventController().createOrUpdate(Event.Type.Performance,
-				ABSOLUTE_DATE, c.getTime());
+				getFixedCalendar().getTime(), c.getTime());
 
 		// Create a 1 hour absence
 		Absence a = train.getAbsenceController().createOrUpdateAbsence(
-				student1, ABSOLUTE_DATE, c.getTime());
+				student1, getFixedCalendar().getTime(), c.getTime());
 
 		a.setStatus(Absence.Status.Denied);
 
 		// Create and approve form to excuse absence
 		Form form = train.getFormsController().createFormA(student1,
-				ABSOLUTE_DATE, "reason");
+				getFixedCalendar().getTime(), "reason");
 		train.getFormsController().approve(form);
 
 		// Verify only form is now approved
@@ -265,22 +265,22 @@ public class FormAutoApproval extends AbstractTest {
 		DataTrain train = DataTrain.getAndStartTrain();
 
 		Calendar c = Calendar.getInstance();
-		c.setTime(ABSOLUTE_DATE);
+		c.setTime(getFixedCalendar().getTime());
 		c.roll(Calendar.HOUR, 1);
 
 		// Create a 1 hour event for absence
 		train.getEventController().createOrUpdate(Event.Type.Performance,
-				ABSOLUTE_DATE, c.getTime());
+				getFixedCalendar().getTime(), c.getTime());
 
 		// Create a 1 hour absence
 		Absence a = train.getAbsenceController().createOrUpdateAbsence(
-				student1, ABSOLUTE_DATE, c.getTime());
+				student1, getFixedCalendar().getTime(), c.getTime());
 
 		a.setStatus(Absence.Status.Denied);
 
 		// Create and approve form to excuse absence
 		Form form = train.getFormsController().createFormA(student1,
-				ABSOLUTE_DATE, "reason");
+				getFixedCalendar().getTime(), "reason");
 		train.getFormsController().approve(form);
 
 		// Verify only form is now approved
@@ -312,4 +312,10 @@ public class FormAutoApproval extends AbstractTest {
 				User.Section.AltoSax);
 	}
 
+	private Calendar getFixedCalendar() {
+		Calendar c = Calendar.getInstance(TIMEZONE);
+		c.set(2004, 8, 20, 17, 42, 51);
+		c.set(Calendar.MILLISECOND, 555);
+		return c;
+	}
 }
