@@ -115,7 +115,7 @@
 			</c:otherwise>
 		</c:choose>
 		<form method="POST" id="deleteForm">
-			<hidden id="deleteFormId" name="removeid" value="" />
+			<input type="hidden" id="deleteFormId" name="removeid" value="" />
 		</form>
 		<script>
 			function deleteForm(id, type) {
