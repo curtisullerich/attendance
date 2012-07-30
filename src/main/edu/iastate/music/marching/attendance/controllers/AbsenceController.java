@@ -503,7 +503,15 @@ public class AbsenceController extends AbstractController {
 			formDateEnd.set(Calendar.MILLISECOND, 0);
 
 			// absence date must fall on a valid form date repetition
-			if (dateFallsOnRepetition(absence.getDatetime(), form.getStart())) {
+			// if (dateFallsOnRepetition(absence.getDatetime(),
+			// form.getStart())) {
+			if (
+			// formTimeStart.get(Calendar.DAY_OF_WEEK) == formTimeStart
+			// .get(Calendar.DAY_OF_WEEK)
+			formTimeStart.get(Calendar.DAY_OF_WEEK) > 0
+					&& formTimeStart.get(Calendar.DAY_OF_WEEK) < 8
+					&& form.getDayAsInt() == formTimeStart
+							.get(Calendar.DAY_OF_WEEK)) {
 				if (absence.getType() == Absence.Type.Absence) {
 					if (formTimeEnd != null
 							&& !formTimeStart.getTime().after(
