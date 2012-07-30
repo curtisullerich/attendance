@@ -116,27 +116,37 @@ public class MessagingServlet extends AbstractBaseServlet {
 		showThread(req, resp, longid, train);
 	}
 
-	private void postMessageThread(HttpServletRequest req,
-			HttpServletResponse resp) throws ServletException, IOException {
-		long threadId = Long.parseLong(req.getParameter("Id"));
-		String message = req.getParameter("Message");
-		
-		// TODO https://github.com/curtisullerich/attendance/issues/119
-		//sanitize message?
-		
-		DataTrain train = DataTrain.getAndStartTrain();
+//	private void postMessageThread(HttpServletRequest req,
+//			HttpServletResponse resp) throws ServletException, IOException {
+//		long threadId = Long.parseLong(req.getParameter("Id"));
+//		String message = req.getParameter("Message");
+//		
+//		// TODO https://github.com/curtisullerich/attendance/issues/119
+//		//sanitize message?
+//		
+//		DataTrain train = DataTrain.getAndStartTrain();
+//
+//		// TODO https://github.com/curtisullerich/attendance/issues/116
+//		//Handle exceptions maybe for invalid thread id's?
+//		MessageThread thread = train.getMessagingController().get(threadId);
+//
+//		//Verify currently logged in user is a participant in the
+//		// conversation, or is a director
+//		if (isPartOfConversation(thread, train.getAuthController().getCurrentUser(req.getSession()))) {
+//			train.getMessagingController().addMessage(thread, train.getAuthController().getCurrentUser(req.getSession()), message);
+//			showThread(req, resp, threadId, train);
+//      }
+//	}
 
-		// TODO https://github.com/curtisullerich/attendance/issues/116
-		//Handle exceptions maybe for invalid thread id's?
-		MessageThread thread = train.getMessagingController().get(threadId);
-
-		// TODO https://github.com/curtisullerich/attendance/issues/120
-		//Verify currently logged in user is a participant in the
-		// conversation, or is a director
-		
-		train.getMessagingController().addMessage(thread, train.getAuthController().getCurrentUser(req.getSession()), message);
-
-		showThread(req, resp, threadId, train);
+	private boolean isPartOfConversation(MessageThread thread, User currentUser) {
+		if (currentUser == null) return false;
+		boolean ret = false;
+		for (User participant: thread.getParticipants()) {
+			if (participant.equals(currentUser)) {
+				ret = true;
+			}
+		}
+		return ret;
 	}
 
 	private void showIndex(HttpServletRequest req, HttpServletResponse resp)
@@ -158,9 +168,27 @@ public class MessagingServlet extends AbstractBaseServlet {
 			unresolved =  train.getMessagingController().get(train.getAuthController().getCurrentUser(req.getSession()), false);
 		}
 		
-		// TODO https://github.com/curtisullerich/attendance/issues/120
 		//Verify currently logged in user is a participant in the
 		// conversation, or is a director
+		User current = train.getAuthController().getCurrentUser(req.getSession());
+		if (current.getType() != User.Type.Director) {
+			List<MessageThread> tempResolved = new ArrayList<MessageThread>();
+			List<MessageThread> tempUnresolved = new ArrayList<MessageThread>();
+			
+			for (MessageThread thread: resolved) {
+				if (isPartOfConversation(thread, current)) {
+					tempResolved.add(thread);					
+				}
+			}
+			
+			for (MessageThread thread: unresolved) {
+				if (isPartOfConversation(thread, current)) {
+					tempUnresolved.add(thread);
+				}
+			}
+			resolved = tempResolved;
+			unresolved = tempUnresolved;
+		}
 		
 		List<MessageThread> nonempty_resolved = new ArrayList<MessageThread>();
 		List<MessageThread> nonempty_unresolved = new ArrayList<MessageThread>();
@@ -204,15 +232,19 @@ public class MessagingServlet extends AbstractBaseServlet {
 		//Handle exceptions maybe for invalid thread id's?
 		MessageThread thread = train.getMessagingController().get(threadId);
 
-		// TODO https://github.com/curtisullerich/attendance/issues/120
 		//Verify currently logged in user is a participant in the
 		// conversation, or is a director
-
-		PageBuilder builder = new PageBuilder(Page.viewthread, SERVLET_JSP_PATH);
-
-		builder.setAttribute("thread", thread);
-
-		builder.passOffToJsp(req, resp);
+		if (isPartOfConversation(thread, train.getAuthController().getCurrentUser(req.getSession()))) {
+			PageBuilder builder = new PageBuilder(Page.viewthread, SERVLET_JSP_PATH);
+	
+			builder.setAttribute("thread", thread);
+	
+			builder.passOffToJsp(req, resp);
+		}
+		else {
+			PageBuilder builder = new PageBuilder(Page.index, SERVLET_JSP_PATH);
+			builder.passOffToJsp(req, resp);
+		}
 	}
 
 	/**
@@ -251,5 +283,4 @@ public class MessagingServlet extends AbstractBaseServlet {
 	private String getIndexURL() {
 		return pageToUrl(Page.index, getInitParameter("path"));
 	}
-
 }

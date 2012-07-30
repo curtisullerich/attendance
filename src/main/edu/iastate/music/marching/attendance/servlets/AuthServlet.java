@@ -219,19 +219,10 @@ public class AuthServlet extends AbstractBaseServlet {
 		univID = req.getParameter("UniversityID");
 		secondEmail = new Email(req.getParameter("SecondEmail"));
 
-		try {
-			if (univID.length() != 9) {
-				errors.add("University ID was not nine digits");
-			}
-
-			// just makes sure it's parseable as an int. we don't JUST do this,
-			// because leading zeroes are valid
-			Integer.parseInt(univID);
-
-		} catch (NumberFormatException e) {
-			errors.add("University ID entered was not a number");
+		if (!ValidationUtil.isValidUniversityID(univID)) {
+			errors.add("University ID was not valid");
 		}
-
+		
 		try {
 			year = Integer.parseInt(req.getParameter("Year"));
 		} catch (NumberFormatException e) {

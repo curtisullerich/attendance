@@ -435,8 +435,7 @@ public class AbsenceController extends AbstractController {
 
 				if (fmt.format(absence.getEvent().getDate()).equals(
 						fmt.format(form.getStart()))) {
-					// TODO
-					// https://github.com/curtisullerich/attendance/issues/107
+					// TODO https://github.com/curtisullerich/attendance/issues/107
 					// it wouldn't be hard to implement an AutoApproved
 					// type for documentation purposes, since this and the form
 					// controller are the only places it should happen
