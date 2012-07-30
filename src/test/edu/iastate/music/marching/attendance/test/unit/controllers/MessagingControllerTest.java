@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.UserController;
+import edu.iastate.music.marching.attendance.model.Form;
 import edu.iastate.music.marching.attendance.model.MessageThread;
 import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.test.AbstractTest;
@@ -30,9 +31,9 @@ public class MessagingControllerTest extends AbstractTest {
 				"First", "last", 2, "major", User.Section.AltoSax);
 
 		MessageThread mts = train.getMessagingController()
-				.createMessageThread();
+				.createMessageThread((Form)null);
 		MessageThread mtd = train.getMessagingController()
-				.createMessageThread();
+				.createMessageThread((Form)null);
 
 		train.getMessagingController().addMessage(mtd, director, "D");
 		train.getMessagingController().addMessage(mts, student, "S");
@@ -78,9 +79,9 @@ public class MessagingControllerTest extends AbstractTest {
 				"First", "last", 2, "major", User.Section.AltoSax);
 
 		MessageThread mts = train.getMessagingController()
-				.createMessageThread();
+				.createMessageThread((Form)null);
 		MessageThread mtd = train.getMessagingController()
-				.createMessageThread();
+				.createMessageThread((Form)null);
 
 		train.getMessagingController().addMessage(mtd, director, "D");
 		train.getMessagingController().addMessage(mts, student, "S");
@@ -120,7 +121,7 @@ public class MessagingControllerTest extends AbstractTest {
 		User student = Users.createStudent(uc, "studenttt", "123456789",
 				"First", "last", 2, "major", User.Section.AltoSax);
 
-		MessageThread mt = train.getMessagingController().createMessageThread();
+		MessageThread mt = train.getMessagingController().createMessageThread((Form)null);
 
 		train.getMessagingController().addMessage(mt, director, "Begin");
 		train.getMessagingController().addMessage(mt, director, "Middle");
@@ -154,7 +155,7 @@ public class MessagingControllerTest extends AbstractTest {
 		User student = Users.createStudent(uc, "studenttt", "123456789",
 				"First", "last", 2, "major", User.Section.AltoSax);
 
-		MessageThread mt = train.getMessagingController().createMessageThread();
+		MessageThread mt = train.getMessagingController().createMessageThread((Form)null);
 
 		train.getMessagingController().addMessage(mt, director, "Begin");
 		train.getMessagingController().addMessage(mt, director, "Middle");
