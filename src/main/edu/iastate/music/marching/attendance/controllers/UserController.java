@@ -74,8 +74,7 @@ public class UserController extends AbstractController {
 
 		return user;
 	}
-	//TODO https://github.com/curtisullerich/attendance/issues/102
-	//Validation of major, rank, section, year, universtiy id
+
 	private void validateUser(User user) throws IllegalArgumentException {
 
 		if (user == null)
@@ -92,7 +91,11 @@ public class UserController extends AbstractController {
 		if (!ValidationUtil.isValidName(user.getLastName()))
 			throw new IllegalArgumentException("Invalid last name");
 
-		user.getUniversityID();
+		//Check id
+		String uId = user.getUniversityID();
+		if (!ValidationUtil.isValidUniversityID(uId)) {
+			throw new IllegalArgumentException("Invalid university id");
+		}
 
 		// Check secondary email
 		if (!ValidationUtil.validSecondaryEmail(user.getSecondaryEmail(),
@@ -101,12 +104,24 @@ public class UserController extends AbstractController {
 
 		// Check student specific things
 		if (user.getType() == User.Type.Student) {
-			user.getMajor();
-			user.getRank();
-			user.getSection();
-			user.getYear();
+			String major = user.getMajor();
+			String rank = user.getRank();
+			User.Section section = user.getSection();
+			int year = user.getYear();
+			
+			if (!ValidationUtil.isValidMajor(major)) {
+				throw new IllegalArgumentException("Invalid major");
+			}
+			if (!ValidationUtil.isValidRank(rank)) {
+				throw new IllegalArgumentException("Invalid rank");
+			}
+			if (!ValidationUtil.isValidSection(section)) {
+				throw new IllegalArgumentException("Invalid section");
+			}
+			if (!ValidationUtil.isValidYear(year)) {
+				throw new IllegalArgumentException("Invalid year");
+			}
 		}
-
 	}
 
 	public User createDirector(String schoolEmail, String loginEmail,

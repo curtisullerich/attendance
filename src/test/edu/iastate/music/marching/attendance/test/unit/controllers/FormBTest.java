@@ -215,7 +215,7 @@ public class FormBTest extends AbstractTest {
 
 		form.setStatus(Form.Status.Approved);
 		fc.update(form);
-		
+
 		assertEquals(Absence.Status.Pending, a.getStatus());
 	}
 
@@ -533,12 +533,12 @@ public class FormBTest extends AbstractTest {
 
 		// a normal rehearsal
 		Calendar eventstart = Calendar.getInstance();
-		eventstart.set(2012, 7, 20, 16, 30, 0);
+		eventstart.set(2012, 7, 27, 16, 30, 0);
 		Calendar eventend = Calendar.getInstance();
-		eventend.set(2012, 7, 20, 17, 50, 0);
+		eventend.set(2012, 7, 27, 17, 50, 0);
 
 		Calendar tardytime = Calendar.getInstance();
-		tardytime.set(2012, 7, 20, 16, 50, 0);
+		tardytime.set(2012, 7, 27, 16, 50, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
@@ -581,12 +581,12 @@ public class FormBTest extends AbstractTest {
 
 		// a normal rehearsal
 		Calendar eventstart = Calendar.getInstance();
-		eventstart.set(2012, 10, 22, 16, 30, 0);
+		eventstart.set(2012, 8, 6, 16, 30, 0);
 		Calendar eventend = Calendar.getInstance();
-		eventend.set(2012, 10, 22, 17, 50, 0);
+		eventend.set(2012, 8, 6, 17, 50, 0);
 
 		Calendar tardytime = Calendar.getInstance();
-		tardytime.set(2012, 10, 22, 16, 30, 0);
+		tardytime.set(2012, 8, 6, 16, 30, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),

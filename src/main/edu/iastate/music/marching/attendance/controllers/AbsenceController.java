@@ -435,8 +435,7 @@ public class AbsenceController extends AbstractController {
 
 				if (fmt.format(absence.getEvent().getDate()).equals(
 						fmt.format(form.getStart()))) {
-					// TODO
-					// https://github.com/curtisullerich/attendance/issues/107
+					// TODO https://github.com/curtisullerich/attendance/issues/107
 					// it wouldn't be hard to implement an AutoApproved
 					// type for documentation purposes, since this and the form
 					// controller are the only places it should happen
@@ -503,7 +502,15 @@ public class AbsenceController extends AbstractController {
 			formDateEnd.set(Calendar.MILLISECOND, 0);
 
 			// absence date must fall on a valid form date repetition
-			if (dateFallsOnRepetition(absence.getDatetime(), form.getStart())) {
+			// if (dateFallsOnRepetition(absence.getDatetime(),
+			// form.getStart())) {
+			if (
+			// formTimeStart.get(Calendar.DAY_OF_WEEK) == formTimeStart
+			// .get(Calendar.DAY_OF_WEEK)
+			formTimeStart.get(Calendar.DAY_OF_WEEK) > 0
+					&& formTimeStart.get(Calendar.DAY_OF_WEEK) < 8
+					&& form.getDayAsInt() == formTimeStart
+							.get(Calendar.DAY_OF_WEEK)) {
 				if (absence.getType() == Absence.Type.Absence) {
 					if (formTimeEnd != null
 							&& !formTimeStart.getTime().after(
