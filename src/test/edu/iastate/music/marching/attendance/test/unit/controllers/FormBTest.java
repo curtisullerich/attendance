@@ -972,7 +972,7 @@ public class FormBTest extends AbstractTest {
 		AbsenceController ac = train.getAbsenceController();
 		FormController fc = train.getFormsController();
 
-		User student = Users.createStudent(uc, "student1", "123456789", "John",
+		User student = Users.createStudent(uc, "student4", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
 		Calendar startdate = Calendar.getInstance();
