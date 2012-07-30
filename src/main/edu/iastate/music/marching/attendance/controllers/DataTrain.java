@@ -1,5 +1,6 @@
 package edu.iastate.music.marching.attendance.controllers;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.concurrent.Future;
 
@@ -121,14 +122,19 @@ public class DataTrain {
 		return false;
 	}
 	
-	private class CacheKey {
+	private static class CacheKey implements Serializable {
+		
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -8879640511900898415L;
 		
 		public CacheKey(Class<?> clazz, int id) {
-			this.clazz = clazz;
+			this.clazz = clazz.getName();
 			this.id = id;
 		}
 		
-		public Class<?> clazz;
+		public String clazz;
 		public int id;
 	}
 	
