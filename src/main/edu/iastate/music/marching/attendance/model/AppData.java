@@ -1,5 +1,6 @@
 package edu.iastate.music.marching.attendance.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -10,8 +11,13 @@ import com.google.code.twig.annotation.Version;
 
 @Version(AttendanceDatastore.VERSION)
 @Entity(kind="AppData", allocateIdsBy=0)
-public class AppData {
+public class AppData implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6536920800348300644L;
+
 	/**
 	 * Get app data through datatrain:
 	 * DataTrain.get().getAppDataController.get()

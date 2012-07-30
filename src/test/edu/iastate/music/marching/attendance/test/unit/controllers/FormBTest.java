@@ -972,7 +972,7 @@ public class FormBTest extends AbstractTest {
 		AbsenceController ac = train.getAbsenceController();
 		FormController fc = train.getFormsController();
 
-		User student = Users.createStudent(uc, "student1", "123456789", "John",
+		User student = Users.createStudent(uc, "student4", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
 		Calendar startdate = Calendar.getInstance();
@@ -6717,7 +6717,7 @@ public class FormBTest extends AbstractTest {
 		AbsenceController ac = train.getAbsenceController();
 		FormController fc = train.getFormsController();
 
-		User student = Users.createStudent(uc, "student1", "123456789", "John",
+		User student = Users.createStudent(uc, "student4", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
 		Calendar startdate = Calendar.getInstance();
@@ -6760,7 +6760,7 @@ public class FormBTest extends AbstractTest {
 		AbsenceController ac = train.getAbsenceController();
 		FormController fc = train.getFormsController();
 		
-		User student = Users.createStudent(uc, "student1", "123456789", "John",
+		User student = Users.createStudent(uc, "student4", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 		
 		String sDate = "2012-09-21 0600";
@@ -6801,7 +6801,7 @@ public class FormBTest extends AbstractTest {
 		AbsenceController ac = train.getAbsenceController();
 		FormController fc = train.getFormsController();
 		
-		User student = Users.createStudent(uc, "student1", "123456789", "John",
+		User student = Users.createStudent(uc, "student4", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 		
 		String sDate = "2012-09-21 0600";
@@ -6834,4 +6834,44 @@ public class FormBTest extends AbstractTest {
 		assertEquals(Absence.Status.Denied, absences.get(0).getStatus());
 	}
 
+	/**
+	 * Add a form B, add an absence, deny the absence, approve the form, check
+	 * the absence is still denied.
+	 */
+	@Test
+	public void testApproveDeniedAbsenceWithFormB() {
+		DataTrain train = getDataTrain();
+
+		UserController uc = train.getUsersController();
+		EventController ec = train.getEventController();
+		AbsenceController ac = train.getAbsenceController();
+		FormController fc = train.getFormsController();
+
+		User student = Users.createStudent(uc, "student4", "123456789", "John",
+				"Cox", 2, "major", User.Section.AltoSax);
+
+		Calendar date = Calendar.getInstance();
+		date.set(2012, 7, 7, 0, 0, 0);
+		Calendar start = Calendar.getInstance();
+		start.set(2012, 7, 7, 16, 30, 0);
+		Calendar end = Calendar.getInstance();
+		end.set(2012, 7, 7, 17, 50, 0);
+		
+		Form form = fc.createFormB(student, "department", "course", "section",
+				"building", date.getTime(), date.getTime(),
+				Calendar.MONDAY, start.getTime(), end.getTime(),
+				"details", 10, Absence.Type.Absence);
+
+		Event e = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
+				end.getTime());
+		Absence a = ac.createOrUpdateAbsence(student, e);
+
+		a.setStatus(Absence.Status.Denied);
+		a = ac.updateAbsence(a);
+
+		form.setStatus(Form.Status.Approved);
+		fc.update(form);
+
+		assertEquals(Absence.Status.Denied, a.getStatus());
+	}
 }
