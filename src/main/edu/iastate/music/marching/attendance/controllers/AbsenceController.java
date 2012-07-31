@@ -657,9 +657,10 @@ public class AbsenceController extends AbstractController {
 		MessageThread messages = this.train.getMessagingController()
 				.createMessageThread(student);
 		absence.setMessageThread(messages);
-
+		train.getDataStore().store(absence);
 		absence.getMessageThread().setAbsenceParent(absence);
-
+		train.getDataStore().update(absence.getMessageThread());
+		
 		// Then do some validation
 		Absence resolvedAbsence = validateAbsence(absence);
 		if (resolvedAbsence != null) {
@@ -667,13 +668,15 @@ public class AbsenceController extends AbstractController {
 			checkForAutoApproval(resolvedAbsence);
 
 			// Then do actual store
-			this.train.getDataStore().store(resolvedAbsence);
+			this.train.getDataStore().storeOrUpdate(resolvedAbsence);
 
 			// Finally check for side-effects caused by absence
 			train.getUsersController().updateUserGrade(student);
 
 			// Done.
 			return resolvedAbsence;
+		} else {
+			train.getDataStore().delete(absence);
 		}
 
 		// Invalid absence returns null because it doesn't store
