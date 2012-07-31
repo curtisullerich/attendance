@@ -92,8 +92,52 @@
 	<body>
 		<jsp:include page="/WEB-INF/template/header.jsp" />
 
-		<h1>Message Thread</h1>
-		
+		<h2>Message Thread</h2>
+		<c:if test="${not empty thread.formParent}">
+			<a href='/director/forms/view?id=${thread.formParent.id}'>Form ${thread.formParent.type}</a> submitted by ${thread.formParent.student.firstName } ${thread.formParent.student.lastName} (<a href='/director/student?id=${thread.formParent.student.netID}'>${thread.formParent.student.netID}</a>)<br/>
+			<c:if test="${thread.formParent.type.displayName eq 'A'}">
+				<%--TODO redirect form? --%>
+				Date of performance: <fmt:formatDate value="${thread.formParent.start}" pattern="M/d/yy"/><br/>
+			</c:if>
+			<c:if test="${thread.formParent.type.displayName eq 'B'}">
+					Department: ${thread.formParent.dept}<br/>
+					Course: ${thread.formParent.course }<br/>
+					Section: ${thread.formParent.section}<br/>
+					Building: ${thread.formParent.building}<br/>
+					Start Date: <fmt:formatDate value="${thread.formParent.start}" pattern="M/d/yyyy"/><br/>
+					End Date: <fmt:formatDate value="${thread.formParent.end}" pattern="M/d/yyyy"/><br/>
+					On ${thread.formParent.dayAsString} from <fmt:formatDate value="${thread.formParent.start}" pattern="h:mm a"/> to <fmt:formatDate value="${thread.formParent.end}" pattern="h:mm a"/><br/>
+					Type: ${thread.formParent.absenceType}<br/>
+			</c:if>
+			<c:if test="${thread.formParent.type.displayName eq 'C'}">
+				 Type: ${thread.formParent.absenceType}<br/>
+				 Date of rehearsal: <fmt:formatDate value="${thread.formParent.start}" pattern="M/d/yy"/> <br/>
+	  			 <c:if test="${thread.formParent.type.absenceType eq 'Tardy'}">
+					 Time of arriving: <fmt:formatDate value="${thread.formParent.start}" pattern="h:mm a"/><br/>
+				 </c:if>
+	  			 <c:if test="${thread.formParent.type.absenceType eq 'EarlyCheckOut'}">
+					 Time of leaving: <fmt:formatDate value="${thread.formParent.start}" pattern="h:mm a"/><br/>
+				 </c:if>
+			</c:if>
+			<c:if test="${thread.formParent.type.displayName eq 'D'}">
+				Date: <fmt:formatDate value="${thread.formParent.start}" pattern="M/d/yy"/><br/>
+				${thread.formParent.minutesWorked} ${thread.formParent.emailStatus} minutes worked for ${thread.formParent.emailto}<br/>
+			</c:if>
+			Approved by director? - ${thread.formParent.status }<br/>
+		</c:if>
+		<c:if test="${not empty thread.absenceParent}">
+			${thread.absenceParent.status} <a href='/director/viewabsence?absenceid=${thread.absenceParent.id}'> ${thread.absenceParent.type } </a> for ${thread.formParent.student.firstName } ${thread.formParent.student.lastName} (<a href='/director/student?id=${thread.absenceParent.student.netID}'>${thread.absenceParent.student.netID}</a>)<br/>
+			Date: <fmt:formatDate value="${thread.absenceParent.start}" pattern="M/d/yy"/><br/>
+			<c:if test="${thread.absenceParent.type.displayName eq 'Tardy'}">
+			Time of arrival: <fmt:formatDate value="${thread.absenceParent.start}" pattern="h:mm a"/><br/>
+			</c:if>
+			<c:if test="${thread.formParent.type.displayName eq 'EarlyCheckOut'}">
+			Time of leaving: <fmt:formatDate value="${thread.absenceParent.start}" pattern="h:mm a"/><br/>
+			</c:if>
+			<c:if test="${thread.formParent.type.displayName eq 'Absence'}">
+			</c:if>
+			Performance type: ${thread.formParent.event.type }
+		</c:if>
 		<br/>
 		
 		<div class="gutter" style="padding:0px 20px;">
@@ -120,8 +164,6 @@
 					<p style="font-size:large;"><i>Not Resolved.</i></p>
 				</c:when>
 			</c:choose>
-		
-		
 		<br/>
 		
 		<div class="grid-full">
@@ -152,14 +194,10 @@
 				<input type="hidden" value="<c:out value="${auth.user.name}" />" name="name"/>
 				
 				<input type="submit" value="Add Message" name="Submit"/>
-			
 			</form>
-		
 		</div>
-		
 		<br/>
 		<br/>
-		
 		<c:if test="${empty thread.messages}">
 			<strong>No messages yet.</strong>
 			<br/>

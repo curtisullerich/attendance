@@ -11,9 +11,9 @@
 		<div class="">
 			<table class="gray full-width gray-hover" style="table-layout:fixed;white-space:nowrap;overflow:hidden;">
 				<colgroup>
-					<col width="20%" />
-					<col width="23%" />
-					<col width="47%" />
+					<col width="18%" />
+					<col width="32%" />
+					<col width="40%" />
 					<col width="10%" />
 				</colgroup>
 				<thead>
@@ -39,10 +39,21 @@
 						<td>
 							<c:if test="${!thread.resolved}"><strong></c:if>
 							<c:if test="${not empty thread.formParent}">
-								<p>Form</p>
+								<c:if test="${thread.formParent.type.displayName eq 'A'}">
+									<p>Form A - <fmt:formatDate value="${thread.formParent.start}" pattern="M/d/yy"/></p>
+								</c:if>
+								<c:if test="${thread.formParent.type.displayName eq 'B'}">
+									<p>Form B - ${thread.formParent.absenceType eq 'EarlyCheckOut' ? "ECO" : thread.formParent.absenceType}. ${thread.formParent.dayAsString}, <fmt:formatDate value="${thread.formParent.start}" pattern="h:mm"/>-<fmt:formatDate value="${thread.formParent.end}" pattern="h:mm"/></p>									
+								</c:if>
+								<c:if test="${thread.formParent.type.displayName eq 'C'}">
+									<p>Form C - ${thread.formParent.absenceType eq 'EarlyCheckOut' ? "ECO" : thread.formParent.absenceType}. <fmt:formatDate value="${thread.formParent.start}" pattern="M/d/yy - h:mm a"/></p>
+								</c:if>
+								<c:if test="${thread.formParent.type.displayName eq 'D'}">
+									<p>Form D - <fmt:formatDate value="${thread.formParent.start}" pattern="M/d/yy"/>. ${thread.formParent.minutesWorked} mins for ${thread.formParent.emailto}</p>
+								</c:if>
 							</c:if>
 							<c:if test="${not empty thread.absenceParent}">
-								<p>Absence</p>
+								<p>${thread.absenceParent.status} ${thread.absenceParent.type } - <fmt:formatDate value="${thread.absenceParent.start}" pattern="M/d/yy"/></p>
 							</c:if>
 							<c:if test="${!thread.resolved}"></strong></c:if>
 						</td>
@@ -72,7 +83,6 @@
 								<c:if test="${empty thread.messages }">
 									-
 								</c:if>
-								
 							</p>
 							<c:if test="${!thread.resolved}"></strong></c:if>
 						</td>

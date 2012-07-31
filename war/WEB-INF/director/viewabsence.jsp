@@ -57,12 +57,12 @@
 					</select>
 				</dd>
 				<dt><label for="Event" class="required">Event</label></dt>
-					<dd>
-						Start Time: <input type="text" name="Event" value='<fmt:formatDate value="${absence.event.start}" pattern="MM/dd/yyyy 'at' h:mm a"/>' disabled readonly/> 
-					</dd>
-					<dd>
-						End Time: <input type="text" name="Event" value='<fmt:formatDate value="${absence.event.end}" pattern="MM/dd/yyyy 'at' h:mm a"/>' disabled readonly/>
-					</dd>		
+				<dd>
+					Start Time: <input type="text" name="Event" value='<fmt:formatDate value="${absence.event.start}" pattern="MM/dd/yyyy 'at' h:mm a"/>' disabled readonly/> 
+				</dd>
+				<dd>
+					End Time: <input type="text" name="Event" value='<fmt:formatDate value="${absence.event.end}" pattern="MM/dd/yyyy 'at' h:mm a"/>' disabled readonly/>
+				</dd>		
 			</dl>
 			
 			<input type="hidden" value="${absence.id}" name="absenceid"/>
