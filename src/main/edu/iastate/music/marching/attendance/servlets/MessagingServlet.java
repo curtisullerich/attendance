@@ -2,6 +2,7 @@ package edu.iastate.music.marching.attendance.servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -118,29 +119,26 @@ public class MessagingServlet extends AbstractBaseServlet {
 		showThread(req, resp, longid, train);
 	}
 
-	// private void postMessageThread(HttpServletRequest req,
-	// HttpServletResponse resp) throws ServletException, IOException {
-	// long threadId = Long.parseLong(req.getParameter("Id"));
-	// String message = req.getParameter("Message");
-	//
-	// // TODO https://github.com/curtisullerich/attendance/issues/119
-	// //sanitize message?
-	//
-	// DataTrain train = DataTrain.getAndStartTrain();
-	//
-	// // TODO https://github.com/curtisullerich/attendance/issues/116
-	// //Handle exceptions maybe for invalid thread id's?
-	// MessageThread thread = train.getMessagingController().get(threadId);
-	//
-	// //Verify currently logged in user is a participant in the
-	// // conversation, or is a director
-	// if (isPartOfConversation(thread,
-	// train.getAuthController().getCurrentUser(req.getSession()))) {
-	// train.getMessagingController().addMessage(thread,
-	// train.getAuthController().getCurrentUser(req.getSession()), message);
-	// showThread(req, resp, threadId, train);
-	// }
-	// }
+//	private void postMessageThread(HttpServletRequest req,
+//			HttpServletResponse resp) throws ServletException, IOException {
+//		long threadId = Long.parseLong(req.getParameter("Id"));
+//		String message = req.getParameter("Message");
+//		
+//		// TODO https://github.com/curtisullerich/attendance/issues/119
+//		//sanitize message?
+//		
+//		DataTrain train = DataTrain.getAndStartTrain();
+//
+//		//Handle exceptions maybe for invalid thread id's? -Didn't do because this is unused
+//		MessageThread thread = train.getMessagingController().get(threadId);
+//
+//		//Verify currently logged in user is a participant in the
+//		// conversation, or is a director
+//		if (isPartOfConversation(thread, train.getAuthController().getCurrentUser(req.getSession()))) {
+//			train.getMessagingController().addMessage(thread, train.getAuthController().getCurrentUser(req.getSession()), message);
+//			showThread(req, resp, threadId, train);
+//      }
+//	}
 
 	private boolean isPartOfConversation(MessageThread thread, User currentUser) {
 		if (currentUser == null)
@@ -158,8 +156,7 @@ public class MessagingServlet extends AbstractBaseServlet {
 			throws ServletException, IOException {
 		DataTrain train = DataTrain.getAndStartTrain();
 
-		// TODO https://github.com/curtisullerich/attendance/issues/116
-		// Handle exceptions maybe for invalid thread id's?
+		//Handle exceptions maybe for invalid thread id's?
 		List<MessageThread> resolved;
 		List<MessageThread> unresolved;
 		if (train.getAuthController().getCurrentUser(req.getSession())
@@ -236,18 +233,15 @@ public class MessagingServlet extends AbstractBaseServlet {
 			long threadId, DataTrain train) throws ServletException,
 			IOException {
 
-		// TODO https://github.com/curtisullerich/attendance/issues/116
-		// Handle exceptions maybe for invalid thread id's?
+		//Handle exceptions maybe for invalid thread id's?
 		MessageThread thread = train.getMessagingController().get(threadId);
 
 		// Verify currently logged in user is a participant in the
 		// conversation, or is a director
-
-		User current = train.getAuthController().getCurrentUser(
-				req.getSession());
+		User current = train.getAuthController().getCurrentUser(req.getSession());
 
 		if (current.getType() == User.Type.Director
-				|| isPartOfConversation(thread, current)) {
+				|| thread != null && isPartOfConversation(thread, current)) {
 			PageBuilder builder = new PageBuilder(Page.viewthread,
 					SERVLET_JSP_PATH);
 
@@ -256,6 +250,8 @@ public class MessagingServlet extends AbstractBaseServlet {
 			builder.passOffToJsp(req, resp);
 		} else {
 			PageBuilder builder = new PageBuilder(Page.index, SERVLET_JSP_PATH);
+			
+			builder.setAttribute("error_messages", Arrays.asList("Invalid message thread."));
 			builder.passOffToJsp(req, resp);
 		}
 	}
