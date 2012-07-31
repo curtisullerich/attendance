@@ -40,16 +40,16 @@
 							<c:if test="${!thread.resolved}"><strong></c:if>
 							<c:if test="${not empty thread.formParent}">
 								<c:if test="${thread.formParent.type.displayName eq 'A'}">
-									<p>Form A - <fmt:formatDate value="${thread.formParent.start}" pattern="M/d/yy"/></p>
+									<p>${thread.formParent.status} Form A - <fmt:formatDate value="${thread.formParent.start}" pattern="M/d/yy"/></p>
 								</c:if>
 								<c:if test="${thread.formParent.type.displayName eq 'B'}">
-									<p>Form B - ${thread.formParent.absenceType eq 'EarlyCheckOut' ? "ECO" : thread.formParent.absenceType}. ${thread.formParent.dayAsString}, <fmt:formatDate value="${thread.formParent.start}" pattern="h:mm"/>-<fmt:formatDate value="${thread.formParent.end}" pattern="h:mm"/></p>									
+									<p>${thread.formParent.status} Form B - ${thread.formParent.absenceType eq 'EarlyCheckOut' ? "ECO" : thread.formParent.absenceType}. ${thread.formParent.dayAsString}, <fmt:formatDate value="${thread.formParent.start}" pattern="h:mm"/>-<fmt:formatDate value="${thread.formParent.end}" pattern="h:mm"/></p>									
 								</c:if>
 								<c:if test="${thread.formParent.type.displayName eq 'C'}">
-									<p>Form C - ${thread.formParent.absenceType eq 'EarlyCheckOut' ? "ECO" : thread.formParent.absenceType}. <fmt:formatDate value="${thread.formParent.start}" pattern="M/d/yy - h:mm a"/></p>
+									<p>${thread.formParent.status} Form C - ${thread.formParent.absenceType eq 'EarlyCheckOut' ? "ECO" : thread.formParent.absenceType}. <fmt:formatDate value="${thread.formParent.start}" pattern="M/d/yy - h:mm a"/></p>
 								</c:if>
 								<c:if test="${thread.formParent.type.displayName eq 'D'}">
-									<p>Form D - <fmt:formatDate value="${thread.formParent.start}" pattern="M/d/yy"/>. ${thread.formParent.minutesWorked} mins for ${thread.formParent.emailto}</p>
+									<p>${thread.formParent.status} Form D - <fmt:formatDate value="${thread.formParent.start}" pattern="M/d/yy"/>. ${thread.formParent.minutesWorked} mins for ${thread.formParent.emailto}</p>
 								</c:if>
 							</c:if>
 							<c:if test="${not empty thread.absenceParent}">
