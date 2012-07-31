@@ -212,8 +212,8 @@ public class FormController extends AbstractController {
 		// never cause an error, but should we fix it? Probably. Maybe the
 		// resolution of time on app engine doesn't go to milliseconds?
 		// End exactly one time unit before the next day starts
-		temp.roll(Calendar.DATE, true);
-		temp.roll(Calendar.MILLISECOND, false);
+		temp.add(Calendar.DATE, 1);
+		temp.add(Calendar.MILLISECOND, -1);
 		Date endDate = temp.getTime();
 
 		Form form = ModelFactory.newForm(Form.Type.A, student);
