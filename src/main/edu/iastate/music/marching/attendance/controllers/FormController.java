@@ -108,7 +108,7 @@ public class FormController extends AbstractController {
 		dataTrain.getDataStore().store(form);
 
 		form.getMessageThread().setFormParent(form);
-		dataTrain.getDataStore().update(form);
+		dataTrain.getDataStore().update(form.getMessageThread());
 		
 		// Update grade, it may have changed
 		dataTrain.getUsersController().update(form.getStudent());

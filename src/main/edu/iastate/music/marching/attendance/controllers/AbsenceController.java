@@ -657,6 +657,7 @@ public class AbsenceController extends AbstractController {
 		MessageThread messages = this.train.getMessagingController()
 				.createMessageThread(student);
 		absence.setMessageThread(messages);
+
 		absence.getMessageThread().setAbsenceParent(absence);
 
 		// Then do some validation
