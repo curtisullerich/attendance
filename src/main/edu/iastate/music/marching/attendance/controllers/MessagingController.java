@@ -41,7 +41,7 @@ public class MessagingController extends AbstractController {
 
 		// Default to resolved, no messages yet
 		thread.setResolved(true);
-		// train.getDataStore().store(thread);
+		train.getDataStore().store(thread);
 
 		return thread;
 	}
