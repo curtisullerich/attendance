@@ -20,9 +20,9 @@ import edu.iastate.music.marching.attendance.model.ModelFactory;
 public class DataTrain {
 
 	private StandardObjectDatastore datastore = null;
-	
+
 	private Cache cache = null;
-	
+
 	/**
 	 * Current transaction
 	 */
@@ -30,11 +30,11 @@ public class DataTrain {
 
 	public static DataTrain getAndStartTrain() {
 		DataTrain train = new DataTrain();
-		
-		// HACK @Daniel - Force version model object to
-		// be created any time we interact with the datastore
+
+		// Force version model object to
+		// be created and associated
 		train.getVersionController().getCurrent();
-		
+
 		return train;
 	}
 
@@ -81,7 +81,7 @@ public class DataTrain {
 	public VersionController getVersionController() {
 		return new VersionController(this);
 	}
-	
+
 	public MigrationController getMigrationController() {
 		return new MigrationController(this);
 	}
@@ -89,74 +89,72 @@ public class DataTrain {
 	StandardObjectDatastore getDataStore() {
 		return this.datastore;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	<CachedType> CachedType loadFromCache(Class<CachedType> clazz, int id) {
 		Cache cache = getMemCache();
-		
-		if(cache != null)
-			return (CachedType)cache.get(new CacheKey(clazz, id));
+
+		if (cache != null)
+			return (CachedType) cache.get(new CacheKey(clazz, id));
 		else
 			return null;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	<CachedType> boolean updateCache(int id, CachedType object) {
-		
-		if(object == null)
-		{
+
+		if (object == null) {
 			return false;
 		}
-		
+
 		Class<?> clazz = object.getClass();
-		
+
 		Cache cache = getMemCache();
-		
-		if(cache != null)
-		{
+
+		if (cache != null) {
 			cache.put(new CacheKey(clazz, id), object);
-			
+
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	private static class CacheKey implements Serializable {
-		
+
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = -8879640511900898415L;
-		
+
 		public CacheKey(Class<?> clazz, int id) {
 			this.clazz = clazz.getName();
 			this.id = id;
 		}
-		
+
 		public String clazz;
 		public int id;
 	}
-	
+
 	private Cache getMemCache() {
-		if(this.cache == null)
-		{
+		if (this.cache == null) {
 			try {
-	            CacheFactory cacheFactory = CacheManager.getInstance().getCacheFactory();
-	            this.cache = cacheFactory.createCache(Collections.emptyMap());
-	        } catch (CacheException e) {
-	        	return null;
-	        }
+				CacheFactory cacheFactory = CacheManager.getInstance()
+						.getCacheFactory();
+				this.cache = cacheFactory.createCache(Collections.emptyMap());
+			} catch (CacheException e) {
+				return null;
+			}
 		}
-		
+
 		return this.cache;
 	}
 
-	//For implementing transaction support
+	// For implementing transaction support
 	// Object getAncestor() {
 	// return getVersionController().getCurrent();
 	// }
-	
+
 	<T> RootFindCommand<T> find(Class<T> type) {
 		return getDataStore().find().type(type);
 	}

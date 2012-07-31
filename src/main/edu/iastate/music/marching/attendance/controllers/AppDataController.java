@@ -73,6 +73,7 @@ public class AppDataController extends AbstractController {
 	}
 
 	public void save(AppData appData) {
+		this.dataTrain.updateCache(appData.getDatastoreVersion(), appData);
 		dataTrain.getDataStore().update(appData);
 	}
 }
