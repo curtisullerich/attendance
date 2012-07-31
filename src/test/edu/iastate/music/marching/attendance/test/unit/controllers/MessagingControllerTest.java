@@ -31,9 +31,9 @@ public class MessagingControllerTest extends AbstractTest {
 				"First", "last", 2, "major", User.Section.AltoSax);
 
 		MessageThread mts = train.getMessagingController()
-				.createMessageThread((Form)null);
+				.createMessageThread();
 		MessageThread mtd = train.getMessagingController()
-				.createMessageThread((Form)null);
+				.createMessageThread();
 
 		train.getMessagingController().addMessage(mtd, director, "D");
 		train.getMessagingController().addMessage(mts, student, "S");
@@ -54,7 +54,7 @@ public class MessagingControllerTest extends AbstractTest {
 		assertEquals("S", result_student.getMessages().get(0).getText());
 		assertNotNull(result_student.getMessages().get(0).getTimestamp());
 		// TODO https://github.com/curtisullerich/attendance/issues/124
-		//more checks
+		// more checks
 
 		MessageThread resultd = getDataTrain().getMessagingController().get(
 				mtd.getId());
@@ -63,7 +63,7 @@ public class MessagingControllerTest extends AbstractTest {
 		assertEquals(1, resultd.getParticipants().size());
 		assertEquals(1, resultd.getMessages().size());
 		// TODO https://github.com/curtisullerich/attendance/issues/124
-		//more checks
+		// more checks
 	}
 
 	@Test
@@ -79,9 +79,9 @@ public class MessagingControllerTest extends AbstractTest {
 				"First", "last", 2, "major", User.Section.AltoSax);
 
 		MessageThread mts = train.getMessagingController()
-				.createMessageThread((Form)null);
+				.createMessageThread();
 		MessageThread mtd = train.getMessagingController()
-				.createMessageThread((Form)null);
+				.createMessageThread();
 
 		train.getMessagingController().addMessage(mtd, director, "D");
 		train.getMessagingController().addMessage(mts, student, "S");
@@ -97,7 +97,7 @@ public class MessagingControllerTest extends AbstractTest {
 		assertEquals("S", results.getMessages().get(0).getText());
 		assertNotNull(results.getMessages().get(0).getTimestamp());
 		// TODO https://github.com/curtisullerich/attendance/issues/124
-		//more checks
+		// more checks
 
 		MessageThread resultd = getDataTrain().getMessagingController().get(
 				mtd.getId());
@@ -106,7 +106,7 @@ public class MessagingControllerTest extends AbstractTest {
 		assertEquals(1, resultd.getParticipants().size());
 		assertEquals(1, resultd.getMessages().size());
 		// TODO https://github.com/curtisullerich/attendance/issues/124
-		//more checks
+		// more checks
 	}
 
 	@Test
@@ -121,7 +121,7 @@ public class MessagingControllerTest extends AbstractTest {
 		User student = Users.createStudent(uc, "studenttt", "123456789",
 				"First", "last", 2, "major", User.Section.AltoSax);
 
-		MessageThread mt = train.getMessagingController().createMessageThread((Form)null);
+		MessageThread mt = train.getMessagingController().createMessageThread();
 
 		train.getMessagingController().addMessage(mt, director, "Begin");
 		train.getMessagingController().addMessage(mt, director, "Middle");
@@ -136,7 +136,7 @@ public class MessagingControllerTest extends AbstractTest {
 		assertEquals(2, result.getParticipants().size());
 		assertEquals(4, result.getMessages().size());
 		// TODO https://github.com/curtisullerich/attendance/issues/124
-		//more checks
+		// more checks
 	}
 
 	/**
@@ -155,7 +155,7 @@ public class MessagingControllerTest extends AbstractTest {
 		User student = Users.createStudent(uc, "studenttt", "123456789",
 				"First", "last", 2, "major", User.Section.AltoSax);
 
-		MessageThread mt = train.getMessagingController().createMessageThread((Form)null);
+		MessageThread mt = train.getMessagingController().createMessageThread();
 
 		train.getMessagingController().addMessage(mt, director, "Begin");
 		train.getMessagingController().addMessage(mt, director, "Middle");
@@ -170,7 +170,7 @@ public class MessagingControllerTest extends AbstractTest {
 		assertEquals(2, result.getParticipants().size());
 		assertEquals(4, result.getMessages().size());
 		// TODO https://github.com/curtisullerich/attendance/issues/124
-		//more checks
+		// more checks
 		assertEquals("End", result.getMessages().get(0).getText());
 	}
 

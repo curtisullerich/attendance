@@ -655,8 +655,9 @@ public class AbsenceController extends AbstractController {
 	private Absence storeAbsence(Absence absence, User student) {
 		// First build an empty message thread and store it
 		MessageThread messages = this.train.getMessagingController()
-				.createMessageThread(absence, student);
+				.createMessageThread(student);
 		absence.setMessageThread(messages);
+
 		absence.getMessageThread().setAbsenceParent(absence);
 
 		// Then do some validation
