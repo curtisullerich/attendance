@@ -32,13 +32,11 @@
 				</c:choose>
 				<dd>
 				
-				<c:if test="${form.type.displayName eq 'A' || form.type.displayName eq 'C'}">
+				<c:if test="${form.type.displayName eq 'A'}">
 					<dt><label>Start Time</label></dt>
 					<dd>
 						<fmt:formatDate value="${form.start}" pattern="M/d/yyyy"/>
 					</dd>
-					<dt><label>Absence Type</label>
-					<dd>${form.absenceType}</dd>
 				</c:if>
 				<c:if test="${form.type.displayName eq 'B'}">
 					<dt><label>Department</label></dt>
@@ -71,10 +69,24 @@
 					<dt><label>Absence Type</label>
 					<dd>${form.absenceType}</dd>
 				</c:if>
-				
+				<c:if test="${form.type.displayName eq 'C'}">
+					<dt><label>Start Time</label></dt>
+					<dd>
+						<fmt:formatDate value="${form.start}" pattern="M/d/yyyy"/>
+					</dd>
+					<dt><label>Time of Arriving/Leaving</label></dt>
+					<dd>
+						<fmt:formatDate value="${form.start}" pattern="hh:mm a"/>
+					</dd>
+					<dt><label>Absence Type</label>
+					<dd>${form.absenceType}</dd>
+				</c:if>
 				<c:if test="${form.type.displayName eq 'D'}">
 					<dt><label>Email To</label></dt>
 					<dd>${form.emailTo}</dd>
+					
+					<dt><label>Approve by this person?</label></dt>
+					<dd>${form.emailStatus}</dd>
 					
 					<dt><label>Total amount of work</label></dt>
 					<dd>${form.minutesWorked}</dd>
@@ -83,7 +95,6 @@
 					<dd>
 					<fmt:formatDate value="${form.start}" pattern="M/d/yyyy"/>
 					</dd>
-				
 				</c:if>
 				<dt><label>Details</label>
 				<dd>${form.details}<dd>
