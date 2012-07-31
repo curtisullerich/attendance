@@ -21,6 +21,11 @@ public class VersionController {
 		DatastoreVersion version = this.datatrain.loadFromCache(
 				DatastoreVersion.class, id);
 
+		if (version != null
+				&& null == this.datatrain.getDataStore().associatedKey(version)) {
+			this.datatrain.getDataStore().associate(version);
+		}
+
 		if (version == null) {
 			version = this.datatrain.getDataStore().load(
 					DatastoreVersion.class, DatastoreVersion.CURRENT + 1);
