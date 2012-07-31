@@ -228,7 +228,9 @@
 				var key;
 				for (var i = 0; i < localStorage.length; i++) {
 					key = localStorage.key(i);
-					if(!stringContains(studentPrepend,key) && !stringContains(loginPrepend,key)){
+//					if(!stringContains(studentPrepend,key) && !stringContains(loginPrepend,key)
+					if (stringContains(absentPrependPerformance,key) || stringContains(absentPrependRehearsal,key) || stringContains(rehearsalPrepend,key)
+							|| stringContains(performancePrepend,key) || stringContains(tardyPrepend,key) || stringContains(earlyCheckOutPrepend,key)){
 						str += key + "&newline&";
 					}
 				}
@@ -253,7 +255,7 @@
              	    	}
              	    	else if (result.error == "empty")
              	    	{
-             	    		alert("Nothing was uploaded, have you created any tardies / absences?");
+             	    		alert("Nothing was uploaded, have you submitted any information yet?");
              	    	}
              	    	else if (result.error == "exception")
              	    	{
@@ -261,12 +263,15 @@
              	    		
              	    		// Wipe local data store
              	    		//clear all absence and tardy data
+/*commented by Curtis on 7/31/12. Why would we ever want to destroy it all if an error occurs? The
+controllers will fix duplicate insertion for us magically anyway, so it's not a big deal. Biggest issue
+would be if there's something in the local storage that causes the error itself, so it would be repeated.
 							clearLocalStoragewithPrepend(absentPrependPerformance);
 							clearLocalStoragewithPrepend(absentPrependRehearsal);
 							clearLocalStoragewithPrepend(rehearsalPrepend);
 							clearLocalStoragewithPrepend(performancePrepend);
 							clearLocalStoragewithPrepend(tardyPrepend);
-							clearLocalStoragewithPrepend(earlyCheckOutPrepend);
+							clearLocalStoragewithPrepend(earlyCheckOutPrepend);*/
              	    	}
              	    	else if (result.error == "success")
              	    	{
@@ -281,7 +286,7 @@
 							clearLocalStoragewithPrepend(tardyPrepend);
 							clearLocalStoragewithPrepend(earlyCheckOutPrepend);
 							
-             	    		alert("Upload to server successful. Removing data from local storage.\n" + result.message);
+             	    		alert("Upload to server successful. Removing data from local storage.\n");// + result.message);
              	    	}
              	    	else
              	    	{

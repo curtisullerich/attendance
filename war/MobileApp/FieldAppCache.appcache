@@ -1,7 +1,7 @@
 CACHE MANIFEST
 
 # Attendance Appcache
-# 7-21-12 v2.2.0.23
+# 7-31-12 v2.2.0.25
 
 NETWORK:
 /MobileApp/data/classlist
@@ -26,4 +26,3 @@ FieldAppAbsent.html
 /jquery/images/icons-18-white.png
 /jquery/images/icons-36-black.png
 /jquery/images/icons-36-white.png
-
