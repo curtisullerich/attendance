@@ -2743,9 +2743,11 @@ public class FormBTest extends AbstractTest {
 		eventstart.set(2012, 7, 20, 16, 30, 0);
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2012, 7, 20, 17, 50, 0);
+		eventend.set(Calendar.MILLISECOND, 0);
 
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 17, 50, 0);
+		tardytime.set(Calendar.MILLISECOND, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
@@ -6750,7 +6752,7 @@ public class FormBTest extends AbstractTest {
 
 		assertEquals(Absence.Status.Approved, a.getStatus());
 	}
-	
+
 	@Test
 	public void testNonAutoApproveOnDeniedAbsenceFormSecond() {
 		DataTrain train = getDataTrain();
@@ -6759,10 +6761,10 @@ public class FormBTest extends AbstractTest {
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
 		FormController fc = train.getFormsController();
-		
+
 		User student = Users.createStudent(uc, "student4", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
-		
+
 		String sDate = "2012-09-21 0600";
 		String eDate = "2012-09-21 0700";
 		Date startDate = null;
@@ -6770,28 +6772,27 @@ public class FormBTest extends AbstractTest {
 		try {
 			startDate = new SimpleDateFormat("yyyy-MM-dd HHmm").parse(sDate);
 			endDate = new SimpleDateFormat("yyyy-MM-dd HHmm").parse(eDate);
-			
+
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		
+
 		ec.createOrUpdate(Event.Type.Rehearsal, startDate, endDate);
 		Absence abs = ac.createOrUpdateAbsence(student, startDate, endDate);
 		abs.setStatus(Absence.Status.Denied);
 		ac.updateAbsence(abs);
-		
+
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startDate, endDate,
-				Calendar.MONDAY, startDate, endDate,
-				"details", 10, Absence.Type.Absence);
+				"building", startDate, endDate, Calendar.MONDAY, startDate,
+				endDate, "details", 10, Absence.Type.Absence);
 		form.setStatus(Form.Status.Approved);
 		fc.update(form);
-		
+
 		List<Absence> absences = ac.get(student);
-		
+
 		assertEquals(Absence.Status.Denied, absences.get(0).getStatus());
 	}
-	
+
 	@Test
 	public void testNonAutoApproveOnDeniedAbsenceFormFirst() {
 		DataTrain train = getDataTrain();
@@ -6800,10 +6801,10 @@ public class FormBTest extends AbstractTest {
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
 		FormController fc = train.getFormsController();
-		
+
 		User student = Users.createStudent(uc, "student4", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
-		
+
 		String sDate = "2012-09-21 0600";
 		String eDate = "2012-09-21 0700";
 		Date startDate = null;
@@ -6811,26 +6812,25 @@ public class FormBTest extends AbstractTest {
 		try {
 			startDate = new SimpleDateFormat("yyyy-MM-dd HHmm").parse(sDate);
 			endDate = new SimpleDateFormat("yyyy-MM-dd HHmm").parse(eDate);
-			
+
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		
+
 		ec.createOrUpdate(Event.Type.Rehearsal, startDate, endDate);
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", startDate, endDate,
-				Calendar.MONDAY, startDate, endDate,
-				"details", 10, Absence.Type.Absence);
-		
+				"building", startDate, endDate, Calendar.MONDAY, startDate,
+				endDate, "details", 10, Absence.Type.Absence);
+
 		Absence abs = ac.createOrUpdateAbsence(student, startDate, endDate);
 		abs.setStatus(Absence.Status.Denied);
 		ac.updateAbsence(abs);
-		
+
 		form.setStatus(Form.Status.Approved);
 		fc.update(form);
-		
+
 		List<Absence> absences = ac.get(student);
-		
+
 		assertEquals(Absence.Status.Denied, absences.get(0).getStatus());
 	}
 
@@ -6856,11 +6856,11 @@ public class FormBTest extends AbstractTest {
 		start.set(2012, 7, 7, 16, 30, 0);
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
-		
+
 		Form form = fc.createFormB(student, "department", "course", "section",
-				"building", date.getTime(), date.getTime(),
-				Calendar.MONDAY, start.getTime(), end.getTime(),
-				"details", 10, Absence.Type.Absence);
+				"building", date.getTime(), date.getTime(), Calendar.MONDAY,
+				start.getTime(), end.getTime(), "details", 10,
+				Absence.Type.Absence);
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
 				end.getTime());
