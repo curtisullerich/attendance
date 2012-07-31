@@ -12,8 +12,6 @@ import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.code.twig.ObjectDatastore;
 import com.google.common.collect.Sets;
 
-import edu.iastate.music.marching.attendance.model.Absence;
-import edu.iastate.music.marching.attendance.model.Form;
 import edu.iastate.music.marching.attendance.model.Message;
 import edu.iastate.music.marching.attendance.model.MessageThread;
 import edu.iastate.music.marching.attendance.model.ModelFactory;
@@ -27,8 +25,7 @@ public class MessagingController extends AbstractController {
 		this.train = dataTrain;
 	}
 
-	public MessageThread createMessageThread(Form parentForm,
-			User... initial_participants) {
+	public MessageThread createMessageThread(User... initial_participants) {
 
 		MessageThread thread = ModelFactory.newMessageThread();
 
@@ -38,24 +35,6 @@ public class MessagingController extends AbstractController {
 
 		// Default to resolved, no messages yet
 		thread.setResolved(true);
-		thread.setFormParent(parentForm);
-		train.getDataStore().store(thread);
-
-		return thread;
-	}
-
-	public MessageThread createMessageThread(Absence parentAbsence,
-			User... initial_participants) {
-
-		MessageThread thread = ModelFactory.newMessageThread();
-
-		if (initial_participants != null) {
-			thread.setParticipants(Sets.newHashSet(initial_participants));
-		}
-
-		// Default to resolved, no messages yet
-		thread.setResolved(true);
-		thread.setAbsenceParent(parentAbsence);
 		train.getDataStore().store(thread);
 
 		return thread;

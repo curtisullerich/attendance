@@ -99,7 +99,7 @@ public class FormController extends AbstractController {
 		// try {
 		// First build an empty message thread and store it
 		MessageThread messages = dataTrain.getMessagingController()
-				.createMessageThread(form, form.getStudent());
+				.createMessageThread(form.getStudent());
 		form.setMessageThread(messages);
 
 		updateFormD(form);
@@ -107,6 +107,9 @@ public class FormController extends AbstractController {
 		// Store
 		dataTrain.getDataStore().store(form);
 
+		form.getMessageThread().setFormParent(form);
+		dataTrain.getDataStore().update(form);
+		
 		// Update grade, it may have changed
 		dataTrain.getUsersController().update(form.getStudent());
 
