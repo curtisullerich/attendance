@@ -25,6 +25,12 @@ public class MessagingController extends AbstractController {
 		this.train = dataTrain;
 	}
 
+	/**
+	 * Note that this does not store the message thread!
+	 * 
+	 * @param initial_participants
+	 * @return
+	 */
 	public MessageThread createMessageThread(User... initial_participants) {
 
 		MessageThread thread = ModelFactory.newMessageThread();
@@ -35,7 +41,7 @@ public class MessagingController extends AbstractController {
 
 		// Default to resolved, no messages yet
 		thread.setResolved(true);
-		train.getDataStore().store(thread);
+		// train.getDataStore().store(thread);
 
 		return thread;
 	}
