@@ -31,7 +31,7 @@ public class MessagingServlet extends AbstractBaseServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		
+
 		if (!isLoggedIn(req, resp)) {
 			resp.sendRedirect(AuthServlet.getLoginUrl(req));
 			return;
@@ -61,7 +61,7 @@ public class MessagingServlet extends AbstractBaseServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		
+
 		if (!isLoggedIn(req, resp)) {
 			resp.sendRedirect(AuthServlet.getLoginUrl());
 			return;
@@ -84,19 +84,20 @@ public class MessagingServlet extends AbstractBaseServlet {
 			}
 	}
 
-	private void handleThread(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		//there are two possibilities, so figure 
-		//out which button was pressed and handle it
+	private void handleThread(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		// there are two possibilities, so figure
+		// out which button was pressed and handle it
 		String resolved = req.getParameter("resolved");
 		String id = req.getParameter("id");
 		String message = req.getParameter("Message");
 		long longid = Long.parseLong(id);
 		DataTrain train = DataTrain.getAndStartTrain();
 
-		if (resolved != null && !resolved.equals("")) {//resolve or unresolve
+		if (resolved != null && !resolved.equals("")) {// resolve or unresolve
 			MessagingController mc = train.getMessagingController();
 			MessageThread mt = mc.get(longid);
-			
+
 			if (resolved.equals("false")) {
 				mt.setResolved(true);
 				mc.update(mt);
@@ -105,43 +106,47 @@ public class MessagingServlet extends AbstractBaseServlet {
 				mc.update(mt);
 			} else {
 			}
-		} else if (message != null && !message.equals("")) {//add a message
+		} else if (message != null && !message.equals("")) {// add a message
 			MessagingController mc = train.getMessagingController();
 			MessageThread mt = mc.get(longid);
-			User sender = train.getAuthController().getCurrentUser(req.getSession());
+			User sender = train.getAuthController().getCurrentUser(
+					req.getSession());
 			mc.addMessage(mt, sender, message);
-			
+
 		} else {
 		}
 		showThread(req, resp, longid, train);
 	}
 
-//	private void postMessageThread(HttpServletRequest req,
-//			HttpServletResponse resp) throws ServletException, IOException {
-//		long threadId = Long.parseLong(req.getParameter("Id"));
-//		String message = req.getParameter("Message");
-//		
-//		// TODO https://github.com/curtisullerich/attendance/issues/119
-//		//sanitize message?
-//		
-//		DataTrain train = DataTrain.getAndStartTrain();
-//
-//		// TODO https://github.com/curtisullerich/attendance/issues/116
-//		//Handle exceptions maybe for invalid thread id's?
-//		MessageThread thread = train.getMessagingController().get(threadId);
-//
-//		//Verify currently logged in user is a participant in the
-//		// conversation, or is a director
-//		if (isPartOfConversation(thread, train.getAuthController().getCurrentUser(req.getSession()))) {
-//			train.getMessagingController().addMessage(thread, train.getAuthController().getCurrentUser(req.getSession()), message);
-//			showThread(req, resp, threadId, train);
-//      }
-//	}
+	// private void postMessageThread(HttpServletRequest req,
+	// HttpServletResponse resp) throws ServletException, IOException {
+	// long threadId = Long.parseLong(req.getParameter("Id"));
+	// String message = req.getParameter("Message");
+	//
+	// // TODO https://github.com/curtisullerich/attendance/issues/119
+	// //sanitize message?
+	//
+	// DataTrain train = DataTrain.getAndStartTrain();
+	//
+	// // TODO https://github.com/curtisullerich/attendance/issues/116
+	// //Handle exceptions maybe for invalid thread id's?
+	// MessageThread thread = train.getMessagingController().get(threadId);
+	//
+	// //Verify currently logged in user is a participant in the
+	// // conversation, or is a director
+	// if (isPartOfConversation(thread,
+	// train.getAuthController().getCurrentUser(req.getSession()))) {
+	// train.getMessagingController().addMessage(thread,
+	// train.getAuthController().getCurrentUser(req.getSession()), message);
+	// showThread(req, resp, threadId, train);
+	// }
+	// }
 
 	private boolean isPartOfConversation(MessageThread thread, User currentUser) {
-		if (currentUser == null) return false;
+		if (currentUser == null)
+			return false;
 		boolean ret = false;
-		for (User participant: thread.getParticipants()) {
+		for (User participant : thread.getParticipants()) {
 			if (participant.equals(currentUser)) {
 				ret = true;
 			}
@@ -154,34 +159,37 @@ public class MessagingServlet extends AbstractBaseServlet {
 		DataTrain train = DataTrain.getAndStartTrain();
 
 		// TODO https://github.com/curtisullerich/attendance/issues/116
-		//Handle exceptions maybe for invalid thread id's?
+		// Handle exceptions maybe for invalid thread id's?
 		List<MessageThread> resolved;
 		List<MessageThread> unresolved;
-		if(train.getAuthController().getCurrentUser(req.getSession()).getType().equals(User.Type.Director))
-		{
+		if (train.getAuthController().getCurrentUser(req.getSession())
+				.getType().equals(User.Type.Director)) {
 			resolved = train.getMessagingController().get(true);
-			unresolved =  train.getMessagingController().get(false);
+			unresolved = train.getMessagingController().get(false);
+		} else {
+			resolved = train.getMessagingController().get(
+					train.getAuthController().getCurrentUser(req.getSession()),
+					true);
+			unresolved = train.getMessagingController().get(
+					train.getAuthController().getCurrentUser(req.getSession()),
+					false);
 		}
-		else
-		{
-			resolved = train.getMessagingController().get(train.getAuthController().getCurrentUser(req.getSession()), true);
-			unresolved =  train.getMessagingController().get(train.getAuthController().getCurrentUser(req.getSession()), false);
-		}
-		
-		//Verify currently logged in user is a participant in the
+
+		// Verify currently logged in user is a participant in the
 		// conversation, or is a director
-		User current = train.getAuthController().getCurrentUser(req.getSession());
+		User current = train.getAuthController().getCurrentUser(
+				req.getSession());
 		if (current.getType() != User.Type.Director) {
 			List<MessageThread> tempResolved = new ArrayList<MessageThread>();
 			List<MessageThread> tempUnresolved = new ArrayList<MessageThread>();
-			
-			for (MessageThread thread: resolved) {
+
+			for (MessageThread thread : resolved) {
 				if (isPartOfConversation(thread, current)) {
-					tempResolved.add(thread);					
+					tempResolved.add(thread);
 				}
 			}
-			
-			for (MessageThread thread: unresolved) {
+
+			for (MessageThread thread : unresolved) {
 				if (isPartOfConversation(thread, current)) {
 					tempUnresolved.add(thread);
 				}
@@ -189,25 +197,25 @@ public class MessagingServlet extends AbstractBaseServlet {
 			resolved = tempResolved;
 			unresolved = tempUnresolved;
 		}
-		
+
 		List<MessageThread> nonempty_resolved = new ArrayList<MessageThread>();
 		List<MessageThread> nonempty_unresolved = new ArrayList<MessageThread>();
-		
-		if(resolved != null)
-			for(MessageThread mt : resolved)
-			{
-				if(mt.getMessages() != null && mt.getMessages().size() > 0)
+
+		if (resolved != null)
+			for (MessageThread mt : resolved) {
+				if (mt.getMessages() != null && mt.getMessages().size() > 0)
 					nonempty_resolved.add(mt);
 			}
-		if(unresolved != null)
-			for(MessageThread mt : unresolved)
-			{
-				if(mt.getMessages() != null && mt.getMessages().size() > 0)
+		if (unresolved != null)
+			for (MessageThread mt : unresolved) {
+				if (mt.getMessages() != null && mt.getMessages().size() > 0)
 					nonempty_unresolved.add(mt);
 			}
-		
-		Collections.sort(nonempty_resolved, MessageThread.SORT_LATEST_MESSAGE_DESC);
-		Collections.sort(nonempty_unresolved, MessageThread.SORT_LATEST_MESSAGE_DESC);
+
+		Collections.sort(nonempty_resolved,
+				MessageThread.SORT_LATEST_MESSAGE_DESC);
+		Collections.sort(nonempty_unresolved,
+				MessageThread.SORT_LATEST_MESSAGE_DESC);
 
 		PageBuilder builder = new PageBuilder(Page.index, SERVLET_JSP_PATH);
 
@@ -229,19 +237,24 @@ public class MessagingServlet extends AbstractBaseServlet {
 			IOException {
 
 		// TODO https://github.com/curtisullerich/attendance/issues/116
-		//Handle exceptions maybe for invalid thread id's?
+		// Handle exceptions maybe for invalid thread id's?
 		MessageThread thread = train.getMessagingController().get(threadId);
 
-		//Verify currently logged in user is a participant in the
+		// Verify currently logged in user is a participant in the
 		// conversation, or is a director
-		if (isPartOfConversation(thread, train.getAuthController().getCurrentUser(req.getSession()))) {
-			PageBuilder builder = new PageBuilder(Page.viewthread, SERVLET_JSP_PATH);
-	
+
+		User current = train.getAuthController().getCurrentUser(
+				req.getSession());
+
+		if (current.getType() == User.Type.Director
+				|| isPartOfConversation(thread, current)) {
+			PageBuilder builder = new PageBuilder(Page.viewthread,
+					SERVLET_JSP_PATH);
+
 			builder.setAttribute("thread", thread);
-	
+
 			builder.passOffToJsp(req, resp);
-		}
-		else {
+		} else {
 			PageBuilder builder = new PageBuilder(Page.index, SERVLET_JSP_PATH);
 			builder.passOffToJsp(req, resp);
 		}
