@@ -1186,4 +1186,429 @@ public class AbsenceControllerTest extends AbstractTest {
 		assertEquals(3, numUnanchored);
 		assertEquals(3, numAnchored);
 	}
+	
+	@Test
+	public void testOverlappingEventsRehersal() {
+		DataTrain train = getDataTrain();
+		
+		EventController ec = train.getEventController();
+		
+		Date startOverlap = makeDate("2012-09-21 0600");
+		Date endOverlap = makeDate("2012-09-21 0700");
+		
+		ec.createOrUpdate(Event.Type.Rehearsal, startOverlap, endOverlap);
+		ec.createOrUpdate(Event.Type.Rehearsal, startOverlap, endOverlap);
+		
+		List<Event> events = ec.getAll();
+		
+		assertEquals(1, events.size());
+		assertEquals(startOverlap, events.get(0).getStart());
+		assertEquals(endOverlap, events.get(0).getEnd());
+	}
+	
+	@Test
+	public void testOverlappingEventsPerformance() {
+		DataTrain train = getDataTrain();
+		
+		EventController ec = train.getEventController();
+		
+		Date startOverlap = makeDate("2012-09-21 0600");
+		Date endOverlap = makeDate("2012-09-21 0700");
+		
+		ec.createOrUpdate(Event.Type.Performance, startOverlap, endOverlap);
+		ec.createOrUpdate(Event.Type.Performance, startOverlap, endOverlap);
+		
+		List<Event> events = ec.getAll();
+		
+		assertEquals(1, events.size());
+		assertEquals(startOverlap, events.get(0).getStart());
+		assertEquals(endOverlap, events.get(0).getEnd());
+	}
+	
+	@Test
+	public void testOverlappingEventsDifferentTypes() {
+		DataTrain train = getDataTrain();
+		
+		EventController ec = train.getEventController();
+		
+		Date startOverlap = makeDate("2012-09-21 0600");
+		Date endOverlap = makeDate("2012-09-21 0700");
+		
+		ec.createOrUpdate(Event.Type.Rehearsal, startOverlap, endOverlap);
+		ec.createOrUpdate(Event.Type.Performance, startOverlap, endOverlap);
+		
+		List<Event> events = ec.getAll();
+		
+		assertEquals(2, events.size());
+		
+		assertTrue(events.get(0).getType() == Event.Type.Rehearsal 
+				|| events.get(0).getType() == Event.Type.Performance);
+		assertEquals(startOverlap, events.get(0).getStart());
+		assertEquals(endOverlap, events.get(0).getEnd());
+		
+		assertTrue(events.get(1).getType() == Event.Type.Rehearsal 
+				|| events.get(1).getType() == Event.Type.Performance);
+		assertEquals(startOverlap, events.get(1).getStart());
+		assertEquals(endOverlap, events.get(1).getEnd());
+	}
+	
+	@Test
+	public void testNonOverlappingEventsRehearsal() {
+		DataTrain train = getDataTrain();
+		
+		EventController ec = train.getEventController();
+		
+		Date startFirst = makeDate("2012-09-21 0600");
+		Date endFirst = makeDate("2012-09-21 0700");
+		
+		Date startSecond = makeDate("2012-09-22 0600");
+		Date endSecond = makeDate("2012-09-22 0700");
+		
+		ec.createOrUpdate(Event.Type.Rehearsal, startFirst, endFirst);
+		ec.createOrUpdate(Event.Type.Rehearsal, startSecond, endSecond);
+		
+		List<Event> events = ec.getAll();
+		
+		Event first = (events.get(0).getStart().equals(startFirst)) ? events.get(0) : events.get(1);
+		Event second = (events.get(0).getStart().equals(startSecond)) ? events.get(0) : events.get(1);
+		
+		assertEquals(2, events.size());
+		
+		assertEquals(Event.Type.Rehearsal, first.getType());
+		assertEquals(startFirst, first.getStart());
+		assertEquals(endFirst, first.getEnd());
+		
+		assertEquals(Event.Type.Rehearsal, second.getType());
+		assertEquals(startSecond, second.getStart());
+		assertEquals(endSecond, second.getEnd());
+	}
+	
+	@Test
+	public void testNonOverlappingEventsPerformance() {
+		DataTrain train = getDataTrain();
+		
+		EventController ec = train.getEventController();
+		
+		Date startFirst = makeDate("2012-09-21 0600");
+		Date endFirst = makeDate("2012-09-21 0700");
+		
+		Date startSecond = makeDate("2012-09-22 0600");
+		Date endSecond = makeDate("2012-09-22 0700");
+		
+		ec.createOrUpdate(Event.Type.Performance, startFirst, endFirst);
+		ec.createOrUpdate(Event.Type.Performance, startSecond, endSecond);
+		
+		List<Event> events = ec.getAll();
+		
+		Event first = (events.get(0).getStart().equals(startFirst)) ? events.get(0) : events.get(1);
+		Event second = (events.get(0).getStart().equals(startSecond)) ? events.get(0) : events.get(1);
+		
+		assertEquals(2, events.size());
+		
+		assertEquals(Event.Type.Performance, first.getType());
+		assertEquals(startFirst, first.getStart());
+		assertEquals(endFirst, first.getEnd());
+		
+		assertEquals(Event.Type.Performance, second.getType());
+		assertEquals(startSecond, second.getStart());
+		assertEquals(endSecond, second.getEnd());
+	}
+	
+	@Test
+	public void testNonOverlappingDiffTypes() {
+		DataTrain train = getDataTrain();
+		
+		EventController ec = train.getEventController();
+		
+		Date startFirst = makeDate("2012-09-21 0600");
+		Date endFirst = makeDate("2012-09-21 0700");
+		
+		Date startSecond = makeDate("2012-09-22 0600");
+		Date endSecond = makeDate("2012-09-22 0700");
+		
+		ec.createOrUpdate(Event.Type.Performance, startFirst, endFirst);
+		ec.createOrUpdate(Event.Type.Rehearsal, startSecond, endSecond);
+		
+		List<Event> events = ec.getAll();
+		
+		Event first = (events.get(0).getStart().equals(startFirst)) ? events.get(0) : events.get(1);
+		Event second = (events.get(0).getStart().equals(startSecond)) ? events.get(0) : events.get(1);
+		
+		assertEquals(2, events.size());
+		
+		assertEquals(Event.Type.Performance, first.getType());
+		assertEquals(startFirst, first.getStart());
+		assertEquals(endFirst, first.getEnd());
+		
+		assertEquals(Event.Type.Rehearsal, second.getType());
+		assertEquals(startSecond, second.getStart());
+		assertEquals(endSecond, second.getEnd());
+	}
+	
+	@Test
+	public void testOverlappingEventsWithTardyDuringEarlyEvent() {
+		/*
+		 * When we have 2 overlapping events adding a tardy during just the first
+		 * event shouldn't cause any problems and it should be linked to the first event
+		*/
+			DataTrain train = getDataTrain();
+			UserController uc = train.getUsersController();
+			EventController ec = train.getEventController();
+			AbsenceController ac = train.getAbsenceController();
+			
+			User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
+					2, "major", User.Section.AltoSax);
+			
+			Date startOverlapFirst = makeDate("2012-09-21 0600");
+			Date endOverlapFirst = makeDate("2012-09-21 0700");
+			
+			Date startOverlapSecond = makeDate("2012-09-21 0645");
+			Date endOverlapSecond = makeDate("2012-09-21 0745");
+			
+			Date tardyStart = makeDate("2012-09-21 0615");
+			
+			ec.createOrUpdate(Event.Type.Rehearsal, startOverlapFirst, endOverlapFirst);
+			ec.createOrUpdate(Event.Type.Performance, startOverlapSecond, endOverlapSecond);
+			
+			ac.createOrUpdateTardy(student, tardyStart);
+			
+			List<Absence> abs = ac.get(student);
+			
+			assertEquals(1, abs.size());
+			assertEquals(tardyStart, abs.get(0).getDatetime());
+			Event event = abs.get(0).getEvent();
+			
+			assertTrue(event != null);
+			assertEquals(startOverlapFirst, event.getStart());
+			assertEquals(endOverlapFirst, event.getEnd());
+	}
+	
+	@Test
+	public void testOverlappingEventsWithTardyDuringLaterEvent() {
+			DataTrain train = getDataTrain();
+			UserController uc = train.getUsersController();
+			EventController ec = train.getEventController();
+			AbsenceController ac = train.getAbsenceController();
+			
+			User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
+					2, "major", User.Section.AltoSax);
+			
+			Date startOverlapFirst = makeDate("2012-09-21 0600");
+			Date endOverlapFirst = makeDate("2012-09-21 0700");
+			
+			Date startOverlapSecond = makeDate("2012-09-21 0645");
+			Date endOverlapSecond = makeDate("2012-09-21 0745");
+			
+			Date tardyStart = makeDate("2012-09-21 0715");
+			
+			ec.createOrUpdate(Event.Type.Rehearsal, startOverlapFirst, endOverlapFirst);
+			ec.createOrUpdate(Event.Type.Performance, startOverlapSecond, endOverlapSecond);
+			
+			ac.createOrUpdateTardy(student, tardyStart);
+			
+			List<Absence> abs = ac.get(student);
+			
+			assertEquals(1, abs.size());
+			assertEquals(tardyStart, abs.get(0).getDatetime());
+			
+			Event event = abs.get(0).getEvent();
+			assertTrue(event != null);
+			assertEquals(startOverlapSecond, event.getStart());
+			assertEquals(endOverlapSecond, event.getEnd());
+	}
+	
+	@Test
+	public void testOverlappingEventsWithTardyDuringEvents() {
+			DataTrain train = getDataTrain();
+			UserController uc = train.getUsersController();
+			EventController ec = train.getEventController();
+			AbsenceController ac = train.getAbsenceController();
+			
+			User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
+					2, "major", User.Section.AltoSax);
+			
+			Date startOverlapFirst = makeDate("2012-09-21 0600");
+			Date endOverlapFirst = makeDate("2012-09-21 0700");
+			
+			Date startOverlapSecond = makeDate("2012-09-21 0645");
+			Date endOverlapSecond = makeDate("2012-09-21 0745");
+			
+			Date tardyStart = makeDate("2012-09-21 0650");
+			
+			ec.createOrUpdate(Event.Type.Rehearsal, startOverlapFirst, endOverlapFirst);
+			ec.createOrUpdate(Event.Type.Performance, startOverlapSecond, endOverlapSecond);
+			
+			ac.createOrUpdateTardy(student, tardyStart);
+			
+			List<Absence> abs = ac.get(student);
+			
+			assertEquals(1, abs.size());
+			assertTrue(abs.get(0).getEvent() == null);
+			assertEquals(tardyStart, abs.get(0).getDatetime());
+	}
+
+	
+	@Test
+	public void testOverlappingEventsWithAbsenceDuringEarlyEvent() {
+		DataTrain train = getDataTrain();
+		UserController uc = train.getUsersController();
+		EventController ec = train.getEventController();
+		AbsenceController ac = train.getAbsenceController();
+		
+		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
+				2, "major", User.Section.AltoSax);
+		
+		Date startOverlapFirst = makeDate("2012-09-21 0600");
+		Date endOverlapFirst = makeDate("2012-09-21 0700");
+		
+		Date startOverlapSecond = makeDate("2012-09-21 0645");
+		Date endOverlapSecond = makeDate("2012-09-21 0745");
+		
+		Date absenceStart = makeDate("2012-09-21 0615");
+		Date absenceEnd = makeDate("2012-09-21 0630");
+		
+		ec.createOrUpdate(Event.Type.Rehearsal, startOverlapFirst, endOverlapFirst);
+		ec.createOrUpdate(Event.Type.Performance, startOverlapSecond, endOverlapSecond);
+		
+		ac.createOrUpdateAbsence(student, absenceStart, absenceEnd);
+		
+		List<Absence> abs = ac.get(student);
+		
+		assertEquals(1, abs.size());
+		//The events overlap so we say they can deal with it 8|
+		assertTrue(abs.get(0).getEvent() == null);
+		assertEquals(absenceStart, abs.get(0).getStart());
+		assertEquals(absenceEnd, abs.get(0).getEnd());
+	}
+	
+	@Test
+	public void testOverlappingEventsWithAbsenceDuringLaterEvent() {
+		DataTrain train = getDataTrain();
+		UserController uc = train.getUsersController();
+		EventController ec = train.getEventController();
+		AbsenceController ac = train.getAbsenceController();
+		
+		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
+				2, "major", User.Section.AltoSax);
+		
+		Date startOverlapFirst = makeDate("2012-09-21 0600");
+		Date endOverlapFirst = makeDate("2012-09-21 0700");
+		
+		Date startOverlapSecond = makeDate("2012-09-21 0645");
+		Date endOverlapSecond = makeDate("2012-09-21 0745");
+		
+		Date absenceStart = makeDate("2012-09-21 0715");
+		Date absenceEnd = makeDate("2012-09-21 0745");
+		
+		ec.createOrUpdate(Event.Type.Rehearsal, startOverlapFirst, endOverlapFirst);
+		ec.createOrUpdate(Event.Type.Performance, startOverlapSecond, endOverlapSecond);
+		
+		ac.createOrUpdateAbsence(student, absenceStart, absenceEnd);
+		
+		List<Absence> abs = ac.get(student);
+		
+		assertEquals(1, abs.size());
+		//The events overlap so we say they can link it
+		assertTrue(abs.get(0).getEvent() == null);
+		assertEquals(absenceStart, abs.get(0).getStart());
+		assertEquals(absenceEnd, abs.get(0).getEnd());
+	}
+	
+	@Test
+	public void testOverlappingEventsWithEarlyDuringEarlyEvent() {
+			DataTrain train = getDataTrain();
+			UserController uc = train.getUsersController();
+			EventController ec = train.getEventController();
+			AbsenceController ac = train.getAbsenceController();
+			
+			User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
+					2, "major", User.Section.AltoSax);
+			
+			Date startOverlapFirst = makeDate("2012-09-21 0600");
+			Date endOverlapFirst = makeDate("2012-09-21 0700");
+			
+			Date startOverlapSecond = makeDate("2012-09-21 0645");
+			Date endOverlapSecond = makeDate("2012-09-21 0745");
+			
+			Date earlyStart = makeDate("2012-09-21 0640");
+			
+			ec.createOrUpdate(Event.Type.Rehearsal, startOverlapFirst, endOverlapFirst);
+			ec.createOrUpdate(Event.Type.Performance, startOverlapSecond, endOverlapSecond);
+			
+			ac.createOrUpdateEarlyCheckout(student, earlyStart);
+			
+			List<Absence> abs = ac.get(student);
+			
+			assertEquals(1, abs.size());
+			assertEquals(earlyStart, abs.get(0).getDatetime());
+			
+			Event event = abs.get(0).getEvent();
+			assertTrue(event != null);
+			assertEquals(startOverlapFirst, event.getStart());
+			assertEquals(endOverlapFirst, event.getEnd());
+	}
+	
+	@Test
+	public void testOverlappingEventsWithEarlyDuringLaterEvent() {
+			DataTrain train = getDataTrain();
+			UserController uc = train.getUsersController();
+			EventController ec = train.getEventController();
+			AbsenceController ac = train.getAbsenceController();
+			
+			User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
+					2, "major", User.Section.AltoSax);
+			
+			Date startOverlapFirst = makeDate("2012-09-21 0600");
+			Date endOverlapFirst = makeDate("2012-09-21 0700");
+			
+			Date startOverlapSecond = makeDate("2012-09-21 0645");
+			Date endOverlapSecond = makeDate("2012-09-21 0745");
+			
+			Date earlyStart = makeDate("2012-09-21 0730");
+			
+			ec.createOrUpdate(Event.Type.Rehearsal, startOverlapFirst, endOverlapFirst);
+			ec.createOrUpdate(Event.Type.Performance, startOverlapSecond, endOverlapSecond);
+			
+			ac.createOrUpdateEarlyCheckout(student, earlyStart);
+			
+			List<Absence> abs = ac.get(student);
+			
+			assertEquals(1, abs.size());
+			assertEquals(earlyStart, abs.get(0).getDatetime());
+			
+			Event event = abs.get(0).getEvent();
+			assertTrue(event != null);
+			assertEquals(startOverlapSecond, event.getStart());
+			assertEquals(endOverlapSecond, event.getEnd());
+	}
+	
+	@Test
+	public void testOverlappingEventsWithEarlyDuringEvents() {
+			DataTrain train = getDataTrain();
+			UserController uc = train.getUsersController();
+			EventController ec = train.getEventController();
+			AbsenceController ac = train.getAbsenceController();
+			
+			User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
+					2, "major", User.Section.AltoSax);
+			
+			Date startOverlapFirst = makeDate("2012-09-21 0600");
+			Date endOverlapFirst = makeDate("2012-09-21 0700");
+			
+			Date startOverlapSecond = makeDate("2012-09-21 0645");
+			Date endOverlapSecond = makeDate("2012-09-21 0745");
+			
+			Date earlyStart = makeDate("2012-09-21 0650");
+			
+			ec.createOrUpdate(Event.Type.Rehearsal, startOverlapFirst, endOverlapFirst);
+			ec.createOrUpdate(Event.Type.Performance, startOverlapSecond, endOverlapSecond);
+			
+			ac.createOrUpdateEarlyCheckout(student, earlyStart);
+			
+			List<Absence> abs = ac.get(student);
+			
+			assertEquals(1, abs.size());
+			assertTrue(abs.get(0).getEvent() == null);
+			assertEquals(earlyStart, abs.get(0).getDatetime());
+	}
 }
