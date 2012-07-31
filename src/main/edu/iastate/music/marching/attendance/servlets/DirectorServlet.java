@@ -14,6 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -46,6 +47,8 @@ public class DirectorServlet extends AbstractBaseServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 6100206975846317440L;
+	
+	private static final Logger LOG = Logger.getLogger(DirectorServlet.class.getName());
 
 	public enum Page {
 		index, appinfo, attendance, export, forms, unanchored, users, user, stats, info, viewabsence, student, makeevent, deletestudent, studentinfo, viewevent, deleteevent;
@@ -102,7 +105,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 				showInfo(req, resp);
 				break;
 			case student:
-				showStudent(req, resp);
+				showStudent(req, resp, new ArrayList<String>(), "");
 				break;
 			case makeevent:
 				showMakeEvent(req, resp);
@@ -348,6 +351,9 @@ public class DirectorServlet extends AbstractBaseServlet {
 	private void postStudentInfo(HttpServletRequest req,
 			HttpServletResponse resp) throws ServletException, IOException {
 		DataTrain train = DataTrain.getAndStartTrain();
+		
+		List<String> errors = new ArrayList<String>();
+		String success = "";
 
 		String firstName, lastName, major, netid, rank;
 		int year = -1;
@@ -368,11 +374,13 @@ public class DirectorServlet extends AbstractBaseServlet {
 		}
 
 		try {
+			year = Integer.parseInt(req.getParameter("Year"));
 			minutesAvailable = Integer.parseInt(req
 					.getParameter("MinutesAvailable"));
-			year = Integer.parseInt(req.getParameter("Year"));
 		} catch (NumberFormatException nfe) {
-			nfe.printStackTrace();
+			LOG.severe(nfe.getStackTrace().toString());
+			LOG.severe(nfe.getMessage());
+			errors.add("Unable to save minutes available.");
 		}
 
 		UserController uc = train.getUsersController();
@@ -390,12 +398,24 @@ public class DirectorServlet extends AbstractBaseServlet {
 		user.setRank(rank);
 		// TODO https://github.com/curtisullerich/attendance/issues/118
 		//May throw validation exceptions
-		uc.update(user);
+		try {
+			uc.update(user);
+			success = "All user information " + 
+					((errors.size() != 0) ? "except minutes available " : "") + "saved.";
+		}
+		catch (IllegalArgumentException e) {
+			errors.add("Unable to save student information: " + e.getMessage());
+		}
 
 		// so the user can get it
 		req.setAttribute("id", netid.toString());
-		req.setAttribute("success_message", "Info successfully updated.");
-		showStudent(req, resp);
+//		if (success) {
+//			req.setAttribute("success_message", "Info successfully updated.");
+//		}
+//		else {
+//			req.setAttribute("error_messages", Arrays.asList("Info couldn't be saved"));
+//		}
+		showStudent(req, resp, errors, success);
 	}
 
 	private void deleteStudent(HttpServletRequest req, HttpServletResponse resp)
@@ -1012,10 +1032,9 @@ public class DirectorServlet extends AbstractBaseServlet {
 		}
 	}
 
-	private void showStudent(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
+	private void showStudent(HttpServletRequest req, HttpServletResponse resp, List<String> errors, 
+			String success) throws ServletException, IOException {
 
-		List<String> errors = new ArrayList<String>();
 		DataTrain train = DataTrain.getAndStartTrain();
 
 		PageBuilder page = new PageBuilder(Page.student, SERVLET_PATH);
@@ -1043,8 +1062,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 			// Pass through any success message in the url parameters sent from
 			// a new form being created or deleted
-			page.setAttribute("success_message",
-					req.getParameter("success_message"));
+			page.setAttribute("success_message", success);
 		}
 		String removeid = req.getParameter("removeid");
 		if (removeid != null && removeid != "") {

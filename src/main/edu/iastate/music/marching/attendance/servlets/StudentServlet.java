@@ -1,7 +1,9 @@
 package edu.iastate.music.marching.attendance.servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +25,8 @@ public class StudentServlet extends AbstractBaseServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 6636386568039228284L;
+	
+	private static final Logger LOG = Logger.getLogger(StudentServlet.class.getName());
 
 	private static final String SERVLET_PATH = "student";
 
@@ -62,7 +66,7 @@ public class StudentServlet extends AbstractBaseServlet {
 				showIndex(req, resp);
 				break;
 			case info:
-				showInfo(req, resp);
+				showInfo(req, resp, null, null);
 				break;
 			}
 	}
@@ -118,6 +122,9 @@ public class StudentServlet extends AbstractBaseServlet {
 			throws IOException, ServletException {
 		
 		DataTrain train = DataTrain.getAndStartTrain();
+		
+		List<String> errors = new ArrayList<String>();
+		String success = "";
 
 		String firstName, lastName, major;
 		int year = -1;
@@ -136,35 +143,42 @@ public class StudentServlet extends AbstractBaseServlet {
 				section = s;
 			}
 		}
-
+		
+		User localUser = train.getAuthController().getCurrentUser(req.getSession());
+		
 		try {
 			year = Integer.parseInt(req.getParameter("Year"));
+			localUser.setYear(year);
 		} catch (NumberFormatException nfe) {
-			nfe.printStackTrace();
+			LOG.severe(nfe.getStackTrace().toString());
+			LOG.severe(nfe.getMessage());
+			errors.add("Unable to save year.");
 		}
-
-		User localUser = train.getAuthController().getCurrentUser(req.getSession());
 
 		UserController uc = train.getUsersController();
 
-		localUser.setYear(year);
 		localUser.setMajor(major);
 		localUser.setSection(section);
 		localUser.setFirstName(firstName);
 		localUser.setLastName(lastName);
 		localUser.setSecondaryEmail(secondEmail);
 
-		// TODO https://github.com/curtisullerich/attendance/issues/118
 		//May throw validation exceptions
-		uc.update(localUser);
-
+		try {
+			uc.update(localUser);
+			success = (errors.size() == 0) ? "Successfully saved all data." : 
+				"Successfully saved all data but the year.";
+		}
+		catch (IllegalArgumentException e) {
+			errors.add("Unable to save "+ ((errors.size() == 0) ? "data that wasn't the year." : "any data."));
+		}
 		AuthController.updateCurrentUser(localUser, req.getSession());
 
-		showInfo(req, resp);
+		showInfo(req, resp, errors, success);
 
 	}
 
-	private void showInfo(HttpServletRequest req, HttpServletResponse resp)
+	private void showInfo(HttpServletRequest req, HttpServletResponse resp, List<String> errors, String succex)
 			throws IOException, ServletException {
 
 		PageBuilder page = new PageBuilder(Page.info, SERVLET_PATH);
@@ -173,6 +187,10 @@ public class StudentServlet extends AbstractBaseServlet {
 				DataTrain.getAndStartTrain().getAuthController().getCurrentUser(req.getSession()));
 
 		page.setAttribute("sections", User.Section.values());
+		
+		page.setAttribute("error_messages", errors);
+		
+		page.setAttribute("success_message", succex);
 
 		page.passOffToJsp(req, resp);
 	}

@@ -2,6 +2,7 @@ package edu.iastate.music.marching.attendance.servlets;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
@@ -67,7 +68,7 @@ public class AdminServlet extends AbstractBaseServlet {
 				showIndex(req, resp);
 				break;
 			case users:
-				showUsers(req, resp);
+				showUsers(req, resp, null, null);
 				break;
 			case user:
 				showUserInfo(req, resp);
@@ -134,6 +135,9 @@ public class AdminServlet extends AbstractBaseServlet {
 		String netID, strType, firstName, lastName;
 
 		DataTrain train = DataTrain.getAndStartTrain();
+		
+		List<String> errors = new ArrayList<String>();
+		String success = "";
 
 		// Grab all the data from the fields
 		netID = req.getParameter("NetID");
@@ -151,21 +155,27 @@ public class AdminServlet extends AbstractBaseServlet {
 		localUser.setFirstName(firstName);
 		localUser.setLastName(lastName);
 
-		// TODO https://github.com/curtisullerich/attendance/issues/118
 		//May throw validation exceptions
-		uc.update(localUser);
+		try {
+			uc.update(localUser);
+			
+			// Update user in session if we just changed the currently logged in
+			// user
+			if (localUser.equals(train.getAuthController().getCurrentUser(
+					req.getSession())))
+				AuthController.updateCurrentUser(localUser, req.getSession());
+			success = "User information saved";
+		}
+		catch (IllegalArgumentException e) {
+			//Invalid information
+			errors.add("Unable to save user information: " + e.getMessage());
+		}
 
-		// Update user in session if we just changed the currently logged in
-		// user
-		if (localUser.equals(train.getAuthController().getCurrentUser(
-				req.getSession())))
-			AuthController.updateCurrentUser(localUser, req.getSession());
-
-		showUsers(req, resp);
+		showUsers(req, resp, errors, success);
 
 	}
 
-	private void showUsers(HttpServletRequest req, HttpServletResponse resp)
+	private void showUsers(HttpServletRequest req, HttpServletResponse resp, List<String> errors, String success)
 			throws ServletException, IOException {
 
 		DataTrain train = DataTrain.getAndStartTrain();
@@ -173,6 +183,10 @@ public class AdminServlet extends AbstractBaseServlet {
 		PageBuilder page = new PageBuilder(Page.users, SERVLET_PATH);
 
 		page.setAttribute("users", train.getUsersController().getAll());
+		
+		page.setAttribute("error_messages", errors);
+		
+		page.setAttribute("success_message", success);
 
 		page.passOffToJsp(req, resp);
 
