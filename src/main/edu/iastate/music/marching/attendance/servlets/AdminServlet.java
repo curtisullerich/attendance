@@ -319,14 +319,16 @@ public class AdminServlet extends AbstractBaseServlet {
 		DataTrain train = DataTrain.getAndStartTrain();
 		List<String> errors = new LinkedList<String>();
 
-		String data = req.getParameter("Data");
-		Scanner scanner = new Scanner(data);
+		String data = req.getParameter("Data").replaceAll("\\s+", "");
+
+		String[] lines = data.split(";");
 		UserController uc = train.getUsersController();
 
 		int i = 0;
-		while (scanner.hasNextLine()) {
+
+		for (int x = 0; x < lines.length; x++) {
 			try {
-				uc.createFakeStudent(scanner.nextLine().split(","));
+				uc.createFakeStudent(lines[x].trim().split(","));
 				i++;
 			} catch (Exception e) {
 				errors.add(e.getMessage());
@@ -334,7 +336,7 @@ public class AdminServlet extends AbstractBaseServlet {
 				System.out.println(e.getStackTrace().toString());
 			}
 		}
-
+		
 		if (errors.size() == 0) {
 			try {
 
