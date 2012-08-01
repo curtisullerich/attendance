@@ -159,7 +159,15 @@ public class EventController extends AbstractController {
 
 	public void delete(Event event) {
 		ObjectDatastore od = this.train.getDataStore();
+		Date start = event.getStart();
+		Date end = event.getEnd();
 		od.delete(event);
+		
+		/* If the deleted event had conflicted with another one before then 
+		*  all the absences for that date/time range would be unanchored.
+		*  Now that one is deleted we can try to link them all up again
+		*/
+		train.getAbsenceController().linkAbsenceEvent(getAll(), start, end);
 		// od.delete() returns void, so we don't really have anything to return
 		// here, either
 	}

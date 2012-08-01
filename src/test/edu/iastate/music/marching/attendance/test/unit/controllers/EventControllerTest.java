@@ -187,7 +187,6 @@ public class EventControllerTest extends AbstractTest {
 		// TODO there's gotta be a better way to verify that they linked
 		// correctly
 		assertEquals(User.Grade.F, uc.get(s1.getId()).getGrade());
-
 	}
 
 }
