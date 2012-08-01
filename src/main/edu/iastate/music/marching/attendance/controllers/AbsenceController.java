@@ -1,6 +1,7 @@
 package edu.iastate.music.marching.attendance.controllers;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -14,6 +15,7 @@ import com.google.code.twig.FindCommand.RootFindCommand;
 import com.google.code.twig.ObjectDatastore;
 
 import edu.iastate.music.marching.attendance.model.Absence;
+import edu.iastate.music.marching.attendance.model.Absence.Type;
 import edu.iastate.music.marching.attendance.model.Event;
 import edu.iastate.music.marching.attendance.model.Form;
 import edu.iastate.music.marching.attendance.model.MessageThread;
@@ -792,5 +794,52 @@ public class AbsenceController extends AbstractController {
 			}
 		}
 		train.getDataStore().deleteAll(absences);
+	}
+	
+	/**
+	 * Method to be used by the Event Controller to update absences when 
+	 * an event is deleted. This will try to link together unanchored absences and events
+	 * @param events 
+	 * 					a list of all the events in the database
+	 * @param eventStart 
+	 * 					the starting time for the event deleted
+	 * @param eventEnd
+	 * 					the ending time for the event just deleted
+	 */
+	protected void linkAbsenceEvent(List<Event> events, Date eventStart, Date eventEnd) {
+		for (Absence a: getUnanchored()) {
+			//For absences both the start and the end have to be inside of the event times, otherwise
+			//im gonna use l33t h4x0r skills since the tardies and earlycheckouts store their time in the 
+			//start field
+			boolean checkBothTimes = a.getType() == Absence.Type.Absence;
+				if (eventStart.compareTo(a.getStart()) > 0 
+						|| (checkBothTimes && a.getEnd().compareTo(eventEnd) > 0)
+						|| (!checkBothTimes && a.getStart().compareTo(eventEnd) > 0)) {
+					//Skip this one because the times were different so the event deleted couldn't 
+					//have conflicted with the correct event for this absence
+					continue;
+				}
+			Event linkedEvent = null;
+			for (Event e: events) {
+				//If the event times wrap around the absence time
+				if (e.getStart().compareTo(a.getStart()) <= 0 
+						&& ((checkBothTimes && a.getEnd().compareTo(e.getEnd()) <= 0)
+								|| (!checkBothTimes && a.getStart().compareTo(e.getEnd()) <= 0))) {
+					if (linkedEvent == null) {
+						linkedEvent = e;
+					}
+					else {
+						//Multiple events so we can't do anything about it
+						linkedEvent = null;
+						break;
+					}
+				}
+			}
+			if (linkedEvent != null) {
+				a.setEvent(linkedEvent);
+				train.getUsersController().update(a.getStudent());
+				this.train.getDataStore().storeOrUpdate(a);
+			}
+		}
 	}
 }
