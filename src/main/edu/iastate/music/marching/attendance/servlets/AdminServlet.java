@@ -321,25 +321,18 @@ public class AdminServlet extends AbstractBaseServlet {
 
 		String data = req.getParameter("Data");
 		Scanner scanner = new Scanner(data);
+		UserController uc = train.getUsersController();
+
+		int i = 0;
 		while (scanner.hasNextLine()) {
-			String[] parts = scanner.nextLine().split(",");
-			// first name, last name, primary email, secondary email, type,
-			// section, uid, year, major, rank, minutesavailable
-			String firstName = parts[0];
-			String lastName = parts[1];
-			Email primaryEmail = new Email(parts[2]);
-			Email secondaryEmail = new Email(parts[3]);
-			String type = parts[4];//just in case we want it
-			User.Section section = User.Section.valueOf(parts[5]);
-			String univID = parts[6];
-			int year = Integer.parseInt(parts[7]);
-			String major = parts[8];
-			User new_user = null;
-			String rank = parts[9];//just in case
-			int minutesAvailable = Integer.parseInt(parts[10]);//just in case
-			com.google.appengine.api.users.User google_user = AuthController
-					.getGoogleUser();
-			train.getUsersController().createStudent(google_user, univID, firstName, lastName, year, major, section, secondaryEmail);
+			try {
+				uc.createFakeStudent(scanner.nextLine().split(","));
+				i++;
+			} catch (Exception e) {
+				errors.add(e.getMessage());
+				System.out.println(e.getMessage());
+				System.out.println(e.getStackTrace().toString());
+			}
 		}
 
 		if (errors.size() == 0) {
@@ -355,7 +348,7 @@ public class AdminServlet extends AbstractBaseServlet {
 
 		page.setPageTitle("makebulk");
 
-		page.setAttribute("success_message", "registered " + 0 + "students");
+		page.setAttribute("success_message", "registered " + i + " students");
 
 		page.passOffToJsp(req, resp);
 	}
@@ -394,6 +387,8 @@ public class AdminServlet extends AbstractBaseServlet {
 			} catch (IllegalArgumentException e) {
 				// Save validation errors
 				errors.add(e.getMessage());
+				System.out.println(e.getMessage());
+				System.out.println(e.getStackTrace());
 			}
 		}
 

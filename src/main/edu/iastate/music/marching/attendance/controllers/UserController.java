@@ -91,7 +91,7 @@ public class UserController extends AbstractController {
 		if (!ValidationUtil.isValidName(user.getLastName()))
 			throw new IllegalArgumentException("Invalid last name");
 
-		//Check id
+		// Check id
 		String uId = user.getUniversityID();
 		if (!ValidationUtil.isValidUniversityID(uId)) {
 			throw new IllegalArgumentException("Invalid university id");
@@ -108,7 +108,7 @@ public class UserController extends AbstractController {
 			String rank = user.getRank();
 			User.Section section = user.getSection();
 			int year = user.getYear();
-			
+
 			if (!ValidationUtil.isValidMajor(major)) {
 				throw new IllegalArgumentException("Invalid major");
 			}
@@ -138,11 +138,48 @@ public class UserController extends AbstractController {
 			throw new IllegalArgumentException(
 					"User already exists in the system");
 
-		User user = ModelFactory.newUser(User.Type.Director, primaryEmail, "000000000");
+		User user = ModelFactory.newUser(User.Type.Director, primaryEmail,
+				"000000000");
 		user.setFirstName(firstName);
 		user.setLastName(lastName);
 		user.setSecondaryEmail(secondaryEmail);
 
+		validateUser(user);
+
+		this.datatrain.getDataStore().store(user);
+
+		return user;
+	}
+
+	public User createFakeStudent(String[] parts) {
+		// first name, last name, primary email, secondary email, type,
+		// section, uid, year, major, rank, minutesavailable
+		String firstName = parts[0];
+		String lastName = parts[1];
+		Email primaryEmail = new Email(parts[2]);
+		Email secondaryEmail = new Email(parts[3]);
+		String type = parts[4];// just in case we want it
+		User.Section section = User.Section.valueOf(parts[5]);
+		String univID = parts[6];
+		int year = Integer.parseInt(parts[7]);
+		String major = parts[8];
+
+		String rank = parts[9];// just in case
+		int minutesAvailable = Integer.parseInt(parts[10]);// just in case
+
+		User user = ModelFactory.newUser(User.Type.Student, primaryEmail,
+				univID);
+		user.setFirstName(firstName);
+		user.setLastName(lastName);
+		user.setSecondaryEmail(secondaryEmail);
+		user.setSection(section);
+		user.setYear(year);
+		user.setMajor(major);
+		user.setRank(rank);
+		user.setMinutesAvailable(minutesAvailable);
+		
+		// com.google.appengine.api.users.User google_user = AuthController
+		// .getGoogleUser();
 		validateUser(user);
 
 		this.datatrain.getDataStore().store(user);
@@ -362,14 +399,14 @@ public class UserController extends AbstractController {
 		// Absences
 		// + associated messagethread instances
 		this.datatrain.getAbsenceController().delete(user);
-		
+
 		// Forms
 		// + associated messagethread instances
 		this.datatrain.getFormsController().delete(user);
-		
+
 		// Remove any Mobile Data uploads
 		this.datatrain.getMobileDataController().scrubUploader(user);
-		
+
 		// Remove user and its messages from any conversations
 		this.datatrain.getMessagingController().scrubParticipant(user);
 
