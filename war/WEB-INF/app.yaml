@@ -102,5 +102,11 @@ handlers:
     path: "admin"
   name: admin
 
+- url: /
+  servlet: edu.iastate.music.marching.attendance.servlets.AuthServlet
+  init_params:
+    path: "index"
+  name: index
+
 error_handlers:
   - file: /error.html
