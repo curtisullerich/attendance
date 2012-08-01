@@ -5,6 +5,7 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -41,7 +42,7 @@ public class AdminServlet extends AbstractBaseServlet {
 			.getName());
 
 	private enum Page {
-		index, users, user, data, export, load, data_migrate, data_delete, register
+		index, users, user, data, export, load, data_migrate, data_delete, register, bulkmake
 	}
 
 	@Override
@@ -85,6 +86,9 @@ public class AdminServlet extends AbstractBaseServlet {
 			case register:
 				showDirectorRegistrationPage(req, resp);
 				break;
+			case bulkmake:
+				showBulkmake(req, resp);
+				break;
 			default:
 				ErrorServlet.showError(req, resp, 404);
 			}
@@ -123,6 +127,9 @@ public class AdminServlet extends AbstractBaseServlet {
 			case register:
 				doDirectorRegistration(req, resp);
 				break;
+			case bulkmake:
+				bulkmake(req, resp);
+				break;
 			default:
 				ErrorServlet.showError(req, resp, 404);
 			}
@@ -135,7 +142,7 @@ public class AdminServlet extends AbstractBaseServlet {
 		String netID, strType, firstName, lastName;
 
 		DataTrain train = DataTrain.getAndStartTrain();
-		
+
 		List<String> errors = new ArrayList<String>();
 		String success = "";
 
@@ -155,19 +162,18 @@ public class AdminServlet extends AbstractBaseServlet {
 		localUser.setFirstName(firstName);
 		localUser.setLastName(lastName);
 
-		//May throw validation exceptions
+		// May throw validation exceptions
 		try {
 			uc.update(localUser);
-			
+
 			// Update user in session if we just changed the currently logged in
 			// user
 			if (localUser.equals(train.getAuthController().getCurrentUser(
 					req.getSession())))
 				AuthController.updateCurrentUser(localUser, req.getSession());
 			success = "User information saved";
-		}
-		catch (IllegalArgumentException e) {
-			//Invalid information
+		} catch (IllegalArgumentException e) {
+			// Invalid information
 			errors.add("Unable to save user information: " + e.getMessage());
 		}
 
@@ -175,17 +181,18 @@ public class AdminServlet extends AbstractBaseServlet {
 
 	}
 
-	private void showUsers(HttpServletRequest req, HttpServletResponse resp, List<String> errors, String success)
-			throws ServletException, IOException {
+	private void showUsers(HttpServletRequest req, HttpServletResponse resp,
+			List<String> errors, String success) throws ServletException,
+			IOException {
 
 		DataTrain train = DataTrain.getAndStartTrain();
 
 		PageBuilder page = new PageBuilder(Page.users, SERVLET_PATH);
 
 		page.setAttribute("users", train.getUsersController().getAll());
-		
+
 		page.setAttribute("error_messages", errors);
-		
+
 		page.setAttribute("success_message", success);
 
 		page.passOffToJsp(req, resp);
@@ -294,6 +301,61 @@ public class AdminServlet extends AbstractBaseServlet {
 		PageBuilder page = new PageBuilder(Page.register, SERVLET_PATH);
 
 		page.setPageTitle("Director Registration");
+
+		page.passOffToJsp(req, resp);
+	}
+
+	private void showBulkmake(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		PageBuilder page = new PageBuilder(Page.bulkmake, SERVLET_PATH);
+		page.setPageTitle("BulkMake");
+
+		page.passOffToJsp(req, resp);
+	}
+
+	private void bulkmake(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+
+		DataTrain train = DataTrain.getAndStartTrain();
+		List<String> errors = new LinkedList<String>();
+
+		String data = req.getParameter("Data");
+		Scanner scanner = new Scanner(data);
+		while (scanner.hasNextLine()) {
+			String[] parts = scanner.nextLine().split(",");
+			// first name, last name, primary email, secondary email, type,
+			// section, uid, year, major, rank, minutesavailable
+			String firstName = parts[0];
+			String lastName = parts[1];
+			Email primaryEmail = new Email(parts[2]);
+			Email secondaryEmail = new Email(parts[3]);
+			String type = parts[4];//just in case we want it
+			User.Section section = User.Section.valueOf(parts[5]);
+			String univID = parts[6];
+			int year = Integer.parseInt(parts[7]);
+			String major = parts[8];
+			User new_user = null;
+			String rank = parts[9];//just in case
+			int minutesAvailable = Integer.parseInt(parts[10]);//just in case
+			com.google.appengine.api.users.User google_user = AuthController
+					.getGoogleUser();
+			train.getUsersController().createStudent(google_user, univID, firstName, lastName, year, major, section, secondaryEmail);
+		}
+
+		if (errors.size() == 0) {
+			try {
+
+			} catch (IllegalArgumentException e) {
+				// Save validation errors
+				errors.add(e.getMessage());
+			}
+		}
+
+		PageBuilder page = new PageBuilder(Page.bulkmake, SERVLET_PATH);
+
+		page.setPageTitle("makebulk");
+
+		page.setAttribute("success_message", "registered " + 0 + "students");
 
 		page.passOffToJsp(req, resp);
 	}
