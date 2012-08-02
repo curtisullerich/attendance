@@ -83,7 +83,7 @@ public class MobileDataController {
 	public String pushMobileData(String data, User uploader)
 			throws IllegalArgumentException {
 
-		// First lets log what is being uploaded
+		// First let's log what is being uploaded
 		MobileDataUpload upload = ModelFactory.newMobileDataUpload(
 				uploader,
 				Calendar.getInstance(

@@ -71,7 +71,7 @@ public class UserController extends AbstractController {
 		validateUser(user);
 
 		this.datatrain.getDataStore().store(user);
-
+		updateUserGrade(user);
 		return user;
 	}
 
@@ -177,6 +177,7 @@ public class UserController extends AbstractController {
 		user.setMajor(major);
 		user.setRank(rank);
 		user.setMinutesAvailable(minutesAvailable);
+		user.setGrade(User.Grade.A);
 		
 		// com.google.appengine.api.users.User google_user = AuthController
 		// .getGoogleUser();
