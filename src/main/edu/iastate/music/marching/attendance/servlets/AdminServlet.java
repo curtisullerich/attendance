@@ -317,7 +317,7 @@ public class AdminServlet extends AbstractBaseServlet {
 			throws ServletException, IOException {
 		DataTrain train = DataTrain.getAndStartTrain();
 		List<String> errors = new LinkedList<String>();
-		if (req.getParameter("Go") != null || !req.getParameter("Go").equals("")) {
+		if (req.getParameter("Go") != null) {
 	
 			String data = req.getParameter("Data").replaceAll("\\s+", "");
 	
