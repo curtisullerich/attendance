@@ -315,44 +315,68 @@ public class AdminServlet extends AbstractBaseServlet {
 
 	private void bulkmake(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-
 		DataTrain train = DataTrain.getAndStartTrain();
 		List<String> errors = new LinkedList<String>();
-
-		String data = req.getParameter("Data").replaceAll("\\s+", "");
-
-		String[] lines = data.split(";");
-		UserController uc = train.getUsersController();
-
-		int i = 0;
-
-		for (int x = 0; x < lines.length; x++) {
-			try {
-				uc.createFakeStudent(lines[x].trim().split(","));
-				i++;
-			} catch (Exception e) {
-				errors.add(e.getMessage());
-				System.out.println(e.getMessage());
-				System.out.println(e.getStackTrace().toString());
+		if (req.getParameter("Go") != null || !req.getParameter("Go").equals("")) {
+	
+			String data = req.getParameter("Data").replaceAll("\\s+", "");
+	
+			String[] lines = data.split(";");
+			UserController uc = train.getUsersController();
+	
+			int i = 0;
+	
+			for (int x = 0; x < lines.length; x++) {
+				try {
+					uc.createFakeStudent(lines[x].trim().split(","));
+					i++;
+				} catch (Exception e) {
+					errors.add(e.getMessage());
+					log.severe(e.getMessage());
+					log.severe(e.getStackTrace().toString());
+				}
 			}
-		}
-		
-		if (errors.size() == 0) {
-			try {
-
-			} catch (IllegalArgumentException e) {
-				// Save validation errors
-				errors.add(e.getMessage());
+			
+			if (errors.size() == 0) {
+				try {
+	
+				} catch (IllegalArgumentException e) {
+					// Save validation errors
+					errors.add(e.getMessage());
+				}
 			}
+	
+			PageBuilder page = new PageBuilder(Page.bulkmake, SERVLET_PATH);
+	
+			page.setPageTitle("makebulk");
+	
+			page.setAttribute("success_message", "registered " + i + " students");
+			
+			page.setAttribute("error_messages", errors);
+	
+			page.passOffToJsp(req, resp);
 		}
-
-		PageBuilder page = new PageBuilder(Page.bulkmake, SERVLET_PATH);
-
-		page.setPageTitle("makebulk");
-
-		page.setAttribute("success_message", "registered " + i + " students");
-
-		page.passOffToJsp(req, resp);
+		else if (req.getParameter("DeleteAll") != null || !req.getParameter("DeleteAll").equals("")) {
+			String success = null;
+			try {
+				train.getDataController().deleteEverthingInTheEntireDatabaseEvenThoughYouCannotUndoThis();
+				success = "Successfully, irrevocably, and unequivically removed everything.";
+			}
+			catch (Throwable aDuh) {
+				log.severe(aDuh.getMessage());
+				log.severe(aDuh.getStackTrace().toString());
+				errors.add(aDuh.toString());
+			}
+			PageBuilder page = new PageBuilder(Page.bulkmake, SERVLET_PATH);
+			
+			page.setPageTitle("makebulk");
+	
+			page.setAttribute("success_message", success);
+			
+			page.setAttribute("error_messages", errors);
+	
+			page.passOffToJsp(req, resp);
+		}
 	}
 
 	private void doDirectorRegistration(HttpServletRequest req,
