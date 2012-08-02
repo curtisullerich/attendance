@@ -18,6 +18,11 @@ public class Util {
 		} catch (NumberFormatException e) {
 			exp.getErrors().add("Invalid year, not a number.");
 		}
+		if (year < 1000) {
+			exp.getErrors().add("Invalid year, must be four digits.");
+		}
+		
+		
 		try {
 			month = Integer.parseInt(sMonth);
 		} catch (NumberFormatException e) {

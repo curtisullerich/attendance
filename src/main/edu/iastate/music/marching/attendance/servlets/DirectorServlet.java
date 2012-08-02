@@ -87,7 +87,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 				showAttendance(req, resp, null, null);
 				break;
 			case appinfo:
-				showAppInfo(req, resp, new ArrayList<String>());
+				showAppInfo(req, resp, new ArrayList<String>(), null);
 				break;
 			case unanchored:
 				showUnanchored(req, resp, null, null);
@@ -102,7 +102,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 				showStats(req, resp);
 				break;
 			case info:
-				showInfo(req, resp);
+				showInfo(req, resp, new ArrayList<String>(), null);
 				break;
 			case student:
 				showStudent(req, resp, new ArrayList<String>(), "");
@@ -328,6 +328,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		DataTrain train = DataTrain.getAndStartTrain();
 		String first = req.getParameter("FirstName");
 		String last = req.getParameter("LastName");
+		String success = null;
 		User director = train.getAuthController().getCurrentUser(
 				req.getSession());
 		List<String> errors = new ArrayList<String>();
@@ -343,9 +344,10 @@ public class DirectorServlet extends AbstractBaseServlet {
 			director.setFirstName(first);
 			director.setLastName(last);
 			train.getUsersController().update(director);
-			req.setAttribute("success_message", "Info saved successfully.");
+//			req.setAttribute("success_message", "Info saved successfully.");
+			success = "Info saved.";
 		}
-		showInfo(req, resp);
+		showInfo(req, resp, errors, success);
 	}
 
 	private void postStudentInfo(HttpServletRequest req,
@@ -613,6 +615,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		boolean validForm = true;
 		List<String> errors = new LinkedList<String>();
 		String newPass = null;
+		String success = null;
 		String newPassConf = null;
 		String title = null;
 		List<String> emailList = null;
@@ -684,11 +687,15 @@ public class DirectorServlet extends AbstractBaseServlet {
 		if (validForm) {
 			appDataController.save(data);
 		}
-		showAppInfo(req, resp, errors);
+		
+		if (errors.size() == 0) {
+			success = "App info updated.";
+		}
+		showAppInfo(req, resp, errors, success);
 	}
 
 	private void showAppInfo(HttpServletRequest req, HttpServletResponse resp,
-			List<String> errors) throws ServletException, IOException {
+			List<String> errors, String success) throws ServletException, IOException {
 
 		DataTrain train = DataTrain.getAndStartTrain();
 
@@ -717,6 +724,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		// page.setAttribute("cutoffTime", data.getFormSubmissionCutoff());
 		page.setAttribute("error_messages", errors);
+		page.setAttribute("success_message", success);
 		page.setPageTitle("Application Info");
 
 		page.passOffToJsp(req, resp);
@@ -833,7 +841,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		page.passOffToJsp(req, resp);
 	}
 
-	private void showInfo(HttpServletRequest req, HttpServletResponse resp)
+	private void showInfo(HttpServletRequest req, HttpServletResponse resp, List<String> errors, String success)
 			throws IOException, ServletException {
 
 		PageBuilder page = new PageBuilder(Page.info, SERVLET_PATH);
@@ -841,6 +849,8 @@ public class DirectorServlet extends AbstractBaseServlet {
 		page.setAttribute("user", DataTrain.getAndStartTrain()
 				.getAuthController().getCurrentUser(req.getSession()));
 
+		page.setAttribute("errors", errors);
+		page.setAttribute("success_message", success);
 		page.passOffToJsp(req, resp);
 	}
 

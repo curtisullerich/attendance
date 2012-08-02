@@ -476,6 +476,7 @@ public class FormController extends AbstractController {
 		// Set remaining fields
 		form.setDetails(details);
 		form.setStatus(Form.Status.Pending);
+		form.setEmailStatus(Form.Status.Pending);
 		form.setEmailTo(email);
 		form.setMinutesWorked(minutes);
 

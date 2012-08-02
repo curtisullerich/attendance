@@ -20,6 +20,7 @@
 			<thead>
 				<tr class="dark-title">
 					<th>Event</th>
+					<th>netID</th>
 					<th>Type</th>
 					<th>Status</th>
 					<th>Time of Arrival/Leaving</th>
@@ -38,11 +39,14 @@
 								</c:forEach>
 							</select>
 						</td>
+						<td>
+							${absence.student.id}
+						</td>
 
 					<c:if test="${not empty absence.event}">
 						<td>
 							<c:out value="${absence.event.type}" />
-							<fmt:formatDate value="${absence.event.start}" pattern="M/dd/yyyy" />
+							<fmt:formatDate value="${absence.event.start}" pattern="M/d/yy" />
 							<fmt:formatDate value="${absence.event.start}" pattern="h:mm a" />
 							-
 							<fmt:formatDate value="${absence.event.end}" pattern="h:mm a" />
@@ -62,7 +66,7 @@
 						</c:when>
 						<c:when test="${(absence.type.absence) && (empty absence.event)}">
 						<td onclick="window.location='/director/viewabsence?absenceid=${absence.id}'">
-							<fmt:formatDate value="${absence.start}" pattern="M/dd/yyyy" />
+							<fmt:formatDate value="${absence.start}" pattern="M/d/yy" />
 							<fmt:formatDate value="${absence.start}" pattern="h:mm a" />
 							-
 							<fmt:formatDate value="${absence.end}" pattern="h:mm a" />

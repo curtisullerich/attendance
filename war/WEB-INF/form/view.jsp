@@ -85,7 +85,7 @@
 					<dt><label>Email To</label></dt>
 					<dd>${form.emailTo}</dd>
 					
-					<dt><label>Approve by this person?</label></dt>
+					<dt><label>Approved by this person?</label></dt>
 					<dd>${form.emailStatus}</dd>
 					
 					<dt><label>Total amount of work</label></dt>
