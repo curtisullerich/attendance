@@ -468,6 +468,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 			errors.add("Invalid Input: The input date is invalid.");
 		} 
 		//show success message?
+		resp.sendRedirect("/director/unanchored");
 		showUnanchored(req, resp, errors, success);
 	}
 
