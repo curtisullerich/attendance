@@ -27,6 +27,11 @@
 		</dl>
 		<input type="submit" value="Go" name="Go" />
 	</form>
+	<form method="post" accept-charset="utf-8">
+	Delete ALL the things!
+	<input  type="submit" value="Delete All" name="DeleteAll">
+	
+	</form>
 	<jsp:include page="/WEB-INF/template/footer.jsp" />
 </body>
 </html>

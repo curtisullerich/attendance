@@ -134,7 +134,7 @@ public class DataController extends AbstractController {
 	}
 	
 	
-	private void deleteEverthingInTheEntireDatabaseEvenThoughYouCannotUndoThis() {
+	public void deleteEverthingInTheEntireDatabaseEvenThoughYouCannotUndoThis() {
 		this.dataTrain.getDataStore().deleteAll(Absence.class);
 		this.dataTrain.getDataStore().deleteAll(AppData.class);
 		this.dataTrain.getDataStore().deleteAll(Event.class);
