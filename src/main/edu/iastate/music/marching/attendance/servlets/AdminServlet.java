@@ -317,7 +317,7 @@ public class AdminServlet extends AbstractBaseServlet {
 			throws ServletException, IOException {
 		DataTrain train = DataTrain.getAndStartTrain();
 		List<String> errors = new LinkedList<String>();
-		if (req.getParameter("Go") != null || !req.getParameter("Go").equals("")) {
+		if (req.getParameter("Go") != null && !req.getParameter("Go").equals("")) {
 	
 			String data = req.getParameter("Data").replaceAll("\\s+", "");
 	
@@ -356,7 +356,7 @@ public class AdminServlet extends AbstractBaseServlet {
 	
 			page.passOffToJsp(req, resp);
 		}
-		else if (req.getParameter("DeleteAll") != null || !req.getParameter("DeleteAll").equals("")) {
+		else if (req.getParameter("DeleteAll") != null && !req.getParameter("DeleteAll").equals("")) {
 			String success = null;
 			try {
 				train.getDataController().deleteEverthingInTheEntireDatabaseEvenThoughYouCannotUndoThis();

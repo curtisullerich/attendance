@@ -55,6 +55,22 @@ public class MessagingControllerTest extends AbstractTest {
 		assertNotNull(result_student.getMessages().get(0).getTimestamp());
 		// TODO https://github.com/curtisullerich/attendance/issues/124
 		// more checks
+		
+		List<MessageThread> resultsDirector = train.getMessagingController().get(director);
+		//Checking result list
+		assertEquals(1, resultsDirector.size());
+		
+		//Check actual message
+		MessageThread resultDirector = resultsDirector.get(0);
+		assertNotNull(resultDirector);
+		assertEquals(1, resultDirector.getParticipants().size());
+		//Now I understand why we had to use the iterator...it's a set not a list :P
+		assertEquals(director, resultDirector.getParticipants().iterator().next());
+		assertEquals(1, resultDirector.getMessages().size());
+		assertEquals(director, resultDirector.getMessages().get(0).getAuthor());
+		assertEquals("D", resultDirector.getMessages().get(0).getText());
+		assertNotNull(resultDirector.getMessages().get(0).getTimestamp());
+		
 
 		MessageThread resultd = getDataTrain().getMessagingController().get(
 				mtd.getId());
@@ -64,6 +80,12 @@ public class MessagingControllerTest extends AbstractTest {
 		assertEquals(1, resultd.getMessages().size());
 		// TODO https://github.com/curtisullerich/attendance/issues/124
 		// more checks
+		
+		MessageThread resultS = getDataTrain().getMessagingController().get(mts.getId());
+		
+		assertNotNull(resultS);
+		assertEquals(1, resultS.getParticipants().size());
+		assertEquals(1, resultS.getMessages().size());
 	}
 
 	@Test
