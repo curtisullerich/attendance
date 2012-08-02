@@ -183,7 +183,6 @@ public class UserController extends AbstractController {
 		validateUser(user);
 
 		this.datatrain.getDataStore().store(user);
-
 		return user;
 	}
 

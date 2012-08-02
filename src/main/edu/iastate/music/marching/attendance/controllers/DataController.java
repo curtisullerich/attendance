@@ -14,15 +14,17 @@ import javax.mail.internet.MimeMessage;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
-import com.google.code.twig.ObjectDatastore;
 import com.google.gson.Gson;
 
 import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.AppData;
+import edu.iastate.music.marching.attendance.model.AttendanceDatastore;
+import edu.iastate.music.marching.attendance.model.DatastoreVersion;
 import edu.iastate.music.marching.attendance.model.Event;
 import edu.iastate.music.marching.attendance.model.Form;
 import edu.iastate.music.marching.attendance.model.MessageThread;
 import edu.iastate.music.marching.attendance.model.MobileDataUpload;
+import edu.iastate.music.marching.attendance.model.ModelFactory;
 import edu.iastate.music.marching.attendance.model.User;
 
 public class DataController extends AbstractController {
@@ -129,5 +131,21 @@ public class DataController extends AbstractController {
 
 	private Gson getGson() {
 		return new Gson();
+	}
+	
+	
+	private void deleteEverthingInTheEntireDatabaseEvenThoughYouCannotUndoThis() {
+		this.dataTrain.getDataStore().deleteAll(Absence.class);
+		this.dataTrain.getDataStore().deleteAll(AppData.class);
+		this.dataTrain.getDataStore().deleteAll(Event.class);
+		this.dataTrain.getDataStore().deleteAll(Form.class);
+		this.dataTrain.getDataStore().deleteAll(Event.class);
+		this.dataTrain.getDataStore().deleteAll(Message.class);
+		this.dataTrain.getDataStore().deleteAll(MessageThread.class);
+		this.dataTrain.getDataStore().deleteAll(MobileDataUpload.class);
+		this.dataTrain.getDataStore().deleteAll(ModelFactory.class);
+		this.dataTrain.getDataStore().deleteAll(User.class);
+		this.dataTrain.getDataStore().deleteAll(DatastoreVersion.class);		
+		this.dataTrain.getDataStore().deleteAll(AttendanceDatastore.class);		
 	}
 }
