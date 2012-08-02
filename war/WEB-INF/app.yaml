@@ -1,5 +1,5 @@
 application: isucfvmb-attendance
-version: 3
+version: 4
 runtime: java
 
 static_files:
