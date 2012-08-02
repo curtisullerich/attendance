@@ -319,7 +319,9 @@ public class AdminServlet extends AbstractBaseServlet {
 		DataTrain train = DataTrain.getAndStartTrain();
 		List<String> errors = new LinkedList<String>();
 
-		String data = req.getParameter("Data").replaceAll("\\s+", "");
+		String data = req.getParameter("Data");
+		
+		data = data.replaceAll("\\s+", "");
 
 		String[] lines = data.split(";");
 		UserController uc = train.getUsersController();
