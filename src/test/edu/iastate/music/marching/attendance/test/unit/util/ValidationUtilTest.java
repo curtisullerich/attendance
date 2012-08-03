@@ -71,15 +71,15 @@ public class ValidationUtilTest {
 		Calendar calendar = getFixedCalendarOnMonday();
 		// Last Monday
 		calendar.add(Calendar.WEEK_OF_YEAR, -2);
-		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now,
+		assertTrue(ValidationUtil.isLessThanWeekdaysAfter(now,
 				calendar.getTime(), 3, TIMEZONE));
 		// Last Month
 		calendar.add(Calendar.MONTH, -1);
-		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now,
+		assertTrue(ValidationUtil.isLessThanWeekdaysAfter(now,
 				calendar.getTime(), 3, TIMEZONE));
 		// Last Year
 		calendar.add(Calendar.YEAR, -1);
-		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now,
+		assertTrue(ValidationUtil.isLessThanWeekdaysAfter(now,
 				calendar.getTime(), 3, TIMEZONE));
 	}
 
@@ -89,15 +89,15 @@ public class ValidationUtilTest {
 		Calendar calendar = getFixedCalendarOnMonday();
 		// Next next Monday
 		calendar.add(Calendar.WEEK_OF_YEAR, 2);
-		assertFalse(ValidationUtil.isOrLessThanWeekdaysAfter(now,
+		assertFalse(ValidationUtil.isLessThanWeekdaysAfter(now,
 				calendar.getTime(), 3, TIMEZONE));
 		// Next Month
 		calendar.add(Calendar.MONTH, 1);
-		assertFalse(ValidationUtil.isOrLessThanWeekdaysAfter(now,
+		assertFalse(ValidationUtil.isLessThanWeekdaysAfter(now,
 				calendar.getTime(), 3, TIMEZONE));
 		// Next Year
 		calendar.add(Calendar.YEAR, 1);
-		assertFalse(ValidationUtil.isOrLessThanWeekdaysAfter(now,
+		assertFalse(ValidationUtil.isLessThanWeekdaysAfter(now,
 				calendar.getTime(), 3, TIMEZONE));
 	}
 
@@ -106,35 +106,35 @@ public class ValidationUtilTest {
 		Date now = getFixedCalendarOnMonday().getTime();
 		Calendar calendar = getFixedCalendarOnMonday();
 		// Monday
-		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now,
+		assertTrue(ValidationUtil.isLessThanWeekdaysAfter(now,
 				calendar.getTime(), 3, TIMEZONE));
 		// Sunday
 		calendar.add(Calendar.DATE, -1);
-		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now,
+		assertTrue(ValidationUtil.isLessThanWeekdaysAfter(now,
 				calendar.getTime(), 3, TIMEZONE));
 		// Saturday
 		calendar.add(Calendar.DATE, -1);
-		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now,
+		assertTrue(ValidationUtil.isLessThanWeekdaysAfter(now,
 				calendar.getTime(), 3, TIMEZONE));
 		// Friday
 		calendar.add(Calendar.DATE, -1);
-		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now,
+		assertTrue(ValidationUtil.isLessThanWeekdaysAfter(now,
 				calendar.getTime(), 3, TIMEZONE));
 		// Thursday
 		calendar.add(Calendar.DATE, -1);
-		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now,
+		assertTrue(ValidationUtil.isLessThanWeekdaysAfter(now,
 				calendar.getTime(), 3, TIMEZONE));
 		// Wednesday
 		calendar.add(Calendar.DATE, -1);
-		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now,
+		assertTrue(ValidationUtil.isLessThanWeekdaysAfter(now,
 				calendar.getTime(), 3, TIMEZONE));
 		// Tuesday
 		calendar.add(Calendar.DATE, -1);
-		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now,
+		assertTrue(ValidationUtil.isLessThanWeekdaysAfter(now,
 				calendar.getTime(), 3, TIMEZONE));
 		// Last Monday
 		calendar.add(Calendar.DATE, -1);
-		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now,
+		assertTrue(ValidationUtil.isLessThanWeekdaysAfter(now,
 				calendar.getTime(), 3, TIMEZONE));
 	}
 
@@ -144,158 +144,321 @@ public class ValidationUtilTest {
 		Calendar calendar = getFixedCalendarOnFriday();
 		System.out.println(calendar.getTime().toString());
 		// Friday
-		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now,
+		assertTrue(ValidationUtil.isLessThanWeekdaysAfter(now,
 				calendar.getTime(), 3, TIMEZONE));
 		// Thursday
 		calendar.add(Calendar.DATE, -1);
-		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now,
+		assertTrue(ValidationUtil.isLessThanWeekdaysAfter(now,
 				calendar.getTime(), 3, TIMEZONE));
 		// Wednesday
 		calendar.add(Calendar.DATE, -1);
-		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now,
+		assertTrue(ValidationUtil.isLessThanWeekdaysAfter(now,
 				calendar.getTime(), 3, TIMEZONE));
 		// Tuesday
 		calendar.add(Calendar.DATE, -1);
-		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now,
+		assertTrue(ValidationUtil.isLessThanWeekdaysAfter(now,
 				calendar.getTime(), 3, TIMEZONE));
 		// Monday
 		calendar.add(Calendar.DATE, -1);
-		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now,
+		assertTrue(ValidationUtil.isLessThanWeekdaysAfter(now,
 				calendar.getTime(), 3, TIMEZONE));
 		// Sunday
 		calendar.add(Calendar.DATE, -1);
-		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now,
+		assertTrue(ValidationUtil.isLessThanWeekdaysAfter(now,
 				calendar.getTime(), 3, TIMEZONE));
 		// Saturday
 		calendar.add(Calendar.DATE, -1);
-		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now,
+		assertTrue(ValidationUtil.isLessThanWeekdaysAfter(now,
 				calendar.getTime(), 3, TIMEZONE));
 		// Last Friday
 		calendar.add(Calendar.DATE, -1);
-		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now,
+		assertTrue(ValidationUtil.isLessThanWeekdaysAfter(now,
 				calendar.getTime(), 3, TIMEZONE));
 	}
 
 	@Test
 	public void testDateIsWeekdaysFrom_Today() {
 		Date now = getFixedCalendarOnMonday().getTime();
-		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now, now, 3,
-				TIMEZONE));
+		assertTrue(ValidationUtil
+				.isLessThanWeekdaysAfter(now, now, 3, TIMEZONE));
 	}
 
 	@Test
-	public void testDateIsWeekdaysFrom_ForwardAWeek() {
-		Date now = getFixedCalendarOnMonday().getTime();
-		Calendar calendar = getFixedCalendarOnMonday();
-		// Monday
-		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now,
-				calendar.getTime(), 3, TIMEZONE));
-		// Tuesday
-		calendar.add(Calendar.DATE, 1);
-		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now,
-				calendar.getTime(), 3, TIMEZONE));
-		// Wednesday
-		calendar.add(Calendar.DATE, 1);
-		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now,
-				calendar.getTime(), 3, TIMEZONE));
-		// Thursday
-		calendar.add(Calendar.DATE, 1);
-		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(now,
-				calendar.getTime(), 3, TIMEZONE));
-		// Friday
-		calendar.add(Calendar.DATE, 1);
-		assertFalse(ValidationUtil.isOrLessThanWeekdaysAfter(now,
-				calendar.getTime(), 3, TIMEZONE));
-		// Saturday
-		calendar.add(Calendar.DATE, 1);
-		assertFalse(ValidationUtil.isOrLessThanWeekdaysAfter(now,
-				calendar.getTime(), 3, TIMEZONE));
-		// Sunday
-		calendar.add(Calendar.DATE, 1);
-		assertFalse(ValidationUtil.isOrLessThanWeekdaysAfter(now,
-				calendar.getTime(), 3, TIMEZONE));
-	}
+	public void testAllDays() {
+		Calendar absence = Calendar.getInstance();
+		Calendar submission = Calendar.getInstance();
 
-	@Test
-	public void testDateIsWeekdaysFrom_ForwardAWeek_OverWeekend() {
-		Date from = getFixedCalendarOnFriday().getTime();
-		Calendar toCalendar = getFixedCalendarOnFriday();
-		// Friday
-		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(from,
-				toCalendar.getTime(), 3, TIMEZONE));
-		// Saturday
-		toCalendar.add(Calendar.DATE, 1);
-		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(from,
-				toCalendar.getTime(), 3, TIMEZONE));
-		// Sunday
-		toCalendar.add(Calendar.DATE, 1);
-		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(from,
-				toCalendar.getTime(), 3, TIMEZONE));
-		// Monday
-		toCalendar.add(Calendar.DATE, 1);
-		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(from,
-				toCalendar.getTime(), 3, TIMEZONE));
-		// Tuesday
-		toCalendar.add(Calendar.DATE, 1);
-		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(from,
-				toCalendar.getTime(), 3, TIMEZONE));
-		// Wednesday
-		toCalendar.add(Calendar.DATE, 1);
-		assertTrue(ValidationUtil.isOrLessThanWeekdaysAfter(from,
-				toCalendar.getTime(), 3, TIMEZONE));
-		// Thursday
-		toCalendar.add(Calendar.DATE, 1);
-		assertFalse(ValidationUtil.isOrLessThanWeekdaysAfter(from,
-				toCalendar.getTime(), 3, TIMEZONE));
-	}
+		for (int i = 0; i < 23; i++) {
+			absence.set(2012, 4, 28, i, 0, 0);
+			submission.set(2012, 5, 3, i, 0, 0);
+			assertFalse(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
 
-	@Test
-	public void testDateIsAtLeastThreeWeekdaysFresh_FarFuture() {
-		Calendar calendar = Calendar.getInstance(TIMEZONE);
+			absence.set(2012, 4, 28, i, 0, 0);
+			submission.set(2012, 5, 2, i, 0, 0);
+			assertFalse(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
 
-		// loop to test each day of the week
-		for (int i = 0; i < 8; i++) {
-			calendar.set(2012, 6, 30 + i, 22, 18, 55);
-			// Next week
-			calendar.add(Calendar.WEEK_OF_YEAR, 2);
-			assertTrue(ValidationUtil.isThreeOrLessWeekdaysAgo(
-					calendar.getTime(), TIMEZONE));
-			calendar.add(Calendar.WEEK_OF_YEAR, 1);
-			assertTrue(ValidationUtil.isThreeOrLessWeekdaysAgo(
-					calendar.getTime(), TIMEZONE));
-			calendar.add(Calendar.MONTH, 1);
-			assertTrue(ValidationUtil.isThreeOrLessWeekdaysAgo(
-					calendar.getTime(), TIMEZONE));
-			calendar.add(Calendar.YEAR, 1);
-			assertTrue(ValidationUtil.isThreeOrLessWeekdaysAgo(
-					calendar.getTime(), TIMEZONE));
+			absence.set(2012, 4, 28, i, 0, 0);
+			submission.set(2012, 5, 1, i, 0, 0);
+			assertFalse(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+
+			absence.set(2012, 4, 28, i, 0, 0);
+			submission.set(2012, 4, 31, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+
+			absence.set(2012, 4, 28, i, 0, 0);
+			submission.set(2012, 4, 30, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+
+			absence.set(2012, 4, 28, i, 0, 0);
+			submission.set(2012, 4, 29, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+
+			absence.set(2012, 4, 28, i, 0, 0);
+			submission.set(2012, 4, 28, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+
+			absence.set(2012, 4, 28, i, 0, 0);
+			submission.set(2012, 4, 27, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+
+			absence.set(2012, 4, 28, i, 0, 0);
+			submission.set(2012, 4, 26, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+
+			absence.set(2012, 4, 28, i, 0, 0);
+			submission.set(2012, 4, 25, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+
+			absence.set(2012, 4, 28, i, 0, 0);
+			submission.set(2012, 4, 24, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+
+			absence.set(2012, 4, 28, i, 0, 0);
+			submission.set(2012, 4, 23, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+
+			absence.set(2012, 4, 23, i, 0, 0);
+			submission.set(2012, 4, 28, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+
+			absence.set(2012, 4, 22, i, 0, 0);
+			submission.set(2012, 4, 28, i, 0, 0);
+			assertFalse(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+
+			absence.set(2012, 4, 23, i, 0, 0);
+			submission.set(2012, 4, 26, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+
+			absence.set(2012, 4, 23, i, 0, 0);
+			submission.set(2012, 4, 27, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+
+			absence.set(2012, 4, 22, i, 0, 0);
+			submission.set(2012, 4, 25, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+
+			absence.set(2012, 4, 22, i, 0, 0);
+			submission.set(2012, 4, 26, i, 0, 0);
+			assertFalse(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+
+			absence.set(2012, 4, 22, i, 0, 0);
+			submission.set(2012, 4, 27, i, 0, 0);
+			assertFalse(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+
+			absence.set(2012, 4, 22, i, 0, 0);
+			submission.set(2012, 4, 28, i, 0, 0);
+			assertFalse(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+
+			absence.set(2012, 4, 23, i, 0, 0);
+			submission.set(2012, 4, 22, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+			absence.set(2012, 4, 23, i, 0, 0);
+			submission.set(2012, 4, 23, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+			absence.set(2012, 4, 23, i, 0, 0);
+			submission.set(2012, 4, 24, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+			absence.set(2012, 4, 23, i, 0, 0);
+			submission.set(2012, 4, 25, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+			absence.set(2012, 4, 23, i, 0, 0);
+			submission.set(2012, 4, 26, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+			absence.set(2012, 4, 23, i, 0, 0);
+			submission.set(2012, 4, 27, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+			absence.set(2012, 4, 23, i, 0, 0);
+			submission.set(2012, 4, 28, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+			absence.set(2012, 4, 23, i, 0, 0);
+			submission.set(2012, 4, 29, i, 0, 0);
+			assertFalse(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+			absence.set(2012, 4, 23, i, 0, 0);
+			submission.set(2011, 7, 23, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+			absence.set(2012, 4, 23, i, 0, 0);
+			submission.set(2013, 1, 22, i, 0, 0);
+			assertFalse(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+
+			absence.set(2012, 4, 24, i, 0, 0);
+			submission.set(2012, 4, 23, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+			absence.set(2012, 4, 24, i, 0, 0);
+			submission.set(2012, 4, 24, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+			absence.set(2012, 4, 24, i, 0, 0);
+			submission.set(2012, 4, 25, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+			absence.set(2012, 4, 24, i, 0, 0);
+			submission.set(2012, 4, 26, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+			absence.set(2012, 4, 24, i, 0, 0);
+			submission.set(2012, 4, 27, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+			absence.set(2012, 4, 24, i, 0, 0);
+			submission.set(2012, 4, 28, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+			absence.set(2012, 4, 24, i, 0, 0);
+			submission.set(2012, 4, 29, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+			absence.set(2012, 4, 24, i, 0, 0);
+			submission.set(2012, 4, 30, i, 0, 0);
+			assertFalse(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+			absence.set(2012, 4, 24, i, 0, 0);
+			submission.set(2013, 4, 23, 17, 31, 0);
+			assertFalse(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+
+			absence.set(2012, 4, 25, i, 0, 0);
+			submission.set(2012, 4, 24, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+			absence.set(2012, 4, 25, i, 0, 0);
+			submission.set(2012, 4, 26, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+			absence.set(2012, 4, 25, i, 0, 0);
+			submission.set(2012, 4, 27, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+			absence.set(2012, 4, 25, i, 0, 0);
+			submission.set(2012, 4, 28, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+			absence.set(2012, 4, 25, i, 0, 0);
+			submission.set(2012, 4, 29, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+			absence.set(2012, 4, 25, i, 0, 0);
+			submission.set(2012, 4, 30, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+			absence.set(2012, 4, 25, i, 0, 0);
+			submission.set(2012, 4, 31, i, 0, 0);
+			assertFalse(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+
+			absence.set(2012, 4, 26, i, 0, 0);
+			submission.set(2012, 4, 25, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+			absence.set(2012, 4, 26, i, 0, 0);
+			submission.set(2012, 4, 26, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+			absence.set(2012, 4, 26, i, 0, 0);
+			submission.set(2012, 4, 27, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+			absence.set(2012, 4, 26, i, 0, 0);
+			submission.set(2012, 4, 28, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+			absence.set(2012, 4, 26, i, 0, 0);
+			submission.set(2012, 4, 29, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+			absence.set(2012, 4, 26, i, 0, 0);
+			submission.set(2012, 4, 30, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+			absence.set(2012, 4, 26, i, 0, 0);
+			submission.set(2012, 4, 31, i, 0, 0);
+			assertFalse(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+			absence.set(2012, 4, 26, i, 0, 0);
+			submission.set(2012, 5, 1, i, 0, 0);
+			assertFalse(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+
+			absence.set(2012, 4, 27, i, 0, 0);
+			submission.set(2012, 4, 26, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+			absence.set(2012, 4, 27, i, 0, 0);
+			submission.set(2012, 4, 27, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+			absence.set(2012, 4, 27, i, 0, 0);
+			submission.set(2012, 4, 28, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+			absence.set(2012, 4, 27, i, 0, 0);
+			submission.set(2012, 4, 29, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+			absence.set(2012, 4, 27, i, 0, 0);
+			submission.set(2012, 4, 30, i, 0, 0);
+			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+			absence.set(2012, 4, 27, i, 0, 0);
+			submission.set(2012, 4, 31, i, 0, 0);
+			assertFalse(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+			absence.set(2012, 4, 27, i, 0, 0);
+			submission.set(2012, 5, 1, i, 0, 0);
+			assertFalse(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+					submission.getTime()));
+
 		}
-	}
-
-	@Test
-	public void testDateIsAtLeastThreeWeekdaysFresh_Now() {
-		Calendar calendar = Calendar.getInstance(TIMEZONE);
-		// Now
-		assertTrue(ValidationUtil.isThreeOrLessWeekdaysAgo(calendar.getTime(),
-				TIMEZONE));
-	}
-
-	@Test
-	public void testDateIsAtLeastThreeWeekdaysFresh_FarPast() {
-		Calendar calendar = Calendar.getInstance(TIMEZONE);
-		// Last week
-		calendar.add(Calendar.WEEK_OF_YEAR, -1);
-		assertFalse(ValidationUtil.isThreeOrLessWeekdaysAgo(calendar.getTime(),
-				TIMEZONE));
-		calendar.add(Calendar.WEEK_OF_YEAR, -1);
-		assertFalse(ValidationUtil.isThreeOrLessWeekdaysAgo(calendar.getTime(),
-				TIMEZONE));
-		calendar.add(Calendar.MONTH, -1);
-		assertFalse(ValidationUtil.isThreeOrLessWeekdaysAgo(calendar.getTime(),
-				TIMEZONE));
-		calendar.add(Calendar.YEAR, -1);
-		assertFalse(ValidationUtil.isThreeOrLessWeekdaysAgo(calendar.getTime(),
-				TIMEZONE));
 	}
 
 	private Calendar getFixedCalendarOnMonday() {

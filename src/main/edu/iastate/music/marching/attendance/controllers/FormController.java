@@ -109,7 +109,7 @@ public class FormController extends AbstractController {
 
 		form.getMessageThread().setFormParent(form);
 		dataTrain.getDataStore().update(form.getMessageThread());
-		
+
 		// Update grade, it may have changed
 		dataTrain.getUsersController().update(form.getStudent());
 
@@ -346,9 +346,13 @@ public class FormController extends AbstractController {
 		}
 
 		// Check date is before cutoff but after today
+
 		if (validateDate
-				&& ValidationUtil.isThreeOrLessWeekdaysAgo(date, this.dataTrain
-						.getAppDataController().get().getTimeZone())) {
+				&& ValidationUtil.canStillSubmitFormC(
+						date,
+						Calendar.getInstance(
+								this.dataTrain.getAppDataController().get()
+										.getTimeZone()).getTime())) {
 			exp.getErrors().add("Invalid date, submitted too late");
 		}
 
@@ -372,8 +376,9 @@ public class FormController extends AbstractController {
 			start = calendar.getTime();
 
 			// End exactly one time unit before the next day starts
-			calendar.roll(Calendar.DATE, true);
-			calendar.roll(Calendar.MILLISECOND, false);
+			// TODO revert if roll was intended
+			calendar.add(Calendar.DATE, 1);
+			calendar.add(Calendar.MILLISECOND, -1);
 			end = calendar.getTime();
 
 		} else if (type == Absence.Type.Tardy) {
@@ -396,8 +401,9 @@ public class FormController extends AbstractController {
 			start = date;
 
 			// End exactly one time unit before the next day starts
-			calendar.roll(Calendar.DATE, true);
-			calendar.roll(Calendar.MILLISECOND, false);
+			// TODO revert to roll() if that was intentional
+			calendar.add(Calendar.DATE, 1);
+			calendar.add(Calendar.MILLISECOND, -1);
 			end = calendar.getTime();
 
 		} else {

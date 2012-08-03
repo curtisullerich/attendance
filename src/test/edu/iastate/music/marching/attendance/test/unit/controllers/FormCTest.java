@@ -2619,8 +2619,10 @@ public class FormCTest extends AbstractTest {
 
 		Calendar eoc = Calendar.getInstance();
 		eoc.set(2012, 7, 7, 16, 30, 0);
+		eoc.set(Calendar.MILLISECOND, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
+		start.set(Calendar.MILLISECOND, 0);
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 

@@ -75,7 +75,7 @@ public class ValidationUtil {
 
 	private static boolean validEmailDomain(String domain, DataTrain train) {
 		// TODO https://github.com/curtisullerich/attendance/issues/122
-		//This should be an application setting
+		// This should be an application setting
 		AppData app = train.getAppDataController().get();
 		return "iastate.edu".equals(domain);
 	}
@@ -108,16 +108,50 @@ public class ValidationUtil {
 	/**
 	 * Validation check for form C submission date
 	 * 
-	 * @param date
+	 * @param absenceTime
 	 * @return
 	 */
-	public static boolean isThreeOrLessWeekdaysAgo(Date date,
-			TimeZone timezone) {
-		int weekdays = 3;
+	public static boolean canStillSubmitFormC(Date absenceTime,
+			Date submissionTime) {
 
-		Date now = Calendar.getInstance(timezone).getTime();
-		
-		return isOrLessThanWeekdaysAfter(date, now, weekdays, timezone);
+		Calendar absence = Calendar.getInstance();
+		Calendar submission = Calendar.getInstance();
+		submission.setTime(submissionTime);
+		absence.setTime(absenceTime);
+		absence.set(Calendar.HOUR_OF_DAY, 0);
+		absence.set(Calendar.MINUTE, 0);
+		absence.set(Calendar.SECOND, 0);
+		absence.set(Calendar.MILLISECOND, 0);
+		submission.set(Calendar.HOUR_OF_DAY, 0);
+		submission.set(Calendar.MINUTE, 0);
+		submission.set(Calendar.SECOND, 0);
+		submission.set(Calendar.MILLISECOND, 0);
+
+		for (int i = 0; i < 3; i++) {
+			submission.add(Calendar.DATE, -1);
+			if (submission.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
+				submission.add(Calendar.DATE, -1);
+			}
+			if (submission.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+				submission.add(Calendar.DATE, -2);
+			}
+		}
+
+		if (submission.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
+			submission.add(Calendar.DATE, -1);
+		}
+		if (submission.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+			submission.add(Calendar.DATE, -2);
+		}
+
+		if (absence.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
+			absence.add(Calendar.DATE, -1);
+		}
+		if (absence.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+			absence.add(Calendar.DATE, -2);
+		}
+
+		return !absence.before(submission);
 	}
 
 	/**
@@ -132,14 +166,15 @@ public class ValidationUtil {
 	 *            maximum difference in days
 	 * @return True if from.date - to.date <= days and from < to
 	 */
-	public static boolean isOrLessThanWeekdaysAfter(Date start, Date end, int days,
-			TimeZone timezone) {
-		
-		if(days < 0)
-		{
-			throw new IllegalArgumentException("Only support positive weekday counts");
+	@Deprecated
+	public static boolean isLessThanWeekdaysAfter(Date start, Date end,
+			int days, TimeZone timezone) {
+
+		if (days < 0) {
+			throw new IllegalArgumentException(
+					"Don't support negative day counts.");
 		}
-		
+
 		Calendar startCal = Calendar.getInstance(timezone);
 		startCal.setTime(start);
 		startCal.set(Calendar.HOUR_OF_DAY, 0);
@@ -148,9 +183,9 @@ public class ValidationUtil {
 		startCal.set(Calendar.MILLISECOND, 0);
 
 		if (startCal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
-			startCal.roll(Calendar.DATE, -1);
+			startCal.add(Calendar.DATE, -1);
 		} else if (startCal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-			startCal.roll(Calendar.DATE, -2);
+			startCal.add(Calendar.DATE, -2);
 		}
 		// now if it was a weekend, it's Friday for the comparison
 
@@ -160,40 +195,37 @@ public class ValidationUtil {
 		endCal.set(Calendar.MINUTE, 0);
 		endCal.set(Calendar.SECOND, 0);
 		endCal.set(Calendar.MILLISECOND, 0);
-		
+
 		if (endCal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
-			endCal.roll(Calendar.DATE, -1);
+			endCal.add(Calendar.DATE, -1);
 		} else if (endCal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-			endCal.roll(Calendar.DATE, -2);
+			endCal.add(Calendar.DATE, -2);
 		}
 		// now if it was a weekend, it's Friday for the comparison
 
-		for(int day = 0; day < Math.abs(days); day++)
-		{
-			endCal.roll(Calendar.DATE, -1);
-			
+		for (int day = 0; day < Math.abs(days); day++) {
+			endCal.add(Calendar.DATE, -1);
+
 			if (endCal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
-				endCal.roll(Calendar.DATE, -1);
+				endCal.add(Calendar.DATE, 0);
 			} else if (endCal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-				endCal.roll(Calendar.DATE, -2);
+				endCal.add(Calendar.DATE, -1);
 			}
 			// now if it was a weekend, it's Friday for the comparison
 		}
-		
+
 		// now we should just be comparing weekend-agnostic WEEK DAYS.
-		return endCal.compareTo(startCal) <= 0;
+		return endCal.compareTo(startCal) < 0;
 	}
 
 	public static boolean isValidUniversityID(String uId) {
 		if (uId.length() != 9) {
 			return false;
-		}
-		else {
+		} else {
 			try {
 				Integer.parseInt(uId);
 				return true;
-			}
-			catch (NumberFormatException e) {
+			} catch (NumberFormatException e) {
 				return false;
 			}
 		}
