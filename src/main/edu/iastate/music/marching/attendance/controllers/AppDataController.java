@@ -57,8 +57,9 @@ public class AppDataController extends AbstractController {
 			calendar.set(Calendar.MINUTE, 35);
 			calendar.set(Calendar.MILLISECOND, 0);
 
-			calendar.roll(Calendar.MONTH, true);
-			calendar.roll(Calendar.MILLISECOND, false);
+			//TODO if this is supposed to be roll(), then revert 
+			calendar.add(Calendar.MONTH, 1);
+			calendar.add(Calendar.MILLISECOND, -1);
 			appData.setFormSubmissionCutoff(calendar.getTime());
 
 			// Defaults to "password"

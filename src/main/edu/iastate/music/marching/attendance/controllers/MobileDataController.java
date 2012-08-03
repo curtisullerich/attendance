@@ -293,7 +293,10 @@ public class MobileDataController {
 
 		// Update grades
 		for (User student : updatedStudents) {
-			uc.updateUserGrade(student);
+			// TODO we could optimize here by setting all the grades and then
+			// using an updateAll method in UserController. Just don't have time
+			// to test it now.
+			uc.update(student);
 		}
 
 		// } catch (RuntimeException ex) {
@@ -327,9 +330,8 @@ public class MobileDataController {
 
 	public void scrubUploader(User uploader) {
 		List<MobileDataUpload> uploads = getUploads(uploader);
-		
-		for(MobileDataUpload upload : uploads)
-		{
+
+		for (MobileDataUpload upload : uploads) {
 			upload.setUploader(null);
 			this.train.getDataStore().update(upload);
 		}
