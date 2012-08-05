@@ -336,23 +336,40 @@ public class FormsServlet extends AbstractBaseServlet {
 						req.getParameter("StartDay"),
 						req.getParameter("StartYear"), "0", "AM", "0", train
 								.getAppDataController().get().getTimeZone());
+			} catch (IllegalArgumentException e) {
+				validForm = false;
+				errors.add("The start date is invalid.");
+			}
+			try {
 				endDate = Util.parseDate(req.getParameter("EndMonth"),
 						req.getParameter("EndDay"),
 						req.getParameter("EndYear"), "0", "AM", "0", train
 								.getAppDataController().get().getTimeZone());
-				fromTime = Util.parseDate("1", "1", "1",
+			} catch (IllegalArgumentException e) {
+				validForm = false;
+				errors.add("The end date is invalid.");
+			}
+			try {
+				fromTime = Util.parseDate("1", "1", "1000",
 						req.getParameter("FromHour"),
 						req.getParameter("FromAMPM"),
 						req.getParameter("FromMinute"), train
 								.getAppDataController().get().getTimeZone());
-				toTime = Util.parseDate("1", "1", "1",
-						req.getParameter("ToHour"), req.getParameter("ToAMPM"),
+			} catch (IllegalArgumentException e) {
+				validForm = false;
+				errors.add("The start time is invalid.");
+			}
+			try {
+				toTime = Util.parseDate("1", "1", "1000",
+						req.getParameter("ToHour"), 
+						req.getParameter("ToAMPM"),
 						req.getParameter("ToMinute"), train
 								.getAppDataController().get().getTimeZone());
 			} catch (IllegalArgumentException e) {
 				validForm = false;
-				errors.add("Invalid Input: The input date is invalid.");
+				errors.add("The end time is invalid.");
 			}
+
 		}
 
 		if (validForm) {
@@ -459,7 +476,7 @@ public class FormsServlet extends AbstractBaseServlet {
 				}
 			} catch (IllegalArgumentException e) {
 				validForm = false;
-				errors.add("Invalid Input: The input date is invalid.");
+				errors.add("The date is invalid.");
 			}
 		}
 
