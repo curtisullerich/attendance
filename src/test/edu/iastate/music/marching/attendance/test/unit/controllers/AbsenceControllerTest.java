@@ -1867,4 +1867,266 @@ public class AbsenceControllerTest extends AbstractTest {
 		abs = (allAbs.get(0).getStart().equals(startOverlap)) ? allAbs.get(0) : allAbs.get(1);;
 		assertEquals(event2, abs.getEvent());
 	}
+
+	@Test
+	public void testECOLastMinute() {
+		DataTrain train = getDataTrain();
+		UserController uc = train.getUsersController();
+		EventController ec = train.getEventController();
+		AbsenceController ac = train.getAbsenceController();
+		
+		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
+				2, "major", User.Section.AltoSax);
+		
+		Calendar date = Calendar.getInstance();
+		date.set(2012, 8, 8, 17, 59, 0);
+		date.set(Calendar.MILLISECOND, 0);
+		Calendar start = Calendar.getInstance();
+		start.set(2012, 8, 8, 17, 0, 0);
+		Calendar end = Calendar.getInstance();
+		end.set(2012, 8, 8, 18, 0, 0);
+		end.set(Calendar.MILLISECOND, 0);
+		
+		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(), end.getTime());
+				
+		Absence a1 = ac.createOrUpdateEarlyCheckout(student, date.getTime());
+
+		assertEquals(event1, a1.getEvent());
+	}
+
+	
+	@Test
+	public void testECOLastSecond() {
+		DataTrain train = getDataTrain();
+		UserController uc = train.getUsersController();
+		EventController ec = train.getEventController();
+		AbsenceController ac = train.getAbsenceController();
+		
+		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
+				2, "major", User.Section.AltoSax);
+		
+		Calendar date = Calendar.getInstance();
+		date.set(2012, 8, 8, 17, 59, 59);
+		date.set(Calendar.MILLISECOND, 0);
+		Calendar start = Calendar.getInstance();
+		start.set(2012, 8, 8, 17, 0, 0);
+		Calendar end = Calendar.getInstance();
+		end.set(2012, 8, 8, 18, 0, 0);
+		end.set(Calendar.MILLISECOND, 0);
+
+		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(), end.getTime());
+				
+		Absence a1 = ac.createOrUpdateEarlyCheckout(student, date.getTime());
+
+		assertEquals(event1, a1.getEvent());
+	}
+
+	@Test
+	public void testTardyLastSecond() {
+		DataTrain train = getDataTrain();
+		UserController uc = train.getUsersController();
+		EventController ec = train.getEventController();
+		AbsenceController ac = train.getAbsenceController();
+		
+		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
+				2, "major", User.Section.AltoSax);
+		
+		Calendar date = Calendar.getInstance();
+		date.set(2012, 8, 8, 17, 59, 59);
+		date.set(Calendar.MILLISECOND, 0);
+		Calendar start = Calendar.getInstance();
+		start.set(2012, 8, 8, 17, 0, 0);
+		Calendar end = Calendar.getInstance();
+		end.set(2012, 8, 8, 18, 0, 0);
+		end.set(Calendar.MILLISECOND, 0);
+
+		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(), end.getTime());
+				
+		Absence a1 = ac.createOrUpdateTardy(student, date.getTime());
+
+		assertEquals(event1, a1.getEvent());
+	}
+
+	@Test
+	public void testTardyLastMinute() {
+		DataTrain train = getDataTrain();
+		UserController uc = train.getUsersController();
+		EventController ec = train.getEventController();
+		AbsenceController ac = train.getAbsenceController();
+		
+		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
+				2, "major", User.Section.AltoSax);
+		
+		Calendar date = Calendar.getInstance();
+		date.set(2012, 8, 8, 17, 59, 0);
+		date.set(Calendar.MILLISECOND, 0);
+		Calendar start = Calendar.getInstance();
+		start.set(2012, 8, 8, 17, 0, 0);
+		Calendar end = Calendar.getInstance();
+		end.set(2012, 8, 8, 18, 0, 0);
+		end.set(Calendar.MILLISECOND, 0);
+		
+		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(), end.getTime());
+				
+		Absence a1 = ac.createOrUpdateTardy(student, date.getTime());
+
+		assertEquals(event1, a1.getEvent());
+	}
+
+	@Test
+	public void testTardyLastMillisecond() {
+		DataTrain train = getDataTrain();
+		UserController uc = train.getUsersController();
+		EventController ec = train.getEventController();
+		AbsenceController ac = train.getAbsenceController();
+		
+		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
+				2, "major", User.Section.AltoSax);
+		
+		Calendar date = Calendar.getInstance();
+		date.set(2012, 8, 8, 17, 59, 59);
+		date.set(Calendar.MILLISECOND, 999);
+		Calendar start = Calendar.getInstance();
+		start.set(2012, 8, 8, 17, 0, 0);
+		Calendar end = Calendar.getInstance();
+		end.set(2012, 8, 8, 18, 0, 0);
+		end.set(Calendar.MILLISECOND, 0);
+		
+		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(), end.getTime());
+				
+		Absence a1 = ac.createOrUpdateTardy(student, date.getTime());
+
+		assertEquals(event1, a1.getEvent());
+	}
+
+	@Test
+	public void testTardyOnEnd() {
+		DataTrain train = getDataTrain();
+		UserController uc = train.getUsersController();
+		EventController ec = train.getEventController();
+		AbsenceController ac = train.getAbsenceController();
+		
+		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
+				2, "major", User.Section.AltoSax);
+		
+		Calendar date = Calendar.getInstance();
+		date.set(2012, 8, 8, 18, 0, 0);
+		date.set(Calendar.MILLISECOND, 0);
+		Calendar start = Calendar.getInstance();
+		start.set(2012, 8, 8, 17, 0, 0);
+		Calendar end = Calendar.getInstance();
+		end.set(2012, 8, 8, 18, 0, 0);
+		end.set(Calendar.MILLISECOND, 0);
+		
+		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(), end.getTime());
+				
+		Absence a1 = ac.createOrUpdateTardy(student, date.getTime());
+
+		assertEquals(event1, a1.getEvent());
+	}
+
+	@Test
+	public void testECOLastMillisecond() {
+		DataTrain train = getDataTrain();
+		UserController uc = train.getUsersController();
+		EventController ec = train.getEventController();
+		AbsenceController ac = train.getAbsenceController();
+		
+		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
+				2, "major", User.Section.AltoSax);
+		
+		Calendar date = Calendar.getInstance();
+		date.set(2012, 8, 8, 17, 59, 59);
+		date.set(Calendar.MILLISECOND, 999);
+		Calendar start = Calendar.getInstance();
+		start.set(2012, 8, 8, 17, 0, 0);
+		Calendar end = Calendar.getInstance();
+		end.set(2012, 8, 8, 18, 0, 0);
+		end.set(Calendar.MILLISECOND, 0);
+		
+		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(), end.getTime());
+				
+		Absence a1 = ac.createOrUpdateEarlyCheckout(student, date.getTime());
+
+		assertEquals(event1, a1.getEvent());
+	}
+
+	@Test
+	public void testECOOnEnd() {
+		DataTrain train = getDataTrain();
+		UserController uc = train.getUsersController();
+		EventController ec = train.getEventController();
+		AbsenceController ac = train.getAbsenceController();
+		
+		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
+				2, "major", User.Section.AltoSax);
+		
+		Calendar date = Calendar.getInstance();
+		date.set(2012, 8, 8, 18, 0, 0);
+		date.set(Calendar.MILLISECOND, 0);
+		Calendar start = Calendar.getInstance();
+		start.set(2012, 8, 8, 17, 0, 0);
+		Calendar end = Calendar.getInstance();
+		end.set(2012, 8, 8, 18, 0, 0);
+		end.set(Calendar.MILLISECOND, 0);
+		
+		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(), end.getTime());
+				
+		Absence a1 = ac.createOrUpdateEarlyCheckout(student, date.getTime());
+
+		assertEquals(event1, a1.getEvent());
+	}
+
+	public void testTardyOverEnd() {
+		DataTrain train = getDataTrain();
+		UserController uc = train.getUsersController();
+		EventController ec = train.getEventController();
+		AbsenceController ac = train.getAbsenceController();
+		
+		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
+				2, "major", User.Section.AltoSax);
+		
+		Calendar date = Calendar.getInstance();
+		date.set(2012, 8, 8, 18, 0, 0);
+		date.set(Calendar.MILLISECOND, 1);
+		Calendar start = Calendar.getInstance();
+		start.set(2012, 8, 8, 17, 0, 0);
+		Calendar end = Calendar.getInstance();
+		end.set(2012, 8, 8, 18, 0, 0);
+		end.set(Calendar.MILLISECOND, 0);
+		
+		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(), end.getTime());
+				
+		Absence a1 = ac.createOrUpdateEarlyCheckout(student, date.getTime());
+
+		assertTrue(!event1.equals(a1.getEvent()));
+	}
+
+	@Test
+	public void testECOOverEnd() {
+		DataTrain train = getDataTrain();
+		UserController uc = train.getUsersController();
+		EventController ec = train.getEventController();
+		AbsenceController ac = train.getAbsenceController();
+		
+		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
+				2, "major", User.Section.AltoSax);
+		
+		Calendar date = Calendar.getInstance();
+		date.set(2012, 8, 8, 18, 0, 0);
+		date.set(Calendar.MILLISECOND, 1);
+		Calendar start = Calendar.getInstance();
+		start.set(2012, 8, 8, 17, 0, 0);
+		Calendar end = Calendar.getInstance();
+		end.set(2012, 8, 8, 18, 0, 0);
+		end.set(Calendar.MILLISECOND, 0);
+		
+		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(), end.getTime());
+				
+		Absence a1 = ac.createOrUpdateEarlyCheckout(student, date.getTime());
+
+		assertTrue(!event1.equals(a1.getEvent()));
+	}
+
+	
 }
