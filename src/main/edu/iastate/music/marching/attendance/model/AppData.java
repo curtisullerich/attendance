@@ -1,6 +1,7 @@
 package edu.iastate.music.marching.attendance.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -84,5 +85,12 @@ public class AppData implements Serializable {
 	
 	public void setDatastoreVersion(int version) {
 		this.datastoreVersion = version;
+	}
+
+	public List<TimeZone> getTimezoneOptions() {
+		
+		List<TimeZone> opts = new ArrayList<TimeZone>();
+		opts.add(TimeZone.getTimeZone("CST"));
+		return opts;
 	}
 }

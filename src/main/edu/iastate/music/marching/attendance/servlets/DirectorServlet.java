@@ -14,6 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
@@ -47,8 +48,9 @@ public class DirectorServlet extends AbstractBaseServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 6100206975846317440L;
-	
-	private static final Logger LOG = Logger.getLogger(DirectorServlet.class.getName());
+
+	private static final Logger LOG = Logger.getLogger(DirectorServlet.class
+			.getName());
 
 	public enum Page {
 		index, appinfo, attendance, export, forms, unanchored, users, user, stats, info, viewabsence, student, makeevent, deletestudent, studentinfo, viewevent, deleteevent;
@@ -298,14 +300,14 @@ public class DirectorServlet extends AbstractBaseServlet {
 				errors.add("Invalid event id");
 			}
 			if (event != null) {
-				//page.setAttribute("success_message", "Event deleted");
+				// page.setAttribute("success_message", "Event deleted");
 				success = "Event deleted";
 				if (sremoveAnchored != null) {
 					if (sremoveAnchored.equals("true")) {
 						AbsenceController ac = train.getAbsenceController();
 						List<Absence> todie = ac.getAll(event);
 						ac.remove(todie);
-//						page.setAttribute("success_message","Event and associated absences deleted.");
+						// page.setAttribute("success_message","Event and associated absences deleted.");
 						success = "Event and associated absences deleted.";
 					}
 				}
@@ -317,7 +319,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		} else {
 			errors.add("Invalid event id");
-			//page.setAttribute("errors", errors);
+			// page.setAttribute("errors", errors);
 		}
 
 		showAttendance(req, resp, errors, success);
@@ -344,7 +346,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 			director.setFirstName(first);
 			director.setLastName(last);
 			train.getUsersController().update(director);
-//			req.setAttribute("success_message", "Info saved successfully.");
+			// req.setAttribute("success_message", "Info saved successfully.");
 			success = "Info saved.";
 		}
 		showInfo(req, resp, errors, success);
@@ -353,7 +355,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 	private void postStudentInfo(HttpServletRequest req,
 			HttpServletResponse resp) throws ServletException, IOException {
 		DataTrain train = DataTrain.getAndStartTrain();
-		
+
 		List<String> errors = new ArrayList<String>();
 		String success = "";
 
@@ -399,24 +401,25 @@ public class DirectorServlet extends AbstractBaseServlet {
 		user.setLastName(lastName);
 		user.setRank(rank);
 		// TODO https://github.com/curtisullerich/attendance/issues/118
-		//May throw validation exceptions
+		// May throw validation exceptions
 		try {
 			uc.update(user);
-			success = "All user information " + 
-					((errors.size() != 0) ? "except minutes available " : "") + "saved.";
-		}
-		catch (IllegalArgumentException e) {
+			success = "All user information "
+					+ ((errors.size() != 0) ? "except minutes available " : "")
+					+ "saved.";
+		} catch (IllegalArgumentException e) {
 			errors.add("Unable to save student information: " + e.getMessage());
 		}
 
 		// so the user can get it
 		req.setAttribute("id", netid.toString());
-//		if (success) {
-//			req.setAttribute("success_message", "Info successfully updated.");
-//		}
-//		else {
-//			req.setAttribute("error_messages", Arrays.asList("Info couldn't be saved"));
-//		}
+		// if (success) {
+		// req.setAttribute("success_message", "Info successfully updated.");
+		// }
+		// else {
+		// req.setAttribute("error_messages",
+		// Arrays.asList("Info couldn't be saved"));
+		// }
 		showStudent(req, resp, errors, success);
 	}
 
@@ -431,12 +434,11 @@ public class DirectorServlet extends AbstractBaseServlet {
 			User todie = uc.get(sid);
 			uc.delete(todie);
 			success = "Student successfully deleted.";
-		}
-		else {
+		} else {
 			errors.add("Unable to delete student.");
 		}
 
-		//add a success or error message
+		// add a success or error message
 		showAttendance(req, resp, errors, success);
 	}
 
@@ -446,7 +448,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		EventController ec = train.getEventController();
 		List<String> errors = new LinkedList<String>();
 		String success = "";
-		
+
 		try {
 			Date start = Util.parseDate(req.getParameter("Month"),
 					req.getParameter("Day"), req.getParameter("Year"),
@@ -468,8 +470,8 @@ public class DirectorServlet extends AbstractBaseServlet {
 			errors.add("Invalid Input: The input date was invalid.");
 		} catch (IllegalArgumentException e) {
 			errors.add("Invalid Input: The input date is invalid.");
-		} 
-		//show success message?
+		}
+		// show success message?
 		resp.sendRedirect("/director/unanchored");
 		showUnanchored(req, resp, errors, success);
 	}
@@ -480,7 +482,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		AbsenceController ac = train.getAbsenceController();
 		EventController ec = train.getEventController();
 		int count = Integer.parseInt(req.getParameter("UnanchoredCount"));
-		
+
 		int numLinked = 0;
 		for (int i = 0; i <= count; i++) {
 			String eventID = req.getParameter("EventID" + i);
@@ -496,8 +498,9 @@ public class DirectorServlet extends AbstractBaseServlet {
 				}
 			}
 		}
-		//show success message and add error messages?
-		showUnanchored(req, resp, null, numLinked + ((numLinked == 1) ? " absence " : " absences ") + "linked.");
+		// show success message and add error messages?
+		showUnanchored(req, resp, null, numLinked
+				+ ((numLinked == 1) ? " absence " : " absences ") + "linked.");
 	}
 
 	private void postAbsenceInfo(HttpServletRequest req,
@@ -617,6 +620,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		String newPass = null;
 		String success = null;
 		String newPassConf = null;
+		String timezone = null;
 		String title = null;
 		List<String> emailList = null;
 		if (!ValidationUtil.isPost(req)) {
@@ -642,6 +646,19 @@ public class DirectorServlet extends AbstractBaseServlet {
 			} else {
 				data.setTimeWorkedEmails(emailList);
 			}
+			timezone = req.getParameter("Timezone");
+
+			if (timezone == null || timezone.equals("")) {
+				errors.add("Invalid Input: Timezone can't be empty.");
+			}
+
+			TimeZone zone = TimeZone.getTimeZone(timezone);
+			if (zone == null) {
+				errors.add("Not a valid timezone.");
+			} else {
+				data.setTimeZone(zone);
+			}
+
 			// Handle the thrown exception
 			Date testDate = null;
 			try {
@@ -687,7 +704,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		if (validForm) {
 			appDataController.save(data);
 		}
-		
+
 		if (errors.size() == 0) {
 			success = "App info updated.";
 		}
@@ -695,7 +712,8 @@ public class DirectorServlet extends AbstractBaseServlet {
 	}
 
 	private void showAppInfo(HttpServletRequest req, HttpServletResponse resp,
-			List<String> errors, String success) throws ServletException, IOException {
+			List<String> errors, String success) throws ServletException,
+			IOException {
 
 		DataTrain train = DataTrain.getAndStartTrain();
 
@@ -713,6 +731,8 @@ public class DirectorServlet extends AbstractBaseServlet {
 		page.setAttribute("Month", cutoffDate.get(Calendar.MONTH) + 1);
 
 		page.setAttribute("Day", cutoffDate.get(Calendar.DATE));
+
+		page.setAttribute("timezones", data.getTimezoneOptions());
 
 		page.setAttribute("ToHour", (cutoffDate.get(Calendar.HOUR) == 0) ? 12
 				: cutoffDate.get(Calendar.HOUR));
@@ -770,8 +790,8 @@ public class DirectorServlet extends AbstractBaseServlet {
 				}
 			}
 		};
-		// TODO https://github.com/curtisullerich/attendance/issues/117 
-		//is there better way to do this? Note that otherwise, events
+		// TODO https://github.com/curtisullerich/attendance/issues/117
+		// is there better way to do this? Note that otherwise, events
 		// print in the order of creation, NOT date order.
 		Collections.sort(students, studentComparator);
 		Collections.sort(events, eventComparator);
@@ -837,12 +857,13 @@ public class DirectorServlet extends AbstractBaseServlet {
 		page.setPageTitle("Unanchored");
 		page.setAttribute("error_messages", errors);
 		page.setAttribute("success_message", success);
-		
+
 		page.passOffToJsp(req, resp);
 	}
 
-	private void showInfo(HttpServletRequest req, HttpServletResponse resp, List<String> errors, String success)
-			throws IOException, ServletException {
+	private void showInfo(HttpServletRequest req, HttpServletResponse resp,
+			List<String> errors, String success) throws IOException,
+			ServletException {
 
 		PageBuilder page = new PageBuilder(Page.info, SERVLET_PATH);
 
@@ -879,7 +900,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		localUser.setSecondaryEmail(secondEmail);
 
 		// TODO https://github.com/curtisullerich/attendance/issues/115
-		//May throw validation exceptions
+		// May throw validation exceptions
 		uc.update(localUser);
 
 		showUsers(req, resp);
@@ -1043,8 +1064,9 @@ public class DirectorServlet extends AbstractBaseServlet {
 		}
 	}
 
-	private void showStudent(HttpServletRequest req, HttpServletResponse resp, List<String> errors, 
-			String success) throws ServletException, IOException {
+	private void showStudent(HttpServletRequest req, HttpServletResponse resp,
+			List<String> errors, String success) throws ServletException,
+			IOException {
 
 		DataTrain train = DataTrain.getAndStartTrain();
 

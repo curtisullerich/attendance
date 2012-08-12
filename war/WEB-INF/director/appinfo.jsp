@@ -96,6 +96,16 @@
 				Please enter the <b>last</b> acceptable day/time for submitting Performance Absence Requests.
 			</dd>
 			
+			<dt><label for="Timezone">Timezone</label></dt>
+			<dd>
+				<select name="Timezone">
+					<c:forEach items="${timezones}" var="zone">
+						<option ${zone.displayName} ${timezone eq zone ? 'selected' : ''}>${zone.displayName}</option>
+					</c:forEach>
+				</select>
+			</dd>			
+			
+			
 			<dt><label for="TimeWorkedEmails">Valid Time Worked Emails for Form D</label></dt>
 			<dd>
 				<select id="TimeWorkedEmails" name="TimeWorkedEmails" size="10">
