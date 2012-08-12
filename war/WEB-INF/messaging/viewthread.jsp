@@ -121,7 +121,7 @@
 			</c:if>
 			<c:if test="${thread.formParent.type.displayName eq 'D'}">
 				Date: <fmt:formatDate value="${thread.formParent.start}" pattern="M/d/yy"/><br/>
-				${thread.formParent.minutesWorked} ${thread.formParent.emailStatus} minutes worked for ${thread.formParent.emailto}<br/>
+				${thread.formParent.minutesWorked} ${thread.formParent.emailStatus} minutes worked for ${thread.formParent.emailTo}<br/>
 			</c:if>
 			Approved by director? - ${thread.formParent.status }<br/>
 		</c:if>

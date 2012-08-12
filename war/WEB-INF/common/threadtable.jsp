@@ -49,7 +49,7 @@
 									<p>${thread.formParent.status} Form C - ${thread.formParent.absenceType eq 'EarlyCheckOut' ? "ECO" : thread.formParent.absenceType}. <fmt:formatDate value="${thread.formParent.start}" pattern="M/d/yy - h:mm a"/></p>
 								</c:if>
 								<c:if test="${thread.formParent.type.displayName eq 'D'}">
-									<p>${thread.formParent.status} Form D - <fmt:formatDate value="${thread.formParent.start}" pattern="M/d/yy"/>. ${thread.formParent.minutesWorked} mins for ${thread.formParent.emailto}</p>
+									<p>${thread.formParent.status} Form D - <fmt:formatDate value="${thread.formParent.start}" pattern="M/d/yy"/>. ${thread.formParent.minutesWorked} mins for ${thread.formParent.emailTo}</p>
 								</c:if>
 							</c:if>
 							<c:if test="${not empty thread.absenceParent}">
