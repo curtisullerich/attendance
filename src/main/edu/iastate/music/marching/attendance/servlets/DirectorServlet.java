@@ -1083,6 +1083,13 @@ public class DirectorServlet extends AbstractBaseServlet {
 			List<MessageThread> messageThreads = train.getMessagingController()
 					.get(student);
 
+			List<MessageThread> messageThreadsNonEmpty = new ArrayList<MessageThread>();
+			for (MessageThread mt : messageThreads) {
+				if (mt.getMessages() != null && !mt.getMessages().isEmpty()) {
+					messageThreadsNonEmpty.add(mt);
+				}
+			}
+
 			page.setPageTitle("Attendance");
 
 			List<Absence> absences = train.getAbsenceController().get(student);
@@ -1090,7 +1097,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 			page.setAttribute("user", student);
 			page.setAttribute("forms", fc.get(student));
 			page.setAttribute("absences", absences);
-			page.setAttribute("threads", messageThreads);
+			page.setAttribute("threads", messageThreadsNonEmpty);
 			page.setAttribute("sections", User.Section.values());
 
 			// Pass through any success message in the url parameters sent from
