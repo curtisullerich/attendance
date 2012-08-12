@@ -106,7 +106,8 @@ public class ValidationUtil {
 	}
 
 	/**
-	 * Validation check for form C submission date
+	 * Validation check for form C submission date. Verifies that it is no more
+	 * than three weekdays since the absence.
 	 * 
 	 * @param absenceTime
 	 * @return

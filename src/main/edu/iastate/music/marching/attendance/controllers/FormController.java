@@ -348,7 +348,7 @@ public class FormController extends AbstractController {
 		// Check date is before cutoff but after today
 
 		if (validateDate
-				&& ValidationUtil.canStillSubmitFormC(
+				&& !ValidationUtil.canStillSubmitFormC(
 						date,
 						Calendar.getInstance(
 								this.dataTrain.getAppDataController().get()
