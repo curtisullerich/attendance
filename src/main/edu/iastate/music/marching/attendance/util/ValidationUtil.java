@@ -57,9 +57,8 @@ public class ValidationUtil {
 		return PATTERN_EMAIL.matcher(email.getEmail()).matches();
 	}
 	
-	public static boolean isUniqueSecondaryEmail(Email email, DataTrain train) {
-		//TODO
-		return train.getUsersController().isUniqueSecondaryEmail(email);
+	public static boolean isUniqueSecondaryEmail(Email checkEmail, Email primary, DataTrain train) {
+		return train.getUsersController().isUniqueSecondaryEmail(checkEmail, primary);
 		
 	}
 

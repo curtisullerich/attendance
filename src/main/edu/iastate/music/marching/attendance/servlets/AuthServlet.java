@@ -249,7 +249,7 @@ public class AuthServlet extends AbstractBaseServlet {
 		if (!ValidationUtil.validSecondaryEmail(secondEmail, train)) {
 			errors.add("Invalid secondary email");
 		}
-		if (!ValidationUtil.isUniqueSecondaryEmail(secondEmail, train)) {
+		if (!ValidationUtil.isUniqueSecondaryEmail(secondEmail, new Email(google_user.getEmail()), train)) {
 			errors.add("Non-unique secondary email");
 		}
 
