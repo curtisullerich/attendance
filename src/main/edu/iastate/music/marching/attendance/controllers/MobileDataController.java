@@ -27,6 +27,7 @@ public class MobileDataController {
 	private static final String SEPARATOR = "&split&";
 	private static final SimpleDateFormat MOBILE_DATETIME_FORMAT = new SimpleDateFormat(
 			"yyyy-MM-dd HHmm");
+			
 	private static final Object EVENT_TYPE_REHERSAL = null;
 	private static final Object EVENT_TYPE_PERFORMANCE = null;
 
@@ -82,6 +83,9 @@ public class MobileDataController {
 
 	public String pushMobileData(String data, User uploader)
 			throws IllegalArgumentException {
+				
+		// Set the correct timezone
+		MOBILE_DATETIME_FORMAT.setTimezone(this.train.getAppDataController().get().getTimeZone());
 
 		// First let's log what is being uploaded
 		MobileDataUpload upload = ModelFactory.newMobileDataUpload(
