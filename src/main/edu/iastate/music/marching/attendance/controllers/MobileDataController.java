@@ -85,7 +85,7 @@ public class MobileDataController {
 			throws IllegalArgumentException {
 				
 		// Set the correct timezone
-		MOBILE_DATETIME_FORMAT.setTimezone(this.train.getAppDataController().get().getTimeZone());
+		MOBILE_DATETIME_FORMAT.setTimeZone(this.train.getAppDataController().get().getTimeZone());
 
 		// First let's log what is being uploaded
 		MobileDataUpload upload = ModelFactory.newMobileDataUpload(

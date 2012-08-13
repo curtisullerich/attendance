@@ -100,7 +100,8 @@
 			<dd>
 				<select name="Timezone">
 					<c:forEach items="${timezones}" var="zone">
-						<option ${zone.displayName} ${timezone eq zone ? 'selected' : ''}>${zone.displayName}</option>
+						<option> </option>
+						<option ${zone.ID} ${timezone.ID eq zone.ID ? 'selected' : ''}>${zone.ID}</option>
 					</c:forEach>
 				</select>
 			</dd>			

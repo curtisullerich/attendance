@@ -88,7 +88,6 @@ public class AppData implements Serializable {
 	}
 
 	public List<TimeZone> getTimezoneOptions() {
-		
 		List<TimeZone> opts = new ArrayList<TimeZone>();
 		opts.add(TimeZone.getTimeZone("CST"));
 		return opts;
