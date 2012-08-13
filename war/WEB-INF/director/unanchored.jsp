@@ -61,6 +61,7 @@
 					<c:choose>
 						<c:when test="${(absence.type.tardy) || (absence.type.earlyCheckOut)}">
 						<td onclick="window.location='/director/viewabsence?absenceid=${absence.id}'">
+							<fmt:formatDate value="${absence.start}" pattern="M/d/yy" />
 							<fmt:formatDate value="${absence.start}" pattern="hh:mm a" />
 						</td>
 						</c:when>

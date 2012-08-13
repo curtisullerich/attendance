@@ -49,10 +49,11 @@
 				curList.sort();
 				for (var i = 0; i < curList.length; i++) {
 					var key = curList[i][1];
-					var student = new Array(2);
+					var student = new Array(3);
 					//create array of student names and netIDs
 					student[0] = keyDelimiter(key,"netID");
 					student[1] = keyDelimiter(key,"name");
+					student[2] = keyDelimiter(key,"rank");
 					array.push(student);
 				}
 				//push array of student names and netIDs to the list
@@ -116,7 +117,7 @@
 				var form = "<form id='absences' name='absences' method='get'>\n";
 				//create each checkbox in the form
 				for (var i = 0; i < array.length; i++) {
-					form += '<input type="checkbox" name="student" value="'+array[i][0]+'">'+array[i][1]+'<br>\n';
+					form += '<input type="checkbox" name="student" value="'+array[i][0]+'">'+array[i][1]+' ' +array[i][2]+'<br>\n';
 				}
 				form += "</form>";
 				//set the html form to the created form

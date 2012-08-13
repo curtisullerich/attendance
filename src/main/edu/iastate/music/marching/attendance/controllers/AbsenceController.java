@@ -774,9 +774,10 @@ public class AbsenceController extends AbstractController {
 	 */
 	public void remove(Absence todie) {
 		ObjectDatastore od = this.train.getDataStore();
-
+	
+		od.delete(todie.getMessageThread());
 		od.delete(todie);
-
+		
 		// Finally check for side-effects caused by absence
 		// this also checks the students grade
 		train.getUsersController().update(todie.getStudent());

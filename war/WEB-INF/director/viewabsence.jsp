@@ -77,6 +77,11 @@
 			</c:if>
 		</form>
 	
+	<form method="post" accept-charset="utf-8">
+		<c:if test="${not new }">
+			<input type="submit" value="Delete Absence" name="delete"/>
+		</c:if> 
+	</form>
 	
 		<jsp:include page="/WEB-INF/template/footer.jsp" />	
 	</body>

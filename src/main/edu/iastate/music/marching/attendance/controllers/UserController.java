@@ -41,7 +41,19 @@ public class UserController extends AbstractController {
 
 		return find.returnCount().now();
 	}
+	
+	public boolean isUniqueId(String id) {
+		RootFindCommand<User> find = this.datatrain.find(User.class);
+		find.addFilter(User.FIELD_UNIVERSITY_ID, FilterOperator.EQUAL, id);
+		return find.returnCount().now() == 0;
+	}
 
+	public boolean isUniqueSecondaryEmail(Email email) {
+		RootFindCommand<User> find = this.datatrain.find(User.class);
+		find.addFilter(User.FIELD_SECONDARY_EMAIL, FilterOperator.EQUAL, email);
+		return find.returnCount().now() == 0;
+	}
+	
 	public User createStudent(com.google.appengine.api.users.User google_user,
 			String univID, String firstName, String lastName, int year,
 			String major, User.Section section, Email secondaryEmail)
@@ -96,12 +108,18 @@ public class UserController extends AbstractController {
 		if (!ValidationUtil.isValidUniversityID(uId)) {
 			throw new IllegalArgumentException("Invalid university id");
 		}
+		
+		if (!ValidationUtil.isUniqueId(uId)) {
+			throw new IllegalArgumentException("University id was not unique");
+		}
 
 		// Check secondary email
 		if (!ValidationUtil.validSecondaryEmail(user.getSecondaryEmail(),
 				this.datatrain))
 			throw new IllegalArgumentException("Invalid secondary email");
-
+//		if (!ValidationUtil.isUniqueSecondaryEmail(user.getSecondaryEmail(), datatrain)) {
+//			throw new IllegalArgumentException("Non-unique secondary email");
+//		}
 		// Check student specific things
 		if (user.getType() == User.Type.Student) {
 			String major = user.getMajor();
@@ -132,7 +150,8 @@ public class UserController extends AbstractController {
 		Email secondaryEmail = new Email(loginEmail);
 		ValidationUtil.validPrimaryEmail(primaryEmail, this.datatrain);
 		ValidationUtil.validSecondaryEmail(secondaryEmail, this.datatrain);
-
+		//ValidationUtil.isUniqueSecondaryEmail(secondaryEmail, train);
+		
 		// Check no duplicate users exist
 		if (get(primaryEmail) != null)
 			throw new IllegalArgumentException(

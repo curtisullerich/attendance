@@ -24,6 +24,8 @@ public class User implements Serializable {
 	public static final String FIELD_PRIMARY_EMAIL = "email";
 
 	public static final String FIELD_SECONDARY_EMAIL = "secondEmail";
+	
+	public static final String FIELD_UNIVERSITY_ID = "universityID";
 
 	public enum Type {
 		Student, TA, Director;
@@ -108,6 +110,7 @@ public class User implements Serializable {
 	@Index
 	private Email secondEmail;
 
+	@Index
 	private String universityID;
 
 	private Section section;

@@ -56,6 +56,12 @@ public class ValidationUtil {
 
 		return PATTERN_EMAIL.matcher(email.getEmail()).matches();
 	}
+	
+	public static boolean isUniqueSecondaryEmail(Email email, DataTrain train) {
+		//TODO
+		return train.getUsersController().isUniqueSecondaryEmail(email);
+		
+	}
 
 	@Deprecated
 	public static boolean validGoogleUser(
@@ -230,6 +236,10 @@ public class ValidationUtil {
 				return false;
 			}
 		}
+	}
+
+	public static boolean isUniqueId(String id) {
+		return DataTrain.getAndStartTrain().getUsersController().isUniqueId(id);
 	}
 
 	public static boolean isValidMajor(String major) {

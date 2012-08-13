@@ -28,6 +28,7 @@ import edu.iastate.music.marching.attendance.controllers.AppDataController;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.EventController;
 import edu.iastate.music.marching.attendance.controllers.FormController;
+import edu.iastate.music.marching.attendance.controllers.MessagingController;
 import edu.iastate.music.marching.attendance.controllers.UserController;
 import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.AppData;
@@ -517,6 +518,10 @@ public class DirectorServlet extends AbstractBaseServlet {
 			validForm = false;
 		} else {
 			String absid = req.getParameter("absenceid");
+			if (req.getParameter("delete") != null) {
+				deleteAbsence(absid, ac, req, resp);
+				return;
+			}
 			long aid;
 			Absence toUpdate = null;
 			if (absid != null) {
@@ -600,6 +605,22 @@ public class DirectorServlet extends AbstractBaseServlet {
 				viewAbsence(req, resp, errors);
 			}
 		}
+	}
+
+	private void deleteAbsence(String absid, AbsenceController ac, 
+			HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		List<String> errors = new ArrayList<String>();
+		try {
+			Absence a = ac.get(Integer.parseInt(absid));
+			ac.remove(a);
+			showAttendance(req, resp, errors, "Successfully deleted absence.");
+		}
+		catch (NumberFormatException e) {
+			LOG.severe("Unable to find absence to delete.");
+			errors.add("Internal error, unable to delete absence.");
+			viewAbsence(req, resp, errors);
+		}
+		
 	}
 
 	private void postAppInfo(HttpServletRequest req, HttpServletResponse resp)

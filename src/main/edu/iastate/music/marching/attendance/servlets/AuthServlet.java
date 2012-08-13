@@ -223,6 +223,10 @@ public class AuthServlet extends AbstractBaseServlet {
 			errors.add("University ID was not valid");
 		}
 		
+		if(!ValidationUtil.isUniqueId(univID)) {
+			errors.add("University ID was not unique");
+		}
+		
 		try {
 			year = Integer.parseInt(req.getParameter("Year"));
 		} catch (NumberFormatException e) {
@@ -245,6 +249,9 @@ public class AuthServlet extends AbstractBaseServlet {
 		if (!ValidationUtil.validSecondaryEmail(secondEmail, train)) {
 			errors.add("Invalid secondary email");
 		}
+//		if (!ValidationUtil.isUniqueSecondaryEmail(secondEmail, train)) {
+//			errors.add("Non-unique secondary email");
+//		}
 
 		if (errors.size() == 0) {
 			try {
