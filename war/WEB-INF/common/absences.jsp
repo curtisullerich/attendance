@@ -39,12 +39,20 @@
 				</c:choose>
 				<tr>
 					<c:if test="${empty absence.event}">
-						<td onclick="window.location='${absence_url_view}'">
+						<td 
+							<c:if test="${auth.user.type.director }">
+							onclick="window.location='${absence_url_view}'"
+							</c:if>
+						>
 							No event.
 						</td>
 					</c:if>
 					<c:if test="${not empty absence.event}">
-						<td onclick="window.location='${absence_url_view}'">
+						<td 
+							<c:if test="${auth.user.type.director }">
+							onclick="window.location='${absence_url_view}'"
+							</c:if>
+						>
 							<c:out value="${absence.event.type}" />
 							<fmt:formatDate value="${absence.event.start}" pattern="M/d" />
 							<fmt:formatDate value="${absence.event.start}" pattern="h:mm a" />
@@ -53,16 +61,32 @@
 						</td>
 					</c:if>
 
-					<td onclick="window.location='${absence_url_view}'">${absence.type}</td>
-					<td onclick="window.location='${absence_url_view}'">${absence.status}</td>
+					<td 
+						<c:if test="${auth.user.type.director }">
+						onclick="window.location='${absence_url_view}'"
+						</c:if>
+					>
+					<td 
+						<c:if test="${auth.user.type.director }">
+						onclick="window.location='${absence_url_view}'"
+						</c:if>
+					>
 					<c:choose>
 						<c:when test="${(absence.type.tardy) || (absence.type.earlyCheckOut)}">
-						<td onclick="window.location='${absence_url_view}'">
+						<td 
+							<c:if test="${auth.user.type.director }">
+							onclick="window.location='${absence_url_view}'"
+							</c:if>
+						>
 							<fmt:formatDate value="${absence.start}" pattern="h:mm a" />
 						</td>
 						</c:when>
 						<c:when test="${(absence.type.absence) && (empty absence.event)}">
-						<td onclick="window.location='${absence_url_view}'">
+						<td 
+							<c:if test="${auth.user.type.director }">
+							onclick="window.location='${absence_url_view}'"
+							</c:if>
+						>
 							<fmt:formatDate value="${absence.start}" pattern="M/d" />
 							<fmt:formatDate value="${absence.start}" pattern="h:mm a" />
 							-
@@ -70,7 +94,7 @@
 						</td>
 						</c:when>
 						<c:when test="${(absence.type.absence) && (not empty absence.event)}">
-							<td onclick="window.location='${absence_url_view}'">
+							<td ${auth.user.type.director ? 'onclick="window.location=\'${absence_url_view}\'"' : ''}>
 								-
 							</td>
 						</c:when>
