@@ -1123,9 +1123,9 @@ public class AbsenceControllerTest extends AbstractTest {
 		
 		User student1 = Users.createStudent(uc, "student1", "123456789", "First", "last", 
 				2, "major", User.Section.AltoSax);
-		User student2 = Users.createStudent(uc, "student2", "123456789", "First", "last", 
+		User student2 = Users.createStudent(uc, "student2", "123456788", "First", "last", 
 				2, "major", User.Section.AltoSax);
-		User student3 = Users.createStudent(uc, "student3", "123456789", "First", "last", 
+		User student3 = Users.createStudent(uc, "student3", "123456787", "First", "last", 
 				2, "major", User.Section.AltoSax);
 
 		Date unanchoredStart = makeDate("2012-09-21 0600");

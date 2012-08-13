@@ -223,7 +223,7 @@ public class AuthServlet extends AbstractBaseServlet {
 			errors.add("University ID was not valid");
 		}
 		
-		if(!ValidationUtil.isUniqueId(univID)) {
+		if(!ValidationUtil.isUniqueId(univID, new Email(google_user.getEmail()))) {
 			errors.add("University ID was not unique");
 		}
 		
@@ -249,9 +249,9 @@ public class AuthServlet extends AbstractBaseServlet {
 		if (!ValidationUtil.validSecondaryEmail(secondEmail, train)) {
 			errors.add("Invalid secondary email");
 		}
-//		if (!ValidationUtil.isUniqueSecondaryEmail(secondEmail, train)) {
-//			errors.add("Non-unique secondary email");
-//		}
+		if (!ValidationUtil.isUniqueSecondaryEmail(secondEmail, train)) {
+			errors.add("Non-unique secondary email");
+		}
 
 		if (errors.size() == 0) {
 			try {

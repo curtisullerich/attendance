@@ -42,16 +42,22 @@ public class UserController extends AbstractController {
 		return find.returnCount().now();
 	}
 	
-	public boolean isUniqueId(String id) {
+	public boolean isUniqueId(String id, Email primary) {
 		RootFindCommand<User> find = this.datatrain.find(User.class);
 		find.addFilter(User.FIELD_UNIVERSITY_ID, FilterOperator.EQUAL, id);
-		return find.returnCount().now() == 0;
+		List<User> found = find.returnAll().now();
+		//When we are registering we need this result to be zero because that means 
+		//the person registering is the one who has it. But when we are just validating stuff
+		//this number can be 1, meaning the current person
+		return found.size() == 0 || (found.size() == 1 && found.get(0).getPrimaryEmail().equals(primary));
 	}
 
-	public boolean isUniqueSecondaryEmail(Email email) {
+	public boolean isUniqueSecondaryEmail(Email secondaryEmail) {
+		if (secondaryEmail == null || "".equals(secondaryEmail.getEmail())) return true;
 		RootFindCommand<User> find = this.datatrain.find(User.class);
-		find.addFilter(User.FIELD_SECONDARY_EMAIL, FilterOperator.EQUAL, email);
-		return find.returnCount().now() == 0;
+		find.addFilter(User.FIELD_SECONDARY_EMAIL, FilterOperator.EQUAL, secondaryEmail);
+		int found = find.returnCount().now();
+		return found == 0 || found == 1;
 	}
 	
 	public User createStudent(com.google.appengine.api.users.User google_user,
@@ -109,7 +115,7 @@ public class UserController extends AbstractController {
 			throw new IllegalArgumentException("Invalid university id");
 		}
 		
-		if (!ValidationUtil.isUniqueId(uId)) {
+		if (!ValidationUtil.isUniqueId(uId, user.getPrimaryEmail())) {
 			throw new IllegalArgumentException("University id was not unique");
 		}
 
@@ -117,9 +123,9 @@ public class UserController extends AbstractController {
 		if (!ValidationUtil.validSecondaryEmail(user.getSecondaryEmail(),
 				this.datatrain))
 			throw new IllegalArgumentException("Invalid secondary email");
-//		if (!ValidationUtil.isUniqueSecondaryEmail(user.getSecondaryEmail(), datatrain)) {
-//			throw new IllegalArgumentException("Non-unique secondary email");
-//		}
+		if (!ValidationUtil.isUniqueSecondaryEmail(user.getSecondaryEmail(), datatrain)) {
+			throw new IllegalArgumentException("Non-unique secondary email");
+		}
 		// Check student specific things
 		if (user.getType() == User.Type.Student) {
 			String major = user.getMajor();
@@ -150,7 +156,7 @@ public class UserController extends AbstractController {
 		Email secondaryEmail = new Email(loginEmail);
 		ValidationUtil.validPrimaryEmail(primaryEmail, this.datatrain);
 		ValidationUtil.validSecondaryEmail(secondaryEmail, this.datatrain);
-		//ValidationUtil.isUniqueSecondaryEmail(secondaryEmail, train);
+		ValidationUtil.isUniqueSecondaryEmail(secondaryEmail, this.datatrain);
 		
 		// Check no duplicate users exist
 		if (get(primaryEmail) != null)

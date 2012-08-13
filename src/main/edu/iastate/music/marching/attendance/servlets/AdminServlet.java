@@ -404,9 +404,9 @@ public class AdminServlet extends AbstractBaseServlet {
 		if (!ValidationUtil.validSecondaryEmail(secondEmail, train)) {
 			errors.add("Invalid secondary (google) email");
 		}
-//		if (!ValidationUtil.isUniqueSecondaryEmail(secondEmail, train)) {
-//			errors.add("Non-unique secondary (google) email");
-//		}
+		if (!ValidationUtil.isUniqueSecondaryEmail(secondEmail, train)) {
+			errors.add("Non-unique secondary (google) email");
+		}
 
 		if (errors.size() == 0) {
 			try {

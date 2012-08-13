@@ -71,7 +71,7 @@ public class MobileDataUploadTest extends AbstractTest {
 
 		DataTrain train = getDataTrain();
 
-		Users.createStudent(train.getUsersController(), "s", "123456789",
+		Users.createStudent(train.getUsersController(), "s", "123456788",
 				"first", "last", 1, "major", User.Section.Clarinet);
 		Users.createStudent(train.getUsersController(), "zf", "123456782",
 				"first", "last", 1, "major", User.Section.TenorSax);

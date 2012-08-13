@@ -238,8 +238,8 @@ public class ValidationUtil {
 		}
 	}
 
-	public static boolean isUniqueId(String id) {
-		return DataTrain.getAndStartTrain().getUsersController().isUniqueId(id);
+	public static boolean isUniqueId(String id, Email primary) {
+		return DataTrain.getAndStartTrain().getUsersController().isUniqueId(id, primary);
 	}
 
 	public static boolean isValidMajor(String major) {
