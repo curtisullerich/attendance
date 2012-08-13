@@ -34,7 +34,7 @@
 				<dd>
 				
 				<c:if test="${form.type.displayName eq 'A'}">
-					<dt><label>Start Time</label></dt>
+					<dt><label>Date</label></dt>
 					<dd>
 						<fmt:formatDate value="${form.start}" pattern="M/d/yyyy"/>
 					</dd>
@@ -62,23 +62,32 @@
 					<dd>${day}</dd>
 					
 					<dt><label>From</label></dt>
-					<dd><fmt:formatDate value="${form.start}" pattern="hh:mm a"/></dd>
+					<dd><fmt:formatDate value="${form.start}" pattern="h:mm a"/></dd>
 					
 					<dt><label>To</label>
-					<dd><fmt:formatDate value="${form.end}" pattern="hh:mm a"/></dd>
+					<dd><fmt:formatDate value="${form.end}" pattern="h:mm a"/></dd>
 
 					<dt><label>Absence Type</label>
 					<dd>${form.absenceType}</dd>
 				</c:if>
 				<c:if test="${form.type.displayName eq 'C'}">
-					<dt><label>Start Time</label></dt>
+					<dt><label>Date</label></dt>
 					<dd>
 						<fmt:formatDate value="${form.start}" pattern="M/d/yyyy"/>
 					</dd>
-					<dt><label>Time of Arriving/Leaving</label></dt>
-					<dd>
-						<fmt:formatDate value="${form.start}" pattern="hh:mm a"/>
-					</dd>
+					<c:if test="${form.absenceType.displayName eq 'Tardy'}">
+						<dt><label>Time of Arriving</label></dt>
+						<dd>
+							<fmt:formatDate value="${form.end}" pattern="h:mm a"/>
+						</dd>
+					</c:if>
+					<c:if test="${form.absenceType.displayName eq 'EarlyCheckOut'}">
+						<dt><label>Time of Leaving</label></dt>
+						<dd>
+							<fmt:formatDate value="${form.start}" pattern="h:mm a"/>
+						</dd>
+					</c:if>
+					<%--display nothing for an Absence type --%>
 					<dt><label>Absence Type</label>
 					<dd>${form.absenceType}</dd>
 				</c:if>
@@ -89,7 +98,7 @@
 					<dt><label>Approved by this person?</label></dt>
 					<dd>${form.emailStatus}</dd>
 					
-					<dt><label>Total amount of work</label></dt>
+					<dt><label>Total minutes worked</label></dt>
 					<dd>${form.minutesWorked}</dd>
 					
 					<dt><label>Start Date</label></dt>	

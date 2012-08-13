@@ -746,7 +746,9 @@ public class DirectorServlet extends AbstractBaseServlet {
 		cutoffDate.setTime(data.getFormSubmissionCutoff());
 
 		page.setAttribute("appinfo", data);
-
+		
+		page.setAttribute("timezone", data.getTimeZone());
+		
 		page.setAttribute("emails", data.getTimeWorkedEmails());
 
 		page.setAttribute("Month", cutoffDate.get(Calendar.MONTH) + 1);
