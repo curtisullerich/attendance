@@ -331,6 +331,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		DataTrain train = DataTrain.getAndStartTrain();
 		String first = req.getParameter("FirstName");
 		String last = req.getParameter("LastName");
+		String secondEmail = req.getParameter("SecondEmail");
 		String success = null;
 		User director = train.getAuthController().getCurrentUser(
 				req.getSession());
@@ -340,6 +341,9 @@ public class DirectorServlet extends AbstractBaseServlet {
 		}
 		if (last == null || last.equals("")) {
 			errors.add("Please supply a last name.");
+		}
+		if (secondEmail != null && !secondEmail.equals("")) {
+			director.setSecondaryEmail(new Email(secondEmail));
 		}
 		if (errors.size() > 0) {
 			req.setAttribute("errors", errors);
