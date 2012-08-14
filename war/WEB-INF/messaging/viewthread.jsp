@@ -112,10 +112,10 @@
 			<c:if test="${thread.formParent.type.displayName eq 'C'}">
 				 Type: ${thread.formParent.absenceType}<br/>
 				 Date of rehearsal: <fmt:formatDate value="${thread.formParent.start}" pattern="M/d/yy"/> <br/>
-	  			 <c:if test="${thread.formParent.type.absenceType eq 'Tardy'}">
+	  			 <c:if test="${thread.formParent.absenceType eq 'Tardy'}">
 					 Time of arriving: <fmt:formatDate value="${thread.formParent.start}" pattern="h:mm a"/><br/>
 				 </c:if>
-	  			 <c:if test="${thread.formParent.type.absenceType eq 'EarlyCheckOut'}">
+	  			 <c:if test="${thread.formParent.absenceType eq 'EarlyCheckOut'}">
 					 Time of leaving: <fmt:formatDate value="${thread.formParent.start}" pattern="h:mm a"/><br/>
 				 </c:if>
 			</c:if>

@@ -6,7 +6,7 @@
 	<c:choose>
 	<c:when test="${fn:length(absences) > 0}">
 
-		<table class="${auth.user.type.director ? 'gray full-width gray-hover' : 'gray full-width'}" style="table-layout:fixed;white-space:nowrap;overflow:hidden;">
+		<table class="${auth.user.type.director ? 'gray full-width gray-hover' : 'gray full-width'}" style="table-layout:fixed;"><!-- white-space:nowrap;overflow:hidden; -->
 			<colgroup>
 				<col width="35%" />
 				<col width="15%" />
@@ -66,11 +66,15 @@
 						onclick="window.location='${absence_url_view}'"
 						</c:if>
 					>
+						${absence.type }
+					</td>
 					<td 
 						<c:if test="${auth.user.type.director }">
 						onclick="window.location='${absence_url_view}'"
 						</c:if>
 					>
+					${absence.status }
+					</td>
 					<c:choose>
 						<c:when test="${(absence.type.tardy) || (absence.type.earlyCheckOut)}">
 						<td 

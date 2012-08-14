@@ -8,7 +8,7 @@
  				<div>
 					<p>Number of Forms Submitted: ${fn:length(forms)}</p>
 					<br/>
-					<table class="gray full-width gray-hover" style="table-layout:fixed;white-space:nowrap;overflow:hidden;">
+					<table class="gray full-width gray-hover" style="table-layout:fixed;"><!-- white-space:nowrap;overflow:hidden; -->
 						<colgroup>
 							<col width="12%" />
 							<col width="7%" />

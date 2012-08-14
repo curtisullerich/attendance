@@ -9,7 +9,7 @@
 <fmt:formatDate var="fmtCurrentYear" value="${now}" pattern="yyyy"/>
 
 		<div class="">
-			<table class="gray full-width gray-hover" style="table-layout:fixed;white-space:nowrap;overflow:hidden;">
+			<table class="gray full-width gray-hover" style="table-layout:fixed;"><!-- white-space:nowrap;overflow:hidden; -->
 				<colgroup>
 					<col width="18%" />
 					<col width="32%" />
