@@ -118,10 +118,10 @@ public class ValidationUtil {
 	 * @return
 	 */
 	public static boolean canStillSubmitFormC(Date absenceTime,
-			Date submissionTime) {
+			Date submissionTime, TimeZone timezone) {
 
-		Calendar absence = Calendar.getInstance();
-		Calendar submission = Calendar.getInstance();
+		Calendar absence = Calendar.getInstance(timezone);
+		Calendar submission = Calendar.getInstance(timezone);
 		submission.setTime(submissionTime);
 		absence.setTime(absenceTime);
 		absence.set(Calendar.HOUR_OF_DAY, 0);

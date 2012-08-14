@@ -11,6 +11,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletInputStream;
@@ -128,6 +129,8 @@ public class MobileDataUploadTest extends AbstractTest {
 	private void simpleAbsenceInsertionVerification() {
 		Event event;
 		DataTrain train = getDataTrain();
+		TimeZone timezone = train.getAppDataController().get()
+				.getTimeZone();
 
 		// Verify insertion lengths
 		assertEquals(1, train.getEventController().getCount().intValue());
@@ -139,7 +142,7 @@ public class MobileDataUploadTest extends AbstractTest {
 
 		event = events.get(0);
 
-		Calendar cal = Calendar.getInstance();
+		Calendar cal = Calendar.getInstance(timezone);
 		cal.setTimeInMillis(0);
 
 		cal.set(2012, 04, 03, 16, 30, 0);

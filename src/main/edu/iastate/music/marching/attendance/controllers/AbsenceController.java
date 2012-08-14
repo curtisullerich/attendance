@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -401,6 +402,9 @@ public class AbsenceController extends AbstractController {
 	 */
 	private Absence checkForAutoApproval(Absence absence, Form form) {
 
+		TimeZone timezone = this.train.getAppDataController().get()
+				.getTimeZone();
+
 		if (form.getStatus() != Form.Status.Approved) {
 			// must be approved!
 			return absence;
@@ -448,7 +452,7 @@ public class AbsenceController extends AbstractController {
 			Event e = absence.getEvent();
 			if (e != null && e.getType() == Event.Type.Rehearsal) {
 
-				Calendar dayOfAbsence = Calendar.getInstance();
+				Calendar dayOfAbsence = Calendar.getInstance(timezone);
 				dayOfAbsence.setTime((Date) (absence.getStart().clone()));
 
 				dayOfAbsence.set(Calendar.HOUR, 0);
@@ -457,9 +461,9 @@ public class AbsenceController extends AbstractController {
 				dayOfAbsence.set(Calendar.SECOND, 0);
 				dayOfAbsence.set(Calendar.MILLISECOND, 0);
 
-				Calendar formTimeStart = Calendar.getInstance();
+				Calendar formTimeStart = Calendar.getInstance(timezone);
 				formTimeStart.setTime(absence.getStart());
-				Calendar formstarttmp = Calendar.getInstance();
+				Calendar formstarttmp = Calendar.getInstance(timezone);
 				formstarttmp.setTime(form.getStart());
 				formTimeStart.set(Calendar.HOUR,
 						formstarttmp.get(Calendar.HOUR));
@@ -474,7 +478,7 @@ public class AbsenceController extends AbstractController {
 				formTimeStart.add(Calendar.MINUTE, form.getMinutesToOrFrom()
 						* -1);
 
-				Calendar formTimeEnd = Calendar.getInstance();
+				Calendar formTimeEnd = Calendar.getInstance(timezone);
 
 				// this just sets the fields to lock into the necessary DATE.
 				// For the current implementation, this should always be the
@@ -486,7 +490,7 @@ public class AbsenceController extends AbstractController {
 					formTimeEnd.setTime(absence.getEnd());
 				}
 
-				Calendar formendtmp = Calendar.getInstance();
+				Calendar formendtmp = Calendar.getInstance(timezone);
 				formendtmp.setTime(form.getEnd());
 				formTimeEnd.set(Calendar.HOUR, formendtmp.get(Calendar.HOUR));
 				formTimeEnd.set(Calendar.HOUR_OF_DAY,
@@ -499,7 +503,7 @@ public class AbsenceController extends AbstractController {
 						formendtmp.get(Calendar.MILLISECOND));
 				formTimeEnd.add(Calendar.MINUTE, form.getMinutesToOrFrom());
 
-				Calendar formDateStart = Calendar.getInstance();
+				Calendar formDateStart = Calendar.getInstance(timezone);
 				formDateStart.setTime(form.getStart());
 				formDateStart.set(Calendar.HOUR, 0);
 				formDateStart.set(Calendar.HOUR_OF_DAY, 0);
@@ -507,7 +511,7 @@ public class AbsenceController extends AbstractController {
 				formDateStart.set(Calendar.SECOND, 0);
 				formDateStart.set(Calendar.MILLISECOND, 0);
 
-				Calendar formDateEnd = Calendar.getInstance();
+				Calendar formDateEnd = Calendar.getInstance(timezone);
 				formDateEnd.setTime(form.getEnd());
 				formDateEnd.set(Calendar.HOUR, 0);
 				formDateEnd.set(Calendar.HOUR_OF_DAY, 0);

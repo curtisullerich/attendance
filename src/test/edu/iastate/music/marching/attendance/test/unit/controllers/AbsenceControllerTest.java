@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.junit.Test;
 
@@ -1084,6 +1085,8 @@ public class AbsenceControllerTest extends AbstractTest {
 	@Test
 	public void testAutoApproveWithFormA() {
 		DataTrain train = getDataTrain();
+		TimeZone timezone = train.getAppDataController().get()
+				.getTimeZone();
 
 		UserController uc = train.getUsersController();
 		EventController ec = train.getEventController();
@@ -1093,11 +1096,11 @@ public class AbsenceControllerTest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar date = Calendar.getInstance(timezone);
 		date.set(2012, 7, 7, 0, 0, 0);
-		Calendar start = Calendar.getInstance();
+		Calendar start = Calendar.getInstance(timezone);
 		start.set(2012, 7, 7, 16, 30, 0);
-		Calendar end = Calendar.getInstance();
+		Calendar end = Calendar.getInstance(timezone);
 		end.set(2012, 7, 7, 17, 50, 0);
 
 		Form form = fc.createFormA(student, date.getTime(), "I love band.");
@@ -1874,16 +1877,18 @@ public class AbsenceControllerTest extends AbstractTest {
 		UserController uc = train.getUsersController();
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
+		TimeZone timezone = train.getAppDataController().get()
+				.getTimeZone();
 		
 		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
 				2, "major", User.Section.AltoSax);
 		
-		Calendar date = Calendar.getInstance();
+		Calendar date = Calendar.getInstance(timezone);
 		date.set(2012, 8, 8, 17, 59, 0);
 		date.set(Calendar.MILLISECOND, 0);
-		Calendar start = Calendar.getInstance();
+		Calendar start = Calendar.getInstance(timezone);
 		start.set(2012, 8, 8, 17, 0, 0);
-		Calendar end = Calendar.getInstance();
+		Calendar end = Calendar.getInstance(timezone);
 		end.set(2012, 8, 8, 18, 0, 0);
 		end.set(Calendar.MILLISECOND, 0);
 		
@@ -1901,16 +1906,18 @@ public class AbsenceControllerTest extends AbstractTest {
 		UserController uc = train.getUsersController();
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
+		TimeZone timezone = train.getAppDataController().get()
+				.getTimeZone();
 		
 		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
 				2, "major", User.Section.AltoSax);
 		
-		Calendar date = Calendar.getInstance();
+		Calendar date = Calendar.getInstance(timezone);
 		date.set(2012, 8, 8, 17, 59, 59);
 		date.set(Calendar.MILLISECOND, 0);
-		Calendar start = Calendar.getInstance();
+		Calendar start = Calendar.getInstance(timezone);
 		start.set(2012, 8, 8, 17, 0, 0);
-		Calendar end = Calendar.getInstance();
+		Calendar end = Calendar.getInstance(timezone);
 		end.set(2012, 8, 8, 18, 0, 0);
 		end.set(Calendar.MILLISECOND, 0);
 
@@ -1927,16 +1934,18 @@ public class AbsenceControllerTest extends AbstractTest {
 		UserController uc = train.getUsersController();
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
+		TimeZone timezone = train.getAppDataController().get()
+				.getTimeZone();
 		
 		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
 				2, "major", User.Section.AltoSax);
 		
-		Calendar date = Calendar.getInstance();
+		Calendar date = Calendar.getInstance(timezone);
 		date.set(2012, 8, 8, 17, 59, 59);
 		date.set(Calendar.MILLISECOND, 0);
-		Calendar start = Calendar.getInstance();
+		Calendar start = Calendar.getInstance(timezone);
 		start.set(2012, 8, 8, 17, 0, 0);
-		Calendar end = Calendar.getInstance();
+		Calendar end = Calendar.getInstance(timezone);
 		end.set(2012, 8, 8, 18, 0, 0);
 		end.set(Calendar.MILLISECOND, 0);
 
@@ -1953,16 +1962,18 @@ public class AbsenceControllerTest extends AbstractTest {
 		UserController uc = train.getUsersController();
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
+		TimeZone timezone = train.getAppDataController().get()
+				.getTimeZone();
 		
 		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
 				2, "major", User.Section.AltoSax);
 		
-		Calendar date = Calendar.getInstance();
+		Calendar date = Calendar.getInstance(timezone);
 		date.set(2012, 8, 8, 17, 59, 0);
 		date.set(Calendar.MILLISECOND, 0);
-		Calendar start = Calendar.getInstance();
+		Calendar start = Calendar.getInstance(timezone);
 		start.set(2012, 8, 8, 17, 0, 0);
-		Calendar end = Calendar.getInstance();
+		Calendar end = Calendar.getInstance(timezone);
 		end.set(2012, 8, 8, 18, 0, 0);
 		end.set(Calendar.MILLISECOND, 0);
 		
@@ -1979,16 +1990,18 @@ public class AbsenceControllerTest extends AbstractTest {
 		UserController uc = train.getUsersController();
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
+		TimeZone timezone = train.getAppDataController().get()
+				.getTimeZone();
 		
 		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
 				2, "major", User.Section.AltoSax);
 		
-		Calendar date = Calendar.getInstance();
+		Calendar date = Calendar.getInstance(timezone);
 		date.set(2012, 8, 8, 17, 59, 59);
 		date.set(Calendar.MILLISECOND, 999);
-		Calendar start = Calendar.getInstance();
+		Calendar start = Calendar.getInstance(timezone);
 		start.set(2012, 8, 8, 17, 0, 0);
-		Calendar end = Calendar.getInstance();
+		Calendar end = Calendar.getInstance(timezone);
 		end.set(2012, 8, 8, 18, 0, 0);
 		end.set(Calendar.MILLISECOND, 0);
 		
@@ -2005,16 +2018,18 @@ public class AbsenceControllerTest extends AbstractTest {
 		UserController uc = train.getUsersController();
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
+		TimeZone timezone = train.getAppDataController().get()
+				.getTimeZone();
 		
 		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
 				2, "major", User.Section.AltoSax);
 		
-		Calendar date = Calendar.getInstance();
+		Calendar date = Calendar.getInstance(timezone);
 		date.set(2012, 8, 8, 18, 0, 0);
 		date.set(Calendar.MILLISECOND, 0);
-		Calendar start = Calendar.getInstance();
+		Calendar start = Calendar.getInstance(timezone);
 		start.set(2012, 8, 8, 17, 0, 0);
-		Calendar end = Calendar.getInstance();
+		Calendar end = Calendar.getInstance(timezone);
 		end.set(2012, 8, 8, 18, 0, 0);
 		end.set(Calendar.MILLISECOND, 0);
 		
@@ -2031,16 +2046,18 @@ public class AbsenceControllerTest extends AbstractTest {
 		UserController uc = train.getUsersController();
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
+		TimeZone timezone = train.getAppDataController().get()
+				.getTimeZone();
 		
 		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
 				2, "major", User.Section.AltoSax);
 		
-		Calendar date = Calendar.getInstance();
+		Calendar date = Calendar.getInstance(timezone);
 		date.set(2012, 8, 8, 17, 59, 59);
 		date.set(Calendar.MILLISECOND, 999);
-		Calendar start = Calendar.getInstance();
+		Calendar start = Calendar.getInstance(timezone);
 		start.set(2012, 8, 8, 17, 0, 0);
-		Calendar end = Calendar.getInstance();
+		Calendar end = Calendar.getInstance(timezone);
 		end.set(2012, 8, 8, 18, 0, 0);
 		end.set(Calendar.MILLISECOND, 0);
 		
@@ -2057,16 +2074,18 @@ public class AbsenceControllerTest extends AbstractTest {
 		UserController uc = train.getUsersController();
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
+		TimeZone timezone = train.getAppDataController().get()
+				.getTimeZone();
 		
 		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
 				2, "major", User.Section.AltoSax);
 		
-		Calendar date = Calendar.getInstance();
+		Calendar date = Calendar.getInstance(timezone);
 		date.set(2012, 8, 8, 18, 0, 0);
 		date.set(Calendar.MILLISECOND, 0);
-		Calendar start = Calendar.getInstance();
+		Calendar start = Calendar.getInstance(timezone);
 		start.set(2012, 8, 8, 17, 0, 0);
-		Calendar end = Calendar.getInstance();
+		Calendar end = Calendar.getInstance(timezone);
 		end.set(2012, 8, 8, 18, 0, 0);
 		end.set(Calendar.MILLISECOND, 0);
 		
@@ -2082,16 +2101,18 @@ public class AbsenceControllerTest extends AbstractTest {
 		UserController uc = train.getUsersController();
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
+		TimeZone timezone = train.getAppDataController().get()
+				.getTimeZone();
 		
 		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
 				2, "major", User.Section.AltoSax);
 		
-		Calendar date = Calendar.getInstance();
+		Calendar date = Calendar.getInstance(timezone);
 		date.set(2012, 8, 8, 18, 0, 0);
 		date.set(Calendar.MILLISECOND, 1);
-		Calendar start = Calendar.getInstance();
+		Calendar start = Calendar.getInstance(timezone);
 		start.set(2012, 8, 8, 17, 0, 0);
-		Calendar end = Calendar.getInstance();
+		Calendar end = Calendar.getInstance(timezone);
 		end.set(2012, 8, 8, 18, 0, 0);
 		end.set(Calendar.MILLISECOND, 0);
 		
@@ -2108,16 +2129,18 @@ public class AbsenceControllerTest extends AbstractTest {
 		UserController uc = train.getUsersController();
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
+		TimeZone timezone = train.getAppDataController().get()
+				.getTimeZone();
 		
 		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
 				2, "major", User.Section.AltoSax);
 		
-		Calendar date = Calendar.getInstance();
+		Calendar date = Calendar.getInstance(timezone);
 		date.set(2012, 8, 8, 18, 0, 0);
 		date.set(Calendar.MILLISECOND, 1);
-		Calendar start = Calendar.getInstance();
+		Calendar start = Calendar.getInstance(timezone);
 		start.set(2012, 8, 8, 17, 0, 0);
-		Calendar end = Calendar.getInstance();
+		Calendar end = Calendar.getInstance(timezone);
 		end.set(2012, 8, 8, 18, 0, 0);
 		end.set(Calendar.MILLISECOND, 0);
 		

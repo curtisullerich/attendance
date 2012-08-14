@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.TimeZone;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -172,7 +173,11 @@ public class FormController extends AbstractController {
 	// }
 
 	public Form createFormA(User student, Date date, String reason) {
-		Calendar calendar = Calendar.getInstance();
+
+		TimeZone timezone = this.dataTrain.getAppDataController().get()
+				.getTimeZone();
+
+		Calendar calendar = Calendar.getInstance(timezone);
 		calendar.setTime(date);
 
 		// Simple validation first
@@ -182,13 +187,13 @@ public class FormController extends AbstractController {
 			exp.getErrors().add("Invalid reason");
 		}
 
-		Calendar cutoff = Calendar.getInstance();
+		Calendar cutoff = Calendar.getInstance(timezone);
 		cutoff.setTime(dataTrain.getAppDataController().get()
 				.getFormSubmissionCutoff());
 
 		// TODO https://github.com/curtisullerich/attendance/issues/103
 		// is timezone correct?
-		if (!Calendar.getInstance().before(cutoff)) {
+		if (!Calendar.getInstance(timezone).before(cutoff)) {
 			exp.getErrors().add(
 					"Sorry, it's past the deadline for submitting Form A.");
 		}
@@ -197,7 +202,7 @@ public class FormController extends AbstractController {
 			throw exp;
 		}
 
-		Calendar temp = Calendar.getInstance();
+		Calendar temp = Calendar.getInstance(timezone);
 		temp.setTime(date);
 
 		// Parsed date starts at beginning of day
@@ -237,11 +242,14 @@ public class FormController extends AbstractController {
 			int day, Date startTime, Date endTime, String details,
 			int minutesToOrFrom, Absence.Type absenceType) {
 
-		Calendar startDateTime = Calendar.getInstance();
-		Calendar endDateTime = Calendar.getInstance();
+		TimeZone timezone = this.dataTrain.getAppDataController().get()
+				.getTimeZone();
 
-		Calendar startTimeCalendar = Calendar.getInstance();
-		Calendar endTimeCalendar = Calendar.getInstance();
+		Calendar startDateTime = Calendar.getInstance(timezone);
+		Calendar endDateTime = Calendar.getInstance(timezone);
+
+		Calendar startTimeCalendar = Calendar.getInstance(timezone);
+		Calendar endTimeCalendar = Calendar.getInstance(timezone);
 
 		startTimeCalendar.setTime(startTime);
 		endTimeCalendar.setTime(endTime);
@@ -338,6 +346,9 @@ public class FormController extends AbstractController {
 	public Form createFormC(User student, Date date, Absence.Type type,
 			String reason, boolean validateDate) {
 
+		TimeZone timezone = this.dataTrain.getAppDataController().get()
+				.getTimeZone();
+
 		// Simple validation first
 		ValidationExceptions exp = new ValidationExceptions();
 
@@ -348,11 +359,8 @@ public class FormController extends AbstractController {
 		// Check date is before cutoff but after today
 
 		if (validateDate
-				&& !ValidationUtil.canStillSubmitFormC(
-						date,
-						Calendar.getInstance(
-								this.dataTrain.getAppDataController().get()
-										.getTimeZone()).getTime())) {
+				&& !ValidationUtil.canStillSubmitFormC(date, Calendar
+						.getInstance(timezone).getTime(), timezone)) {
 			exp.getErrors().add("Invalid date, submitted too late");
 		}
 
@@ -360,7 +368,7 @@ public class FormController extends AbstractController {
 			throw exp;
 		}
 		// ////////////////////////////////////////////////////////////////////////
-		Calendar calendar = Calendar.getInstance();
+		Calendar calendar = Calendar.getInstance(timezone);
 		calendar.setTime(date);
 		Date start = null;
 		Date end = null;
@@ -439,7 +447,10 @@ public class FormController extends AbstractController {
 	 */
 	public Form createFormD(User student, String email, Date date, int minutes,
 			String details) {
-		Calendar calendar = Calendar.getInstance();
+		TimeZone timezone = this.dataTrain.getAppDataController().get()
+				.getTimeZone();
+		
+		Calendar calendar = Calendar.getInstance(timezone);
 		calendar.setTime(date);
 
 		// Simple validation first

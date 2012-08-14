@@ -182,281 +182,292 @@ public class ValidationUtilTest {
 		assertTrue(ValidationUtil
 				.isLessThanWeekdaysAfter(now, now, 3, TIMEZONE));
 	}
+	
+//	public void testSpecificDay() {
+//		Calendar absence = Calendar.getInstance();
+//		Calendar submission = Calendar.getInstance();
+//		
+//		absence.set(2012, 4, 22, i, 0, 0);
+//		submission.set(2012, 4, 26, i, 0, 0);
+//		assertFalse(ValidationUtil.canStillSubmitFormC(absence.getTime(),
+//				submission.getTime(), TIMEZONE));
+//
+//	}
 
 	@Test
 	public void testAllDays() {
-		Calendar absence = Calendar.getInstance();
-		Calendar submission = Calendar.getInstance();
+		Calendar absence = Calendar.getInstance(TIMEZONE);
+		Calendar submission = Calendar.getInstance(TIMEZONE);
 
 		for (int i = 0; i < 23; i++) {
 			absence.set(2012, 4, 28, i, 0, 0);
 			submission.set(2012, 5, 3, i, 0, 0);
 			assertFalse(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 
 			absence.set(2012, 4, 28, i, 0, 0);
 			submission.set(2012, 5, 2, i, 0, 0);
 			assertFalse(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 
 			absence.set(2012, 4, 28, i, 0, 0);
 			submission.set(2012, 5, 1, i, 0, 0);
 			assertFalse(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 
 			absence.set(2012, 4, 28, i, 0, 0);
 			submission.set(2012, 4, 31, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 
 			absence.set(2012, 4, 28, i, 0, 0);
 			submission.set(2012, 4, 30, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 
 			absence.set(2012, 4, 28, i, 0, 0);
 			submission.set(2012, 4, 29, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 
 			absence.set(2012, 4, 28, i, 0, 0);
 			submission.set(2012, 4, 28, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 
 			absence.set(2012, 4, 28, i, 0, 0);
 			submission.set(2012, 4, 27, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 
 			absence.set(2012, 4, 28, i, 0, 0);
 			submission.set(2012, 4, 26, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 
 			absence.set(2012, 4, 28, i, 0, 0);
 			submission.set(2012, 4, 25, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 
 			absence.set(2012, 4, 28, i, 0, 0);
 			submission.set(2012, 4, 24, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 
 			absence.set(2012, 4, 28, i, 0, 0);
 			submission.set(2012, 4, 23, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 
 			absence.set(2012, 4, 23, i, 0, 0);
 			submission.set(2012, 4, 28, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 
 			absence.set(2012, 4, 22, i, 0, 0);
 			submission.set(2012, 4, 28, i, 0, 0);
 			assertFalse(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 
 			absence.set(2012, 4, 23, i, 0, 0);
 			submission.set(2012, 4, 26, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 
 			absence.set(2012, 4, 23, i, 0, 0);
 			submission.set(2012, 4, 27, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 
 			absence.set(2012, 4, 22, i, 0, 0);
 			submission.set(2012, 4, 25, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 
 			absence.set(2012, 4, 22, i, 0, 0);
 			submission.set(2012, 4, 26, i, 0, 0);
 			assertFalse(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 
 			absence.set(2012, 4, 22, i, 0, 0);
 			submission.set(2012, 4, 27, i, 0, 0);
 			assertFalse(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 
 			absence.set(2012, 4, 22, i, 0, 0);
 			submission.set(2012, 4, 28, i, 0, 0);
 			assertFalse(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 
 			absence.set(2012, 4, 23, i, 0, 0);
 			submission.set(2012, 4, 22, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 			absence.set(2012, 4, 23, i, 0, 0);
 			submission.set(2012, 4, 23, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 			absence.set(2012, 4, 23, i, 0, 0);
 			submission.set(2012, 4, 24, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 			absence.set(2012, 4, 23, i, 0, 0);
 			submission.set(2012, 4, 25, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 			absence.set(2012, 4, 23, i, 0, 0);
 			submission.set(2012, 4, 26, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 			absence.set(2012, 4, 23, i, 0, 0);
 			submission.set(2012, 4, 27, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 			absence.set(2012, 4, 23, i, 0, 0);
 			submission.set(2012, 4, 28, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 			absence.set(2012, 4, 23, i, 0, 0);
 			submission.set(2012, 4, 29, i, 0, 0);
 			assertFalse(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 			absence.set(2012, 4, 23, i, 0, 0);
 			submission.set(2011, 7, 23, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 			absence.set(2012, 4, 23, i, 0, 0);
 			submission.set(2013, 1, 22, i, 0, 0);
 			assertFalse(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 
 			absence.set(2012, 4, 24, i, 0, 0);
 			submission.set(2012, 4, 23, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 			absence.set(2012, 4, 24, i, 0, 0);
 			submission.set(2012, 4, 24, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 			absence.set(2012, 4, 24, i, 0, 0);
 			submission.set(2012, 4, 25, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 			absence.set(2012, 4, 24, i, 0, 0);
 			submission.set(2012, 4, 26, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 			absence.set(2012, 4, 24, i, 0, 0);
 			submission.set(2012, 4, 27, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 			absence.set(2012, 4, 24, i, 0, 0);
 			submission.set(2012, 4, 28, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 			absence.set(2012, 4, 24, i, 0, 0);
 			submission.set(2012, 4, 29, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 			absence.set(2012, 4, 24, i, 0, 0);
 			submission.set(2012, 4, 30, i, 0, 0);
 			assertFalse(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 			absence.set(2012, 4, 24, i, 0, 0);
 			submission.set(2013, 4, 23, 17, 31, 0);
 			assertFalse(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 
 			absence.set(2012, 4, 25, i, 0, 0);
 			submission.set(2012, 4, 24, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 			absence.set(2012, 4, 25, i, 0, 0);
 			submission.set(2012, 4, 26, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 			absence.set(2012, 4, 25, i, 0, 0);
 			submission.set(2012, 4, 27, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 			absence.set(2012, 4, 25, i, 0, 0);
 			submission.set(2012, 4, 28, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 			absence.set(2012, 4, 25, i, 0, 0);
 			submission.set(2012, 4, 29, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 			absence.set(2012, 4, 25, i, 0, 0);
 			submission.set(2012, 4, 30, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 			absence.set(2012, 4, 25, i, 0, 0);
 			submission.set(2012, 4, 31, i, 0, 0);
 			assertFalse(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 
 			absence.set(2012, 4, 26, i, 0, 0);
 			submission.set(2012, 4, 25, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 			absence.set(2012, 4, 26, i, 0, 0);
 			submission.set(2012, 4, 26, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 			absence.set(2012, 4, 26, i, 0, 0);
 			submission.set(2012, 4, 27, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 			absence.set(2012, 4, 26, i, 0, 0);
 			submission.set(2012, 4, 28, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 			absence.set(2012, 4, 26, i, 0, 0);
 			submission.set(2012, 4, 29, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 			absence.set(2012, 4, 26, i, 0, 0);
 			submission.set(2012, 4, 30, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 			absence.set(2012, 4, 26, i, 0, 0);
 			submission.set(2012, 4, 31, i, 0, 0);
 			assertFalse(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 			absence.set(2012, 4, 26, i, 0, 0);
 			submission.set(2012, 5, 1, i, 0, 0);
 			assertFalse(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 
 			absence.set(2012, 4, 27, i, 0, 0);
 			submission.set(2012, 4, 26, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 			absence.set(2012, 4, 27, i, 0, 0);
 			submission.set(2012, 4, 27, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 			absence.set(2012, 4, 27, i, 0, 0);
 			submission.set(2012, 4, 28, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 			absence.set(2012, 4, 27, i, 0, 0);
 			submission.set(2012, 4, 29, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 			absence.set(2012, 4, 27, i, 0, 0);
 			submission.set(2012, 4, 30, i, 0, 0);
 			assertTrue(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 			absence.set(2012, 4, 27, i, 0, 0);
 			submission.set(2012, 4, 31, i, 0, 0);
 			assertFalse(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 			absence.set(2012, 4, 27, i, 0, 0);
 			submission.set(2012, 5, 1, i, 0, 0);
 			assertFalse(ValidationUtil.canStillSubmitFormC(absence.getTime(),
-					submission.getTime()));
+					submission.getTime(), TIMEZONE));
 
 		}
 	}
