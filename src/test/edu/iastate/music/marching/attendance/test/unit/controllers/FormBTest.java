@@ -1903,15 +1903,18 @@ public class FormBTest extends AbstractTest {
 		starttime.set(0, 0, 0, 16, 35, 0);
 		Calendar endtime = Calendar.getInstance();
 		endtime.set(0, 0, 0, 17, 45, 0);
+		endtime.set(Calendar.MILLISECOND, 0);
 
 		// a normal rehearsal
 		Calendar eventstart = Calendar.getInstance();
 		eventstart.set(2012, 7, 20, 16, 30, 0);
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2012, 7, 20, 17, 50, 0);
-
+		eventend.set(Calendar.MILLISECOND, 0);
+		
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 17, 50, 0);
+		tardytime.set(Calendar.MILLISECOND, 0);
 
 		Form form = fc.createFormB(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
