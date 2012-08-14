@@ -57,7 +57,7 @@
 										${form.dept} ${form.course } <c:if test="${not empty form.details }"> - ${form.details }</c:if>
 									</c:when>
 									<c:when test ="${form.type.d }">
-										<fmt:formatDate value="${form.start}" pattern="M/d/yyyy" /> - ${form.minutesWorked } hours worked for ${form.emailTo } <c:if test="${not empty form.details }"> - ${form.details } </c:if>
+										<fmt:formatDate value="${form.start}" pattern="M/d/yyyy" /> - ${form.minutesWorked } minutes worked for ${form.emailTo } <c:if test="${not empty form.details }"> - ${form.details } </c:if>
 									</c:when>
 								</c:choose>
 								</p>
