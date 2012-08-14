@@ -67,6 +67,9 @@
 					<dt><label>To</label>
 					<dd><fmt:formatDate value="${form.end}" pattern="h:mm a"/></dd>
 
+					<dt><label>Travel Time</label>
+					<dd>${form.minutesToOrFrom} minutes</dd>
+
 					<dt><label>Absence Type</label>
 					<dd>${form.absenceType}</dd>
 				</c:if>
