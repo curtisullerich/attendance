@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -26,6 +27,44 @@ import edu.iastate.music.marching.attendance.test.util.Users;
 
 @SuppressWarnings("deprecation")
 public class AbsenceControllerTest extends AbstractTest {
+
+	@Test
+	public void removeListOfAbsencesAndTardy() {
+
+		// Arrange
+		DataTrain train = DataTrain.getAndStartTrain();
+		UserController uc = train.getUsersController();
+
+		User student = Users.createSingleTestStudent(uc);
+
+		Date start1 = makeDate("2012-06-16 0500");
+		Date end1 = makeDate("2012-06-16 0600");
+		Date start2 = makeDate("2012-06-17 0500");
+		Date end2 = makeDate("2012-06-17 0600");
+		Date start3 = makeDate("2012-06-18 0500");
+		Date end3 = makeDate("2012-06-18 0600");
+		Date tardyStart = makeDate("2012-06-18 0515");
+
+		Event event1 = train.getEventController().createOrUpdate(
+				Event.Type.Performance, start1, end1);
+		Event event2 = train.getEventController().createOrUpdate(
+				Event.Type.Performance, start2, end2);
+		train.getEventController().createOrUpdate(Event.Type.Performance,
+				start3, end3);
+
+		Absence abs1 = train.getAbsenceController().createOrUpdateAbsence(
+				student, event1);
+		Absence abs2 = train.getAbsenceController().createOrUpdateAbsence(
+				student, event2);
+		Absence tardy = train.getAbsenceController().createOrUpdateTardy(
+				student, tardyStart);
+
+		// Act
+		train.getAbsenceController().remove(Arrays.asList(abs1, abs2, tardy));
+		
+		// Assert
+		assertEquals(0, train.getAbsenceController().getCount().intValue());
+	}
 
 	/**
 	 * Test to see if updating an absence to be during an event will link the
@@ -58,7 +97,7 @@ public class AbsenceControllerTest extends AbstractTest {
 
 		assertEquals(event, absence.getEvent());
 	}
-	
+
 	/**
 	 * Test to see if updating an absence to be during an event will link the
 	 * absence to it
@@ -76,7 +115,7 @@ public class AbsenceControllerTest extends AbstractTest {
 
 		Date absenceStart = makeDate("2012-06-15 0400");
 		Date absenceEnd = makeDate("2012-06-15 0600");
-		
+
 		Date absenceStart2 = makeDate("2012-06-16 0200");
 		Date absenceEnd2 = makeDate("2012-06-16 0400");
 
@@ -124,7 +163,7 @@ public class AbsenceControllerTest extends AbstractTest {
 
 		assertEquals(event, absence.getEvent());
 	}
-	
+
 	/**
 	 * Test to see if updating an absence to be during an event will link the
 	 * absence to it
@@ -177,8 +216,8 @@ public class AbsenceControllerTest extends AbstractTest {
 		Event event = train.getEventController().createOrUpdate(
 				Event.Type.Performance, eventStart, eventEnd);
 
-		Absence absence = train.getAbsenceController().createOrUpdateEarlyCheckout(
-				student, absenceTime1);
+		Absence absence = train.getAbsenceController()
+				.createOrUpdateEarlyCheckout(student, absenceTime1);
 
 		// update absence to be during event
 		absence.setDatetime(absenceTime2);
@@ -186,7 +225,7 @@ public class AbsenceControllerTest extends AbstractTest {
 
 		assertEquals(event, absence.getEvent());
 	}
-	
+
 	/**
 	 * Test to see if updating an absence to be during an event will link the
 	 * absence to it
@@ -208,8 +247,8 @@ public class AbsenceControllerTest extends AbstractTest {
 		Event event = train.getEventController().createOrUpdate(
 				Event.Type.Performance, eventStart, eventEnd);
 
-		Absence absence = train.getAbsenceController().createOrUpdateEarlyCheckout(
-				student, absenceTime1);
+		Absence absence = train.getAbsenceController()
+				.createOrUpdateEarlyCheckout(student, absenceTime1);
 
 		// update absence to be during event
 		absence.setDatetime(absenceTime2);

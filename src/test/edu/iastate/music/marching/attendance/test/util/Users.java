@@ -43,4 +43,9 @@ public class Users {
 						+ TestConfig.getEmailDomain(), firstName, lastName);
 	}
 
+	public static User createSingleTestStudent(UserController uc) {
+		return createStudent(uc, "student", "123456789", "First",
+				"last", 2, "major", User.Section.AltoSax);
+	}
+
 }
