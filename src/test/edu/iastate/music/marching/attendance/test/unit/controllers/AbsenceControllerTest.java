@@ -61,7 +61,7 @@ public class AbsenceControllerTest extends AbstractTest {
 
 		// Act
 		train.getAbsenceController().remove(Arrays.asList(abs1, abs2, tardy));
-		
+
 		// Assert
 		assertEquals(0, train.getAbsenceController().getCount().intValue());
 	}
@@ -1318,17 +1318,6 @@ public class AbsenceControllerTest extends AbstractTest {
 		assertTrue(absence.getStatus() == Absence.Status.Approved);
 	}
 
-	private Date makeDate(String sDate) {
-		// Private method to make dates out of strings following the format I
-		// always use
-		try {
-			return new SimpleDateFormat("yyyy-MM-dd HHmm").parse(sDate);
-		} catch (ParseException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}
-
 	/**
 	 * Add a form A, approve it, add an absence, check that it is approved.
 	 */
@@ -1436,170 +1425,6 @@ public class AbsenceControllerTest extends AbstractTest {
 		}
 		assertEquals(3, numUnanchored);
 		assertEquals(3, numAnchored);
-	}
-
-	@Test
-	public void testOverlappingEventsRehersal() {
-		DataTrain train = getDataTrain();
-
-		EventController ec = train.getEventController();
-
-		Date startOverlap = makeDate("2012-09-21 0600");
-		Date endOverlap = makeDate("2012-09-21 0700");
-
-		ec.createOrUpdate(Event.Type.Rehearsal, startOverlap, endOverlap);
-		ec.createOrUpdate(Event.Type.Rehearsal, startOverlap, endOverlap);
-
-		List<Event> events = ec.getAll();
-
-		assertEquals(1, events.size());
-		assertEquals(startOverlap, events.get(0).getStart());
-		assertEquals(endOverlap, events.get(0).getEnd());
-	}
-
-	@Test
-	public void testOverlappingEventsPerformance() {
-		DataTrain train = getDataTrain();
-
-		EventController ec = train.getEventController();
-
-		Date startOverlap = makeDate("2012-09-21 0600");
-		Date endOverlap = makeDate("2012-09-21 0700");
-
-		ec.createOrUpdate(Event.Type.Performance, startOverlap, endOverlap);
-		ec.createOrUpdate(Event.Type.Performance, startOverlap, endOverlap);
-
-		List<Event> events = ec.getAll();
-
-		assertEquals(1, events.size());
-		assertEquals(startOverlap, events.get(0).getStart());
-		assertEquals(endOverlap, events.get(0).getEnd());
-	}
-
-	@Test
-	public void testOverlappingEventsDifferentTypes() {
-		DataTrain train = getDataTrain();
-
-		EventController ec = train.getEventController();
-
-		Date startOverlap = makeDate("2012-09-21 0600");
-		Date endOverlap = makeDate("2012-09-21 0700");
-
-		ec.createOrUpdate(Event.Type.Rehearsal, startOverlap, endOverlap);
-		ec.createOrUpdate(Event.Type.Performance, startOverlap, endOverlap);
-
-		List<Event> events = ec.getAll();
-
-		assertEquals(2, events.size());
-
-		assertTrue(events.get(0).getType() == Event.Type.Rehearsal
-				|| events.get(0).getType() == Event.Type.Performance);
-		assertEquals(startOverlap, events.get(0).getStart());
-		assertEquals(endOverlap, events.get(0).getEnd());
-
-		assertTrue(events.get(1).getType() == Event.Type.Rehearsal
-				|| events.get(1).getType() == Event.Type.Performance);
-		assertEquals(startOverlap, events.get(1).getStart());
-		assertEquals(endOverlap, events.get(1).getEnd());
-	}
-
-	@Test
-	public void testNonOverlappingEventsRehearsal() {
-		DataTrain train = getDataTrain();
-
-		EventController ec = train.getEventController();
-
-		Date startFirst = makeDate("2012-09-21 0600");
-		Date endFirst = makeDate("2012-09-21 0700");
-
-		Date startSecond = makeDate("2012-09-22 0600");
-		Date endSecond = makeDate("2012-09-22 0700");
-
-		ec.createOrUpdate(Event.Type.Rehearsal, startFirst, endFirst);
-		ec.createOrUpdate(Event.Type.Rehearsal, startSecond, endSecond);
-
-		List<Event> events = ec.getAll();
-
-		Event first = (events.get(0).getStart().equals(startFirst)) ? events
-				.get(0) : events.get(1);
-		Event second = (events.get(0).getStart().equals(startSecond)) ? events
-				.get(0) : events.get(1);
-
-		assertEquals(2, events.size());
-
-		assertEquals(Event.Type.Rehearsal, first.getType());
-		assertEquals(startFirst, first.getStart());
-		assertEquals(endFirst, first.getEnd());
-
-		assertEquals(Event.Type.Rehearsal, second.getType());
-		assertEquals(startSecond, second.getStart());
-		assertEquals(endSecond, second.getEnd());
-	}
-
-	@Test
-	public void testNonOverlappingEventsPerformance() {
-		DataTrain train = getDataTrain();
-
-		EventController ec = train.getEventController();
-
-		Date startFirst = makeDate("2012-09-21 0600");
-		Date endFirst = makeDate("2012-09-21 0700");
-
-		Date startSecond = makeDate("2012-09-22 0600");
-		Date endSecond = makeDate("2012-09-22 0700");
-
-		ec.createOrUpdate(Event.Type.Performance, startFirst, endFirst);
-		ec.createOrUpdate(Event.Type.Performance, startSecond, endSecond);
-
-		List<Event> events = ec.getAll();
-
-		Event first = (events.get(0).getStart().equals(startFirst)) ? events
-				.get(0) : events.get(1);
-		Event second = (events.get(0).getStart().equals(startSecond)) ? events
-				.get(0) : events.get(1);
-
-		assertEquals(2, events.size());
-
-		assertEquals(Event.Type.Performance, first.getType());
-		assertEquals(startFirst, first.getStart());
-		assertEquals(endFirst, first.getEnd());
-
-		assertEquals(Event.Type.Performance, second.getType());
-		assertEquals(startSecond, second.getStart());
-		assertEquals(endSecond, second.getEnd());
-	}
-
-	@Test
-	public void testNonOverlappingDiffTypes() {
-		DataTrain train = getDataTrain();
-
-		EventController ec = train.getEventController();
-
-		Date startFirst = makeDate("2012-09-21 0600");
-		Date endFirst = makeDate("2012-09-21 0700");
-
-		Date startSecond = makeDate("2012-09-22 0600");
-		Date endSecond = makeDate("2012-09-22 0700");
-
-		ec.createOrUpdate(Event.Type.Performance, startFirst, endFirst);
-		ec.createOrUpdate(Event.Type.Rehearsal, startSecond, endSecond);
-
-		List<Event> events = ec.getAll();
-
-		Event first = (events.get(0).getStart().equals(startFirst)) ? events
-				.get(0) : events.get(1);
-		Event second = (events.get(0).getStart().equals(startSecond)) ? events
-				.get(0) : events.get(1);
-
-		assertEquals(2, events.size());
-
-		assertEquals(Event.Type.Performance, first.getType());
-		assertEquals(startFirst, first.getStart());
-		assertEquals(endFirst, first.getEnd());
-
-		assertEquals(Event.Type.Rehearsal, second.getType());
-		assertEquals(startSecond, second.getStart());
-		assertEquals(endSecond, second.getEnd());
 	}
 
 	@Test
@@ -2435,4 +2260,14 @@ public class AbsenceControllerTest extends AbstractTest {
 		assertTrue(!event1.equals(a1.getEvent()));
 	}
 
+	private Date makeDate(String sDate) {
+		// Private method to make dates out of strings following the format I
+		// always use
+		try {
+			return new SimpleDateFormat("yyyy-MM-dd HHmm").parse(sDate);
+		} catch (ParseException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 }
