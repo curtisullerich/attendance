@@ -1,7 +1,6 @@
 package edu.iastate.music.marching.attendance.test.unit.controllers;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -27,6 +26,197 @@ import edu.iastate.music.marching.attendance.test.util.Users;
 
 @SuppressWarnings("deprecation")
 public class AbsenceControllerTest extends AbstractTest {
+
+	/**
+	 * Test to see if updating an absence to be during an event will link the
+	 * absence to it
+	 */
+	@Test
+	public void autoLinkAbsenceOnUpdate_Succeeds() {
+		DataTrain train = getDataTrain();
+
+		UserController uc = train.getUsersController();
+		User student = Users.createStudent(uc, "studenttt", "123456789",
+				"First", "last", 2, "major", User.Section.AltoSax);
+
+		Date eventStart = makeDate("2012-06-16 0400");
+		Date eventEnd = makeDate("2012-06-16 0600");
+
+		Date absenceStart = makeDate("2012-06-15 0400");
+		Date absenceEnd = makeDate("2012-06-15 0600");
+
+		Event event = train.getEventController().createOrUpdate(
+				Event.Type.Performance, eventStart, eventEnd);
+
+		Absence absence = train.getAbsenceController().createOrUpdateAbsence(
+				student, absenceStart, absenceEnd);
+
+		// update absence to be during event
+		absence.setStart(eventStart);
+		absence.setEnd(eventEnd);
+		train.getAbsenceController().updateAbsence(absence);
+
+		assertEquals(event, absence.getEvent());
+	}
+	
+	/**
+	 * Test to see if updating an absence to be during an event will link the
+	 * absence to it
+	 */
+	@Test
+	public void autoLinkAbsenceOnUpdate_Fails() {
+		DataTrain train = getDataTrain();
+
+		UserController uc = train.getUsersController();
+		User student = Users.createStudent(uc, "studenttt", "123456789",
+				"First", "last", 2, "major", User.Section.AltoSax);
+
+		Date eventStart = makeDate("2012-06-16 0400");
+		Date eventEnd = makeDate("2012-06-16 0600");
+
+		Date absenceStart = makeDate("2012-06-15 0400");
+		Date absenceEnd = makeDate("2012-06-15 0600");
+		
+		Date absenceStart2 = makeDate("2012-06-16 0200");
+		Date absenceEnd2 = makeDate("2012-06-16 0400");
+
+		Event event = train.getEventController().createOrUpdate(
+				Event.Type.Performance, eventStart, eventEnd);
+
+		Absence absence = train.getAbsenceController().createOrUpdateAbsence(
+				student, absenceStart, absenceEnd);
+
+		// update absence to be during event
+		absence.setStart(absenceStart2);
+		absence.setEnd(absenceEnd2);
+		train.getAbsenceController().updateAbsence(absence);
+
+		assertNotSame(event, absence.getEvent());
+	}
+
+	/**
+	 * Test to see if updating an absence to be during an event will link the
+	 * absence to it
+	 */
+	@Test
+	public void autoLinkTardyOnUpdate_Succeeds() {
+		DataTrain train = getDataTrain();
+
+		UserController uc = train.getUsersController();
+		User student = Users.createStudent(uc, "studenttt", "123456789",
+				"First", "last", 2, "major", User.Section.AltoSax);
+
+		Date eventStart = makeDate("2012-06-16 0400");
+		Date eventEnd = makeDate("2012-06-16 0600");
+
+		Date absenceTime1 = makeDate("2012-06-15 0400");
+		Date absenceTime2 = makeDate("2012-06-16 0500");
+
+		Event event = train.getEventController().createOrUpdate(
+				Event.Type.Performance, eventStart, eventEnd);
+
+		Absence absence = train.getAbsenceController().createOrUpdateTardy(
+				student, absenceTime1);
+
+		// update absence to be during event
+		absence.setDatetime(absenceTime2);
+		train.getAbsenceController().updateAbsence(absence);
+
+		assertEquals(event, absence.getEvent());
+	}
+	
+	/**
+	 * Test to see if updating an absence to be during an event will link the
+	 * absence to it
+	 */
+	@Test
+	public void autoLinkTardyOnUpdate_Fails() {
+		DataTrain train = getDataTrain();
+
+		UserController uc = train.getUsersController();
+		User student = Users.createStudent(uc, "studenttt", "123456789",
+				"First", "last", 2, "major", User.Section.AltoSax);
+
+		Date eventStart = makeDate("2012-06-16 0400");
+		Date eventEnd = makeDate("2012-06-16 0600");
+
+		Date absenceTime1 = makeDate("2012-06-15 0400");
+		Date absenceTime2 = makeDate("2012-06-14 0500");
+
+		Event event = train.getEventController().createOrUpdate(
+				Event.Type.Performance, eventStart, eventEnd);
+
+		Absence absence = train.getAbsenceController().createOrUpdateTardy(
+				student, absenceTime1);
+
+		// update absence to be during event
+		absence.setDatetime(absenceTime2);
+		train.getAbsenceController().updateAbsence(absence);
+
+		assertNotSame(event, absence.getEvent());
+	}
+
+	/**
+	 * Test to see if updating an absence to be during an event will link the
+	 * absence to it
+	 */
+	@Test
+	public void autoLinkECOOnUpdate_Succeeds() {
+		DataTrain train = getDataTrain();
+
+		UserController uc = train.getUsersController();
+		User student = Users.createStudent(uc, "studenttt", "123456789",
+				"First", "last", 2, "major", User.Section.AltoSax);
+
+		Date eventStart = makeDate("2012-06-16 0400");
+		Date eventEnd = makeDate("2012-06-16 0600");
+
+		Date absenceTime1 = makeDate("2012-06-15 0400");
+		Date absenceTime2 = makeDate("2012-06-16 0500");
+
+		Event event = train.getEventController().createOrUpdate(
+				Event.Type.Performance, eventStart, eventEnd);
+
+		Absence absence = train.getAbsenceController().createOrUpdateEarlyCheckout(
+				student, absenceTime1);
+
+		// update absence to be during event
+		absence.setDatetime(absenceTime2);
+		train.getAbsenceController().updateAbsence(absence);
+
+		assertEquals(event, absence.getEvent());
+	}
+	
+	/**
+	 * Test to see if updating an absence to be during an event will link the
+	 * absence to it
+	 */
+	@Test
+	public void autoLinkECOOnUpdate_Fails() {
+		DataTrain train = getDataTrain();
+
+		UserController uc = train.getUsersController();
+		User student = Users.createStudent(uc, "studenttt", "123456789",
+				"First", "last", 2, "major", User.Section.AltoSax);
+
+		Date eventStart = makeDate("2012-06-16 0400");
+		Date eventEnd = makeDate("2012-06-16 0600");
+
+		Date absenceTime1 = makeDate("2012-06-15 0400");
+		Date absenceTime2 = makeDate("2012-06-14 0500");
+
+		Event event = train.getEventController().createOrUpdate(
+				Event.Type.Performance, eventStart, eventEnd);
+
+		Absence absence = train.getAbsenceController().createOrUpdateEarlyCheckout(
+				student, absenceTime1);
+
+		// update absence to be during event
+		absence.setDatetime(absenceTime2);
+		train.getAbsenceController().updateAbsence(absence);
+
+		assertNotSame(event, absence.getEvent());
+	}
 
 	@Test
 	public void testCreateAbsence() {
@@ -372,7 +562,8 @@ public class AbsenceControllerTest extends AbstractTest {
 		train.getAbsenceController().createOrUpdateTardy(student1, tardy);
 		train.getAbsenceController().createOrUpdateTardy(student1, tardyLate);
 
-		List<Absence> studentAbsences = train.getAbsenceController().get(student1);
+		List<Absence> studentAbsences = train.getAbsenceController().get(
+				student1);
 
 		assertEquals(1, studentAbsences.size());
 		Absence absence = studentAbsences.get(0);
@@ -384,7 +575,8 @@ public class AbsenceControllerTest extends AbstractTest {
 		train.getAbsenceController().createOrUpdateTardy(student2, tardyLate);
 		train.getAbsenceController().createOrUpdateTardy(student2, tardy);
 
-		List<Absence> student2Absences = train.getAbsenceController().get(student2);
+		List<Absence> student2Absences = train.getAbsenceController().get(
+				student2);
 
 		assertEquals(1, studentAbsences.size());
 		Absence absence2 = student2Absences.get(0);
@@ -418,7 +610,8 @@ public class AbsenceControllerTest extends AbstractTest {
 		train.getAbsenceController().createOrUpdateTardy(student1, tardy);
 		train.getAbsenceController().createOrUpdateTardy(student1, otherTardy);
 
-		List<Absence> studentAbsences = train.getAbsenceController().get(student1);
+		List<Absence> studentAbsences = train.getAbsenceController().get(
+				student1);
 
 		assertEquals(2, studentAbsences.size());
 		Absence absence = studentAbsences.get(0);
@@ -493,7 +686,8 @@ public class AbsenceControllerTest extends AbstractTest {
 		train.getAbsenceController().createOrUpdateTardy(nonOverEarlyFirst,
 				tardyDate);
 
-		List<Absence> nonOverEarlyFirstAbsences = train.getAbsenceController().get(nonOverEarlyFirst);
+		List<Absence> nonOverEarlyFirstAbsences = train.getAbsenceController()
+				.get(nonOverEarlyFirst);
 
 		assertEquals(2, nonOverEarlyFirstAbsences.size());
 		tardy = (nonOverEarlyFirstAbsences.get(0).getType() == Absence.Type.Tardy) ? nonOverEarlyFirstAbsences
@@ -508,10 +702,13 @@ public class AbsenceControllerTest extends AbstractTest {
 		assertTrue(earlyCheckOut.getStart().equals(earlyNon));
 
 		// Case 2.a
-		train.getAbsenceController().createOrUpdateTardy(overlapTardyFirst, tardyDate);
-		train.getAbsenceController().createOrUpdateEarlyCheckout(overlapTardyFirst, earlyOverlap);
+		train.getAbsenceController().createOrUpdateTardy(overlapTardyFirst,
+				tardyDate);
+		train.getAbsenceController().createOrUpdateEarlyCheckout(
+				overlapTardyFirst, earlyOverlap);
 
-		List<Absence> overlapTardyFirstAbsences = train.getAbsenceController().get(overlapTardyFirst);
+		List<Absence> overlapTardyFirstAbsences = train.getAbsenceController()
+				.get(overlapTardyFirst);
 
 		assertEquals(1, overlapTardyFirstAbsences.size());
 		Absence createdAbsence = overlapTardyFirstAbsences.get(0);
@@ -521,10 +718,13 @@ public class AbsenceControllerTest extends AbstractTest {
 		assertEquals(eventEnd, createdAbsence.getEnd());
 
 		// Case 2.b
-		train.getAbsenceController().createOrUpdateEarlyCheckout(overlapEarlyFirst, earlyOverlap);
-		train.getAbsenceController().createOrUpdateTardy(overlapEarlyFirst, tardyDate);
+		train.getAbsenceController().createOrUpdateEarlyCheckout(
+				overlapEarlyFirst, earlyOverlap);
+		train.getAbsenceController().createOrUpdateTardy(overlapEarlyFirst,
+				tardyDate);
 
-		List<Absence> overlapEarlyFirstAbsences = train.getAbsenceController().get(overlapEarlyFirst);
+		List<Absence> overlapEarlyFirstAbsences = train.getAbsenceController()
+				.get(overlapEarlyFirst);
 
 		assertEquals(1, overlapEarlyFirstAbsences.size());
 		createdAbsence = overlapEarlyFirstAbsences.get(0);
@@ -667,124 +867,136 @@ public class AbsenceControllerTest extends AbstractTest {
 		assertTrue(absence.getType() == Absence.Type.EarlyCheckOut);
 	}
 
-	
 	@Test
 	public void testApproveAbsence() {
 		DataTrain train = getDataTrain();
-		
+
 		UserController uc = train.getUsersController();
-		User student = Users.createStudent(uc, "student1", "123456789", "First", "last", 2, "major", User.Section.AltoSax);
+		User student = Users.createStudent(uc, "student1", "123456789",
+				"First", "last", 2, "major", User.Section.AltoSax);
 
 		Date start = makeDate("2012-06-16 0500");
 		Date end = makeDate("2012-06-16 0700");
-		
-		train.getEventController().createOrUpdate(Event.Type.Performance, start, end);
-		Absence abs = train.getAbsenceController().createOrUpdateAbsence(student, start, end);
+
+		train.getEventController().createOrUpdate(Event.Type.Performance,
+				start, end);
+		Absence abs = train.getAbsenceController().createOrUpdateAbsence(
+				student, start, end);
 		abs.setStatus(Absence.Status.Approved);
 		train.getAbsenceController().updateAbsence(abs);
-		
+
 		List<Absence> studentAbs = train.getAbsenceController().get(student);
 		assertEquals(1, studentAbs.size());
-		
+
 		Absence absence = studentAbs.get(0);
 		assertTrue(absence.getStart().equals(start));
 		assertTrue(absence.getEnd().equals(end));
 		assertTrue(absence.getType() == Absence.Type.Absence);
-		assertTrue(absence.getStatus() == Absence.Status.Approved);		
+		assertTrue(absence.getStatus() == Absence.Status.Approved);
 	}
-	
+
 	@Test
 	public void testApprovedAbsenceDominatesAbsence() {
 		DataTrain train = getDataTrain();
-		
-		UserController uc = train.getUsersController();
-		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 2, "major", User.Section.AltoSax);
-		User student1 = Users.createStudent(uc, "student1", "123456780", "First", "last", 2, "major", User.Section.AltoSax);
 
-		
+		UserController uc = train.getUsersController();
+		User student = Users.createStudent(uc, "student", "123456789", "First",
+				"last", 2, "major", User.Section.AltoSax);
+		User student1 = Users.createStudent(uc, "student1", "123456780",
+				"First", "last", 2, "major", User.Section.AltoSax);
+
 		Date start = makeDate("2012-06-16 0500");
-		Date end = makeDate("2012-06-16 0600");		
-		
-		//Approved saved first
-		train.getEventController().createOrUpdate(Event.Type.Performance, start, end);
-		Absence abs = train.getAbsenceController().createOrUpdateAbsence(student, start, end);
+		Date end = makeDate("2012-06-16 0600");
+
+		// Approved saved first
+		train.getEventController().createOrUpdate(Event.Type.Performance,
+				start, end);
+		Absence abs = train.getAbsenceController().createOrUpdateAbsence(
+				student, start, end);
 		abs.setStatus(Absence.Status.Approved);
 		train.getAbsenceController().updateAbsence(abs);
-		
+
 		train.getAbsenceController().createOrUpdateAbsence(student, start, end);
-		
+
 		List<Absence> studentAbs = train.getAbsenceController().get(student);
 		assertEquals(1, studentAbs.size());
-		
+
 		Absence absence = studentAbs.get(0);
 		assertTrue(absence.getStart().equals(start));
 		assertTrue(absence.getEnd().equals(end));
 		assertTrue(absence.getType() == Absence.Type.Absence);
-		assertTrue(absence.getStatus() == Absence.Status.Approved);	
+		assertTrue(absence.getStatus() == Absence.Status.Approved);
 	}
-	
+
 	@Test
 	public void testApprovedAbsenceDominatesTardy() {
 		DataTrain train = getDataTrain();
-		
-		UserController uc = train.getUsersController();
-		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 2, "major", User.Section.AltoSax);
-		User student1 = Users.createStudent(uc, "student1", "123456780", "First", "last", 2, "major", User.Section.AltoSax);
 
-		
+		UserController uc = train.getUsersController();
+		User student = Users.createStudent(uc, "student", "123456789", "First",
+				"last", 2, "major", User.Section.AltoSax);
+		User student1 = Users.createStudent(uc, "student1", "123456780",
+				"First", "last", 2, "major", User.Section.AltoSax);
+
 		Date start = makeDate("2012-06-16 0500");
 		Date tardyStart = makeDate("2012-06-16 0515");
-		Date end = makeDate("2012-06-16 0600");		
-		
-		//Approved saved first
-		train.getEventController().createOrUpdate(Event.Type.Performance, start, end);
-		Absence abs = train.getAbsenceController().createOrUpdateAbsence(student, start, end);
+		Date end = makeDate("2012-06-16 0600");
+
+		// Approved saved first
+		train.getEventController().createOrUpdate(Event.Type.Performance,
+				start, end);
+		Absence abs = train.getAbsenceController().createOrUpdateAbsence(
+				student, start, end);
 		abs.setStatus(Absence.Status.Approved);
 		train.getAbsenceController().updateAbsence(abs);
-		
+
 		train.getAbsenceController().createOrUpdateTardy(student, tardyStart);
-		
+
 		List<Absence> studentAbs = train.getAbsenceController().get(student);
 		assertEquals(1, studentAbs.size());
-		
+
 		Absence absence = studentAbs.get(0);
 		assertTrue(absence.getStart().equals(start));
 		assertTrue(absence.getEnd().equals(end));
 		assertTrue(absence.getType() == Absence.Type.Absence);
-		assertTrue(absence.getStatus() == Absence.Status.Approved);	
+		assertTrue(absence.getStatus() == Absence.Status.Approved);
 	}
-	
+
 	@Test
 	public void testApprovedAbsenceDominatesEarly() {
 		DataTrain train = getDataTrain();
-		
-		UserController uc = train.getUsersController();
-		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 2, "major", User.Section.AltoSax);
-		User student1 = Users.createStudent(uc, "student1", "123456780", "First", "last", 2, "major", User.Section.AltoSax);
 
-		
+		UserController uc = train.getUsersController();
+		User student = Users.createStudent(uc, "student", "123456789", "First",
+				"last", 2, "major", User.Section.AltoSax);
+		User student1 = Users.createStudent(uc, "student1", "123456780",
+				"First", "last", 2, "major", User.Section.AltoSax);
+
 		Date start = makeDate("2012-06-16 0500");
 		Date tardyStart = makeDate("2012-06-16 0515");
-		Date end = makeDate("2012-06-16 0600");		
-		
-		//Approved saved first
-		train.getEventController().createOrUpdate(Event.Type.Performance, start, end);
-		Absence abs = train.getAbsenceController().createOrUpdateAbsence(student, start, end);
+		Date end = makeDate("2012-06-16 0600");
+
+		// Approved saved first
+		train.getEventController().createOrUpdate(Event.Type.Performance,
+				start, end);
+		Absence abs = train.getAbsenceController().createOrUpdateAbsence(
+				student, start, end);
 		abs.setStatus(Absence.Status.Approved);
 		train.getAbsenceController().updateAbsence(abs);
-		
-		train.getAbsenceController().createOrUpdateEarlyCheckout(student, tardyStart);
-		
+
+		train.getAbsenceController().createOrUpdateEarlyCheckout(student,
+				tardyStart);
+
 		List<Absence> studentAbs = train.getAbsenceController().get(student);
 		assertEquals(1, studentAbs.size());
-		
+
 		Absence absence = studentAbs.get(0);
 		assertTrue(absence.getStart().equals(start));
 		assertTrue(absence.getEnd().equals(end));
 		assertTrue(absence.getType() == Absence.Type.Absence);
-		assertTrue(absence.getStatus() == Absence.Status.Approved);	
+		assertTrue(absence.getStatus() == Absence.Status.Approved);
 	}
-	
+
 	@Test
 	public void testApprovedTardyVsAbsence() {
 		/*
@@ -792,7 +1004,7 @@ public class AbsenceControllerTest extends AbstractTest {
 		 * adds the tardy first
 		 */
 		DataTrain train = getDataTrain();
-		
+
 		UserController uc = train.getUsersController();
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
@@ -804,18 +1016,15 @@ public class AbsenceControllerTest extends AbstractTest {
 		Date eventEnd = makeDate("2012-06-16 0700");
 		Date tardyDate = makeDate("2012-06-16 0515");
 
-		ec.createOrUpdate(Event.Type.Performance,
-				eventStart, eventEnd);
+		ec.createOrUpdate(Event.Type.Performance, eventStart, eventEnd);
 
 		Absence tardy = ac.createOrUpdateTardy(student, tardyDate);
 		tardy.setStatus(Absence.Status.Approved);
 		ac.updateAbsence(tardy);
-		
-		ac.createOrUpdateAbsence(student, eventStart,
-				eventEnd);
 
-		List<Absence> studentAbsences = ac.get(
-				student);
+		ac.createOrUpdateAbsence(student, eventStart, eventEnd);
+
+		List<Absence> studentAbsences = ac.get(student);
 
 		assertEquals(1, studentAbsences.size());
 		Absence absence = studentAbsences.get(0);
@@ -825,50 +1034,52 @@ public class AbsenceControllerTest extends AbstractTest {
 		assertTrue(absence.getStatus() == Absence.Status.Approved);
 	}
 
-	
 	@Test
 	public void testApprovedTardyDominatesTardySameTime() {
 		DataTrain train = getDataTrain();
-		
-		UserController uc = train.getUsersController();
-		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 2, "major", User.Section.AltoSax);
-		User student1 = Users.createStudent(uc, "student1", "123456780", "First", "last", 2, "major", User.Section.AltoSax);
 
-		
+		UserController uc = train.getUsersController();
+		User student = Users.createStudent(uc, "student", "123456789", "First",
+				"last", 2, "major", User.Section.AltoSax);
+		User student1 = Users.createStudent(uc, "student1", "123456780",
+				"First", "last", 2, "major", User.Section.AltoSax);
+
 		Date start = makeDate("2012-06-16 0500");
-		Date end = makeDate("2012-06-16 0600");		
-		
-		//Approved saved first
-		train.getEventController().createOrUpdate(Event.Type.Performance, start, end);
-		Absence abs = train.getAbsenceController().createOrUpdateTardy(student, start);
+		Date end = makeDate("2012-06-16 0600");
+
+		// Approved saved first
+		train.getEventController().createOrUpdate(Event.Type.Performance,
+				start, end);
+		Absence abs = train.getAbsenceController().createOrUpdateTardy(student,
+				start);
 		abs.setStatus(Absence.Status.Approved);
 		train.getAbsenceController().updateAbsence(abs);
-		
+
 		train.getAbsenceController().createOrUpdateTardy(student, start);
-		
+
 		List<Absence> studentAbs = train.getAbsenceController().get(student);
 		assertEquals(1, studentAbs.size());
-		
+
 		Absence absence = studentAbs.get(0);
 		assertTrue(absence.getStart().equals(start));
 		assertTrue(absence.getType() == Absence.Type.Tardy);
-		assertTrue(absence.getStatus() == Absence.Status.Approved);	
-		
-		//Approved saved second
+		assertTrue(absence.getStatus() == Absence.Status.Approved);
+
+		// Approved saved second
 		train.getAbsenceController().createOrUpdateTardy(student1, start);
 		abs = train.getAbsenceController().createOrUpdateTardy(student1, start);
 		abs.setStatus(Absence.Status.Approved);
 		train.getAbsenceController().updateAbsence(abs);
-		
+
 		studentAbs = train.getAbsenceController().get(student1);
 		assertEquals(1, studentAbs.size());
-		
+
 		absence = studentAbs.get(0);
 		assertTrue(absence.getStart().equals(start));
 		assertTrue(absence.getType() == Absence.Type.Tardy);
 		assertTrue(absence.getStatus() == Absence.Status.Approved);
 	}
-	
+
 	@Test
 	public void testApprovedTardyDominatesTardyDiffTime() {
 		DataTrain train = getDataTrain();
@@ -876,7 +1087,7 @@ public class AbsenceControllerTest extends AbstractTest {
 		UserController uc = train.getUsersController();
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
-		
+
 		User student1 = Users.createStudent(uc, "student1", "123456789",
 				"First", "last", 2, "major", User.Section.AltoSax);
 		User student2 = Users.createStudent(uc, "student2", "123456782",
@@ -888,19 +1099,18 @@ public class AbsenceControllerTest extends AbstractTest {
 		Date tardy = makeDate("2012-06-16 0515");
 		Date tardyLate = makeDate("2012-06-16 0520");
 
-		ec.createOrUpdate(Event.Type.Performance,
-				eventStart, eventEnd);
-		
-		//Approving the early tardy
+		ec.createOrUpdate(Event.Type.Performance, eventStart, eventEnd);
+
+		// Approving the early tardy
 		Absence t = ac.createOrUpdateTardy(student1, tardy);
 		t.setStatus(Absence.Status.Approved);
 		ac.updateAbsence(t);
-		
+
 		ac.createOrUpdateTardy(student1, tardyLate);
 
 		List<Absence> studentAbsences = ac.get(student1);
 
-		//Should be the approved tardy values
+		// Should be the approved tardy values
 		assertEquals(1, studentAbsences.size());
 		Absence absence = studentAbsences.get(0);
 
@@ -916,7 +1126,7 @@ public class AbsenceControllerTest extends AbstractTest {
 
 		List<Absence> student2Absences = ac.get(student2);
 
-		//Should still be the approved values
+		// Should still be the approved values
 		assertEquals(1, student2Absences.size());
 		Absence absence2 = student2Absences.get(0);
 
@@ -924,18 +1134,15 @@ public class AbsenceControllerTest extends AbstractTest {
 		assertTrue(absence2.getStatus() == Absence.Status.Approved);
 		assertTrue(absence2.getType() == Absence.Type.Tardy);
 	}
-	
+
 	@Test
 	public void testApprovedTardyVsEarly() {
 		/*
-		 * This method tests these four cases: 
-		 * Case 1: don't overlap, both should remain. 
-		 * 		a: Adding Tardy first 
-		 * 		b: Adding EarlyCheckout first
+		 * This method tests these four cases: Case 1: don't overlap, both
+		 * should remain. a: Adding Tardy first b: Adding EarlyCheckout first
 		 * 
-		 * Case 2: do overlap, become an absence 
-		 * 		a: Adding Tardy first 
-		 * 		b: Adding EarlyCheckout first
+		 * Case 2: do overlap, become an absence a: Adding Tardy first b: Adding
+		 * EarlyCheckout first
 		 */
 
 		DataTrain train = getDataTrain();
@@ -943,7 +1150,7 @@ public class AbsenceControllerTest extends AbstractTest {
 		UserController uc = train.getUsersController();
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
-		
+
 		User nonOverTardyFirst = Users.createStudent(uc, "student1",
 				"123456780", "First", "last", 2, "major", User.Section.AltoSax);
 		User nonOverEarlyFirst = Users.createStudent(uc, "student2",
@@ -961,8 +1168,7 @@ public class AbsenceControllerTest extends AbstractTest {
 		Date earlyNon = makeDate("2012-06-16 0650");
 		Date earlyOverlap = makeDate("2012-06-16 0510");
 
-		ec.createOrUpdate(Event.Type.Performance,
-				eventStart, eventEnd);
+		ec.createOrUpdate(Event.Type.Performance, eventStart, eventEnd);
 		// Case 1.a
 		Absence t = ac.createOrUpdateTardy(nonOverTardyFirst, tardyDate);
 		t.setStatus(Absence.Status.Approved);
@@ -1012,10 +1218,11 @@ public class AbsenceControllerTest extends AbstractTest {
 		t = ac.createOrUpdateTardy(overlapTardyFirst, tardyDate);
 		t.setStatus(Absence.Status.Approved);
 		ac.updateAbsence(t);
-		
+
 		ac.createOrUpdateEarlyCheckout(overlapTardyFirst, earlyOverlap);
 
-		List<Absence> overlapTardyFirstAbsences = train.getAbsenceController().get(overlapTardyFirst);
+		List<Absence> overlapTardyFirstAbsences = train.getAbsenceController()
+				.get(overlapTardyFirst);
 
 		assertEquals(1, overlapTardyFirstAbsences.size());
 		Absence createdAbsence = overlapTardyFirstAbsences.get(0);
@@ -1029,7 +1236,8 @@ public class AbsenceControllerTest extends AbstractTest {
 		ac.createOrUpdateEarlyCheckout(overlapEarlyFirst, earlyOverlap);
 		ac.createOrUpdateTardy(overlapEarlyFirst, tardyDate);
 
-		List<Absence> overlapEarlyFirstAbsences = train.getAbsenceController().get(overlapEarlyFirst);
+		List<Absence> overlapEarlyFirstAbsences = train.getAbsenceController()
+				.get(overlapEarlyFirst);
 
 		assertEquals(1, overlapEarlyFirstAbsences.size());
 		createdAbsence = overlapEarlyFirstAbsences.get(0);
@@ -1040,34 +1248,37 @@ public class AbsenceControllerTest extends AbstractTest {
 		assertEquals(eventEnd, createdAbsence.getEnd());
 	}
 
-	
 	@Test
 	public void testApprovedEarlyDominatesEarly() {
 		DataTrain train = getDataTrain();
-		
+
 		UserController uc = train.getUsersController();
-		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 2, "major", User.Section.AltoSax);
-			
+		User student = Users.createStudent(uc, "student", "123456789", "First",
+				"last", 2, "major", User.Section.AltoSax);
+
 		Date start = makeDate("2012-06-16 0500");
 		Date checkout = makeDate("2012-06-16 0550");
-		Date end = makeDate("2012-06-16 0600");		
-		
-		//Approved saved first
-		train.getEventController().createOrUpdate(Event.Type.Performance, start, end);
-		Absence abs = train.getAbsenceController().createOrUpdateEarlyCheckout(student, checkout);
+		Date end = makeDate("2012-06-16 0600");
+
+		// Approved saved first
+		train.getEventController().createOrUpdate(Event.Type.Performance,
+				start, end);
+		Absence abs = train.getAbsenceController().createOrUpdateEarlyCheckout(
+				student, checkout);
 		abs.setStatus(Absence.Status.Approved);
 		train.getAbsenceController().updateAbsence(abs);
-		train.getAbsenceController().createOrUpdateEarlyCheckout(student, checkout);
-		
+		train.getAbsenceController().createOrUpdateEarlyCheckout(student,
+				checkout);
+
 		List<Absence> studentAbs = train.getAbsenceController().get(student);
 		assertEquals(1, studentAbs.size());
-		
+
 		Absence absence = studentAbs.get(0);
 		assertTrue(absence.getStart().equals(checkout));
 		assertTrue(absence.getType() == Absence.Type.EarlyCheckOut);
-		assertTrue(absence.getStatus() == Absence.Status.Approved);	
+		assertTrue(absence.getStatus() == Absence.Status.Approved);
 	}
-	
+
 	private Date makeDate(String sDate) {
 		// Private method to make dates out of strings following the format I
 		// always use
@@ -1085,8 +1296,7 @@ public class AbsenceControllerTest extends AbstractTest {
 	@Test
 	public void testAutoApproveWithFormA() {
 		DataTrain train = getDataTrain();
-		TimeZone timezone = train.getAppDataController().get()
-				.getTimeZone();
+		TimeZone timezone = train.getAppDataController().get().getTimeZone();
 
 		UserController uc = train.getUsersController();
 		EventController ec = train.getEventController();
@@ -1112,7 +1322,7 @@ public class AbsenceControllerTest extends AbstractTest {
 		Absence a = ac.createOrUpdateAbsence(student, e);
 		assertEquals(Absence.Status.Approved, a.getStatus());
 	}
-	
+
 	@Test
 	public void testGettingUnanchored() {
 		DataTrain train = getDataTrain();
@@ -1121,753 +1331,789 @@ public class AbsenceControllerTest extends AbstractTest {
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
 		FormController fc = train.getFormsController();
-		
+
 		List<Absence> unanchored = new ArrayList<Absence>();
-		
-		User student1 = Users.createStudent(uc, "student1", "123456789", "First", "last", 
-				2, "major", User.Section.AltoSax);
-		User student2 = Users.createStudent(uc, "student2", "123456788", "First", "last", 
-				2, "major", User.Section.AltoSax);
-		User student3 = Users.createStudent(uc, "student3", "123456787", "First", "last", 
-				2, "major", User.Section.AltoSax);
+
+		User student1 = Users.createStudent(uc, "student1", "123456789",
+				"First", "last", 2, "major", User.Section.AltoSax);
+		User student2 = Users.createStudent(uc, "student2", "123456788",
+				"First", "last", 2, "major", User.Section.AltoSax);
+		User student3 = Users.createStudent(uc, "student3", "123456787",
+				"First", "last", 2, "major", User.Section.AltoSax);
 
 		Date unanchoredStart = makeDate("2012-09-21 0600");
 		Date unanchoredEnd = makeDate("2012-09-21 0700");
-		
+
 		Date anchoredStart = makeDate("2012-09-22 0600");
 		Date anchoredEnd = makeDate("2012-09-22 0700");
-		
-		unanchored.add(ac.createOrUpdateAbsence(student1, unanchoredStart, unanchoredEnd));
+
+		unanchored.add(ac.createOrUpdateAbsence(student1, unanchoredStart,
+				unanchoredEnd));
 		unanchored.add(ac.createOrUpdateTardy(student2, unanchoredStart));
-		unanchored.add(ac.createOrUpdateEarlyCheckout(student3, unanchoredStart));
-		
+		unanchored.add(ac
+				.createOrUpdateEarlyCheckout(student3, unanchoredStart));
+
 		ec.createOrUpdate(Event.Type.Rehearsal, anchoredStart, anchoredEnd);
 		ac.createOrUpdateAbsence(student1, anchoredStart, anchoredEnd);
 		ac.createOrUpdateTardy(student2, anchoredStart);
 		ac.createOrUpdateEarlyCheckout(student3, anchoredStart);
-		
+
 		List<Absence> allUnanchored = ac.getUnanchored();
 		assertEquals(unanchored.size(), allUnanchored.size());
-		
+
 		boolean absenceWorked = false;
 		boolean tardyWorked = false;
 		boolean earlyWorked = false;
-		
-		for (Absence known: unanchored) {
-			for (Absence toCheck: allUnanchored) {
+
+		for (Absence known : unanchored) {
+			for (Absence toCheck : allUnanchored) {
 				if (known.equals(toCheck)) {
 					if (known.getType() == Absence.Type.Absence) {
 						absenceWorked = true;
-					}
-					else if (known.getType() == Absence.Type.Tardy) {
+					} else if (known.getType() == Absence.Type.Tardy) {
 						tardyWorked = true;
-					}
-					else if (known.getType() == Absence.Type.EarlyCheckOut){
+					} else if (known.getType() == Absence.Type.EarlyCheckOut) {
 						earlyWorked = true;
 					}
 				}
 			}
 		}
-		
+
 		assertTrue(absenceWorked);
 		assertTrue(tardyWorked);
 		assertTrue(earlyWorked);
-		
+
 		List<Absence> allAbs = ac.getAll();
-		
+
 		assertEquals(6, allAbs.size());
 		int numAnchored = 0;
 		int numUnanchored = 0;
-		for (Absence e: allAbs) {
+		for (Absence e : allAbs) {
 			if (e.getEvent() == null) {
 				++numUnanchored;
-			}
-			else {
+			} else {
 				++numAnchored;
 			}
 		}
 		assertEquals(3, numUnanchored);
 		assertEquals(3, numAnchored);
 	}
-	
+
 	@Test
 	public void testOverlappingEventsRehersal() {
 		DataTrain train = getDataTrain();
-		
+
 		EventController ec = train.getEventController();
-		
+
 		Date startOverlap = makeDate("2012-09-21 0600");
 		Date endOverlap = makeDate("2012-09-21 0700");
-		
+
 		ec.createOrUpdate(Event.Type.Rehearsal, startOverlap, endOverlap);
 		ec.createOrUpdate(Event.Type.Rehearsal, startOverlap, endOverlap);
-		
+
 		List<Event> events = ec.getAll();
-		
+
 		assertEquals(1, events.size());
 		assertEquals(startOverlap, events.get(0).getStart());
 		assertEquals(endOverlap, events.get(0).getEnd());
 	}
-	
+
 	@Test
 	public void testOverlappingEventsPerformance() {
 		DataTrain train = getDataTrain();
-		
+
 		EventController ec = train.getEventController();
-		
+
 		Date startOverlap = makeDate("2012-09-21 0600");
 		Date endOverlap = makeDate("2012-09-21 0700");
-		
+
 		ec.createOrUpdate(Event.Type.Performance, startOverlap, endOverlap);
 		ec.createOrUpdate(Event.Type.Performance, startOverlap, endOverlap);
-		
+
 		List<Event> events = ec.getAll();
-		
+
 		assertEquals(1, events.size());
 		assertEquals(startOverlap, events.get(0).getStart());
 		assertEquals(endOverlap, events.get(0).getEnd());
 	}
-	
+
 	@Test
 	public void testOverlappingEventsDifferentTypes() {
 		DataTrain train = getDataTrain();
-		
+
 		EventController ec = train.getEventController();
-		
+
 		Date startOverlap = makeDate("2012-09-21 0600");
 		Date endOverlap = makeDate("2012-09-21 0700");
-		
+
 		ec.createOrUpdate(Event.Type.Rehearsal, startOverlap, endOverlap);
 		ec.createOrUpdate(Event.Type.Performance, startOverlap, endOverlap);
-		
+
 		List<Event> events = ec.getAll();
-		
+
 		assertEquals(2, events.size());
-		
-		assertTrue(events.get(0).getType() == Event.Type.Rehearsal 
+
+		assertTrue(events.get(0).getType() == Event.Type.Rehearsal
 				|| events.get(0).getType() == Event.Type.Performance);
 		assertEquals(startOverlap, events.get(0).getStart());
 		assertEquals(endOverlap, events.get(0).getEnd());
-		
-		assertTrue(events.get(1).getType() == Event.Type.Rehearsal 
+
+		assertTrue(events.get(1).getType() == Event.Type.Rehearsal
 				|| events.get(1).getType() == Event.Type.Performance);
 		assertEquals(startOverlap, events.get(1).getStart());
 		assertEquals(endOverlap, events.get(1).getEnd());
 	}
-	
+
 	@Test
 	public void testNonOverlappingEventsRehearsal() {
 		DataTrain train = getDataTrain();
-		
+
 		EventController ec = train.getEventController();
-		
+
 		Date startFirst = makeDate("2012-09-21 0600");
 		Date endFirst = makeDate("2012-09-21 0700");
-		
+
 		Date startSecond = makeDate("2012-09-22 0600");
 		Date endSecond = makeDate("2012-09-22 0700");
-		
+
 		ec.createOrUpdate(Event.Type.Rehearsal, startFirst, endFirst);
 		ec.createOrUpdate(Event.Type.Rehearsal, startSecond, endSecond);
-		
+
 		List<Event> events = ec.getAll();
-		
-		Event first = (events.get(0).getStart().equals(startFirst)) ? events.get(0) : events.get(1);
-		Event second = (events.get(0).getStart().equals(startSecond)) ? events.get(0) : events.get(1);
-		
+
+		Event first = (events.get(0).getStart().equals(startFirst)) ? events
+				.get(0) : events.get(1);
+		Event second = (events.get(0).getStart().equals(startSecond)) ? events
+				.get(0) : events.get(1);
+
 		assertEquals(2, events.size());
-		
+
 		assertEquals(Event.Type.Rehearsal, first.getType());
 		assertEquals(startFirst, first.getStart());
 		assertEquals(endFirst, first.getEnd());
-		
+
 		assertEquals(Event.Type.Rehearsal, second.getType());
 		assertEquals(startSecond, second.getStart());
 		assertEquals(endSecond, second.getEnd());
 	}
-	
+
 	@Test
 	public void testNonOverlappingEventsPerformance() {
 		DataTrain train = getDataTrain();
-		
+
 		EventController ec = train.getEventController();
-		
+
 		Date startFirst = makeDate("2012-09-21 0600");
 		Date endFirst = makeDate("2012-09-21 0700");
-		
+
 		Date startSecond = makeDate("2012-09-22 0600");
 		Date endSecond = makeDate("2012-09-22 0700");
-		
+
 		ec.createOrUpdate(Event.Type.Performance, startFirst, endFirst);
 		ec.createOrUpdate(Event.Type.Performance, startSecond, endSecond);
-		
+
 		List<Event> events = ec.getAll();
-		
-		Event first = (events.get(0).getStart().equals(startFirst)) ? events.get(0) : events.get(1);
-		Event second = (events.get(0).getStart().equals(startSecond)) ? events.get(0) : events.get(1);
-		
+
+		Event first = (events.get(0).getStart().equals(startFirst)) ? events
+				.get(0) : events.get(1);
+		Event second = (events.get(0).getStart().equals(startSecond)) ? events
+				.get(0) : events.get(1);
+
 		assertEquals(2, events.size());
-		
+
 		assertEquals(Event.Type.Performance, first.getType());
 		assertEquals(startFirst, first.getStart());
 		assertEquals(endFirst, first.getEnd());
-		
+
 		assertEquals(Event.Type.Performance, second.getType());
 		assertEquals(startSecond, second.getStart());
 		assertEquals(endSecond, second.getEnd());
 	}
-	
+
 	@Test
 	public void testNonOverlappingDiffTypes() {
 		DataTrain train = getDataTrain();
-		
+
 		EventController ec = train.getEventController();
-		
+
 		Date startFirst = makeDate("2012-09-21 0600");
 		Date endFirst = makeDate("2012-09-21 0700");
-		
+
 		Date startSecond = makeDate("2012-09-22 0600");
 		Date endSecond = makeDate("2012-09-22 0700");
-		
+
 		ec.createOrUpdate(Event.Type.Performance, startFirst, endFirst);
 		ec.createOrUpdate(Event.Type.Rehearsal, startSecond, endSecond);
-		
+
 		List<Event> events = ec.getAll();
-		
-		Event first = (events.get(0).getStart().equals(startFirst)) ? events.get(0) : events.get(1);
-		Event second = (events.get(0).getStart().equals(startSecond)) ? events.get(0) : events.get(1);
-		
+
+		Event first = (events.get(0).getStart().equals(startFirst)) ? events
+				.get(0) : events.get(1);
+		Event second = (events.get(0).getStart().equals(startSecond)) ? events
+				.get(0) : events.get(1);
+
 		assertEquals(2, events.size());
-		
+
 		assertEquals(Event.Type.Performance, first.getType());
 		assertEquals(startFirst, first.getStart());
 		assertEquals(endFirst, first.getEnd());
-		
+
 		assertEquals(Event.Type.Rehearsal, second.getType());
 		assertEquals(startSecond, second.getStart());
 		assertEquals(endSecond, second.getEnd());
 	}
-	
+
 	@Test
 	public void testOverlappingEventsWithTardyDuringEarlyEvent() {
 		/*
-		 * When we have 2 overlapping events adding a tardy during just the first
-		 * event shouldn't cause any problems and it should be linked to the first event
-		*/
-			DataTrain train = getDataTrain();
-			UserController uc = train.getUsersController();
-			EventController ec = train.getEventController();
-			AbsenceController ac = train.getAbsenceController();
-			
-			User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
-					2, "major", User.Section.AltoSax);
-			
-			Date startOverlapFirst = makeDate("2012-09-21 0600");
-			Date endOverlapFirst = makeDate("2012-09-21 0700");
-			
-			Date startOverlapSecond = makeDate("2012-09-21 0645");
-			Date endOverlapSecond = makeDate("2012-09-21 0745");
-			
-			Date tardyStart = makeDate("2012-09-21 0615");
-			
-			ec.createOrUpdate(Event.Type.Rehearsal, startOverlapFirst, endOverlapFirst);
-			ec.createOrUpdate(Event.Type.Performance, startOverlapSecond, endOverlapSecond);
-			
-			ac.createOrUpdateTardy(student, tardyStart);
-			
-			List<Absence> abs = ac.get(student);
-			
-			assertEquals(1, abs.size());
-			assertEquals(tardyStart, abs.get(0).getDatetime());
-			Event event = abs.get(0).getEvent();
-			
-			assertTrue(event != null);
-			assertEquals(startOverlapFirst, event.getStart());
-			assertEquals(endOverlapFirst, event.getEnd());
-	}
-	
-	@Test
-	public void testOverlappingEventsWithTardyDuringLaterEvent() {
-			DataTrain train = getDataTrain();
-			UserController uc = train.getUsersController();
-			EventController ec = train.getEventController();
-			AbsenceController ac = train.getAbsenceController();
-			
-			User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
-					2, "major", User.Section.AltoSax);
-			
-			Date startOverlapFirst = makeDate("2012-09-21 0600");
-			Date endOverlapFirst = makeDate("2012-09-21 0700");
-			
-			Date startOverlapSecond = makeDate("2012-09-21 0645");
-			Date endOverlapSecond = makeDate("2012-09-21 0745");
-			
-			Date tardyStart = makeDate("2012-09-21 0715");
-			
-			ec.createOrUpdate(Event.Type.Rehearsal, startOverlapFirst, endOverlapFirst);
-			ec.createOrUpdate(Event.Type.Performance, startOverlapSecond, endOverlapSecond);
-			
-			ac.createOrUpdateTardy(student, tardyStart);
-			
-			List<Absence> abs = ac.get(student);
-			
-			assertEquals(1, abs.size());
-			assertEquals(tardyStart, abs.get(0).getDatetime());
-			
-			Event event = abs.get(0).getEvent();
-			assertTrue(event != null);
-			assertEquals(startOverlapSecond, event.getStart());
-			assertEquals(endOverlapSecond, event.getEnd());
-	}
-	
-	@Test
-	public void testOverlappingEventsWithTardyDuringEvents() {
-			DataTrain train = getDataTrain();
-			UserController uc = train.getUsersController();
-			EventController ec = train.getEventController();
-			AbsenceController ac = train.getAbsenceController();
-			
-			User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
-					2, "major", User.Section.AltoSax);
-			
-			Date startOverlapFirst = makeDate("2012-09-21 0600");
-			Date endOverlapFirst = makeDate("2012-09-21 0700");
-			
-			Date startOverlapSecond = makeDate("2012-09-21 0645");
-			Date endOverlapSecond = makeDate("2012-09-21 0745");
-			
-			Date tardyStart = makeDate("2012-09-21 0650");
-			
-			ec.createOrUpdate(Event.Type.Rehearsal, startOverlapFirst, endOverlapFirst);
-			ec.createOrUpdate(Event.Type.Performance, startOverlapSecond, endOverlapSecond);
-			
-			ac.createOrUpdateTardy(student, tardyStart);
-			
-			List<Absence> abs = ac.get(student);
-			
-			assertEquals(1, abs.size());
-			assertTrue(abs.get(0).getEvent() == null);
-			assertEquals(tardyStart, abs.get(0).getDatetime());
+		 * When we have 2 overlapping events adding a tardy during just the
+		 * first event shouldn't cause any problems and it should be linked to
+		 * the first event
+		 */
+		DataTrain train = getDataTrain();
+		UserController uc = train.getUsersController();
+		EventController ec = train.getEventController();
+		AbsenceController ac = train.getAbsenceController();
+
+		User student = Users.createStudent(uc, "student", "123456789", "First",
+				"last", 2, "major", User.Section.AltoSax);
+
+		Date startOverlapFirst = makeDate("2012-09-21 0600");
+		Date endOverlapFirst = makeDate("2012-09-21 0700");
+
+		Date startOverlapSecond = makeDate("2012-09-21 0645");
+		Date endOverlapSecond = makeDate("2012-09-21 0745");
+
+		Date tardyStart = makeDate("2012-09-21 0615");
+
+		ec.createOrUpdate(Event.Type.Rehearsal, startOverlapFirst,
+				endOverlapFirst);
+		ec.createOrUpdate(Event.Type.Performance, startOverlapSecond,
+				endOverlapSecond);
+
+		ac.createOrUpdateTardy(student, tardyStart);
+
+		List<Absence> abs = ac.get(student);
+
+		assertEquals(1, abs.size());
+		assertEquals(tardyStart, abs.get(0).getDatetime());
+		Event event = abs.get(0).getEvent();
+
+		assertTrue(event != null);
+		assertEquals(startOverlapFirst, event.getStart());
+		assertEquals(endOverlapFirst, event.getEnd());
 	}
 
-	
+	@Test
+	public void testOverlappingEventsWithTardyDuringLaterEvent() {
+		DataTrain train = getDataTrain();
+		UserController uc = train.getUsersController();
+		EventController ec = train.getEventController();
+		AbsenceController ac = train.getAbsenceController();
+
+		User student = Users.createStudent(uc, "student", "123456789", "First",
+				"last", 2, "major", User.Section.AltoSax);
+
+		Date startOverlapFirst = makeDate("2012-09-21 0600");
+		Date endOverlapFirst = makeDate("2012-09-21 0700");
+
+		Date startOverlapSecond = makeDate("2012-09-21 0645");
+		Date endOverlapSecond = makeDate("2012-09-21 0745");
+
+		Date tardyStart = makeDate("2012-09-21 0715");
+
+		ec.createOrUpdate(Event.Type.Rehearsal, startOverlapFirst,
+				endOverlapFirst);
+		ec.createOrUpdate(Event.Type.Performance, startOverlapSecond,
+				endOverlapSecond);
+
+		ac.createOrUpdateTardy(student, tardyStart);
+
+		List<Absence> abs = ac.get(student);
+
+		assertEquals(1, abs.size());
+		assertEquals(tardyStart, abs.get(0).getDatetime());
+
+		Event event = abs.get(0).getEvent();
+		assertTrue(event != null);
+		assertEquals(startOverlapSecond, event.getStart());
+		assertEquals(endOverlapSecond, event.getEnd());
+	}
+
+	@Test
+	public void testOverlappingEventsWithTardyDuringEvents() {
+		DataTrain train = getDataTrain();
+		UserController uc = train.getUsersController();
+		EventController ec = train.getEventController();
+		AbsenceController ac = train.getAbsenceController();
+
+		User student = Users.createStudent(uc, "student", "123456789", "First",
+				"last", 2, "major", User.Section.AltoSax);
+
+		Date startOverlapFirst = makeDate("2012-09-21 0600");
+		Date endOverlapFirst = makeDate("2012-09-21 0700");
+
+		Date startOverlapSecond = makeDate("2012-09-21 0645");
+		Date endOverlapSecond = makeDate("2012-09-21 0745");
+
+		Date tardyStart = makeDate("2012-09-21 0650");
+
+		ec.createOrUpdate(Event.Type.Rehearsal, startOverlapFirst,
+				endOverlapFirst);
+		ec.createOrUpdate(Event.Type.Performance, startOverlapSecond,
+				endOverlapSecond);
+
+		ac.createOrUpdateTardy(student, tardyStart);
+
+		List<Absence> abs = ac.get(student);
+
+		assertEquals(1, abs.size());
+		assertTrue(abs.get(0).getEvent() == null);
+		assertEquals(tardyStart, abs.get(0).getDatetime());
+	}
+
 	@Test
 	public void testOverlappingEventsWithAbsenceDuringEarlyEvent() {
 		DataTrain train = getDataTrain();
 		UserController uc = train.getUsersController();
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
-		
-		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
-				2, "major", User.Section.AltoSax);
-		
+
+		User student = Users.createStudent(uc, "student", "123456789", "First",
+				"last", 2, "major", User.Section.AltoSax);
+
 		Date startOverlapFirst = makeDate("2012-09-21 0600");
 		Date endOverlapFirst = makeDate("2012-09-21 0700");
-		
+
 		Date startOverlapSecond = makeDate("2012-09-21 0645");
 		Date endOverlapSecond = makeDate("2012-09-21 0745");
-		
+
 		Date absenceStart = makeDate("2012-09-21 0615");
 		Date absenceEnd = makeDate("2012-09-21 0630");
-		
-		ec.createOrUpdate(Event.Type.Rehearsal, startOverlapFirst, endOverlapFirst);
-		ec.createOrUpdate(Event.Type.Performance, startOverlapSecond, endOverlapSecond);
-		
+
+		ec.createOrUpdate(Event.Type.Rehearsal, startOverlapFirst,
+				endOverlapFirst);
+		ec.createOrUpdate(Event.Type.Performance, startOverlapSecond,
+				endOverlapSecond);
+
 		ac.createOrUpdateAbsence(student, absenceStart, absenceEnd);
-		
+
 		List<Absence> abs = ac.get(student);
-		
+
 		assertEquals(1, abs.size());
-		//The events overlap so we say they can deal with it 8|
+		// The events overlap so we say they can deal with it 8|
 		assertTrue(abs.get(0).getEvent() == null);
 		assertEquals(absenceStart, abs.get(0).getStart());
 		assertEquals(absenceEnd, abs.get(0).getEnd());
 	}
-	
+
 	@Test
 	public void testOverlappingEventsWithAbsenceDuringLaterEvent() {
 		DataTrain train = getDataTrain();
 		UserController uc = train.getUsersController();
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
-		
-		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
-				2, "major", User.Section.AltoSax);
-		
+
+		User student = Users.createStudent(uc, "student", "123456789", "First",
+				"last", 2, "major", User.Section.AltoSax);
+
 		Date startOverlapFirst = makeDate("2012-09-21 0600");
 		Date endOverlapFirst = makeDate("2012-09-21 0700");
-		
+
 		Date startOverlapSecond = makeDate("2012-09-21 0645");
 		Date endOverlapSecond = makeDate("2012-09-21 0745");
-		
+
 		Date absenceStart = makeDate("2012-09-21 0715");
 		Date absenceEnd = makeDate("2012-09-21 0745");
-		
-		ec.createOrUpdate(Event.Type.Rehearsal, startOverlapFirst, endOverlapFirst);
-		ec.createOrUpdate(Event.Type.Performance, startOverlapSecond, endOverlapSecond);
-		
+
+		ec.createOrUpdate(Event.Type.Rehearsal, startOverlapFirst,
+				endOverlapFirst);
+		ec.createOrUpdate(Event.Type.Performance, startOverlapSecond,
+				endOverlapSecond);
+
 		ac.createOrUpdateAbsence(student, absenceStart, absenceEnd);
-		
+
 		List<Absence> abs = ac.get(student);
-		
+
 		assertEquals(1, abs.size());
-		//The events overlap so we say they can link it
+		// The events overlap so we say they can link it
 		assertTrue(abs.get(0).getEvent() == null);
 		assertEquals(absenceStart, abs.get(0).getStart());
 		assertEquals(absenceEnd, abs.get(0).getEnd());
 	}
-	
+
 	@Test
 	public void testOverlappingEventsWithEarlyDuringEarlyEvent() {
-			DataTrain train = getDataTrain();
-			UserController uc = train.getUsersController();
-			EventController ec = train.getEventController();
-			AbsenceController ac = train.getAbsenceController();
-			
-			User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
-					2, "major", User.Section.AltoSax);
-			
-			Date startOverlapFirst = makeDate("2012-09-21 0600");
-			Date endOverlapFirst = makeDate("2012-09-21 0700");
-			
-			Date startOverlapSecond = makeDate("2012-09-21 0645");
-			Date endOverlapSecond = makeDate("2012-09-21 0745");
-			
-			Date earlyStart = makeDate("2012-09-21 0640");
-			
-			ec.createOrUpdate(Event.Type.Rehearsal, startOverlapFirst, endOverlapFirst);
-			ec.createOrUpdate(Event.Type.Performance, startOverlapSecond, endOverlapSecond);
-			
-			ac.createOrUpdateEarlyCheckout(student, earlyStart);
-			
-			List<Absence> abs = ac.get(student);
-			
-			assertEquals(1, abs.size());
-			assertEquals(earlyStart, abs.get(0).getDatetime());
-			
-			Event event = abs.get(0).getEvent();
-			assertTrue(event != null);
-			assertEquals(startOverlapFirst, event.getStart());
-			assertEquals(endOverlapFirst, event.getEnd());
+		DataTrain train = getDataTrain();
+		UserController uc = train.getUsersController();
+		EventController ec = train.getEventController();
+		AbsenceController ac = train.getAbsenceController();
+
+		User student = Users.createStudent(uc, "student", "123456789", "First",
+				"last", 2, "major", User.Section.AltoSax);
+
+		Date startOverlapFirst = makeDate("2012-09-21 0600");
+		Date endOverlapFirst = makeDate("2012-09-21 0700");
+
+		Date startOverlapSecond = makeDate("2012-09-21 0645");
+		Date endOverlapSecond = makeDate("2012-09-21 0745");
+
+		Date earlyStart = makeDate("2012-09-21 0640");
+
+		ec.createOrUpdate(Event.Type.Rehearsal, startOverlapFirst,
+				endOverlapFirst);
+		ec.createOrUpdate(Event.Type.Performance, startOverlapSecond,
+				endOverlapSecond);
+
+		ac.createOrUpdateEarlyCheckout(student, earlyStart);
+
+		List<Absence> abs = ac.get(student);
+
+		assertEquals(1, abs.size());
+		assertEquals(earlyStart, abs.get(0).getDatetime());
+
+		Event event = abs.get(0).getEvent();
+		assertTrue(event != null);
+		assertEquals(startOverlapFirst, event.getStart());
+		assertEquals(endOverlapFirst, event.getEnd());
 	}
-	
+
 	@Test
 	public void testOverlappingEventsWithEarlyDuringLaterEvent() {
-			DataTrain train = getDataTrain();
-			UserController uc = train.getUsersController();
-			EventController ec = train.getEventController();
-			AbsenceController ac = train.getAbsenceController();
-			
-			User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
-					2, "major", User.Section.AltoSax);
-			
-			Date startOverlapFirst = makeDate("2012-09-21 0600");
-			Date endOverlapFirst = makeDate("2012-09-21 0700");
-			
-			Date startOverlapSecond = makeDate("2012-09-21 0645");
-			Date endOverlapSecond = makeDate("2012-09-21 0745");
-			
-			Date earlyStart = makeDate("2012-09-21 0730");
-			
-			ec.createOrUpdate(Event.Type.Rehearsal, startOverlapFirst, endOverlapFirst);
-			ec.createOrUpdate(Event.Type.Performance, startOverlapSecond, endOverlapSecond);
-			
-			ac.createOrUpdateEarlyCheckout(student, earlyStart);
-			
-			List<Absence> abs = ac.get(student);
-			
-			assertEquals(1, abs.size());
-			assertEquals(earlyStart, abs.get(0).getDatetime());
-			
-			Event event = abs.get(0).getEvent();
-			assertTrue(event != null);
-			assertEquals(startOverlapSecond, event.getStart());
-			assertEquals(endOverlapSecond, event.getEnd());
+		DataTrain train = getDataTrain();
+		UserController uc = train.getUsersController();
+		EventController ec = train.getEventController();
+		AbsenceController ac = train.getAbsenceController();
+
+		User student = Users.createStudent(uc, "student", "123456789", "First",
+				"last", 2, "major", User.Section.AltoSax);
+
+		Date startOverlapFirst = makeDate("2012-09-21 0600");
+		Date endOverlapFirst = makeDate("2012-09-21 0700");
+
+		Date startOverlapSecond = makeDate("2012-09-21 0645");
+		Date endOverlapSecond = makeDate("2012-09-21 0745");
+
+		Date earlyStart = makeDate("2012-09-21 0730");
+
+		ec.createOrUpdate(Event.Type.Rehearsal, startOverlapFirst,
+				endOverlapFirst);
+		ec.createOrUpdate(Event.Type.Performance, startOverlapSecond,
+				endOverlapSecond);
+
+		ac.createOrUpdateEarlyCheckout(student, earlyStart);
+
+		List<Absence> abs = ac.get(student);
+
+		assertEquals(1, abs.size());
+		assertEquals(earlyStart, abs.get(0).getDatetime());
+
+		Event event = abs.get(0).getEvent();
+		assertTrue(event != null);
+		assertEquals(startOverlapSecond, event.getStart());
+		assertEquals(endOverlapSecond, event.getEnd());
 	}
-	
+
 	@Test
 	public void testOverlappingEventsWithEarlyDuringEvents() {
-			DataTrain train = getDataTrain();
-			UserController uc = train.getUsersController();
-			EventController ec = train.getEventController();
-			AbsenceController ac = train.getAbsenceController();
-			
-			User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
-					2, "major", User.Section.AltoSax);
-			
-			Date startOverlapFirst = makeDate("2012-09-21 0600");
-			Date endOverlapFirst = makeDate("2012-09-21 0700");
-			
-			Date startOverlapSecond = makeDate("2012-09-21 0645");
-			Date endOverlapSecond = makeDate("2012-09-21 0745");
-			
-			Date earlyStart = makeDate("2012-09-21 0650");
-			
-			ec.createOrUpdate(Event.Type.Rehearsal, startOverlapFirst, endOverlapFirst);
-			ec.createOrUpdate(Event.Type.Performance, startOverlapSecond, endOverlapSecond);
-			
-			ac.createOrUpdateEarlyCheckout(student, earlyStart);
-			
-			List<Absence> abs = ac.get(student);
-			
-			assertEquals(1, abs.size());
-			assertTrue(abs.get(0).getEvent() == null);
-			assertEquals(earlyStart, abs.get(0).getDatetime());
+		DataTrain train = getDataTrain();
+		UserController uc = train.getUsersController();
+		EventController ec = train.getEventController();
+		AbsenceController ac = train.getAbsenceController();
+
+		User student = Users.createStudent(uc, "student", "123456789", "First",
+				"last", 2, "major", User.Section.AltoSax);
+
+		Date startOverlapFirst = makeDate("2012-09-21 0600");
+		Date endOverlapFirst = makeDate("2012-09-21 0700");
+
+		Date startOverlapSecond = makeDate("2012-09-21 0645");
+		Date endOverlapSecond = makeDate("2012-09-21 0745");
+
+		Date earlyStart = makeDate("2012-09-21 0650");
+
+		ec.createOrUpdate(Event.Type.Rehearsal, startOverlapFirst,
+				endOverlapFirst);
+		ec.createOrUpdate(Event.Type.Performance, startOverlapSecond,
+				endOverlapSecond);
+
+		ac.createOrUpdateEarlyCheckout(student, earlyStart);
+
+		List<Absence> abs = ac.get(student);
+
+		assertEquals(1, abs.size());
+		assertTrue(abs.get(0).getEvent() == null);
+		assertEquals(earlyStart, abs.get(0).getDatetime());
 	}
-	
+
 	@Test
 	public void testAbsenceAutoLinkEventDeleted() {
 		DataTrain train = getDataTrain();
 		UserController uc = train.getUsersController();
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
-		
-		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
-				2, "major", User.Section.AltoSax);
 
-		
+		User student = Users.createStudent(uc, "student", "123456789", "First",
+				"last", 2, "major", User.Section.AltoSax);
+
 		Date startOverlap = makeDate("2012-09-21 0600");
 		Date endOverlap = makeDate("2012-09-21 0700");
-		
-		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, startOverlap, endOverlap);
-		Event event2 = ec.createOrUpdate(Event.Type.Performance, startOverlap, endOverlap);
-		
+
+		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, startOverlap,
+				endOverlap);
+		Event event2 = ec.createOrUpdate(Event.Type.Performance, startOverlap,
+				endOverlap);
+
 		List<Event> events = ec.getAll();
-		
+
 		assertEquals(2, events.size());
-		
-		assertTrue(events.get(0).getType() == Event.Type.Rehearsal 
+
+		assertTrue(events.get(0).getType() == Event.Type.Rehearsal
 				|| events.get(0).getType() == Event.Type.Performance);
 		assertEquals(startOverlap, events.get(0).getStart());
 		assertEquals(endOverlap, events.get(0).getEnd());
-		
-		assertTrue(events.get(1).getType() == Event.Type.Rehearsal 
+
+		assertTrue(events.get(1).getType() == Event.Type.Rehearsal
 				|| events.get(1).getType() == Event.Type.Performance);
 		assertEquals(startOverlap, events.get(1).getStart());
 		assertEquals(endOverlap, events.get(1).getEnd());
 
 		ac.createOrUpdateAbsence(student, startOverlap, endOverlap);
-		
+
 		List<Absence> abs = ac.get(student);
 		assertEquals(1, abs.size());
-		
+
 		Absence a = abs.get(0);
 		assertTrue(a.getEvent() == null);
-		
+
 		ec.delete(event1);
-		
+
 		a = ac.get(student).get(0);
 		assertTrue(a.getEvent() != null);
 		assertEquals(startOverlap, a.getEvent().getStart());
 		assertEquals(endOverlap, a.getEvent().getEnd());
 		assertEquals(Event.Type.Performance, a.getEvent().getType());
 	}
-	
+
 	@Test
 	public void testAbsenceDOESNTAutoLinkEventDeleted() {
 		DataTrain train = getDataTrain();
 		UserController uc = train.getUsersController();
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
-		
-		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
-				2, "major", User.Section.AltoSax);
 
-		
+		User student = Users.createStudent(uc, "student", "123456789", "First",
+				"last", 2, "major", User.Section.AltoSax);
+
 		Date startOverlap = makeDate("2012-09-21 0600");
 		Date endOverlap = makeDate("2012-09-21 0700");
-		
+
 		Date otherStart = makeDate("2012-09-22 0600");
 		Date otherEnd = makeDate("2012-09-22 0700");
-		
-		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, startOverlap, endOverlap);
-		Event event2 = ec.createOrUpdate(Event.Type.Performance, startOverlap, endOverlap);
-		
+
+		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, startOverlap,
+				endOverlap);
+		Event event2 = ec.createOrUpdate(Event.Type.Performance, startOverlap,
+				endOverlap);
+
 		ec.createOrUpdate(Event.Type.Rehearsal, otherStart, otherEnd);
 		ec.createOrUpdate(Event.Type.Performance, otherStart, otherEnd);
-		
+
 		ac.createOrUpdateAbsence(student, otherStart, otherEnd);
 		ac.createOrUpdateAbsence(student, startOverlap, endOverlap);
-		
+
 		ec.delete(event1);
 		List<Absence> allAbs = ac.get(student);
-		Absence abs = (allAbs.get(0).getStart().equals(otherStart)) ? allAbs.get(0) : allAbs.get(1);
+		Absence abs = (allAbs.get(0).getStart().equals(otherStart)) ? allAbs
+				.get(0) : allAbs.get(1);
 		assertTrue(abs.getEvent() == null);
-		
-		abs = (allAbs.get(0).getStart().equals(startOverlap)) ? allAbs.get(0) : allAbs.get(1);;
-		assertEquals(event2, abs.getEvent());		
+
+		abs = (allAbs.get(0).getStart().equals(startOverlap)) ? allAbs.get(0)
+				: allAbs.get(1);
+		;
+		assertEquals(event2, abs.getEvent());
 	}
-	
+
 	@Test
 	public void testTardyAutoLinkEventDeleted() {
 		DataTrain train = getDataTrain();
 		UserController uc = train.getUsersController();
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
-		
-		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
-				2, "major", User.Section.AltoSax);
 
-		
+		User student = Users.createStudent(uc, "student", "123456789", "First",
+				"last", 2, "major", User.Section.AltoSax);
+
 		Date startOverlap = makeDate("2012-09-21 0600");
 		Date endOverlap = makeDate("2012-09-21 0700");
-		
-		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, startOverlap, endOverlap);
-		Event event2 = ec.createOrUpdate(Event.Type.Performance, startOverlap, endOverlap);
-		
+
+		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, startOverlap,
+				endOverlap);
+		Event event2 = ec.createOrUpdate(Event.Type.Performance, startOverlap,
+				endOverlap);
+
 		List<Event> events = ec.getAll();
-		
+
 		assertEquals(2, events.size());
-		
-		assertTrue(events.get(0).getType() == Event.Type.Rehearsal 
+
+		assertTrue(events.get(0).getType() == Event.Type.Rehearsal
 				|| events.get(0).getType() == Event.Type.Performance);
 		assertEquals(startOverlap, events.get(0).getStart());
 		assertEquals(endOverlap, events.get(0).getEnd());
-		
-		assertTrue(events.get(1).getType() == Event.Type.Rehearsal 
+
+		assertTrue(events.get(1).getType() == Event.Type.Rehearsal
 				|| events.get(1).getType() == Event.Type.Performance);
 		assertEquals(startOverlap, events.get(1).getStart());
 		assertEquals(endOverlap, events.get(1).getEnd());
 
 		ac.createOrUpdateTardy(student, startOverlap);
-		
+
 		List<Absence> abs = ac.get(student);
 		assertEquals(1, abs.size());
-		
+
 		Absence a = abs.get(0);
 		assertTrue(a.getEvent() == null);
-		
+
 		ec.delete(event2);
-		
+
 		a = ac.get(student).get(0);
 		assertTrue(a.getEvent() != null);
 		assertEquals(startOverlap, a.getEvent().getStart());
 		assertEquals(endOverlap, a.getEvent().getEnd());
 		assertEquals(Event.Type.Rehearsal, a.getEvent().getType());
 	}
-	
+
 	@Test
 	public void testTardyDOESNTAutoLinkEventDeleted() {
 		DataTrain train = getDataTrain();
 		UserController uc = train.getUsersController();
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
-		
-		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
-				2, "major", User.Section.AltoSax);
 
-		
+		User student = Users.createStudent(uc, "student", "123456789", "First",
+				"last", 2, "major", User.Section.AltoSax);
+
 		Date startOverlap = makeDate("2012-09-21 0600");
 		Date endOverlap = makeDate("2012-09-21 0700");
-		
+
 		Date otherStart = makeDate("2012-09-22 0600");
 		Date otherEnd = makeDate("2012-09-22 0700");
-		
+
 		Date tardyStart = makeDate("2012-09-22 0615");
-		
-		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, startOverlap, endOverlap);
-		Event event2 = ec.createOrUpdate(Event.Type.Performance, startOverlap, endOverlap);
-		
+
+		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, startOverlap,
+				endOverlap);
+		Event event2 = ec.createOrUpdate(Event.Type.Performance, startOverlap,
+				endOverlap);
+
 		ec.createOrUpdate(Event.Type.Rehearsal, otherStart, otherEnd);
 		ec.createOrUpdate(Event.Type.Performance, otherStart, otherEnd);
-		
+
 		ac.createOrUpdateTardy(student, tardyStart);
 		ac.createOrUpdateTardy(student, startOverlap);
-		
+
 		ec.delete(event1);
-		
+
 		List<Absence> allAbs = ac.get(student);
-		Absence abs = (allAbs.get(0).getStart().equals(tardyStart)) ? allAbs.get(0) : allAbs.get(1);
+		Absence abs = (allAbs.get(0).getStart().equals(tardyStart)) ? allAbs
+				.get(0) : allAbs.get(1);
 		assertTrue(abs.getEvent() == null);
-		
-		abs = (allAbs.get(0).getStart().equals(startOverlap)) ? allAbs.get(0) : allAbs.get(1);;
+
+		abs = (allAbs.get(0).getStart().equals(startOverlap)) ? allAbs.get(0)
+				: allAbs.get(1);
+		;
 		assertEquals(event2, abs.getEvent());
-		
+
 	}
-	
+
 	@Test
 	public void testEarlyAutoLinkEventDeleted() {
 		DataTrain train = getDataTrain();
 		UserController uc = train.getUsersController();
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
-		
-		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
-				2, "major", User.Section.AltoSax);
 
-		
+		User student = Users.createStudent(uc, "student", "123456789", "First",
+				"last", 2, "major", User.Section.AltoSax);
+
 		Date startOverlap = makeDate("2012-09-21 0600");
 		Date endOverlap = makeDate("2012-09-21 0700");
-		
-		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, startOverlap, endOverlap);
-		Event event2 = ec.createOrUpdate(Event.Type.Performance, startOverlap, endOverlap);
-		
+
+		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, startOverlap,
+				endOverlap);
+		Event event2 = ec.createOrUpdate(Event.Type.Performance, startOverlap,
+				endOverlap);
+
 		List<Event> events = ec.getAll();
-		
+
 		assertEquals(2, events.size());
-		
-		assertTrue(events.get(0).getType() == Event.Type.Rehearsal 
+
+		assertTrue(events.get(0).getType() == Event.Type.Rehearsal
 				|| events.get(0).getType() == Event.Type.Performance);
 		assertEquals(startOverlap, events.get(0).getStart());
 		assertEquals(endOverlap, events.get(0).getEnd());
-		
-		assertTrue(events.get(1).getType() == Event.Type.Rehearsal 
+
+		assertTrue(events.get(1).getType() == Event.Type.Rehearsal
 				|| events.get(1).getType() == Event.Type.Performance);
 		assertEquals(startOverlap, events.get(1).getStart());
 		assertEquals(endOverlap, events.get(1).getEnd());
 
 		ac.createOrUpdateEarlyCheckout(student, endOverlap);
-		
+
 		List<Absence> abs = ac.get(student);
 		assertEquals(1, abs.size());
-		
+
 		Absence a = abs.get(0);
 		assertTrue(a.getEvent() == null);
-		
+
 		ec.delete(event1);
-		
+
 		a = ac.get(student).get(0);
 		assertTrue(a.getEvent() != null);
 		assertEquals(startOverlap, a.getEvent().getStart());
 		assertEquals(endOverlap, a.getEvent().getEnd());
 		assertEquals(Event.Type.Performance, a.getEvent().getType());
 	}
-	
+
 	@Test
 	public void testEarlyDOESNTAutoLinkEventDeleted() {
 		DataTrain train = getDataTrain();
 		UserController uc = train.getUsersController();
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
-		
-		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
-				2, "major", User.Section.AltoSax);
 
-		
+		User student = Users.createStudent(uc, "student", "123456789", "First",
+				"last", 2, "major", User.Section.AltoSax);
+
 		Date startOverlap = makeDate("2012-09-21 0600");
 		Date endOverlap = makeDate("2012-09-21 0700");
-		
+
 		Date otherStart = makeDate("2012-09-22 0600");
 		Date otherEnd = makeDate("2012-09-22 0700");
-		
+
 		Date earlyStart = makeDate("2012-09-22 0615");
-		
-		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, startOverlap, endOverlap);
-		Event event2 = ec.createOrUpdate(Event.Type.Performance, startOverlap, endOverlap);
-		
+
+		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, startOverlap,
+				endOverlap);
+		Event event2 = ec.createOrUpdate(Event.Type.Performance, startOverlap,
+				endOverlap);
+
 		ec.createOrUpdate(Event.Type.Rehearsal, otherStart, otherEnd);
 		ec.createOrUpdate(Event.Type.Performance, otherStart, otherEnd);
-		
+
 		ac.createOrUpdateEarlyCheckout(student, earlyStart);
 		ac.createOrUpdateEarlyCheckout(student, startOverlap);
-		
+
 		ec.delete(event1);
-		
+
 		List<Absence> allAbs = ac.get(student);
-		Absence abs = (allAbs.get(0).getStart().equals(earlyStart)) ? allAbs.get(0) : allAbs.get(1);
+		Absence abs = (allAbs.get(0).getStart().equals(earlyStart)) ? allAbs
+				.get(0) : allAbs.get(1);
 		assertTrue(abs.getEvent() == null);
-		
-		abs = (allAbs.get(0).getStart().equals(startOverlap)) ? allAbs.get(0) : allAbs.get(1);;
+
+		abs = (allAbs.get(0).getStart().equals(startOverlap)) ? allAbs.get(0)
+				: allAbs.get(1);
+		;
 		assertEquals(event2, abs.getEvent());
 	}
 
@@ -1877,12 +2123,11 @@ public class AbsenceControllerTest extends AbstractTest {
 		UserController uc = train.getUsersController();
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
-		TimeZone timezone = train.getAppDataController().get()
-				.getTimeZone();
-		
-		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
-				2, "major", User.Section.AltoSax);
-		
+		TimeZone timezone = train.getAppDataController().get().getTimeZone();
+
+		User student = Users.createStudent(uc, "student", "123456789", "First",
+				"last", 2, "major", User.Section.AltoSax);
+
 		Calendar date = Calendar.getInstance(timezone);
 		date.set(2012, 8, 8, 17, 59, 0);
 		date.set(Calendar.MILLISECOND, 0);
@@ -1891,27 +2136,26 @@ public class AbsenceControllerTest extends AbstractTest {
 		Calendar end = Calendar.getInstance(timezone);
 		end.set(2012, 8, 8, 18, 0, 0);
 		end.set(Calendar.MILLISECOND, 0);
-		
-		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(), end.getTime());
-				
+
+		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
+				end.getTime());
+
 		Absence a1 = ac.createOrUpdateEarlyCheckout(student, date.getTime());
 
 		assertEquals(event1, a1.getEvent());
 	}
 
-	
 	@Test
 	public void testECOLastSecond() {
 		DataTrain train = getDataTrain();
 		UserController uc = train.getUsersController();
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
-		TimeZone timezone = train.getAppDataController().get()
-				.getTimeZone();
-		
-		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
-				2, "major", User.Section.AltoSax);
-		
+		TimeZone timezone = train.getAppDataController().get().getTimeZone();
+
+		User student = Users.createStudent(uc, "student", "123456789", "First",
+				"last", 2, "major", User.Section.AltoSax);
+
 		Calendar date = Calendar.getInstance(timezone);
 		date.set(2012, 8, 8, 17, 59, 59);
 		date.set(Calendar.MILLISECOND, 0);
@@ -1921,8 +2165,9 @@ public class AbsenceControllerTest extends AbstractTest {
 		end.set(2012, 8, 8, 18, 0, 0);
 		end.set(Calendar.MILLISECOND, 0);
 
-		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(), end.getTime());
-				
+		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
+				end.getTime());
+
 		Absence a1 = ac.createOrUpdateEarlyCheckout(student, date.getTime());
 
 		assertEquals(event1, a1.getEvent());
@@ -1934,12 +2179,11 @@ public class AbsenceControllerTest extends AbstractTest {
 		UserController uc = train.getUsersController();
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
-		TimeZone timezone = train.getAppDataController().get()
-				.getTimeZone();
-		
-		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
-				2, "major", User.Section.AltoSax);
-		
+		TimeZone timezone = train.getAppDataController().get().getTimeZone();
+
+		User student = Users.createStudent(uc, "student", "123456789", "First",
+				"last", 2, "major", User.Section.AltoSax);
+
 		Calendar date = Calendar.getInstance(timezone);
 		date.set(2012, 8, 8, 17, 59, 59);
 		date.set(Calendar.MILLISECOND, 0);
@@ -1949,8 +2193,9 @@ public class AbsenceControllerTest extends AbstractTest {
 		end.set(2012, 8, 8, 18, 0, 0);
 		end.set(Calendar.MILLISECOND, 0);
 
-		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(), end.getTime());
-				
+		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
+				end.getTime());
+
 		Absence a1 = ac.createOrUpdateTardy(student, date.getTime());
 
 		assertEquals(event1, a1.getEvent());
@@ -1962,12 +2207,11 @@ public class AbsenceControllerTest extends AbstractTest {
 		UserController uc = train.getUsersController();
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
-		TimeZone timezone = train.getAppDataController().get()
-				.getTimeZone();
-		
-		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
-				2, "major", User.Section.AltoSax);
-		
+		TimeZone timezone = train.getAppDataController().get().getTimeZone();
+
+		User student = Users.createStudent(uc, "student", "123456789", "First",
+				"last", 2, "major", User.Section.AltoSax);
+
 		Calendar date = Calendar.getInstance(timezone);
 		date.set(2012, 8, 8, 17, 59, 0);
 		date.set(Calendar.MILLISECOND, 0);
@@ -1976,9 +2220,10 @@ public class AbsenceControllerTest extends AbstractTest {
 		Calendar end = Calendar.getInstance(timezone);
 		end.set(2012, 8, 8, 18, 0, 0);
 		end.set(Calendar.MILLISECOND, 0);
-		
-		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(), end.getTime());
-				
+
+		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
+				end.getTime());
+
 		Absence a1 = ac.createOrUpdateTardy(student, date.getTime());
 
 		assertEquals(event1, a1.getEvent());
@@ -1990,12 +2235,11 @@ public class AbsenceControllerTest extends AbstractTest {
 		UserController uc = train.getUsersController();
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
-		TimeZone timezone = train.getAppDataController().get()
-				.getTimeZone();
-		
-		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
-				2, "major", User.Section.AltoSax);
-		
+		TimeZone timezone = train.getAppDataController().get().getTimeZone();
+
+		User student = Users.createStudent(uc, "student", "123456789", "First",
+				"last", 2, "major", User.Section.AltoSax);
+
 		Calendar date = Calendar.getInstance(timezone);
 		date.set(2012, 8, 8, 17, 59, 59);
 		date.set(Calendar.MILLISECOND, 999);
@@ -2004,9 +2248,10 @@ public class AbsenceControllerTest extends AbstractTest {
 		Calendar end = Calendar.getInstance(timezone);
 		end.set(2012, 8, 8, 18, 0, 0);
 		end.set(Calendar.MILLISECOND, 0);
-		
-		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(), end.getTime());
-				
+
+		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
+				end.getTime());
+
 		Absence a1 = ac.createOrUpdateTardy(student, date.getTime());
 
 		assertEquals(event1, a1.getEvent());
@@ -2018,12 +2263,11 @@ public class AbsenceControllerTest extends AbstractTest {
 		UserController uc = train.getUsersController();
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
-		TimeZone timezone = train.getAppDataController().get()
-				.getTimeZone();
-		
-		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
-				2, "major", User.Section.AltoSax);
-		
+		TimeZone timezone = train.getAppDataController().get().getTimeZone();
+
+		User student = Users.createStudent(uc, "student", "123456789", "First",
+				"last", 2, "major", User.Section.AltoSax);
+
 		Calendar date = Calendar.getInstance(timezone);
 		date.set(2012, 8, 8, 18, 0, 0);
 		date.set(Calendar.MILLISECOND, 0);
@@ -2032,9 +2276,10 @@ public class AbsenceControllerTest extends AbstractTest {
 		Calendar end = Calendar.getInstance(timezone);
 		end.set(2012, 8, 8, 18, 0, 0);
 		end.set(Calendar.MILLISECOND, 0);
-		
-		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(), end.getTime());
-				
+
+		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
+				end.getTime());
+
 		Absence a1 = ac.createOrUpdateTardy(student, date.getTime());
 
 		assertEquals(event1, a1.getEvent());
@@ -2046,12 +2291,11 @@ public class AbsenceControllerTest extends AbstractTest {
 		UserController uc = train.getUsersController();
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
-		TimeZone timezone = train.getAppDataController().get()
-				.getTimeZone();
-		
-		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
-				2, "major", User.Section.AltoSax);
-		
+		TimeZone timezone = train.getAppDataController().get().getTimeZone();
+
+		User student = Users.createStudent(uc, "student", "123456789", "First",
+				"last", 2, "major", User.Section.AltoSax);
+
 		Calendar date = Calendar.getInstance(timezone);
 		date.set(2012, 8, 8, 17, 59, 59);
 		date.set(Calendar.MILLISECOND, 999);
@@ -2060,9 +2304,10 @@ public class AbsenceControllerTest extends AbstractTest {
 		Calendar end = Calendar.getInstance(timezone);
 		end.set(2012, 8, 8, 18, 0, 0);
 		end.set(Calendar.MILLISECOND, 0);
-		
-		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(), end.getTime());
-				
+
+		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
+				end.getTime());
+
 		Absence a1 = ac.createOrUpdateEarlyCheckout(student, date.getTime());
 
 		assertEquals(event1, a1.getEvent());
@@ -2074,12 +2319,11 @@ public class AbsenceControllerTest extends AbstractTest {
 		UserController uc = train.getUsersController();
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
-		TimeZone timezone = train.getAppDataController().get()
-				.getTimeZone();
-		
-		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
-				2, "major", User.Section.AltoSax);
-		
+		TimeZone timezone = train.getAppDataController().get().getTimeZone();
+
+		User student = Users.createStudent(uc, "student", "123456789", "First",
+				"last", 2, "major", User.Section.AltoSax);
+
 		Calendar date = Calendar.getInstance(timezone);
 		date.set(2012, 8, 8, 18, 0, 0);
 		date.set(Calendar.MILLISECOND, 0);
@@ -2088,9 +2332,10 @@ public class AbsenceControllerTest extends AbstractTest {
 		Calendar end = Calendar.getInstance(timezone);
 		end.set(2012, 8, 8, 18, 0, 0);
 		end.set(Calendar.MILLISECOND, 0);
-		
-		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(), end.getTime());
-				
+
+		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
+				end.getTime());
+
 		Absence a1 = ac.createOrUpdateEarlyCheckout(student, date.getTime());
 
 		assertEquals(event1, a1.getEvent());
@@ -2101,12 +2346,11 @@ public class AbsenceControllerTest extends AbstractTest {
 		UserController uc = train.getUsersController();
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
-		TimeZone timezone = train.getAppDataController().get()
-				.getTimeZone();
-		
-		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
-				2, "major", User.Section.AltoSax);
-		
+		TimeZone timezone = train.getAppDataController().get().getTimeZone();
+
+		User student = Users.createStudent(uc, "student", "123456789", "First",
+				"last", 2, "major", User.Section.AltoSax);
+
 		Calendar date = Calendar.getInstance(timezone);
 		date.set(2012, 8, 8, 18, 0, 0);
 		date.set(Calendar.MILLISECOND, 1);
@@ -2115,9 +2359,10 @@ public class AbsenceControllerTest extends AbstractTest {
 		Calendar end = Calendar.getInstance(timezone);
 		end.set(2012, 8, 8, 18, 0, 0);
 		end.set(Calendar.MILLISECOND, 0);
-		
-		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(), end.getTime());
-				
+
+		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
+				end.getTime());
+
 		Absence a1 = ac.createOrUpdateEarlyCheckout(student, date.getTime());
 
 		assertTrue(!event1.equals(a1.getEvent()));
@@ -2129,12 +2374,11 @@ public class AbsenceControllerTest extends AbstractTest {
 		UserController uc = train.getUsersController();
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
-		TimeZone timezone = train.getAppDataController().get()
-				.getTimeZone();
-		
-		User student = Users.createStudent(uc, "student", "123456789", "First", "last", 
-				2, "major", User.Section.AltoSax);
-		
+		TimeZone timezone = train.getAppDataController().get().getTimeZone();
+
+		User student = Users.createStudent(uc, "student", "123456789", "First",
+				"last", 2, "major", User.Section.AltoSax);
+
 		Calendar date = Calendar.getInstance(timezone);
 		date.set(2012, 8, 8, 18, 0, 0);
 		date.set(Calendar.MILLISECOND, 1);
@@ -2143,13 +2387,13 @@ public class AbsenceControllerTest extends AbstractTest {
 		Calendar end = Calendar.getInstance(timezone);
 		end.set(2012, 8, 8, 18, 0, 0);
 		end.set(Calendar.MILLISECOND, 0);
-		
-		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(), end.getTime());
-				
+
+		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
+				end.getTime());
+
 		Absence a1 = ac.createOrUpdateEarlyCheckout(student, date.getTime());
 
 		assertTrue(!event1.equals(a1.getEvent()));
 	}
 
-	
 }
