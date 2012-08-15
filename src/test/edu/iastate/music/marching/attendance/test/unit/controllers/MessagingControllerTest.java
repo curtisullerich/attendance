@@ -1,16 +1,13 @@
 package edu.iastate.music.marching.attendance.test.unit.controllers;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
 
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.UserController;
-import edu.iastate.music.marching.attendance.model.Form;
 import edu.iastate.music.marching.attendance.model.MessageThread;
 import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.test.AbstractTest;
@@ -18,9 +15,14 @@ import edu.iastate.music.marching.attendance.test.util.Users;
 
 public class MessagingControllerTest extends AbstractTest {
 
+	/**
+	 * Creates two independent message threads and adds messages to them
+	 * to ensure no side-effects between threads happen
+	 */
 	@Test
 	public void testGetUserFilter() {
 
+		// Arrange
 		DataTrain train = getDataTrain();
 
 		// Setup two users
@@ -30,6 +32,7 @@ public class MessagingControllerTest extends AbstractTest {
 		User student = Users.createStudent(uc, "studenttt", "123456789",
 				"First", "last", 2, "major", User.Section.AltoSax);
 
+		// Act
 		MessageThread mts = train.getMessagingController()
 				.createMessageThread();
 		MessageThread mtd = train.getMessagingController()
@@ -38,12 +41,14 @@ public class MessagingControllerTest extends AbstractTest {
 		train.getMessagingController().addMessage(mtd, director, "D");
 		train.getMessagingController().addMessage(mts, student, "S");
 
+		// Assert
 		List<MessageThread> results_student = train.getMessagingController()
 				.get(student);
-		// Check resulting list
+		
+		// Check resulting list for student
 		assertEquals(1, results_student.size());
 
-		// Check returned object
+		// Check returned object for student
 		MessageThread result_student = results_student.get(0);
 		assertNotNull(result_student);
 		assertEquals(1, result_student.getParticipants().size());
@@ -53,11 +58,11 @@ public class MessagingControllerTest extends AbstractTest {
 		assertEquals(student, result_student.getMessages().get(0).getAuthor());
 		assertEquals("S", result_student.getMessages().get(0).getText());
 		assertNotNull(result_student.getMessages().get(0).getTimestamp());
-		// TODO https://github.com/curtisullerich/attendance/issues/124
-		// more checks
 		
+		// Director checks
 		List<MessageThread> resultsDirector = train.getMessagingController().get(director);
-		//Checking result list
+		
+		//Checking result list for director
 		assertEquals(1, resultsDirector.size());
 		
 		//Check actual message
@@ -70,79 +75,19 @@ public class MessagingControllerTest extends AbstractTest {
 		assertEquals(director, resultDirector.getMessages().get(0).getAuthor());
 		assertEquals("D", resultDirector.getMessages().get(0).getText());
 		assertNotNull(resultDirector.getMessages().get(0).getTimestamp());
-		
-
-		MessageThread resultd = getDataTrain().getMessagingController().get(
-				mtd.getId());
-		// Check returned object
-		assertNotNull(resultd);
-		assertEquals(1, resultd.getParticipants().size());
-		assertEquals(1, resultd.getMessages().size());
-		// TODO https://github.com/curtisullerich/attendance/issues/124
-		// more checks
-		
-		MessageThread resultS = getDataTrain().getMessagingController().get(mts.getId());
-		
-		assertNotNull(resultS);
-		assertEquals(1, resultS.getParticipants().size());
-		assertEquals(1, resultS.getMessages().size());
-	}
-
-	@Test
-	public void testCreateMessageThreadWithSingleMessage() {
-
-		DataTrain train = getDataTrain();
-
-		// Setup two users
-		UserController uc = train.getUsersController();
-		User director = Users.createDirector(uc, "director", "I am",
-				"The Director");
-		User student = Users.createStudent(uc, "studenttt", "123456789",
-				"First", "last", 2, "major", User.Section.AltoSax);
-
-		MessageThread mts = train.getMessagingController()
-				.createMessageThread();
-		MessageThread mtd = train.getMessagingController()
-				.createMessageThread();
-
-		train.getMessagingController().addMessage(mtd, director, "D");
-		train.getMessagingController().addMessage(mts, student, "S");
-
-		MessageThread results = getDataTrain().getMessagingController().get(
-				mts.getId());
-		// Check returned object
-		assertNotNull(results);
-		assertEquals(1, results.getParticipants().size());
-		assertEquals(student, results.getParticipants().iterator().next());
-		assertEquals(1, results.getMessages().size());
-		assertEquals(student, results.getMessages().get(0).getAuthor());
-		assertEquals("S", results.getMessages().get(0).getText());
-		assertNotNull(results.getMessages().get(0).getTimestamp());
-		// TODO https://github.com/curtisullerich/attendance/issues/124
-		// more checks
-
-		MessageThread resultd = getDataTrain().getMessagingController().get(
-				mtd.getId());
-		// Check returned object
-		assertNotNull(resultd);
-		assertEquals(1, resultd.getParticipants().size());
-		assertEquals(1, resultd.getMessages().size());
-		// TODO https://github.com/curtisullerich/attendance/issues/124
-		// more checks
 	}
 
 	@Test
 	public void testCreateMessageThreadWithTwoParticipantsAndFourMessages() {
-
+		// Arrange
 		DataTrain train = getDataTrain();
 
 		// Setup two users
 		UserController uc = train.getUsersController();
-		User director = Users.createDirector(uc, "director", "I am",
-				"The Director");
-		User student = Users.createStudent(uc, "studenttt", "123456789",
-				"First", "last", 2, "major", User.Section.AltoSax);
+		User director = Users.createSingleTestDirector(uc);
+		User student = Users.createSingleTestStudent(uc);
 
+		// Act
 		MessageThread mt = train.getMessagingController().createMessageThread();
 
 		train.getMessagingController().addMessage(mt, director, "Begin");
@@ -150,15 +95,20 @@ public class MessagingControllerTest extends AbstractTest {
 		train.getMessagingController().addMessage(mt, student, "Middle");
 		train.getMessagingController().addMessage(mt, student, "End");
 
-		// Load from datastore and compare
+		// Assert
 		MessageThread result = train.getMessagingController().get(mt.getId());
 
 		// Check returned object
 		assertNotNull(result);
 		assertEquals(2, result.getParticipants().size());
+		assertTrue(result.getParticipants().contains(student));
+		assertTrue(result.getParticipants().contains(director));
+		
 		assertEquals(4, result.getMessages().size());
-		// TODO https://github.com/curtisullerich/attendance/issues/124
-		// more checks
+		assertEquals("Begin", result.getMessages().get(3).getText());
+		assertEquals("Middle", result.getMessages().get(2).getText());
+		assertEquals("Middle", result.getMessages().get(1).getText());
+		assertEquals("End", result.getMessages().get(0).getText());
 	}
 
 	/**
@@ -170,13 +120,14 @@ public class MessagingControllerTest extends AbstractTest {
 
 		DataTrain train = getDataTrain();
 
-		// Setup two users
+		// Arrange
 		UserController uc = train.getUsersController();
 		User director = Users.createDirector(uc, "director", "I am",
 				"The Director");
 		User student = Users.createStudent(uc, "studenttt", "123456789",
 				"First", "last", 2, "major", User.Section.AltoSax);
 
+		// Act
 		MessageThread mt = train.getMessagingController().createMessageThread();
 
 		train.getMessagingController().addMessage(mt, director, "Begin");
@@ -184,15 +135,12 @@ public class MessagingControllerTest extends AbstractTest {
 		train.getMessagingController().addMessage(mt, student, "Middle");
 		train.getMessagingController().addMessage(mt, student, "End");
 
-		// Load again and compare
+		// Assert
 		MessageThread result = train.getMessagingController().get(mt.getId());
 
 		// Check returned object
 		assertNotNull(result);
-		assertEquals(2, result.getParticipants().size());
-		assertEquals(4, result.getMessages().size());
-		// TODO https://github.com/curtisullerich/attendance/issues/124
-		// more checks
+		
 		assertEquals("End", result.getMessages().get(0).getText());
 	}
 
