@@ -144,5 +144,7 @@ public class DataController extends AbstractController {
 		this.dataTrain.getDataStore().deleteAll(MessageThread.class);
 		this.dataTrain.getDataStore().deleteAll(MobileDataUpload.class);
 		this.dataTrain.getDataStore().deleteAll(User.class);
+		
+		this.dataTrain.getMemCache().clear();
 	}
 }

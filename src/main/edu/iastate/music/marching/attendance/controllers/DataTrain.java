@@ -136,7 +136,7 @@ public class DataTrain {
 		public int id;
 	}
 
-	private Cache getMemCache() {
+	Cache getMemCache() {
 		if (this.cache == null) {
 			try {
 				CacheFactory cacheFactory = CacheManager.getInstance()
