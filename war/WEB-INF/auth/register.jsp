@@ -34,7 +34,7 @@
 			<dd><input type="text" name="LastName" value="<c:out value="${LastName}" />" /></dd>
 			
 			<dt><label class="required" for="UniversityID">University ID</label></dt>
-			<dd><input type="text" name="UniversityID" value="<c:out value="${UniversityID>0?UniversityID:''}" />" /></dd>
+			<dd><input type="text" name="UniversityID" value="<c:out value="${UniversityID}" />" /></dd>
 			
 			<dt><label for="SecondEmail">Secondary Email</label></dt>
 			<dd>

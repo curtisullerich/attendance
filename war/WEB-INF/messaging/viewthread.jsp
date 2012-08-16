@@ -94,7 +94,14 @@
 
 		<h2>Message Thread</h2>
 		<c:if test="${not empty thread.formParent}">
-			<a href='/director/forms/view?id=${thread.formParent.id}'>Form ${thread.formParent.type}</a> submitted by ${thread.formParent.student.firstName } ${thread.formParent.student.lastName} (<a href='/director/student?id=${thread.formParent.student.netID}'>${thread.formParent.student.netID}</a>)<br/>
+			<c:if test="${auth.user.type.director}">
+				<a href='/director/forms/view?id=${thread.formParent.id}'>Form ${thread.formParent.type}</a> submitted by ${thread.formParent.student.firstName } ${thread.formParent.student.lastName} (<a href='/director/student?id=${thread.formParent.student.netID}'>${thread.formParent.student.netID}</a>)<br/>
+			</c:if>
+			<c:if test="${not auth.user.type.director}">
+				<a href='/student/forms/view?id=${thread.formParent.id}'>Form ${thread.formParent.type}</a> submitted by ${thread.formParent.student.firstName } ${thread.formParent.student.lastName} (${thread.formParent.student.netID})<br/>
+			</c:if>
+			
+
 			<c:if test="${thread.formParent.type.displayName eq 'A'}">
 				<%--TODO redirect form? --%>
 				Date of performance: <fmt:formatDate value="${thread.formParent.start}" pattern="M/d/yy"/><br/>
@@ -126,8 +133,31 @@
 			Approved by director? - ${thread.formParent.status }<br/>
 		</c:if>
 		<c:if test="${not empty thread.absenceParent}">
-			${thread.absenceParent.status} <a href='/director/viewabsence?absenceid=${thread.absenceParent.id}'> ${thread.absenceParent.type } </a> for ${thread.formParent.student.firstName } ${thread.formParent.student.lastName} (<a href='/director/student?id=${thread.absenceParent.student.netID}'>${thread.absenceParent.student.netID}</a>)<br/>
-			Date: <fmt:formatDate value="${thread.absenceParent.start}" pattern="M/d/yy"/><br/>
+
+			<c:if test="${auth.user.type.director}">
+				${thread.absenceParent.status} <a href='/director/viewabsence?absenceid=${thread.absenceParent.id}'> ${thread.absenceParent.type } </a> for ${thread.absenceParent.student.firstName } ${thread.absenceParent.student.lastName} (<a href='/director/student?id=${thread.absenceParent.student.netID}'>${thread.absenceParent.student.netID}</a>)<br/>
+			</c:if>
+			<c:if test="${not auth.user.type.director}">
+				${thread.absenceParent.status} ${thread.absenceParent.type} for ${thread.absenceParent.student.firstName } ${thread.absenceParent.student.lastName} (${thread.absenceParent.student.netID})<br/>
+				<c:if test="${not empty thread.absenceParent.event}">
+					Event details: <c:out value="${thread.absenceParent.event.type}" /> on 
+					<fmt:formatDate value="${thread.absenceParent.event.start}" pattern="M/d/yy" /> from 
+					<fmt:formatDate value="${thread.absenceParent.event.start}" pattern="h:mm a" /> to 
+					<fmt:formatDate value="${thread.absenceParent.event.end}" pattern="h:mm a" />
+<%-- 					<c:choose> --%>
+<%-- 						<c:when test="${(thread.absenceParent.type.tardy) || (thread.absenceParent.type.earlyCheckOut)}"> --%>
+<%-- 							<fmt:formatDate value="${thread.absenceParent.start}" pattern="h:mm a" /> --%>
+<%-- 						</c:when> --%>
+<%-- 						<c:when test="${(thread.absenceParent.type.absence) && (empty thread.absenceParent.event)}"> --%>
+<%-- 							<fmt:formatDate value="${thread.absenceParent.start}" pattern="M/d" /> --%>
+<%-- 							<fmt:formatDate value="${thread.absenceParent.start}" pattern="h:mm a" /> --%>
+<!-- 							- -->
+<%-- 							<fmt:formatDate value="${thread.absenceParent.end}" pattern="h:mm a" /> --%>
+<%-- 						</c:when> --%>
+<%-- 					</c:choose>		 --%>
+				</c:if>
+			</c:if>
+			<br/>
 			<c:if test="${thread.absenceParent.type.displayName eq 'Tardy'}">
 			Time of arrival: <fmt:formatDate value="${thread.absenceParent.start}" pattern="h:mm a"/><br/>
 			</c:if>
@@ -136,7 +166,6 @@
 			</c:if>
 			<c:if test="${thread.formParent.type.displayName eq 'Absence'}">
 			</c:if>
-			Performance type: ${thread.formParent.event.type }
 		</c:if>
 		<br/>
 		

@@ -119,12 +119,12 @@ public class UserController extends AbstractController {
 
 		// Check id
 		String uId = user.getUniversityID();
-		if (user.getType() != User.Type.Director
-				&& !ValidationUtil.isValidUniversityID(uId)) {
+		if (!ValidationUtil.isValidUniversityID(uId)) {
 			throw new IllegalArgumentException("Invalid university id");
 		}
 
-		if (!ValidationUtil.isUniqueId(uId, user.getPrimaryEmail())) {
+		if (user.getType() != User.Type.Director
+				&& !ValidationUtil.isUniqueId(uId, user.getPrimaryEmail())) {
 			throw new IllegalArgumentException("University id was not unique");
 		}
 
