@@ -79,13 +79,28 @@ public class UserController extends AbstractController {
 
 		// Extract email
 		Email email = new Email(google_user.getEmail());
+		
+		return createStudent(email,
+				 univID,  firstName,  lastName,  year,
+				 major,  section,  secondaryEmail);
+	}
+
+	public User createStudent(Email primaryEmail, String univID,
+			String firstName, String lastName, int year, String major,
+			User.Section section, Email secondaryEmail)
+			throws IllegalArgumentException {
+
+		// Check google user
+		if (primaryEmail == null)
+			throw new IllegalArgumentException("Must give a google user");
 
 		// Check no duplicate users exist
-		if (get(email) != null)
+		if (get(primaryEmail) != null)
 			throw new IllegalArgumentException(
 					"User already exists in the system");
 
-		User user = ModelFactory.newUser(User.Type.Student, email, univID);
+		User user = ModelFactory.newUser(User.Type.Student, primaryEmail,
+				univID);
 		user.setFirstName(firstName);
 		user.setLastName(lastName);
 		user.setYear(year);

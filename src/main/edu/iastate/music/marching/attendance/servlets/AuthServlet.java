@@ -294,7 +294,6 @@ public class AuthServlet extends AbstractBaseServlet {
 			// Log them in
 			resp.sendRedirect(URL_LOGIN);
 		}
-
 	}
 
 	private void doLogout(HttpServletRequest req, HttpServletResponse resp)

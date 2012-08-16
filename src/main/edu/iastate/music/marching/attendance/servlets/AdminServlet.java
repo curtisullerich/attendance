@@ -42,7 +42,7 @@ public class AdminServlet extends AbstractBaseServlet {
 			.getName());
 
 	private enum Page {
-		index, users, user, data, export, load, data_migrate, data_delete, register, bulkmake
+		index, users, user, data, export, load, data_migrate, data_delete, register, bulkmake, student_register
 	}
 
 	@Override
@@ -89,6 +89,9 @@ public class AdminServlet extends AbstractBaseServlet {
 			case bulkmake:
 				showBulkmake(req, resp);
 				break;
+			case student_register:
+				showStudentRegistrationPage(req, resp);
+				break;
 			default:
 				ErrorServlet.showError(req, resp, 404);
 			}
@@ -130,10 +133,12 @@ public class AdminServlet extends AbstractBaseServlet {
 			case bulkmake:
 				bulkmake(req, resp);
 				break;
+			case student_register:
+				doStudentRegistration(req, resp);
+				break;
 			default:
 				ErrorServlet.showError(req, resp, 404);
 			}
-
 	}
 
 	private void postUserInfo(HttpServletRequest req, HttpServletResponse resp)
@@ -305,6 +310,17 @@ public class AdminServlet extends AbstractBaseServlet {
 		page.passOffToJsp(req, resp);
 	}
 
+	private void showStudentRegistrationPage(HttpServletRequest req,
+			HttpServletResponse resp) throws ServletException, IOException {
+		PageBuilder page = new PageBuilder(Page.student_register, SERVLET_PATH);
+
+		page.setPageTitle("Manual Student Registration");
+		
+		page.setAttribute("sections", User.Section.values());
+
+		page.passOffToJsp(req, resp);
+	}
+
 	private void showBulkmake(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		PageBuilder page = new PageBuilder(Page.bulkmake, SERVLET_PATH);
@@ -319,14 +335,13 @@ public class AdminServlet extends AbstractBaseServlet {
 		List<String> errors = new LinkedList<String>();
 		if (req.getParameter("Go") != null) {
 
-	
 			String data = req.getParameter("Data").replaceAll("\\s+", "");
-	
+
 			String[] lines = data.split(";");
 			UserController uc = train.getUsersController();
-	
+
 			int i = 0;
-	
+
 			for (int x = 0; x < lines.length; x++) {
 				try {
 					uc.createFakeStudent(lines[x].trim().split(","));
@@ -337,45 +352,45 @@ public class AdminServlet extends AbstractBaseServlet {
 					log.severe(e.getStackTrace().toString());
 				}
 			}
-			
+
 			if (errors.size() == 0) {
 				try {
-	
+
 				} catch (IllegalArgumentException e) {
 					// Save validation errors
 					errors.add(e.getMessage());
 				}
 			}
-	
+
 			PageBuilder page = new PageBuilder(Page.bulkmake, SERVLET_PATH);
-	
+
 			page.setPageTitle("makebulk");
-	
-			page.setAttribute("success_message", "registered " + i + " students");
-			
+
+			page.setAttribute("success_message", "registered " + i
+					+ " students");
+
 			page.setAttribute("error_messages", errors);
-	
+
 			page.passOffToJsp(req, resp);
-		}
-		else if (req.getParameter("DeleteAll") != null) {
+		} else if (req.getParameter("DeleteAll") != null) {
 			String success = null;
 			try {
-				train.getDataController().deleteEverthingInTheEntireDatabaseEvenThoughYouCannotUndoThis();
+				train.getDataController()
+						.deleteEverthingInTheEntireDatabaseEvenThoughYouCannotUndoThis();
 				success = "Successfully, irrevocably, and unequivically removed everything.";
-			}
-			catch (Throwable aDuh) {
+			} catch (Throwable aDuh) {
 				log.severe(aDuh.getMessage());
 				log.severe(aDuh.getStackTrace().toString());
 				errors.add(aDuh.toString());
 			}
 			PageBuilder page = new PageBuilder(Page.bulkmake, SERVLET_PATH);
-			
+
 			page.setPageTitle("makebulk");
-	
+
 			page.setAttribute("success_message", success);
-			
+
 			page.setAttribute("error_messages", errors);
-	
+
 			page.passOffToJsp(req, resp);
 		}
 	}
@@ -404,7 +419,8 @@ public class AdminServlet extends AbstractBaseServlet {
 		if (!ValidationUtil.validSecondaryEmail(secondEmail, train)) {
 			errors.add("Invalid secondary (google) email");
 		}
-		if (!ValidationUtil.isUniqueSecondaryEmail(secondEmail, primaryEmail, train)) {
+		if (!ValidationUtil.isUniqueSecondaryEmail(secondEmail, primaryEmail,
+				train)) {
 			errors.add("Non-unique secondary (google) email");
 		}
 
@@ -445,6 +461,107 @@ public class AdminServlet extends AbstractBaseServlet {
 
 			page.passOffToJsp(req, resp);
 		}
+	}
+
+	private void doStudentRegistration(HttpServletRequest req,
+			HttpServletResponse resp) throws ServletException, IOException {
+
+		DataTrain train = DataTrain.getAndStartTrain();
+
+		String firstName;
+		String lastName;
+		String major;
+		Email primaryEmail;
+		Email secondEmail;
+		String univID;
+		int year = -1;
+		User.Section section = null;
+		User new_user = null;
+		List<String> errors = new LinkedList<String>();
+
+		// Grab all the data from the form fields
+		firstName = req.getParameter("FirstName");
+		lastName = req.getParameter("LastName");
+		major = req.getParameter("Major");
+		univID = req.getParameter("UniversityID");
+		primaryEmail = new Email(req.getParameter("PrimaryEmail"));
+		secondEmail = new Email(req.getParameter("SecondEmail"));
+
+		if (!ValidationUtil.isValidUniversityID(univID)) {
+			errors.add("University ID was not valid");
+		}
+
+		if (!ValidationUtil.isUniqueId(univID, primaryEmail)) {
+			errors.add("University ID was not unique");
+		}
+
+		try {
+			year = Integer.parseInt(req.getParameter("Year"));
+		} catch (NumberFormatException e) {
+			errors.add("Invalid number of years in band entered, was not a number");
+		}
+
+		try {
+			section = User.Section.valueOf(req.getParameter("Section"));
+		} catch (IllegalArgumentException e) {
+			errors.add("Invalid section");
+		} catch (NullPointerException e) {
+			errors.add("Invalid section");
+		}
+
+		if (!ValidationUtil.validPrimaryEmail(primaryEmail, train)) {
+			errors.add("Invalid primary email, try logging out and then registering under your school email account");
+		}
+
+		if (!ValidationUtil.validSecondaryEmail(secondEmail, train)) {
+			errors.add("Invalid secondary email");
+		}
+		if (!ValidationUtil.isUniqueSecondaryEmail(secondEmail, primaryEmail,
+				train)) {
+			errors.add("Non-unique secondary email");
+		}
+
+		if (errors.size() == 0) {
+			try {
+				new_user = train.getUsersController().createStudent(
+						primaryEmail, univID, firstName, lastName, year, major,
+						section, secondEmail);
+
+			} catch (IllegalArgumentException e) {
+				// Save validation errors
+				errors.add(e.getMessage());
+
+			}
+		}
+
+		PageBuilder page = new PageBuilder(Page.student_register, SERVLET_PATH);
+
+		if (new_user == null) {
+			// Render registration page again
+
+			page.setAttribute("FirstName", firstName);
+			page.setAttribute("LastName", lastName);
+			page.setAttribute("PrimaryEmail", primaryEmail.getEmail());
+			page.setAttribute("Major", major);
+			page.setAttribute("UniversityID", univID);
+			page.setAttribute("Year", year);
+			page.setAttribute("SecondEmail", secondEmail.getEmail());
+			page.setAttribute("Section",
+					(section == null) ? null : section.getValue());
+
+			page.setAttribute("sections", User.Section.values());
+
+			page.setAttribute("error_messages", errors);
+			page.setPageTitle("Failed Registration");
+		} else {
+			// Did create a new user!
+			page.setPageTitle("Student Registration");
+
+			page.setAttribute("success_message",
+					"Successfully registered Student " + new_user.getName());
+		}
+		
+		page.passOffToJsp(req, resp);
 	}
 
 	private void downloadExportData(HttpServletRequest req,

@@ -59,6 +59,9 @@ links:
       links:
         - href: /admin/register
           text: Add a director
+          
+        - href: /admin/student_register
+          text: Add a student
 
         - href: /admin/data
           text: Data Backup/Restore

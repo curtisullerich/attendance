@@ -9,9 +9,9 @@ import com.google.code.twig.annotation.Index;
 import com.google.code.twig.annotation.Version;
 
 @Version(AttendanceDatastore.VERSION)
-@Entity(kind="User", allocateIdsBy=0)
+@Entity(kind = "User", allocateIdsBy = 0)
 public class User implements Serializable {
-	
+
 	/**
 	 * 
 	 */
@@ -24,7 +24,7 @@ public class User implements Serializable {
 	public static final String FIELD_PRIMARY_EMAIL = "email";
 
 	public static final String FIELD_SECONDARY_EMAIL = "secondEmail";
-	
+
 	public static final String FIELD_UNIVERSITY_ID = "universityID";
 
 	public enum Type {
@@ -238,7 +238,16 @@ public class User implements Serializable {
 
 	public void setPrimaryEmail(Email email) {
 		this.email = email;
-		this.id = email.getEmail().substring(0, email.getEmail().indexOf('@'));
+		// TODO https://github.com/curtisullerich/attendance/issues/170
+		// This shouldn't be in the model, it should happen in the controllers
+		// somehow
+		if (email.getEmail().indexOf('%') == -1) {
+			this.id = email.getEmail().substring(0,
+					email.getEmail().indexOf('@'));
+		} else {
+			this.id = email.getEmail().substring(0,
+					email.getEmail().indexOf('%'));
+		}
 	}
 
 	public Email getPrimaryEmail() {
@@ -252,7 +261,7 @@ public class User implements Serializable {
 	public Email getSecondaryEmail() {
 		return this.secondEmail;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		if (this.email == null || this.email.getEmail() == null)
