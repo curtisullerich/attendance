@@ -19,6 +19,8 @@
 		<h1>Class Conflict Request | Form B</h1>
 		
 		<p>First year members are only allowed one conflict.</p>
+		<p>Note: If you have a class that meets multiple times per week (Tuesday and Thursday, for instance)
+		you must submit one form for each day of the week.</p>
 		
 		<form method="post" accept-charset="utf-8">
 		
