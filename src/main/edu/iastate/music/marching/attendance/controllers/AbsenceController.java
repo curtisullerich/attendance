@@ -10,6 +10,8 @@ import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.code.twig.FindCommand.RootFindCommand;
 import com.google.code.twig.ObjectDatastore;
@@ -45,20 +47,12 @@ public class AbsenceController extends AbstractController {
 		Absence absence = ModelFactory.newAbsence(Absence.Type.Tardy, student);
 		absence.setDatetime(time);
 		// Associate with event
-		List<Event> events = train.getEventController().get(time);
-		absence.setStatus(Absence.Status.Pending);
-
-		// else the absence is orphaned, because we can't know which one is
-		// best. It'll show in unanchored and they'll have to fix it.
-		if (events.size() == 1) {
-			Event toLink = events.get(0);
-			// now link
-			absence.setEvent(toLink);
-
-		} else {
+		if(!tryLink(absence))
+		{
 			log.log(Level.WARNING, "Orphaned tardy being created at time: "
 					+ time);
 		}
+
 		return storeAbsence(absence, student);
 	}
 
@@ -237,12 +231,8 @@ public class AbsenceController extends AbstractController {
 		absence.setStatus(Absence.Status.Pending);
 
 		// Associate with event
-		// else the absence is orphaned
-		List<Event> events = train.getEventController().get(start, end);
-		if (events.size() == 1) {
-			absence.setEvent(events.get(0));
-			// associated with this event for this student
-		} else {
+		if(!tryLink(absence))
+		{
 			log.log(Level.WARNING,
 					"Orphaned absence being created for timespan: " + start
 							+ " to " + end);
@@ -294,12 +284,8 @@ public class AbsenceController extends AbstractController {
 		absence.setStatus(Absence.Status.Pending);
 
 		// Associate with event
-		List<Event> events = train.getEventController().get(time);
-
-		if (events.size() == 1) {
-			absence.setEvent(events.get(0));
-			// associated with this event for this student
-		} else {
+		if(!tryLink(absence))
+		{
 			log.log(Level.WARNING,
 					"Orphaned early checkout being created for time: " + time);
 		}
@@ -622,8 +608,10 @@ public class AbsenceController extends AbstractController {
 
 	public Absence updateAbsence(Absence absence) {
 
+		// See if we can link up an event now
 		Event linked = absence.getEvent();
-		if (linked != null && absence.getType() == Absence.Type.Tardy) {
+		if (linked == null) {
+			tryLink(absence);
 		}
 
 		// Do some validation
@@ -653,6 +641,57 @@ public class AbsenceController extends AbstractController {
 
 			// Success.
 			return resolvedAbsence;
+		}
+	}
+	
+	private boolean tryLink(Absence absence) {
+		Date time = absence.getDatetime();
+		Date start = absence.getStart();
+		Date end = absence.getEnd();
+		List<Event> events;
+		
+		switch(absence.getType())
+		{
+		case Absence:
+			// Associate with event
+			// else the absence is orphaned
+			events = train.getEventController().get(start, end);
+			if (events.size() == 1) {
+				absence.setEvent(events.get(0));
+				// associated with this event for this student
+				return true;
+			} else {
+				return false;
+			}
+		case EarlyCheckOut:
+			// Associate with event
+			events = this.train.getEventController().get(time);
+
+			if (events.size() == 1) {
+				absence.setEvent(events.get(0));
+				// associated with this event for this student
+				return true;
+			} else {
+				return false;
+			}
+		case Tardy:
+			// Associate with event
+			events = train.getEventController().get(time);
+			absence.setStatus(Absence.Status.Pending);
+
+			// else the absence is orphaned, because we can't know which one is
+			// best. It'll show in unanchored and they'll have to fix it.
+			if (events.size() == 1) {
+				Event toLink = events.get(0);
+				// now link
+				absence.setEvent(toLink);
+
+				return true;
+			} else {
+				return false;
+			}
+		default:
+			throw new UnsupportedOperationException();
 		}
 	}
 
