@@ -23,7 +23,7 @@ public class ValidationUtil {
 			.compile("^([a-zA-Z0-9._%+-]+)@([a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4})$");
 
 	private static final Pattern PATTERN_GTEMPEMAIL = Pattern
-			.compile("^([a-zA-Z0-9._%+-]+)%40([a-zA-Z0-9.-]+)@gtempaccount.com");
+			.compile("^([a-zA-Z0-9._%+-]+)%40([a-zA-Z0-9.-]+)@gtempaccount.com$");
 
 	private static final int MAX_STRING_LENGTH = 500;
 
@@ -58,8 +58,8 @@ public class ValidationUtil {
 		}
 		
 		// Allow address%40domain@gtempaccount.com email's
-		Matcher gTempMatcher = PATTERN_GTEMPEMAIL.matcher(domain);
-		if(gTempMatcher.matches())
+		Matcher gTempMatcher = PATTERN_GTEMPEMAIL.matcher(email.getEmail());
+		if(gTempMatcher.matches() && domain.equals(gTempMatcher.group(2)))
 		{
 			return true;
 		}
