@@ -309,8 +309,13 @@ public class FormsServlet extends AbstractBaseServlet {
 			section = req.getParameter("Section");
 			building = req.getParameter("Building");
 			comments = req.getParameter("Comments");
-			minutesToOrFrom = Integer.parseInt(req
-					.getParameter("MinutesToOrFrom"));
+
+			try {
+				minutesToOrFrom = Integer.parseInt(req
+						.getParameter("MinutesToOrFrom"));
+			} catch (NumberFormatException ex) {
+				errors.add("Invalid minutes to or from value, it must be a whole, positive number.");
+			}
 
 			String stype = req.getParameter("Type");
 			if (stype != null && !stype.equals("")) {
@@ -361,8 +366,7 @@ public class FormsServlet extends AbstractBaseServlet {
 			}
 			try {
 				toTime = Util.parseDate("1", "1", "1000",
-						req.getParameter("ToHour"), 
-						req.getParameter("ToAMPM"),
+						req.getParameter("ToHour"), req.getParameter("ToAMPM"),
 						req.getParameter("ToMinute"), train
 								.getAppDataController().get().getTimeZone());
 			} catch (IllegalArgumentException e) {
