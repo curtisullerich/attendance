@@ -250,7 +250,7 @@ public class FormsServlet extends AbstractBaseServlet {
 
 			if (form == null) {
 				validForm = false;
-				errors.add("Internal Error: Failed to create form and store in database");
+				errors.add("Fix any errors above and try to resubmit. If you're still having issues, submit a bug report using the form at the bottom of the page.");
 			}
 		}
 		if (validForm) {
@@ -402,7 +402,7 @@ public class FormsServlet extends AbstractBaseServlet {
 
 			if (form == null) {
 				validForm = false;
-				errors.add("Internal Error: Failed to create form and store in database. Please submit a bug report through the form at the bottom of this page.");
+				errors.add("Fix any errors above and try to resubmit. If you're still having issues, submit a bug report using the form at the bottom of the page.");
 			}
 		}
 		if (validForm) {
@@ -430,6 +430,22 @@ public class FormsServlet extends AbstractBaseServlet {
 			page.setAttribute("MinutesToOrFrom", minutesToOrFrom);
 			page.setAttribute("Type", absenceType);
 			page.setAttribute("types", Absence.Type.values());
+			
+			if (fromTime != null) {
+				Calendar from = Calendar.getInstance();
+				from.setTime(fromTime);
+				page.setAttribute("FromHour", from.get(Calendar.HOUR));
+				page.setAttribute("FromMinute", from.get(Calendar.MINUTE));
+				page.setAttribute("FromAMPM", from.get(Calendar.AM_PM) == 0 ? "AM" : "PM");
+			}
+
+			if (toTime != null) {
+				Calendar to = Calendar.getInstance();
+				to.setTime(toTime);
+				page.setAttribute("ToHour", to.get(Calendar.HOUR));
+				page.setAttribute("ToMinute", to.get(Calendar.MINUTE));
+				page.setAttribute("ToAMPM", to.get(Calendar.AM_PM) == 0 ? "AM" : "PM");
+			}
 
 			page.passOffToJsp(req, resp);
 		}
@@ -508,7 +524,7 @@ public class FormsServlet extends AbstractBaseServlet {
 
 			if (form == null) {
 				validForm = false;
-				errors.add("Internal Error: Failed to create form and store in database");
+				errors.add("Fix any errors above and try to resubmit. If you're still having issues, submit a bug report using the form at the bottom of the page.");
 			}
 		}
 		if (validForm) {
@@ -589,7 +605,7 @@ public class FormsServlet extends AbstractBaseServlet {
 
 			if (form == null) {
 				validForm = false;
-				errors.add("Internal Error: Failed to create form and store in database");
+				errors.add("Fix any errors above and try to resubmit. If you're still having issues, submit a bug report using the form at the bottom of the page.");
 			}
 		}
 		if (validForm) {
