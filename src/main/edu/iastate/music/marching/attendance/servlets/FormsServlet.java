@@ -309,8 +309,14 @@ public class FormsServlet extends AbstractBaseServlet {
 			section = req.getParameter("Section");
 			building = req.getParameter("Building");
 			comments = req.getParameter("Comments");
-			minutesToOrFrom = Integer.parseInt(req
-					.getParameter("MinutesToOrFrom"));
+
+			String minutestmp = req.getParameter("MinutestoOrFrom");
+
+			try {
+				minutesToOrFrom = Integer.parseInt(minutestmp);
+			} catch (NumberFormatException nfe) {
+				errors.add("Minutes to or from must be a whole number.");
+			}
 
 			String stype = req.getParameter("Type");
 			if (stype != null && !stype.equals("")) {
@@ -326,7 +332,14 @@ public class FormsServlet extends AbstractBaseServlet {
 			}
 
 			// this is one-based! Starting on Sunday.
+			
+			try {
 			day = Integer.parseInt(req.getParameter("DayOfWeek"));
+			
+			} catch (NumberFormatException nfe) {
+				errors.add("Weekday was invalid.");
+			}
+			
 			if (day < 1 || day > 7) {
 				errors.add("Value of " + day + " for day was not valid.");
 			}
@@ -361,8 +374,7 @@ public class FormsServlet extends AbstractBaseServlet {
 			}
 			try {
 				toTime = Util.parseDate("1", "1", "1000",
-						req.getParameter("ToHour"), 
-						req.getParameter("ToAMPM"),
+						req.getParameter("ToHour"), req.getParameter("ToAMPM"),
 						req.getParameter("ToMinute"), train
 								.getAppDataController().get().getTimeZone());
 			} catch (IllegalArgumentException e) {

@@ -486,7 +486,13 @@ public class DirectorServlet extends AbstractBaseServlet {
 		DataTrain train = DataTrain.getAndStartTrain();
 		AbsenceController ac = train.getAbsenceController();
 		EventController ec = train.getEventController();
-		int count = Integer.parseInt(req.getParameter("UnanchoredCount"));
+		int count = -1;
+
+		try {
+			count = Integer.parseInt(req.getParameter("UnanchoredCount"));
+		} catch (NumberFormatException nfe) {
+			LOG.severe("Unanchored count wasn't a number. This is a hidden field, so something's wrong.");
+		}
 
 		int numLinked = 0;
 		for (int i = 0; i <= count; i++) {
@@ -611,20 +617,20 @@ public class DirectorServlet extends AbstractBaseServlet {
 		}
 	}
 
-	private void deleteAbsence(String absid, AbsenceController ac, 
-			HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	private void deleteAbsence(String absid, AbsenceController ac,
+			HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
 		List<String> errors = new ArrayList<String>();
 		try {
 			Absence a = ac.get(Integer.parseInt(absid));
 			ac.remove(a);
 			showAttendance(req, resp, errors, "Successfully deleted absence.");
-		}
-		catch (NumberFormatException e) {
+		} catch (NumberFormatException e) {
 			LOG.severe("Unable to find absence to delete.");
 			errors.add("Internal error, unable to delete absence.");
 			viewAbsence(req, resp, errors);
 		}
-		
+
 	}
 
 	private void postAppInfo(HttpServletRequest req, HttpServletResponse resp)
@@ -750,9 +756,9 @@ public class DirectorServlet extends AbstractBaseServlet {
 		cutoffDate.setTime(data.getFormSubmissionCutoff());
 
 		page.setAttribute("appinfo", data);
-		
+
 		page.setAttribute("timezone", data.getTimeZone());
-		
+
 		page.setAttribute("emails", data.getTimeWorkedEmails());
 
 		page.setAttribute("Month", cutoffDate.get(Calendar.MONTH) + 1);
