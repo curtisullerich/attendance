@@ -6,14 +6,16 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
+import com.google.appengine.api.datastore.Text;
 import com.google.code.twig.annotation.Entity;
 import com.google.code.twig.annotation.Id;
+import com.google.code.twig.annotation.Type;
 import com.google.code.twig.annotation.Version;
 
 @Version(AttendanceDatastore.VERSION)
-@Entity(kind="AppData", allocateIdsBy=0)
+@Entity(kind = "AppData", allocateIdsBy = 0)
 public class AppData implements Serializable {
-	
+
 	/**
 	 * 
 	 */
@@ -35,7 +37,10 @@ public class AppData implements Serializable {
 	private String hashedMobilePassword;
 
 	private String timeZoneID;
-	
+
+	@Type(Text.class)
+	private String statusMessage;
+
 	@Id
 	private int datastoreVersion;
 
@@ -74,7 +79,7 @@ public class AppData implements Serializable {
 	public TimeZone getTimeZone() {
 		return TimeZone.getTimeZone(this.timeZoneID);
 	}
-	
+
 	public void setTimeZone(TimeZone timezone) {
 		this.timeZoneID = timezone.getID();
 	}
@@ -82,9 +87,17 @@ public class AppData implements Serializable {
 	public int getDatastoreVersion() {
 		return this.datastoreVersion;
 	}
-	
+
 	public void setDatastoreVersion(int version) {
 		this.datastoreVersion = version;
+	}
+
+	public void setStatusMessage(String statusMessage) {
+		this.statusMessage = statusMessage;
+	}
+
+	public String getStatusMessage() {
+		return this.statusMessage;
 	}
 
 	public List<TimeZone> getTimezoneOptions() {

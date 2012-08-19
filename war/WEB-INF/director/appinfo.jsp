@@ -124,6 +124,11 @@
 				<br/>
 			</dd>
 			
+			<dt><label for="StatusMessage">Status Message</label></dt>
+			<dd>
+				<textarea rows="12" cols="60" name="StatusMessage">${StatusMessage }</textarea>
+			</dd>
+			
 
 		</dl>
 				<input type="submit" value="Save Info" name="SaveInfo" onclick="preprocessInfo();"/>

@@ -9,10 +9,8 @@
 	<body>
 		<jsp:include page="/WEB-INF/template/header.jsp" />
 
-		<h1>Director Page</h1>
-		<p>
-		</p>
+		<h1>Director Page</h1>		
+		<jsp:include page="/WEB-INF/common/status.jsp"/>
 		<jsp:include page="/WEB-INF/template/footer.jsp" />
 	</body>
-
 </html>

@@ -653,6 +653,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		String newPassConf = null;
 		String timezone = null;
 		String title = null;
+		String statusMessage = null;
 		List<String> emailList = null;
 		if (!ValidationUtil.isPost(req)) {
 			validForm = false;
@@ -731,6 +732,14 @@ public class DirectorServlet extends AbstractBaseServlet {
 			} else {
 				data.setTitle(title);
 			}
+			
+			statusMessage = req.getParameter("StatusMessage");
+//			if (statusMessage == null || statusMessage.equals("") ) {
+//				errors.add("Status message was empty.");
+//			} else {
+				data.setStatusMessage(statusMessage);
+//			}
+			
 		}
 		if (validForm) {
 			appDataController.save(data);
@@ -775,6 +784,8 @@ public class DirectorServlet extends AbstractBaseServlet {
 		page.setAttribute("ToAMPM",
 				(cutoffDate.get(Calendar.AM_PM) == Calendar.AM) ? "AM" : "PM");
 
+		page.setAttribute("StatusMessage", data.getStatusMessage());
+		
 		// page.setAttribute("cutoffTime", data.getFormSubmissionCutoff());
 		page.setAttribute("error_messages", errors);
 		page.setAttribute("success_message", success);
@@ -989,6 +1000,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		PageBuilder page = new PageBuilder(Page.index, SERVLET_PATH);
 
 		page.setPageTitle("Director");
+		page.setAttribute("StatusMessage", DataTrain.getAndStartTrain().getAppDataController().get().getStatusMessage());
 
 		page.passOffToJsp(req, resp);
 	}
