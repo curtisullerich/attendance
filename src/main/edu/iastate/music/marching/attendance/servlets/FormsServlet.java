@@ -310,7 +310,7 @@ public class FormsServlet extends AbstractBaseServlet {
 			building = req.getParameter("Building");
 			comments = req.getParameter("Comments");
 
-			String minutestmp = req.getParameter("MinutestoOrFrom");
+			String minutestmp = req.getParameter("MinutesToOrFrom");
 
 			try {
 				minutesToOrFrom = Integer.parseInt(minutestmp);
