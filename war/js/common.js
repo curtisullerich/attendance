@@ -5,7 +5,41 @@
  * 
  */
 
-
+/**
+ * 
+ */
+function bug_report_form_onsubmit()
+{
+	var forms = [];
+	var count = 0;
+	$('form').each(function(index) {
+		if($(this).attr('id') != 'bugreportform')
+		{
+			count++;
+			var id = $(this).attr('id');
+			
+			if(!id)
+			{
+				id = "form" + count;
+			}
+			
+			var form = {
+					id: id,
+					fields: {}
+			}
+			
+			$(this).find("input").each(function(index2) {
+				form.fields[$(this).attr('name')] = $(this).val();
+			});
+			
+			forms.push(form);
+		}
+	});
+	
+	$("#bugreportform input[name=FieldValues]").val(JSON.stringify({ forms: forms }));
+	
+	return true;
+}
 
 /**
  * Makes browser go back (same as hitting browser's back button)

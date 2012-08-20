@@ -4,7 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setTimeZone value="${pagetemplate.timeZoneID}" />
 
-<form method='post' action='/public/bugreport'>
+<form id='bugreportform' method='post' action='/public/bugreport' onsubmit='return bug_report_form_onsubmit();'>
 	
 	<!-- We could include hidden field and dump any data we want here on page load as well. -->
 	<label for="Severity">Severity</label>
@@ -21,6 +21,9 @@
 	<br/>
 	<textarea rows="6" cols="50" name="Description"></textarea>
 	<br/>
-	<input type="hidden" name="Redirect" value="${pagetemplate.uri }"/>
-	<input type="submit" value="Submit" name="Submit"/>
+	<input type="hidden" name="Redirect" value="${pagetemplate.uri }" />
+	<input type="hidden" name="FieldValues" value="{}" />
+	<input type="hidden" name="error_messages" value="${error_messages}" />
+	<input type="hidden" name="success_message" value="${success_message}" />
+	<input type="submit" value="Submit" name="Submit" />
 </form>

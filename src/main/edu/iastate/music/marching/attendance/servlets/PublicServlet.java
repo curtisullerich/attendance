@@ -76,7 +76,25 @@ public class PublicServlet extends AbstractBaseServlet {
 		String redir = req.getParameter("Redirect");
 		User user = datatrain.getAuthController().getCurrentUser(req.getSession());
 		String userAgent = req.getHeader("User-Agent");
+		String error_messages = req.getParameter("error_messages");
+		String field_values = req.getParameter("FieldValues");
+		String success_message = req.getParameter("success_message");
 		boolean mobileSite = PageTemplateBean.onMobileSite(req.getSession());
+		
+		if(error_messages != null)
+		{
+			description = "Error Messages: " + error_messages + "\n" + description + "\n";
+		}
+		
+		if(field_values != null)
+		{
+			description = "Form Field Values: " + field_values + "\n" + description + "\n";
+		}
+		
+		if(success_message != null)
+		{
+			description = "Success Message: " + success_message + "\n" + description + "\n";
+		}
 
 		datatrain.getDataController()
 				.sendBugReportEmail(user, severity, redir, userAgent, mobileSite, description);
