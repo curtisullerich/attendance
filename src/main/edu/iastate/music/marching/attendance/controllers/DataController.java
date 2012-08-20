@@ -59,7 +59,9 @@ public class DataController extends AbstractController {
 		msgBody += "On mobile site: " + new Boolean(mobileSite).toString()
 				+ "<br/>\n";
 		msgBody += "<br/>\n";
-		msgBody += "Message: \n" + StringEscapeUtils.escapeHtml4(message);
+		msgBody += "Message: \n"
+				+ StringEscapeUtils.escapeHtml4(message).replace("\n",
+						"\n<br/>");
 
 		try {
 			MimeMessage msg = new MimeMessage(session);
@@ -132,8 +134,7 @@ public class DataController extends AbstractController {
 	private Gson getGson() {
 		return new Gson();
 	}
-	
-	
+
 	public void deleteEverthingInTheEntireDatabaseEvenThoughYouCannotUndoThis() {
 		this.dataTrain.getDataStore().deleteAll(Absence.class);
 		this.dataTrain.getDataStore().deleteAll(AppData.class);
@@ -144,7 +145,7 @@ public class DataController extends AbstractController {
 		this.dataTrain.getDataStore().deleteAll(MessageThread.class);
 		this.dataTrain.getDataStore().deleteAll(MobileDataUpload.class);
 		this.dataTrain.getDataStore().deleteAll(User.class);
-		
+
 		this.dataTrain.getMemCache().clear();
 	}
 }

@@ -74,33 +74,31 @@ public class PublicServlet extends AbstractBaseServlet {
 		String severity = req.getParameter("Severity");
 		String description = req.getParameter("Description");
 		String redir = req.getParameter("Redirect");
-		User user = datatrain.getAuthController().getCurrentUser(req.getSession());
+		User user = datatrain.getAuthController().getCurrentUser(
+				req.getSession());
 		String userAgent = req.getHeader("User-Agent");
 		String error_messages = req.getParameter("error_messages");
 		String field_values = req.getParameter("FieldValues");
 		String success_message = req.getParameter("success_message");
 		boolean mobileSite = PageTemplateBean.onMobileSite(req.getSession());
-		
-		if(error_messages != null)
-		{
-			description = "Error Messages: " + error_messages + "\n" + description + "\n";
-		}
-		
-		if(field_values != null)
-		{
-			description = "Form Field Values: " + field_values + "\n" + description + "\n";
-		}
-		
-		if(success_message != null)
-		{
-			description = "Success Message: " + success_message + "\n" + description + "\n";
-		}
-		
-		// Line breaks
-		description = description.replace("\n", "\n<br/>");
 
-		datatrain.getDataController()
-				.sendBugReportEmail(user, severity, redir, userAgent, mobileSite, description);
+		if (error_messages != null && !error_messages.equals("[]")) {
+			description = "\nError Messages: " + error_messages + "\n"
+					+ description + "\n";
+		}
+
+		if (field_values != null) {
+			description = "\nForm Field Values: " + field_values + "\n"
+					+ description + "\n";
+		}
+
+		if (success_message != null && !success_message.equals("")) {
+			description = "\nSuccess Message: " + success_message + "\n"
+					+ description + "\n";
+		}
+
+		datatrain.getDataController().sendBugReportEmail(user, severity, redir,
+				userAgent, mobileSite, description);
 
 		String append = "?";
 		if (redir.contains("?")) {
