@@ -19,7 +19,7 @@
 	overflow:visible;
 }
 #container div.sidebar {
-	position:absolute;
+	position:fixed;
 }
 #content {
 	width:auto;
