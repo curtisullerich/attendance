@@ -95,6 +95,9 @@ public class PublicServlet extends AbstractBaseServlet {
 		{
 			description = "Success Message: " + success_message + "\n" + description + "\n";
 		}
+		
+		// Line breaks
+		description = description.replace("\n", "\n<br/>");
 
 		datatrain.getDataController()
 				.sendBugReportEmail(user, severity, redir, userAgent, mobileSite, description);
