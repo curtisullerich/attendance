@@ -54,7 +54,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 			.getName());
 
 	public enum Page {
-		index, appinfo, attendance, export, forms, unanchored, users, user, stats, info, viewabsence, student, makeevent, deletestudent, studentinfo, viewevent, deleteevent;
+		index, appinfo, attendance, export, forms, unanchored, users, user, stats, info, viewabsence, student, makeevent, deletestudent, studentinfo, viewevent, deleteevent, postdelete;
 	}
 
 	private static final String SERVLET_PATH = "director";
@@ -84,7 +84,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 				showIndex(req, resp);
 				break;
 			case viewabsence:
-				viewAbsence(req, resp, new ArrayList<String>());
+				viewAbsence(req, resp, new ArrayList<String>(), "");
 				break;
 			case attendance:
 				showAttendance(req, resp, null, null);
@@ -323,7 +323,17 @@ public class DirectorServlet extends AbstractBaseServlet {
 			// page.setAttribute("errors", errors);
 		}
 
-		showAttendance(req, resp, errors, success);
+		// Don't redirect to attendance if in a new window
+		if ("true".equals(req.getParameter("newindow"))) {
+			new PageBuilder(Page.postdelete, SERVLET_PATH)
+					.setAttribute(
+							"success_message",
+							success
+									+ ", please close this window to return to the attendance table.")
+					.passOffToJsp(req, resp);
+		} else {
+			showAttendance(req, resp, errors, success);
+		}
 	}
 
 	private void postDirectorInfo(HttpServletRequest req,
@@ -610,9 +620,20 @@ public class DirectorServlet extends AbstractBaseServlet {
 			if (validForm) {
 				// How about update the absence huh?
 				ac.updateAbsence(toUpdate);
-				resp.sendRedirect(pageToUrl(Page.attendance, SERVLET_PATH));
+
+				// Do not redirect if in a new window, instead show a success
+				// message
+				if ("true".equals(req.getParameter("newindow"))) {
+					viewAbsence(
+							req,
+							resp,
+							errors,
+							"Successfully updated absence, close this window to return to the attendance table");
+				} else {
+					resp.sendRedirect(pageToUrl(Page.attendance, SERVLET_PATH));
+				}
 			} else {
-				viewAbsence(req, resp, errors);
+				viewAbsence(req, resp, errors, "");
 			}
 		}
 	}
@@ -624,11 +645,25 @@ public class DirectorServlet extends AbstractBaseServlet {
 		try {
 			Absence a = ac.get(Integer.parseInt(absid));
 			ac.remove(a);
-			showAttendance(req, resp, errors, "Successfully deleted absence.");
+
+			// Do not redirect if in a new window, instead show a success
+			// message
+			if ("true".equals(req.getParameter("newindow"))) {
+				new PageBuilder(Page.postdelete, SERVLET_PATH)
+						.setAttribute(
+								"success_message",
+								"Successfully deleted absence, close this window to return to the attendance table")
+						.passOffToJsp(req, resp);
+			} else {
+				// Redirect
+				resp.sendRedirect(pageToUrl(Page.attendance, SERVLET_PATH));
+				showAttendance(req, resp, errors,
+						"Successfully deleted absence.");
+			}
 		} catch (NumberFormatException e) {
 			LOG.severe("Unable to find absence to delete.");
 			errors.add("Internal error, unable to delete absence.");
-			viewAbsence(req, resp, errors);
+			viewAbsence(req, resp, errors, "");
 		}
 
 	}
@@ -732,14 +767,14 @@ public class DirectorServlet extends AbstractBaseServlet {
 			} else {
 				data.setTitle(title);
 			}
-			
+
 			statusMessage = req.getParameter("StatusMessage");
-//			if (statusMessage == null || statusMessage.equals("") ) {
-//				errors.add("Status message was empty.");
-//			} else {
-				data.setStatusMessage(statusMessage);
-//			}
-			
+			// if (statusMessage == null || statusMessage.equals("") ) {
+			// errors.add("Status message was empty.");
+			// } else {
+			data.setStatusMessage(statusMessage);
+			// }
+
 		}
 		if (validForm) {
 			appDataController.save(data);
@@ -785,7 +820,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 				(cutoffDate.get(Calendar.AM_PM) == Calendar.AM) ? "AM" : "PM");
 
 		page.setAttribute("StatusMessage", data.getStatusMessage());
-		
+
 		// page.setAttribute("cutoffTime", data.getFormSubmissionCutoff());
 		page.setAttribute("error_messages", errors);
 		page.setAttribute("success_message", success);
@@ -1000,7 +1035,8 @@ public class DirectorServlet extends AbstractBaseServlet {
 		PageBuilder page = new PageBuilder(Page.index, SERVLET_PATH);
 
 		page.setPageTitle("Director");
-		page.setAttribute("StatusMessage", DataTrain.getAndStartTrain().getAppDataController().get().getStatusMessage());
+		page.setAttribute("StatusMessage", DataTrain.getAndStartTrain()
+				.getAppDataController().get().getStatusMessage());
 
 		page.passOffToJsp(req, resp);
 	}
@@ -1026,7 +1062,8 @@ public class DirectorServlet extends AbstractBaseServlet {
 	}
 
 	private void viewAbsence(HttpServletRequest req, HttpServletResponse resp,
-			List<String> incomingErrors) throws ServletException, IOException {
+			List<String> incomingErrors, String success_message)
+			throws ServletException, IOException {
 		DataTrain train = DataTrain.getAndStartTrain();
 
 		AbsenceController ac = train.getAbsenceController();
@@ -1103,9 +1140,10 @@ public class DirectorServlet extends AbstractBaseServlet {
 			page.setAttribute("types", Absence.Type.values());
 			page.setAttribute("status", Absence.Status.values());
 			page.setAttribute("error_messages", incomingErrors);
+			page.setAttribute("success_message", success_message);
 			page.passOffToJsp(req, resp);
 		} else {
-			showAttendance(req, resp, errors, null);
+			showAttendance(req, resp, errors, success_message);
 		}
 	}
 
