@@ -941,8 +941,6 @@ public class AbsenceControllerTest extends AbstractTest {
 		UserController uc = train.getUsersController();
 		User student = Users.createStudent(uc, "student", "123456789", "First",
 				"last", 2, "major", User.Section.AltoSax);
-		User student1 = Users.createStudent(uc, "student1", "123456780",
-				"First", "last", 2, "major", User.Section.AltoSax);
 
 		Date start = makeDate("2012-06-16 0500");
 		Date end = makeDate("2012-06-16 0600");
@@ -974,8 +972,6 @@ public class AbsenceControllerTest extends AbstractTest {
 		UserController uc = train.getUsersController();
 		User student = Users.createStudent(uc, "student", "123456789", "First",
 				"last", 2, "major", User.Section.AltoSax);
-		User student1 = Users.createStudent(uc, "student1", "123456780",
-				"First", "last", 2, "major", User.Section.AltoSax);
 
 		Date start = makeDate("2012-06-16 0500");
 		Date tardyStart = makeDate("2012-06-16 0515");
@@ -1008,8 +1004,6 @@ public class AbsenceControllerTest extends AbstractTest {
 		UserController uc = train.getUsersController();
 		User student = Users.createStudent(uc, "student", "123456789", "First",
 				"last", 2, "major", User.Section.AltoSax);
-		User student1 = Users.createStudent(uc, "student1", "123456780",
-				"First", "last", 2, "major", User.Section.AltoSax);
 
 		Date start = makeDate("2012-06-16 0500");
 		Date tardyStart = makeDate("2012-06-16 0515");
@@ -1358,7 +1352,6 @@ public class AbsenceControllerTest extends AbstractTest {
 		UserController uc = train.getUsersController();
 		EventController ec = train.getEventController();
 		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
 
 		List<Absence> unanchored = new ArrayList<Absence>();
 
@@ -1725,8 +1718,6 @@ public class AbsenceControllerTest extends AbstractTest {
 
 		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, startOverlap,
 				endOverlap);
-		Event event2 = ec.createOrUpdate(Event.Type.Performance, startOverlap,
-				endOverlap);
 
 		List<Event> events = ec.getAll();
 
@@ -1750,7 +1741,7 @@ public class AbsenceControllerTest extends AbstractTest {
 		Absence a = abs.get(0);
 		assertTrue(a.getEvent() == null);
 
-		ec.delete(event1);
+		ec.delete(event1, false);
 
 		a = ac.get(student).get(0);
 		assertTrue(a.getEvent() != null);
@@ -1786,7 +1777,7 @@ public class AbsenceControllerTest extends AbstractTest {
 		ac.createOrUpdateAbsence(student, otherStart, otherEnd);
 		ac.createOrUpdateAbsence(student, startOverlap, endOverlap);
 
-		ec.delete(event1);
+		ec.delete(event1, false);
 		List<Absence> allAbs = ac.get(student);
 		Absence abs = (allAbs.get(0).getStart().equals(otherStart)) ? allAbs
 				.get(0) : allAbs.get(1);
@@ -1811,8 +1802,6 @@ public class AbsenceControllerTest extends AbstractTest {
 		Date startOverlap = makeDate("2012-09-21 0600");
 		Date endOverlap = makeDate("2012-09-21 0700");
 
-		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, startOverlap,
-				endOverlap);
 		Event event2 = ec.createOrUpdate(Event.Type.Performance, startOverlap,
 				endOverlap);
 
@@ -1838,7 +1827,7 @@ public class AbsenceControllerTest extends AbstractTest {
 		Absence a = abs.get(0);
 		assertTrue(a.getEvent() == null);
 
-		ec.delete(event2);
+		ec.delete(event2, false);
 
 		a = ac.get(student).get(0);
 		assertTrue(a.getEvent() != null);
@@ -1876,7 +1865,7 @@ public class AbsenceControllerTest extends AbstractTest {
 		ac.createOrUpdateTardy(student, tardyStart);
 		ac.createOrUpdateTardy(student, startOverlap);
 
-		ec.delete(event1);
+		ec.delete(event1, false);
 
 		List<Absence> allAbs = ac.get(student);
 		Absence abs = (allAbs.get(0).getStart().equals(tardyStart)) ? allAbs
@@ -1905,8 +1894,6 @@ public class AbsenceControllerTest extends AbstractTest {
 
 		Event event1 = ec.createOrUpdate(Event.Type.Rehearsal, startOverlap,
 				endOverlap);
-		Event event2 = ec.createOrUpdate(Event.Type.Performance, startOverlap,
-				endOverlap);
 
 		List<Event> events = ec.getAll();
 
@@ -1930,7 +1917,7 @@ public class AbsenceControllerTest extends AbstractTest {
 		Absence a = abs.get(0);
 		assertTrue(a.getEvent() == null);
 
-		ec.delete(event1);
+		ec.delete(event1, false);
 
 		a = ac.get(student).get(0);
 		assertTrue(a.getEvent() != null);
@@ -1968,7 +1955,7 @@ public class AbsenceControllerTest extends AbstractTest {
 		ac.createOrUpdateEarlyCheckout(student, earlyStart);
 		ac.createOrUpdateEarlyCheckout(student, startOverlap);
 
-		ec.delete(event1);
+		ec.delete(event1, false);
 
 		List<Absence> allAbs = ac.get(student);
 		Absence abs = (allAbs.get(0).getStart().equals(earlyStart)) ? allAbs
