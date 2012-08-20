@@ -310,11 +310,12 @@ public class FormsServlet extends AbstractBaseServlet {
 			building = req.getParameter("Building");
 			comments = req.getParameter("Comments");
 
+			String minutestmp = req.getParameter("MinutestoOrFrom");
+
 			try {
-				minutesToOrFrom = Integer.parseInt(req
-						.getParameter("MinutesToOrFrom"));
-			} catch (NumberFormatException ex) {
-				errors.add("Invalid minutes to or from value, it must be a whole, positive number.");
+				minutesToOrFrom = Integer.parseInt(minutestmp);
+			} catch (NumberFormatException nfe) {
+				errors.add("Minutes to or from must be a whole number.");
 			}
 
 			String stype = req.getParameter("Type");
@@ -331,7 +332,14 @@ public class FormsServlet extends AbstractBaseServlet {
 			}
 
 			// this is one-based! Starting on Sunday.
+			
+			try {
 			day = Integer.parseInt(req.getParameter("DayOfWeek"));
+			
+			} catch (NumberFormatException nfe) {
+				errors.add("Weekday was invalid.");
+			}
+			
 			if (day < 1 || day > 7) {
 				errors.add("Value of " + day + " for day was not valid.");
 			}
