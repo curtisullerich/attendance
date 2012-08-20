@@ -620,7 +620,7 @@ public class AbsenceController extends AbstractController {
 			// Null resolved absence means remove from database
 
 			try {
-				this.train.getDataStore().delete(absence);
+				remove(absence);
 			} catch (IllegalArgumentException e) {
 				LOG.severe("Attempted to delete absence that wasn't associated.");
 			}
