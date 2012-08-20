@@ -292,6 +292,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		DataTrain train = DataTrain.getAndStartTrain();
 		PageBuilder page = new PageBuilder(Page.attendance, SERVLET_PATH);
 		String sremoveAnchored = req.getParameter("RemoveAnchored");
+		boolean bRemoveAnchored;
 		EventController ec = train.getEventController();
 		if (sid != null && !sid.equals("")) {
 			Event event = null;
@@ -303,16 +304,12 @@ public class DirectorServlet extends AbstractBaseServlet {
 			if (event != null) {
 				// page.setAttribute("success_message", "Event deleted");
 				success = "Event deleted";
-				if (sremoveAnchored != null) {
-					if (sremoveAnchored.equals("true")) {
-						AbsenceController ac = train.getAbsenceController();
-						List<Absence> todie = ac.getAll(event);
-						ac.remove(todie);
-						// page.setAttribute("success_message","Event and associated absences deleted.");
-						success = "Event and associated absences deleted.";
-					}
+				if (sremoveAnchored != null && sremoveAnchored.equals("true")) {
+					bRemoveAnchored = true;
+				} else {
+					bRemoveAnchored = false;
 				}
-				ec.delete(event);
+				ec.delete(event, bRemoveAnchored);
 
 				// this is set just in case we go back to the page with errors.
 				page.setAttribute("event", event);

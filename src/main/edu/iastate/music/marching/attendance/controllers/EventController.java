@@ -157,8 +157,23 @@ public class EventController extends AbstractController {
 		return event;
 	}
 
-	public void delete(Event event) {
+	public void delete(Event event, boolean deleteLinkedAbsences) {
 		ObjectDatastore od = this.train.getDataStore();
+		
+		AbsenceController ac = train.getAbsenceController();
+		List<Absence> todie = ac.getAll(event);
+		if (deleteLinkedAbsences) {
+			// Just remove all of them
+			ac.remove(todie);
+		} else {
+			// Still need to unlink them
+			for(Absence absence : todie)
+			{
+				absence.setEvent(null);
+				ac.updateAbsence(absence);
+			}
+		}
+		
 		Date start = event.getStart();
 		Date end = event.getEnd();
 		od.delete(event);

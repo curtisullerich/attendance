@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +28,10 @@ public class FormsServlet extends AbstractBaseServlet {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -4738485557840953303L;
+	private static final long serialVersionUID = -4738485557840953301L;
+	
+	private static final Logger log = Logger.getLogger(FormsServlet.class
+			.getName());
 
 	private enum Page {
 		forma, formb, formc, formd, index, view, remove, messages;
@@ -97,15 +101,25 @@ public class FormsServlet extends AbstractBaseServlet {
 		try {
 			long id = Long.parseLong(req.getParameter("id"));
 			form = train.getFormsController().get(id);
+			
 			PageBuilder page = new PageBuilder(Page.view, SERVLET_PATH);
-			page.setPageTitle("Form " + form.getType());
-			page.setAttribute("form", form);
-			page.setAttribute("day", form.getDayAsString());
-			page.setAttribute("isDirector", currentUser.getType().isDirector());
-			page.setAttribute("error_messages", errors);
-			page.setAttribute("success_message", success_message);
+			
+			if(form == null)
+			{
+				log.warning("Could not find form number " + id + ".");
+				errors.add("Could not find form number " + id + ".");
+				page.setAttribute("error_messages", errors);
+			} else {
+				page.setPageTitle("Form " + form.getType());
+				page.setAttribute("form", form);
+				page.setAttribute("day", form.getDayAsString());
+				page.setAttribute("isDirector", currentUser.getType().isDirector());
+				page.setAttribute("error_messages", errors);
+				page.setAttribute("success_message", success_message);
+			}
 			page.passOffToJsp(req, resp);
 		} catch (NumberFormatException nfe) {
+			log.warning("Could not parse view form id: " + req.getParameter("id"));
 			ErrorServlet.showError(req, resp, 500);
 		}
 	}
