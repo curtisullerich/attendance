@@ -54,7 +54,15 @@ public class Util {
 		}
 
 		try {
-			calendar.set(Calendar.HOUR, Integer.parseInt(hour));
+			int intHour = Integer.parseInt(hour);
+			
+			// Allow for midnight / noon to be specified as 
+			if(intHour == 12)
+			{
+				intHour = 0;
+			}
+			
+			calendar.set(Calendar.HOUR, intHour);
 		} catch (NumberFormatException e) {
 			exp.getErrors().add("Invalid hour, not a number");
 		}
