@@ -204,6 +204,7 @@ public class StudentServlet extends AbstractBaseServlet {
 
 		page.setAttribute("user", currentUser);
 		page.setPageTitle("Student");
+		page.setAttribute("StatusMessage", DataTrain.getAndStartTrain().getAppDataController().get().getStatusMessage());
 
 		page.passOffToJsp(req, resp);
 	}

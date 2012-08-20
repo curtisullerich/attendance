@@ -22,6 +22,8 @@
 
 	<p>Use the navigation options on the left to manage your
 		attendance.</p>
+	<jsp:include page="/WEB-INF/common/status.jsp"/>
+		
 	<jsp:include page="/WEB-INF/template/footer.jsp" />
 </body>
 

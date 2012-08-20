@@ -94,6 +94,8 @@ public class TAServlet extends AbstractBaseServlet {
 				req.getParameter("success_message"));
 
 		page.setPageTitle("Staff");
+		page.setAttribute("StatusMessage", DataTrain.getAndStartTrain().getAppDataController().get().getStatusMessage());
+
 
 		page.passOffToJsp(req, resp);
 	}
