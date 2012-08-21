@@ -18,7 +18,8 @@
 			<dl class="block-layout">
 			<dt><label></label></dt>
 			
-				<dt><label for="StartMonth" class="required">Start Time</label></dt>
+				<dt><label for="StartMonth" class="required">Check in/out time</label></dt>
+				Note that this time is irrelevant if this is not a tardy or early checkout. This field is here so you can change it to a tardy or early checkout if desired.
 				<dd><fmt:formatDate value="${absence.start}" pattern="M/d/yyyy"/>
 					<%//hidden because these should never be changed %>
 					<input size='5' type='hidden' name='StartMonth' min='01' max='12' value='<fmt:formatDate value="${absence.start}" pattern="M"/>'/>
