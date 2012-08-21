@@ -9,7 +9,7 @@
 <fmt:formatDate var="fmtCurrentYear" value="${now}" pattern="yyyy"/>
 
 		<div class="">
-			<table class="gray full-width gray-hover" style="table-layout:fixed;"><!-- white-space:nowrap;overflow:hidden; -->
+			<table class="sortable gray full-width gray-hover" style="table-layout:fixed;"><!-- white-space:nowrap;overflow:hidden; -->
 				<colgroup>
 					<col width="18%" />
 					<col width="32%" />
@@ -20,7 +20,7 @@
 				<tr class="dark-title">
 					<th>Participants</th>
 					<th>Subject</th>
-					<th colspan=2>Latest Message</th>
+					<th class="sorttable_nosort" colspan=2>Latest Message</th>
 				</tr>
 				</thead>
 				<tbody>

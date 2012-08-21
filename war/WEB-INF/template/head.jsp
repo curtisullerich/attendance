@@ -4,6 +4,7 @@
 	
 	<script type="text/javascript" src="/jquery/jquery.min.js"></script>
 	<script type="text/javascript" src="/js/common.js"></script>
+	<script type="text/javascript" src="/js/sorttable.js"></script>
 	
 	<c:choose>
 	<c:when test="${not pagetemplate.mobileSite}">
