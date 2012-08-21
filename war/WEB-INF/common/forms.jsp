@@ -8,7 +8,7 @@
  				<div>
 					<p>Number of Forms Submitted: ${fn:length(forms)}</p>
 					<br/>
-					<table class="gray full-width gray-hover" style="table-layout:fixed;"><!-- white-space:nowrap;overflow:hidden; -->
+					<table class="sortable gray full-width gray-hover" style="table-layout:fixed;"><!-- white-space:nowrap;overflow:hidden; -->
 						<colgroup>
 							<col width="12%" />
 							<col width="7%" />
@@ -23,8 +23,8 @@
 								<th>Type</th>
 								<th>Status</th>
 								<th>About</th>
-								<th></th>
-								<th></th>
+								<th class="sorttable_nosort"></th>
+								<th class="sorttable_nosort"></th>
 							</tr>
 						</thead>
 						<tbody>

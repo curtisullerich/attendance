@@ -85,7 +85,7 @@ table.gray tr:nth-child(odd) td.highlight, table.gray tr:nth-child(even) td.high
 
 	<div>
 	Click a column header to sort!
-	<table id="sortable" class="gray">
+	<table class="sortable gray">
 		<!-- start headers -->
 		<thead>
 			<tr>
@@ -95,7 +95,7 @@ table.gray tr:nth-child(odd) td.highlight, table.gray tr:nth-child(even) td.high
 				<th>University ID</th>
 				<!-- all events. TODO will need to link this -->
 				<c:forEach items="${events}" var="event">
-						<th title="<fmt:formatDate value="${event.date}" pattern="EEEE"/>"><a target="_blank" href="/director/viewevent?id=${event.id }&newindow=true"><c:out value="${event.type}" /><br />
+						<th class="sorttable_nosort" title="<fmt:formatDate value="${event.date}" pattern="EEEE"/>"><a target="_blank" href="/director/viewevent?id=${event.id }&newindow=true"><c:out value="${event.type}" /><br />
 						<fmt:formatDate value="${event.date}" pattern="M/dd/yyyy" /></a></th>
 				</c:forEach>
 				<th>Grade</th>
