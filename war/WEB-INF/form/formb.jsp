@@ -21,6 +21,12 @@
 		<p>First year members are only allowed one conflict.</p>
 		<p>Note: If you have a class that meets multiple times per week (Tuesday and Thursday, for instance)
 		you must submit one form for each day of the week.</p>
+		<p>
+		Helpful hints: The year must be four digits. All fields are required (except "comments"). If your class doesn't have a section, for instance, enter "none."
+		</p>
+		<p>
+		But please remember that nobody can ready your mind, so if you're having a problem, you need to include the error message and what you entered into the offending field(s) so the developers can fix the problem. Thanks!
+		</p>
 		
 		<form method="post" accept-charset="utf-8">
 		
