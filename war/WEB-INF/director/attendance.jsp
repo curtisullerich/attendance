@@ -20,7 +20,8 @@
 	overflow:visible;
 }
 #container div.sidebar {
-	position:absolute;
+	position: fixed;
+	background-color: white;
 }
 #content {
 	width:auto;
