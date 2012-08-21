@@ -194,13 +194,24 @@
 				if (endPM) {
 					endHour += 12;
 				}
+
+				
+				if (startHour % 12 == 0) {
+					startHour -= 12;
+				}
+				
 				//midnight is 0 in 24 hour time
-				if (!startPM && startHour==12) {
-					startHour-=12;
+// 				if (!startPM && startHour==12) {
+// 					startHour-=12;
+// 				}
+// 				if(!endPM && endHour==12) {
+// 					endHour-=12;
+// 				}
+
+				if (endHour %12 == 0) {
+					endHour -= 12;
 				}
-				if(!endPM && endHour==12) {
-					endHour-=12;
-				}
+
 				//check that endtime is after starttime			
 				if (startHour > endHour) {
 					return false;
@@ -238,9 +249,13 @@
 				//convert 12 to 24 hour time
 				} else if (radix == 24) {
 					if (isStartPM){
-						if(startHour != 12)
+						if(startHour != 12) {
 							startHour += 12;
+						}
 					} 
+					if (startHour == 12 && !isStartPM) {
+						startHour = 0;
+					}
 				}
 				// pad for ASCII sorting
 				if(startHour<10)
@@ -281,8 +296,12 @@
 				//convert 12 to 24 hour time
 				} else if (radix == 24) {
 					if (isEndPM) {
-						if(endHour != 12)
+						if(endHour != 12){
 							endHour += 12;
+						}
+					}
+					if (endHour == 12 && !isEndPM) {
+						endHour = 0;
 					}
 				}
 				// pad for ASCII sorting
