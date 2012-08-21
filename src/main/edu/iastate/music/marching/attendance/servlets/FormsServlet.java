@@ -446,7 +446,8 @@ public class FormsServlet extends AbstractBaseServlet {
 			page.setAttribute("types", Absence.Type.values());
 			
 			if (fromTime != null) {
-				Calendar from = Calendar.getInstance();
+				Calendar from = Calendar.getInstance(train.getAppDataController().get()
+						.getTimeZone());
 				from.setTime(fromTime);
 				page.setAttribute("FromHour", from.get(Calendar.HOUR));
 				page.setAttribute("FromMinute", from.get(Calendar.MINUTE));
@@ -454,7 +455,8 @@ public class FormsServlet extends AbstractBaseServlet {
 			}
 
 			if (toTime != null) {
-				Calendar to = Calendar.getInstance();
+				Calendar to = Calendar.getInstance(train.getAppDataController().get()
+						.getTimeZone());
 				to.setTime(toTime);
 				page.setAttribute("ToHour", to.get(Calendar.HOUR));
 				page.setAttribute("ToMinute", to.get(Calendar.MINUTE));
