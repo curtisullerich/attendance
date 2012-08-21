@@ -47,8 +47,7 @@ public class AbsenceController extends AbstractController {
 		Absence absence = ModelFactory.newAbsence(Absence.Type.Tardy, student);
 		absence.setDatetime(time);
 		// Associate with event
-		if(!tryLink(absence))
-		{
+		if (!tryLink(absence)) {
 			log.log(Level.WARNING, "Orphaned tardy being created at time: "
 					+ time);
 		}
@@ -114,84 +113,54 @@ public class AbsenceController extends AbstractController {
 
 		switch (current.getType()) {
 		case Absence:
-			// Anything beats an absence
-			return false;
+			switch (contester.getType()) {
+			case Absence:
+				return false;
+			case Tardy:
+				return false;
+			case EarlyCheckOut:
+				// No conflict
+				return true;
+			}
+			break;
 		case Tardy:
 			switch (contester.getType()) {
 			case Absence:
-				// Absence always loses, unless it is approved
-				if (contester.getStatus() != Absence.Status.Approved) {
-					remove(contester);
-					return true;
-				} else {
-					return false;
-				}
+				// Absence loses to tardy
+				remove(contester);
+				return true;
 			case Tardy:
-				// Later tardy beats an earlier one
-				if (!current.getDatetime().before(contester.getDatetime())) {
-					if (contester.getStatus() != Absence.Status.Approved) {
+				if (contester.getDatetime().equals(current.getDatetime())) {
+					if (contester.getStatus() == Absence.Status.Approved) {
+						return false;
+					} else {
 						remove(contester);
 						return true;
-					} else {
-						return false;
 					}
-				} else if (contester.getStatus() != Absence.Status.Approved) {
-					return true;
-				} else {
-					return false;
 				}
+				// both allowed
+				return true;
 			case EarlyCheckOut:
-				// if check IN time is after check OUT time,
-				// you're going to have a bad time (completely absent)
-				// Otherwise no conflict
-				if (current.getDatetime().after(contester.getDatetime())) {
-					// Create a new absence
-					current.setType(Absence.Type.Absence);
-					current.setStart(current.getEvent().getStart());
-					current.setEnd(current.getEvent().getEnd());
-					// remove the old EarlyCheckOut
-					remove(contester);
-				}
+				// No conflict
 				return true;
 			}
 			break;
 		case EarlyCheckOut:
 			switch (contester.getType()) {
 			case Absence:
-				// Absence always loses, unless the absence is approved
-				if (contester.getStatus() != Absence.Status.Approved) {
-					remove(contester);
-					return true;
-				} else {
-					return false;
-				}
-			case Tardy:
-				// if check IN time is after check OUT time,
-				// you're going to have a bad time (completely absent)
-				// Otherwise no conflict
-				if (contester.getDatetime().after(current.getDatetime())) {
-					// Create a new absence
-					current.setType(Absence.Type.Absence);
-					current.setStart(current.getEvent().getStart());
-					current.setEnd(current.getEvent().getEnd());
-					// remove the old Tardy
-					remove(contester);
-				}
-				// else if (contester.getStatus() == Absence.Status.Approved) {
-				// return false;
-				// }
-				// else {
 				return true;
-				// }
+			case Tardy:
+				return true;
 			case EarlyCheckOut:
-				// Earlier EarlyCheckOut beats a later one
-				if (current.getStart().before(contester.getStart())) {
-					remove(contester);
-					return true;
-				} else {
-					// We aren't earlier, contester stays
-					return false;
+				if (contester.getDatetime().equals(current.getDatetime())) {
+					if (contester.getStatus() == Absence.Status.Approved) {
+						return false;
+					} else {
+						remove(contester);
+						return true;
+					}
 				}
+				return true;
 			}
 			break;
 		}
@@ -231,8 +200,7 @@ public class AbsenceController extends AbstractController {
 		absence.setStatus(Absence.Status.Pending);
 
 		// Associate with event
-		if(!tryLink(absence))
-		{
+		if (!tryLink(absence)) {
 			log.log(Level.WARNING,
 					"Orphaned absence being created for timespan: " + start
 							+ " to " + end);
@@ -284,8 +252,7 @@ public class AbsenceController extends AbstractController {
 		absence.setStatus(Absence.Status.Pending);
 
 		// Associate with event
-		if(!tryLink(absence))
-		{
+		if (!tryLink(absence)) {
 			log.log(Level.WARNING,
 					"Orphaned early checkout being created for time: " + time);
 		}
@@ -643,15 +610,14 @@ public class AbsenceController extends AbstractController {
 			return resolvedAbsence;
 		}
 	}
-	
+
 	private boolean tryLink(Absence absence) {
 		Date time = absence.getDatetime();
 		Date start = absence.getStart();
 		Date end = absence.getEnd();
 		List<Event> events;
-		
-		switch(absence.getType())
-		{
+
+		switch (absence.getType()) {
 		case Absence:
 			// Associate with event
 			// else the absence is orphaned

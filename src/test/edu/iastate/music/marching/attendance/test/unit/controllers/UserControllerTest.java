@@ -483,7 +483,7 @@ public class UserControllerTest extends AbstractTest {
 
 		Event e6 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
 				end.getTime());
-		assertEquals(Absence.Type.Absence, a7.getType());
+		assertEquals(Absence.Type.EarlyCheckOut, a7.getType());
 
 		// So, at this point, the logic in the event creation has automatically
 		// linked the absence to the event. Setting the event is redundant.

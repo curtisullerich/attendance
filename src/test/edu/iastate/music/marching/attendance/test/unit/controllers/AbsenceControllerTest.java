@@ -468,8 +468,7 @@ public class AbsenceControllerTest extends AbstractTest {
 	public void testAbsenceVsEarlySameEvent() {
 		/*
 		 * If we have an absence and an early checkout added during the same
-		 * interval, the absence should be removed and the early checkout should
-		 * remain
+		 * interval, they should both remain
 		 */
 		DataTrain train = getDataTrain();
 
@@ -492,11 +491,10 @@ public class AbsenceControllerTest extends AbstractTest {
 		List<Absence> studentAbsences = train.getAbsenceController().get(
 				student);
 
-		assertEquals(1, studentAbsences.size());
+		assertEquals(2, studentAbsences.size());
 		Absence absence = studentAbsences.get(0);
 
-		assertTrue(absence.getStart().equals(early));
-		assertTrue(absence.getType() == Absence.Type.EarlyCheckOut);
+		assertTrue(absence.getType() == Absence.Type.Absence);
 	}
 
 	@Test
@@ -577,9 +575,8 @@ public class AbsenceControllerTest extends AbstractTest {
 	@Test
 	public void testTardyVsTardySameEvent() {
 		/*
-		 * If we have two tardies added for the same event we need to take the
-		 * later tardy. This method checks adding the earlier tardy before the
-		 * later tardy and vice versa
+		 * If we have two tardies added for the same event they should both
+		 * remain
 		 */
 		DataTrain train = getDataTrain();
 
@@ -604,10 +601,9 @@ public class AbsenceControllerTest extends AbstractTest {
 		List<Absence> studentAbsences = train.getAbsenceController().get(
 				student1);
 
-		assertEquals(1, studentAbsences.size());
+		assertEquals(2, studentAbsences.size());
 		Absence absence = studentAbsences.get(0);
 
-		assertTrue(absence.getStart().equals(tardyLate));
 		assertTrue(absence.getType() == Absence.Type.Tardy);
 
 		// Adding the late tardy before the early tardy
@@ -617,10 +613,9 @@ public class AbsenceControllerTest extends AbstractTest {
 		List<Absence> student2Absences = train.getAbsenceController().get(
 				student2);
 
-		assertEquals(1, studentAbsences.size());
+		assertEquals(2, studentAbsences.size());
 		Absence absence2 = student2Absences.get(0);
 
-		assertTrue(absence2.getStart().equals(tardyLate));
 		assertTrue(absence2.getType() == Absence.Type.Tardy);
 	}
 
@@ -674,6 +669,8 @@ public class AbsenceControllerTest extends AbstractTest {
 		 * 
 		 * Case 2: do overlap, become an absence a: Adding Tardy first b: Adding
 		 * EarlyCheckout first
+		 * 
+		 * Both should remain in all cases.
 		 */
 
 		DataTrain train = getDataTrain();
@@ -749,12 +746,8 @@ public class AbsenceControllerTest extends AbstractTest {
 		List<Absence> overlapTardyFirstAbsences = train.getAbsenceController()
 				.get(overlapTardyFirst);
 
-		assertEquals(1, overlapTardyFirstAbsences.size());
+		assertEquals(2, overlapTardyFirstAbsences.size());
 		Absence createdAbsence = overlapTardyFirstAbsences.get(0);
-
-		assertTrue(createdAbsence.getType() == Absence.Type.Absence);
-		assertEquals(eventStart, createdAbsence.getStart());
-		assertEquals(eventEnd, createdAbsence.getEnd());
 
 		// Case 2.b
 		train.getAbsenceController().createOrUpdateEarlyCheckout(
@@ -765,12 +758,9 @@ public class AbsenceControllerTest extends AbstractTest {
 		List<Absence> overlapEarlyFirstAbsences = train.getAbsenceController()
 				.get(overlapEarlyFirst);
 
-		assertEquals(1, overlapEarlyFirstAbsences.size());
+		assertEquals(2, overlapEarlyFirstAbsences.size());
 		createdAbsence = overlapEarlyFirstAbsences.get(0);
 
-		assertTrue(createdAbsence.getType() == Absence.Type.Absence);
-		assertEquals(eventStart, createdAbsence.getStart());
-		assertEquals(eventEnd, createdAbsence.getEnd());
 	}
 
 	@Test
@@ -778,6 +768,7 @@ public class AbsenceControllerTest extends AbstractTest {
 		/*
 		 * Same as the testAbsenceVsEarly method only this adds the Early
 		 * checkout before the absence
+		 * 
 		 */
 		DataTrain train = getDataTrain();
 
@@ -800,20 +791,15 @@ public class AbsenceControllerTest extends AbstractTest {
 		List<Absence> studentAbsences = train.getAbsenceController().get(
 				student);
 
-		assertEquals(1, studentAbsences.size());
+		assertEquals(2, studentAbsences.size());
 		Absence absence = studentAbsences.get(0);
-
-		assertTrue(absence.getStart().equals(early));
-		assertTrue(absence.getType() == Absence.Type.EarlyCheckOut);
 	}
 
 	@Test
 	public void testEarlyVsEarlySameEvent() {
 		/*
 		 * If we have two early checkouts added for the same time zone we need
-		 * to take the earlier of the two and remove the later. This method
-		 * checks adding the later checkout before the earlier checkout and vice
-		 * versa
+		 * to make sure that both remain.
 		 */
 
 		DataTrain train = getDataTrain();
@@ -841,10 +827,10 @@ public class AbsenceControllerTest extends AbstractTest {
 		List<Absence> studentAbsences = train.getAbsenceController().get(
 				student1);
 
-		assertEquals(1, studentAbsences.size());
+		assertEquals(2, studentAbsences.size());
 		Absence absence = studentAbsences.get(0);
 
-		assertTrue(absence.getStart().equals(earlyEarlier));
+		assertTrue(absence.getStart().equals(early));
 		assertTrue(absence.getType() == Absence.Type.EarlyCheckOut);
 
 		// Adding the earlier early before the early
@@ -856,7 +842,7 @@ public class AbsenceControllerTest extends AbstractTest {
 		List<Absence> student2Absences = train.getAbsenceController().get(
 				student2);
 
-		assertEquals(1, studentAbsences.size());
+		assertEquals(2, studentAbsences.size());
 		Absence absence2 = student2Absences.get(0);
 
 		assertTrue(absence2.getStart().equals(earlyEarlier));
@@ -966,7 +952,7 @@ public class AbsenceControllerTest extends AbstractTest {
 	}
 
 	@Test
-	public void testApprovedAbsenceDominatesTardy() {
+	public void testTardyDominatesApprovedAbsence() {
 		DataTrain train = getDataTrain();
 
 		UserController uc = train.getUsersController();
@@ -991,14 +977,13 @@ public class AbsenceControllerTest extends AbstractTest {
 		assertEquals(1, studentAbs.size());
 
 		Absence absence = studentAbs.get(0);
-		assertTrue(absence.getStart().equals(start));
-		assertTrue(absence.getEnd().equals(end));
-		assertTrue(absence.getType() == Absence.Type.Absence);
-		assertTrue(absence.getStatus() == Absence.Status.Approved);
+		assertTrue(absence.getStart().equals(tardyStart));
+		assertTrue(absence.getType() == Absence.Type.Tardy);
+		assertTrue(absence.getStatus() == Absence.Status.Pending);
 	}
 
 	@Test
-	public void testApprovedAbsenceDominatesEarly() {
+	public void testApprovedAbsenceVersusEarly() {
 		DataTrain train = getDataTrain();
 
 		UserController uc = train.getUsersController();
@@ -1021,13 +1006,9 @@ public class AbsenceControllerTest extends AbstractTest {
 				tardyStart);
 
 		List<Absence> studentAbs = train.getAbsenceController().get(student);
-		assertEquals(1, studentAbs.size());
+		assertEquals(2, studentAbs.size());
 
 		Absence absence = studentAbs.get(0);
-		assertTrue(absence.getStart().equals(start));
-		assertTrue(absence.getEnd().equals(end));
-		assertTrue(absence.getType() == Absence.Type.Absence);
-		assertTrue(absence.getStatus() == Absence.Status.Approved);
 	}
 
 	@Test
@@ -1114,7 +1095,7 @@ public class AbsenceControllerTest extends AbstractTest {
 	}
 
 	@Test
-	public void testApprovedTardyDominatesTardyDiffTime() {
+	public void testApprovedTardyVersusTardyDiffTime() {
 		DataTrain train = getDataTrain();
 
 		UserController uc = train.getUsersController();
@@ -1144,7 +1125,7 @@ public class AbsenceControllerTest extends AbstractTest {
 		List<Absence> studentAbsences = ac.get(student1);
 
 		// Should be the approved tardy values
-		assertEquals(1, studentAbsences.size());
+		assertEquals(2, studentAbsences.size());
 		Absence absence = studentAbsences.get(0);
 
 		assertTrue(absence.getStart().equals(tardy));
@@ -1160,12 +1141,7 @@ public class AbsenceControllerTest extends AbstractTest {
 		List<Absence> student2Absences = ac.get(student2);
 
 		// Should still be the approved values
-		assertEquals(1, student2Absences.size());
-		Absence absence2 = student2Absences.get(0);
-
-		assertTrue(absence2.getStart().equals(tardyLate));
-		assertTrue(absence2.getStatus() == Absence.Status.Approved);
-		assertTrue(absence2.getType() == Absence.Type.Tardy);
+		assertEquals(2, student2Absences.size());
 	}
 
 	@Test
@@ -1176,6 +1152,8 @@ public class AbsenceControllerTest extends AbstractTest {
 		 * 
 		 * Case 2: do overlap, become an absence a: Adding Tardy first b: Adding
 		 * EarlyCheckout first
+		 * 
+		 * --revision. both should remain in all cases.
 		 */
 
 		DataTrain train = getDataTrain();
@@ -1257,13 +1235,8 @@ public class AbsenceControllerTest extends AbstractTest {
 		List<Absence> overlapTardyFirstAbsences = train.getAbsenceController()
 				.get(overlapTardyFirst);
 
-		assertEquals(1, overlapTardyFirstAbsences.size());
+		assertEquals(2, overlapTardyFirstAbsences.size());
 		Absence createdAbsence = overlapTardyFirstAbsences.get(0);
-
-		assertTrue(createdAbsence.getType() == Absence.Type.Absence);
-		assertTrue(createdAbsence.getStatus() == Absence.Status.Pending);
-		assertEquals(eventStart, createdAbsence.getStart());
-		assertEquals(eventEnd, createdAbsence.getEnd());
 
 		// Case 2.b
 		ac.createOrUpdateEarlyCheckout(overlapEarlyFirst, earlyOverlap);
@@ -1272,17 +1245,11 @@ public class AbsenceControllerTest extends AbstractTest {
 		List<Absence> overlapEarlyFirstAbsences = train.getAbsenceController()
 				.get(overlapEarlyFirst);
 
-		assertEquals(1, overlapEarlyFirstAbsences.size());
-		createdAbsence = overlapEarlyFirstAbsences.get(0);
-
-		assertTrue(createdAbsence.getType() == Absence.Type.Absence);
-		assertTrue(createdAbsence.getStatus() == Absence.Status.Pending);
-		assertEquals(eventStart, createdAbsence.getStart());
-		assertEquals(eventEnd, createdAbsence.getEnd());
+		assertEquals(2, overlapEarlyFirstAbsences.size());
 	}
 
 	@Test
-	public void testApprovedEarlyDominatesEarly() {
+	public void testApprovedEarlyVersusEarly() {
 		DataTrain train = getDataTrain();
 
 		UserController uc = train.getUsersController();
@@ -1305,11 +1272,7 @@ public class AbsenceControllerTest extends AbstractTest {
 
 		List<Absence> studentAbs = train.getAbsenceController().get(student);
 		assertEquals(1, studentAbs.size());
-
-		Absence absence = studentAbs.get(0);
-		assertTrue(absence.getStart().equals(checkout));
-		assertTrue(absence.getType() == Absence.Type.EarlyCheckOut);
-		assertTrue(absence.getStatus() == Absence.Status.Approved);
+		assertEquals(Absence.Status.Approved, studentAbs.get(0).getStatus());
 	}
 
 	/**
