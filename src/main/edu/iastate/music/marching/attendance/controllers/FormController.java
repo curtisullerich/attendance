@@ -449,7 +449,7 @@ public class FormController extends AbstractController {
 			String details) {
 		TimeZone timezone = this.dataTrain.getAppDataController().get()
 				.getTimeZone();
-		
+
 		Calendar calendar = Calendar.getInstance(timezone);
 		calendar.setTime(date);
 
@@ -523,12 +523,12 @@ public class FormController extends AbstractController {
 				.append(form.getDetails())
 				.append("\r\n\r\n")
 				.append("<br/><br/>")
-				.append("<a href=\"www.isucfvmb-attendance.appspot.com/public/verify?s=a&i="
-						+ form.getHashedId() + "\">Click here to approve.</a>")
+				.append("<a href='http://www.isucfvmb-attendance.appspot.com/public/verify?s=a&i="
+						+ form.getHashedId() + "'>Click here to approve</a>.")
 				.append("\r\n\r\n")
 				.append("<br/><br/>")
-				.append("<a href=\"www.isucfvmb-attendance.appspot.com/public/verify?s=d&i="
-						+ form.getHashedId() + "\">Click here to deny.</a>")
+				.append("<a href='http://www.isucfvmb-attendance.appspot.com/public/verify?s=d&i="
+						+ form.getHashedId() + "'>Click here to deny</a>.")
 				.append("\r\n\r\n")
 				.append("<br/><br/>")
 				.append("Thanks!")

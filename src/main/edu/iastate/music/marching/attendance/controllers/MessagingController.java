@@ -24,6 +24,20 @@ public class MessagingController extends AbstractController {
 	public MessagingController(DataTrain dataTrain) {
 		this.train = dataTrain;
 	}
+	
+	public boolean isPartOfConversation(MessageThread thread, User currentUser) {
+		if (currentUser == null)
+			return false;
+		boolean ret = false;
+		for (User participant : thread.getParticipants()) {
+			if (participant.equals(currentUser)) {
+				ret = true;
+			}
+		}
+		return ret;
+	}
+
+
 
 	/**
 	 * Note that this does not store the message thread!

@@ -18,6 +18,7 @@ import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.FormController;
 import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.Form;
+import edu.iastate.music.marching.attendance.model.MessageThread;
 import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.util.PageBuilder;
 import edu.iastate.music.marching.attendance.util.Util;
@@ -29,7 +30,7 @@ public class FormsServlet extends AbstractBaseServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = -4738485557840953301L;
-	
+
 	private static final Logger log = Logger.getLogger(FormsServlet.class
 			.getName());
 
@@ -101,11 +102,10 @@ public class FormsServlet extends AbstractBaseServlet {
 		try {
 			long id = Long.parseLong(req.getParameter("id"));
 			form = train.getFormsController().get(id);
-			
+
 			PageBuilder page = new PageBuilder(Page.view, SERVLET_PATH);
-			
-			if(form == null)
-			{
+
+			if (form == null) {
 				log.warning("Could not find form number " + id + ".");
 				errors.add("Could not find form number " + id + ".");
 				page.setAttribute("error_messages", errors);
@@ -113,13 +113,36 @@ public class FormsServlet extends AbstractBaseServlet {
 				page.setPageTitle("Form " + form.getType());
 				page.setAttribute("form", form);
 				page.setAttribute("day", form.getDayAsString());
-				page.setAttribute("isDirector", currentUser.getType().isDirector());
+				page.setAttribute("isDirector", currentUser.getType()
+						.isDirector());
+
+				// Handle exceptions maybe for invalid thread id's?
+				MessageThread thread = form.getMessageThread();
+				if (thread != null) {
+					User current = train.getAuthController().getCurrentUser(
+							req.getSession());
+					if (current.getType() == User.Type.Director
+							|| thread != null
+							&& train.getMessagingController()
+									.isPartOfConversation(thread, current)) {
+
+						page.setAttribute("thread", thread);
+
+					} else {
+						errors.add("Invalid message thread.");
+					}
+
+				} else {
+					errors.add("Form's message thread wasn't there.");
+				}
+
 				page.setAttribute("error_messages", errors);
 				page.setAttribute("success_message", success_message);
 			}
 			page.passOffToJsp(req, resp);
 		} catch (NumberFormatException nfe) {
-			log.warning("Could not parse view form id: " + req.getParameter("id"));
+			log.warning("Could not parse view form id: "
+					+ req.getParameter("id"));
 			ErrorServlet.showError(req, resp, 500);
 		}
 	}
@@ -213,7 +236,13 @@ public class FormsServlet extends AbstractBaseServlet {
 			fc.update(f);
 			success_message = "Successfully updated form.";
 		}
-
+		
+		if (validForm) {
+			//see if we need to handle any thread stuff
+			MessagingServlet ms = new MessagingServlet();
+			ms.handleThread(req, resp);
+		}
+		
 		viewForm(req, resp, errors, success_message);
 
 	}
@@ -346,14 +375,14 @@ public class FormsServlet extends AbstractBaseServlet {
 			}
 
 			// this is one-based! Starting on Sunday.
-			
+
 			try {
-			day = Integer.parseInt(req.getParameter("DayOfWeek"));
-			
+				day = Integer.parseInt(req.getParameter("DayOfWeek"));
+
 			} catch (NumberFormatException nfe) {
 				errors.add("Weekday was invalid.");
 			}
-			
+
 			if (day < 1 || day > 7) {
 				errors.add("Value of " + day + " for day was not valid.");
 			}
@@ -444,23 +473,25 @@ public class FormsServlet extends AbstractBaseServlet {
 			page.setAttribute("MinutesToOrFrom", minutesToOrFrom);
 			page.setAttribute("Type", absenceType);
 			page.setAttribute("types", Absence.Type.values());
-			
+
 			if (fromTime != null) {
-				Calendar from = Calendar.getInstance(train.getAppDataController().get()
-						.getTimeZone());
+				Calendar from = Calendar.getInstance(train
+						.getAppDataController().get().getTimeZone());
 				from.setTime(fromTime);
 				page.setAttribute("FromHour", from.get(Calendar.HOUR));
 				page.setAttribute("FromMinute", from.get(Calendar.MINUTE));
-				page.setAttribute("FromAMPM", from.get(Calendar.AM_PM) == 0 ? "AM" : "PM");
+				page.setAttribute("FromAMPM",
+						from.get(Calendar.AM_PM) == 0 ? "AM" : "PM");
 			}
 
 			if (toTime != null) {
-				Calendar to = Calendar.getInstance(train.getAppDataController().get()
-						.getTimeZone());
+				Calendar to = Calendar.getInstance(train.getAppDataController()
+						.get().getTimeZone());
 				to.setTime(toTime);
 				page.setAttribute("ToHour", to.get(Calendar.HOUR));
 				page.setAttribute("ToMinute", to.get(Calendar.MINUTE));
-				page.setAttribute("ToAMPM", to.get(Calendar.AM_PM) == 0 ? "AM" : "PM");
+				page.setAttribute("ToAMPM", to.get(Calendar.AM_PM) == 0 ? "AM"
+						: "PM");
 			}
 
 			page.passOffToJsp(req, resp);

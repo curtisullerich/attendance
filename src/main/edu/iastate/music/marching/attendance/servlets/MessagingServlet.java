@@ -2,7 +2,6 @@ package edu.iastate.music.marching.attendance.servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -10,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.iastate.music.marching.attendance.controllers.AuthController;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.MessagingController;
 import edu.iastate.music.marching.attendance.model.MessageThread;
@@ -26,7 +26,7 @@ public class MessagingServlet extends AbstractBaseServlet {
 	private static final String SERVLET_JSP_PATH = "messaging";
 
 	private enum Page {
-		index, viewthread;
+		index, viewthread, handle;
 	}
 
 	@Override
@@ -51,11 +51,51 @@ public class MessagingServlet extends AbstractBaseServlet {
 		case index:
 			showIndex(req, resp);
 			break;
-		case viewthread:
-			showThread(req, resp);
-			break;
+		 case viewthread:
+			 showThread(req, resp);
+			 break;
 		default:
 			ErrorServlet.showError(req, resp, 404);
+		}
+	}
+
+	private void showThread(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+		DataTrain train = DataTrain.getAndStartTrain();
+		MessagingController mc = train.getMessagingController();
+		
+		String sid = req.getParameter("id");
+		long id = -1;
+		if (sid != null && !sid.equals("")) {
+			try {
+				 id = Long.parseLong(sid);
+			} catch (NumberFormatException nfe) {
+				//error
+			}
+		} else {
+			//error
+		}
+		
+		AuthController ac = train.getAuthController();
+		User current = ac.getCurrentUser(req.getSession());
+		
+		MessageThread mt = mc.get(id);
+		if (mt == null) {
+			//error
+		} else {
+			if (mt.getAbsenceParent() != null) {
+				if (current.getType() == User.Type.Director) {
+					resp.sendRedirect("/director/viewabsence?absenceid=" + mt.getAbsenceParent().getId());
+				} else {
+					resp.sendRedirect("/student/viewabsence?absenceid=" + mt.getAbsenceParent().getId());
+				}
+			} 
+			if (mt.getFormParent() != null) {
+				if (current.getType() == User.Type.Director) {
+					resp.sendRedirect("/director/forms/view?id=" + mt.getFormParent().getId());
+				} else {
+					resp.sendRedirect("/student/forms/view?id=" + mt.getFormParent().getId());
+				}
+			}
 		}
 	}
 
@@ -77,7 +117,7 @@ public class MessagingServlet extends AbstractBaseServlet {
 			ErrorServlet.showError(req, resp, 404);
 		else
 			switch (page) {
-			case viewthread:
+			case handle:
 				handleThread(req, resp);
 				break;
 			default:
@@ -85,7 +125,7 @@ public class MessagingServlet extends AbstractBaseServlet {
 			}
 	}
 
-	private void handleThread(HttpServletRequest req, HttpServletResponse resp)
+	public void handleThread(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		// there are two possibilities, so figure
 		// out which button was pressed and handle it
@@ -95,9 +135,13 @@ public class MessagingServlet extends AbstractBaseServlet {
 		long longid = Long.parseLong(id);
 		DataTrain train = DataTrain.getAndStartTrain();
 
+		MessagingController mc = train.getMessagingController();
+		MessageThread mt = mc.get(longid);
+
+		User sender = train.getAuthController()
+				.getCurrentUser(req.getSession());
+
 		if (resolved != null && !resolved.equals("")) {// resolve or unresolve
-			MessagingController mc = train.getMessagingController();
-			MessageThread mt = mc.get(longid);
 
 			if (resolved.equals("false")) {
 				mt.setResolved(true);
@@ -108,55 +152,62 @@ public class MessagingServlet extends AbstractBaseServlet {
 			} else {
 			}
 		} else if (message != null && !message.equals("")) {// add a message
-			MessagingController mc = train.getMessagingController();
-			MessageThread mt = mc.get(longid);
-			User sender = train.getAuthController().getCurrentUser(
-					req.getSession());
+
 			mc.addMessage(mt, sender, message);
 
 		} else {
 		}
-		showThread(req, resp, longid, train);
-	}
 
-//	private void postMessageThread(HttpServletRequest req,
-//			HttpServletResponse resp) throws ServletException, IOException {
-//		long threadId = Long.parseLong(req.getParameter("Id"));
-//		String message = req.getParameter("Message");
-//		
-//		// TODO https://github.com/curtisullerich/attendance/issues/119
-//		//sanitize message?
-//		
-//		DataTrain train = DataTrain.getAndStartTrain();
-//
-//		//Handle exceptions maybe for invalid thread id's? -Didn't do because this is unused
-//		MessageThread thread = train.getMessagingController().get(threadId);
-//
-//		//Verify currently logged in user is a participant in the
-//		// conversation, or is a director
-//		if (isPartOfConversation(thread, train.getAuthController().getCurrentUser(req.getSession()))) {
-//			train.getMessagingController().addMessage(thread, train.getAuthController().getCurrentUser(req.getSession()), message);
-//			showThread(req, resp, threadId, train);
-//      }
-//	}
-
-	private boolean isPartOfConversation(MessageThread thread, User currentUser) {
-		if (currentUser == null)
-			return false;
-		boolean ret = false;
-		for (User participant : thread.getParticipants()) {
-			if (participant.equals(currentUser)) {
-				ret = true;
+		if (mt != null) {
+			if (mt.getFormParent() != null) {
+				if (sender.getType() == User.Type.Director) {
+					resp.sendRedirect("/director/form/view");
+				} else {
+					resp.sendRedirect("/student/form/view");
+				}
+			} else if (mt.getAbsenceParent() != null) {
+				if (sender.getType() == User.Type.Director) {
+					resp.sendRedirect("/director/viewabsence");
+				} else {
+					resp.sendRedirect("/student/viewabsence");
+				}
 			}
+		} else {
+			ErrorServlet.showError(req, resp, 404);
 		}
-		return ret;
+
+		// showThread(req, resp, longid, train);
 	}
+
+	// private void postMessageThread(HttpServletRequest req,
+	// HttpServletResponse resp) throws ServletException, IOException {
+	// long threadId = Long.parseLong(req.getParameter("Id"));
+	// String message = req.getParameter("Message");
+	//
+	// // TODO https://github.com/curtisullerich/attendance/issues/119
+	// //sanitize message?
+	//
+	// DataTrain train = DataTrain.getAndStartTrain();
+	//
+	// //Handle exceptions maybe for invalid thread id's? -Didn't do because
+	// this is unused
+	// MessageThread thread = train.getMessagingController().get(threadId);
+	//
+	// //Verify currently logged in user is a participant in the
+	// // conversation, or is a director
+	// if (isPartOfConversation(thread,
+	// train.getAuthController().getCurrentUser(req.getSession()))) {
+	// train.getMessagingController().addMessage(thread,
+	// train.getAuthController().getCurrentUser(req.getSession()), message);
+	// showThread(req, resp, threadId, train);
+	// }
+	// }
 
 	private void showIndex(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		DataTrain train = DataTrain.getAndStartTrain();
 
-		//Handle exceptions maybe for invalid thread id's?
+		// Handle exceptions maybe for invalid thread id's?
 		List<MessageThread> resolved;
 		List<MessageThread> unresolved;
 		if (train.getAuthController().getCurrentUser(req.getSession())
@@ -181,13 +232,15 @@ public class MessagingServlet extends AbstractBaseServlet {
 			List<MessageThread> tempUnresolved = new ArrayList<MessageThread>();
 
 			for (MessageThread thread : resolved) {
-				if (isPartOfConversation(thread, current)) {
+				if (train.getMessagingController().isPartOfConversation(thread,
+						current)) {
 					tempResolved.add(thread);
 				}
 			}
 
 			for (MessageThread thread : unresolved) {
-				if (isPartOfConversation(thread, current)) {
+				if (train.getMessagingController().isPartOfConversation(thread,
+						current)) {
 					tempUnresolved.add(thread);
 				}
 			}
@@ -222,39 +275,17 @@ public class MessagingServlet extends AbstractBaseServlet {
 		builder.passOffToJsp(req, resp);
 	}
 
-	private void showThread(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
+	// private void showThread(HttpServletRequest req, HttpServletResponse resp)
+	// throws ServletException, IOException {
+	//
+	// long threadId = Long.parseLong(req.getParameter("id"));
+	// showThread(req, resp, threadId, DataTrain.getAndStartTrain());
+	// }
 
-		long threadId = Long.parseLong(req.getParameter("id"));
-		showThread(req, resp, threadId, DataTrain.getAndStartTrain());
-	}
-
-	private void showThread(HttpServletRequest req, HttpServletResponse resp,
-			long threadId, DataTrain train) throws ServletException,
-			IOException {
-
-		//Handle exceptions maybe for invalid thread id's?
-		MessageThread thread = train.getMessagingController().get(threadId);
-
-		// Verify currently logged in user is a participant in the
-		// conversation, or is a director
-		User current = train.getAuthController().getCurrentUser(req.getSession());
-
-		if (current.getType() == User.Type.Director
-				|| thread != null && isPartOfConversation(thread, current)) {
-			PageBuilder builder = new PageBuilder(Page.viewthread,
-					SERVLET_JSP_PATH);
-
-			builder.setAttribute("thread", thread);
-
-			builder.passOffToJsp(req, resp);
-		} else {
-			PageBuilder builder = new PageBuilder(Page.index, SERVLET_JSP_PATH);
-			
-			builder.setAttribute("error_messages", Arrays.asList("Invalid message thread."));
-			builder.passOffToJsp(req, resp);
-		}
-	}
+	// private void showThread(HttpServletRequest req, HttpServletResponse resp,
+	// long threadId, DataTrain train) throws ServletException,
+	// IOException {
+	// }
 
 	/**
 	 * This servlet can be used for multiple user types, this grabs the type of
