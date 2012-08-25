@@ -84,16 +84,16 @@ public class MessagingServlet extends AbstractBaseServlet {
 		} else {
 			if (mt.getAbsenceParent() != null) {
 				if (current.getType() == User.Type.Director) {
-					resp.sendRedirect("/director/viewabsence?absenceid=" + mt.getAbsenceParent().getId());
+					resp.sendRedirect("/director/viewabsence?absenceid=" + mt.getAbsenceParent().getId() + "#messages");
 				} else {
-					resp.sendRedirect("/student/viewabsence?absenceid=" + mt.getAbsenceParent().getId());
+					resp.sendRedirect("/student/viewabsence?absenceid=" + mt.getAbsenceParent().getId() + "#messages");
 				}
 			} 
 			if (mt.getFormParent() != null) {
 				if (current.getType() == User.Type.Director) {
-					resp.sendRedirect("/director/forms/view?id=" + mt.getFormParent().getId());
+					resp.sendRedirect("/director/forms/view?id=" + mt.getFormParent().getId() + "#messages");
 				} else {
-					resp.sendRedirect("/student/forms/view?id=" + mt.getFormParent().getId());
+					resp.sendRedirect("/student/forms/view?id=" + mt.getFormParent().getId() + "#messages");
 				}
 			}
 		}

@@ -94,7 +94,7 @@
 </script>
 
 
-		<h2>Message Thread</h2>
+		<h2>Message Thread</h2><a name="messages"></a>
 
 		<div class="gutter" style="padding:0px 20px;">
 			<c:choose>
