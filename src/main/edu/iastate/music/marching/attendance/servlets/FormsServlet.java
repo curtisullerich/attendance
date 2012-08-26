@@ -237,12 +237,6 @@ public class FormsServlet extends AbstractBaseServlet {
 			success_message = "Successfully updated form.";
 		}
 
-		if (validForm) {
-			// see if we need to handle any thread stuff
-			MessagingServlet ms = new MessagingServlet();
-			ms.handleThread(req, resp);
-		}
-
 		viewForm(req, resp, errors, success_message);
 
 	}
@@ -308,7 +302,7 @@ public class FormsServlet extends AbstractBaseServlet {
 
 			String success = SUCCESS_FORMA;
 			if (!Calendar.getInstance(timezone).before(cutoff)) {
-				success = "PLEASE NOTE: This form is late! It has been submitted, but marked as denied. You must add a message to it in order to bring it to the director's attention if you want it to be approved!";
+				success = "PLEASE NOTE: This form was submitted after the deadline, so AttendBot 2.0 marked it as late and denied. The director will see this and choose to approve it or leave it as denied.";
 			}
 
 			String url = getIndexURL() + "?success_message="
@@ -330,7 +324,7 @@ public class FormsServlet extends AbstractBaseServlet {
 			page.setAttribute("Reason", reason);
 			setStartDate(date, page, timezone);
 			if (!Calendar.getInstance(timezone).before(cutoff)) {
-				errors.add("PLEASE NOTE: The deadline for submitting form A has passed. You can still submit one, but it will be automatically marked as denied. If you really have a valid reason for submitting late, then you must add a message to the form AFTER submitting to bring it to the director's attention!");
+				errors.add("PLEASE NOTE: The deadline for submitting form A has passed. You can still submit one, but it will be marked as late by AttendBot 2.0. Be sure to explain your circumstances when you submit.");
 			}
 
 			page.passOffToJsp(req, resp);
@@ -603,7 +597,7 @@ public class FormsServlet extends AbstractBaseServlet {
 
 			String success = SUCCESS_FORMC;
 			if (late) {
-				success = "PLEASE NOTE: This form is late! It has been submitted, but marked as denied. You must add a message to it in order to bring it to the director's attention if you want it to be approved!";
+				success = "PLEASE NOTE: This form C was submitted more than 3 weekdays after the absence in question. AttendBot 2.0 has marked it as denied and late, but a director could still approve it at his or her discretion. You probably want to add a message explaining the circumstances if you didn't do that already.";
 			}
 			String url = getIndexURL() + "?success_message="
 					+ URLEncoder.encode(success, "UTF-8");

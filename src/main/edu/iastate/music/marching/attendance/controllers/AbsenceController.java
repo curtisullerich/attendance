@@ -414,6 +414,8 @@ public class AbsenceController extends AbstractController {
 				dayOfAbsence.set(Calendar.SECOND, 0);
 				dayOfAbsence.set(Calendar.MILLISECOND, 0);
 
+				// take the date from the absence and the time-of-day from the
+				// form
 				Calendar formTimeStart = Calendar.getInstance(timezone);
 				formTimeStart.setTime(absence.getStart());
 				Calendar formstarttmp = Calendar.getInstance(timezone);
@@ -428,6 +430,7 @@ public class AbsenceController extends AbstractController {
 						formstarttmp.get(Calendar.SECOND));
 				formTimeStart.set(Calendar.MILLISECOND,
 						formstarttmp.get(Calendar.MILLISECOND));
+				// to include the buffer
 				formTimeStart.add(Calendar.MINUTE, form.getMinutesToOrFrom()
 						* -1);
 
@@ -443,6 +446,8 @@ public class AbsenceController extends AbstractController {
 					formTimeEnd.setTime(absence.getEnd());
 				}
 
+				// take the date from the absence and the time-of-day from the
+				// form
 				Calendar formendtmp = Calendar.getInstance(timezone);
 				formendtmp.setTime(form.getEnd());
 				formTimeEnd.set(Calendar.HOUR, formendtmp.get(Calendar.HOUR));
@@ -454,6 +459,7 @@ public class AbsenceController extends AbstractController {
 						formendtmp.get(Calendar.SECOND));
 				formTimeEnd.set(Calendar.MILLISECOND,
 						formendtmp.get(Calendar.MILLISECOND));
+				// to include the buffer
 				formTimeEnd.add(Calendar.MINUTE, form.getMinutesToOrFrom());
 
 				Calendar formDateStart = Calendar.getInstance(timezone);
@@ -488,6 +494,21 @@ public class AbsenceController extends AbstractController {
 								&& !formTimeEnd.getTime().before(
 										absence.getEnd())
 								&& form.getAbsenceType() == Absence.Type.Absence) {
+							absence.setStatus(Absence.Status.Approved);
+						} else if (!formTimeEnd.getTime().before(
+								absence.getStart())
+								&& !formTimeStart.getTime().after(
+										absence.getEnd())
+								&& form.getAbsenceType() == Absence.Type.Absence) {
+							// this case is specifically to cover the time when
+							// a class conflict does not actually cover an
+							// entire rehearsal, but it's close enough that
+							// students don't go
+
+							// in prose, this means that if there is any overlap
+							// of the form B start and end (including buffer)
+							// and the rehearsal, then the absence will be
+							// approved
 							absence.setStatus(Absence.Status.Approved);
 						}
 					} else if (absence.getType() == Absence.Type.Tardy) {

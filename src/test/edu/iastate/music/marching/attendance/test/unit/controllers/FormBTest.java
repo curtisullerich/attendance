@@ -1911,7 +1911,7 @@ public class FormBTest extends AbstractTest {
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2012, 7, 20, 17, 50, 0);
 		eventend.set(Calendar.MILLISECOND, 0);
-		
+
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 17, 50, 0);
 		tardytime.set(Calendar.MILLISECOND, 0);
@@ -3894,7 +3894,9 @@ public class FormBTest extends AbstractTest {
 		form.setStatus(Form.Status.Approved);
 		fc.update(form);
 
-		assertEquals(Absence.Status.Pending, a.getStatus());
+		// because we now allow overlaps to approve the absence, this is
+		// approved instead of pending
+		assertEquals(Absence.Status.Approved, a.getStatus());
 	}
 
 	/**
@@ -3984,7 +3986,9 @@ public class FormBTest extends AbstractTest {
 		form.setStatus(Form.Status.Approved);
 		fc.update(form);
 
-		assertEquals(Absence.Status.Pending, a.getStatus());
+		// because we now allow overlaps to approve the absence, this is
+		// approved instead of pending
+		assertEquals(Absence.Status.Approved, a.getStatus());
 	}
 
 	/**
@@ -4074,7 +4078,9 @@ public class FormBTest extends AbstractTest {
 		form.setStatus(Form.Status.Approved);
 		fc.update(form);
 
-		assertEquals(Absence.Status.Pending, a.getStatus());
+		// because we now allow overlaps to approve the absence, this is
+		// approved instead of pending
+		assertEquals(Absence.Status.Approved, a.getStatus());
 	}
 
 	/**
@@ -4213,7 +4219,9 @@ public class FormBTest extends AbstractTest {
 		form.setStatus(Form.Status.Approved);
 		fc.update(form);
 
-		assertEquals(Absence.Status.Pending, a.getStatus());
+		// because we now allow overlaps to approve the absence, this is
+		// approved instead of pending
+		assertEquals(Absence.Status.Approved, a.getStatus());
 	}
 
 	/**
@@ -4305,7 +4313,9 @@ public class FormBTest extends AbstractTest {
 		form.setStatus(Form.Status.Approved);
 		fc.update(form);
 
-		assertEquals(Absence.Status.Pending, a.getStatus());
+		// because we now allow overlaps to approve the absence, this is
+		// approved instead of pending
+		assertEquals(Absence.Status.Approved, a.getStatus());
 	}
 
 	/**
@@ -4397,7 +4407,9 @@ public class FormBTest extends AbstractTest {
 		form.setStatus(Form.Status.Approved);
 		fc.update(form);
 
-		assertEquals(Absence.Status.Pending, a.getStatus());
+		// because we now allow overlaps to approve the absence, this is
+		// approved instead of pending
+		assertEquals(Absence.Status.Approved, a.getStatus());
 	}
 
 	/**
@@ -6877,4 +6889,51 @@ public class FormBTest extends AbstractTest {
 
 		assertEquals(Absence.Status.Denied, a.getStatus());
 	}
+
+	/**
+	 * class times within event
+	 */
+	@Test
+	public void testDeprecatedAbsenceBug() {
+		DataTrain train = getDataTrain();
+
+		UserController uc = train.getUsersController();
+		EventController ec = train.getEventController();
+		AbsenceController ac = train.getAbsenceController();
+		FormController fc = train.getFormsController();
+
+		User student = Users.createStudent(uc, "student1", "123456789", "John",
+				"Cox", 2, "major", User.Section.AltoSax);
+
+		Calendar startdate = Calendar.getInstance();
+		startdate.set(2012, 7, 23, 0, 0, 0);
+		Calendar enddate = Calendar.getInstance();
+		enddate.set(2012, 12, 6, 0, 0, 0);
+		Calendar starttime = Calendar.getInstance();
+		starttime.set(0, 0, 0, 15, 40, 0);
+		Calendar endtime = Calendar.getInstance();
+		endtime.set(0, 0, 0, 17, 30, 0);
+
+		// a normal rehearsal
+		Calendar eventstart = Calendar.getInstance();
+		eventstart.set(2012, 7, 23, 16, 30, 0);
+		Calendar eventend = Calendar.getInstance();
+		eventend.set(2012, 7, 23, 17, 50, 0);
+
+		Form form = fc.createFormB(student, "department", "course", "section",
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.THURSDAY, starttime.getTime(), endtime.getTime(),
+				"details", 15, Absence.Type.Absence);
+
+		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
+				eventend.getTime());
+		Absence a = ac.createOrUpdateAbsence(student, eventstart.getTime(),
+				eventend.getTime());
+
+		form.setStatus(Form.Status.Approved);
+		fc.update(form);
+
+		assertEquals(Absence.Status.Approved, a.getStatus());
+	}
+
 }

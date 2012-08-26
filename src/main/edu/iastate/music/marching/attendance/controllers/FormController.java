@@ -233,10 +233,23 @@ public class FormController extends AbstractController {
 
 		if (late) {
 			form.setStatus(Form.Status.Denied);
+			// Perform store
+			storeForm(form);
+			this.dataTrain
+					.getMessagingController()
+					.addMessage(
+							form.getMessageThread(),
+							form.getStudent(),
+							"This message has been added for "
+									+ form.getStudent().getFirstName()
+									+ " by AttendBot 2.0. "
+									+ form.getStudent().getFirstName()
+									+ " submitted this form after the deadline had already passed "
+									+ "but would like you to consider it anyway. AttendBot marked "
+									+ "this form as denied, but a Director may approve it.");
+		} else {
+			storeForm(form);
 		}
-		
-		// Perform store
-		storeForm(form);
 
 		return form;
 		// return formACHelper(student, date, reason, Form.Type.A);
@@ -436,6 +449,18 @@ public class FormController extends AbstractController {
 		if (late) {
 			form.setStatus(Form.Status.Denied);
 			storeForm(form);
+			this.dataTrain
+					.getMessagingController()
+					.addMessage(
+							form.getMessageThread(),
+							form.getStudent(),
+							"This message has been added for "
+									+ form.getStudent().getFirstName()
+									+ " by AttendBot 2.0. "
+									+ form.getStudent().getFirstName()
+									+ " submitted this form after the deadline had already passed "
+									+ "but would like you to consider it anyway. AttendBot marked "
+									+ "this form as denied, but a Director may approve it.");
 			exp.getErrors()
 					.add("It's past the deadline for submitting this Form C. This form has been submitted, but marked as denied. If you believe you have a valid excuse for late submission, add a message to this form in order to bring it to the director's attention.");
 		} else {
