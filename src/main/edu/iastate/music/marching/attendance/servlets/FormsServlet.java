@@ -236,13 +236,13 @@ public class FormsServlet extends AbstractBaseServlet {
 			fc.update(f);
 			success_message = "Successfully updated form.";
 		}
-		
+
 		if (validForm) {
-			//see if we need to handle any thread stuff
+			// see if we need to handle any thread stuff
 			MessagingServlet ms = new MessagingServlet();
 			ms.handleThread(req, resp);
 		}
-		
+
 		viewForm(req, resp, errors, success_message);
 
 	}
@@ -293,13 +293,28 @@ public class FormsServlet extends AbstractBaseServlet {
 
 			if (form == null) {
 				validForm = false;
-				errors.add("Fix any errors above and try to resubmit. If you're still having issues, submit a bug report using the form at the bottom of the page.");
+				errors.add("--------");
+				errors.add("If any of the errors above are fixable, please address them and try to resubmit. If you're still having issues, submit a bug report using the form at the bottom of the page");
 			}
 		}
+
+		TimeZone timezone = train.getAppDataController().get().getTimeZone();
+
+		Calendar cutoff = Calendar.getInstance(timezone);
+		cutoff.setTime(train.getAppDataController().get()
+				.getFormSubmissionCutoff());
+
 		if (validForm) {
+
+			String success = SUCCESS_FORMA;
+			if (!Calendar.getInstance(timezone).before(cutoff)) {
+				success = "PLEASE NOTE: This form is late! It has been submitted, but marked as denied. You must add a message to it in order to bring it to the director's attention if you want it to be approved!";
+			}
+
 			String url = getIndexURL() + "?success_message="
-					+ URLEncoder.encode(SUCCESS_FORMA, "UTF-8");
+					+ URLEncoder.encode(success, "UTF-8");
 			// url = resp.encodeRedirectURL(url);
+
 			resp.sendRedirect(url);
 		} else {
 			// Show form
@@ -313,8 +328,10 @@ public class FormsServlet extends AbstractBaseServlet {
 					.getFormSubmissionCutoff());
 
 			page.setAttribute("Reason", reason);
-			setStartDate(date, page, train.getAppDataController().get()
-					.getTimeZone());
+			setStartDate(date, page, timezone);
+			if (!Calendar.getInstance(timezone).before(cutoff)) {
+				errors.add("PLEASE NOTE: The deadline for submitting form A has passed. You can still submit one, but it will be automatically marked as denied. If you really have a valid reason for submitting late, then you must add a message to the form AFTER submitting to bring it to the director's attention!");
+			}
 
 			page.passOffToJsp(req, resp);
 		}
@@ -554,7 +571,8 @@ public class FormsServlet extends AbstractBaseServlet {
 				errors.add("The date is invalid.");
 			}
 		}
-
+		FormController fc = train.getFormsController();
+		boolean late = false;
 		if (validForm) {
 			// Store our new form to the data store
 			User student = train.getAuthController().getCurrentUser(
@@ -562,8 +580,7 @@ public class FormsServlet extends AbstractBaseServlet {
 
 			Form form = null;
 			try {
-				form = train.getFormsController().createFormC(student, date,
-						type, reason);
+				form = fc.createFormC(student, date, type, reason);
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add(e.getMessage());
@@ -572,11 +589,24 @@ public class FormsServlet extends AbstractBaseServlet {
 			if (form == null) {
 				validForm = false;
 				errors.add("Fix any errors above and try to resubmit. If you're still having issues, submit a bug report using the form at the bottom of the page.");
+			} else {
+				TimeZone timezone = train.getAppDataController().get()
+						.getTimeZone();
+
+				if (!ValidationUtil.canStillSubmitFormC(form.getStart(),
+						Calendar.getInstance(timezone).getTime(), timezone)) {
+					late = true;
+				}
 			}
 		}
 		if (validForm) {
+
+			String success = SUCCESS_FORMC;
+			if (late) {
+				success = "PLEASE NOTE: This form is late! It has been submitted, but marked as denied. You must add a message to it in order to bring it to the director's attention if you want it to be approved!";
+			}
 			String url = getIndexURL() + "?success_message="
-					+ URLEncoder.encode(SUCCESS_FORMC, "UTF-8");
+					+ URLEncoder.encode(success, "UTF-8");
 			url = resp.encodeRedirectURL(url);
 			resp.sendRedirect(url);
 		} else {
