@@ -1309,6 +1309,10 @@ public class DirectorServlet extends AbstractBaseServlet {
 		boolean done = false;
 		Map<Event, List<Absence>> studentAbsMap = new HashMap<Event, List<Absence>>();
 		
+		if (absences.size() == 0 || events.size() == 0) {
+			return studentAbsMap;
+		}
+		
 		while (!done) {
 			Absence curAbs = absences.get(absPtr);
 			Event event = events.get(eventPtr);
