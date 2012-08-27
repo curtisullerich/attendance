@@ -6,7 +6,7 @@
 <html>
 <head>
 <jsp:include page="/WEB-INF/template/head.jsp" />
-<script type="text/javascript" src="/js/tablesorter/jquery.tablesorter.js"></script> 
+
 <style type="text/css">
 #container
 {
@@ -53,13 +53,6 @@ table.gray tr:nth-child(odd) td.highlight, table.gray tr:nth-child(even) td.high
 }<%// e0e0e0 is another option for the color%>
 </style>
 
-<script>
-	$(document).ready(function() 
-	    { 
-	        $("#sortable").tablesorter(); 
-	    } 
-	); 
-</script>
 </head>
 <body>
 	<jsp:include page="/WEB-INF/template/header.jsp" />

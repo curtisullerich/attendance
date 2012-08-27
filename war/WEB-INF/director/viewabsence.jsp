@@ -11,8 +11,8 @@
 	<body>
 		<jsp:include page="/WEB-INF/template/header.jsp" />
 		
-		<h1>Absence Info For: <c:out value="${absence.student.name}" /></h1>
-		
+		<h1>Absence Info For: <c:out value="${absence.student.name}" /> (<a href='/director/student?id=${absence.student.netID}'>${absence.student.netID}</a>)</h1>
+
 		<form method="post" accept-charset="utf-8">
 			<fmt:formatDate var="arst" value="${absence.start}" pattern="yyyy"/> 
 			<dl class="block-layout">
@@ -71,19 +71,24 @@
 			<input type="hidden" value="${absence.event.id}" name="eventid"/>
 			<input type="submit" value="Submit" name="SubmitChanges" />
 			<input type="button" value="Cancel" name="Cancel" onclick="window.location = '/director/attendance'"/>
-			<c:if test="${not new}">
-				<input type="button" value="Messages" name="Message" onclick="window.location = '/director/messages/viewthread?id=${absence.messageThread.id}'"/>
-			</c:if>	
-			<c:if test="${new }">
-				<input type="button" value="Messages" disabled name="Message" title="You can't view messages until you've actually created this absence." onclick="window.location = '/director/messages/viewthread?id=${absence.messageThread.id}'"/>
-			</c:if>
+<%-- 			<c:if test="${not new}"> --%>
+<%-- 				<input type="button" value="Messages" name="Message" onclick="window.location = '/director/messages/viewthread?id=${absence.messageThread.id}'"/> --%>
+<%-- 			</c:if>	 --%>
+<%-- 			<c:if test="${new }"> --%>
+<%-- 				<input type="button" value="Messages" disabled name="Message" title="You can't view messages until you've actually created this absence." onclick="window.location = '/director/messages/viewthread?id=${absence.messageThread.id}'"/> --%>
+<%-- 			</c:if> --%>
 		</form>
 	
-	<form method="post" accept-charset="utf-8">
-		<c:if test="${not new }">
-			<input type="submit" value="Delete Absence" name="delete"/>
-		</c:if> 
-	</form>
+		<form method="post" accept-charset="utf-8">
+			<c:if test="${not new }">
+				<input type="submit" value="Delete Absence" name="delete"/>
+			</c:if> 
+		</form>
+
+		<br/>
+		<hr/>
+		<br/>
+		<jsp:include page="/WEB-INF/common/viewthread.jsp"/>
 	
 		<jsp:include page="/WEB-INF/template/footer.jsp" />	
 	</body>

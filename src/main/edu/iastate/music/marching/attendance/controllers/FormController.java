@@ -191,11 +191,12 @@ public class FormController extends AbstractController {
 		cutoff.setTime(dataTrain.getAppDataController().get()
 				.getFormSubmissionCutoff());
 
+		boolean late = false;
+
 		// TODO https://github.com/curtisullerich/attendance/issues/103
 		// is timezone correct?
 		if (!Calendar.getInstance(timezone).before(cutoff)) {
-			exp.getErrors().add(
-					"Sorry, it's past the deadline for submitting Form A.");
+			late = true;
 		}
 
 		if (exp.getErrors().size() > 0) {
@@ -230,8 +231,25 @@ public class FormController extends AbstractController {
 		form.setDetails(reason);
 		form.setStatus(Form.Status.Pending);
 
-		// Perform store
-		storeForm(form);
+		if (late) {
+			form.setStatus(Form.Status.Denied);
+			// Perform store
+			storeForm(form);
+			this.dataTrain
+					.getMessagingController()
+					.addMessage(
+							form.getMessageThread(),
+							form.getStudent(),
+							"This message has been added for "
+									+ form.getStudent().getFirstName()
+									+ " by AttendBot 2.0. "
+									+ form.getStudent().getFirstName()
+									+ " submitted this form after the deadline had already passed "
+									+ "but would like you to consider it anyway. AttendBot marked "
+									+ "this form as denied, but a Director may approve it.");
+		} else {
+			storeForm(form);
+		}
 
 		return form;
 		// return formACHelper(student, date, reason, Form.Type.A);
@@ -357,11 +375,11 @@ public class FormController extends AbstractController {
 		}
 
 		// Check date is before cutoff but after today
-
+		boolean late = false;
 		if (validateDate
 				&& !ValidationUtil.canStillSubmitFormC(date, Calendar
 						.getInstance(timezone).getTime(), timezone)) {
-			exp.getErrors().add("Invalid date, submitted too late");
+			late = true;
 		}
 
 		if (exp.getErrors().size() > 0) {
@@ -428,8 +446,27 @@ public class FormController extends AbstractController {
 		form.setStatus(Form.Status.Pending);
 		form.setAbsenceType(type);
 
-		// Perform store
-		storeForm(form);
+		if (late) {
+			form.setStatus(Form.Status.Denied);
+			storeForm(form);
+			this.dataTrain
+					.getMessagingController()
+					.addMessage(
+							form.getMessageThread(),
+							form.getStudent(),
+							"This message has been added for "
+									+ form.getStudent().getFirstName()
+									+ " by AttendBot 2.0. "
+									+ form.getStudent().getFirstName()
+									+ " submitted this form after the deadline had already passed "
+									+ "but would like you to consider it anyway. AttendBot marked "
+									+ "this form as denied, but a Director may approve it.");
+			exp.getErrors()
+					.add("It's past the deadline for submitting this Form C. This form has been submitted, but marked as denied. If you believe you have a valid excuse for late submission, add a message to this form in order to bring it to the director's attention.");
+		} else {
+			// Perform store
+			storeForm(form);
+		}
 
 		return form;
 	}
@@ -449,7 +486,7 @@ public class FormController extends AbstractController {
 			String details) {
 		TimeZone timezone = this.dataTrain.getAppDataController().get()
 				.getTimeZone();
-		
+
 		Calendar calendar = Calendar.getInstance(timezone);
 		calendar.setTime(date);
 
@@ -523,12 +560,12 @@ public class FormController extends AbstractController {
 				.append(form.getDetails())
 				.append("\r\n\r\n")
 				.append("<br/><br/>")
-				.append("<a href=\"www.isucfvmb-attendance.appspot.com/public/verify?s=a&i="
-						+ form.getHashedId() + "\">Click here to approve.</a>")
+				.append("<a href='http://www.isucfvmb-attendance.appspot.com/public/verify?s=a&i="
+						+ form.getHashedId() + "'>Click here to approve</a>.")
 				.append("\r\n\r\n")
 				.append("<br/><br/>")
-				.append("<a href=\"www.isucfvmb-attendance.appspot.com/public/verify?s=d&i="
-						+ form.getHashedId() + "\">Click here to deny.</a>")
+				.append("<a href='http://www.isucfvmb-attendance.appspot.com/public/verify?s=d&i="
+						+ form.getHashedId() + "'>Click here to deny</a>.")
 				.append("\r\n\r\n")
 				.append("<br/><br/>")
 				.append("Thanks!")

@@ -8,11 +8,18 @@
 		<jsp:include page="/WEB-INF/template/head.jsp" />
 	</head>
 
-	
 	<body>
 		<jsp:include page="/WEB-INF/template/header.jsp" />
 		
 		<h1>Form <c:out value="${form.type.value}" /></h1>
+
+		<c:if test="${auth.user.type.director}">
+			Submitted by ${form.student.firstName } ${form.student.lastName} (<a href='/director/student?id=${form.student.netID}'>${form.student.netID}</a>)<br/>
+		</c:if>
+		<c:if test="${not auth.user.type.director}">
+			Submitted by ${form.student.firstName } ${form.student.lastName} (${form.student.netID})<br/>
+		</c:if>
+
 		
 		<form method="post" accept-charset="utf-8">
 			<dl class="block-layout">
@@ -118,6 +125,10 @@
 				</c:if>
 			</dl>
 		</form>
+		<br/>
+		<hr/>
+		<br/>
+		<jsp:include page="/WEB-INF/common/viewthread.jsp"/>
 
 		<jsp:include page="/WEB-INF/template/footer.jsp" />
 	</body>

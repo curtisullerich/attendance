@@ -129,13 +129,14 @@ public class PublicServlet extends AbstractBaseServlet {
 		}
 		if (isValid) {
 			Form f = fc.getByHashedId(hashedId);
-			if (f != null && f.getStatus().isPending()) {
+			if (f != null) { //doesn't need to be pending
 				if (status.equals("a")) {
 					f.setEmailStatus(Form.Status.Approved);
+					success_message = "Successfully approved the form.";
 				} else {
 					f.setEmailStatus(Form.Status.Denied);
+					success_message = "Successfully denied the form.";
 				}
-				success_message = "Successfully updated form.";
 				fc.update(f);
 			} else {
 				if (f == null)

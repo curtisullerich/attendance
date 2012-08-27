@@ -10,6 +10,11 @@
 <html>
 	<head>
 		<jsp:include page="/WEB-INF/template/head.jsp" />
+		<script>
+			function goahead() {
+				return true;
+			}
+		</script>
 	</head>
 
 	<body>
@@ -66,7 +71,7 @@
 				
 			</dl>
 			
-			<input type="submit" value="Save Info" name="SaveInfo"/>
+			<input type="submit" value="Save Info" name="SaveInfo" onclick="return goahead()"/>
 		</form>		
 		
 		<jsp:include page="/WEB-INF/template/footer.jsp" />

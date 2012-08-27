@@ -1071,6 +1071,27 @@ public class DirectorServlet extends AbstractBaseServlet {
 			} else {
 				absenceid = Long.parseLong(sabsenceid);
 				checkedAbsence = ac.get(absenceid);
+				
+				// Handle exceptions maybe for invalid thread id's?
+				MessageThread thread = checkedAbsence.getMessageThread();
+				if (thread != null) {
+					User current = train.getAuthController().getCurrentUser(
+							req.getSession());
+					if (current.getType() == User.Type.Director
+							|| thread != null
+							&& train.getMessagingController()
+									.isPartOfConversation(thread, current)) {
+
+						page.setAttribute("thread", thread);
+
+					} else {
+						errors.add("Invalid message thread.");
+					}
+
+				} else {
+					errors.add("Absence's message thread wasn't there.");
+				}
+				
 			}
 		} else {
 			validInput = false;

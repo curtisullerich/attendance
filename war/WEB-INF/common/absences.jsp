@@ -6,7 +6,7 @@
 	<c:choose>
 	<c:when test="${fn:length(absences) > 0}">
 
-		<table class="${auth.user.type.director ? 'gray full-width gray-hover' : 'gray full-width'}" style="table-layout:fixed;"><!-- white-space:nowrap;overflow:hidden; -->
+		<table class="gray full-width gray-hover" style="table-layout:fixed;"><!-- white-space:nowrap;overflow:hidden; -->
 			<colgroup>
 				<col width="35%" />
 				<col width="15%" />
@@ -26,33 +26,18 @@
 			<tbody>
 			<c:forEach items="${absences}" var="absence">
 
-				<c:choose>
-					<c:when test="${auth.user.type.director}">
-						<c:url var="absence_url_view" value="viewabsence">
-							<c:param name="absenceid" value="${absence.id}"/>
-							<c:param name="redirect" value="${pagetemplate.uri}"/>
-						</c:url>
-					</c:when>
-					<c:otherwise>
-						<%//TODO %>
-					</c:otherwise>
-				</c:choose>
+				<c:url var="absence_url_view" value="viewabsence">
+					<c:param name="absenceid" value="${absence.id}"/>
+					<c:param name="redirect" value="${pagetemplate.uri}"/>
+				</c:url>
 				<tr>
 					<c:if test="${empty absence.event}">
-						<td 
-							<c:if test="${auth.user.type.director }">
-							onclick="window.location='${absence_url_view}'"
-							</c:if>
-						>
+						<td onclick="window.location='${absence_url_view}'">
 							No event.
 						</td>
 					</c:if>
 					<c:if test="${not empty absence.event}">
-						<td 
-							<c:if test="${auth.user.type.director }">
-							onclick="window.location='${absence_url_view}'"
-							</c:if>
-						>
+						<td onclick="window.location='${absence_url_view}'">
 							<c:out value="${absence.event.type}" />
 							<fmt:formatDate value="${absence.event.start}" pattern="M/d" />
 							<fmt:formatDate value="${absence.event.start}" pattern="h:mm a" />
@@ -61,36 +46,20 @@
 						</td>
 					</c:if>
 
-					<td 
-						<c:if test="${auth.user.type.director }">
-						onclick="window.location='${absence_url_view}'"
-						</c:if>
-					>
+					<td onclick="window.location='${absence_url_view}'">
 						${absence.type }
 					</td>
-					<td 
-						<c:if test="${auth.user.type.director }">
-						onclick="window.location='${absence_url_view}'"
-						</c:if>
-					>
+					<td onclick="window.location='${absence_url_view}'">
 					${absence.status }
 					</td>
 					<c:choose>
 						<c:when test="${(absence.type.tardy) || (absence.type.earlyCheckOut)}">
-						<td 
-							<c:if test="${auth.user.type.director }">
-							onclick="window.location='${absence_url_view}'"
-							</c:if>
-						>
+						<td onclick="window.location='${absence_url_view}'">
 							<fmt:formatDate value="${absence.start}" pattern="h:mm a" />
 						</td>
 						</c:when>
 						<c:when test="${(absence.type.absence) && (empty absence.event)}">
-						<td 
-							<c:if test="${auth.user.type.director }">
-							onclick="window.location='${absence_url_view}'"
-							</c:if>
-						>
+						<td onclick="window.location='${absence_url_view}'">
 							<fmt:formatDate value="${absence.start}" pattern="M/d" />
 							<fmt:formatDate value="${absence.start}" pattern="h:mm a" />
 							-
@@ -98,9 +67,7 @@
 						</td>
 						</c:when>
 						<c:when test="${(absence.type.absence) && (not empty absence.event)}">
-							<td ${auth.user.type.director ? 'onclick="window.location=\'${absence_url_view}\'"' : ''}>
-								-
-							</td>
+							<td onclick="window.location='${absence_url_view}'">-</td>
 						</c:when>
 					</c:choose>
 					<td>

@@ -2,6 +2,7 @@ package edu.iastate.music.marching.attendance.servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -11,12 +12,17 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.appengine.api.datastore.Email;
 
+import edu.iastate.music.marching.attendance.controllers.AbsenceController;
 import edu.iastate.music.marching.attendance.controllers.AuthController;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.UserController;
 import edu.iastate.music.marching.attendance.model.Absence;
+import edu.iastate.music.marching.attendance.model.Event;
+import edu.iastate.music.marching.attendance.model.MessageThread;
+import edu.iastate.music.marching.attendance.model.ModelFactory;
 import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.model.User.Section;
+import edu.iastate.music.marching.attendance.servlets.DirectorServlet.Page;
 import edu.iastate.music.marching.attendance.util.PageBuilder;
 
 public class StudentServlet extends AbstractBaseServlet {
@@ -25,15 +31,16 @@ public class StudentServlet extends AbstractBaseServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 6636386568039228284L;
-	
-	private static final Logger LOG = Logger.getLogger(StudentServlet.class.getName());
+
+	private static final Logger LOG = Logger.getLogger(StudentServlet.class
+			.getName());
 
 	private static final String SERVLET_PATH = "student";
 
 	public static final String INDEX_URL = pageToUrl(Page.index, SERVLET_PATH);
 
 	private enum Page {
-		index, attendance, forms, messages, info;
+		index, attendance, forms, messages, info, viewabsence;
 	}
 
 	@Override
@@ -68,7 +75,78 @@ public class StudentServlet extends AbstractBaseServlet {
 			case info:
 				showInfo(req, resp, null, null);
 				break;
+			case viewabsence:
+				viewAbsence(req, resp, new ArrayList<String>(), "");
+				break;
 			}
+	}
+
+	private void viewAbsence(HttpServletRequest req, HttpServletResponse resp,
+			List<String> incomingErrors, String success_message)
+			throws ServletException, IOException {
+		DataTrain train = DataTrain.getAndStartTrain();
+
+		AbsenceController ac = train.getAbsenceController();
+
+		boolean validInput = true;
+
+		List<String> errors = new LinkedList<String>();
+
+		String sabsenceid = req.getParameter("absenceid");
+
+		Absence checkedAbsence = null;
+
+		long absenceid;
+		PageBuilder page = new PageBuilder(Page.viewabsence, SERVLET_PATH,
+				train);
+
+		if (sabsenceid != null) {
+
+			absenceid = Long.parseLong(sabsenceid);
+			checkedAbsence = ac.get(absenceid);
+
+			// Handle exceptions maybe for invalid thread id's?
+			MessageThread thread = checkedAbsence.getMessageThread();
+			if (thread != null) {
+				User current = train.getAuthController().getCurrentUser(
+						req.getSession());
+				if (current.getType() == User.Type.Director
+						|| thread != null
+						&& train.getMessagingController().isPartOfConversation(
+								thread, current)) {
+
+					page.setAttribute("thread", thread);
+
+				} else {
+					errors.add("Invalid message thread.");
+				}
+
+			} else {
+				errors.add("Absence's message thread wasn't there.");
+			}
+
+		} else {
+			validInput = false;
+			errors.add("No absence to look for");
+		}
+
+		// Shouldn't ever happen since the id is sent by us from the jsp
+		if (checkedAbsence == null) {
+			validInput = false;
+			errors.add("Could not find the absence.");
+		}
+
+		if (validInput) {
+			page.setPageTitle("View Absence");
+			page.setAttribute("absence", checkedAbsence);
+			page.setAttribute("types", Absence.Type.values());
+			page.setAttribute("status", Absence.Status.values());
+			page.setAttribute("error_messages", incomingErrors);
+			page.setAttribute("success_message", success_message);
+			page.passOffToJsp(req, resp);
+		} else {
+			showAttendance(req, resp);
+		}
 	}
 
 	private void showAttendance(HttpServletRequest req, HttpServletResponse resp)
@@ -78,7 +156,8 @@ public class StudentServlet extends AbstractBaseServlet {
 
 		PageBuilder page = new PageBuilder(Page.attendance, SERVLET_PATH);
 
-		User currentUser = train.getAuthController().getCurrentUser(req.getSession());
+		User currentUser = train.getAuthController().getCurrentUser(
+				req.getSession());
 
 		page.setPageTitle("Attendance");
 
@@ -120,9 +199,9 @@ public class StudentServlet extends AbstractBaseServlet {
 
 	private void postInfo(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException, ServletException {
-		
+
 		DataTrain train = DataTrain.getAndStartTrain();
-		
+
 		List<String> errors = new ArrayList<String>();
 		String success = "";
 
@@ -143,9 +222,10 @@ public class StudentServlet extends AbstractBaseServlet {
 				section = s;
 			}
 		}
-		
-		User localUser = train.getAuthController().getCurrentUser(req.getSession());
-		
+
+		User localUser = train.getAuthController().getCurrentUser(
+				req.getSession());
+
 		try {
 			year = Integer.parseInt(req.getParameter("Year"));
 			localUser.setYear(year);
@@ -163,14 +243,15 @@ public class StudentServlet extends AbstractBaseServlet {
 		localUser.setLastName(lastName);
 		localUser.setSecondaryEmail(secondEmail);
 
-		//May throw validation exceptions
+		// May throw validation exceptions
 		try {
 			uc.update(localUser);
-			success = (errors.size() == 0) ? "Successfully saved all data." : 
-				"Successfully saved all data but the year.";
-		}
-		catch (IllegalArgumentException e) {
-			errors.add("Unable to save "+ ((errors.size() == 0) ? "data that wasn't the year." : "any data."));
+			success = (errors.size() == 0) ? "Successfully saved all data."
+					: "Successfully saved all data but the year.";
+		} catch (IllegalArgumentException e) {
+			errors.add("Unable to save "
+					+ ((errors.size() == 0) ? "data that wasn't the year."
+							: "any data."));
 		}
 		AuthController.updateCurrentUser(localUser, req.getSession());
 
@@ -178,18 +259,19 @@ public class StudentServlet extends AbstractBaseServlet {
 
 	}
 
-	private void showInfo(HttpServletRequest req, HttpServletResponse resp, List<String> errors, String succex)
-			throws IOException, ServletException {
+	private void showInfo(HttpServletRequest req, HttpServletResponse resp,
+			List<String> errors, String succex) throws IOException,
+			ServletException {
 
 		PageBuilder page = new PageBuilder(Page.info, SERVLET_PATH);
 
-		page.setAttribute("user",
-				DataTrain.getAndStartTrain().getAuthController().getCurrentUser(req.getSession()));
+		page.setAttribute("user", DataTrain.getAndStartTrain()
+				.getAuthController().getCurrentUser(req.getSession()));
 
 		page.setAttribute("sections", User.Section.values());
-		
+
 		page.setAttribute("error_messages", errors);
-		
+
 		page.setAttribute("success_message", succex);
 
 		page.passOffToJsp(req, resp);
@@ -200,11 +282,13 @@ public class StudentServlet extends AbstractBaseServlet {
 
 		PageBuilder page = new PageBuilder(Page.index, SERVLET_PATH);
 		DataTrain train = DataTrain.getAndStartTrain();
-		User currentUser = train.getAuthController().getCurrentUser(req.getSession());
+		User currentUser = train.getAuthController().getCurrentUser(
+				req.getSession());
 
 		page.setAttribute("user", currentUser);
 		page.setPageTitle("Student");
-		page.setAttribute("StatusMessage", DataTrain.getAndStartTrain().getAppDataController().get().getStatusMessage());
+		page.setAttribute("StatusMessage", DataTrain.getAndStartTrain()
+				.getAppDataController().get().getStatusMessage());
 
 		page.passOffToJsp(req, resp);
 	}

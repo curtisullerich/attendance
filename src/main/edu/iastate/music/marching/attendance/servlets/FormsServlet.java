@@ -18,6 +18,7 @@ import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.FormController;
 import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.Form;
+import edu.iastate.music.marching.attendance.model.MessageThread;
 import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.util.PageBuilder;
 import edu.iastate.music.marching.attendance.util.Util;
@@ -29,7 +30,7 @@ public class FormsServlet extends AbstractBaseServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = -4738485557840953301L;
-	
+
 	private static final Logger log = Logger.getLogger(FormsServlet.class
 			.getName());
 
@@ -101,11 +102,10 @@ public class FormsServlet extends AbstractBaseServlet {
 		try {
 			long id = Long.parseLong(req.getParameter("id"));
 			form = train.getFormsController().get(id);
-			
+
 			PageBuilder page = new PageBuilder(Page.view, SERVLET_PATH);
-			
-			if(form == null)
-			{
+
+			if (form == null) {
 				log.warning("Could not find form number " + id + ".");
 				errors.add("Could not find form number " + id + ".");
 				page.setAttribute("error_messages", errors);
@@ -113,13 +113,36 @@ public class FormsServlet extends AbstractBaseServlet {
 				page.setPageTitle("Form " + form.getType());
 				page.setAttribute("form", form);
 				page.setAttribute("day", form.getDayAsString());
-				page.setAttribute("isDirector", currentUser.getType().isDirector());
+				page.setAttribute("isDirector", currentUser.getType()
+						.isDirector());
+
+				// Handle exceptions maybe for invalid thread id's?
+				MessageThread thread = form.getMessageThread();
+				if (thread != null) {
+					User current = train.getAuthController().getCurrentUser(
+							req.getSession());
+					if (current.getType() == User.Type.Director
+							|| thread != null
+							&& train.getMessagingController()
+									.isPartOfConversation(thread, current)) {
+
+						page.setAttribute("thread", thread);
+
+					} else {
+						errors.add("Invalid message thread.");
+					}
+
+				} else {
+					errors.add("Form's message thread wasn't there.");
+				}
+
 				page.setAttribute("error_messages", errors);
 				page.setAttribute("success_message", success_message);
 			}
 			page.passOffToJsp(req, resp);
 		} catch (NumberFormatException nfe) {
-			log.warning("Could not parse view form id: " + req.getParameter("id"));
+			log.warning("Could not parse view form id: "
+					+ req.getParameter("id"));
 			ErrorServlet.showError(req, resp, 500);
 		}
 	}
@@ -264,13 +287,28 @@ public class FormsServlet extends AbstractBaseServlet {
 
 			if (form == null) {
 				validForm = false;
-				errors.add("Fix any errors above and try to resubmit. If you're still having issues, submit a bug report using the form at the bottom of the page.");
+				errors.add("--------");
+				errors.add("If any of the errors above are fixable, please address them and try to resubmit. If you're still having issues, submit a bug report using the form at the bottom of the page");
 			}
 		}
+
+		TimeZone timezone = train.getAppDataController().get().getTimeZone();
+
+		Calendar cutoff = Calendar.getInstance(timezone);
+		cutoff.setTime(train.getAppDataController().get()
+				.getFormSubmissionCutoff());
+
 		if (validForm) {
+
+			String success = SUCCESS_FORMA;
+			if (!Calendar.getInstance(timezone).before(cutoff)) {
+				success = "PLEASE NOTE: This form was submitted after the deadline, so AttendBot 2.0 marked it as late and denied. The director will see this and choose to approve it or leave it as denied.";
+			}
+
 			String url = getIndexURL() + "?success_message="
-					+ URLEncoder.encode(SUCCESS_FORMA, "UTF-8");
+					+ URLEncoder.encode(success, "UTF-8");
 			// url = resp.encodeRedirectURL(url);
+
 			resp.sendRedirect(url);
 		} else {
 			// Show form
@@ -284,8 +322,10 @@ public class FormsServlet extends AbstractBaseServlet {
 					.getFormSubmissionCutoff());
 
 			page.setAttribute("Reason", reason);
-			setStartDate(date, page, train.getAppDataController().get()
-					.getTimeZone());
+			setStartDate(date, page, timezone);
+			if (!Calendar.getInstance(timezone).before(cutoff)) {
+				errors.add("PLEASE NOTE: The deadline for submitting form A has passed. You can still submit one, but it will be marked as late by AttendBot 2.0. Be sure to explain your circumstances when you submit.");
+			}
 
 			page.passOffToJsp(req, resp);
 		}
@@ -346,14 +386,14 @@ public class FormsServlet extends AbstractBaseServlet {
 			}
 
 			// this is one-based! Starting on Sunday.
-			
+
 			try {
-			day = Integer.parseInt(req.getParameter("DayOfWeek"));
-			
+				day = Integer.parseInt(req.getParameter("DayOfWeek"));
+
 			} catch (NumberFormatException nfe) {
 				errors.add("Weekday was invalid.");
 			}
-			
+
 			if (day < 1 || day > 7) {
 				errors.add("Value of " + day + " for day was not valid.");
 			}
@@ -444,23 +484,25 @@ public class FormsServlet extends AbstractBaseServlet {
 			page.setAttribute("MinutesToOrFrom", minutesToOrFrom);
 			page.setAttribute("Type", absenceType);
 			page.setAttribute("types", Absence.Type.values());
-			
+
 			if (fromTime != null) {
-				Calendar from = Calendar.getInstance(train.getAppDataController().get()
-						.getTimeZone());
+				Calendar from = Calendar.getInstance(train
+						.getAppDataController().get().getTimeZone());
 				from.setTime(fromTime);
 				page.setAttribute("FromHour", from.get(Calendar.HOUR));
 				page.setAttribute("FromMinute", from.get(Calendar.MINUTE));
-				page.setAttribute("FromAMPM", from.get(Calendar.AM_PM) == 0 ? "AM" : "PM");
+				page.setAttribute("FromAMPM",
+						from.get(Calendar.AM_PM) == 0 ? "AM" : "PM");
 			}
 
 			if (toTime != null) {
-				Calendar to = Calendar.getInstance(train.getAppDataController().get()
-						.getTimeZone());
+				Calendar to = Calendar.getInstance(train.getAppDataController()
+						.get().getTimeZone());
 				to.setTime(toTime);
 				page.setAttribute("ToHour", to.get(Calendar.HOUR));
 				page.setAttribute("ToMinute", to.get(Calendar.MINUTE));
-				page.setAttribute("ToAMPM", to.get(Calendar.AM_PM) == 0 ? "AM" : "PM");
+				page.setAttribute("ToAMPM", to.get(Calendar.AM_PM) == 0 ? "AM"
+						: "PM");
 			}
 
 			page.passOffToJsp(req, resp);
@@ -523,7 +565,8 @@ public class FormsServlet extends AbstractBaseServlet {
 				errors.add("The date is invalid.");
 			}
 		}
-
+		FormController fc = train.getFormsController();
+		boolean late = false;
 		if (validForm) {
 			// Store our new form to the data store
 			User student = train.getAuthController().getCurrentUser(
@@ -531,8 +574,7 @@ public class FormsServlet extends AbstractBaseServlet {
 
 			Form form = null;
 			try {
-				form = train.getFormsController().createFormC(student, date,
-						type, reason);
+				form = fc.createFormC(student, date, type, reason);
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add(e.getMessage());
@@ -541,11 +583,24 @@ public class FormsServlet extends AbstractBaseServlet {
 			if (form == null) {
 				validForm = false;
 				errors.add("Fix any errors above and try to resubmit. If you're still having issues, submit a bug report using the form at the bottom of the page.");
+			} else {
+				TimeZone timezone = train.getAppDataController().get()
+						.getTimeZone();
+
+				if (!ValidationUtil.canStillSubmitFormC(form.getStart(),
+						Calendar.getInstance(timezone).getTime(), timezone)) {
+					late = true;
+				}
 			}
 		}
 		if (validForm) {
+
+			String success = SUCCESS_FORMC;
+			if (late) {
+				success = "PLEASE NOTE: This form C was submitted more than 3 weekdays after the absence in question. AttendBot 2.0 has marked it as denied and late, but a director could still approve it at his or her discretion. You probably want to add a message explaining the circumstances if you didn't do that already.";
+			}
 			String url = getIndexURL() + "?success_message="
-					+ URLEncoder.encode(SUCCESS_FORMC, "UTF-8");
+					+ URLEncoder.encode(success, "UTF-8");
 			url = resp.encodeRedirectURL(url);
 			resp.sendRedirect(url);
 		} else {
