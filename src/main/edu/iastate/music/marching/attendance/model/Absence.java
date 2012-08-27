@@ -176,4 +176,9 @@ public class Absence {
 	public void setMessageThread(MessageThread messageThread) {
 		this.messages = messageThread;
 	}
+	
+	@Override
+	public String toString() {
+		return student.toString() + " Start: " + start.toString() + " End: " + end.toString();
+	}
 }

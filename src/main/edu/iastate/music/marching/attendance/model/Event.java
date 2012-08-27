@@ -126,4 +126,14 @@ public class Event {
 	public Type getType() {
 		return this.type;
 	}
+	
+	public boolean absIsDuring(Absence a) {
+		return (start.compareTo(a.getStart()) <= 0 && a.getStart().compareTo(end) <= 0) 
+				&& (a.getEnd() == null //Tardies and Ecos don't have end dates
+				|| (start.compareTo(a.getEnd()) <= 0 && a.getEnd().compareTo(end) <= 0));
+	}
+	
+	public String toString() {
+		return "Start: " + start.toString() + " End: " + end.toString();
+	}
 }
