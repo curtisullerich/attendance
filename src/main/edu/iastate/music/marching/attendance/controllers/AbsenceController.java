@@ -792,7 +792,7 @@ public class AbsenceController extends AbstractController {
 
 		// Finally check for side-effects caused by absence
 		for (User u : users) {
-			uc.updateUserGrade(u);
+			uc.update(u);
 		}
 	}
 

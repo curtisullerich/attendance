@@ -161,6 +161,7 @@ public class EventController extends AbstractController {
 		ObjectDatastore od = this.train.getDataStore();
 		
 		AbsenceController ac = train.getAbsenceController();
+
 		List<Absence> todie = ac.getAll(event);
 		if (deleteLinkedAbsences) {
 			// Just remove all of them
@@ -170,7 +171,7 @@ public class EventController extends AbstractController {
 			for(Absence absence : todie)
 			{
 				absence.setEvent(null);
-				ac.updateAbsence(absence);
+				//ac.updateAbsence(absence);
 			}
 		}
 		
@@ -178,11 +179,19 @@ public class EventController extends AbstractController {
 		Date end = event.getEnd();
 		od.delete(event);
 		
+		//Can't update until we actually delete the event otherwise
+		//the absence will just link to the same event
+		if (!deleteLinkedAbsences) {
+			for (Absence absence: todie) {
+				ac.updateAbsence(absence);
+			}
+		}
+		
 		/* If the deleted event had conflicted with another one before then 
 		*  all the absences for that date/time range would be unanchored.
 		*  Now that one is deleted we can try to link them all up again
 		*/
-		train.getAbsenceController().linkAbsenceEvent(getAll(), start, end);
+		ac.linkAbsenceEvent(getAll(), start, end);
 		// od.delete() returns void, so we don't really have anything to return
 		// here, either
 	}
