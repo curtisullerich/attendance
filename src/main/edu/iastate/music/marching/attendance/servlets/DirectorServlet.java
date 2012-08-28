@@ -838,7 +838,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		List<Event> events = train.getEventController().readAll();
 		List<Absence> absences = train.getAbsenceController().getAll();
 
-		Map<User, Map<Event, List<Absence>>> absenceMap = this.makeAbsenceMap(students, events, absences);
+		Map<User, Map<Event, List<Absence>>> absenceMap = this.makeAbsenceMap(students, events, absences); 
 //		Map<User, Map<Event, List<Absence>>> absenceMap = 
 //				this.createStudentEventAbsMapOld(absences, events, students, train.getAbsenceController());
 
