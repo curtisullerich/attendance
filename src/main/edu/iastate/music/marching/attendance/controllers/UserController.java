@@ -193,7 +193,10 @@ public class UserController extends AbstractController {
 				"000000000");
 		user.setFirstName(firstName);
 		user.setLastName(lastName);
-		user.setSecondaryEmail(secondaryEmail);
+		if(secondaryEmail != null && secondaryEmail.getEmail() != "")
+		{
+			user.setSecondaryEmail(secondaryEmail);
+		}
 
 		validateUser(user);
 
