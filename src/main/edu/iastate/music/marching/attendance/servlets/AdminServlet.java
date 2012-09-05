@@ -1,6 +1,9 @@
 package edu.iastate.music.marching.attendance.servlets;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -12,6 +15,13 @@ import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemIterator;
+import org.apache.commons.fileupload.FileItemStream;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.google.appengine.api.datastore.Email;
 import com.google.common.collect.Lists;
@@ -118,6 +128,9 @@ public class AdminServlet extends AbstractBaseServlet {
 			ErrorServlet.showError(req, resp, 404);
 		else
 			switch (page) {
+			case data:
+				doDataImport(req, resp);
+				break;
 			case users:
 				postUserInfo(req, resp);
 				break;
@@ -260,6 +273,54 @@ public class AdminServlet extends AbstractBaseServlet {
 		page.passOffToJsp(req, resp);
 	}
 
+	private void doDataImport(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+
+		DataTrain train = DataTrain.getAndStartTrain();
+		
+		
+
+		try {
+			ServletFileUpload upload = new ServletFileUpload();
+			resp.setContentType("text/plain");
+
+			FileItemIterator iterator = upload.getItemIterator(req);
+			while (iterator.hasNext()) {
+				FileItemStream item = iterator.next();
+				InputStream stream = item.openStream();
+
+				if (item.isFormField()) {
+					log.info("Got a form field: " + item.getFieldName());
+				} else {
+					log.info("Got an uploaded file: " + item.getFieldName()
+							+ ", name = " + item.getName());
+
+					// Now we have the file name and contents, go ahead and import
+					train.getDataController().deleteEverthingInTheEntireDatabaseEvenThoughYouCannotUndoThis();
+					train.getDataController().importJSONDatabaseDump(new InputStreamReader(stream));
+//					int len;
+//					byte[] buffer = new byte[8192];
+//					while ((len = stream.read(buffer, 0, buffer.length)) != -1) {
+//						resp.getOutputStream().write(buffer, 0, len);
+//					}
+				}
+			}
+		} catch (Exception ex) {
+			throw new ServletException(ex);
+		}
+
+		// PageBuilder page = new PageBuilder(Page.data, SERVLET_PATH);
+		//
+		// page.setPageTitle("Data Export/Import/Update");
+		//
+		// page.setAttribute("DatastoreVersions",
+		// Lists.reverse(train.getVersionController().getAll()));
+		// page.setAttribute("ObjectDatastoreVersion",
+		// AttendanceDatastore.VERSION);
+		//
+		// page.passOffToJsp(req, resp);
+	}
+
 	private void showDataMigratePage(HttpServletRequest req,
 			HttpServletResponse resp) throws ServletException, IOException {
 
@@ -315,7 +376,7 @@ public class AdminServlet extends AbstractBaseServlet {
 		PageBuilder page = new PageBuilder(Page.student_register, SERVLET_PATH);
 
 		page.setPageTitle("Manual Student Registration");
-		
+
 		page.setAttribute("sections", User.Section.values());
 
 		page.passOffToJsp(req, resp);
@@ -560,7 +621,7 @@ public class AdminServlet extends AbstractBaseServlet {
 			page.setAttribute("success_message",
 					"Successfully registered Student " + new_user.getName());
 		}
-		
+
 		page.passOffToJsp(req, resp);
 	}
 

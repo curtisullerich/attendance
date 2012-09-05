@@ -5,6 +5,8 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
@@ -34,6 +36,7 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.annotations.Expose;
 import com.google.gson.reflect.TypeToken;
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.AppData;
@@ -41,6 +44,7 @@ import edu.iastate.music.marching.attendance.model.AttendanceDatastore;
 import edu.iastate.music.marching.attendance.model.DatastoreVersion;
 import edu.iastate.music.marching.attendance.model.Event;
 import edu.iastate.music.marching.attendance.model.Form;
+import edu.iastate.music.marching.attendance.model.GsonWithPartials;
 import edu.iastate.music.marching.attendance.model.MessageThread;
 import edu.iastate.music.marching.attendance.model.MobileDataUpload;
 import edu.iastate.music.marching.attendance.model.ModelFactory;
@@ -110,6 +114,8 @@ public class DataController extends AbstractController {
 
 		Dump dump = new Dump();
 
+		dump.format_version = DUMP_FORMAT_VERSION;
+
 		dump.absences = dataTrain.getAbsenceController().getAll();
 
 		dump.appData = dataTrain.getAppDataController().get();
@@ -126,22 +132,122 @@ public class DataController extends AbstractController {
 
 		dump.users = dataTrain.getUsersController().getAll();
 
-		getGson().toJson(dump, out);
+		GsonWithPartials.toJson(dump, out);
 	}
 
 	public void importJSONDatabaseDump(Reader input) {
-		Dump dump = getGson().fromJson(input, Dump.class);
+		Dump dump = GsonWithPartials.fromJson(input, Dump.class);
 
 		if (dump.format_version < DUMP_FORMAT_VERSION) {
 			// Old dump, probably not compatible with current database format
 			throw new IllegalStateException(
 					"Tried to import out-of-date dump not compatible with current database structure");
 		}
+
+		// Insert all things that don't link to other objects first
+		importAll(dump.versions);
+		importAll(dump.appData);
+		importAll(dump.users);
+		importAll(dump.events);
+		importAll(dump.mobileData);
+
+		// Then things that depend on the previous
+		// injecting the previous things first
+		importAll(dump.messages);
+		importAll(dump.absences);
+		importAll(dump.messages);
+		importAll(dump.forms);
+		
+		// Re-import a couple things that probably got messed up by the references
+		importAll(dump.users);
+		importAll(dump.events);
+		inject(dump.messages);
+		inject(dump.absences);
+		inject(dump.forms);
+		importAll(dump.messages);
+		importAll(dump.absences);
+		importAll(dump.forms);
+
+		// Done!
 	}
 
-	private class Dump {
+	private <T> void inject(List<T> src) {
+		for (T item : src) {
+			Class<?> clazz = item.getClass();
 
-		public int format_version;
+			for (Field field : clazz.getDeclaredFields()) {
+				try {
+					field.setAccessible(true);
+
+					Class<?> type = field.getType();
+
+					if (Object[].class.equals(type)) {
+						Object[] innerValues = (Object[]) field.get(item);
+						if (innerValues != null) {
+							List<?> innerList = Arrays.asList(innerValues);
+							inject(innerList);
+							field.set(item, innerList.toArray());
+						}
+					} else if (User.class.equals(type)) {
+						// Try to load user
+						User user = (User) field.get(item);
+						if (user != null) {
+							user = dataTrain.getUsersController().get(
+									(user).getId());
+							field.set(item, user);
+						}
+					} else if (Absence.class.equals(type)) {
+						// Try to load Absence
+						Absence absence = (Absence) field.get(item);
+						if (absence != null) {
+							absence = dataTrain.getAbsenceController().get(
+									absence.getId());
+							field.set(item, absence);
+						}
+					} else if (Event.class.equals(type)) {
+						// Try to load Event
+						Event event = (Event) field.get(item);
+						if (event != null) {
+							event = dataTrain.getEventController().get(
+									(event).getId());
+							field.set(item, event);
+						}
+					} else if (MessageThread.class.equals(type)) {
+						// Try to load MessageThread
+						MessageThread thread = (MessageThread) field.get(item);
+						if (thread != null) {
+							thread = dataTrain.getMessagingController().get(
+									(thread).getId());
+							field.set(item, thread);
+						}
+					}
+
+				} catch (IllegalArgumentException e) {
+					// Skip field
+				} catch (IllegalAccessException e) {
+					// Skip field
+				}
+			}
+		}
+	}
+
+	private <T> void importAll(T... src) {
+		for(T item : src)
+		{
+			dataTrain.getDataStore().storeOrUpdate(item);
+		}
+	}
+
+	private <T> void importAll(List<T> src) {
+		for(T item : src)
+		{
+			dataTrain.getDataStore().storeOrUpdate(item);
+		}
+	}
+
+	public static class Dump {
+
+		public int format_version = -1;
 
 		public List<Absence> absences;
 		public AppData appData;
@@ -151,142 +257,6 @@ public class DataController extends AbstractController {
 		public List<MessageThread> messages;
 		public List<MobileDataUpload> mobileData;
 		public List<User> users;
-
-		public Dump() {
-			format_version = DUMP_FORMAT_VERSION;
-		}
-	}
-
-	private Gson getGson() {
-		GsonBuilder gson = new GsonBuilder();
-		OuterTypeAdapter adapter = new OuterTypeAdapter();
-		gson.registerTypeAdapter(Absence.class, adapter);
-		gson.registerTypeAdapter(AppData.class, adapter);
-		gson.registerTypeAdapter(DatastoreVersion.class, adapter);
-		gson.registerTypeAdapter(Event.class, adapter);
-		gson.registerTypeAdapter(Form.class, adapter);
-		gson.registerTypeAdapter(Message.class, adapter);
-		gson.registerTypeAdapter(MessageThread.class, adapter);
-		gson.registerTypeAdapter(MobileDataUpload.class, adapter);
-		gson.registerTypeAdapter(User.class, adapter);
-		return gson.create();
-	}
-
-	private class OuterTypeAdapter implements JsonSerializer<Object>,
-			JsonDeserializer<Object> {
-
-		@Override
-		public Object deserialize(JsonElement json, Type typeOfT,
-				JsonDeserializationContext context) throws JsonParseException {
-			return getInnerGson().fromJson(json, typeOfT);
-		}
-
-		@Override
-		public JsonElement serialize(Object src, Type typeOfSrc,
-				JsonSerializationContext context) {
-
-			if (src == null) {
-				return JsonNull.INSTANCE;
-			}
-
-			Class<?> clazz = (Class<?>) typeOfSrc;
-			JsonObject object = new JsonObject();
-
-			for (Field field : clazz.getDeclaredFields()) {
-				try {
-					field.setAccessible(true);
-
-					if (!Modifier.isStatic(field.getModifiers())) {
-						object.add(
-								field.getName(),
-								getInnerGson().toJsonTree(field.get(src),
-										field.getType()));
-					}
-				} catch (IllegalArgumentException e) {
-					// Skip field
-				} catch (IllegalAccessException e) {
-					// Skip field
-				}
-			}
-
-			return object;
-		}
-	}
-
-	private class InnerTypeAdapter implements JsonSerializer<Object>,
-			JsonDeserializer<Object> {
-
-		@Override
-		public Object deserialize(JsonElement json, Type typeOfT,
-				JsonDeserializationContext context) throws JsonParseException {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public JsonElement serialize(Object src, Type typeOfSrc,
-				JsonSerializationContext context)
-				throws IllegalArgumentException {
-
-			if (src == null) {
-				return JsonNull.INSTANCE;
-			}
-
-			Class<?> clazz = src.getClass();
-			String id = null;
-
-			for (Field field : clazz.getDeclaredFields()) {
-				try {
-					field.setAccessible(true);
-					if (field.isAnnotationPresent(Id.class)) {
-						if (id != null) {
-							throw new IllegalArgumentException(
-									"Multiple Id fields on model object not allowed");
-						}
-
-						Object value = field.get(src);
-
-						if (value == null) {
-							throw new IllegalArgumentException(
-									"Null Id field value not allowed");
-						}
-
-						id = value.toString();
-					}
-				} catch (IllegalArgumentException e) {
-					// Skip field
-				} catch (IllegalAccessException e) {
-					// Skip field
-				}
-			}
-
-			if (id == null) {
-				// return getGson().toJsonTree(src, typeOfSrc);
-//				return JsonNull.INSTANCE;
-				 throw new IllegalArgumentException(
-				 "No Id field found in model object of type " +
-				 typeOfSrc.toString());
-			}
-
-			JsonObject object = new JsonObject();
-			object.addProperty("id", id);
-			return object;
-		}
-	}
-
-	private Gson getInnerGson() {
-		GsonBuilder gson = new GsonBuilder();
-		InnerTypeAdapter adapter = new InnerTypeAdapter();
-		gson.registerTypeAdapter(Absence.class, adapter);
-		gson.registerTypeAdapter(AppData.class, adapter);
-		gson.registerTypeAdapter(DatastoreVersion.class, adapter);
-		gson.registerTypeAdapter(Event.class, adapter);
-		gson.registerTypeAdapter(Form.class, adapter);
-		gson.registerTypeAdapter(Message.class, adapter);
-		gson.registerTypeAdapter(MessageThread.class, adapter);
-		gson.registerTypeAdapter(MobileDataUpload.class, adapter);
-		gson.registerTypeAdapter(User.class, adapter);
-		return gson.create();
 	}
 
 	public void deleteEverthingInTheEntireDatabaseEvenThoughYouCannotUndoThis() {

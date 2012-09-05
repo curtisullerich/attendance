@@ -279,19 +279,24 @@ public class User implements Serializable {
 		if (o instanceof User) {
 			User u = (User) o;
 
-			if (this.email == null || this.email.getEmail() == null)
-				throw new IllegalStateException("Null email for this user");
-
-			if (u.email == null || u.email.getEmail() == null)
-				throw new IllegalArgumentException(
-						"Null email on compared user");
+			if (this.email == null || this.email.getEmail() == null
+					|| u.email == null || u.email.getEmail() == null) {
+				if (this.email == null && u.email == null) {
+					return true;
+				} else if (this.email.getEmail() == null
+						&& u.email.getEmail() == null) {
+					return true;
+				} else {
+					return false;
+				}
+			}
 
 			if (this.email.equals(u.email))
 				return true;
 		}
 		return false;
 	}
-	
+
 	@Override
 	public String toString() {
 		return getName();

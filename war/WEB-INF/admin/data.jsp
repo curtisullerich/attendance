@@ -16,14 +16,16 @@
 		<h2>Backup / Restore</h2>
 		<p>
 			<a href="export/data.json">Export entire current database</a> (Useful as a backup)<br/>
-			<form class="grid-10">
-			<fieldset>
-				<label for="file">Import data: </label>
-				<input id="file" name="file" type="file" accept="application/json" />
-				<br/>
-				Expects a file previously exported from above link.
-				<br/>
-				<input type="submit" value="Import" style="float:right" />
+			<form class="grid-10" method="POST" enctype="multipart/form-data">
+				<fieldset>
+					<label for="file">Import data: </label>
+					<input id="file" name="file" type="file" accept="application/json" />
+					<br/>
+					Expects a backup file previously exported from above link.
+					<br/><br/>
+					<strong>WARNING:</strong> Will overwrite all data currently in the system</strong>
+					<br/>
+					<input type="submit" value="Import" style="float:right" />
 				</fieldset>
 			</form>
 			<br style="clear:both" />
