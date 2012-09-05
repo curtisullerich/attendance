@@ -522,6 +522,21 @@ public class AbsenceController extends AbstractController {
 										.getAbsenceType() == Absence.Type.Tardy)) {
 							absence.setStatus(Absence.Status.Approved);
 						}
+
+						// if event and form times overlap, and if absence time
+						// falls within the event
+						if (!absence.getEvent().getEnd()
+								.before(absence.getDatetime())
+								&& !absence.getEvent().getStart()
+										.after(absence.getDatetime())
+								&& !formTimeEnd.getTime().before(
+										absence.getEvent().getStart())
+								&& !formTimeStart.getTime().after(
+										absence.getEvent().getEnd())
+								&& form.getAbsenceType() == Absence.Type.Absence) {
+							absence.setStatus(Absence.Status.Approved);
+						}
+
 					} else if (absence.getType() == Absence.Type.EarlyCheckOut) {
 
 						if (formTimeEnd != null
@@ -533,6 +548,21 @@ public class AbsenceController extends AbstractController {
 										.getAbsenceType() == Absence.Type.EarlyCheckOut)) {
 							absence.setStatus(Absence.Status.Approved);
 						}
+
+						// if the time is during the event and the form is
+						// approved, then approve the form
+						if (!absence.getEvent().getEnd()
+								.before(absence.getDatetime())
+								&& !absence.getEvent().getStart()
+										.after(absence.getDatetime())
+								&& !formTimeEnd.getTime().before(
+										absence.getEvent().getStart())
+								&& !formTimeStart.getTime().after(
+										absence.getEvent().getEnd())
+								&& form.getAbsenceType() == Absence.Type.Absence) {
+							absence.setStatus(Absence.Status.Approved);
+						}
+
 					}
 				}
 			}
