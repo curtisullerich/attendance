@@ -1,0 +1,28 @@
+CACHE MANIFEST
+
+# Attendance Appcache
+# 8-18-12 v2.2.0.28
+
+NETWORK:
+/MobileApp/data/classlist
+/MobileApp/data/upload
+
+CACHE:
+FieldAppMain.html
+FieldAppTardy.html
+FieldAppAbsent.html
+/js/script.js
+/js/sha.js
+/js/common.js
+/css/base.mobile.css
+/css/custom.mobile.css
+/img/404Cy.png
+/jquery/jquery.min.js
+/jquery/jquery.mobile.min.js
+/jquery/jquery.mobile.min.css
+/jquery/images/ajax-loader.gif
+/jquery/images/ajax-loader.png
+/jquery/images/icons-18-black.png
+/jquery/images/icons-18-white.png
+/jquery/images/icons-36-black.png
+/jquery/images/icons-36-white.png

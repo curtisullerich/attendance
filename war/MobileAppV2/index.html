@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html manifest="cache.appcache">
+<head>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/underscore-min.js"></script>
+	<script type="text/javascript" src="js/json2.js"></script>
+	<script type="text/javascript" src="js/backbone-min.js"></script>
+	<script type="text/javascript" src="js/backbone-relational.js"></script>
+	<script type="text/javascript" src="js/backbone.localStorage.js"></script>
+
+	<script type="text/html" id="template-part-top">
+		<header class="hwrapper"><h1>Attendance</h1>
+			<a class="right" href="javascript: help();">Help</a>
+		</header>
+	</script>
+
+	<script type="text/html" id="template-top">
+		<header class="hwrapper"><h1>Attendance</h1>
+			<a class="right" href="javascript: help();">Help</a>
+		</header>
+	</script>
+
+	<script type="text/html" id="template-bottom">
+		<br/>
+		<footer class="fwrapper">
+			<div>
+				<p><strong>Mobile App</strong> | <a href="/">Full Site</a></p>
+				<br/>
+				<p class="light">Template &copy; 2012 <a href="http://m.iastate.edu/">Iowa State University</a></p>
+			</div>
+		</footer>
+	</script>
+
+	<script type="text/html" id="template-mainview">
+		<%= $("#template-top").html() %>
+		
+		<h1>Mobile App Main</h1>
+		
+		<ul class="navigation group drilldown panel">
+			<li class="selected">
+					<a id="tardy" href="#checkinout"><b>Tardy Check-In/Early Check-Out</b></a>
+					<a id="absent" href="#absent"><b>Report Absences</b></a>
+					<a id="upload" href="#"><b>Upload Attendance Data</b></a>
+			</li>
+		</ul>
+		
+		<ul class="navigation group drilldown panel">
+			<li class="selected">
+				<a id="update" href="#"><b>Update Class List</b></a>
+				<a class="button" id="classList">Class List Updated: <%= updated %></a>
+			</li>
+		</ul>
+
+		<%= $("#template-bottom").html() %>
+	</script>
+
+	<script type="text/html" id="template-login">
+		<%= $("#template-top").html() %>
+		
+		<div class="box">
+			<h1>TA Login</h1>
+			<form class="centeralign" id="login_form" class="ui-body ui-body-a ui-corner-all">
+				<ul class="navigation group drilldown panel">
+					<li class="selected">
+						<div class="flippedButton">
+							<table>
+								<tr>
+									<td>TA netID:</td>
+									<td><input type="text" id="loginName" placeholder="TA netID"/></td>
+								</tr>
+								<tr>
+									<td>Password:</td>
+									<td><input type="password" id="loginPassword" placeholder="password"/></td>
+								</tr>
+							</table>
+						</div>
+						<input type="submit" class="submit" value="Login"/>
+					</li>
+				</ul>
+			</form>
+		</div>
+		<%= $("#template-bottom").html() %>
+	</script>
+
+	<script type="text/html" id="template-checkinoutview">
+		<%= $("#template-top").html() %>
+
+		<div id="main" style="display: none">
+			<h1>Absence Report</h1>
+			<ul class="navigation group drilldown panel">
+				<li class="selected">
+					<div class="flippedButton">
+						<table> <!-- table 0 -->
+							<tr>
+								<td><strong>Event type </strong></td>
+								<td>
+									<form id="event" name="event" method="get">
+										<input id="rehearsalRadio" type="radio" name="eventType" value="rehearsal"/>Rehearsal
+										<input id="performanceRadio" type="radio" name="eventType" value="performance"/>Performance
+									</form>
+								</td>
+							</tr>
+							<tr>
+								<td>Start time: </td>
+								<td>
+									<form id="startAmPm" name="startAmPm" method="get">
+										<input id="startHour" size="5" type="number" name="startHour" min="01" max="12" value="4"/>
+										<input id="startMinute" size="5" type="number" name="startMinute" min="00" max="50" step="10" value="30"/>
+										<input id="startAM" type="radio" name="startrdio" value="AM"/>AM
+										<input id="startPM" type="radio" name="startrdio" value="PM" checked/>PM
+									</form>
+								</td>
+							</tr>
+							<tr>
+								<td>End time:</td>
+								<td>
+									<form id="endAmPm" name="endAmPm" method="get">
+										<input id="endHour" size="5" type="number" name="endHour" min="01" max="12" value="5"/>
+										<input id="endMinute" size="5" type="number" name="endMinute" min="00" max="50" step="10" value="50"/>
+										<input id="endAM" type="radio" name="endrdio" value="AM"/>AM
+										<input id="endPM" type="radio" name="endrdio" value="PM" checked/>PM
+									</form> 
+								</td>
+							</tr>
+						</table> 
+					</div>
+					<a id="editMain" href="javascript: handleEdit(true);">Remove</a>
+				</li>
+			</ul>
+			
+			<ul class="navigation group drilldown panel">
+				<li class="selected">
+					<div class="flippedButton">
+						<b>Mark all students that are absent.</b><br/>
+						<div id="checkboxes" class="checkboxes" > 
+							<form id="absences" name="absences" method="get" style="margin: auto"></form>
+						</div>
+					</div>
+					<a id="addOrEditButton" href="javascript: cache();">Submit</a>
+					<a id="clear" href="javascript: clearAbsences();" style="display: none">Clear Absence Data</a>
+				</li>
+			</ul>
+			
+			<ul class="navigation group drilldown panel">
+				<li class="selected">
+					<a id="viewButton" href="javascript: absencesOnOff();"><b>View Absences</b></a>
+					<div class="button">
+						<div id="eventDiv"></div>
+						<table id="eventTable" class="table"> <!-- table 1 -->
+							<tbody></tbody>
+						</table>
+						<div id="absenceDiv"></div>
+						<table id="absenceTable" class="table"> <!-- table 2 -->
+							<tbody></tbody>
+						</table>
+					</div>
+				</li>
+			</ul>
+		</div>
+						
+		<div class="box" id="login">
+			<h1>TA Absence Login</h1>
+			<form class="centeralign" id="TACredentials" onsubmit="return confirmTACredentials();">
+				<ul class="navigation group drilldown panel">
+					<li class="selected">
+						<div class="flippedButton">
+							<table>
+								<tr>
+									<td>TA netID:</td>
+									<td><input type="text" id="TA" placeholder="TA netID"/></td>
+								</tr>
+								<tr>
+									<td>Password:</td>
+									<td><input type="password" id="password" placeholder="password"/></td>
+								</tr>
+							</table>
+						</div>
+						<input type="submit" class="submit" id="submit"/>
+					</li>
+				</ul>
+			</form>
+		</div>
+
+		<%= $("#template-bottom").html() %>
+	</script>
+
+	<script type="text/javascript" src="js/sha.js"></script>
+
+	<script type="text/javascript" src="js/app.js"></script>
+	<script type="text/javascript" src="js/app/model/models.js"></script>
+	<script type="text/javascript" src="js/app/views/attendance.js"></script>
+	<script type="text/javascript" src="js/app/views/check_in_out.js"></script>
+	<script type="text/javascript" src="js/app/views/login.js"></script>
+	<script type="text/javascript" src="js/app/views/main.js"></script>
+	<script type="text/javascript" src="js/app/views/student_rank.js"></script>
+	<script type="text/javascript" src="js/bootstrap.js"></script>
+
+	<link href="css/base.mobile.css" media="all" rel="stylesheet">
+	<!--[if lte IE 8]>
+			<script>
+				(function()
+				{
+					var els = 'header,footer,section,aside,nav,article,hgroup,time,figure,figcaption'.split(',');
+					for (var i = 0; i < els.length; i++)
+						document.createElement(els[i]);
+				})();
+			</script>
+		<![endif]--> 
+	<link href="css/custom.mobile.css" media="all" rel="stylesheet">
+</head>
+<body>
+	<div id="app_view" />
+</body>
+</html>

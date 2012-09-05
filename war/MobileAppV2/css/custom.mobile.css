@@ -1,0 +1,82 @@
+.panel.drilldown > li {
+	background-color: rgb(245, 244, 237);
+}
+
+
+
+.userbox {
+	margin-top: 19px;
+	margin-bottom: 0;
+	color: white;
+	text-align: right;
+	text-shadow: 1px 1px 1px grey;
+}
+
+.userbox a {
+	color: white;
+}
+
+.userbox a:link {
+	text-decoration: none;
+}
+
+.userbox a:visited {
+	text-decoration: none;
+}
+
+.userbox a:hover {
+	text-decoration: underline;
+}
+
+table.gray-hover tbody tr:hover td {
+	background-color: #bbb;
+	cursor: default;
+}
+
+table.gray-hover tbody tr:active td {
+	background-color: #888;
+	cursor: default;
+}
+
+div.newmessagepreview {
+	color: #999;
+	height: 48px;
+	padding: 8px 0 0 12px;
+	border: 1px solid #D9D9D9 !important;
+	border-top: 1px solid silver !important;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	border-radius: 1px;
+	-webkit-border-radius: 1px;
+	-moz-border-radius: 1px;
+	-o-transition: none;
+	-webkit-transition: none;
+}
+
+div.threadresolved {
+	background-color: #ddd;
+	border-radius: 10px;
+	display: inline-block;
+	padding: 5px 10px;
+	text-shadow: #eee 0 -1px 0;
+}
+
+div.threadresolved form {
+	margin: 0px;
+}
+
+div.message-mine {
+	float: left;
+	border-top: 1px #bbb solid;
+	padding: 5px;
+	margin: 0px;
+}
+
+div.message-theirs {
+	float: right;
+	border-top: 1px #bbb solid;
+	padding: 5px;
+	margin: 0px;
+	background-color: #f9f9f9;
+}

@@ -1,0 +1,16 @@
+		<h1>Mobile App Main</h1>
+		
+		<ul class="navigation group drilldown panel">
+			<li class="selected">
+					<a id="tardy" href="javascript: window.location='FieldAppTardy.html'"><b>Tardy Check-In/Early Check-Out</b></a>
+					<a id="absent" href="javascript: window.location='FieldAppAbsent.html'"><b>Report Absences</b></a>
+					<a id="submit" href="javascript: loginAndUpload();"><b>Upload Attendance Data</b></a>
+			</li>
+		</ul>
+		
+		<ul class="navigation group drilldown panel">
+			<li class="selected">
+				<a id="update" href="javascript: updateList();"><b>Update Class List</b></a>
+				<a class="button" id="classList">Latest Class List: {{classlist.updated}}</a>
+			</li>
+		</ul>
