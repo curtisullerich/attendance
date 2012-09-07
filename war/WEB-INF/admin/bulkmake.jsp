@@ -56,8 +56,16 @@
 	</form>
 	
 	<form method="post" accept-charset="utf-8">
-	Refresh Datastore
-	<input type="submit" value="Refresh" name="Refresh">
+	Refresh Forms
+	<input type="submit" value="RefreshForms" name="RefreshForms">
+	</form>
+	<form method="post" accept-charset="utf-8">
+	Refresh Absences
+	<input type="submit" value="RefreshAbsences" name="RefreshAbsences">
+	</form>
+	<form method="post" accept-charset="utf-8">
+	Refresh Forms
+	<input type="submit" value="RefreshUsers" name="RefreshUsers">
 	</form>
 	<jsp:include page="/WEB-INF/template/footer.jsp" />
 </body>

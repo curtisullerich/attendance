@@ -453,22 +453,14 @@ public class AdminServlet extends AbstractBaseServlet {
 
 			page.passOffToJsp(req, resp);
 		}
-		else if (req.getParameter("Refresh") != null) {
+		else if (req.getParameter("RefreshAbsences") != null) {
 			String succex = null;
-			FormController fc = train.getFormsController();
-			UserController uc = train.getUsersController();
 			AbsenceController ac = train.getAbsenceController();
 			try {
-				for (Form f: fc.getAll()) {
-					fc.update(f);
-				}
 				for (Absence a: ac.getAll()) {
 					ac.updateAbsence(a);
 				}
-				for (User u: uc.getAll()) {
-					uc.update(u);
-				}
-				succex = "It's working! It's WORKING!!! <(' '<) <(' ')> (>' ')>";
+				succex = "Absences refreshed.";
 			}
 			catch (Throwable tehThrowable) {
 				errors.add(tehThrowable.getMessage());
@@ -477,7 +469,55 @@ public class AdminServlet extends AbstractBaseServlet {
 			}
 			PageBuilder page = new PageBuilder(Page.bulkmake, SERVLET_PATH);
 
-			page.setPageTitle("makebulk");
+			page.setPageTitle("bulkmake");
+
+			page.setAttribute("success_message", succex);
+
+			page.setAttribute("error_messages", errors);
+
+			page.passOffToJsp(req, resp);
+		}
+		else if (req.getParameter("RefreshForms") != null) {
+			String succex = null;
+			FormController fc = train.getFormsController();
+			try {
+				for (Form f: fc.getAll()) {
+					fc.update(f);
+				}
+				succex = "Forms refreshed.";
+			}
+			catch (Throwable tehThrowable) {
+				errors.add(tehThrowable.getMessage());
+				log.severe(tehThrowable.getMessage());
+				log.severe(tehThrowable.getStackTrace().toString());
+			}
+			PageBuilder page = new PageBuilder(Page.bulkmake, SERVLET_PATH);
+
+			page.setPageTitle("bulkmake");
+
+			page.setAttribute("success_message", succex);
+
+			page.setAttribute("error_messages", errors);
+
+			page.passOffToJsp(req, resp);
+		}
+		else if (req.getParameter("RefreshUsers") != null) {
+			String succex = null;
+			UserController uc = train.getUsersController();
+			try {
+				for (User u: uc.getAll()) {
+					uc.update(u);
+				}
+				succex = "Users refreshed. <(' '<) <(' ')> (>' ')>";
+			}
+			catch (Throwable tehThrowable) {
+				errors.add(tehThrowable.getMessage());
+				log.severe(tehThrowable.getMessage());
+				log.severe(tehThrowable.getStackTrace().toString());
+			}
+			PageBuilder page = new PageBuilder(Page.bulkmake, SERVLET_PATH);
+
+			page.setPageTitle("bulkmake");
 
 			page.setAttribute("success_message", succex);
 
