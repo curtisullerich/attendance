@@ -54,6 +54,11 @@
 	<input  type="submit" value="Delete All" name="DeleteAll" onclick="return superconfirm()">
 	
 	</form>
+	
+	<form method="post" accept-charset="utf-8">
+	Refresh Datastore
+	<input type="submit" value="Refresh" name="Refresh">
+	</form>
 	<jsp:include page="/WEB-INF/template/footer.jsp" />
 </body>
 </html>

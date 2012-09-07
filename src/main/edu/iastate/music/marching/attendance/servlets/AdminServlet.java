@@ -1,6 +1,5 @@
 package edu.iastate.music.marching.attendance.servlets;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -8,7 +7,6 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,20 +14,21 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.google.appengine.api.datastore.Email;
 import com.google.common.collect.Lists;
 
+import edu.iastate.music.marching.attendance.controllers.AbsenceController;
 import edu.iastate.music.marching.attendance.controllers.AuthController;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
+import edu.iastate.music.marching.attendance.controllers.FormController;
 import edu.iastate.music.marching.attendance.controllers.UserController;
+import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.AttendanceDatastore;
+import edu.iastate.music.marching.attendance.model.Form;
 import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.model.migration.MigrationException;
 import edu.iastate.music.marching.attendance.util.PageBuilder;
@@ -449,6 +448,38 @@ public class AdminServlet extends AbstractBaseServlet {
 			page.setPageTitle("makebulk");
 
 			page.setAttribute("success_message", success);
+
+			page.setAttribute("error_messages", errors);
+
+			page.passOffToJsp(req, resp);
+		}
+		else if (req.getParameter("Refresh") != null) {
+			String succex = null;
+			FormController fc = train.getFormsController();
+			UserController uc = train.getUsersController();
+			AbsenceController ac = train.getAbsenceController();
+			try {
+				for (Form f: fc.getAll()) {
+					fc.update(f);
+				}
+				for (Absence a: ac.getAll()) {
+					ac.updateAbsence(a);
+				}
+				for (User u: uc.getAll()) {
+					uc.update(u);
+				}
+				succex = "It's working! It's WORKING!!! <(' '<) <(' ')> (>' ')>";
+			}
+			catch (Throwable tehThrowable) {
+				errors.add(tehThrowable.getMessage());
+				log.severe(tehThrowable.getMessage());
+				log.severe(tehThrowable.getStackTrace().toString());
+			}
+			PageBuilder page = new PageBuilder(Page.bulkmake, SERVLET_PATH);
+
+			page.setPageTitle("makebulk");
+
+			page.setAttribute("success_message", succex);
 
 			page.setAttribute("error_messages", errors);
 
