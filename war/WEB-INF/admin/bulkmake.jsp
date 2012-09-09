@@ -54,6 +54,19 @@
 	<input  type="submit" value="Delete All" name="DeleteAll" onclick="return superconfirm()">
 	
 	</form>
+	
+	<form method="post" accept-charset="utf-8">
+	Refresh Forms
+	<input type="submit" value="RefreshForms" name="RefreshForms">
+	</form>
+	<form method="post" accept-charset="utf-8">
+	Refresh Absences
+	<input type="submit" value="RefreshAbsences" name="RefreshAbsences">
+	</form>
+	<form method="post" accept-charset="utf-8">
+	Refresh Forms
+	<input type="submit" value="RefreshUsers" name="RefreshUsers">
+	</form>
 	<jsp:include page="/WEB-INF/template/footer.jsp" />
 </body>
 </html>

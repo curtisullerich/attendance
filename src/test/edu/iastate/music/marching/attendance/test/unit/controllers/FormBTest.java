@@ -6936,4 +6936,314 @@ public class FormBTest extends AbstractTest {
 		assertEquals(Absence.Status.Approved, a.getStatus());
 	}
 
+	/**
+	 * class times overlap event start, tardy time during event, outside class,
+	 * form for an absence
+	 */
+	@Test
+	public void testTardyWithFormB101() {
+		DataTrain train = getDataTrain();
+
+		UserController uc = train.getUsersController();
+		EventController ec = train.getEventController();
+		AbsenceController ac = train.getAbsenceController();
+		FormController fc = train.getFormsController();
+
+		User student = Users.createStudent(uc, "student1", "123456789", "John",
+				"Cox", 2, "major", User.Section.AltoSax);
+
+		Calendar startdate = Calendar.getInstance();
+		startdate.set(2012, 7, 6, 0, 0, 0);
+		Calendar enddate = Calendar.getInstance();
+		enddate.set(2012, 11, 20, 0, 0, 0);
+		Calendar starttime = Calendar.getInstance();
+		starttime.set(0, 0, 0, 16, 10, 0);
+		Calendar endtime = Calendar.getInstance();
+		endtime.set(0, 0, 0, 17, 0, 0);
+
+		// a normal rehearsal
+		Calendar eventstart = Calendar.getInstance();
+		eventstart.set(2012, 7, 6, 16, 30, 0);
+		eventstart.set(Calendar.MILLISECOND, 0);
+		Calendar eventend = Calendar.getInstance();
+		eventend.set(2012, 7, 6, 17, 50, 0);
+
+		Calendar tardytime = Calendar.getInstance();
+		tardytime.set(2012, 7, 6, 17, 30, 0);
+		tardytime.set(Calendar.MILLISECOND, 0);
+
+		Form form = fc.createFormB(student, "department", "course", "section",
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
+
+		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
+				eventend.getTime());
+		Absence a = ac.createOrUpdateTardy(student, tardytime.getTime());
+
+		form.setStatus(Form.Status.Approved);
+		fc.update(form);
+		a = ac.updateAbsence(a);
+
+		assertEquals(Absence.Status.Approved, a.getStatus());
+	}
+
+	/**
+	 * class times overlap event start, ECO time during event, outside class,
+	 * form for an absence
+	 */
+	@Test
+	public void testECOWithFormB101() {
+		DataTrain train = getDataTrain();
+
+		UserController uc = train.getUsersController();
+		EventController ec = train.getEventController();
+		AbsenceController ac = train.getAbsenceController();
+		FormController fc = train.getFormsController();
+
+		User student = Users.createStudent(uc, "student1", "123456789", "John",
+				"Cox", 2, "major", User.Section.AltoSax);
+
+		Calendar startdate = Calendar.getInstance();
+		startdate.set(2012, 7, 6, 0, 0, 0);
+		Calendar enddate = Calendar.getInstance();
+		enddate.set(2012, 11, 20, 0, 0, 0);
+		Calendar starttime = Calendar.getInstance();
+		starttime.set(0, 0, 0, 16, 10, 0);
+		Calendar endtime = Calendar.getInstance();
+		endtime.set(0, 0, 0, 17, 0, 0);
+
+		// a normal rehearsal
+		Calendar eventstart = Calendar.getInstance();
+		eventstart.set(2012, 7, 6, 16, 30, 0);
+		eventstart.set(Calendar.MILLISECOND, 0);
+		Calendar eventend = Calendar.getInstance();
+		eventend.set(2012, 7, 6, 17, 50, 0);
+
+		Calendar tardytime = Calendar.getInstance();
+		tardytime.set(2012, 7, 6, 17, 30, 0);
+		tardytime.set(Calendar.MILLISECOND, 0);
+
+		Form form = fc.createFormB(student, "department", "course", "section",
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
+
+		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
+				eventend.getTime());
+		Absence a = ac
+				.createOrUpdateEarlyCheckout(student, tardytime.getTime());
+
+		form.setStatus(Form.Status.Approved);
+		fc.update(form);
+		a = ac.updateAbsence(a);
+
+		assertEquals(Absence.Status.Approved, a.getStatus());
+	}
+
+	/**
+	 * class times overlap event start, tardy time during event, outside class,
+	 * form for an absence
+	 */
+	@Test
+	public void testTardyWithPendingFormB101() {
+		DataTrain train = getDataTrain();
+
+		UserController uc = train.getUsersController();
+		EventController ec = train.getEventController();
+		AbsenceController ac = train.getAbsenceController();
+		FormController fc = train.getFormsController();
+
+		User student = Users.createStudent(uc, "student1", "123456789", "John",
+				"Cox", 2, "major", User.Section.AltoSax);
+
+		Calendar startdate = Calendar.getInstance();
+		startdate.set(2012, 7, 6, 0, 0, 0);
+		Calendar enddate = Calendar.getInstance();
+		enddate.set(2012, 11, 20, 0, 0, 0);
+		Calendar starttime = Calendar.getInstance();
+		starttime.set(0, 0, 0, 16, 10, 0);
+		Calendar endtime = Calendar.getInstance();
+		endtime.set(0, 0, 0, 17, 0, 0);
+
+		// a normal rehearsal
+		Calendar eventstart = Calendar.getInstance();
+		eventstart.set(2012, 7, 6, 16, 30, 0);
+		eventstart.set(Calendar.MILLISECOND, 0);
+		Calendar eventend = Calendar.getInstance();
+		eventend.set(2012, 7, 6, 17, 50, 0);
+
+		Calendar tardytime = Calendar.getInstance();
+		tardytime.set(2012, 7, 6, 17, 30, 0);
+		tardytime.set(Calendar.MILLISECOND, 0);
+
+		Form form = fc.createFormB(student, "department", "course", "section",
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
+
+		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
+				eventend.getTime());
+		Absence a = ac.createOrUpdateTardy(student, tardytime.getTime());
+
+		form.setStatus(Form.Status.Pending);
+		fc.update(form);
+		a = ac.updateAbsence(a);
+		assertEquals(Absence.Status.Pending, a.getStatus());
+	}
+
+	/**
+	 * class times overlap event start, ECO time during event, outside class,
+	 * form for an absence
+	 */
+	@Test
+	public void testECOWithPendingFormB101() {
+		DataTrain train = getDataTrain();
+
+		UserController uc = train.getUsersController();
+		EventController ec = train.getEventController();
+		AbsenceController ac = train.getAbsenceController();
+		FormController fc = train.getFormsController();
+
+		User student = Users.createStudent(uc, "student1", "123456789", "John",
+				"Cox", 2, "major", User.Section.AltoSax);
+
+		Calendar startdate = Calendar.getInstance();
+		startdate.set(2012, 7, 6, 0, 0, 0);
+		Calendar enddate = Calendar.getInstance();
+		enddate.set(2012, 11, 20, 0, 0, 0);
+		Calendar starttime = Calendar.getInstance();
+		starttime.set(0, 0, 0, 16, 10, 0);
+		Calendar endtime = Calendar.getInstance();
+		endtime.set(0, 0, 0, 17, 0, 0);
+
+		// a normal rehearsal
+		Calendar eventstart = Calendar.getInstance();
+		eventstart.set(2012, 7, 6, 16, 30, 0);
+		eventstart.set(Calendar.MILLISECOND, 0);
+		Calendar eventend = Calendar.getInstance();
+		eventend.set(2012, 7, 6, 17, 50, 0);
+
+		Calendar tardytime = Calendar.getInstance();
+		tardytime.set(2012, 7, 6, 17, 30, 0);
+		tardytime.set(Calendar.MILLISECOND, 0);
+
+		Form form = fc.createFormB(student, "department", "course", "section",
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
+
+		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
+				eventend.getTime());
+		Absence a = ac
+				.createOrUpdateEarlyCheckout(student, tardytime.getTime());
+
+		form.setStatus(Form.Status.Pending);
+		fc.update(form);
+		a = ac.updateAbsence(a);
+		assertEquals(Absence.Status.Pending, a.getStatus());
+	}
+
+	/**
+	 * class times overlap event start, tardy time during event, outside class,
+	 * form for an absence
+	 */
+	@Test
+	public void testTardyWithDeniedFormB101() {
+		DataTrain train = getDataTrain();
+
+		UserController uc = train.getUsersController();
+		EventController ec = train.getEventController();
+		AbsenceController ac = train.getAbsenceController();
+		FormController fc = train.getFormsController();
+
+		User student = Users.createStudent(uc, "student1", "123456789", "John",
+				"Cox", 2, "major", User.Section.AltoSax);
+
+		Calendar startdate = Calendar.getInstance();
+		startdate.set(2012, 7, 6, 0, 0, 0);
+		Calendar enddate = Calendar.getInstance();
+		enddate.set(2012, 11, 20, 0, 0, 0);
+		Calendar starttime = Calendar.getInstance();
+		starttime.set(0, 0, 0, 16, 10, 0);
+		Calendar endtime = Calendar.getInstance();
+		endtime.set(0, 0, 0, 17, 0, 0);
+
+		// a normal rehearsal
+		Calendar eventstart = Calendar.getInstance();
+		eventstart.set(2012, 7, 6, 16, 30, 0);
+		eventstart.set(Calendar.MILLISECOND, 0);
+		Calendar eventend = Calendar.getInstance();
+		eventend.set(2012, 7, 6, 17, 50, 0);
+
+		Calendar tardytime = Calendar.getInstance();
+		tardytime.set(2012, 7, 6, 17, 30, 0);
+		tardytime.set(Calendar.MILLISECOND, 0);
+
+		Form form = fc.createFormB(student, "department", "course", "section",
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
+
+		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
+				eventend.getTime());
+		Absence a = ac.createOrUpdateTardy(student, tardytime.getTime());
+
+		form.setStatus(Form.Status.Denied);
+		fc.update(form);
+		a = ac.updateAbsence(a);
+		assertEquals(Absence.Status.Pending, a.getStatus());
+	}
+
+	/**
+	 * class times overlap event start, ECO time during event, outside class,
+	 * form for an absence
+	 */
+	@Test
+	public void testECOWithDeniedFormB101() {
+		DataTrain train = getDataTrain();
+
+		UserController uc = train.getUsersController();
+		EventController ec = train.getEventController();
+		AbsenceController ac = train.getAbsenceController();
+		FormController fc = train.getFormsController();
+
+		User student = Users.createStudent(uc, "student1", "123456789", "John",
+				"Cox", 2, "major", User.Section.AltoSax);
+
+		Calendar startdate = Calendar.getInstance();
+		startdate.set(2012, 7, 6, 0, 0, 0);
+		Calendar enddate = Calendar.getInstance();
+		enddate.set(2012, 11, 20, 0, 0, 0);
+		Calendar starttime = Calendar.getInstance();
+		starttime.set(0, 0, 0, 16, 10, 0);
+		Calendar endtime = Calendar.getInstance();
+		endtime.set(0, 0, 0, 17, 0, 0);
+
+		// a normal rehearsal
+		Calendar eventstart = Calendar.getInstance();
+		eventstart.set(2012, 7, 6, 16, 30, 0);
+		eventstart.set(Calendar.MILLISECOND, 0);
+		Calendar eventend = Calendar.getInstance();
+		eventend.set(2012, 7, 6, 17, 50, 0);
+
+		Calendar tardytime = Calendar.getInstance();
+		tardytime.set(2012, 7, 6, 17, 30, 0);
+		tardytime.set(Calendar.MILLISECOND, 0);
+
+		Form form = fc.createFormB(student, "department", "course", "section",
+				"building", startdate.getTime(), enddate.getTime(),
+				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
+				"details", 10, Absence.Type.Absence);
+
+		Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
+				eventend.getTime());
+		Absence a = ac
+				.createOrUpdateEarlyCheckout(student, tardytime.getTime());
+
+		form.setStatus(Form.Status.Denied);
+		fc.update(form);
+		a = ac.updateAbsence(a);
+		assertEquals(Absence.Status.Pending, a.getStatus());
+	}
 }
