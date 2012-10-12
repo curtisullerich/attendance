@@ -28,7 +28,7 @@
 
 				<c:url var="absence_url_view" value="viewabsence">
 					<c:param name="absenceid" value="${absence.id}"/>
-					<c:param name="redirect" value="${pagetemplate.uri}"/>
+					<%--c:param name="redirect" value="${pagetemplate.uri}"/--%>
 				</c:url>
 				<tr>
 					<c:if test="${empty absence.event}">

@@ -31,23 +31,23 @@
 						<c:forEach items="${forms}" var="form">
 							<c:url var="form_url_view" value="forms/view">
 								<c:param name="id" value="${form.id}"/>
-								<c:param name="redirect" value="${pagetemplate.uri}"/>
+								<%--c:param name="redirect" value="${pagetemplate.uri}"/--%>
 							</c:url>
 							<c:url var="form_url_remove" value="forms">
 								<c:param name="id" value="${form.id}"/>
 							</c:url>
 							<c:url var="form_url_messages" value="messages/viewthread">
 								<c:param name="id" value="${form.id}"/>
-								<c:param name="redirect" value="${pagetemplate.uri}"/>
+								<%-- c:param name="redirect" value="${pagetemplate.uri}"/ --%>
 							</c:url>
 
 							<tr id="row_form_<c:out value="${form.id}" />">
 						<tr>
 							<%--Note that I did this because the last two columns are buttons. --%>
-							<td onclick="window.location='<c:out value="${form_url_view}" />'">${form.student.id}</td>
-							<td onclick="window.location='<c:out value="${form_url_view}" />'">${form.type}</td>
-							<td onclick="window.location='<c:out value="${form_url_view}" />'">${form.status}</td>
-							<td onclick="window.location='<c:out value="${form_url_view}" />'">
+							<td onclick="window.open('<c:out value="${form_url_view}" />')">${form.student.id}</td>
+							<td onclick="window.open('<c:out value="${form_url_view}" />')">${form.type}</td>
+							<td onclick="window.open('<c:out value="${form_url_view}" />')">${form.status}</td>
+							<td onclick="window.open('<c:out value="${form_url_view}" />')">
 							<p style="overflow:hidden;">								
 								<c:choose>
 									<c:when test="${form.type.a || form.type.c}">							

@@ -70,7 +70,7 @@
 			<input type="hidden" value="${absence.id}" name="absenceid"/>
 			<input type="hidden" value="${absence.event.id}" name="eventid"/>
 			<input type="submit" value="Submit" name="SubmitChanges" />
-			<input type="button" value="Cancel" name="Cancel" onclick="window.location = '/director/attendance'"/>
+			<%--input type="button" value="Cancel" name="Cancel" onclick="window.location = '/director/attendance'"/--%>
 <%-- 			<c:if test="${not new}"> --%>
 <%-- 				<input type="button" value="Messages" name="Message" onclick="window.location = '/director/messages/viewthread?id=${absence.messageThread.id}'"/> --%>
 <%-- 			</c:if>	 --%>

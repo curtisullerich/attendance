@@ -326,10 +326,10 @@ public class DirectorServlet extends AbstractBaseServlet {
 					.setAttribute(
 							"success_message",
 							success
-									+ ", please close this window to return to the attendance table.")
+									+ ", please close this window to return to the previous page.")
 					.passOffToJsp(req, resp);
 		} else {
-			showAttendance(req, resp, errors, success);
+			showStudent(req, resp, errors, success);
 		}
 	}
 
@@ -451,7 +451,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		}
 
 		// add a success or error message
-		showAttendance(req, resp, errors, success);
+		showStudent(req, resp, errors, success);
 	}
 
 	private void postEvent(HttpServletRequest req, HttpServletResponse resp)
@@ -620,15 +620,15 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 				// Do not redirect if in a new window, instead show a success
 				// message
-				if ("true".equals(req.getParameter("newindow"))) {
+//				if ("true".equals(req.getParameter("newindow"))) {
 					viewAbsence(
 							req,
 							resp,
 							errors,
-							"Successfully updated absence, close this window to return to the attendance table");
-				} else {
-					resp.sendRedirect(pageToUrl(Page.attendance, SERVLET_PATH));
-				}
+							"Successfully updated absence, close this window to return to the previous page");
+//				} else {
+//					resp.sendRedirect(pageToUrl(Page.attendance, SERVLET_PATH));
+//				}
 			} else {
 				viewAbsence(req, resp, errors, "");
 			}
@@ -645,18 +645,18 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 			// Do not redirect if in a new window, instead show a success
 			// message
-			if ("true".equals(req.getParameter("newindow"))) {
+//			if ("true".equals(req.getParameter("newindow"))) {
 				new PageBuilder(Page.postdelete, SERVLET_PATH)
 						.setAttribute(
 								"success_message",
-								"Successfully deleted absence, close this window to return to the attendance table")
+								"Successfully deleted absence, close this window to return to the previous page.")
 						.passOffToJsp(req, resp);
-			} else {
-				// Redirect
-				resp.sendRedirect(pageToUrl(Page.attendance, SERVLET_PATH));
-				showAttendance(req, resp, errors,
-						"Successfully deleted absence.");
-			}
+//			} else {
+//				// Redirect
+//				resp.sendRedirect(pageToUrl(Page.attendance, SERVLET_PATH));
+//				showStudent(req, resp, errors,
+//						"Successfully deleted absence.");
+//			}
 		} catch (NumberFormatException e) {
 			LOG.severe("Unable to find absence to delete.");
 			errors.add("Internal error, unable to delete absence.");
@@ -1104,7 +1104,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 			errors.add("Could not find the absence.");
 		}
 
-		if (validInput) {
+//		if (validInput) {
 			page.setPageTitle("View Absence");
 			page.setAttribute("absence", checkedAbsence);
 			page.setAttribute("types", Absence.Type.values());
@@ -1112,9 +1112,9 @@ public class DirectorServlet extends AbstractBaseServlet {
 			page.setAttribute("error_messages", incomingErrors);
 			page.setAttribute("success_message", success_message);
 			page.passOffToJsp(req, resp);
-		} else {
-			showAttendance(req, resp, errors, success_message);
-		}
+//		} else {
+//			showAttendance(req, resp, errors, success_message);
+//		}
 	}
 
 	private void showStudent(HttpServletRequest req, HttpServletResponse resp,

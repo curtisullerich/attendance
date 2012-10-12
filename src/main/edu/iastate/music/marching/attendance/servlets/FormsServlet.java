@@ -2,6 +2,7 @@ package edu.iastate.music.marching.attendance.servlets;
 
 import java.io.IOException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
@@ -307,7 +308,7 @@ public class FormsServlet extends AbstractBaseServlet {
 
 			String url = getIndexURL() + "?success_message="
 					+ URLEncoder.encode(success, "UTF-8");
-			// url = resp.encodeRedirectURL(url);
+			 url = resp.encodeRedirectURL(url);
 
 			resp.sendRedirect(url);
 		} else {

@@ -25,7 +25,7 @@
 				</thead>
 				<tbody>
 				<c:forEach items="${threads}" var="thread" varStatus="loopCount">
-					<tr onclick="window.location='messages/viewthread?id=<c:out value="${thread.id}"/>'">
+					<tr onclick="window.open('messages/viewthread?id=<c:out value="${thread.id}"/>')">
 						<td>
 							<c:if test="${!thread.resolved}"><strong></c:if>
 							<p>
