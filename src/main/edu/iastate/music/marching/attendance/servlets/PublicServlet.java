@@ -23,7 +23,7 @@ public class PublicServlet extends AbstractBaseServlet {
 	private static final long serialVersionUID = 9184644423443871525L;
 
 	private enum Page {
-		verify, bugreport;
+		verify, bugreport, faq;
 	}
 
 	private static final String SERVLET_PATH = "public";
@@ -42,10 +42,20 @@ public class PublicServlet extends AbstractBaseServlet {
 		case verify:
 			verifyFormD(req, resp);
 			break;
+		case faq:
+			faq(req, resp);
+			break;
 		default:
 			ErrorServlet.showError(req, resp, 404);
 		}
 
+	}
+
+	private void faq(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		PageBuilder page = new PageBuilder(Page.faq, SERVLET_PATH);
+		page.setPageTitle("Attendance FAQ");
+		page.passOffToJsp(req, resp);
 	}
 
 	@Override
@@ -129,7 +139,7 @@ public class PublicServlet extends AbstractBaseServlet {
 		}
 		if (isValid) {
 			Form f = fc.getByHashedId(hashedId);
-			if (f != null) { //doesn't need to be pending
+			if (f != null) { // doesn't need to be pending
 				if (status.equals("a")) {
 					f.setEmailStatus(Form.Status.Approved);
 					success_message = "Successfully approved the form.";

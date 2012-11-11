@@ -43,7 +43,7 @@
 		<dl class="block-layout">
 
 			<dt>
-				<label class='required'>Date:</label>
+				<label class='required'>Date of the absence:</label>
 			</dt>
 			<dd>
 				<input autofocus id='startMonth' size='5' type='number'

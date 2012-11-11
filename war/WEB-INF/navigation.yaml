@@ -14,6 +14,9 @@ links:
 
         - href: /student/info
           text: Edit Info
+          
+        - href: /public/faq
+          text: FAQ
 
     - href: /ta/
       text: TA
@@ -52,6 +55,9 @@ links:
 
         - href: /director/export
           text: Grade Export
+
+        - href: /public/faq
+          text: FAQ
 
     - href: /admin/
       auth: [Director,Admin]

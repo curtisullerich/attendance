@@ -41,7 +41,7 @@
 					<label for="AmountWorked">Minutes</label>
 				</dd>
 				
-				<dt><label for="StartMonth" class="required">Date</label></dt>
+				<dt><label for="StartMonth" class="required">Date of the absence</label></dt>
 				<dd>
 					<input id='startMonth' size='5' type='number' name='StartMonth' min='01' max='12' placeholder='MM' value='<c:out value="${empty StartMonth ? '' : StartMonth+1}" />' />
 					/

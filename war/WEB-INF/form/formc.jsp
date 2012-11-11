@@ -32,7 +32,7 @@
 		
 			<dl class="block-layout">
 
-				<dt ><label class="required">Date</label></dt>
+				<dt ><label class="required">Date of the absence</label></dt>
 				<dd>
 					<input autofocus id='Month' size='5' type='number' name='Month' min='01' max='12' placeholder='MM' value='<c:out value="${empty StartMonth ? '' : StartMonth+1}" />' />
 					/
