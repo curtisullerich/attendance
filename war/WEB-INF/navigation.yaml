@@ -9,9 +9,6 @@ links:
         - href: /student/forms
           text: Forms
 
-        - href: /student/messages
-          text: Messages
-
         - href: /student/info
           text: Edit Info
           
@@ -40,9 +37,6 @@ links:
 
         - href: /director/stats
           text: Statistics
-
-        - href: /director/messages
-          text: Messages
 
         - href: /director/unanchored
           text: Un-Anchored

@@ -30,7 +30,6 @@ import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.AttendanceDatastore;
 import edu.iastate.music.marching.attendance.model.Form;
 import edu.iastate.music.marching.attendance.model.User;
-import edu.iastate.music.marching.attendance.model.migration.MigrationException;
 import edu.iastate.music.marching.attendance.util.PageBuilder;
 import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
@@ -89,9 +88,6 @@ public class AdminServlet extends AbstractBaseServlet {
 			case data:
 				showDataPage(req, resp);
 				break;
-			case data_migrate:
-				showDataMigratePage(req, resp);
-				break;
 			case register:
 				showDirectorRegistrationPage(req, resp);
 				break;
@@ -135,9 +131,6 @@ public class AdminServlet extends AbstractBaseServlet {
 				break;
 			case load:
 				postImportData(req, resp);
-				break;
-			case data_migrate:
-				doDataMigration(req, resp);
 				break;
 			case register:
 				doDirectorRegistration(req, resp);
@@ -318,47 +311,6 @@ public class AdminServlet extends AbstractBaseServlet {
 		// AttendanceDatastore.VERSION);
 		//
 		// page.passOffToJsp(req, resp);
-	}
-
-	private void showDataMigratePage(HttpServletRequest req,
-			HttpServletResponse resp) throws ServletException, IOException {
-
-		PageBuilder page = new PageBuilder(Page.data_migrate, SERVLET_PATH);
-
-		page.setPageTitle("Data Migration");
-
-		page.setAttribute("version", req.getParameter("version"));
-
-		page.setAttribute("ObjectDatastoreVersion", AttendanceDatastore.VERSION);
-
-		page.passOffToJsp(req, resp);
-	}
-
-	private void doDataMigration(HttpServletRequest req,
-			HttpServletResponse resp) throws ServletException, IOException {
-
-		int fromVersion = new Integer(req.getParameter("version"));
-
-		DataTrain train = DataTrain.getAndStartTrain();
-
-		PageBuilder page = new PageBuilder(Page.data_migrate, SERVLET_PATH);
-
-		try {
-			train.getMigrationController().upgrade(fromVersion);
-
-			page.setAttribute("success_message",
-					"Successfully migrated data from version " + fromVersion);
-		} catch (MigrationException e) {
-			log.log(Level.WARNING, "Could not migrate from version "
-					+ fromVersion, e);
-			page.setAttribute("error_messages", new String[] { e.toString() });
-		}
-
-		page.setPageTitle("Data Migration");
-
-		page.setAttribute("version", req.getParameter("version"));
-
-		page.passOffToJsp(req, resp);
 	}
 
 	private void showDirectorRegistrationPage(HttpServletRequest req,

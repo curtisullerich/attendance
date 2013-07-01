@@ -13,7 +13,6 @@ import edu.iastate.music.marching.attendance.controllers.AbsenceController;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.EventController;
 import edu.iastate.music.marching.attendance.controllers.FormController;
-import edu.iastate.music.marching.attendance.controllers.MessagingController;
 import edu.iastate.music.marching.attendance.controllers.MobileDataController;
 import edu.iastate.music.marching.attendance.controllers.UserController;
 import edu.iastate.music.marching.attendance.model.Absence;
@@ -94,7 +93,7 @@ public class UserControllerTest extends AbstractTest {
 	 * 
 	 * This includes:
 	 * 
-	 * Absences, Forms, MessageThreads, mobile data uploads
+	 * Absences, Forms mobile data uploads
 	 * 
 	 * @author Daniel Stiner <daniel.stiner@gmail.com>
 	 */
@@ -106,7 +105,6 @@ public class UserControllerTest extends AbstractTest {
 		UserController uc = train.getUsersController();
 		AbsenceController ac = train.getAbsenceController();
 		FormController fc = train.getFormsController();
-		MessagingController mc = train.getMessagingController();
 		MobileDataController mdc = train.getMobileDataController();
 
 		// Student 1 setup, the user to be deleted
@@ -117,9 +115,6 @@ public class UserControllerTest extends AbstractTest {
 		ac.createOrUpdateAbsence(student1, null);
 
 		Form student1Form = fc.createFormA(student1, new Date(), "Some reason");
-
-		mc.addMessage(student1Form.getMessageThread(), student1,
-				"test message!");
 
 		mdc.pushMobileData(SINGLE_ABSENCE_STUDENT1_TESTDATA, student1);
 
@@ -132,16 +127,7 @@ public class UserControllerTest extends AbstractTest {
 		Form student2Form = fc.createFormA(student2, new Date(),
 				"Some other reason");
 
-		mc.addMessage(student2Form.getMessageThread(), student2,
-				"test message!");
-
 		mdc.pushMobileData(SINGLE_ABSENCE_STUDENT2_TESTDATA, student2);
-
-		// Shared state
-		mc.addMessage(student1Form.getMessageThread(), student2,
-				"test message!");
-		mc.addMessage(student2Form.getMessageThread(), student1,
-				"test message!");
 
 		// Act
 		uc.delete(student1);
@@ -165,10 +151,6 @@ public class UserControllerTest extends AbstractTest {
 		// Check only student2's form remains
 		assertEquals(1, fc.getAll().size());
 		assertEquals(1, fc.get(survivingStudent).size());
-
-		// Check shared message thread owned by student1 was deleted
-		assertEquals(3, mc.getAll().size());
-		assertEquals(3, mc.get(survivingStudent).size());
 
 		// Check mobile data upload from student2 remains
 		assertEquals(2, mdc.getUploads().size());

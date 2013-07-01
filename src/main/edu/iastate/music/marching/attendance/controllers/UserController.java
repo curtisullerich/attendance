@@ -445,24 +445,19 @@ public class UserController extends AbstractController {
 	 * 
 	 * This includes:
 	 * 
-	 * Absences, Forms, MessageThreads, mobile data uploads
+	 * Absences, Forms, mobile data uploads
 	 */
 	public void delete(User user) {
 		ObjectDatastore od = this.datatrain.getDataStore();
 
 		// Absences
-		// + associated messagethread instances
 		this.datatrain.getAbsenceController().delete(user);
 
 		// Forms
-		// + associated messagethread instances
 		this.datatrain.getFormsController().delete(user);
 
 		// Remove any Mobile Data uploads
 		this.datatrain.getMobileDataController().scrubUploader(user);
-
-		// Remove user and its messages from any conversations
-		this.datatrain.getMessagingController().scrubParticipant(user);
 
 		od.delete(user);
 	}

@@ -28,7 +28,7 @@
 			<br>
 			<br>
 			<b>Why is my form not approved?</b><br>
-			Dr. Richards must approve all forms. You can add a message to any form by clicking on the form and using the message box at the bottom of the page to add a message. Dr. Richards will get a notification of this message.
+			Dr. Richards must approve all forms. Email the attendance account to to ask why this has not happened.
 			<br>
 			<br>
 			<b>Why is my tardy, absence, or early checkout not approved?</b><br>

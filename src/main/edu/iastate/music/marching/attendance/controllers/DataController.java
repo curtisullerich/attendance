@@ -1,11 +1,7 @@
 package edu.iastate.music.marching.attendance.controllers;
 
 import java.io.Reader;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
@@ -20,34 +16,13 @@ import javax.mail.internet.MimeMessage;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
-import com.google.code.twig.annotation.Entity;
-import com.google.code.twig.annotation.Id;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonNull;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
-import com.google.gson.TypeAdapter;
-import com.google.gson.TypeAdapterFactory;
-import com.google.gson.annotations.Expose;
-import com.google.gson.reflect.TypeToken;
-import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
-
 import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.AppData;
-import edu.iastate.music.marching.attendance.model.AttendanceDatastore;
 import edu.iastate.music.marching.attendance.model.DatastoreVersion;
 import edu.iastate.music.marching.attendance.model.Event;
 import edu.iastate.music.marching.attendance.model.Form;
 import edu.iastate.music.marching.attendance.model.GsonWithPartials;
-import edu.iastate.music.marching.attendance.model.MessageThread;
 import edu.iastate.music.marching.attendance.model.MobileDataUpload;
-import edu.iastate.music.marching.attendance.model.ModelFactory;
 import edu.iastate.music.marching.attendance.model.User;
 
 @interface FullyExport {
@@ -126,8 +101,6 @@ public class DataController extends AbstractController {
 
 		dump.forms = dataTrain.getFormsController().getAll();
 
-		dump.messages = dataTrain.getMessagingController().getAll();
-
 		dump.mobileData = dataTrain.getMobileDataController().getUploads();
 
 		dump.users = dataTrain.getUsersController().getAll();
@@ -153,18 +126,14 @@ public class DataController extends AbstractController {
 
 		// Then things that depend on the previous
 		// injecting the previous things first
-		importAll(dump.messages);
 		importAll(dump.absences);
-		importAll(dump.messages);
 		importAll(dump.forms);
 		
 		// Re-import a couple things that probably got messed up by the references
 		importAll(dump.users);
 		importAll(dump.events);
-		inject(dump.messages);
 		inject(dump.absences);
 		inject(dump.forms);
-		importAll(dump.messages);
 		importAll(dump.absences);
 		importAll(dump.forms);
 
@@ -212,16 +181,7 @@ public class DataController extends AbstractController {
 									(event).getId());
 							field.set(item, event);
 						}
-					} else if (MessageThread.class.equals(type)) {
-						// Try to load MessageThread
-						MessageThread thread = (MessageThread) field.get(item);
-						if (thread != null) {
-							thread = dataTrain.getMessagingController().get(
-									(thread).getId());
-							field.set(item, thread);
-						}
 					}
-
 				} catch (IllegalArgumentException e) {
 					// Skip field
 				} catch (IllegalAccessException e) {
@@ -254,7 +214,6 @@ public class DataController extends AbstractController {
 		public List<DatastoreVersion> versions;
 		public List<Event> events;
 		public List<Form> forms;
-		public List<MessageThread> messages;
 		public List<MobileDataUpload> mobileData;
 		public List<User> users;
 	}
@@ -265,8 +224,6 @@ public class DataController extends AbstractController {
 		this.dataTrain.getDataStore().deleteAll(Event.class);
 		this.dataTrain.getDataStore().deleteAll(Form.class);
 		this.dataTrain.getDataStore().deleteAll(Event.class);
-		this.dataTrain.getDataStore().deleteAll(Message.class);
-		this.dataTrain.getDataStore().deleteAll(MessageThread.class);
 		this.dataTrain.getDataStore().deleteAll(MobileDataUpload.class);
 		this.dataTrain.getDataStore().deleteAll(User.class);
 

@@ -74,16 +74,8 @@ public class DataTrain {
 		return new UserController(this);
 	}
 
-	public MessagingController getMessagingController() {
-		return new MessagingController(this);
-	}
-
 	public VersionController getVersionController() {
 		return new VersionController(this);
-	}
-
-	public MigrationController getMigrationController() {
-		return new MigrationController(this);
 	}
 
 	StandardObjectDatastore getDataStore() {

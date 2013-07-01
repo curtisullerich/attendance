@@ -41,7 +41,6 @@
 		<br/>
 		<hr/>
 		<br/>
-		<jsp:include page="/WEB-INF/common/viewthread.jsp"/>
 	
 		<jsp:include page="/WEB-INF/template/footer.jsp" />	
 	</body>

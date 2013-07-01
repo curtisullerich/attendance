@@ -95,10 +95,6 @@
 		<div class="msg_body">
 			<jsp:include page="/WEB-INF/common/absences.jsp" />
 		</div>
-		<h2 class="msg_head">Messages (${fn:length(threads)})</h2>
-		<div class="msg_body">
-			<jsp:include page="/WEB-INF/common/threadtable.jsp"/>		
-		</div>
 		<h2 class="msg_head">Delete</h2>
 		<div class="msg_body">
 			<form method="post" action="/director/deletestudent" accept-charset="utf-8">

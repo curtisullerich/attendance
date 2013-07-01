@@ -71,12 +71,6 @@
 			<input type="hidden" value="${absence.event.id}" name="eventid"/>
 			<input type="submit" value="Submit" name="SubmitChanges" />
 			<%--input type="button" value="Cancel" name="Cancel" onclick="window.location = '/director/attendance'"/--%>
-<%-- 			<c:if test="${not new}"> --%>
-<%-- 				<input type="button" value="Messages" name="Message" onclick="window.location = '/director/messages/viewthread?id=${absence.messageThread.id}'"/> --%>
-<%-- 			</c:if>	 --%>
-<%-- 			<c:if test="${new }"> --%>
-<%-- 				<input type="button" value="Messages" disabled name="Message" title="You can't view messages until you've actually created this absence." onclick="window.location = '/director/messages/viewthread?id=${absence.messageThread.id}'"/> --%>
-<%-- 			</c:if> --%>
 		</form>
 	
 		<form method="post" accept-charset="utf-8">
@@ -88,7 +82,6 @@
 		<br/>
 		<hr/>
 		<br/>
-		<jsp:include page="/WEB-INF/common/viewthread.jsp"/>
 	
 		<jsp:include page="/WEB-INF/template/footer.jsp" />	
 	</body>

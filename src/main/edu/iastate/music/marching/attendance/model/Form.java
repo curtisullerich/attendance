@@ -113,8 +113,6 @@ public class Form {
 	
 	private Status emailStatus;
 
-	private MessageThread messages;
-
 	@com.google.code.twig.annotation.Type(Text.class)
 	private String details;
 
@@ -267,14 +265,6 @@ public class Form {
 
 	public void setStatus(Status status) {
 		this.status = status;
-	}
-
-	public MessageThread getMessageThread() {
-		return this.messages;
-	}
-
-	public void setMessageThread(MessageThread messageThread) {
-		this.messages = messageThread;
 	}
 
 	public void setBuilding(String building) {

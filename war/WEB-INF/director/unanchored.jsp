@@ -24,7 +24,6 @@
 					<th>Type</th>
 					<th>Status</th>
 					<th>Time of Arrival/Leaving</th>
-					<th>Messages</th>
 				</tr>
 			</thead>
 			<c:forEach items="${absences}" var="absence" varStatus="i">
@@ -79,34 +78,6 @@
 							</td>
 						</c:when>
 					</c:choose>
-					<td>
-
-						<c:if test="${!absence.messageThread.resolved}">
-							<strong>
-								<c:choose>
-									<c:when test="${auth.user.type.director}">
-										<a href="/director/messages/viewthread?id=${absence.messageThread.id}">Messages(${fn:length(absence.messageThread.messages)})</a>
-									</c:when>
-									<c:when test="${auth.user.type.student}">
-										<a href="/student/messages/viewthread?id=${absence.messageThread.id}">Messages(${fn:length(absence.messageThread.messages)})</a>
-									</c:when>
-								</c:choose>
-							</strong>
-						</c:if>
-						
-						<c:if test="${absence.messageThread.resolved}">
-							<c:choose>
-								<c:when test="${auth.user.type.director}">
-									<a href="/director/messages/viewthread?id=${absence.messageThread.id}">Messages(${fn:length(absence.messageThread.messages)})</a>
-								</c:when>
-								<c:when test="${auth.user.type.student}">
-									<a href="/student/messages/viewthread?id=${absence.messageThread.id}">Messages(${fn:length(absence.messageThread.messages)})</a>
-								</c:when>
-							</c:choose>
-						</c:if>
-						<!-- Messages button. Make it bold if there's an unresolved thread. -->
-					</td>
-					
 				</tr>
 					</c:if>
 					</c:forEach>
@@ -119,10 +90,6 @@
 		<c:if test="${empty absences }">
 			<strong>There are no un-anchored absences! (That's a good thing.)</strong>
 		</c:if>
-		
-		
-		
 		<jsp:include page="/WEB-INF/template/footer.jsp" />
 	</body>
-
 </html>

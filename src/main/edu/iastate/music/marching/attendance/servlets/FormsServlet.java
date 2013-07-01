@@ -2,7 +2,6 @@ package edu.iastate.music.marching.attendance.servlets;
 
 import java.io.IOException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
@@ -19,7 +18,6 @@ import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.FormController;
 import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.Form;
-import edu.iastate.music.marching.attendance.model.MessageThread;
 import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.util.PageBuilder;
 import edu.iastate.music.marching.attendance.util.Util;
@@ -36,7 +34,7 @@ public class FormsServlet extends AbstractBaseServlet {
 			.getName());
 
 	private enum Page {
-		forma, formb, formc, formd, index, view, remove, messages;
+		forma, formb, formc, formd, index, view, remove;
 	}
 
 	private static final String SERVLET_PATH = "form";
@@ -86,8 +84,6 @@ public class FormsServlet extends AbstractBaseServlet {
 		// case remove:
 		// removeForm(req, resp);
 		// break;
-		case messages:
-			break;
 		default:
 			ErrorServlet.showError(req, resp, 404);
 		}
@@ -116,26 +112,6 @@ public class FormsServlet extends AbstractBaseServlet {
 				page.setAttribute("day", form.getDayAsString());
 				page.setAttribute("isDirector", currentUser.getType()
 						.isDirector());
-
-				// Handle exceptions maybe for invalid thread id's?
-				MessageThread thread = form.getMessageThread();
-				if (thread != null) {
-					User current = train.getAuthController().getCurrentUser(
-							req.getSession());
-					if (current.getType() == User.Type.Director
-							|| thread != null
-							&& train.getMessagingController()
-									.isPartOfConversation(thread, current)) {
-
-						page.setAttribute("thread", thread);
-
-					} else {
-						errors.add("Invalid message thread.");
-					}
-
-				} else {
-					errors.add("Form's message thread wasn't there.");
-				}
 
 				page.setAttribute("error_messages", errors);
 				page.setAttribute("success_message", success_message);
@@ -180,8 +156,6 @@ public class FormsServlet extends AbstractBaseServlet {
 				break;
 			case formd:
 				handleFormD(req, resp);
-				break;
-			case messages:
 				break;
 			case view:
 				updateStatus(req, resp);

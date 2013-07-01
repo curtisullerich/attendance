@@ -98,8 +98,6 @@ public class Absence {
 	@Index
 	private User student;
 
-	private MessageThread messages;
-
 	private Date start;
 
 	private Date end;
@@ -167,14 +165,6 @@ public class Absence {
 
 	public void setStatus(Status status) {
 		this.status = status;
-	}
-
-	public MessageThread getMessageThread() {
-		return this.messages;
-	}
-
-	public void setMessageThread(MessageThread messageThread) {
-		this.messages = messageThread;
 	}
 	
 	@Override

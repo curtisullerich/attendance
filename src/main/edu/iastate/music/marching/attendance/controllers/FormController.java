@@ -21,7 +21,6 @@ import com.google.code.twig.ObjectDatastore;
 
 import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.Form;
-import edu.iastate.music.marching.attendance.model.MessageThread;
 import edu.iastate.music.marching.attendance.model.ModelFactory;
 import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.util.ValidationExceptions;
@@ -98,18 +97,11 @@ public class FormController extends AbstractController {
 		// Track transaction = dataTrain.switchTracksInternal();
 		//
 		// try {
-		// First build an empty message thread and store it
-		MessageThread messages = dataTrain.getMessagingController()
-				.createMessageThread(form.getStudent());
-		form.setMessageThread(messages);
 
 		updateFormD(form);
 
 		// Store
 		dataTrain.getDataStore().store(form);
-
-		form.getMessageThread().setFormParent(form);
-		dataTrain.getDataStore().update(form.getMessageThread());
 
 		// Update grade, it may have changed
 		dataTrain.getUsersController().update(form.getStudent());
@@ -235,18 +227,6 @@ public class FormController extends AbstractController {
 			form.setStatus(Form.Status.Denied);
 			// Perform store
 			storeForm(form);
-			this.dataTrain
-					.getMessagingController()
-					.addMessage(
-							form.getMessageThread(),
-							form.getStudent(),
-							"This message has been added for "
-									+ form.getStudent().getFirstName()
-									+ " by AttendBot 2.0. "
-									+ form.getStudent().getFirstName()
-									+ " submitted this form after the deadline had already passed "
-									+ "but would like you to consider it anyway. AttendBot marked "
-									+ "this form as denied, but a Director may approve it.");
 		} else {
 			storeForm(form);
 		}
@@ -449,18 +429,6 @@ public class FormController extends AbstractController {
 		if (late) {
 			form.setStatus(Form.Status.Denied);
 			storeForm(form);
-			this.dataTrain
-					.getMessagingController()
-					.addMessage(
-							form.getMessageThread(),
-							form.getStudent(),
-							"This message has been added for "
-									+ form.getStudent().getFirstName()
-									+ " by AttendBot 2.0. "
-									+ form.getStudent().getFirstName()
-									+ " submitted this form after the deadline had already passed "
-									+ "but would like you to consider it anyway. AttendBot marked "
-									+ "this form as denied, but a Director may approve it.");
 			exp.getErrors()
 					.add("It's past the deadline for submitting this Form C. This form has been submitted, but marked as denied. If you believe you have a valid excuse for late submission, add a message to this form in order to bring it to the director's attention.");
 		} else {
@@ -610,10 +578,6 @@ public class FormController extends AbstractController {
 			return false;
 		} else {
 			User student = form.getStudent();
-			MessageThread mt = form.getMessageThread();
-			od.delete(mt); // the associated messages are embedded in the
-							// MessageThread, so there's no need to delete them
-							// separately
 			od.delete(form);
 			od.refresh(student);
 			return true;
@@ -626,16 +590,7 @@ public class FormController extends AbstractController {
 	}
 
 	void delete(User user) {
-		MessagingController mc = this.dataTrain.getMessagingController();
 		List<Form> forms = this.get(user);
-
-		for (Form form : forms) {
-			MessageThread mt = form.getMessageThread();
-
-			if (mt != null) {
-				mc.delete(mt);
-			}
-		}
 		this.dataTrain.getDataStore().deleteAll(forms);
 	}
 

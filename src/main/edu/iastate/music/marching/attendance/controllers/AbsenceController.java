@@ -10,8 +10,6 @@ import java.util.TimeZone;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.code.twig.FindCommand.RootFindCommand;
 import com.google.code.twig.ObjectDatastore;
@@ -19,7 +17,6 @@ import com.google.code.twig.ObjectDatastore;
 import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.Event;
 import edu.iastate.music.marching.attendance.model.Form;
-import edu.iastate.music.marching.attendance.model.MessageThread;
 import edu.iastate.music.marching.attendance.model.ModelFactory;
 import edu.iastate.music.marching.attendance.model.User;
 
@@ -713,13 +710,7 @@ public class AbsenceController extends AbstractController {
 	}
 
 	private Absence storeAbsence(Absence absence, User student) {
-		// First build an empty message thread and store it
-		MessageThread messages = this.train.getMessagingController()
-				.createMessageThread(student);
-		absence.setMessageThread(messages);
 		train.getDataStore().store(absence);
-		absence.getMessageThread().setAbsenceParent(absence);
-		train.getDataStore().update(absence.getMessageThread());
 
 		// Then do some validation
 		Absence resolvedAbsence = validateAbsence(absence);
@@ -816,7 +807,6 @@ public class AbsenceController extends AbstractController {
 		for (Absence a : todie) {
 			User u = a.getStudent();
 			users.add(u);
-			od.delete(a.getMessageThread());
 		}
 		od.deleteAll(todie);
 
@@ -835,7 +825,6 @@ public class AbsenceController extends AbstractController {
 	public void remove(Absence todie) {
 		ObjectDatastore od = this.train.getDataStore();
 
-		od.delete(todie.getMessageThread());
 		od.delete(todie);
 
 		// Finally check for side-effects caused by absence
@@ -844,16 +833,7 @@ public class AbsenceController extends AbstractController {
 	}
 
 	void delete(User student) {
-		MessagingController mc = this.train.getMessagingController();
 		List<Absence> absences = this.get(student);
-
-		for (Absence a : absences) {
-			MessageThread mt = a.getMessageThread();
-
-			if (mt != null) {
-				mc.delete(mt);
-			}
-		}
 		train.getDataStore().deleteAll(absences);
 	}
 

@@ -14,7 +14,7 @@
 <script>
 	function goahead() {
 		<c:if test="${late}">
-			return confirm("It's past the deadline to submit this form. If you think you have a valid excuse, you can go ahead and submit. The form will be marked as denied, but you can add a message to it to bring it to the director's attention and he or she could approve it.");
+			return confirm("It's past the deadline to submit this form. If you think you have a valid excuse, you can go ahead and submit. The form will be marked as denied without notifying the director.");
 		</c:if>
 		<c:if test="${not late}">
 			return true;

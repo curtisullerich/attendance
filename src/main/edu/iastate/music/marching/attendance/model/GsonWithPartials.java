@@ -38,7 +38,6 @@ public class GsonWithPartials {
 		gson.registerTypeAdapter(Event.class, adapter);
 		gson.registerTypeAdapter(Form.class, adapter);
 		gson.registerTypeAdapter(Message.class, adapter);
-		gson.registerTypeAdapter(MessageThread.class, adapter);
 		gson.registerTypeAdapter(MobileDataUpload.class, adapter);
 		gson.registerTypeAdapter(User.class, adapter);
 		return gson.create();
@@ -53,7 +52,6 @@ public class GsonWithPartials {
 		gson.registerTypeAdapter(Event.class, adapter);
 		gson.registerTypeAdapter(Form.class, adapter);
 		gson.registerTypeAdapter(Message.class, adapter);
-		gson.registerTypeAdapter(MessageThread.class, adapter);
 		gson.registerTypeAdapter(MobileDataUpload.class, adapter);
 		gson.registerTypeAdapter(User.class, adapter);
 		return gson.create();

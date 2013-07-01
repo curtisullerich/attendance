@@ -28,12 +28,10 @@ import edu.iastate.music.marching.attendance.controllers.AppDataController;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.EventController;
 import edu.iastate.music.marching.attendance.controllers.FormController;
-import edu.iastate.music.marching.attendance.controllers.MessagingController;
 import edu.iastate.music.marching.attendance.controllers.UserController;
 import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.AppData;
 import edu.iastate.music.marching.attendance.model.Event;
-import edu.iastate.music.marching.attendance.model.MessageThread;
 import edu.iastate.music.marching.attendance.model.ModelFactory;
 import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.model.User.Section;
@@ -1090,26 +1088,6 @@ public class DirectorServlet extends AbstractBaseServlet {
 				absenceid = Long.parseLong(sabsenceid);
 				checkedAbsence = ac.get(absenceid);
 
-				// Handle exceptions maybe for invalid thread id's?
-				MessageThread thread = checkedAbsence.getMessageThread();
-				if (thread != null) {
-					User current = train.getAuthController().getCurrentUser(
-							req.getSession());
-					if (current.getType() == User.Type.Director
-							|| thread != null
-							&& train.getMessagingController()
-									.isPartOfConversation(thread, current)) {
-
-						page.setAttribute("thread", thread);
-
-					} else {
-						errors.add("Invalid message thread.");
-					}
-
-				} else {
-					errors.add("Absence's message thread wasn't there.");
-				}
-
 			}
 		} else {
 			validInput = false;
@@ -1151,16 +1129,6 @@ public class DirectorServlet extends AbstractBaseServlet {
 		} else {
 			User student = train.getUsersController().get(netid);
 
-			List<MessageThread> messageThreads = train.getMessagingController()
-					.get(student);
-
-			List<MessageThread> messageThreadsNonEmpty = new ArrayList<MessageThread>();
-			for (MessageThread mt : messageThreads) {
-				if (mt.getMessages() != null && !mt.getMessages().isEmpty()) {
-					messageThreadsNonEmpty.add(mt);
-				}
-			}
-
 			page.setPageTitle("Attendance");
 
 			List<Absence> absences = train.getAbsenceController().get(student);
@@ -1168,7 +1136,6 @@ public class DirectorServlet extends AbstractBaseServlet {
 			page.setAttribute("user", student);
 			page.setAttribute("forms", fc.get(student));
 			page.setAttribute("absences", absences);
-			page.setAttribute("threads", messageThreadsNonEmpty);
 			page.setAttribute("sections", User.Section.values());
 
 			// Pass through any success message in the url parameters sent from

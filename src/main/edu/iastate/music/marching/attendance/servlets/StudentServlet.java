@@ -17,12 +17,8 @@ import edu.iastate.music.marching.attendance.controllers.AuthController;
 import edu.iastate.music.marching.attendance.controllers.DataTrain;
 import edu.iastate.music.marching.attendance.controllers.UserController;
 import edu.iastate.music.marching.attendance.model.Absence;
-import edu.iastate.music.marching.attendance.model.Event;
-import edu.iastate.music.marching.attendance.model.MessageThread;
-import edu.iastate.music.marching.attendance.model.ModelFactory;
 import edu.iastate.music.marching.attendance.model.User;
 import edu.iastate.music.marching.attendance.model.User.Section;
-import edu.iastate.music.marching.attendance.servlets.DirectorServlet.Page;
 import edu.iastate.music.marching.attendance.util.PageBuilder;
 
 public class StudentServlet extends AbstractBaseServlet {
@@ -40,7 +36,7 @@ public class StudentServlet extends AbstractBaseServlet {
 	public static final String INDEX_URL = pageToUrl(Page.index, SERVLET_PATH);
 
 	private enum Page {
-		index, attendance, forms, messages, info, viewabsence;
+		index, attendance, forms, info, viewabsence;
 	}
 
 	@Override
@@ -68,9 +64,6 @@ public class StudentServlet extends AbstractBaseServlet {
 				showAttendance(req, resp);
 				break;
 			case forms:
-				break;
-			case messages:
-				showIndex(req, resp);
 				break;
 			case info:
 				showInfo(req, resp, null, null);
@@ -104,26 +97,6 @@ public class StudentServlet extends AbstractBaseServlet {
 
 			absenceid = Long.parseLong(sabsenceid);
 			checkedAbsence = ac.get(absenceid);
-
-			// Handle exceptions maybe for invalid thread id's?
-			MessageThread thread = checkedAbsence.getMessageThread();
-			if (thread != null) {
-				User current = train.getAuthController().getCurrentUser(
-						req.getSession());
-				if (current.getType() == User.Type.Director
-						|| thread != null
-						&& train.getMessagingController().isPartOfConversation(
-								thread, current)) {
-
-					page.setAttribute("thread", thread);
-
-				} else {
-					errors.add("Invalid message thread.");
-				}
-
-			} else {
-				errors.add("Absence's message thread wasn't there.");
-			}
 
 		} else {
 			validInput = false;

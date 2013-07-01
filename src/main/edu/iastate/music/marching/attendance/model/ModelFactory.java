@@ -52,21 +52,8 @@ public class ModelFactory {
 		return upload;
 	}
 
-	public static MessageThread newMessageThread() {
-		MessageThread m = new MessageThread();
-		return m;
-	}
-
 	public static StandardObjectDatastore newObjectDatastore() {
 		return new AttendanceDatastore();
-	}
-
-	public static Message newMessage(User sender, String message) {
-		Message m = new Message();
-		m.setAuthor(sender);
-		m.setText(message);
-		m.setTimestamp(Calendar.getInstance().getTime());
-		return m;
 	}
 
 	public static DatastoreVersion newDatastoreVersion(int version) {

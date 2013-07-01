@@ -15,7 +15,6 @@
 							<col width="12%"/>
 							<col width="44%" />
 							<col width="10%" />
-							<col width="15%" />
 						</colgroup>
 						<thead>
 							<tr class="dark-title">
@@ -23,7 +22,6 @@
 								<th>Type</th>
 								<th>Status</th>
 								<th>About</th>
-								<th class="sorttable_nosort"></th>
 								<th class="sorttable_nosort"></th>
 							</tr>
 						</thead>
@@ -35,10 +33,6 @@
 							</c:url>
 							<c:url var="form_url_remove" value="forms">
 								<c:param name="id" value="${form.id}"/>
-							</c:url>
-							<c:url var="form_url_messages" value="messages/viewthread">
-								<c:param name="id" value="${form.id}"/>
-								<%-- c:param name="redirect" value="${pagetemplate.uri}"/ --%>
 							</c:url>
 
 							<tr id="row_form_<c:out value="${form.id}" />">
@@ -78,31 +72,6 @@
 											<button onclick="deleteForm(${form.id}, 'director')">Delete</button>
 										</c:when>
 									</c:choose>
-								</td>
-								<td>
-									<c:if test="${!form.messageThread.resolved}">
-										<strong>
-											<c:choose>
-												<c:when test="${auth.user.type.director}">
-													<a target="_blank" href="/director/messages/viewthread?id=${form.messageThread.id}">Messages(${fn:length(form.messageThread.messages)})</a>
-												</c:when>
-												<c:when test="${auth.user.type.student || auth.user.type.ta}">
-													<a target="_blank" href="/student/messages/viewthread?id=${form.messageThread.id}">Messages(${fn:length(form.messageThread.messages)})</a>
-												</c:when>
-											</c:choose>
-										</strong>
-									</c:if>
-									<c:if test="${form.messageThread.resolved}">
-										<c:choose>
-											<c:when test="${auth.user.type.director}">
-												<a target="_blank" href="/director/messages/viewthread?id=${form.messageThread.id}">Messages(${fn:length(form.messageThread.messages)})</a>
-											</c:when>
-											<c:when test="${auth.user.type.student || auth.user.type.ta}">
-												<a target="_blank" href="/student/messages/viewthread?id=${form.messageThread.id}">Messages(${fn:length(form.messageThread.messages)})</a>
-											</c:when>
-										</c:choose>
-									</c:if>
-									<!-- Messages button. Make it bold if there's an unresolved thread. -->
 								</td>
 							</tr>	
 						</c:forEach>

@@ -12,7 +12,6 @@
 				<col width="15%" />
 				<col width="10%" />
 				<col width="12%" />
-				<col width="12%" />
 			</colgroup>
 			<thead>
 				<tr class="dark-title">
@@ -20,7 +19,6 @@
 					<th>Type</th>
 					<th>Status</th>
 					<th>Time In/Out</th>
-					<th></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -70,34 +68,6 @@
 							<td onclick="window.location='${absence_url_view}'">-</td>
 						</c:when>
 					</c:choose>
-					<td>
-
-						<c:if test="${!absence.messageThread.resolved}">
-							<strong>
-								<c:choose>
-									<c:when test="${auth.user.type.director}">
-										<a href="/director/messages/viewthread?id=${absence.messageThread.id}">Messages(${fn:length(absence.messageThread.messages)})</a>
-									</c:when>
-									<c:when test="${auth.user.type.student}">
-										<a href="/student/messages/viewthread?id=${absence.messageThread.id}">Messages(${fn:length(absence.messageThread.messages)})</a>
-									</c:when>
-								</c:choose>
-							</strong>
-						</c:if>
-						
-						<c:if test="${absence.messageThread.resolved}">
-							<c:choose>
-								<c:when test="${auth.user.type.director}">
-									<a href="/director/messages/viewthread?id=${absence.messageThread.id}">Messages(${fn:length(absence.messageThread.messages)})</a>
-								</c:when>
-								<c:when test="${auth.user.type.student}">
-									<a href="/student/messages/viewthread?id=${absence.messageThread.id}">Messages(${fn:length(absence.messageThread.messages)})</a>
-								</c:when>
-							</c:choose>
-						</c:if>
-						<!-- Messages button. Make it bold if there's an unresolved thread. -->
-					</td>
-					
 				</tr>
 			</c:forEach>
 			</tbody>
