@@ -500,7 +500,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		} catch (NumberFormatException nfe) {
 			LOG.severe("Unanchored count wasn't a number. This is a hidden field, so something's wrong.");
 		}
-
+		List<String> errors = new ArrayList<String>();
 		int numLinked = 0;
 		for (int i = 0; i <= count; i++) {
 			String eventID = req.getParameter("EventID" + i);
@@ -510,15 +510,31 @@ public class DirectorServlet extends AbstractBaseServlet {
 					// retrieve the event and link it up
 					Event e = ec.get(Long.parseLong(eventID));
 					Absence a = ac.get(Long.parseLong(absenceID));
-					a.setEvent(e);
-					ac.updateAbsence(a);
-					++numLinked;
+					Calendar eventCal = Calendar.getInstance();
+					Calendar absenceCal = Calendar.getInstance();
+					eventCal.setTime(e.getDate());
+					absenceCal.setTime(a.getDatetime());
+					if (eventCal.get(Calendar.DAY_OF_YEAR) != absenceCal
+							.get(Calendar.DAY_OF_YEAR)
+							|| eventCal.get(Calendar.YEAR) != absenceCal
+									.get(Calendar.YEAR)) {
+						errors.add("Absence was not the same day as the event.");
+					} else {
+						a.setEvent(e);
+						ac.updateAbsence(a);
+						++numLinked;
+					}
 				}
 			}
 		}
 		// show success message and add error messages?
-		showUnanchored(req, resp, null, numLinked
-				+ ((numLinked == 1) ? " absence " : " absences ") + "linked.");
+		if (numLinked == 0) {
+			showUnanchored(req, resp, errors, null);
+		} else {
+			showUnanchored(req, resp, errors, numLinked
+					+ ((numLinked == 1) ? " absence " : " absences ")
+					+ "linked.");
+		}
 	}
 
 	private void postAbsenceInfo(HttpServletRequest req,
@@ -620,15 +636,15 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 				// Do not redirect if in a new window, instead show a success
 				// message
-//				if ("true".equals(req.getParameter("newindow"))) {
-					viewAbsence(
-							req,
-							resp,
-							errors,
-							"Successfully updated absence, close this window to return to the previous page");
-//				} else {
-//					resp.sendRedirect(pageToUrl(Page.attendance, SERVLET_PATH));
-//				}
+				// if ("true".equals(req.getParameter("newindow"))) {
+				viewAbsence(
+						req,
+						resp,
+						errors,
+						"Successfully updated absence, close this window to return to the previous page");
+				// } else {
+				// resp.sendRedirect(pageToUrl(Page.attendance, SERVLET_PATH));
+				// }
 			} else {
 				viewAbsence(req, resp, errors, "");
 			}
@@ -645,18 +661,18 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 			// Do not redirect if in a new window, instead show a success
 			// message
-//			if ("true".equals(req.getParameter("newindow"))) {
-				new PageBuilder(Page.postdelete, SERVLET_PATH)
-						.setAttribute(
-								"success_message",
-								"Successfully deleted absence, close this window to return to the previous page.")
-						.passOffToJsp(req, resp);
-//			} else {
-//				// Redirect
-//				resp.sendRedirect(pageToUrl(Page.attendance, SERVLET_PATH));
-//				showStudent(req, resp, errors,
-//						"Successfully deleted absence.");
-//			}
+			// if ("true".equals(req.getParameter("newindow"))) {
+			new PageBuilder(Page.postdelete, SERVLET_PATH)
+					.setAttribute(
+							"success_message",
+							"Successfully deleted absence, close this window to return to the previous page.")
+					.passOffToJsp(req, resp);
+			// } else {
+			// // Redirect
+			// resp.sendRedirect(pageToUrl(Page.attendance, SERVLET_PATH));
+			// showStudent(req, resp, errors,
+			// "Successfully deleted absence.");
+			// }
 		} catch (NumberFormatException e) {
 			LOG.severe("Unable to find absence to delete.");
 			errors.add("Internal error, unable to delete absence.");
@@ -838,9 +854,11 @@ public class DirectorServlet extends AbstractBaseServlet {
 		List<Event> events = train.getEventController().readAll();
 		List<Absence> absences = train.getAbsenceController().getAll();
 
-		Map<User, Map<Event, List<Absence>>> absenceMap = this.makeAbsenceMap(students, events, absences); 
-//		Map<User, Map<Event, List<Absence>>> absenceMap = 
-//				this.createStudentEventAbsMapOld(absences, events, students, train.getAbsenceController());
+		Map<User, Map<Event, List<Absence>>> absenceMap = this.makeAbsenceMap(
+				students, events, absences);
+		// Map<User, Map<Event, List<Absence>>> absenceMap =
+		// this.createStudentEventAbsMapOld(absences, events, students,
+		// train.getAbsenceController());
 
 		page.setAttribute("students", students);
 		page.setAttribute("absenceMap", absenceMap);
@@ -1071,7 +1089,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 			} else {
 				absenceid = Long.parseLong(sabsenceid);
 				checkedAbsence = ac.get(absenceid);
-				
+
 				// Handle exceptions maybe for invalid thread id's?
 				MessageThread thread = checkedAbsence.getMessageThread();
 				if (thread != null) {
@@ -1091,7 +1109,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 				} else {
 					errors.add("Absence's message thread wasn't there.");
 				}
-				
+
 			}
 		} else {
 			validInput = false;
@@ -1104,17 +1122,17 @@ public class DirectorServlet extends AbstractBaseServlet {
 			errors.add("Could not find the absence.");
 		}
 
-//		if (validInput) {
-			page.setPageTitle("View Absence");
-			page.setAttribute("absence", checkedAbsence);
-			page.setAttribute("types", Absence.Type.values());
-			page.setAttribute("status", Absence.Status.values());
-			page.setAttribute("error_messages", incomingErrors);
-			page.setAttribute("success_message", success_message);
-			page.passOffToJsp(req, resp);
-//		} else {
-//			showAttendance(req, resp, errors, success_message);
-//		}
+		// if (validInput) {
+		page.setPageTitle("View Absence");
+		page.setAttribute("absence", checkedAbsence);
+		page.setAttribute("types", Absence.Type.values());
+		page.setAttribute("status", Absence.Status.values());
+		page.setAttribute("error_messages", incomingErrors);
+		page.setAttribute("success_message", success_message);
+		page.passOffToJsp(req, resp);
+		// } else {
+		// showAttendance(req, resp, errors, success_message);
+		// }
 	}
 
 	private void showStudent(HttpServletRequest req, HttpServletResponse resp,
@@ -1171,23 +1189,21 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		page.passOffToJsp(req, resp);
 	}
-	
-	private Map<User, Map<Event, List<Absence>>> makeAbsenceMap(List<User> students, 
-			List<Event> events, List<Absence> absences) {
-		
+
+	private Map<User, Map<Event, List<Absence>>> makeAbsenceMap(
+			List<User> students, List<Event> events, List<Absence> absences) {
+
 		Comparator<User> studentComparator = new Comparator<User>() {
 			public int compare(User a, User b) {
 				if (a == null) {
 					return -1;
-				} 
-				else if (b == null) {
+				} else if (b == null) {
 					return 1;
-				} 
-				else if (!a.getLastName().equalsIgnoreCase(b.getLastName())){
+				} else if (!a.getLastName().equalsIgnoreCase(b.getLastName())) {
 					return a.getLastName().compareToIgnoreCase(b.getLastName());
-				}
-				else {
-					return a.getFirstName().compareToIgnoreCase(b.getFirstName());
+				} else {
+					return a.getFirstName().compareToIgnoreCase(
+							b.getFirstName());
 				}
 			}
 		};
@@ -1198,56 +1214,61 @@ public class DirectorServlet extends AbstractBaseServlet {
 			public int compare(Absence lhs, Absence rhs) {
 				User lhsStudent = lhs.getStudent();
 				User rhsStudent = rhs.getStudent();
-				
-				//Order first by student
-				if (!lhsStudent.getLastName().equalsIgnoreCase(rhsStudent.getLastName())) {
-					return lhsStudent.getLastName().compareToIgnoreCase(rhsStudent.getLastName());
+
+				// Order first by student
+				if (!lhsStudent.getLastName().equalsIgnoreCase(
+						rhsStudent.getLastName())) {
+					return lhsStudent.getLastName().compareToIgnoreCase(
+							rhsStudent.getLastName());
 				}
-				if (!lhsStudent.getFirstName().equalsIgnoreCase(rhsStudent.getFirstName())) {
-					return lhsStudent.getFirstName().compareToIgnoreCase(rhsStudent.getFirstName());
+				if (!lhsStudent.getFirstName().equalsIgnoreCase(
+						rhsStudent.getFirstName())) {
+					return lhsStudent.getFirstName().compareToIgnoreCase(
+							rhsStudent.getFirstName());
 				}
-				//Then by time
+				// Then by time
 				else if (!lhs.getStart().equals(rhs.getStart())) {
 					return lhs.getStart().compareTo(rhs.getStart());
-				}
-				else {
-					return (lhs.getEnd() != null) ? lhs.getEnd().compareTo(rhs.getEnd()) : 0;
+				} else {
+					return (lhs.getEnd() != null) ? lhs.getEnd().compareTo(
+							rhs.getEnd()) : 0;
 				}
 			}
-			
+
 		};
-		
+
 		Comparator<Event> eventComparator = new Comparator<Event>() {
 			public int compare(Event a, Event b) {
 				if (a == null) {
 					return -1;
-				} 
-				else if (b == null) {
+				} else if (b == null) {
 					return 1;
-				} 
-				else if (!a.getStart().equals(b.getStart())){
+				} else if (!a.getStart().equals(b.getStart())) {
 					return a.getStart().compareTo(b.getStart());
-				}
-				else {
-					return (a.getEnd() != null) ? a.getEnd().compareTo(b.getEnd()) : 0;
+				} else {
+					return (a.getEnd() != null) ? a.getEnd().compareTo(
+							b.getEnd()) : 0;
 				}
 			}
 		};
-		
+
 		Collections.sort(students, studentComparator);
 		Collections.sort(absences, absenceComparator);
 		Collections.sort(events, eventComparator);
-		
+
 		Map<User, Map<Event, List<Absence>>> ret = new HashMap<User, Map<Event, List<Absence>>>();
-		
-		for (User s: students) {
-			ret.put(s, createStudentEventAbsMap(getStudentAbsences(absences, s), events));
+
+		for (User s : students) {
+			ret.put(s,
+					createStudentEventAbsMap(getStudentAbsences(absences, s),
+							events));
 		}
 		return ret;
 	}
-	
-	private Map<User, Map<Event, List<Absence>>> createStudentEventAbsMapOld(List<Absence> absences,
-			List<Event> events, List<User> students, AbsenceController ac) {
+
+	private Map<User, Map<Event, List<Absence>>> createStudentEventAbsMapOld(
+			List<Absence> absences, List<Event> events, List<User> students,
+			AbsenceController ac) {
 		Comparator<User> studentComparator = new Comparator<User>() {
 			public int compare(User a, User b) {
 				if (a == null) {
@@ -1301,38 +1322,36 @@ public class DirectorServlet extends AbstractBaseServlet {
 		}
 		return absenceMap;
 	}
-	
-	//Expects absences to only have one student's absences sorted by time
-	private Map<Event, List<Absence>> createStudentEventAbsMap(List<Absence> absences, List<Event> events) {
+
+	// Expects absences to only have one student's absences sorted by time
+	private Map<Event, List<Absence>> createStudentEventAbsMap(
+			List<Absence> absences, List<Event> events) {
 		int eventPtr = 0;
 		int absPtr = 0;
 		boolean done = false;
 		Map<Event, List<Absence>> studentAbsMap = new HashMap<Event, List<Absence>>();
-		
+
 		if (absences.size() == 0 || events.size() == 0) {
 			return studentAbsMap;
 		}
-		
+
 		while (!done) {
 			Absence curAbs = absences.get(absPtr);
 			Event event = events.get(eventPtr);
-			
+
 			if (curAbs.getEvent() != null && curAbs.getEvent().equals(event)) {
 				List<Absence> studentAbs = studentAbsMap.get(event);
 				if (studentAbs == null) {
 					studentAbs = new ArrayList<Absence>();
 					studentAbs.add(curAbs);
 					studentAbsMap.put(event, studentAbs);
-				}
-				else {
+				} else {
 					studentAbs.add(curAbs);
 				}
 				++absPtr;
-			}
-			else if (event.getStart().before((curAbs.getStart()))) {
+			} else if (event.getStart().before((curAbs.getStart()))) {
 				++eventPtr;
-			}
-			else {
+			} else {
 				++absPtr;
 			}
 			if (absPtr >= absences.size() || eventPtr >= events.size()) {
@@ -1341,8 +1360,9 @@ public class DirectorServlet extends AbstractBaseServlet {
 		}
 		return studentAbsMap;
 	}
-	
-	private List<Absence> getStudentAbsences(List<Absence> absences, User student) {
+
+	private List<Absence> getStudentAbsences(List<Absence> absences,
+			User student) {
 		List<Absence> abs = new ArrayList<Absence>();
 		for (int i = 0; i < absences.size(); ++i) {
 			Absence cur = absences.get(i);
