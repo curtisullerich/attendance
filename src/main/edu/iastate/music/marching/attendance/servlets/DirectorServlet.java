@@ -52,7 +52,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 			.getName());
 
 	public enum Page {
-		index, appinfo, attendance, export, forms, unanchored, users, user, stats, info, viewabsence, student, makeevent, deletestudent, studentinfo, viewevent, deleteevent, postdelete;
+		index, appinfo, attendance, export, forms, unanchored, users, user, info, viewabsence, student, makeevent, deletestudent, studentinfo, viewevent, deleteevent, postdelete;
 	}
 
 	private static final String SERVLET_PATH = "director";
@@ -98,9 +98,6 @@ public class DirectorServlet extends AbstractBaseServlet {
 				break;
 			case user:
 				showUserInfo(req, resp);
-				break;
-			case stats:
-				showStats(req, resp);
 				break;
 			case info:
 				showInfo(req, resp, new ArrayList<String>(), null);
@@ -176,55 +173,6 @@ public class DirectorServlet extends AbstractBaseServlet {
 		page.setAttribute("today", today);
 		page.setAttribute("types", Event.Type.values());
 		page.setPageTitle("Make Event");
-		page.passOffToJsp(req, resp);
-	}
-
-	private void showStats(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-
-		DataTrain train = DataTrain.getAndStartTrain();
-
-		PageBuilder page = new PageBuilder(Page.stats, SERVLET_PATH);
-
-		Date date = new Date();
-
-		int numAbsences = train.getAbsenceController()
-				.get(Absence.Type.Absence).size();
-		int numTardy = train.getAbsenceController()
-				.getCount(Absence.Type.Tardy);
-		int numLeaveEarly = train.getAbsenceController().getCount(
-				Absence.Type.EarlyCheckOut);
-		int numStudents = train.getUsersController()
-				.getCount(User.Type.Student);
-		int numEvents = train.getEventController().getCount();
-		String avgPresent = numEvents != 0 ? (numStudents - (numAbsences / numEvents))
-				+ ""
-				: "No Recorded Events";
-		String avgTardy = numEvents != 0 ? (numTardy / numEvents) + ""
-				: "No Recorded Events";
-		String avgLeaveEarly = numEvents != 0 ? (numLeaveEarly / numEvents)
-				+ "" : "No Recorded Events";
-		String avgAbsent = numEvents != 0 ? (numAbsences / numEvents) + ""
-				: "No Recorded Events";
-		String avgPresentWR = numEvents != 0 ? (numStudents - (numAbsences
-				+ numTardy + numLeaveEarly)
-				/ numEvents)
-				+ "" : "No Recorded Events";
-
-		page.setAttribute("date", date);
-
-		page.setAttribute("numStudents", numStudents);
-		page.setAttribute("numEvents", numEvents);
-		page.setAttribute("avgPresentStudents", avgPresent);
-		page.setAttribute("avgTardyStudents", avgTardy);
-		page.setAttribute("avgAbsentStudents", avgAbsent);
-		page.setAttribute("avgPresentStudentsWR", avgPresentWR);
-		page.setAttribute("avgLeaveEarly", avgLeaveEarly);
-		// page.setAttribute("avgGrade",
-		// train.getUsersController().averageGrade());
-
-		page.setPageTitle("Statistics");
-
 		page.passOffToJsp(req, resp);
 	}
 
