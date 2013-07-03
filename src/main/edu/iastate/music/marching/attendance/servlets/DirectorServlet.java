@@ -641,6 +641,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		// update the item and save it
 		// return the jsp
 		boolean validForm = true;
+		boolean cronExportEnabled;
 		List<String> errors = new LinkedList<String>();
 		String newPass = null;
 		String success = null;
@@ -726,6 +727,9 @@ public class DirectorServlet extends AbstractBaseServlet {
 			} else {
 				data.setTitle(title);
 			}
+			
+			cronExportEnabled = null != req.getParameter("CronExportEnabled");
+			data.setCronExportEnabled(cronExportEnabled);
 
 			statusMessage = req.getParameter("StatusMessage");
 			// if (statusMessage == null || statusMessage.equals("") ) {

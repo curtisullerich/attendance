@@ -15,17 +15,25 @@
 		
 		<h2>Backup / Restore</h2>
 		<p>
-			<a href="export/data.json">Export entire current database</a> (Useful as a backup)<br/>
-			<form class="grid-10" method="POST" enctype="multipart/form-data">
+		
+			<form class="grid-8" method="POST" action="/admin/backup" enctype="multipart/form-data">
 				<fieldset>
-					<label for="file">Import data: </label>
-					<input id="file" name="file" type="file" accept="application/json" />
-					<br/>
-					Expects a backup file previously exported from above link.
+					<legend>Data Backup:</legend>
+					<p>Backup all data currently in the system by sending it via email to the directors.<p/>
+					<p>Note: May take several minutes for the backup to complete.</p>
+					<input type="submit" value="Backup" style="float:right" />
+				</fieldset>
+			</form>
+			
+			<form class="grid-8" method="POST" action="/admin/restore" enctype="multipart/form-data">
+				<fieldset>
+					<legend>Data Restore:</legend>
+					<p>Import a previous backup file.</p>
+					<label for="file">Data file: </label>
+					<input name="file" type="file" accept="application/json" />
 					<br/><br/>
-					<strong>WARNING:</strong> Will overwrite all data currently in the system</strong>
-					<br/>
-					<input type="submit" value="Import" style="float:right" />
+					<p><strong>WARNING:</strong> Will overwrite all data currently in the system</p>
+					<input type="submit" value="Restore" style="float:right" />
 				</fieldset>
 			</form>
 			<br style="clear:both" />
@@ -35,45 +43,7 @@
 		
 		<h2>Database Version</h2>
 		<p>
-			Application code uses database version: v<c:out value="${ObjectDatastoreVersion}" /><br/>
-			The following versions are available:<br/>
-			<ul>
-			<c:forEach items="${DatastoreVersions}" var="DatastoreVersion" varStatus="loopStatus">
-				<li>
-					<c:choose>
-						<c:when test="${DatastoreVersion.version == ObjectDatastoreVersion}">
-							Current version:
-						</c:when>
-						<c:when test="${DatastoreVersion.version > ObjectDatastoreVersion}">
-							Future version:
-						</c:when>
-						<c:when test="${DatastoreVersion.version < ObjectDatastoreVersion}">
-							Past version:
-						</c:when>
-					</c:choose>
-					v<c:out value="${DatastoreVersion.version}" />
-				
-					<ul>
-					<c:choose>
-						<c:when test="${DatastoreVersion.version < ObjectDatastoreVersion}">
-							<li>
-								<form action="data_migrate" method="GET" style="display:inline">
-									<input type="submit" value="Migrate" title="Copy this data to current application version" />
-									<input type="hidden" name="version" value="<c:out value="${DatastoreVersion.version}" />"/>
-								</form>
-							</li>
-							<li>
-								<form action="data_delete" method="POST" style="display:inline">
-									<input type="submit" value="Delete" title="Delete this data" />
-									<input type="hidden" onClick="confirm('Really delete?')" name="version" value="<c:out value="${DatastoreVersion.version}" />"/>
-								</form>
-							</li>
-						</c:when>
-					</c:choose>
-					</ul>
-				</li>
-			</c:forEach>
-			</ul>
+			Application code uses database version: v<c:out value="${ObjectDatastoreVersion}" />
 		</p>
 		
 		<jsp:include page="/WEB-INF/template/footer.jsp" />

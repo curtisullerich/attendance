@@ -72,8 +72,12 @@
 				
 <!-- 				</select> -->
 <!-- 			</dd> -->
+
 			<dt><label class="required" for="Title">Title</label></dt>
 			<dd><input type="text" name="Title" value="<c:out value="${appinfo.title}" />" /></dd>
+			
+			<dt><label for="CronExportEnabled">Backups:</label></dt>
+			<dd><label>Daily data backups enabled: <input type="checkbox" name="CronExportEnabled" <c:if test="${appinfo.cronExportEnabled}">checked="checked"</c:if> align="right"></label></dd>
 			
 			<dt><label for="Month" class="required">Form A Submission Cutoff</label></dt>
 			

@@ -44,6 +44,8 @@ public class AppData implements Serializable {
 	@Id
 	private int datastoreVersion;
 
+	private boolean isCronExportEnabled;
+
 	public String getTitle() {
 		return this.title;
 	}
@@ -104,5 +106,13 @@ public class AppData implements Serializable {
 		List<TimeZone> opts = new ArrayList<TimeZone>();
 		opts.add(TimeZone.getTimeZone("CST"));
 		return opts;
+	}
+
+	public boolean isCronExportEnabled() {
+		return this.isCronExportEnabled;
+	}
+
+	public void setCronExportEnabled(boolean isEnabled) {
+		this.isCronExportEnabled = isEnabled;
 	}
 }

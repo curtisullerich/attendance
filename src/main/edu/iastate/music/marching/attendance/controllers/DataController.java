@@ -16,6 +16,7 @@ import javax.mail.internet.MimeMessage;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
+import edu.iastate.music.marching.attendance.Configuration;
 import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.AppData;
 import edu.iastate.music.marching.attendance.model.DatastoreVersion;
@@ -31,9 +32,6 @@ import edu.iastate.music.marching.attendance.model.User;
 public class DataController extends AbstractController {
 
 	private static final int DUMP_FORMAT_VERSION = 2;
-
-	private static final String BUGREPORT_EMAIL_TO = "mbattendance@iastate.edu";
-	private static final String BUGREPORT_EMAIL_FROM = "mbattendance@gmail.com";
 
 	private DataTrain dataTrain;
 
@@ -66,9 +64,9 @@ public class DataController extends AbstractController {
 
 		try {
 			MimeMessage msg = new MimeMessage(session);
-			msg.setFrom(new InternetAddress(BUGREPORT_EMAIL_FROM));
+			msg.setFrom(new InternetAddress(Configuration.Emails.BUGREPORT_EMAIL_FROM));
 			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
-					BUGREPORT_EMAIL_TO));
+					Configuration.Emails.BUGREPORT_EMAIL_TO));
 
 			msg.setSubject("Attendance Bug Report");
 			msg.setContent(msgBody, "text/html");
