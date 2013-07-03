@@ -1,0 +1,4 @@
+cron:
+- description: daily export job
+  url: /task/export_daily
+  schedule: every 24 hours

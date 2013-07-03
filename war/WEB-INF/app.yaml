@@ -88,5 +88,12 @@ handlers:
     path: "admin"
   name: admin
 
+- url: /task/*
+  servlet: edu.iastate.music.marching.attendance.servlets.TaskServlet
+  init_params:
+    path: "task"
+  name: task
+  login: admin
+
 error_handlers:
   - file: /error.html

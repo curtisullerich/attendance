@@ -3,7 +3,6 @@ package edu.iastate.music.marching.attendance.servlets;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,7 +18,6 @@ import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.google.appengine.api.datastore.Email;
-import com.google.common.collect.Lists;
 
 import edu.iastate.music.marching.attendance.controllers.AbsenceController;
 import edu.iastate.music.marching.attendance.controllers.AuthController;
@@ -30,27 +28,23 @@ import edu.iastate.music.marching.attendance.model.Absence;
 import edu.iastate.music.marching.attendance.model.AttendanceDatastore;
 import edu.iastate.music.marching.attendance.model.Form;
 import edu.iastate.music.marching.attendance.model.User;
+import edu.iastate.music.marching.attendance.tasks.Tasks;
 import edu.iastate.music.marching.attendance.util.PageBuilder;
 import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
 public class AdminServlet extends AbstractBaseServlet {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 6636386568039228284L;
 
 	private static final String SERVLET_PATH = "admin";
 
 	public static final String INDEX_URL = pageToUrl(Page.index, SERVLET_PATH);
 
-	private static final String CONTENT_TYPE_JSON = "application/json";
-
 	private static final Logger log = Logger.getLogger(AdminServlet.class
 			.getName());
 
 	private enum Page {
-		index, users, user, data, export, load, data_migrate, data_delete, register, bulkmake, student_register
+		index, users, user, data, restore, backup, data_migrate, data_delete, register, bulkmake, student_register
 	}
 
 	@Override
@@ -81,9 +75,6 @@ public class AdminServlet extends AbstractBaseServlet {
 				break;
 			case user:
 				showUserInfo(req, resp);
-				break;
-			case export:
-				downloadExportData(req, resp);
 				break;
 			case data:
 				showDataPage(req, resp);
@@ -123,14 +114,14 @@ public class AdminServlet extends AbstractBaseServlet {
 			ErrorServlet.showError(req, resp, 404);
 		else
 			switch (page) {
-			case data:
+			case backup:
+				queueDataExport(req, resp);
+				break;
+			case restore:
 				doDataImport(req, resp);
 				break;
 			case users:
 				postUserInfo(req, resp);
-				break;
-			case load:
-				postImportData(req, resp);
 				break;
 			case register:
 				doDirectorRegistration(req, resp);
@@ -256,10 +247,8 @@ public class AdminServlet extends AbstractBaseServlet {
 
 		PageBuilder page = new PageBuilder(Page.data, SERVLET_PATH);
 
-		page.setPageTitle("Data Export/Import/Update");
+		page.setPageTitle("Data Export/Import");
 
-		page.setAttribute("DatastoreVersions",
-				Lists.reverse(train.getVersionController().getAll()));
 		page.setAttribute("ObjectDatastoreVersion", AttendanceDatastore.VERSION);
 
 		page.passOffToJsp(req, resp);
@@ -269,8 +258,6 @@ public class AdminServlet extends AbstractBaseServlet {
 			throws ServletException, IOException {
 
 		DataTrain train = DataTrain.getAndStartTrain();
-		
-		
 
 		try {
 			ServletFileUpload upload = new ServletFileUpload();
@@ -287,30 +274,26 @@ public class AdminServlet extends AbstractBaseServlet {
 					log.info("Got an uploaded file: " + item.getFieldName()
 							+ ", name = " + item.getName());
 
-					// Now we have the file name and contents, go ahead and import
-					train.getDataController().deleteEverthingInTheEntireDatabaseEvenThoughYouCannotUndoThis();
-					train.getDataController().importJSONDatabaseDump(new InputStreamReader(stream));
-//					int len;
-//					byte[] buffer = new byte[8192];
-//					while ((len = stream.read(buffer, 0, buffer.length)) != -1) {
-//						resp.getOutputStream().write(buffer, 0, len);
-//					}
+					// Now we have the file name and contents, go ahead and
+					// import
+					train.getDataController()
+							.deleteEverthingInTheEntireDatabaseEvenThoughYouCannotUndoThis();
+					train.getDataController().importJSONDatabaseDump(
+							new InputStreamReader(stream));
+					// int len;
+					// byte[] buffer = new byte[8192];
+					// while ((len = stream.read(buffer, 0, buffer.length)) !=
+					// -1) {
+					// resp.getOutputStream().write(buffer, 0, len);
+					// }
 				}
 			}
 		} catch (Exception ex) {
 			throw new ServletException(ex);
 		}
 
-		// PageBuilder page = new PageBuilder(Page.data, SERVLET_PATH);
-		//
-		// page.setPageTitle("Data Export/Import/Update");
-		//
-		// page.setAttribute("DatastoreVersions",
-		// Lists.reverse(train.getVersionController().getAll()));
-		// page.setAttribute("ObjectDatastoreVersion",
-		// AttendanceDatastore.VERSION);
-		//
-		// page.passOffToJsp(req, resp);
+		new PageBuilder(Page.restore, SERVLET_PATH).setPageTitle(
+				"Data Restore Complete").passOffToJsp(req, resp);
 	}
 
 	private void showDirectorRegistrationPage(HttpServletRequest req,
@@ -404,17 +387,15 @@ public class AdminServlet extends AbstractBaseServlet {
 			page.setAttribute("error_messages", errors);
 
 			page.passOffToJsp(req, resp);
-		}
-		else if (req.getParameter("RefreshAbsences") != null) {
+		} else if (req.getParameter("RefreshAbsences") != null) {
 			String succex = null;
 			AbsenceController ac = train.getAbsenceController();
 			try {
-				for (Absence a: ac.getAll()) {
+				for (Absence a : ac.getAll()) {
 					ac.updateAbsence(a);
 				}
 				succex = "Absences refreshed.";
-			}
-			catch (Throwable tehThrowable) {
+			} catch (Throwable tehThrowable) {
 				errors.add(tehThrowable.getMessage());
 				log.severe(tehThrowable.getMessage());
 				log.severe(tehThrowable.getStackTrace().toString());
@@ -428,17 +409,15 @@ public class AdminServlet extends AbstractBaseServlet {
 			page.setAttribute("error_messages", errors);
 
 			page.passOffToJsp(req, resp);
-		}
-		else if (req.getParameter("RefreshForms") != null) {
+		} else if (req.getParameter("RefreshForms") != null) {
 			String succex = null;
 			FormController fc = train.getFormsController();
 			try {
-				for (Form f: fc.getAll()) {
+				for (Form f : fc.getAll()) {
 					fc.update(f);
 				}
 				succex = "Forms refreshed.";
-			}
-			catch (Throwable tehThrowable) {
+			} catch (Throwable tehThrowable) {
 				errors.add(tehThrowable.getMessage());
 				log.severe(tehThrowable.getMessage());
 				log.severe(tehThrowable.getStackTrace().toString());
@@ -452,17 +431,15 @@ public class AdminServlet extends AbstractBaseServlet {
 			page.setAttribute("error_messages", errors);
 
 			page.passOffToJsp(req, resp);
-		}
-		else if (req.getParameter("RefreshUsers") != null) {
+		} else if (req.getParameter("RefreshUsers") != null) {
 			String succex = null;
 			UserController uc = train.getUsersController();
 			try {
-				for (User u: uc.getAll()) {
+				for (User u : uc.getAll()) {
 					uc.update(u);
 				}
 				succex = "Users refreshed. <(' '<) <(' ')> (>' ')>";
-			}
-			catch (Throwable tehThrowable) {
+			} catch (Throwable tehThrowable) {
 				errors.add(tehThrowable.getMessage());
 				log.severe(tehThrowable.getMessage());
 				log.severe(tehThrowable.getStackTrace().toString());
@@ -648,27 +625,14 @@ public class AdminServlet extends AbstractBaseServlet {
 		page.passOffToJsp(req, resp);
 	}
 
-	private void downloadExportData(HttpServletRequest req,
+	private void queueDataExport(HttpServletRequest req,
 			HttpServletResponse resp) throws ServletException, IOException {
 
-		resp.setContentType(CONTENT_TYPE_JSON);
+		Tasks.exportData();
 
-		DataTrain train = DataTrain.getAndStartTrain();
+		log.info("Queueing data export");
 
-		OutputStreamWriter osw = new OutputStreamWriter(resp.getOutputStream());
-
-		train.getDataController().dumpDatabaseAsJSON(osw);
-
-		osw.flush();
-	}
-
-	private void postImportData(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-
-		PageBuilder page = new PageBuilder(Page.data, SERVLET_PATH);
-
-		page.setPageTitle("Data Export/Import");
-
-		page.passOffToJsp(req, resp);
+		new PageBuilder(Page.backup, SERVLET_PATH).setPageTitle(
+				"Data Backup Started").passOffToJsp(req, resp);
 	}
 }
