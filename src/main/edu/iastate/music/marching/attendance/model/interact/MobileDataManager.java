@@ -58,8 +58,6 @@ public class MobileDataManager {
 				sb.append(SEPARATOR);
 				sb.append(next.getLastName());
 				sb.append(SEPARATOR);
-				sb.append(train.getAppDataManager().get()
-						.getHashedMobilePassword());
 				sb.append(SEPARATOR);
 				sb.append(next.getRank());
 			} else if (next.getType() == User.Type.Student) {

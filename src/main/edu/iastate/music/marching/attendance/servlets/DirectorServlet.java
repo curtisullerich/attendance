@@ -702,21 +702,6 @@ public class DirectorServlet extends AbstractBaseServlet {
 				errors.add("Invalid Input: The input date is invalid.");
 			}
 
-			// Check if they added a new password and then change it
-			newPass = req.getParameter("hashedPass");
-			newPassConf = req.getParameter("hashedPassConf");
-			if (newPass != null && !newPass.equals("")) {
-				if (newPassConf == null || newPassConf.equals("")) {
-					validForm = false;
-					errors.add("Password and Confirm Password didn't match.");
-				} else if (!newPass.equals(newPassConf)) {
-					validForm = false;
-					errors.add("Password and Confirm Password didn't match");
-				} else {
-					data.setHashedMobilePassword(newPass);
-				}
-			}
-
 			title = req.getParameter("Title");
 			if (title == null || title.equals("")) {
 				errors.add("Must supply a title.");

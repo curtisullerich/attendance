@@ -62,9 +62,6 @@ public class AppDataManager extends AbstractManager {
 			calendar.add(Calendar.MILLISECOND, -1);
 			appData.setFormSubmissionCutoff(calendar.getTime());
 
-			// Defaults to "password"
-			appData.setHashedMobilePassword("5BAA61E4C9B93F3F0682250B6CF8331B7EE68FD8");
-
 			this.dataTrain.getDataStore().store(appData);
 			this.dataTrain.updateCache(id, appData);
 		}

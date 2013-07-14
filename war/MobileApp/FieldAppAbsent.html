@@ -14,7 +14,6 @@
 		<script type="text/javascript" src="/jquery/jquery.min.js"></script>
 		<script type="text/javascript" src="/js/common.js"></script>
 		<script type="text/javascript" src="/js/script.js"></script>
-		<script type="text/javascript" src="/js/sha.js"></script>
 	
 		<link href="/css/base.mobile.css" media="all" rel="stylesheet">
 		<!--[if lte IE 8]>
@@ -61,8 +60,6 @@
 				//clear radio buttons
 				document.getElementById("rehearsalRadio").checked = 0;
 				document.getElementById("performanceRadio").checked = 0;
-				//move cursor to login
-				netIDSelectTA();
 				//enable clear button if debug is true
 				if(debug){
 					document.getElementById("clear").style.display="inherit";
@@ -87,18 +84,6 @@
 					   }
 				}
 				return;
-			}
-			
-			/**
-			 * This function selects the netID input box by default when called
-			 *
-			 * @author Todd Wegter
-			 * @date 2-10-212
-			 */
-			function netIDSelectTA(){
-				var text_input = document.getElementById ("TA");
-				text_input.focus ();
-				text_input.select ();
 			}
 			
 			/**
@@ -695,7 +680,7 @@
 			<a class="right" id="help" href="javascript: help();">Help</a>
 		</header>
 
-		<div id="main" style="display: none">
+		<div id="main">
 			<h1>Absence Report</h1>
 			<ul class="navigation group drilldown panel">
 				<li class="selected">
@@ -766,29 +751,6 @@
 					</div>
 				</li>
 			</ul>
-		</div>
-						
-		<div class="box" id="login">
-			<h1>TA Absence Login</h1>
-			<form class="centeralign" id="TACredentials" onsubmit="return confirmTACredentials();">
-				<ul class="navigation group drilldown panel">
-					<li class="selected">
-						<div class="flippedButton">
-							<table>
-								<tr>
-									<td>TA netID:</td>
-									<td><input type="text" id="TA" placeholder="TA netID"/></td>
-								</tr>
-								<tr>
-									<td>Password:</td>
-									<td><input type="password" id="password" placeholder="password"/></td>
-								</tr>
-							</table>
-						</div>
-						<input type="submit" class="submit" id="submit"/>
-					</li>
-				</ul>
-			</form>
 		</div>
 		
 		<br/>

@@ -9,58 +9,12 @@
 <html>
 	<head>
 		<jsp:include page="/WEB-INF/template/head.jsp" />
-		<script type="text/javascript" src="/js/sha.js"></script>
-	
-		<script type="text/javascript">
-		function addTimeWorkedEmail() {
-			var email = $('#TimeWorkedEmail').val();
-			if(isValidEmailAddress(email))
-				$('#TimeWorkedEmails').append('<option>'+email+'</option>');
-			else
-				alert("Invalid email to add");
-		}
-		function deleteTimeWorkedEmails() {
-			var selected = $("#TimeWorkedEmails option:selected");
-			selected.map(function(){
-		      $(this).remove();
-		    });
-		}
-		
-		function preprocessInfo(){
-			var opts = document.getElementById('TimeWorkedEmails').options;
-			var emails = "";
-			for (var i = 0; i < opts.length; i++)
-			{
-				emails += opts[i].value + "delimit";
-			}
-			$('input[name=hiddenEmails]').val(emails);
-			var pass = $('#MobilePassword').val();
-			if (pass != "")
-				$('input[name=hashedPass]').val(Sha1.hash(pass, true));		
-			var passConf = $('#MobilePasswordConf').val();
-			if (passConf != "")
-				$('input[name=hashedPassConf]').val(Sha1.hash(passConf, true));
-		}
-		</script>
 	</head>
 
 	<body>		
 		<jsp:include page="/WEB-INF/template/header.jsp" />
 	
 		<h1>Application Settings for: <c:out value="${appinfo.title}" /></h1>		
-		
-		<dl class="block-layout">
-			<dt><label for="MobilePassword">New Mobile App Password</label></dt>
-			<dd>
-				<input type="password" id="MobilePassword" name="MobilePassword" />
-				<br/>
-				Leave blank to not change the password.
-			</dd>
-			<dt><label for="MobilPasswordConfirm">Confirm New Mobile App Password</label></dt>
-			<dd>
-				<input type="password" id="MobilePasswordConf" name = "MobilePasswordConf" />
-			</dd>	
-		</dl>
 		
 		<%//Put the form down here so the MobilePassword wasn't getting posted in the form %>
 		<form method="post" accept-charset="utf-8">	

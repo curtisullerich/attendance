@@ -35,8 +35,6 @@ public class AppData implements Serializable {
 
 	private List<String> timeWorkedEmails;
 
-	private String hashedMobilePassword;
-
 	private String timeZoneID;
 
 	@Type(Text.class)
@@ -61,14 +59,6 @@ public class AppData implements Serializable {
 
 	public void setTimeWorkedEmails(List<String> timeWorkedEmails) {
 		this.timeWorkedEmails = timeWorkedEmails;
-	}
-
-	public String getHashedMobilePassword() {
-		return hashedMobilePassword;
-	}
-
-	public void setHashedMobilePassword(String hashedMobilePassword) {
-		this.hashedMobilePassword = hashedMobilePassword;
 	}
 
 	public Date getFormSubmissionCutoff() {
