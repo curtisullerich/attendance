@@ -105,33 +105,58 @@ table.gray tr:nth-child(odd) td.highlight, table.gray tr:nth-child(even) td.high
 								<c:when test="${absence.type.tardy && !absence.status.approved}">
 									<c:set var="cellcontents">
 										${cellcontents}
-										<a target="_blank" href="/director/viewabsence?absenceid=${absence.id }&newindow=true">${absence.status} ${absence.type }[<fmt:formatDate value="${absence.datetime}" pattern="M/d"/>]</a><c:if test="${not loop.last}"><br/></c:if>
+										<a target="_blank" href="/director/viewabsence?absenceid=${absence.id }&newindow=true">
+                                          ${absence.status} ${absence.type }[<fmt:formatDate value="${absence.datetime}" pattern="M/d"/>]
+                                        </a>
+                                        <c:if test="${not loop.last}">
+                                          <br/>
+                                        </c:if>
 									</c:set>
 								</c:when>
 								<c:when test="${absence.type.absence && !absence.status.approved}">
 									<c:set var="cellcontents">
 										${cellcontents}
-										<a target="_blank" href="/director/viewabsence?absenceid=${absence.id }&newindow=true">${absence.status} ${absence.type } [<fmt:formatDate value="${absence.datetime}" pattern="M/d"/>]</a><c:if test="${not loop.last}"><br/></c:if>
+										<a target="_blank" href="/director/viewabsence?absenceid=${absence.id }&newindow=true">
+                                          ${absence.status} ${absence.type } [<fmt:formatDate value="${absence.datetime}" pattern="M/d"/>]
+                                        </a>
+                                        <c:if test="${not loop.last}">
+                                          <br/>
+                                        </c:if>
 									</c:set>
 								</c:when>
 								<c:when test="${absence.type.earlyCheckOut && !absence.status.approved}">
 									<c:set var="cellcontents">
 										${cellcontents}
-										<a target="_blank" href="/director/viewabsence?absenceid=${absence.id }&newindow=true">${absence.status} ${absence.type }[<fmt:formatDate value="${absence.datetime}" pattern="M/d"/>]</a><c:if test="${not loop.last}"><br/></c:if>
+										<a target="_blank" href="/director/viewabsence?absenceid=${absence.id }&newindow=true">
+                                          ${absence.status} ${absence.type }[<fmt:formatDate value="${absence.datetime}" pattern="M/d"/>]
+                                        </a>
+                                        <c:if test="${not loop.last}">
+                                          <br/>
+                                        </c:if>
 									</c:set>
 								</c:when>
 								<c:when test="${absence.status.approved}">
 									<c:if test="${showApproved}">
 										<c:set var="cellcontents">
 											${cellcontents}
-											<a target="_blank" href="/director/viewabsence?absenceid=${absence.id }&newindow=true" >${absence.status} ${absence.type }[<fmt:formatDate value="${absence.datetime}" pattern="M/d"/>]</a><c:if test="${not loop.last}"><br/></c:if>
+											<a target="_blank" href="/director/viewabsence?absenceid=${absence.id }&newindow=true" >
+                                              ${absence.status} ${absence.type }[<fmt:formatDate value="${absence.datetime}" pattern="M/d"/>]
+                                            </a>
+                                            <c:if test="${not loop.last}">
+                                              <br/>
+                                            </c:if>
 										</c:set>
 									</c:if>
 									<c:if test="${!showApproved}">
 										<c:set var="cellcontents">
 											${cellcontents}
 											<span class="show-absence-onhover">
-												<a target="_blank" href="/director/viewabsence?absenceid=${absence.id }&newindow=true" >${absence.status} ${absence.type }[<fmt:formatDate value="${absence.datetime}" pattern="M/d"/>]</a><c:if test="${not loop.last}"><br/></c:if>
+												<a target="_blank" href="/director/viewabsence?absenceid=${absence.id }&newindow=true" >
+                                                  ${absence.status} ${absence.type }[<fmt:formatDate value="${absence.datetime}" pattern="M/d"/>]
+                                                </a>
+                                                <c:if test="${not loop.last}">
+                                                  <br/>
+                                                </c:if>
 											</span>
 										</c:set>
 									</c:if>
