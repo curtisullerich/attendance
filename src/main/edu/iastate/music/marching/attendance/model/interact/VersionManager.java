@@ -1,15 +1,15 @@
-package edu.iastate.music.marching.attendance.controllers;
+package edu.iastate.music.marching.attendance.model.interact;
 
 import java.util.List;
 
-import edu.iastate.music.marching.attendance.model.DatastoreVersion;
-import edu.iastate.music.marching.attendance.model.ModelFactory;
+import edu.iastate.music.marching.attendance.model.store.DatastoreVersion;
+import edu.iastate.music.marching.attendance.model.store.ModelFactory;
 
-public class VersionController {
+public class VersionManager {
 
 	private DataTrain datatrain;
 
-	public VersionController(DataTrain dataTrain) {
+	public VersionManager(DataTrain dataTrain) {
 		this.datatrain = dataTrain;
 	}
 

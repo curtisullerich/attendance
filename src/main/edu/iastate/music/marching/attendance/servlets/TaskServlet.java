@@ -8,7 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import edu.iastate.music.marching.attendance.controllers.DataTrain;
+import edu.iastate.music.marching.attendance.model.interact.DataTrain;
 import edu.iastate.music.marching.attendance.tasks.Export;
 
 public class TaskServlet extends AbstractBaseServlet {
@@ -56,7 +56,7 @@ public class TaskServlet extends AbstractBaseServlet {
 			DataTrain train = DataTrain.getAndStartTrain();
 
 			// Check if we should perform an export based on preferences
-			if (train.getAppDataController().get().isCronExportEnabled()) {
+			if (train.getAppDataManager().get().isCronExportEnabled()) {
 
 				Export.performExport();
 

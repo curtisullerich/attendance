@@ -4,9 +4,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 
-import edu.iastate.music.marching.attendance.controllers.DataTrain;
-import edu.iastate.music.marching.attendance.model.User;
-import edu.iastate.music.marching.attendance.model.User.Grade;
+import edu.iastate.music.marching.attendance.model.interact.DataTrain;
+import edu.iastate.music.marching.attendance.model.store.User;
+import edu.iastate.music.marching.attendance.model.store.User.Grade;
 
 public class GradeExport {
 
@@ -19,7 +19,7 @@ public class GradeExport {
 		// Header
 		writer.println("Email" + "\t" + "UniversityID" + "\t" + "Grade");
 
-		for (User student : train.getUsersController().get(User.Type.Student)) {
+		for (User student : train.getUsersManager().get(User.Type.Student)) {
 			
 			String line = "";
 			line += student.getPrimaryEmail().getEmail();

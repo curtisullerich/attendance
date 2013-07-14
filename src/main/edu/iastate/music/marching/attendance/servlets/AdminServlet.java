@@ -19,15 +19,15 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.google.appengine.api.datastore.Email;
 
-import edu.iastate.music.marching.attendance.controllers.AbsenceController;
-import edu.iastate.music.marching.attendance.controllers.AuthController;
-import edu.iastate.music.marching.attendance.controllers.DataTrain;
-import edu.iastate.music.marching.attendance.controllers.FormController;
-import edu.iastate.music.marching.attendance.controllers.UserController;
-import edu.iastate.music.marching.attendance.model.Absence;
-import edu.iastate.music.marching.attendance.model.AttendanceDatastore;
-import edu.iastate.music.marching.attendance.model.Form;
-import edu.iastate.music.marching.attendance.model.User;
+import edu.iastate.music.marching.attendance.model.interact.AbsenceManager;
+import edu.iastate.music.marching.attendance.model.interact.AuthManager;
+import edu.iastate.music.marching.attendance.model.interact.DataTrain;
+import edu.iastate.music.marching.attendance.model.interact.FormManager;
+import edu.iastate.music.marching.attendance.model.interact.UserManager;
+import edu.iastate.music.marching.attendance.model.store.Absence;
+import edu.iastate.music.marching.attendance.model.store.AttendanceDatastore;
+import edu.iastate.music.marching.attendance.model.store.Form;
+import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.tasks.Tasks;
 import edu.iastate.music.marching.attendance.util.PageBuilder;
 import edu.iastate.music.marching.attendance.util.ValidationUtil;
@@ -51,7 +51,7 @@ public class AdminServlet extends AbstractBaseServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		if (!AuthController.isAdminLoggedIn()) {
+		if (!AuthManager.isAdminLoggedIn()) {
 			if (!isLoggedIn(req, resp)) {
 				resp.sendRedirect(AuthServlet.getLoginUrl(req));
 				return;
@@ -98,7 +98,7 @@ public class AdminServlet extends AbstractBaseServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		if (!AuthController.isAdminLoggedIn()) {
+		if (!AuthManager.isAdminLoggedIn()) {
 			if (!isLoggedIn(req, resp)) {
 				resp.sendRedirect(AuthServlet.getLoginUrl(req));
 				return;
@@ -155,7 +155,7 @@ public class AdminServlet extends AbstractBaseServlet {
 
 		User.Type type = User.Type.valueOf(strType);
 
-		UserController uc = train.getUsersController();
+		UserManager uc = train.getUsersManager();
 
 		User localUser = uc.get(netID);
 
@@ -169,9 +169,9 @@ public class AdminServlet extends AbstractBaseServlet {
 
 			// Update user in session if we just changed the currently logged in
 			// user
-			if (localUser.equals(train.getAuthController().getCurrentUser(
+			if (localUser.equals(train.getAuthManager().getCurrentUser(
 					req.getSession())))
-				AuthController.updateCurrentUser(localUser, req.getSession());
+				AuthManager.updateCurrentUser(localUser, req.getSession());
 			success = "User information saved";
 		} catch (IllegalArgumentException e) {
 			// Invalid information
@@ -190,7 +190,7 @@ public class AdminServlet extends AbstractBaseServlet {
 
 		PageBuilder page = new PageBuilder(Page.users, SERVLET_PATH);
 
-		page.setAttribute("users", train.getUsersController().getAll());
+		page.setAttribute("users", train.getUsersManager().getAll());
 
 		page.setAttribute("error_messages", errors);
 
@@ -213,7 +213,7 @@ public class AdminServlet extends AbstractBaseServlet {
 
 		if (parts.length >= 3) {
 			String netid = parts[2];
-			u = train.getUsersController().get(netid);
+			u = train.getUsersManager().get(netid);
 		}
 
 		if (u == null)
@@ -276,9 +276,9 @@ public class AdminServlet extends AbstractBaseServlet {
 
 					// Now we have the file name and contents, go ahead and
 					// import
-					train.getDataController()
+					train.getDataManager()
 							.deleteEverthingInTheEntireDatabaseEvenThoughYouCannotUndoThis();
-					train.getDataController().importJSONDatabaseDump(
+					train.getDataManager().importJSONDatabaseDump(
 							new InputStreamReader(stream));
 					// int len;
 					// byte[] buffer = new byte[8192];
@@ -333,7 +333,7 @@ public class AdminServlet extends AbstractBaseServlet {
 			String data = req.getParameter("Data").replaceAll("\\s+", "");
 
 			String[] lines = data.split(";");
-			UserController uc = train.getUsersController();
+			UserManager uc = train.getUsersManager();
 
 			int i = 0;
 
@@ -370,7 +370,7 @@ public class AdminServlet extends AbstractBaseServlet {
 		} else if (req.getParameter("DeleteAll") != null) {
 			String success = null;
 			try {
-				train.getDataController()
+				train.getDataManager()
 						.deleteEverthingInTheEntireDatabaseEvenThoughYouCannotUndoThis();
 				success = "Successfully, irrevocably, and unequivically removed everything.";
 			} catch (Throwable aDuh) {
@@ -389,7 +389,7 @@ public class AdminServlet extends AbstractBaseServlet {
 			page.passOffToJsp(req, resp);
 		} else if (req.getParameter("RefreshAbsences") != null) {
 			String succex = null;
-			AbsenceController ac = train.getAbsenceController();
+			AbsenceManager ac = train.getAbsenceManager();
 			try {
 				for (Absence a : ac.getAll()) {
 					ac.updateAbsence(a);
@@ -411,7 +411,7 @@ public class AdminServlet extends AbstractBaseServlet {
 			page.passOffToJsp(req, resp);
 		} else if (req.getParameter("RefreshForms") != null) {
 			String succex = null;
-			FormController fc = train.getFormsController();
+			FormManager fc = train.getFormsManager();
 			try {
 				for (Form f : fc.getAll()) {
 					fc.update(f);
@@ -433,7 +433,7 @@ public class AdminServlet extends AbstractBaseServlet {
 			page.passOffToJsp(req, resp);
 		} else if (req.getParameter("RefreshUsers") != null) {
 			String succex = null;
-			UserController uc = train.getUsersController();
+			UserManager uc = train.getUsersManager();
 			try {
 				for (User u : uc.getAll()) {
 					uc.update(u);
@@ -487,7 +487,7 @@ public class AdminServlet extends AbstractBaseServlet {
 
 		if (errors.size() == 0) {
 			try {
-				new_user = train.getUsersController().createDirector(
+				new_user = train.getUsersManager().createDirector(
 						primaryEmail.getEmail(), secondEmail.getEmail(),
 						firstName, lastName);
 
@@ -584,7 +584,7 @@ public class AdminServlet extends AbstractBaseServlet {
 
 		if (errors.size() == 0) {
 			try {
-				new_user = train.getUsersController().createStudent(
+				new_user = train.getUsersManager().createStudent(
 						primaryEmail, univID, firstName, lastName, year, major,
 						section, secondEmail);
 

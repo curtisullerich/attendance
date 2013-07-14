@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 
 import org.junit.Test;
 
-import edu.iastate.music.marching.attendance.model.User;
+import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.servlets.DirectorServlet;
 import edu.iastate.music.marching.attendance.servlets.MobileAppDataServlet;
 import edu.iastate.music.marching.attendance.test.AbstractTest;
@@ -199,7 +199,7 @@ public class ServletAccess extends AbstractTest {
 	private HttpServletRequest setStudentSession(HttpServletRequest req) {
 		HttpSession session = mock(HttpSession.class);
 		when(session.getAttribute("authenticated_user")).thenReturn(
-				Users.createStudent(getDataTrain().getUsersController(),
+				Users.createStudent(getDataTrain().getUsersManager(),
 						"studenttt", "123456789", "I am", "A Student", 10,
 						"Being Silly", User.Section.AltoSax));
 		when(req.getSession()).thenReturn(session);
@@ -209,7 +209,7 @@ public class ServletAccess extends AbstractTest {
 	private HttpServletRequest setDirectorSession(HttpServletRequest req) {
 		HttpSession session = mock(HttpSession.class);
 		when(session.getAttribute("authenticated_user")).thenReturn(
-				Users.createDirector(getDataTrain().getUsersController(),
+				Users.createDirector(getDataTrain().getUsersManager(),
 						"director", "I am", "The Director"));
 		when(req.getSession()).thenReturn(session);
 		return req;
@@ -218,7 +218,7 @@ public class ServletAccess extends AbstractTest {
 	private HttpServletRequest setTASession(HttpServletRequest req) {
 		HttpSession session = mock(HttpSession.class);
 		when(session.getAttribute("authenticated_user")).thenReturn(
-				Users.createTA(getDataTrain().getUsersController(), "ta",
+				Users.createTA(getDataTrain().getUsersManager(), "ta",
 						"123456789", "I am", "A TA", 10, "Being Silly",
 						User.Section.AltoSax));
 		when(req.getSession()).thenReturn(session);

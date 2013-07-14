@@ -7,8 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import edu.iastate.music.marching.attendance.controllers.AuthController;
-import edu.iastate.music.marching.attendance.model.User;
+import edu.iastate.music.marching.attendance.model.interact.AuthManager;
+import edu.iastate.music.marching.attendance.model.store.User;
 
 public abstract class AbstractBaseServlet extends HttpServlet {
 
@@ -74,7 +74,7 @@ public abstract class AbstractBaseServlet extends HttpServlet {
 	protected static boolean isLoggedIn(HttpServletRequest req,
 			HttpServletResponse resp, User.Type... allowed_types)
 			throws IOException {
-		if (!AuthController.isLoggedIn(req.getSession(), allowed_types)) {
+		if (!AuthManager.isLoggedIn(req.getSession(), allowed_types)) {
 			// User of correct type is not logged in
 			return false;
 		}

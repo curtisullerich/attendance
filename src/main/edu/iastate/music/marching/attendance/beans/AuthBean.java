@@ -6,8 +6,8 @@ import javax.servlet.http.HttpSession;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
-import edu.iastate.music.marching.attendance.controllers.DataTrain;
-import edu.iastate.music.marching.attendance.model.User;
+import edu.iastate.music.marching.attendance.model.interact.DataTrain;
+import edu.iastate.music.marching.attendance.model.store.User;
 
 public class AuthBean implements java.io.Serializable {
 	/**
@@ -26,7 +26,7 @@ public class AuthBean implements java.io.Serializable {
 	}
 
 	public User getUser() {
-		return this.train.getAuthController().getCurrentUser(this.session);
+		return this.train.getAuthManager().getCurrentUser(this.session);
 	}
 
 	public com.google.appengine.api.users.User getGoogleUser() {

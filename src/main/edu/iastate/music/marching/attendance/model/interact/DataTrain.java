@@ -1,4 +1,4 @@
-package edu.iastate.music.marching.attendance.controllers;
+package edu.iastate.music.marching.attendance.model.interact;
 
 import java.io.Serializable;
 import java.util.Collections;
@@ -15,7 +15,7 @@ import com.google.appengine.api.datastore.Transaction;
 import com.google.code.twig.FindCommand.RootFindCommand;
 import com.google.code.twig.standard.StandardObjectDatastore;
 
-import edu.iastate.music.marching.attendance.model.ModelFactory;
+import edu.iastate.music.marching.attendance.model.store.ModelFactory;
 
 public class DataTrain {
 
@@ -33,7 +33,7 @@ public class DataTrain {
 
 		// Force version model object to
 		// be created and associated
-		train.getVersionController().getCurrent();
+		train.getVersionManager().getCurrent();
 
 		return train;
 	}
@@ -42,40 +42,40 @@ public class DataTrain {
 		datastore = ModelFactory.newObjectDatastore();
 	}
 
-	public AbsenceController getAbsenceController() {
-		return new AbsenceController(this);
+	public AbsenceManager getAbsenceManager() {
+		return new AbsenceManager(this);
 	}
 
-	public AppDataController getAppDataController() {
-		return new AppDataController(this);
+	public AppDataManager getAppDataManager() {
+		return new AppDataManager(this);
 	}
 
-	public AuthController getAuthController() {
-		return new AuthController(this);
+	public AuthManager getAuthManager() {
+		return new AuthManager(this);
 	}
 
-	public DataController getDataController() {
-		return new DataController(this);
+	public DataManager getDataManager() {
+		return new DataManager(this);
 	}
 
-	public EventController getEventController() {
-		return new EventController(this);
+	public EventManager getEventManager() {
+		return new EventManager(this);
 	}
 
-	public FormController getFormsController() {
-		return new FormController(this);
+	public FormManager getFormsManager() {
+		return new FormManager(this);
 	}
 
-	public MobileDataController getMobileDataController() {
-		return new MobileDataController(this);
+	public MobileDataManager getMobileDataManager() {
+		return new MobileDataManager(this);
 	}
 
-	public UserController getUsersController() {
-		return new UserController(this);
+	public UserManager getUsersManager() {
+		return new UserManager(this);
 	}
 
-	public VersionController getVersionController() {
-		return new VersionController(this);
+	public VersionManager getVersionManager() {
+		return new VersionManager(this);
 	}
 
 	StandardObjectDatastore getDataStore() {

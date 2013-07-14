@@ -9,10 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import edu.iastate.music.marching.attendance.beans.PageTemplateBean;
-import edu.iastate.music.marching.attendance.controllers.DataTrain;
-import edu.iastate.music.marching.attendance.controllers.FormController;
-import edu.iastate.music.marching.attendance.model.Form;
-import edu.iastate.music.marching.attendance.model.User;
+import edu.iastate.music.marching.attendance.model.interact.DataTrain;
+import edu.iastate.music.marching.attendance.model.interact.FormManager;
+import edu.iastate.music.marching.attendance.model.store.Form;
+import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.util.PageBuilder;
 
 public class PublicServlet extends AbstractBaseServlet {
@@ -84,7 +84,7 @@ public class PublicServlet extends AbstractBaseServlet {
 		String severity = req.getParameter("Severity");
 		String description = req.getParameter("Description");
 		String redir = req.getParameter("Redirect");
-		User user = datatrain.getAuthController().getCurrentUser(
+		User user = datatrain.getAuthManager().getCurrentUser(
 				req.getSession());
 		String userAgent = req.getHeader("User-Agent");
 		String error_messages = req.getParameter("error_messages");
@@ -107,7 +107,7 @@ public class PublicServlet extends AbstractBaseServlet {
 					+ description + "\n";
 		}
 
-		datatrain.getDataController().sendBugReportEmail(user, severity, redir,
+		datatrain.getDataManager().sendBugReportEmail(user, severity, redir,
 				userAgent, mobileSite, description);
 
 		String append = "?";
@@ -125,7 +125,7 @@ public class PublicServlet extends AbstractBaseServlet {
 	private void verifyFormD(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		DataTrain train = DataTrain.getAndStartTrain();
-		FormController fc = new FormController(train);
+		FormManager fc = new FormManager(train);
 		List<String> errors = new LinkedList<String>();
 		String success_message = null;
 		boolean isValid = true;

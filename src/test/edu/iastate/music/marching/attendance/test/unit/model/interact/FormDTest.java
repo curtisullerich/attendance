@@ -1,4 +1,4 @@
-package edu.iastate.music.marching.attendance.test.unit.controllers;
+package edu.iastate.music.marching.attendance.test.unit.model.interact;
 
 import static org.junit.Assert.assertEquals;
 
@@ -8,13 +8,13 @@ import java.util.List;
 
 import org.junit.Test;
 
-import edu.iastate.music.marching.attendance.controllers.AppDataController;
-import edu.iastate.music.marching.attendance.controllers.DataTrain;
-import edu.iastate.music.marching.attendance.controllers.FormController;
-import edu.iastate.music.marching.attendance.controllers.UserController;
-import edu.iastate.music.marching.attendance.model.AppData;
-import edu.iastate.music.marching.attendance.model.Form;
-import edu.iastate.music.marching.attendance.model.User;
+import edu.iastate.music.marching.attendance.model.interact.AppDataManager;
+import edu.iastate.music.marching.attendance.model.interact.DataTrain;
+import edu.iastate.music.marching.attendance.model.interact.FormManager;
+import edu.iastate.music.marching.attendance.model.interact.UserManager;
+import edu.iastate.music.marching.attendance.model.store.AppData;
+import edu.iastate.music.marching.attendance.model.store.Form;
+import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.test.AbstractTest;
 import edu.iastate.music.marching.attendance.test.util.Users;
 import edu.iastate.music.marching.attendance.util.ValidationExceptions;
@@ -35,15 +35,15 @@ public class FormDTest extends AbstractTest {
 	@Test
 	public void testApprove() {
 		DataTrain train = getDataTrain();
-		AppDataController adc = train.getAppDataController();
+		AppDataManager adc = train.getAppDataManager();
 		AppData ad = adc.get();
 		List<String> emails = new ArrayList<String>();
 		emails.add("user@domain.com");
 		ad.setTimeWorkedEmails(emails);
 		adc.save(ad);
 
-		UserController uc = train.getUsersController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -74,15 +74,15 @@ public class FormDTest extends AbstractTest {
 	@Test
 	public void testWrongEmail() {
 		DataTrain train = getDataTrain();
-		AppDataController adc = train.getAppDataController();
+		AppDataManager adc = train.getAppDataManager();
 		AppData ad = adc.get();
 		List<String> emails = new ArrayList<String>();
 		emails.add("user@domain.com");
 		ad.setTimeWorkedEmails(emails);
 		adc.save(ad);
 
-		UserController uc = train.getUsersController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -111,15 +111,15 @@ public class FormDTest extends AbstractTest {
 	@Test
 	public void testEmailApproveTwice() {
 		DataTrain train = getDataTrain();
-		AppDataController adc = train.getAppDataController();
+		AppDataManager adc = train.getAppDataManager();
 		AppData ad = adc.get();
 		List<String> emails = new ArrayList<String>();
 		emails.add("user@domain.com");
 		ad.setTimeWorkedEmails(emails);
 		adc.save(ad);
 
-		UserController uc = train.getUsersController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -156,15 +156,15 @@ public class FormDTest extends AbstractTest {
 	@Test
 	public void testEmailApproveDeny() {
 		DataTrain train = getDataTrain();
-		AppDataController adc = train.getAppDataController();
+		AppDataManager adc = train.getAppDataManager();
 		AppData ad = adc.get();
 		List<String> emails = new ArrayList<String>();
 		emails.add("user@domain.com");
 		ad.setTimeWorkedEmails(emails);
 		adc.save(ad);
 
-		UserController uc = train.getUsersController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -204,15 +204,15 @@ public class FormDTest extends AbstractTest {
 	@Test
 	public void testApproveTwice() {
 		DataTrain train = getDataTrain();
-		AppDataController adc = train.getAppDataController();
+		AppDataManager adc = train.getAppDataManager();
 		AppData ad = adc.get();
 		List<String> emails = new ArrayList<String>();
 		emails.add("user@domain.com");
 		ad.setTimeWorkedEmails(emails);
 		adc.save(ad);
 
-		UserController uc = train.getUsersController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -249,15 +249,15 @@ public class FormDTest extends AbstractTest {
 	@Test
 	public void testApproveDeny() {
 		DataTrain train = getDataTrain();
-		AppDataController adc = train.getAppDataController();
+		AppDataManager adc = train.getAppDataManager();
 		AppData ad = adc.get();
 		List<String> emails = new ArrayList<String>();
 		emails.add("user@domain.com");
 		ad.setTimeWorkedEmails(emails);
 		adc.save(ad);
 
-		UserController uc = train.getUsersController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);

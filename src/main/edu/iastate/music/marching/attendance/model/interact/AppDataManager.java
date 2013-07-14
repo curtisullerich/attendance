@@ -1,18 +1,18 @@
-package edu.iastate.music.marching.attendance.controllers;
+package edu.iastate.music.marching.attendance.model.interact;
 
 import java.util.Calendar;
 import java.util.TimeZone;
 
-import edu.iastate.music.marching.attendance.model.AppData;
-import edu.iastate.music.marching.attendance.model.AttendanceDatastore;
-import edu.iastate.music.marching.attendance.model.DatastoreVersion;
-import edu.iastate.music.marching.attendance.model.ModelFactory;
+import edu.iastate.music.marching.attendance.model.store.AppData;
+import edu.iastate.music.marching.attendance.model.store.AttendanceDatastore;
+import edu.iastate.music.marching.attendance.model.store.DatastoreVersion;
+import edu.iastate.music.marching.attendance.model.store.ModelFactory;
 
-public class AppDataController extends AbstractController {
+public class AppDataManager extends AbstractManager {
 
 	private DataTrain dataTrain;
 
-	public AppDataController(DataTrain dataTrain) {
+	public AppDataManager(DataTrain dataTrain) {
 		this.dataTrain = dataTrain;
 	}
 
@@ -24,7 +24,7 @@ public class AppDataController extends AbstractController {
 	 */
 	public AppData get() {
 
-		int id = this.dataTrain.getVersionController().getCurrent()
+		int id = this.dataTrain.getVersionManager().getCurrent()
 				.getVersion();
 
 		// Try cache first

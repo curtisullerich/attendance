@@ -1,4 +1,4 @@
-package edu.iastate.music.marching.attendance.controllers;
+package edu.iastate.music.marching.attendance.model.interact;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -12,16 +12,17 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.google.appengine.api.datastore.Query.FilterOperator;
-import edu.iastate.music.marching.attendance.model.Absence;
-import edu.iastate.music.marching.attendance.model.Event;
-import edu.iastate.music.marching.attendance.model.MobileDataUpload;
-import edu.iastate.music.marching.attendance.model.ModelFactory;
-import edu.iastate.music.marching.attendance.model.User;
 
-public class MobileDataController {
+import edu.iastate.music.marching.attendance.model.store.Absence;
+import edu.iastate.music.marching.attendance.model.store.Event;
+import edu.iastate.music.marching.attendance.model.store.MobileDataUpload;
+import edu.iastate.music.marching.attendance.model.store.ModelFactory;
+import edu.iastate.music.marching.attendance.model.store.User;
+
+public class MobileDataManager {
 
 	private static final Logger log = Logger
-			.getLogger(MobileDataController.class.getName());
+			.getLogger(MobileDataManager.class.getName());
 
 	private static final String NEWLINE = "&newline&";
 	private static final String SEPARATOR = "&split&";
@@ -33,14 +34,14 @@ public class MobileDataController {
 
 	private DataTrain train;
 
-	MobileDataController(DataTrain dataTrain) {
+	MobileDataManager(DataTrain dataTrain) {
 		this.train = dataTrain;
 	}
 
 	public String getClassList() {
 
 		// Get all students and TA's
-		List<User> users = this.train.getUsersController().get(
+		List<User> users = this.train.getUsersManager().get(
 				User.Type.Student, User.Type.TA);
 
 		StringBuilder sb = new StringBuilder();
@@ -57,7 +58,7 @@ public class MobileDataController {
 				sb.append(SEPARATOR);
 				sb.append(next.getLastName());
 				sb.append(SEPARATOR);
-				sb.append(train.getAppDataController().get()
+				sb.append(train.getAppDataManager().get()
 						.getHashedMobilePassword());
 				sb.append(SEPARATOR);
 				sb.append(next.getRank());
@@ -85,13 +86,13 @@ public class MobileDataController {
 			throws IllegalArgumentException {
 				
 		// Set the correct timezone
-		MOBILE_DATETIME_FORMAT.setTimeZone(this.train.getAppDataController().get().getTimeZone());
+		MOBILE_DATETIME_FORMAT.setTimeZone(this.train.getAppDataManager().get().getTimeZone());
 
 		// First let's log what is being uploaded
 		MobileDataUpload upload = ModelFactory.newMobileDataUpload(
 				uploader,
 				Calendar.getInstance(
-						this.train.getAppDataController().get().getTimeZone())
+						this.train.getAppDataManager().get().getTimeZone())
 						.getTime(), data);
 		this.train.getDataStore().store(upload);
 
@@ -156,9 +157,9 @@ public class MobileDataController {
 
 		// try {
 
-		EventController ec = this.train.getEventController();
-		AbsenceController ac = this.train.getAbsenceController();
-		UserController uc = this.train.getUsersController();
+		EventManager ec = this.train.getEventManager();
+		AbsenceManager ac = this.train.getAbsenceManager();
+		UserManager uc = this.train.getUsersManager();
 
 		// List<Event> localEvents = new LinkedList<Event>();
 

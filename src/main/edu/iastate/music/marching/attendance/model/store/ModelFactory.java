@@ -1,10 +1,11 @@
-package edu.iastate.music.marching.attendance.model;
+package edu.iastate.music.marching.attendance.model.store;
 
 import java.util.Calendar;
 import java.util.Date;
 
 import com.google.appengine.api.datastore.Email;
 import com.google.code.twig.standard.StandardObjectDatastore;
+
 
 public class ModelFactory {
 

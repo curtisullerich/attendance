@@ -19,6 +19,14 @@ import com.google.gson.JsonParseException;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
+import edu.iastate.music.marching.attendance.model.store.Absence;
+import edu.iastate.music.marching.attendance.model.store.AppData;
+import edu.iastate.music.marching.attendance.model.store.DatastoreVersion;
+import edu.iastate.music.marching.attendance.model.store.Event;
+import edu.iastate.music.marching.attendance.model.store.Form;
+import edu.iastate.music.marching.attendance.model.store.MobileDataUpload;
+import edu.iastate.music.marching.attendance.model.store.User;
+
 public class GsonWithPartials {
 	
 	public static <T> void toJson(T src, Appendable writer) {

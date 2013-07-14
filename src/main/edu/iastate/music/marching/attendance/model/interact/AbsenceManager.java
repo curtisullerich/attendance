@@ -1,4 +1,4 @@
-package edu.iastate.music.marching.attendance.controllers;
+package edu.iastate.music.marching.attendance.model.interact;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -14,23 +14,23 @@ import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.code.twig.FindCommand.RootFindCommand;
 import com.google.code.twig.ObjectDatastore;
 
-import edu.iastate.music.marching.attendance.model.Absence;
-import edu.iastate.music.marching.attendance.model.Event;
-import edu.iastate.music.marching.attendance.model.Form;
-import edu.iastate.music.marching.attendance.model.ModelFactory;
-import edu.iastate.music.marching.attendance.model.User;
+import edu.iastate.music.marching.attendance.model.store.Absence;
+import edu.iastate.music.marching.attendance.model.store.Event;
+import edu.iastate.music.marching.attendance.model.store.Form;
+import edu.iastate.music.marching.attendance.model.store.ModelFactory;
+import edu.iastate.music.marching.attendance.model.store.User;
 
-public class AbsenceController extends AbstractController {
+public class AbsenceManager extends AbstractManager {
 
-	private static final Logger log = Logger.getLogger(AbsenceController.class
+	private static final Logger log = Logger.getLogger(AbsenceManager.class
 			.getName());
 
 	private DataTrain train;
 
-	private static final Logger LOG = Logger.getLogger(AbsenceController.class
+	private static final Logger LOG = Logger.getLogger(AbsenceManager.class
 			.getName());
 
-	public AbsenceController(DataTrain dataTrain) {
+	public AbsenceManager(DataTrain dataTrain) {
 		this.train = dataTrain;
 	}
 
@@ -285,7 +285,7 @@ public class AbsenceController extends AbstractController {
 			return null;
 		}
 
-		AbsenceController ac = train.getAbsenceController();
+		AbsenceManager ac = train.getAbsenceManager();
 		List<Absence> conflicts = ac.getAll(linked, student);
 
 		if (conflicts.size() > 2) {
@@ -330,7 +330,7 @@ public class AbsenceController extends AbstractController {
 			// "Can't validate Absence with null student");
 		}
 
-		List<Form> forms = train.getFormsController().get(student);
+		List<Form> forms = train.getFormsManager().get(student);
 
 		for (Form form : forms) {
 			checkForAutoApproval(absence, form);
@@ -349,7 +349,7 @@ public class AbsenceController extends AbstractController {
 	 */
 	private Absence checkForAutoApproval(Absence absence, Form form) {
 
-		TimeZone timezone = this.train.getAppDataController().get()
+		TimeZone timezone = this.train.getAppDataManager().get()
 				.getTimeZone();
 
 		if (form.getStatus() != Form.Status.Approved) {
@@ -649,7 +649,7 @@ public class AbsenceController extends AbstractController {
 			// this.train.getDataStore().store(resolvedAbsence);
 
 			// Finally check for side-effects caused by absence
-			train.getUsersController().update(resolvedAbsence.getStudent());
+			train.getUsersManager().update(resolvedAbsence.getStudent());
 
 			// Success.
 			return resolvedAbsence;
@@ -666,7 +666,7 @@ public class AbsenceController extends AbstractController {
 		case Absence:
 			// Associate with event
 			// else the absence is orphaned
-			events = train.getEventController().get(start, end);
+			events = train.getEventManager().get(start, end);
 			if (events.size() == 1) {
 				absence.setEvent(events.get(0));
 				// associated with this event for this student
@@ -676,7 +676,7 @@ public class AbsenceController extends AbstractController {
 			}
 		case EarlyCheckOut:
 			// Associate with event
-			events = this.train.getEventController().get(time);
+			events = this.train.getEventManager().get(time);
 
 			if (events.size() == 1) {
 				absence.setEvent(events.get(0));
@@ -687,7 +687,7 @@ public class AbsenceController extends AbstractController {
 			}
 		case Tardy:
 			// Associate with event
-			events = train.getEventController().get(time);
+			events = train.getEventManager().get(time);
 			absence.setStatus(Absence.Status.Pending);
 
 			// else the absence is orphaned, because we can't know which one is
@@ -719,7 +719,7 @@ public class AbsenceController extends AbstractController {
 			this.train.getDataStore().storeOrUpdate(resolvedAbsence);
 
 			// Finally check for side-effects caused by absence
-			train.getUsersController().updateUserGrade(student);
+			train.getUsersManager().updateUserGrade(student);
 
 			// Done.
 			return resolvedAbsence;
@@ -798,7 +798,7 @@ public class AbsenceController extends AbstractController {
 
 	public void remove(List<Absence> todie) {
 		ObjectDatastore od = this.train.getDataStore();
-		UserController uc = this.train.getUsersController();
+		UserManager uc = this.train.getUsersManager();
 
 		HashSet<User> users = new HashSet<User>();
 		for (Absence a : todie) {
@@ -826,7 +826,7 @@ public class AbsenceController extends AbstractController {
 
 		// Finally check for side-effects caused by absence
 		// this also checks the students grade
-		train.getUsersController().update(todie.getStudent());
+		train.getUsersManager().update(todie.getStudent());
 	}
 
 	void delete(User student) {
@@ -880,7 +880,7 @@ public class AbsenceController extends AbstractController {
 			}
 			if (linkedEvent != null) {
 				a.setEvent(linkedEvent);
-				train.getUsersController().update(a.getStudent());
+				train.getUsersManager().update(a.getStudent());
 				this.train.getDataStore().storeOrUpdate(a);
 			}
 		}
