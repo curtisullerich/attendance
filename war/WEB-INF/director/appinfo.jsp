@@ -9,6 +9,11 @@
 <html>
 	<head>
 		<jsp:include page="/WEB-INF/template/head.jsp" />
+        <link rel="stylesheet" media="all" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+        <link rel="stylesheet" media="all" type="text/css" href="/css/jquery-ui-timepicker-addon.css" />
+        <script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="/js/jquery-ui-timepicker-addon.js"></script>
+        
 	</head>
 
 	<body>		
@@ -35,7 +40,11 @@
 			
 			<dt><label for="Month" class="required">Form A Submission Cutoff</label></dt>
 			
-			<dd>
+          
+            <dd>
+              <input type="text" name="datetime" id="datetime" value='<c:out value="${datetime}" />' />
+            </dd>
+	    <!--<dd>
 				<input size='5' type='number' name='Month' min='01' max='12' placeholder='MM' value='<c:out value="${Month}" />' />
 				/
 				<input size='5' type='number' name='Day' min='01' max='31' step='1' placeholder='DD' value='<c:out value="${Day}" />' />
@@ -52,7 +61,7 @@
 				</select>
 				<br/>
 				Please enter the <b>last</b> acceptable day/time for submitting Performance Absence Requests.
-			</dd>
+			</dd-->
 			
  			<dt><label for="Timezone">Timezone</label></dt>
 			<dd>
@@ -76,5 +85,11 @@
 		<input type="hidden" id="hashedPassConf" name = "hashedPassConf" value ="">
 		</form>		
 		<jsp:include page="/WEB-INF/template/footer.jsp" />
+        <script>
+          //$('#datetime').datetimepicker();
+          $('#datetime').datetimepicker({
+        		timeFormat: "h:mm TT"
+          });
+        </script>
 	</body>
 </html>

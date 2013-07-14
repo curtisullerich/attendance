@@ -640,9 +640,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		boolean validForm = true;
 		boolean cronExportEnabled;
 		List<String> errors = new LinkedList<String>();
-		String newPass = null;
 		String success = null;
-		String newPassConf = null;
 		String timezone = null;
 		String title = null;
 		String statusMessage = null;
@@ -665,11 +663,9 @@ public class DirectorServlet extends AbstractBaseServlet {
 			// Handle the thrown exception
 			Date testDate = null;
 			try {
-				testDate = Util.parseDate(req.getParameter("Month"),
-						req.getParameter("Day"), req.getParameter("Year"),
-						req.getParameter("ToHour"), req.getParameter("ToAMPM"),
-						req.getParameter("ToMinute"), train.getAppDataManager()
-								.get().getTimeZone());
+				String datetime = req.getParameter("datetime");
+				testDate = Util.parseDateTime(datetime,
+						train.getAppDataManager().get().getTimeZone());
 				data.setFormSubmissionCutoff(testDate);
 			} catch (ValidationExceptions e) {
 				validForm = false;
@@ -727,19 +723,9 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		page.setAttribute("timezone", data.getTimeZone());
 
-		page.setAttribute("Month", cutoffDate.get(Calendar.MONTH) + 1);
-
-		page.setAttribute("Day", cutoffDate.get(Calendar.DATE));
-
+		page.setAttribute("datetime", Util.sdf.format(data.getFormSubmissionCutoff()));
+		
 		page.setAttribute("timezones", data.getTimezoneOptions());
-
-		page.setAttribute("ToHour", (cutoffDate.get(Calendar.HOUR) == 0) ? 12
-				: cutoffDate.get(Calendar.HOUR));
-
-		page.setAttribute("ToMinute", cutoffDate.get(Calendar.MINUTE));
-
-		page.setAttribute("ToAMPM",
-				(cutoffDate.get(Calendar.AM_PM) == Calendar.AM) ? "AM" : "PM");
 
 		page.setAttribute("StatusMessage", data.getStatusMessage());
 
@@ -768,7 +754,6 @@ public class DirectorServlet extends AbstractBaseServlet {
 			List<Absence> a = train.getAbsenceManager().get(s);
 			absenceList.put(s, a);
 		}
-
 
 		page.setAttribute("students", students);
 		page.setAttribute("absenceList", absenceList);

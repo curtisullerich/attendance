@@ -1,10 +1,15 @@
 package edu.iastate.music.marching.attendance.util;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
 public class Util {
+
+	public static final SimpleDateFormat sdf = new SimpleDateFormat(
+			"MM/dd/yyyy hh:mm aa");
 
 	public static Date parseDate(String sMonth, String sDay, String sYear,
 			String hour, String AMPM, String minute, TimeZone timeZone) {
@@ -21,8 +26,7 @@ public class Util {
 		if (year < 1000) {
 			exp.getErrors().add("Invalid year, must be four digits.");
 		}
-		
-		
+
 		try {
 			month = Integer.parseInt(sMonth);
 		} catch (NumberFormatException e) {
@@ -55,13 +59,12 @@ public class Util {
 
 		try {
 			int intHour = Integer.parseInt(hour);
-			
-			// Allow for midnight / noon to be specified as 
-			if(intHour == 12)
-			{
+
+			// Allow for midnight / noon to be specified as
+			if (intHour == 12) {
 				intHour = 0;
 			}
-			
+
 			calendar.set(Calendar.HOUR, intHour);
 		} catch (NumberFormatException e) {
 			exp.getErrors().add("Invalid hour, not a number");
@@ -92,5 +95,30 @@ public class Util {
 		}
 
 		return calendar.getTime();
+	}
+
+	public static Date parseDateTime(String datetime, TimeZone timeZone) {
+
+		// TODO does this handle time zones correctly?
+		Calendar calendar = Calendar.getInstance(timeZone);
+		Date d;
+
+		// Do validate first and store any problems to this exception
+		ValidationExceptions exp = new ValidationExceptions();
+		try {
+			d = sdf.parse(datetime);
+			calendar.setTime(d);
+		} catch (ParseException e) {
+			exp.getErrors().add("Invalid date.");
+		}
+
+		calendar.set(Calendar.MILLISECOND, 0);
+		calendar.setLenient(false);
+
+		if (exp.getErrors().size() > 0) {
+			throw exp;
+		}
+		Date ret = calendar.getTime();
+		return ret;
 	}
 }
