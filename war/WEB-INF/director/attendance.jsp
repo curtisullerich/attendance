@@ -8,25 +8,25 @@
 <jsp:include page="/WEB-INF/template/head.jsp" />
 
 <style type="text/css">
-/* #container */
-/* { */
-/* 	width:auto; */
-/* 	display:inline-block; */
-/* 	margin-left: 50px; */
-/* 	margin-right: 50px; */
-/* } */
-/* #container-inner { */
-/* 	width:auto; */
-/* 	overflow:visible; */
-/* } */
-/* #container div.sidebar { */
-/* 	position: fixed; */
-/* 	background-color: white; */
-/* } */
-/* #content { */
-/* 	width:auto; */
-/* 	margin-left:210px; */
-/* } */
+/* #container 
+ { 
+ 	width:auto; 
+ 	display:inline-block; 
+ 	margin-left: 50px; 
+ 	margin-right: 50px; 
+ } 
+ #container-inner { 
+ 	width:auto; 
+ 	overflow:visible; 
+ } 
+ #container div.sidebar { 
+ 	position: fixed; 
+ 	background-color: white; 
+ } 
+ #content { 
+ 	width:auto; 
+ 	margin-left:210px; 
+ } */
 
 td .show-absence-onhover {
 	color:#333;
@@ -114,21 +114,21 @@ table.gray tr:nth-child(odd) td.highlight, table.gray tr:nth-child(even) td.high
 									<c:set var="cellcontents">
 										${cellcontents}
 										<a target="_blank" href="/director/viewabsence?absenceid=${absence.id }&newindow=true">${absence.status} ${absence.type }<!-- : ${absence.datetime }--></a>
-										<br/>
+<!-- 										<br/> -->
 									</c:set>
 								</c:when>
 								<c:when test="${absence.type.absence && !absence.status.approved}">
 									<c:set var="cellcontents">
 										${cellcontents}
 										<a target="_blank" href="/director/viewabsence?absenceid=${absence.id }&newindow=true">${absence.status} ${absence.type } </a>
-										<br/>
+<!-- 										<br/> -->
 									</c:set>
 								</c:when>
 								<c:when test="${absence.type.earlyCheckOut && !absence.status.approved}">
 									<c:set var="cellcontents">
 										${cellcontents}
 										<a target="_blank" href="/director/viewabsence?absenceid=${absence.id }&newindow=true">${absence.status} ${absence.type }<!-- : ${absence.datetime }--></a>
-										<br/>
+<!-- 										<br/> -->
 									</c:set>
 								</c:when>
 								<c:when test="${absence.status.approved}">
@@ -136,7 +136,7 @@ table.gray tr:nth-child(odd) td.highlight, table.gray tr:nth-child(even) td.high
 										<c:set var="cellcontents">
 											${cellcontents}
 											<a target="_blank" href="/director/viewabsence?absenceid=${absence.id }&newindow=true" >${absence.status} ${absence.type }<!-- : ${absence.datetime }--></a>
-											<br/>
+<!-- 											<br/> -->
 										</c:set>
 									</c:if>
 									<c:if test="${!showApproved}">
@@ -144,7 +144,7 @@ table.gray tr:nth-child(odd) td.highlight, table.gray tr:nth-child(even) td.high
 											${cellcontents}
 											<span class="show-absence-onhover">
 												<a target="_blank" href="/director/viewabsence?absenceid=${absence.id }&newindow=true" >${absence.status} ${absence.type }<!-- : ${absence.datetime }--></a>
-												<br/>
+<!-- 												<br/> -->
 											</span>
 										</c:set>
 									</c:if>
@@ -160,13 +160,13 @@ table.gray tr:nth-child(odd) td.highlight, table.gray tr:nth-child(even) td.high
 					// TODO make them clickable and hoverable only if there was nothing for that day%>
 					<%//class="${(empty absenceMap[student][event])?'show-add-onhover':''}" onClick="${cellonclick}" %>
 						<td class="${(event.type.performance)?'highlight':''}">
-							<c:if test="${empty absenceList[student][event] }">
-								<span class="show-add-onhover">
-									<a target="_blank" href="/director/viewabsence?absenceid=new&eventid=${event.id}&studentid=${student.id}&newindow=true" >Add Absence</a>
-									<br/>
-								</span>
-							</c:if>		
-							${cellcontents}&nbsp;
+<%-- 							<c:if test="${empty absenceList[student] }"> --%>
+<!-- 								<span class="show-add-onhover"> -->
+<%-- 									<a target="_blank" href="/director/viewabsence?absenceid=new&eventid=${event.id}&studentid=${student.id}&newindow=true" >Add Absence</a> --%>
+<!-- 									<br/> -->
+<!-- 								</span> -->
+<%-- 							</c:if>		 --%>
+							${cellcontents}
 						</td>
 <%-- 					</c:forEach> --%>
 				</tr>
