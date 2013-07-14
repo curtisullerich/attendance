@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import edu.iastate.music.marching.attendance.model.interact.DataTrain;
 import edu.iastate.music.marching.attendance.tasks.Export;
+import edu.iastate.music.marching.attendance.tasks.Import;
 
 public class TaskServlet extends AbstractBaseServlet {
 
@@ -21,10 +22,13 @@ public class TaskServlet extends AbstractBaseServlet {
 			.getName());
 
 	private enum Page {
-		export, export_daily;
+		export, import_, export_daily;
 	}
 
 	public static final String EXPORT_DATA_URL = pageToUrl(Page.export,
+			SERVLET_PATH);
+
+	public static final String IMPORT_DATA_URL = pageToUrl(Page.import_,
 			SERVLET_PATH);
 
 	@Override
@@ -41,6 +45,9 @@ public class TaskServlet extends AbstractBaseServlet {
 				break;
 			case export_daily:
 				doDailyExport(req, resp);
+				break;
+			case import_:
+				doImport(req, resp);
 				break;
 			default:
 				ErrorServlet.showError(req, resp, 404);
@@ -68,6 +75,7 @@ public class TaskServlet extends AbstractBaseServlet {
 			LOG.log(Level.SEVERE,
 					"Encountered exception doing daily data export", e);
 		} finally {
+			// Never retry, avoids infinite loops
 			resp.sendError(200);
 		}
 	}
@@ -85,6 +93,22 @@ public class TaskServlet extends AbstractBaseServlet {
 			LOG.log(Level.SEVERE,
 					"Encountered exception doing on-demand data export", e);
 		} finally {
+			// Never retry, avoids infinite loops
+			resp.sendError(200);
+		}
+	}
+
+	private void doImport(HttpServletRequest req, HttpServletResponse resp)
+			throws IOException {
+
+		LOG.info("Doing full data import.");
+
+		try {
+			Import.performImport(req.getInputStream());
+		} catch (Exception e) {
+			LOG.log(Level.SEVERE, "Encountered exception doing data import", e);
+		} finally {
+			// Never retry, avoids infinite loops
 			resp.sendError(200);
 		}
 	}

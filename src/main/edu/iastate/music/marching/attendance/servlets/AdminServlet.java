@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.fileupload.FileItemIterator;
 import org.apache.commons.fileupload.FileItemStream;
+import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import com.google.appengine.api.datastore.Email;
@@ -30,6 +31,7 @@ import edu.iastate.music.marching.attendance.model.store.Form;
 import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.tasks.Tasks;
 import edu.iastate.music.marching.attendance.util.PageBuilder;
+import edu.iastate.music.marching.attendance.util.ServletUtil;
 import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
 public class AdminServlet extends AbstractBaseServlet {
@@ -257,43 +259,14 @@ public class AdminServlet extends AbstractBaseServlet {
 	private void doDataImport(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		DataTrain train = DataTrain.getAndStartTrain();
-
 		try {
-			ServletFileUpload upload = new ServletFileUpload();
-			resp.setContentType("text/plain");
-
-			FileItemIterator iterator = upload.getItemIterator(req);
-			while (iterator.hasNext()) {
-				FileItemStream item = iterator.next();
-				InputStream stream = item.openStream();
-
-				if (item.isFormField()) {
-					log.info("Got a form field: " + item.getFieldName());
-				} else {
-					log.info("Got an uploaded file: " + item.getFieldName()
-							+ ", name = " + item.getName());
-
-					// Now we have the file name and contents, go ahead and
-					// import
-					train.getDataManager()
-							.deleteEverthingInTheEntireDatabaseEvenThoughYouCannotUndoThis();
-					train.getDataManager().importJSONDatabaseDump(
-							new InputStreamReader(stream));
-					// int len;
-					// byte[] buffer = new byte[8192];
-					// while ((len = stream.read(buffer, 0, buffer.length)) !=
-					// -1) {
-					// resp.getOutputStream().write(buffer, 0, len);
-					// }
-				}
-			}
-		} catch (Exception ex) {
-			throw new ServletException(ex);
+			Tasks.importData(ServletUtil.getInputStream(req));
+		} catch (FileUploadException ex) {
+			throw new ServletException("Encountered file upload exception", ex);
 		}
 
 		new PageBuilder(Page.restore, SERVLET_PATH).setPageTitle(
-				"Data Restore Complete").passOffToJsp(req, resp);
+				"Data Restore In-progress").passOffToJsp(req, resp);
 	}
 
 	private void showDirectorRegistrationPage(HttpServletRequest req,
@@ -584,9 +557,9 @@ public class AdminServlet extends AbstractBaseServlet {
 
 		if (errors.size() == 0) {
 			try {
-				new_user = train.getUsersManager().createStudent(
-						primaryEmail, univID, firstName, lastName, year, major,
-						section, secondEmail);
+				new_user = train.getUsersManager().createStudent(primaryEmail,
+						univID, firstName, lastName, year, major, section,
+						secondEmail);
 
 			} catch (IllegalArgumentException e) {
 				// Save validation errors

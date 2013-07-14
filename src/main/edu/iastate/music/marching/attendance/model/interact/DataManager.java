@@ -15,6 +15,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.mortbay.log.Log;
 
 import edu.iastate.music.marching.attendance.Configuration;
 import edu.iastate.music.marching.attendance.model.GsonWithPartials;
@@ -64,7 +65,8 @@ public class DataManager extends AbstractManager {
 
 		try {
 			MimeMessage msg = new MimeMessage(session);
-			msg.setFrom(new InternetAddress(Configuration.Emails.BUGREPORT_EMAIL_FROM));
+			msg.setFrom(new InternetAddress(
+					Configuration.Emails.BUGREPORT_EMAIL_FROM));
 			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
 					Configuration.Emails.BUGREPORT_EMAIL_TO));
 
@@ -107,6 +109,7 @@ public class DataManager extends AbstractManager {
 	}
 
 	public void importJSONDatabaseDump(Reader input) {
+		
 		Dump dump = GsonWithPartials.fromJson(input, Dump.class);
 
 		if (dump.format_version < DUMP_FORMAT_VERSION) {
@@ -114,6 +117,9 @@ public class DataManager extends AbstractManager {
 			throw new IllegalStateException(
 					"Tried to import out-of-date dump not compatible with current database structure");
 		}
+
+		// Yup
+		deleteEverthingInTheEntireDatabaseEvenThoughYouCannotUndoThis();
 
 		// Insert all things that don't link to other objects first
 		importAll(dump.versions);
@@ -126,8 +132,9 @@ public class DataManager extends AbstractManager {
 		// injecting the previous things first
 		importAll(dump.absences);
 		importAll(dump.forms);
-		
-		// Re-import a couple things that probably got messed up by the references
+
+		// Re-import a couple things that probably got messed up by the
+		// references
 		importAll(dump.users);
 		importAll(dump.events);
 		inject(dump.absences);
@@ -190,16 +197,18 @@ public class DataManager extends AbstractManager {
 	}
 
 	private <T> void importAll(T... src) {
-		for(T item : src)
-		{
+		for (T item : src) {
 			dataTrain.getDataStore().storeOrUpdate(item);
 		}
 	}
 
 	private <T> void importAll(List<T> src) {
-		for(T item : src)
-		{
-			dataTrain.getDataStore().storeOrUpdate(item);
+		for (T item : src) {
+			try {
+				dataTrain.getDataStore().storeOrUpdate(item);
+			} catch (Exception ex) {
+				Log.warn("Encountered error during import", ex);
+			}
 		}
 	}
 
