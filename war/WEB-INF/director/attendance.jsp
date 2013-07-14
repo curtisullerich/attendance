@@ -60,6 +60,11 @@ table.gray tr:nth-child(odd) td.highlight, table.gray tr:nth-child(even) td.high
 	<h1>${pagetemplate.title}</h1>
 	<br />
 
+    <c:if test="${empty students}">
+      No students registered.
+    </c:if>
+    <c:if test="${not empty students}">
+
 <%-- 	<button id="show" onClick="showApproved();"><c:out value="${showApproved ? 'Hide Approved' :'Show Approved' }"/></button> --%>
 	<div class="threadresolved">
 		<form id="showapprovedform" method="post" accept-charset="utf-8">
@@ -174,6 +179,7 @@ table.gray tr:nth-child(odd) td.highlight, table.gray tr:nth-child(even) td.high
 		</tbody>
 	</table>
 	</div>
+    </c:if>
 	<jsp:include page="/WEB-INF/template/footer.jsp" />
 </body>
 </html>
