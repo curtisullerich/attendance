@@ -79,72 +79,59 @@ table.gray tr:nth-child(odd) td.highlight, table.gray tr:nth-child(even) td.high
 	<div>
 	Click a column header to sort!
 	<table class="sortable gray">
-		<!-- start headers -->
 		<thead>
 			<tr>
 				<th>Last Name</th>
 				<th>First name</th>
 				<th>Section</th>
 				<th>University ID</th>
-				<!-- all events. TODO will need to link this -->
-<%-- 				<c:forEach items="${events}" var="event"> --%>
-<%-- 						<th class="sorttable_nosort" title="<fmt:formatDate value="${event.date}" pattern="EEEE"/>"><a target="_blank" href="/director/viewevent?id=${event.id }&newindow=true"><c:out value="${event.type}" /><br /> --%>
-<%-- 						<fmt:formatDate value="${event.date}" pattern="M/dd/yyyy" /></a></th> --%>
-<%-- 				</c:forEach> --%>
 				<th>Grade</th>
 				<th>Absences</th>
-				<!-- headers are now done -->
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach items="${students }" var="student">
+			<c:forEach items="${students }" var="student" >
 				<tr>
 					<td><a target="_blank" href="/director/student?id=${student.id }&newindow=true">${student.lastName }</a></td>
 					<td><a target="_blank" href="/director/student?id=${student.id }&newindow=true">${student.firstName }</a></td>
 					<td>${student.section.displayName }</td>
 					<td>${student.universityID }</td>
 					<td>${student.grade.displayName }</td>
-<%-- 					<c:forEach items="${events}" var="event"> --%>
 					
 						<c:set var="cellcontents" value="" />
 							
-						<c:forEach items="${absenceList[student]}" var="absence">
+						<c:forEach items="${absenceList[student]}" var="absence" varStatus="loop">
 							<c:choose>
 								<c:when test="${absence.type.tardy && !absence.status.approved}">
 									<c:set var="cellcontents">
 										${cellcontents}
-										<a target="_blank" href="/director/viewabsence?absenceid=${absence.id }&newindow=true">${absence.status} ${absence.type }<!-- : ${absence.datetime }--></a>
-<!-- 										<br/> -->
+										<a target="_blank" href="/director/viewabsence?absenceid=${absence.id }&newindow=true">${absence.status} ${absence.type }[<fmt:formatDate value="${absence.datetime}" pattern="M/d"/>]</a><c:if test="${not loop.last}"><br/></c:if>
 									</c:set>
 								</c:when>
 								<c:when test="${absence.type.absence && !absence.status.approved}">
 									<c:set var="cellcontents">
 										${cellcontents}
-										<a target="_blank" href="/director/viewabsence?absenceid=${absence.id }&newindow=true">${absence.status} ${absence.type } </a>
-<!-- 										<br/> -->
+										<a target="_blank" href="/director/viewabsence?absenceid=${absence.id }&newindow=true">${absence.status} ${absence.type } [<fmt:formatDate value="${absence.datetime}" pattern="M/d"/>]</a><c:if test="${not loop.last}"><br/></c:if>
 									</c:set>
 								</c:when>
 								<c:when test="${absence.type.earlyCheckOut && !absence.status.approved}">
 									<c:set var="cellcontents">
 										${cellcontents}
-										<a target="_blank" href="/director/viewabsence?absenceid=${absence.id }&newindow=true">${absence.status} ${absence.type }<!-- : ${absence.datetime }--></a>
-<!-- 										<br/> -->
+										<a target="_blank" href="/director/viewabsence?absenceid=${absence.id }&newindow=true">${absence.status} ${absence.type }[<fmt:formatDate value="${absence.datetime}" pattern="M/d"/>]</a><c:if test="${not loop.last}"><br/></c:if>
 									</c:set>
 								</c:when>
 								<c:when test="${absence.status.approved}">
 									<c:if test="${showApproved}">
 										<c:set var="cellcontents">
 											${cellcontents}
-											<a target="_blank" href="/director/viewabsence?absenceid=${absence.id }&newindow=true" >${absence.status} ${absence.type }<!-- : ${absence.datetime }--></a>
-<!-- 											<br/> -->
+											<a target="_blank" href="/director/viewabsence?absenceid=${absence.id }&newindow=true" >${absence.status} ${absence.type }[<fmt:formatDate value="${absence.datetime}" pattern="M/d"/>]</a><c:if test="${not loop.last}"><br/></c:if>
 										</c:set>
 									</c:if>
 									<c:if test="${!showApproved}">
 										<c:set var="cellcontents">
 											${cellcontents}
 											<span class="show-absence-onhover">
-												<a target="_blank" href="/director/viewabsence?absenceid=${absence.id }&newindow=true" >${absence.status} ${absence.type }<!-- : ${absence.datetime }--></a>
-<!-- 												<br/> -->
+												<a target="_blank" href="/director/viewabsence?absenceid=${absence.id }&newindow=true" >${absence.status} ${absence.type }[<fmt:formatDate value="${absence.datetime}" pattern="M/d"/>]</a><c:if test="${not loop.last}"><br/></c:if>
 											</span>
 										</c:set>
 									</c:if>
@@ -152,23 +139,11 @@ table.gray tr:nth-child(odd) td.highlight, table.gray tr:nth-child(even) td.high
 								<c:otherwise>								
 								</c:otherwise>
 							</c:choose>
-						</c:forEach>
+ 						</c:forEach>
 
-<%//						<c:set var="cellonclick">
-						//	window.location='/director/viewabsence';
-						//</c:set>
-					// TODO make them clickable and hoverable only if there was nothing for that day%>
-					<%//class="${(empty absenceMap[student][event])?'show-add-onhover':''}" onClick="${cellonclick}" %>
 						<td class="${(event.type.performance)?'highlight':''}">
-<%-- 							<c:if test="${empty absenceList[student] }"> --%>
-<!-- 								<span class="show-add-onhover"> -->
-<%-- 									<a target="_blank" href="/director/viewabsence?absenceid=new&eventid=${event.id}&studentid=${student.id}&newindow=true" >Add Absence</a> --%>
-<!-- 									<br/> -->
-<!-- 								</span> -->
-<%-- 							</c:if>		 --%>
 							${cellcontents}
 						</td>
-<%-- 					</c:forEach> --%>
 				</tr>
 			</c:forEach>
 		</tbody>
