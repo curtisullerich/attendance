@@ -1,4 +1,4 @@
-package edu.iastate.music.marching.attendance.test.unit.controllers;
+package edu.iastate.music.marching.attendance.test.unit.model.interact;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -11,24 +11,24 @@ import java.util.List;
 
 import org.junit.Test;
 
-import edu.iastate.music.marching.attendance.controllers.AbsenceController;
-import edu.iastate.music.marching.attendance.controllers.DataTrain;
-import edu.iastate.music.marching.attendance.controllers.EventController;
-import edu.iastate.music.marching.attendance.controllers.UserController;
-import edu.iastate.music.marching.attendance.model.Absence;
-import edu.iastate.music.marching.attendance.model.Event;
-import edu.iastate.music.marching.attendance.model.User;
+import edu.iastate.music.marching.attendance.model.interact.AbsenceManager;
+import edu.iastate.music.marching.attendance.model.interact.DataTrain;
+import edu.iastate.music.marching.attendance.model.interact.EventManager;
+import edu.iastate.music.marching.attendance.model.interact.UserManager;
+import edu.iastate.music.marching.attendance.model.store.Absence;
+import edu.iastate.music.marching.attendance.model.store.Event;
+import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.test.AbstractTest;
 import edu.iastate.music.marching.attendance.test.util.Users;
 
-public class EventControllerTest extends AbstractTest {
+public class EventManagerTest extends AbstractTest {
 	
 
 	@Test
 	public void testOverlappingEventsRehersal() {
 		DataTrain train = getDataTrain();
 
-		EventController ec = train.getEventController();
+		EventManager ec = train.getEventManager();
 
 		Date startOverlap = makeDate("2012-09-21 0600");
 		Date endOverlap = makeDate("2012-09-21 0700");
@@ -47,7 +47,7 @@ public class EventControllerTest extends AbstractTest {
 	public void testOverlappingEventsPerformance() {
 		DataTrain train = getDataTrain();
 
-		EventController ec = train.getEventController();
+		EventManager ec = train.getEventManager();
 
 		Date startOverlap = makeDate("2012-09-21 0600");
 		Date endOverlap = makeDate("2012-09-21 0700");
@@ -66,7 +66,7 @@ public class EventControllerTest extends AbstractTest {
 	public void testOverlappingEventsDifferentTypes() {
 		DataTrain train = getDataTrain();
 
-		EventController ec = train.getEventController();
+		EventManager ec = train.getEventManager();
 
 		Date startOverlap = makeDate("2012-09-21 0600");
 		Date endOverlap = makeDate("2012-09-21 0700");
@@ -93,7 +93,7 @@ public class EventControllerTest extends AbstractTest {
 	public void testNonOverlappingEventsRehearsal() {
 		DataTrain train = getDataTrain();
 
-		EventController ec = train.getEventController();
+		EventManager ec = train.getEventManager();
 
 		Date startFirst = makeDate("2012-09-21 0600");
 		Date endFirst = makeDate("2012-09-21 0700");
@@ -126,7 +126,7 @@ public class EventControllerTest extends AbstractTest {
 	public void testNonOverlappingEventsPerformance() {
 		DataTrain train = getDataTrain();
 
-		EventController ec = train.getEventController();
+		EventManager ec = train.getEventManager();
 
 		Date startFirst = makeDate("2012-09-21 0600");
 		Date endFirst = makeDate("2012-09-21 0700");
@@ -159,7 +159,7 @@ public class EventControllerTest extends AbstractTest {
 	public void testNonOverlappingDiffTypes() {
 		DataTrain train = getDataTrain();
 
-		EventController ec = train.getEventController();
+		EventManager ec = train.getEventManager();
 
 		Date startFirst = makeDate("2012-09-21 0600");
 		Date endFirst = makeDate("2012-09-21 0700");
@@ -202,11 +202,11 @@ public class EventControllerTest extends AbstractTest {
 				.parse("2012-06-16 0700");
 
 		// Act
-		train.getEventController().createOrUpdate(Event.Type.Performance,
+		train.getEventManager().createOrUpdate(Event.Type.Performance,
 				eventStart, eventEnd);
 
 		// Assert
-		List<Event> events = train.getEventController().getAll();
+		List<Event> events = train.getEventManager().getAll();
 
 		assertEquals(1, events.size());
 
@@ -232,13 +232,13 @@ public class EventControllerTest extends AbstractTest {
 				.parse("2012-06-16 0700");
 
 		// Act
-		train.getEventController().createOrUpdate(Event.Type.Performance,
+		train.getEventManager().createOrUpdate(Event.Type.Performance,
 				eventStart, eventEnd);
-		train.getEventController().createOrUpdate(Event.Type.Performance,
+		train.getEventManager().createOrUpdate(Event.Type.Performance,
 				eventStart, eventEnd);
 
 		// Assert
-		List<Event> events = train.getEventController().getAll();
+		List<Event> events = train.getEventManager().getAll();
 
 		assertEquals(1, events.size());
 
@@ -253,9 +253,9 @@ public class EventControllerTest extends AbstractTest {
 	public void testAutomaticLinking() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
 
 		User s1 = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -292,9 +292,9 @@ public class EventControllerTest extends AbstractTest {
 	public void testAutomaticAbsenceLinking() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
 
 		User s1 = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);

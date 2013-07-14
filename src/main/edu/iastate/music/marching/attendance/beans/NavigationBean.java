@@ -11,7 +11,7 @@ import com.esotericsoftware.yamlbeans.YamlReader;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
-import edu.iastate.music.marching.attendance.model.User;
+import edu.iastate.music.marching.attendance.model.store.User;
 
 public class NavigationBean implements java.io.Serializable {
 

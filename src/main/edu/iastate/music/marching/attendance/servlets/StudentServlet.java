@@ -12,13 +12,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.appengine.api.datastore.Email;
 
-import edu.iastate.music.marching.attendance.controllers.AbsenceController;
-import edu.iastate.music.marching.attendance.controllers.AuthController;
-import edu.iastate.music.marching.attendance.controllers.DataTrain;
-import edu.iastate.music.marching.attendance.controllers.UserController;
-import edu.iastate.music.marching.attendance.model.Absence;
-import edu.iastate.music.marching.attendance.model.User;
-import edu.iastate.music.marching.attendance.model.User.Section;
+import edu.iastate.music.marching.attendance.model.interact.AbsenceManager;
+import edu.iastate.music.marching.attendance.model.interact.AuthManager;
+import edu.iastate.music.marching.attendance.model.interact.DataTrain;
+import edu.iastate.music.marching.attendance.model.interact.UserManager;
+import edu.iastate.music.marching.attendance.model.store.Absence;
+import edu.iastate.music.marching.attendance.model.store.User;
+import edu.iastate.music.marching.attendance.model.store.User.Section;
 import edu.iastate.music.marching.attendance.util.PageBuilder;
 
 public class StudentServlet extends AbstractBaseServlet {
@@ -79,7 +79,7 @@ public class StudentServlet extends AbstractBaseServlet {
 			throws ServletException, IOException {
 		DataTrain train = DataTrain.getAndStartTrain();
 
-		AbsenceController ac = train.getAbsenceController();
+		AbsenceManager ac = train.getAbsenceManager();
 
 		boolean validInput = true;
 
@@ -129,15 +129,15 @@ public class StudentServlet extends AbstractBaseServlet {
 
 		PageBuilder page = new PageBuilder(Page.attendance, SERVLET_PATH);
 
-		User currentUser = train.getAuthController().getCurrentUser(
+		User currentUser = train.getAuthManager().getCurrentUser(
 				req.getSession());
 
 		page.setPageTitle("Attendance");
 
-		List<Absence> a = train.getAbsenceController().get(currentUser);
+		List<Absence> a = train.getAbsenceManager().get(currentUser);
 
 		page.setAttribute("user", currentUser);
-		page.setAttribute("forms", train.getFormsController().get(currentUser));
+		page.setAttribute("forms", train.getFormsManager().get(currentUser));
 		page.setAttribute("absences", a);
 
 		page.passOffToJsp(req, resp);
@@ -196,7 +196,7 @@ public class StudentServlet extends AbstractBaseServlet {
 			}
 		}
 
-		User localUser = train.getAuthController().getCurrentUser(
+		User localUser = train.getAuthManager().getCurrentUser(
 				req.getSession());
 
 		try {
@@ -208,7 +208,7 @@ public class StudentServlet extends AbstractBaseServlet {
 			errors.add("Unable to save year.");
 		}
 
-		UserController uc = train.getUsersController();
+		UserManager uc = train.getUsersManager();
 
 		localUser.setMajor(major);
 		localUser.setSection(section);
@@ -226,7 +226,7 @@ public class StudentServlet extends AbstractBaseServlet {
 					+ ((errors.size() == 0) ? "data that wasn't the year."
 							: "any data."));
 		}
-		AuthController.updateCurrentUser(localUser, req.getSession());
+		AuthManager.updateCurrentUser(localUser, req.getSession());
 
 		showInfo(req, resp, errors, success);
 
@@ -239,7 +239,7 @@ public class StudentServlet extends AbstractBaseServlet {
 		PageBuilder page = new PageBuilder(Page.info, SERVLET_PATH);
 
 		page.setAttribute("user", DataTrain.getAndStartTrain()
-				.getAuthController().getCurrentUser(req.getSession()));
+				.getAuthManager().getCurrentUser(req.getSession()));
 
 		page.setAttribute("sections", User.Section.values());
 
@@ -255,13 +255,13 @@ public class StudentServlet extends AbstractBaseServlet {
 
 		PageBuilder page = new PageBuilder(Page.index, SERVLET_PATH);
 		DataTrain train = DataTrain.getAndStartTrain();
-		User currentUser = train.getAuthController().getCurrentUser(
+		User currentUser = train.getAuthManager().getCurrentUser(
 				req.getSession());
 
 		page.setAttribute("user", currentUser);
 		page.setPageTitle("Student");
 		page.setAttribute("StatusMessage", DataTrain.getAndStartTrain()
-				.getAppDataController().get().getStatusMessage());
+				.getAppDataManager().get().getStatusMessage());
 
 		page.passOffToJsp(req, resp);
 	}

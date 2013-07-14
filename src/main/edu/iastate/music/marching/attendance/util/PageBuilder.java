@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import edu.iastate.music.marching.attendance.beans.AuthBean;
 import edu.iastate.music.marching.attendance.beans.PageTemplateBean;
-import edu.iastate.music.marching.attendance.controllers.DataTrain;
-import edu.iastate.music.marching.attendance.model.AppData;
+import edu.iastate.music.marching.attendance.model.interact.DataTrain;
+import edu.iastate.music.marching.attendance.model.store.AppData;
 
 public class PageBuilder {
 
@@ -50,9 +50,9 @@ public class PageBuilder {
 		
 		mDataTrain = train;
 		
-		mAppData = mDataTrain.getAppDataController().get();
+		mAppData = mDataTrain.getAppDataManager().get();
 
-		mPageTemplateBean = new PageTemplateBean(jsp_simple_path, mAppData, mDataTrain.getAuthController());
+		mPageTemplateBean = new PageTemplateBean(jsp_simple_path, mAppData, mDataTrain.getAuthManager());
 
 		mPageTemplateBean.setTitle(mAppData.getTitle());
 	}

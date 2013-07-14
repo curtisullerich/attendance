@@ -1,4 +1,4 @@
-package edu.iastate.music.marching.attendance.controllers;
+package edu.iastate.music.marching.attendance.model.interact;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -19,18 +19,18 @@ import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.code.twig.FindCommand.RootFindCommand;
 import com.google.code.twig.ObjectDatastore;
 
-import edu.iastate.music.marching.attendance.model.Absence;
-import edu.iastate.music.marching.attendance.model.Form;
-import edu.iastate.music.marching.attendance.model.ModelFactory;
-import edu.iastate.music.marching.attendance.model.User;
+import edu.iastate.music.marching.attendance.model.store.Absence;
+import edu.iastate.music.marching.attendance.model.store.Form;
+import edu.iastate.music.marching.attendance.model.store.ModelFactory;
+import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.util.ValidationExceptions;
 import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
-public class FormController extends AbstractController {
+public class FormManager extends AbstractManager {
 
 	private DataTrain dataTrain;
 
-	public FormController(DataTrain dataTrain) {
+	public FormManager(DataTrain dataTrain) {
 		this.dataTrain = dataTrain;
 	}
 
@@ -63,7 +63,7 @@ public class FormController extends AbstractController {
 						&& f.getEmailStatus() == Form.Status.Approved) {
 					student.setMinutesAvailable(student.getMinutesAvailable()
 							+ f.getMinutesWorked());
-					this.dataTrain.getUsersController().update(student);
+					this.dataTrain.getUsersManager().update(student);
 					f.setApplied(true);
 				}
 			}
@@ -74,7 +74,7 @@ public class FormController extends AbstractController {
 		updateFormD(f);
 		this.dataTrain.getDataStore().update(f);
 
-		AbsenceController ac = this.dataTrain.getAbsenceController();
+		AbsenceManager ac = this.dataTrain.getAbsenceManager();
 
 		// TODO https://github.com/curtisullerich/attendance/issues/106
 		// what if the student is null?
@@ -104,11 +104,11 @@ public class FormController extends AbstractController {
 		dataTrain.getDataStore().store(form);
 
 		// Update grade, it may have changed
-		dataTrain.getUsersController().update(form.getStudent());
+		dataTrain.getUsersManager().update(form.getStudent());
 
 		// TODO https://github.com/curtisullerich/attendance/issues/106
 		// what if the student is null?
-		AbsenceController ac = this.dataTrain.getAbsenceController();
+		AbsenceManager ac = this.dataTrain.getAbsenceManager();
 		for (Absence absence : ac.get(form.getStudent())) {
 			// TODO https://github.com/curtisullerich/attendance/issues/106
 			// I wrote a (private) method in Absence controller that could
@@ -166,7 +166,7 @@ public class FormController extends AbstractController {
 
 	public Form createFormA(User student, Date date, String reason) {
 
-		TimeZone timezone = this.dataTrain.getAppDataController().get()
+		TimeZone timezone = this.dataTrain.getAppDataManager().get()
 				.getTimeZone();
 
 		Calendar calendar = Calendar.getInstance(timezone);
@@ -180,7 +180,7 @@ public class FormController extends AbstractController {
 		}
 
 		Calendar cutoff = Calendar.getInstance(timezone);
-		cutoff.setTime(dataTrain.getAppDataController().get()
+		cutoff.setTime(dataTrain.getAppDataManager().get()
 				.getFormSubmissionCutoff());
 
 		boolean late = false;
@@ -240,7 +240,7 @@ public class FormController extends AbstractController {
 			int day, Date startTime, Date endTime, String details,
 			int minutesToOrFrom, Absence.Type absenceType) {
 
-		TimeZone timezone = this.dataTrain.getAppDataController().get()
+		TimeZone timezone = this.dataTrain.getAppDataManager().get()
 				.getTimeZone();
 
 		Calendar startDateTime = Calendar.getInstance(timezone);
@@ -344,7 +344,7 @@ public class FormController extends AbstractController {
 	public Form createFormC(User student, Date date, Absence.Type type,
 			String reason, boolean validateDate) {
 
-		TimeZone timezone = this.dataTrain.getAppDataController().get()
+		TimeZone timezone = this.dataTrain.getAppDataManager().get()
 				.getTimeZone();
 
 		// Simple validation first
@@ -452,7 +452,7 @@ public class FormController extends AbstractController {
 	 */
 	public Form createFormD(User student, String email, Date date, int minutes,
 			String details) {
-		TimeZone timezone = this.dataTrain.getAppDataController().get()
+		TimeZone timezone = this.dataTrain.getAppDataManager().get()
 				.getTimeZone();
 
 		Calendar calendar = Calendar.getInstance(timezone);
@@ -470,7 +470,7 @@ public class FormController extends AbstractController {
 		}
 
 		if (!ValidationUtil.isValidFormDEmail(email, this.dataTrain
-				.getAppDataController().get())) {
+				.getAppDataManager().get())) {
 			exp.getErrors().add("Verification email is not valid");
 		}
 

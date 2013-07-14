@@ -1,4 +1,4 @@
-package edu.iastate.music.marching.attendance.controllers;
+package edu.iastate.music.marching.attendance.model.interact;
 
 import javax.servlet.http.HttpSession;
 
@@ -6,11 +6,11 @@ import com.google.appengine.api.datastore.Email;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
-import edu.iastate.music.marching.attendance.model.User;
+import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.util.GoogleAccountException;
 import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
-public class AuthController {
+public class AuthManager {
 
 	private static final String SESSION_USER_ATTRIBUTE = "authenticated_user";
 
@@ -18,7 +18,7 @@ public class AuthController {
 
 	private User currentUser = null;
 
-	public AuthController(DataTrain dataTrain) {
+	public AuthManager(DataTrain dataTrain) {
 		this.train = dataTrain;
 	}
 
@@ -107,7 +107,7 @@ public class AuthController {
 
 			// Check if there is a user in the system already for this
 			// google user
-			matchedUser = train.getUsersController().get(google_users_email);
+			matchedUser = train.getUsersManager().get(google_users_email);
 
 		} else if (ValidationUtil.validSecondaryEmail(google_users_email,
 				this.train)) {
@@ -115,7 +115,7 @@ public class AuthController {
 
 			// Check if there is a user in the system already for this
 			// google user
-			matchedUser = train.getUsersController().getSecondary(
+			matchedUser = train.getUsersManager().getSecondary(
 					google_users_email);
 		} else {
 			throw new GoogleAccountException("Not a valid google account",
@@ -127,7 +127,7 @@ public class AuthController {
 			return false;
 		} else {
 			// Did successful login
-			AuthController.updateCurrentUser(matchedUser, session);
+			AuthManager.updateCurrentUser(matchedUser, session);
 			return true;
 		}
 	}

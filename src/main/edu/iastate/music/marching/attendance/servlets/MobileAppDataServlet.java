@@ -8,9 +8,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
-import edu.iastate.music.marching.attendance.controllers.DataTrain;
-import edu.iastate.music.marching.attendance.controllers.MobileDataController;
-import edu.iastate.music.marching.attendance.model.User;
+import edu.iastate.music.marching.attendance.model.interact.DataTrain;
+import edu.iastate.music.marching.attendance.model.interact.MobileDataManager;
+import edu.iastate.music.marching.attendance.model.store.User;
 
 public class MobileAppDataServlet extends AbstractBaseServlet {
 
@@ -35,7 +35,7 @@ public class MobileAppDataServlet extends AbstractBaseServlet {
 		} else {
 			DataTrain train = DataTrain.getAndStartTrain();
 
-			MobileDataController mdc = train.getMobileDataController();
+			MobileDataManager mdc = train.getMobileDataManager();
 
 			result.data = mdc.getClassList();
 			result.error = ResultErrorType.success;
@@ -58,7 +58,7 @@ public class MobileAppDataServlet extends AbstractBaseServlet {
 
 			DataTrain train = DataTrain.getAndStartTrain();
 
-			MobileDataController mdc = train.getMobileDataController();
+			MobileDataManager mdc = train.getMobileDataManager();
 
 			// data here is the posted content delimited by "&newline&". Those
 			// values in turn are
@@ -81,7 +81,7 @@ public class MobileAppDataServlet extends AbstractBaseServlet {
 				try {
 					result.message = mdc.pushMobileData(
 							data,
-							train.getAuthController().getCurrentUser(
+							train.getAuthManager().getCurrentUser(
 									req.getSession()));
 				} catch (IllegalArgumentException e) {
 					result.error = ResultErrorType.exception;

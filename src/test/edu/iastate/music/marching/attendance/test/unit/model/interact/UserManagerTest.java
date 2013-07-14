@@ -1,4 +1,4 @@
-package edu.iastate.music.marching.attendance.test.unit.controllers;
+package edu.iastate.music.marching.attendance.test.unit.model.interact;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -9,21 +9,21 @@ import java.util.List;
 
 import org.junit.Test;
 
-import edu.iastate.music.marching.attendance.controllers.AbsenceController;
-import edu.iastate.music.marching.attendance.controllers.DataTrain;
-import edu.iastate.music.marching.attendance.controllers.EventController;
-import edu.iastate.music.marching.attendance.controllers.FormController;
-import edu.iastate.music.marching.attendance.controllers.MobileDataController;
-import edu.iastate.music.marching.attendance.controllers.UserController;
-import edu.iastate.music.marching.attendance.model.Absence;
-import edu.iastate.music.marching.attendance.model.Event;
-import edu.iastate.music.marching.attendance.model.Form;
-import edu.iastate.music.marching.attendance.model.User;
+import edu.iastate.music.marching.attendance.model.interact.AbsenceManager;
+import edu.iastate.music.marching.attendance.model.interact.DataTrain;
+import edu.iastate.music.marching.attendance.model.interact.EventManager;
+import edu.iastate.music.marching.attendance.model.interact.FormManager;
+import edu.iastate.music.marching.attendance.model.interact.MobileDataManager;
+import edu.iastate.music.marching.attendance.model.interact.UserManager;
+import edu.iastate.music.marching.attendance.model.store.Absence;
+import edu.iastate.music.marching.attendance.model.store.Event;
+import edu.iastate.music.marching.attendance.model.store.Form;
+import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.test.AbstractTest;
 import edu.iastate.music.marching.attendance.test.TestConfig;
 import edu.iastate.music.marching.attendance.test.util.Users;
 
-public class UserControllerTest extends AbstractTest {
+public class UserManagerTest extends AbstractTest {
 
 	public static final String SINGLE_ABSENCE_STUDENT1_TESTDATA = "tardyStudent&split&el&split&Starster&split&studenttt&split&2012-05-03&split&0109&split&|&split&null&newline&";
 
@@ -35,7 +35,7 @@ public class UserControllerTest extends AbstractTest {
 		// Setup
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
+		UserManager uc = train.getUsersManager();
 
 		Users.createDirector(uc, "director", "I am", "The Director");
 
@@ -61,7 +61,7 @@ public class UserControllerTest extends AbstractTest {
 
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
+		UserManager uc = train.getUsersManager();
 
 		Users.createStudent(uc, "studenttt", "123456789", "I am", "A Student",
 				10, "Being Silly", User.Section.AltoSax);
@@ -102,10 +102,10 @@ public class UserControllerTest extends AbstractTest {
 
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
-		MobileDataController mdc = train.getMobileDataController();
+		UserManager uc = train.getUsersManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
+		MobileDataManager mdc = train.getMobileDataManager();
 
 		// Student 1 setup, the user to be deleted
 		User student1 = Users.createStudent(uc, "studenttt", "123456789",
@@ -165,7 +165,7 @@ public class UserControllerTest extends AbstractTest {
 
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
+		UserManager uc = train.getUsersManager();
 
 		User s1 = Users.createStudent(uc, "student1", "123456789", "First",
 				"last", 2, "major", User.Section.AltoSax);
@@ -203,9 +203,9 @@ public class UserControllerTest extends AbstractTest {
 	public void testGrade() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
 
 		User s1 = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -320,9 +320,9 @@ public class UserControllerTest extends AbstractTest {
 		// TODO test that grade is affected after linking, but not before
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
 
 		User s1 = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -392,9 +392,9 @@ public class UserControllerTest extends AbstractTest {
 	public void nonOverLappingAbsencesTest() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
 
 		User s1 = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -436,9 +436,9 @@ public class UserControllerTest extends AbstractTest {
 	public void overLappingAbsencesTest() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
 
 		User s1 = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);

@@ -1,4 +1,4 @@
-package edu.iastate.music.marching.attendance.test.unit.controllers;
+package edu.iastate.music.marching.attendance.test.unit.model.interact;
 
 import static org.junit.Assert.*;
 
@@ -6,11 +6,11 @@ import org.junit.Test;
 
 import com.google.appengine.api.datastore.Email;
 
-import edu.iastate.music.marching.attendance.controllers.DataTrain;
+import edu.iastate.music.marching.attendance.model.interact.DataTrain;
 import edu.iastate.music.marching.attendance.test.AbstractTest;
 import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
-public class AuthControllerTest extends AbstractTest{
+public class AuthManagerTest extends AbstractTest{
 
 	@Test
 	public void testValidGoogleUsers() {

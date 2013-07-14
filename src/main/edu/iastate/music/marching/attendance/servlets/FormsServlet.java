@@ -14,11 +14,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import edu.iastate.music.marching.attendance.App;
-import edu.iastate.music.marching.attendance.controllers.DataTrain;
-import edu.iastate.music.marching.attendance.controllers.FormController;
-import edu.iastate.music.marching.attendance.model.Absence;
-import edu.iastate.music.marching.attendance.model.Form;
-import edu.iastate.music.marching.attendance.model.User;
+import edu.iastate.music.marching.attendance.model.interact.DataTrain;
+import edu.iastate.music.marching.attendance.model.interact.FormManager;
+import edu.iastate.music.marching.attendance.model.store.Absence;
+import edu.iastate.music.marching.attendance.model.store.Form;
+import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.util.PageBuilder;
 import edu.iastate.music.marching.attendance.util.Util;
 import edu.iastate.music.marching.attendance.util.ValidationUtil;
@@ -93,12 +93,12 @@ public class FormsServlet extends AbstractBaseServlet {
 			List<String> errors, String success_message)
 			throws ServletException, IOException {
 		DataTrain train = DataTrain.getAndStartTrain();
-		User currentUser = train.getAuthController().getCurrentUser(
+		User currentUser = train.getAuthManager().getCurrentUser(
 				req.getSession());
 		Form form = null;
 		try {
 			long id = Long.parseLong(req.getParameter("id"));
-			form = train.getFormsController().get(id);
+			form = train.getFormsManager().get(id);
 
 			PageBuilder page = new PageBuilder(Page.view, SERVLET_PATH);
 
@@ -168,7 +168,7 @@ public class FormsServlet extends AbstractBaseServlet {
 	private void updateStatus(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		DataTrain train = DataTrain.getAndStartTrain();
-		FormController fc = train.getFormsController();
+		FormManager fc = train.getFormsManager();
 
 		List<String> errors = new LinkedList<String>();
 		String success_message = "";
@@ -239,7 +239,7 @@ public class FormsServlet extends AbstractBaseServlet {
 				date = Util.parseDate(req.getParameter("StartMonth"),
 						req.getParameter("StartDay"),
 						req.getParameter("StartYear"), "0", "AM", "0", train
-								.getAppDataController().get().getTimeZone());
+								.getAppDataManager().get().getTimeZone());
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add("Invalid Input: The input date is invalid.");
@@ -248,12 +248,12 @@ public class FormsServlet extends AbstractBaseServlet {
 
 		if (validForm) {
 			// Store our new form to the data store
-			User student = train.getAuthController().getCurrentUser(
+			User student = train.getAuthManager().getCurrentUser(
 					req.getSession());
 
 			Form form = null;
 			try {
-				form = train.getFormsController().createFormA(student, date,
+				form = train.getFormsManager().createFormA(student, date,
 						reason);
 			} catch (IllegalArgumentException e) {
 				validForm = false;
@@ -267,10 +267,10 @@ public class FormsServlet extends AbstractBaseServlet {
 			}
 		}
 
-		TimeZone timezone = train.getAppDataController().get().getTimeZone();
+		TimeZone timezone = train.getAppDataManager().get().getTimeZone();
 
 		Calendar cutoff = Calendar.getInstance(timezone);
-		cutoff.setTime(train.getAppDataController().get()
+		cutoff.setTime(train.getAppDataManager().get()
 				.getFormSubmissionCutoff());
 
 		if (validForm) {
@@ -293,7 +293,7 @@ public class FormsServlet extends AbstractBaseServlet {
 
 			page.setAttribute("error_messages", errors);
 
-			page.setAttribute("cutoff", train.getAppDataController().get()
+			page.setAttribute("cutoff", train.getAppDataManager().get()
 					.getFormSubmissionCutoff());
 
 			page.setAttribute("Reason", reason);
@@ -377,7 +377,7 @@ public class FormsServlet extends AbstractBaseServlet {
 				startDate = Util.parseDate(req.getParameter("StartMonth"),
 						req.getParameter("StartDay"),
 						req.getParameter("StartYear"), "0", "AM", "0", train
-								.getAppDataController().get().getTimeZone());
+								.getAppDataManager().get().getTimeZone());
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add("The start date is invalid.");
@@ -386,7 +386,7 @@ public class FormsServlet extends AbstractBaseServlet {
 				endDate = Util.parseDate(req.getParameter("EndMonth"),
 						req.getParameter("EndDay"),
 						req.getParameter("EndYear"), "0", "AM", "0", train
-								.getAppDataController().get().getTimeZone());
+								.getAppDataManager().get().getTimeZone());
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add("The end date is invalid.");
@@ -396,7 +396,7 @@ public class FormsServlet extends AbstractBaseServlet {
 						req.getParameter("FromHour"),
 						req.getParameter("FromAMPM"),
 						req.getParameter("FromMinute"), train
-								.getAppDataController().get().getTimeZone());
+								.getAppDataManager().get().getTimeZone());
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add("The start time is invalid.");
@@ -405,7 +405,7 @@ public class FormsServlet extends AbstractBaseServlet {
 				toTime = Util.parseDate("1", "1", "1000",
 						req.getParameter("ToHour"), req.getParameter("ToAMPM"),
 						req.getParameter("ToMinute"), train
-								.getAppDataController().get().getTimeZone());
+								.getAppDataManager().get().getTimeZone());
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add("The end time is invalid.");
@@ -415,12 +415,12 @@ public class FormsServlet extends AbstractBaseServlet {
 
 		if (validForm) {
 			// Store our new form to the datastore
-			User student = train.getAuthController().getCurrentUser(
+			User student = train.getAuthManager().getCurrentUser(
 					req.getSession());
 
 			Form form = null;
 			try {
-				form = train.getFormsController().createFormB(student,
+				form = train.getFormsManager().createFormB(student,
 						department, course, section, building, startDate,
 						endDate, day, fromTime, toTime, comments,
 						minutesToOrFrom, absenceType);
@@ -450,9 +450,9 @@ public class FormsServlet extends AbstractBaseServlet {
 			page.setAttribute("Course", course);
 			page.setAttribute("Section", section);
 			page.setAttribute("Building", building);
-			setStartDate(startDate, page, train.getAppDataController().get()
+			setStartDate(startDate, page, train.getAppDataManager().get()
 					.getTimeZone());
-			setEndDate(endDate, page, train.getAppDataController().get()
+			setEndDate(endDate, page, train.getAppDataManager().get()
 					.getTimeZone());
 			page.setAttribute("Type", Form.Type.B);
 			page.setAttribute("Comments", comments);
@@ -462,7 +462,7 @@ public class FormsServlet extends AbstractBaseServlet {
 
 			if (fromTime != null) {
 				Calendar from = Calendar.getInstance(train
-						.getAppDataController().get().getTimeZone());
+						.getAppDataManager().get().getTimeZone());
 				from.setTime(fromTime);
 				page.setAttribute("FromHour", from.get(Calendar.HOUR));
 				page.setAttribute("FromMinute", from.get(Calendar.MINUTE));
@@ -471,7 +471,7 @@ public class FormsServlet extends AbstractBaseServlet {
 			}
 
 			if (toTime != null) {
-				Calendar to = Calendar.getInstance(train.getAppDataController()
+				Calendar to = Calendar.getInstance(train.getAppDataManager()
 						.get().getTimeZone());
 				to.setTime(toTime);
 				page.setAttribute("ToHour", to.get(Calendar.HOUR));
@@ -521,7 +521,7 @@ public class FormsServlet extends AbstractBaseServlet {
 				if (type == Absence.Type.Absence) {
 					date = Util.parseDate(req.getParameter("Month"),
 							req.getParameter("Day"), req.getParameter("Year"),
-							"0", "AM", "0", train.getAppDataController().get()
+							"0", "AM", "0", train.getAppDataManager().get()
 									.getTimeZone());
 
 				} else {
@@ -532,7 +532,7 @@ public class FormsServlet extends AbstractBaseServlet {
 									req.getParameter("Hour"),
 									req.getParameter("AMPM"),
 									req.getParameter("Minute"), train
-											.getAppDataController().get()
+											.getAppDataManager().get()
 											.getTimeZone());
 				}
 			} catch (IllegalArgumentException e) {
@@ -540,11 +540,11 @@ public class FormsServlet extends AbstractBaseServlet {
 				errors.add("The date is invalid.");
 			}
 		}
-		FormController fc = train.getFormsController();
+		FormManager fc = train.getFormsManager();
 		boolean late = false;
 		if (validForm) {
 			// Store our new form to the data store
-			User student = train.getAuthController().getCurrentUser(
+			User student = train.getAuthManager().getCurrentUser(
 					req.getSession());
 
 			Form form = null;
@@ -559,7 +559,7 @@ public class FormsServlet extends AbstractBaseServlet {
 				validForm = false;
 				errors.add("Fix any errors above and try to resubmit. If you're still having issues, submit a bug report using the form at the bottom of the page.");
 			} else {
-				TimeZone timezone = train.getAppDataController().get()
+				TimeZone timezone = train.getAppDataManager().get()
 						.getTimeZone();
 
 				if (!ValidationUtil.canStillSubmitFormC(form.getStart(),
@@ -586,7 +586,7 @@ public class FormsServlet extends AbstractBaseServlet {
 
 			page.setAttribute("error_messages", errors);
 			page.setAttribute("types", Absence.Type.values());
-			setStartDate(date, page, train.getAppDataController().get()
+			setStartDate(date, page, train.getAppDataManager().get()
 					.getTimeZone());
 			page.setAttribute("Reason", reason);
 
@@ -627,13 +627,13 @@ public class FormsServlet extends AbstractBaseServlet {
 				date = Util.parseDate(req.getParameter("StartMonth"),
 						req.getParameter("StartDay"),
 						req.getParameter("StartYear"), "0", "AM", "0", train
-								.getAppDataController().get().getTimeZone());
+								.getAppDataManager().get().getTimeZone());
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add("Invalid Input: The input date is invalid.");
 			}
 		}
-		User student = train.getAuthController().getCurrentUser(
+		User student = train.getAuthManager().getCurrentUser(
 				req.getSession());
 
 		if (validForm) {
@@ -642,7 +642,7 @@ public class FormsServlet extends AbstractBaseServlet {
 			Form form = null;
 			try {
 				// hash the id for use in the accepting and declining forms
-				form = train.getFormsController().createFormD(student, email,
+				form = train.getFormsManager().createFormD(student, email,
 						date, minutes, details);
 			} catch (IllegalArgumentException e) {
 				validForm = false;
@@ -667,12 +667,12 @@ public class FormsServlet extends AbstractBaseServlet {
 
 			page.setAttribute("error_messages", errors);
 
-			page.setAttribute("verifiers", train.getAppDataController().get()
+			page.setAttribute("verifiers", train.getAppDataManager().get()
 					.getTimeWorkedEmails());
 
 			page.setAttribute("Email", email);
 			page.setAttribute("AmountWorked", minutes);
-			setStartDate(date, page, train.getAppDataController().get()
+			setStartDate(date, page, train.getAppDataManager().get()
 					.getTimeZone());
 			page.setAttribute("Details", details);
 
@@ -709,7 +709,7 @@ public class FormsServlet extends AbstractBaseServlet {
 			throws ServletException, IOException {
 
 		DataTrain train = DataTrain.getAndStartTrain();
-		FormController fc = train.getFormsController();
+		FormManager fc = train.getFormsManager();
 
 		PageBuilder page = new PageBuilder(Page.index, SERVLET_PATH);
 
@@ -718,7 +718,7 @@ public class FormsServlet extends AbstractBaseServlet {
 		page.setAttribute("success_message",
 				req.getParameter("success_message"));
 
-		User currentUser = train.getAuthController().getCurrentUser(
+		User currentUser = train.getAuthManager().getCurrentUser(
 				req.getSession());
 
 		String removeid = req.getParameter("removeid");

@@ -1,4 +1,4 @@
-package edu.iastate.music.marching.attendance.model;
+package edu.iastate.music.marching.attendance.model.store;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;
@@ -11,10 +11,11 @@ import com.google.code.twig.annotation.Version;
 import com.google.code.twig.standard.StandardObjectDatastore;
 import com.google.code.twig.util.generic.GenericTypeReflector;
 
+
 public class AttendanceDatastore extends StandardObjectDatastore {
 
 	public static final int VERSION = 1;
-	public static final String MODEL_PACKAGE = "edu.iastate.music.marching.attendance.model";
+	public static final String MODEL_OBJECTS_PACKAGE = "edu.iastate.music.marching.attendance.model.store";
 
 	AttendanceDatastore() {
 		super(new Configuration());
@@ -96,7 +97,7 @@ public class AttendanceDatastore extends StandardObjectDatastore {
 					return Class.forName(name);
 				} catch (ClassNotFoundException e) {
 					try {
-						return Class.forName(MODEL_PACKAGE + "." + name);
+						return Class.forName(MODEL_OBJECTS_PACKAGE + "." + name);
 					} catch (ClassNotFoundException e2) {
 						throw new IllegalStateException(e);
 					}
@@ -108,7 +109,7 @@ public class AttendanceDatastore extends StandardObjectDatastore {
 				String packageStr;
 				String simpleName;
 				if (simpleNameSplitPoint == -1) {
-					packageStr = MODEL_PACKAGE;
+					packageStr = MODEL_OBJECTS_PACKAGE;
 					simpleName = name;
 				} else {
 					packageStr = name.substring(0, simpleNameSplitPoint);

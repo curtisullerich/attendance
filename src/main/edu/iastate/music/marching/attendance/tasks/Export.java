@@ -26,8 +26,8 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 import edu.iastate.music.marching.attendance.Configuration;
-import edu.iastate.music.marching.attendance.controllers.DataTrain;
-import edu.iastate.music.marching.attendance.model.User;
+import edu.iastate.music.marching.attendance.model.interact.DataTrain;
+import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.servlets.DirectorServlet;
 
 public class Export {
@@ -40,7 +40,7 @@ public class Export {
 
 			DataTrain train = DataTrain.getAndStartTrain();
 
-			String appTitle = train.getAppDataController().get().getTitle();
+			String appTitle = train.getAppDataManager().get().getTitle();
 			Date exportTime = new Date();
 			String humanExportTime = DateFormat.getDateTimeInstance().format(
 					new Date());
@@ -58,13 +58,13 @@ public class Export {
 					+ filenameExportTime + ".json";
 			StringWriter dataStream = new StringWriter();
 
-			train.getDataController().dumpDatabaseAsJSON(dataStream);
+			train.getDataManager().dumpDatabaseAsJSON(dataStream);
 
 			MimeMessage msg = new MimeMessage(session);
 			msg.setFrom(new InternetAddress(from));
 
 			// Add all directors as recipients
-			for (User d : train.getUsersController().get(User.Type.Director)) {
+			for (User d : train.getUsersManager().get(User.Type.Director)) {
 				msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
 						d.getPrimaryEmail().getEmail()));
 			}

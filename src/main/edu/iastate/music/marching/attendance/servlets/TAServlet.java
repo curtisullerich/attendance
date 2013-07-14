@@ -9,9 +9,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import edu.iastate.music.marching.attendance.controllers.DataTrain;
-import edu.iastate.music.marching.attendance.controllers.UserController;
-import edu.iastate.music.marching.attendance.model.User;
+import edu.iastate.music.marching.attendance.model.interact.DataTrain;
+import edu.iastate.music.marching.attendance.model.interact.UserManager;
+import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.util.PageBuilder;
 
 public class TAServlet extends AbstractBaseServlet {
@@ -94,7 +94,7 @@ public class TAServlet extends AbstractBaseServlet {
 				req.getParameter("success_message"));
 
 		page.setPageTitle("Staff");
-		page.setAttribute("StatusMessage", DataTrain.getAndStartTrain().getAppDataController().get().getStatusMessage());
+		page.setAttribute("StatusMessage", DataTrain.getAndStartTrain().getAppDataManager().get().getStatusMessage());
 
 
 		page.passOffToJsp(req, resp);
@@ -106,7 +106,7 @@ public class TAServlet extends AbstractBaseServlet {
 		DataTrain train = DataTrain.getAndStartTrain();
 		PageBuilder page = new PageBuilder(Page.setranks, SERVLET_PATH);
 
-		List<User> students = train.getUsersController().get(User.Type.Student);
+		List<User> students = train.getUsersManager().get(User.Type.Student);
 		page.setAttribute("students", students);
 
 		page.setPageTitle("Set Ranks");
@@ -119,7 +119,7 @@ public class TAServlet extends AbstractBaseServlet {
 
 		DataTrain train = DataTrain.getAndStartTrain();
 
-		UserController uc = train.getUsersController();
+		UserManager uc = train.getUsersManager();
 
 		List<User> students = uc.get(User.Type.Student);
 

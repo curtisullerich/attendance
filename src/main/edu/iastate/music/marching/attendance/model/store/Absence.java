@@ -1,4 +1,4 @@
-package edu.iastate.music.marching.attendance.model;
+package edu.iastate.music.marching.attendance.model.store;
 
 import java.util.Date;
 
@@ -6,6 +6,7 @@ import com.google.code.twig.annotation.Entity;
 import com.google.code.twig.annotation.Id;
 import com.google.code.twig.annotation.Index;
 import com.google.code.twig.annotation.Version;
+
 
 @Version(AttendanceDatastore.VERSION)
 @Entity(kind="Absence", allocateIdsBy=0)

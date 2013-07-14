@@ -11,9 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.appengine.api.datastore.Email;
 
-import edu.iastate.music.marching.attendance.controllers.AuthController;
-import edu.iastate.music.marching.attendance.controllers.DataTrain;
-import edu.iastate.music.marching.attendance.model.User;
+import edu.iastate.music.marching.attendance.model.interact.AuthManager;
+import edu.iastate.music.marching.attendance.model.interact.DataTrain;
+import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.util.GoogleAccountException;
 import edu.iastate.music.marching.attendance.util.PageBuilder;
 import edu.iastate.music.marching.attendance.util.ValidationUtil;
@@ -131,7 +131,7 @@ public class AuthServlet extends AbstractBaseServlet {
 
 		try {
 
-			if (train.getAuthController().login(req.getSession())) {
+			if (train.getAuthManager().login(req.getSession())) {
 				// Successful login
 				redirectPostLogin(req, resp, allow_redirect);
 			} else {
@@ -142,7 +142,7 @@ public class AuthServlet extends AbstractBaseServlet {
 			switch (e.getType()) {
 			case None:
 				// No google user logged in at all, try to login
-				resp.sendRedirect(AuthController
+				resp.sendRedirect(AuthManager
 						.getGoogleLoginURL(getLoginCallback(req)));
 				break;
 			case Invalid:
@@ -161,10 +161,10 @@ public class AuthServlet extends AbstractBaseServlet {
 
 		DataTrain train = DataTrain.getAndStartTrain();
 
-		if (AuthController.getGoogleUser() != null) {
+		if (AuthManager.getGoogleUser() != null) {
 			// Have a valid google login
 			// Check if current user is already registered
-			User u = train.getAuthController().getCurrentUser(req.getSession());
+			User u = train.getAuthManager().getCurrentUser(req.getSession());
 			if (u == null) {
 				// Not yet registered
 				showRegistration(req, resp);
@@ -185,7 +185,7 @@ public class AuthServlet extends AbstractBaseServlet {
 
 		PageBuilder page = new PageBuilder(Page.register, SERVLET_PATH);
 
-		page.setAttribute("NetID", AuthController.getGoogleUser().getEmail());
+		page.setAttribute("NetID", AuthManager.getGoogleUser().getEmail());
 
 		page.setAttribute("sections", User.Section.values());
 
@@ -209,7 +209,7 @@ public class AuthServlet extends AbstractBaseServlet {
 		User new_user = null;
 		List<String> errors = new LinkedList<String>();
 
-		com.google.appengine.api.users.User google_user = AuthController
+		com.google.appengine.api.users.User google_user = AuthManager
 				.getGoogleUser();
 
 		// Grab all the data from the form fields
@@ -255,7 +255,7 @@ public class AuthServlet extends AbstractBaseServlet {
 
 		if (errors.size() == 0) {
 			try {
-				new_user = train.getUsersController().createStudent(
+				new_user = train.getUsersManager().createStudent(
 						google_user, univID, firstName, lastName, year, major,
 						section, secondEmail);
 
@@ -300,15 +300,15 @@ public class AuthServlet extends AbstractBaseServlet {
 			throws ServletException, IOException {
 
 		// Force logout from app itself
-		if (AuthController.isLoggedIn(req.getSession())) {
-			AuthController.logout(req.getSession());
+		if (AuthManager.isLoggedIn(req.getSession())) {
+			AuthManager.logout(req.getSession());
 		}
 
 		// Also log out of google for this app
 		// Does not log user compelely out of google
-		if (AuthController.getGoogleUser() != null) {
+		if (AuthManager.getGoogleUser() != null) {
 			// Logout from page and redirect back to this same page
-			resp.sendRedirect(AuthController.getGoogleLogoutURL(pageToUrl(
+			resp.sendRedirect(AuthManager.getGoogleLogoutURL(pageToUrl(
 					Page.logout, SERVLET_PATH)));
 		} else {
 			new PageBuilder(Page.logout, SERVLET_PATH).passOffToJsp(req, resp);
@@ -319,7 +319,7 @@ public class AuthServlet extends AbstractBaseServlet {
 			HttpServletResponse resp, boolean redirect) throws IOException,
 			ServletException {
 
-		User user = DataTrain.getAndStartTrain().getAuthController()
+		User user = DataTrain.getAndStartTrain().getAuthManager()
 				.getCurrentUser(req.getSession());
 
 		if (user == null)

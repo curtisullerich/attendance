@@ -22,11 +22,11 @@ import javax.servlet.http.HttpSession;
 
 import org.junit.Test;
 
-import edu.iastate.music.marching.attendance.controllers.DataTrain;
-import edu.iastate.music.marching.attendance.controllers.UserController;
-import edu.iastate.music.marching.attendance.model.Absence;
-import edu.iastate.music.marching.attendance.model.Event;
-import edu.iastate.music.marching.attendance.model.User;
+import edu.iastate.music.marching.attendance.model.interact.DataTrain;
+import edu.iastate.music.marching.attendance.model.interact.UserManager;
+import edu.iastate.music.marching.attendance.model.store.Absence;
+import edu.iastate.music.marching.attendance.model.store.Event;
+import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.servlets.MobileAppDataServlet;
 import edu.iastate.music.marching.attendance.test.AbstractTest;
 import edu.iastate.music.marching.attendance.test.TestConfig;
@@ -52,14 +52,14 @@ public class MobileDataUploadTest extends AbstractTest {
 
 		DataTrain train = DataTrain.getAndStartTrain();
 
-		User ta = Users.createTA(train.getUsersController(), "ta", "123456780",
+		User ta = Users.createTA(train.getUsersManager(), "ta", "123456780",
 				"first", "last", 2, "major", User.Section.Staff);
-		Users.createStudent(train.getUsersController(), "s", "123456719",
+		Users.createStudent(train.getUsersManager(), "s", "123456719",
 				"first", "last", 1, "major", User.Section.Baritone);
-		Users.createStudent(train.getUsersController(), "zf", "123456782",
+		Users.createStudent(train.getUsersManager(), "zf", "123456782",
 				"first", "last", 1, "major", User.Section.Drumline_Bass);
 
-		train.getMobileDataController().pushMobileData(SIMPLE_ABSENCE_TESTDATA,
+		train.getMobileDataManager().pushMobileData(SIMPLE_ABSENCE_TESTDATA,
 				ta);
 
 		simpleAbsenceInsertionVerification();
@@ -72,9 +72,9 @@ public class MobileDataUploadTest extends AbstractTest {
 
 		DataTrain train = getDataTrain();
 
-		Users.createStudent(train.getUsersController(), "s", "123456788",
+		Users.createStudent(train.getUsersManager(), "s", "123456788",
 				"first", "last", 1, "major", User.Section.Clarinet);
-		Users.createStudent(train.getUsersController(), "zf", "123456782",
+		Users.createStudent(train.getUsersManager(), "zf", "123456782",
 				"first", "last", 1, "major", User.Section.TenorSax);
 
 		HttpServletRequest req = mock(HttpServletRequest.class);
@@ -129,15 +129,15 @@ public class MobileDataUploadTest extends AbstractTest {
 	private void simpleAbsenceInsertionVerification() {
 		Event event;
 		DataTrain train = getDataTrain();
-		TimeZone timezone = train.getAppDataController().get()
+		TimeZone timezone = train.getAppDataManager().get()
 				.getTimeZone();
 
 		// Verify insertion lengths
-		assertEquals(1, train.getEventController().getCount().intValue());
-		assertEquals(2, train.getAbsenceController().getCount().intValue());
+		assertEquals(1, train.getEventManager().getCount().intValue());
+		assertEquals(2, train.getAbsenceManager().getCount().intValue());
 
 		// Verify event
-		List<Event> events = train.getEventController().getAll();
+		List<Event> events = train.getEventManager().getAll();
 		assertEquals(1, events.size());
 
 		event = events.get(0);
@@ -154,7 +154,7 @@ public class MobileDataUploadTest extends AbstractTest {
 		assertEquals(Event.Type.Rehearsal, event.getType());
 
 		// Verify absences
-		List<Absence> absences = train.getAbsenceController().getAll();
+		List<Absence> absences = train.getAbsenceManager().getAll();
 		assertEquals(2, absences.size());
 
 		boolean foundS = false;
@@ -183,7 +183,7 @@ public class MobileDataUploadTest extends AbstractTest {
 	public void simpleTardyInsertionThroughController() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
+		UserManager uc = train.getUsersManager();
 
 		Users.createStudent(uc, "s", "123456780", "test1", "tester", 1,
 				"major", User.Section.AltoSax);
@@ -194,13 +194,13 @@ public class MobileDataUploadTest extends AbstractTest {
 		User ta = Users.createTA(uc, "ta", "123456783", "test1", "tester", 1,
 				"major", User.Section.AltoSax);
 
-		train.getMobileDataController().pushMobileData(SIMPLE_TARDY_TESTDATA,
+		train.getMobileDataManager().pushMobileData(SIMPLE_TARDY_TESTDATA,
 				ta);
 
 		// Verify insertion lengths
-		assertEquals(0, train.getEventController().getCount().intValue());
+		assertEquals(0, train.getEventManager().getCount().intValue());
 
-		assertEquals(6, train.getAbsenceController().getCount().intValue());
+		assertEquals(6, train.getAbsenceManager().getCount().intValue());
 
 		// TODO: https://github.com/curtisullerich/attendance/issues/123
 		// Check actual data returned
@@ -209,7 +209,7 @@ public class MobileDataUploadTest extends AbstractTest {
 	private HttpServletRequest setTASession(HttpServletRequest req) {
 		HttpSession session = mock(HttpSession.class);
 		when(session.getAttribute("authenticated_user")).thenReturn(
-				Users.createTA(getDataTrain().getUsersController(), "ta",
+				Users.createTA(getDataTrain().getUsersManager(), "ta",
 						"123456789", "I am", "A TA", 10, "Being Silly",
 						User.Section.AltoSax));
 		when(req.getSession()).thenReturn(session);

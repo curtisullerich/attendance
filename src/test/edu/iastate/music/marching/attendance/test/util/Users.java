@@ -2,13 +2,13 @@ package edu.iastate.music.marching.attendance.test.util;
 
 import com.google.appengine.api.datastore.Email;
 
-import edu.iastate.music.marching.attendance.controllers.UserController;
-import edu.iastate.music.marching.attendance.model.User;
+import edu.iastate.music.marching.attendance.model.interact.UserManager;
+import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.test.TestConfig;
 
 public class Users {
 
-	public static final User createStudent(UserController uc,
+	public static final User createStudent(UserManager uc,
 			String email_firstpart, String univID, String firstName,
 			String lastName, int year, String major, User.Section section) {
 
@@ -20,7 +20,7 @@ public class Users {
 				major, section, new Email(""));
 	}
 
-	public static final User createTA(UserController uc,
+	public static final User createTA(UserManager uc,
 			String email_firstpart, String univID, String firstName,
 			String lastName, int year, String major, User.Section section) {
 
@@ -35,7 +35,7 @@ public class Users {
 		return u;
 	}
 
-	public static final User createDirector(UserController uc,
+	public static final User createDirector(UserManager uc,
 			String email_firstpart, String firstName, String lastName) {
 		return uc.createDirector(
 				email_firstpart + "@" + TestConfig.getEmailDomain(),
@@ -43,12 +43,12 @@ public class Users {
 						+ TestConfig.getEmailDomain(), firstName, lastName);
 	}
 
-	public static User createSingleTestStudent(UserController uc) {
+	public static User createSingleTestStudent(UserManager uc) {
 		return createStudent(uc, "student", "123456789", "First", "last", 1,
 				"major", User.Section.AltoSax);
 	}
 
-	public static User createSingleTestDirector(UserController uc) {
+	public static User createSingleTestDirector(UserManager uc) {
 		return Users.createDirector(uc, "director", "I am", "The Director");
 	}
 }

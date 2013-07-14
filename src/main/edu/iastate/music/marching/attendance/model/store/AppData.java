@@ -1,4 +1,4 @@
-package edu.iastate.music.marching.attendance.model;
+package edu.iastate.music.marching.attendance.model.store;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -11,6 +11,7 @@ import com.google.code.twig.annotation.Entity;
 import com.google.code.twig.annotation.Id;
 import com.google.code.twig.annotation.Type;
 import com.google.code.twig.annotation.Version;
+
 
 @Version(AttendanceDatastore.VERSION)
 @Entity(kind = "AppData", allocateIdsBy = 0)

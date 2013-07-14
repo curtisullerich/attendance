@@ -1,4 +1,4 @@
-package edu.iastate.music.marching.attendance.controllers;
+package edu.iastate.music.marching.attendance.model.interact;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -12,19 +12,19 @@ import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.code.twig.FindCommand.RootFindCommand;
 import com.google.code.twig.ObjectDatastore;
 
-import edu.iastate.music.marching.attendance.model.Absence;
-import edu.iastate.music.marching.attendance.model.Event;
-import edu.iastate.music.marching.attendance.model.Event.Type;
-import edu.iastate.music.marching.attendance.model.ModelFactory;
+import edu.iastate.music.marching.attendance.model.store.Absence;
+import edu.iastate.music.marching.attendance.model.store.Event;
+import edu.iastate.music.marching.attendance.model.store.ModelFactory;
+import edu.iastate.music.marching.attendance.model.store.Event.Type;
 
-public class EventController extends AbstractController {
+public class EventManager extends AbstractManager {
 
 	DataTrain train;
 
-	private static final Logger log = Logger.getLogger(EventController.class
+	private static final Logger log = Logger.getLogger(EventManager.class
 			.getName());
 
-	public EventController(DataTrain dataTrain) {
+	public EventManager(DataTrain dataTrain) {
 		this.train = dataTrain;
 	}
 
@@ -93,7 +93,7 @@ public class EventController extends AbstractController {
 		// overlapping.add(e);
 		// }
 		// }
-		AbsenceController ac = train.getAbsenceController();
+		AbsenceManager ac = train.getAbsenceManager();
 		List<Absence> unanchored = ac.getUnanchored();
 
 		List<Event> all = getAll();
@@ -149,7 +149,7 @@ public class EventController extends AbstractController {
 				// performance. Another possible solution is keeping a list of
 				// all students and updating each one before returning
 				this.train.getDataStore().refresh(event);
-				this.train.getUsersController().update(a.getStudent());
+				this.train.getUsersManager().update(a.getStudent());
 			}
 		}
 
@@ -160,7 +160,7 @@ public class EventController extends AbstractController {
 	public void delete(Event event, boolean deleteLinkedAbsences) {
 		ObjectDatastore od = this.train.getDataStore();
 		
-		AbsenceController ac = train.getAbsenceController();
+		AbsenceManager ac = train.getAbsenceManager();
 
 		List<Absence> todie = ac.getAll(event);
 		if (deleteLinkedAbsences) {

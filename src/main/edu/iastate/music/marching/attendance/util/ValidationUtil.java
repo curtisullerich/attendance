@@ -10,9 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.google.appengine.api.datastore.Email;
 
-import edu.iastate.music.marching.attendance.controllers.DataTrain;
-import edu.iastate.music.marching.attendance.model.AppData;
-import edu.iastate.music.marching.attendance.model.User;
+import edu.iastate.music.marching.attendance.model.interact.DataTrain;
+import edu.iastate.music.marching.attendance.model.store.AppData;
+import edu.iastate.music.marching.attendance.model.store.User;
 
 public class ValidationUtil {
 
@@ -79,7 +79,7 @@ public class ValidationUtil {
 
 	public static boolean isUniqueSecondaryEmail(Email checkEmail,
 			Email primary, DataTrain train) {
-		return train.getUsersController().isUniqueSecondaryEmail(checkEmail,
+		return train.getUsersManager().isUniqueSecondaryEmail(checkEmail,
 				primary);
 
 	}
@@ -244,7 +244,7 @@ public class ValidationUtil {
 	}
 
 	public static boolean isUniqueId(String id, Email primary) {
-		return DataTrain.getAndStartTrain().getUsersController()
+		return DataTrain.getAndStartTrain().getUsersManager()
 				.isUniqueId(id, primary);
 	}
 

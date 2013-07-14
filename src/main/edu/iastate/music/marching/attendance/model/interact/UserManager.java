@@ -1,4 +1,4 @@
-package edu.iastate.music.marching.attendance.controllers;
+package edu.iastate.music.marching.attendance.model.interact;
 
 import java.util.Arrays;
 import java.util.Iterator;
@@ -9,17 +9,17 @@ import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.code.twig.FindCommand.RootFindCommand;
 import com.google.code.twig.ObjectDatastore;
 
-import edu.iastate.music.marching.attendance.model.Absence;
-import edu.iastate.music.marching.attendance.model.ModelFactory;
-import edu.iastate.music.marching.attendance.model.User;
-import edu.iastate.music.marching.attendance.model.User.Type;
+import edu.iastate.music.marching.attendance.model.store.Absence;
+import edu.iastate.music.marching.attendance.model.store.ModelFactory;
+import edu.iastate.music.marching.attendance.model.store.User;
+import edu.iastate.music.marching.attendance.model.store.User.Type;
 import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
-public class UserController extends AbstractController {
+public class UserManager extends AbstractManager {
 
 	DataTrain datatrain;
 
-	public UserController(DataTrain dataTrain) {
+	public UserManager(DataTrain dataTrain) {
 		this.datatrain = dataTrain;
 	}
 
@@ -345,7 +345,7 @@ public class UserController extends AbstractController {
 	 * Note that this DOES NOT currently refresh the student in the database.
 	 */
 	public void updateUserGrade(User student) {
-		AbsenceController ac = this.datatrain.getAbsenceController();
+		AbsenceManager ac = this.datatrain.getAbsenceManager();
 		int count = 0;
 		List<Absence> absences = ac.get(student);
 		for (Absence a : absences) {
@@ -451,13 +451,13 @@ public class UserController extends AbstractController {
 		ObjectDatastore od = this.datatrain.getDataStore();
 
 		// Absences
-		this.datatrain.getAbsenceController().delete(user);
+		this.datatrain.getAbsenceManager().delete(user);
 
 		// Forms
-		this.datatrain.getFormsController().delete(user);
+		this.datatrain.getFormsManager().delete(user);
 
 		// Remove any Mobile Data uploads
-		this.datatrain.getMobileDataController().scrubUploader(user);
+		this.datatrain.getMobileDataManager().scrubUploader(user);
 
 		od.delete(user);
 	}

@@ -1,4 +1,4 @@
-package edu.iastate.music.marching.attendance.test.unit.controllers;
+package edu.iastate.music.marching.attendance.test.unit.model.interact;
 
 import static org.junit.Assert.assertEquals;
 
@@ -10,15 +10,15 @@ import java.util.List;
 
 import org.junit.Test;
 
-import edu.iastate.music.marching.attendance.controllers.AbsenceController;
-import edu.iastate.music.marching.attendance.controllers.DataTrain;
-import edu.iastate.music.marching.attendance.controllers.EventController;
-import edu.iastate.music.marching.attendance.controllers.FormController;
-import edu.iastate.music.marching.attendance.controllers.UserController;
-import edu.iastate.music.marching.attendance.model.Absence;
-import edu.iastate.music.marching.attendance.model.Event;
-import edu.iastate.music.marching.attendance.model.Form;
-import edu.iastate.music.marching.attendance.model.User;
+import edu.iastate.music.marching.attendance.model.interact.AbsenceManager;
+import edu.iastate.music.marching.attendance.model.interact.DataTrain;
+import edu.iastate.music.marching.attendance.model.interact.EventManager;
+import edu.iastate.music.marching.attendance.model.interact.FormManager;
+import edu.iastate.music.marching.attendance.model.interact.UserManager;
+import edu.iastate.music.marching.attendance.model.store.Absence;
+import edu.iastate.music.marching.attendance.model.store.Event;
+import edu.iastate.music.marching.attendance.model.store.Form;
+import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.test.AbstractTest;
 import edu.iastate.music.marching.attendance.test.util.Users;
 
@@ -46,10 +46,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA1() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -81,10 +81,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA2() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -119,10 +119,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA3() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -158,10 +158,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA4() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -197,10 +197,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA5() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -235,10 +235,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA6() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -273,10 +273,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA7() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -307,10 +307,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA8() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -343,10 +343,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA9() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -380,9 +380,9 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA11() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -403,7 +403,7 @@ public class FormATest extends AbstractTest {
 		fc.update(form);
 
 		assertEquals(Absence.Status.Pending, ac.get(a.getId()).getStatus());
-		EventController ec = train.getEventController();
+		EventManager ec = train.getEventManager();
 		Event e = ec.createOrUpdate(Event.Type.Performance, start.getTime(),
 				end.getTime());
 		assertEquals(Absence.Status.Approved, ac.get(a.getId()).getStatus());
@@ -418,9 +418,9 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA12() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -454,9 +454,9 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA13() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -491,9 +491,9 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA14() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -510,7 +510,7 @@ public class FormATest extends AbstractTest {
 		Absence a = ac.createOrUpdateAbsence(student, start.getTime(),
 				end.getTime());
 
-		EventController ec = train.getEventController();
+		EventManager ec = train.getEventManager();
 		Event e = ec.createOrUpdate(Event.Type.Performance, start.getTime(),
 				end.getTime());
 
@@ -532,10 +532,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA15() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -571,10 +571,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA16() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -610,10 +610,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA17() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -645,10 +645,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA18() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -680,10 +680,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA19() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -716,10 +716,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA21() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -753,10 +753,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA22() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -793,10 +793,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA27() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -830,10 +830,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA31() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -865,10 +865,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA32() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -903,10 +903,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA33() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -941,10 +941,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA34() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -980,10 +980,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA35() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -1018,10 +1018,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA36() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -1056,10 +1056,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA37() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -1090,10 +1090,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA38() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -1126,10 +1126,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA39() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -1159,9 +1159,9 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA41() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -1182,7 +1182,7 @@ public class FormATest extends AbstractTest {
 		fc.update(form);
 
 		assertEquals(Absence.Status.Pending, ac.get(a.getId()).getStatus());
-		EventController ec = train.getEventController();
+		EventManager ec = train.getEventManager();
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
 				end.getTime());
 		assertEquals(Absence.Status.Pending, ac.get(a.getId()).getStatus());
@@ -1198,10 +1198,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA51() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -1235,10 +1235,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA52() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -1274,10 +1274,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA53() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -1314,10 +1314,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA54() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -1354,10 +1354,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA55() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -1393,10 +1393,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA56() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -1432,10 +1432,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA57() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -1467,10 +1467,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA58() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -1504,10 +1504,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA59() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -1539,10 +1539,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA61() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -1576,10 +1576,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA62() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -1615,10 +1615,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA63() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -1655,10 +1655,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA64() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -1695,10 +1695,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA65() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -1734,10 +1734,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA66() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -1773,10 +1773,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA67() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -1808,10 +1808,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA68() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -1845,10 +1845,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA69() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -1878,10 +1878,10 @@ public class FormATest extends AbstractTest {
 	public void testApproveWithFormA71() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -1914,10 +1914,10 @@ public class FormATest extends AbstractTest {
 	public void testNonAutoApproveOnDeniedAbsenceFormSecond() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 		
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -1952,10 +1952,10 @@ public class FormATest extends AbstractTest {
 	public void testNonAutoApproveOnDeniedAbsenceFormFirst() {
 		DataTrain train = getDataTrain();
 
-		UserController uc = train.getUsersController();
-		EventController ec = train.getEventController();
-		AbsenceController ac = train.getAbsenceController();
-		FormController fc = train.getFormsController();
+		UserManager uc = train.getUsersManager();
+		EventManager ec = train.getEventManager();
+		AbsenceManager ac = train.getAbsenceManager();
+		FormManager fc = train.getFormsManager();
 		
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);

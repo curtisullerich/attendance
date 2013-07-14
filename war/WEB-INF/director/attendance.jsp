@@ -1,7 +1,6 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java"
-	isELIgnored="false"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setTimeZone value="${pagetemplate.timeZoneID}" />
 
 <html>
@@ -9,71 +8,49 @@
 <jsp:include page="/WEB-INF/template/head.jsp" />
 
 <style type="text/css">
-/* #container */
-/* { */
-/* 	width:auto; */
-/* 	display:inline-block; */
-/* 	margin-left: 50px; */
-/* 	margin-right: 50px; */
-/* } */
-/* #container-inner { */
-/* 	width:auto; */
-/* 	overflow:visible; */
-/* } */
-/* #container div.sidebar { */
-/* 	position: fixed; */
-/* 	background-color: white; */
-/* } */
-/* #content { */
-/* 	width:auto; */
-/* 	margin-left:210px; */
-/* } */
+#container
+{
+	width:auto;
+	display:inline-block;
+	margin-left: 50px;
+	margin-right: 50px;
+}
+#container-inner {
+	width:auto;
+	overflow:visible;
+}
+#container div.sidebar {
+	position: fixed;
+	background-color: white;
+}
+#content {
+	width:auto;
+	margin-left:210px;
+}
+
 td .show-absence-onhover {
-	color: #333;
-	display: none;
+	color:#333;
+	display:none;
 }
-
 td:hover .show-absence-onhover {
-	visibility: visible;
+	visibility:visible;
 }
-
 td:hover .show-absence-onhover a {
-	color: #333;
+	color:#333;
 }
-
 td .show-add-onhover {
-	color: #aaa;
-	visibility: hidden;
+	color:#aaa;
+	visibility:hidden;
 }
-
 td:hover .show-add-onhover {
-	visibility: visible;
+	visibility:visible;
 }
-
 td:hover .show-add-onhover a {
-	color: #aaa;
+	color:#aaa;
 }
-
-table.gray tr:nth-child(odd) td.highlight,table.gray tr:nth-child(even) td.highlight
-	{
+table.gray tr:nth-child(odd) td.highlight, table.gray tr:nth-child(even) td.highlight {
 	background-color: e2e2c5;
-}
-<%//
-e0e0e0
- 
-is
- 
-another
- 
-option
- 
-for
- 
-the
- 
-color
-%
->
+}<%// e0e0e0 is another option for the color%>
 </style>
 
 </head>
@@ -182,7 +159,7 @@ color
 						//</c:set>
 					// TODO make them clickable and hoverable only if there was nothing for that day%>
 					<%//class="${(empty absenceMap[student][event])?'show-add-onhover':''}" onClick="${cellonclick}" %>
-						<td class="${(event.type.performance)?'highlight':''}">
+<%-- 						<td class="${(event.type.performance)?'highlight':''}"> --%>
 							<c:if test="${empty absenceList[student][event] }">
 								<span class="show-add-onhover">
 									<a target="_blank" href="/director/viewabsence?absenceid=new&eventid=${event.id}&studentid=${student.id}&newindow=true" >Add Absence</a>

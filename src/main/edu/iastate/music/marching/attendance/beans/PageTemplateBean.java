@@ -3,9 +3,9 @@ package edu.iastate.music.marching.attendance.beans;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import edu.iastate.music.marching.attendance.controllers.AuthController;
-import edu.iastate.music.marching.attendance.model.AppData;
-import edu.iastate.music.marching.attendance.model.User;
+import edu.iastate.music.marching.attendance.model.interact.AuthManager;
+import edu.iastate.music.marching.attendance.model.store.AppData;
+import edu.iastate.music.marching.attendance.model.store.User;
 
 public class PageTemplateBean implements java.io.Serializable {
 
@@ -38,7 +38,7 @@ public class PageTemplateBean implements java.io.Serializable {
 
 	private String mPath;
 
-	private AuthController mAuth;
+	private AuthManager mAuth;
 
 	private User mCurrentUser;
 
@@ -50,7 +50,7 @@ public class PageTemplateBean implements java.io.Serializable {
 	 * @param mJSPPath
 	 */
 	public PageTemplateBean(String jsp_path, AppData appData,
-			AuthController authController) {
+			AuthManager authController) {
 		mJSPPath = jsp_path;
 		mAppData = appData;
 		mAuth = authController;

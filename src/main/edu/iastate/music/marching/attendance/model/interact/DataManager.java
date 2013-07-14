@@ -1,4 +1,4 @@
-package edu.iastate.music.marching.attendance.controllers;
+package edu.iastate.music.marching.attendance.model.interact;
 
 import java.io.Reader;
 import java.lang.reflect.Field;
@@ -17,25 +17,25 @@ import javax.mail.internet.MimeMessage;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import edu.iastate.music.marching.attendance.Configuration;
-import edu.iastate.music.marching.attendance.model.Absence;
-import edu.iastate.music.marching.attendance.model.AppData;
-import edu.iastate.music.marching.attendance.model.DatastoreVersion;
-import edu.iastate.music.marching.attendance.model.Event;
-import edu.iastate.music.marching.attendance.model.Form;
 import edu.iastate.music.marching.attendance.model.GsonWithPartials;
-import edu.iastate.music.marching.attendance.model.MobileDataUpload;
-import edu.iastate.music.marching.attendance.model.User;
+import edu.iastate.music.marching.attendance.model.store.Absence;
+import edu.iastate.music.marching.attendance.model.store.AppData;
+import edu.iastate.music.marching.attendance.model.store.DatastoreVersion;
+import edu.iastate.music.marching.attendance.model.store.Event;
+import edu.iastate.music.marching.attendance.model.store.Form;
+import edu.iastate.music.marching.attendance.model.store.MobileDataUpload;
+import edu.iastate.music.marching.attendance.model.store.User;
 
 @interface FullyExport {
 }
 
-public class DataController extends AbstractController {
+public class DataManager extends AbstractManager {
 
 	private static final int DUMP_FORMAT_VERSION = 2;
 
 	private DataTrain dataTrain;
 
-	public DataController(DataTrain dataTrain) {
+	public DataManager(DataTrain dataTrain) {
 		this.dataTrain = dataTrain;
 	}
 
@@ -89,19 +89,19 @@ public class DataController extends AbstractController {
 
 		dump.format_version = DUMP_FORMAT_VERSION;
 
-		dump.absences = dataTrain.getAbsenceController().getAll();
+		dump.absences = dataTrain.getAbsenceManager().getAll();
 
-		dump.appData = dataTrain.getAppDataController().get();
+		dump.appData = dataTrain.getAppDataManager().get();
 
-		dump.versions = dataTrain.getVersionController().getAll();
+		dump.versions = dataTrain.getVersionManager().getAll();
 
-		dump.events = dataTrain.getEventController().getAll();
+		dump.events = dataTrain.getEventManager().getAll();
 
-		dump.forms = dataTrain.getFormsController().getAll();
+		dump.forms = dataTrain.getFormsManager().getAll();
 
-		dump.mobileData = dataTrain.getMobileDataController().getUploads();
+		dump.mobileData = dataTrain.getMobileDataManager().getUploads();
 
-		dump.users = dataTrain.getUsersController().getAll();
+		dump.users = dataTrain.getUsersManager().getAll();
 
 		GsonWithPartials.toJson(dump, out);
 	}
@@ -159,7 +159,7 @@ public class DataController extends AbstractController {
 						// Try to load user
 						User user = (User) field.get(item);
 						if (user != null) {
-							user = dataTrain.getUsersController().get(
+							user = dataTrain.getUsersManager().get(
 									(user).getId());
 							field.set(item, user);
 						}
@@ -167,7 +167,7 @@ public class DataController extends AbstractController {
 						// Try to load Absence
 						Absence absence = (Absence) field.get(item);
 						if (absence != null) {
-							absence = dataTrain.getAbsenceController().get(
+							absence = dataTrain.getAbsenceManager().get(
 									absence.getId());
 							field.set(item, absence);
 						}
@@ -175,7 +175,7 @@ public class DataController extends AbstractController {
 						// Try to load Event
 						Event event = (Event) field.get(item);
 						if (event != null) {
-							event = dataTrain.getEventController().get(
+							event = dataTrain.getEventManager().get(
 									(event).getId());
 							field.set(item, event);
 						}
