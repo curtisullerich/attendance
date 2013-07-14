@@ -1,0 +1,400 @@
+Golda	Sheperd	gsheperd	gsheperd@iastate.edu	gsheperd@gmail.com	Office Support certificate  	220927819
+Terence	Satcher	tsatcher	tsatcher@iastate.edu	tsatcher@gmail.com	Business Technology 	862690363
+Cleopatra	Weisel	cweisel	cweisel@iastate.edu	cweisel@gmail.com	Geography	787397157
+Blair	Ellerbe	bellerbe	bellerbe@iastate.edu	bellerbe@gmail.com	Digital Illustration	329562123
+Jordon	Koerber	jkoerber	jkoerber@iastate.edu	jkoerber@gmail.com	Tribal Enterprise Management	545891578
+Nicolas	Kegley	nkegley	nkegley@iastate.edu	nkegley@gmail.com	Music	504541958
+Normand	Hollandsworth	nhollandsworth	nhollandsworth@iastate.edu	nhollandsworth@gmail.com	Legal Office Assistant certificate  	686433675
+Juanita	Patel	jpatel	jpatel@iastate.edu	jpatel@gmail.com	Physical Education	809851016
+Avis	Gayman	agayman	agayman@iastate.edu	agayman@gmail.com	Service Learning	184473628
+Janeen	Murrah	jmurrah	jmurrah@iastate.edu	jmurrah@gmail.com	Creative Writing	125512728
+Melia	Etter	metter	metter@iastate.edu	metter@gmail.com	Cosmetology	852188593
+Kaye	Burdette	kburdette	kburdette@iastate.edu	kburdette@gmail.com	Nursing Assistant Certified	489490361
+Olene	Bourdon	obourdon	obourdon@iastate.edu	obourdon@gmail.com	Environmental Studies	786052074
+Joni	Sala	jsala	jsala@iastate.edu	jsala@gmail.com	Political Science	101895448
+Ashleigh	Barga	abarga	abarga@iastate.edu	abarga@gmail.com	Visual Communications	500848474
+Mose	Albus	malbus	malbus@iastate.edu	malbus@gmail.com	Aviation	749386029
+Kent	Kinghorn	kkinghorn	kkinghorn@iastate.edu	kkinghorn@gmail.com	East County Campus	305885999
+Marceline	Burbridge	mburbridge	mburbridge@iastate.edu	mburbridge@gmail.com	Computer Science	950743625
+Bethany	Eady	beady	beady@iastate.edu	beady@gmail.com	Anthropology  	911284711
+Joshua	Hydrick	jhydrick	jhydrick@iastate.edu	jhydrick@gmail.com	Multi-Occupational Trades	127530984
+Julia	Bade	jbade	jbade@iastate.edu	jbade@gmail.com	Precision Machining	122901274
+Edgardo	Sieber	esieber	esieber@iastate.edu	esieber@gmail.com	Optometry	587271225
+Alden	Stump	astump	astump@iastate.edu	astump@gmail.com	Apprenticeships	945234246
+Reginald	Marvin	rmarvin	rmarvin@iastate.edu	rmarvin@gmail.com	College in the High School	443083813
+Antonia	Cracraft	acracraft	acracraft@iastate.edu	acracraft@gmail.com	Web Design (Visual Arts)	294939457
+Jaquelyn	Sturrock	jsturrock	jsturrock@iastate.edu	jsturrock@gmail.com	Photography	479904918
+Ambrose	Slee	aslee	aslee@iastate.edu	aslee@gmail.com	Marketing	126136708
+Bong	Hallberg	bhallberg	bhallberg@iastate.edu	bhallberg@gmail.com	Acting/Theatre	299522499
+Otha	Kohler	okohler	okohler@iastate.edu	okohler@gmail.com	Journalism  	494098834
+Portia	Filkins	pfilkins	pfilkins@iastate.edu	pfilkins@gmail.com	Fire Science  	546231017
+Bruna	Dahle	bdahle	bdahle@iastate.edu	bdahle@gmail.com	Physics	309776005
+Jessia	Sauve	jsauve	jsauve@iastate.edu	jsauve@gmail.com	GIS 	307779887
+Eulah	Mann	emann	emann@iastate.edu	emann@gmail.com	Computer Aided Design (CAD)	296902933
+Jc	Bellomy	jbellomy	jbellomy@iastate.edu	jbellomy@gmail.com	Administrative Support certificate	513643119
+Katharine	Lacasse	klacasse	klacasse@iastate.edu	klacasse@gmail.com	Dentistry 	360803453
+Evelin	Pennington	epennington	epennington@iastate.edu	epennington@gmail.com	Physical Therapy  	119340734
+Shellie	Roque	sroque	sroque@iastate.edu	sroque@gmail.com	English	853820178
+Noelia	Robidoux	nrobidoux	nrobidoux@iastate.edu	nrobidoux@gmail.com	Welding and Fabrication	600808890
+Reagan	Deckard	rdeckard	rdeckard@iastate.edu	rdeckard@gmail.com	Legal Office Support	678064926
+Harriette	Statton	hstatton	hstatton@iastate.edu	hstatton@gmail.com	Humanities	267315639
+Karrie	Petties	kpetties	kpetties@iastate.edu	kpetties@gmail.com	Healthcare Risk Management	993289070
+Sage	Kirch	skirch	skirch@iastate.edu	skirch@gmail.com	Learning Communities	873951875
+Sherron	Strawbridge	sstrawbridge	sstrawbridge@iastate.edu	sstrawbridge@gmail.com	Foreign Language	208800963
+Pam	Magnusson	pmagnusson	pmagnusson@iastate.edu	pmagnusson@gmail.com	Oceanography	399425666
+Bradford	Nicholson	bnicholson	bnicholson@iastate.edu	bnicholson@gmail.com	Management	749335966
+Kareem	Sisler	ksisler	ksisler@iastate.edu	ksisler@gmail.com	Chiropractic Medicine	740072592
+Pedro	Cusson	pcusson	pcusson@iastate.edu	pcusson@gmail.com	Advanced Manufacturing	942796528
+Jovita	Welsch	jwelsch	jwelsch@iastate.edu	jwelsch@gmail.com	Sociology 	479896299
+Ozella	Godsey	ogodsey	ogodsey@iastate.edu	ogodsey@gmail.com	Occupational Therapy	847032123
+Dominick	Wimbush	dwimbush	dwimbush@iastate.edu	dwimbush@gmail.com	Early Childhood Education	703275009
+Carmelita	Vargas	cvargas	cvargas@iastate.edu	cvargas@gmail.com	Accounting	373031659
+Toby	Tamez	ttamez	ttamez@iastate.edu	ttamez@gmail.com	Mathematics	628822545
+Keesha	Guerrier	kguerrier	kguerrier@iastate.edu	kguerrier@gmail.com	Philosophy	894231100
+Jesse	Kary	jkary	jkary@iastate.edu	jkary@gmail.com	History 	861577676
+Arturo	Kleine	akleine	akleine@iastate.edu	akleine@gmail.com	Print Making	554755438
+Alyse	Varian	avarian	avarian@iastate.edu	avarian@gmail.com	Painting	630102032
+Shirlene	Tiller	stiller	stiller@iastate.edu	stiller@gmail.com	Finance	131073247
+Meagan	Darity	mdarity	mdarity@iastate.edu	mdarity@gmail.com	Dental Hygiene	318465976
+Gigi	Oney	goney	goney@iastate.edu	goney@gmail.com	Business Administration	817663822
+Mason	Radabaugh	mradabaugh	mradabaugh@iastate.edu	mradabaugh@gmail.com	Radiologic Tech 	472882599
+Jc	Arehart	jarehart	jarehart@iastate.edu	jarehart@gmail.com	Emergency Medical Technician (EMT)	255706661
+Nathanial	Darrell	ndarrell	ndarrell@iastate.edu	ndarrell@gmail.com	World Languages	593918885
+Wilbert	Rosendahl	wrosendahl	wrosendahl@iastate.edu	wrosendahl@gmail.com	Green Programs 	732736685
+Melda	Homes	mhomes	mhomes@iastate.edu	mhomes@gmail.com	Engineering	707037247
+Jacki	Shawgo	jshawgo	jshawgo@iastate.edu	jshawgo@gmail.com	Ceramics	437232718
+Bok	Stamm	bstamm	bstamm@iastate.edu	bstamm@gmail.com	Criminal Justice 	495065467
+Ming	Oster	moster	moster@iastate.edu	moster@gmail.com	Veterinary Medicine 	557583839
+Delbert	Dauber	ddauber	ddauber@iastate.edu	ddauber@gmail.com	Project Management	800598353
+Otto	Braaten	obraaten	obraaten@iastate.edu	obraaten@gmail.com	Psychology 	568844575
+Ramiro	Derrick	rderrick	rderrick@iastate.edu	rderrick@gmail.com	Pharmacy	453929585
+Willian	Massengill	wmassengill	wmassengill@iastate.edu	wmassengill@gmail.com	Graphic Design	540724168
+Concepcion	Cogdill	ccogdill	ccogdill@iastate.edu	ccogdill@gmail.com	Chemistry	126617467
+Clinton	Stoneman	cstoneman	cstoneman@iastate.edu	cstoneman@gmail.com	Communication Studies (Speech)	139138561
+My	Colclough	mcolclough	mcolclough@iastate.edu	mcolclough@gmail.com	Atmospheric Science	733043879
+Earl	Camillo	ecamillo	ecamillo@iastate.edu	ecamillo@gmail.com	Tech Prep	984868945
+Patience	Wotring	pwotring	pwotring@iastate.edu	pwotring@gmail.com	Speech (Now Communication Studies)	633865357
+Damaris	Brookover	dbrookover	dbrookover@iastate.edu	dbrookover@gmail.com	Nutrition	454239717
+Phung	Mo	pmo	pmo@iastate.edu	pmo@gmail.com	Studio Arts	253314277
+Gregg	Jeffress	gjeffress	gjeffress@iastate.edu	gjeffress@gmail.com	ORCA (Ocean Research College Academy)	552014702
+Cory	Jaworski	cjaworski	cjaworski@iastate.edu	cjaworski@gmail.com	Theatre 	983868973
+Eulah	Nicolson	enicolson	enicolson@iastate.edu	enicolson@gmail.com	Written Arts	793470825
+Jessika	Galloway	jgalloway	jgalloway@iastate.edu	jgalloway@gmail.com	Art	585655703
+Celestine	Skowronski	cskowronski	cskowronski@iastate.edu	cskowronski@gmail.com	Sculpture	874260801
+Jewell	Deschamps	jdeschamps	jdeschamps@iastate.edu	jdeschamps@gmail.com	Global Studies	308958515
+Brent	Wingate	bwingate	bwingate@iastate.edu	bwingate@gmail.com	Drawing	562394496
+Ada	Gerst	agerst	agerst@iastate.edu	agerst@gmail.com	WorkFirst   	957220649
+Dayna	Jeanpierre	djeanpierre	djeanpierre@iastate.edu	djeanpierre@gmail.com	Biology	620015327
+Sheridan	Dearman	sdearman	sdearman@iastate.edu	sdearman@gmail.com	Phlebotomy	513218558
+Jerrell	Groman	jgroman	jgroman@iastate.edu	jgroman@gmail.com	Astronomy	342351529
+Hollie	Reinert	hreinert	hreinert@iastate.edu	hreinert@gmail.com	Medicine	593196678
+Danika	Worsley	dworsley	dworsley@iastate.edu	dworsley@gmail.com	Education (Elementary and Secondary)  	961404653
+Hulda	Boshart	hboshart	hboshart@iastate.edu	hboshart@gmail.com	Composites	105138216
+Elizabeth	Striegel	estriegel	estriegel@iastate.edu	estriegel@gmail.com	Corporate & Continuing Education Center	805289709
+Esteban	Dunmore	edunmore	edunmore@iastate.edu	edunmore@gmail.com	Botany   	838437320
+Mechelle	Mchaney	mmchaney	mmchaney@iastate.edu	mmchaney@gmail.com	Economics	897561622
+Roy	Fillman	rfillman	rfillman@iastate.edu	rfillman@gmail.com	Geoscience	766453070
+Shela	Larios	slarios	slarios@iastate.edu	slarios@gmail.com	Nursing (RN)	828225910
+Jaqueline	Wadlow	jwadlow	jwadlow@iastate.edu	jwadlow@gmail.com	Computer Information Systems (CIS)	566810455
+Marline	Germaine	mgermaine	mgermaine@iastate.edu	mgermaine@gmail.com	Multimedia: Web Design	605222078
+Sulema	Delapp	sdelapp	sdelapp@iastate.edu	sdelapp@gmail.com	Natural Science	483481611
+Mirna	Laroque	mlaroque	mlaroque@iastate.edu	mlaroque@gmail.com	Reading and Study Skills	150510967
+Bryon	Ellett	bellett	bellett@iastate.edu	bellett@gmail.com	Office Support certificate  	883009139
+Chia	Ollie	collie	collie@iastate.edu	collie@gmail.com	Business Technology 	612999400
+Ernestina	Mccardell	emccardell	emccardell@iastate.edu	emccardell@gmail.com	Geography	279855478
+Germaine	Greig	ggreig	ggreig@iastate.edu	ggreig@gmail.com	Digital Illustration	554248420
+Soila	Brasel	sbrasel	sbrasel@iastate.edu	sbrasel@gmail.com	Tribal Enterprise Management	536432601
+Casey	Sholtis	csholtis	csholtis@iastate.edu	csholtis@gmail.com	Music	421110968
+Grace	Liao	gliao	gliao@iastate.edu	gliao@gmail.com	Legal Office Assistant certificate  	411470127
+Merrie	Bomba	mbomba	mbomba@iastate.edu	mbomba@gmail.com	Physical Education	584630916
+Rufina	Staton	rstaton	rstaton@iastate.edu	rstaton@gmail.com	Service Learning	661140507
+Rogelio	Carroll	rcarroll	rcarroll@iastate.edu	rcarroll@gmail.com	Creative Writing	651207218
+Johnnie	Rutt	jrutt	jrutt@iastate.edu	jrutt@gmail.com	Cosmetology	512332120
+Alix	Juergens	ajuergens	ajuergens@iastate.edu	ajuergens@gmail.com	Nursing Assistant Certified	125177485
+Rodrigo	Calle	rcalle	rcalle@iastate.edu	rcalle@gmail.com	Environmental Studies	306644528
+Dino	Wheeler	dwheeler	dwheeler@iastate.edu	dwheeler@gmail.com	Political Science	259490133
+Donovan	Swinton	dswinton	dswinton@iastate.edu	dswinton@gmail.com	Visual Communications	626014783
+Phyliss	Aguirre	paguirre	paguirre@iastate.edu	paguirre@gmail.com	Aviation	874907974
+Ricki	Kibbe	rkibbe	rkibbe@iastate.edu	rkibbe@gmail.com	East County Campus	818595046
+Kareem	Deavers	kdeavers	kdeavers@iastate.edu	kdeavers@gmail.com	Computer Science	817387806
+Leland	Fritsch	lfritsch	lfritsch@iastate.edu	lfritsch@gmail.com	Anthropology  	834793633
+Edgar	Imboden	eimboden	eimboden@iastate.edu	eimboden@gmail.com	Multi-Occupational Trades	329764636
+Meghan	Conerly	mconerly	mconerly@iastate.edu	mconerly@gmail.com	Precision Machining	857570349
+Chieko	Vanderveen	cvanderveen	cvanderveen@iastate.edu	cvanderveen@gmail.com	Optometry	705802172
+Daria	Hallowell	dhallowell	dhallowell@iastate.edu	dhallowell@gmail.com	Apprenticeships	174910724
+Geraldine	Fabrizio	gfabrizio	gfabrizio@iastate.edu	gfabrizio@gmail.com	College in the High School	115021567
+Roman	Stanfill	rstanfill	rstanfill@iastate.edu	rstanfill@gmail.com	Web Design (Visual Arts)	113103977
+Arlinda	Dieckman	adieckman	adieckman@iastate.edu	adieckman@gmail.com	Photography	780028097
+Brenda	Estabrook	bestabrook	bestabrook@iastate.edu	bestabrook@gmail.com	Marketing	324603303
+Neoma	Hutson	nhutson	nhutson@iastate.edu	nhutson@gmail.com	Acting/Theatre	198539764
+Joelle	Backlund	jbacklund	jbacklund@iastate.edu	jbacklund@gmail.com	Journalism  	662321875
+Eldon	Larkins	elarkins	elarkins@iastate.edu	elarkins@gmail.com	Fire Science  	409980577
+Jefferson	Tyson	jtyson	jtyson@iastate.edu	jtyson@gmail.com	Physics	162563840
+Consuela	Vivier	cvivier	cvivier@iastate.edu	cvivier@gmail.com	GIS 	243662972
+Sterling	Ebel	sebel	sebel@iastate.edu	sebel@gmail.com	Computer Aided Design (CAD)	574642359
+Ilse	Pio	ipio	ipio@iastate.edu	ipio@gmail.com	Administrative Support certificate	251330451
+Rhea	Halton	rhalton	rhalton@iastate.edu	rhalton@gmail.com	Dentistry 	345622993
+Stuart	Grimshaw	sgrimshaw	sgrimshaw@iastate.edu	sgrimshaw@gmail.com	Physical Therapy  	740430934
+Meda	Mcclard	mmcclard	mmcclard@iastate.edu	mmcclard@gmail.com	English	509231467
+Roy	Godbey	rgodbey	rgodbey@iastate.edu	rgodbey@gmail.com	Welding and Fabrication	389801589
+Keith	Schroyer	kschroyer	kschroyer@iastate.edu	kschroyer@gmail.com	Legal Office Support	526393912
+Fiona	Eby	feby	feby@iastate.edu	feby@gmail.com	Humanities	121271119
+Erik	Merrit	emerrit	emerrit@iastate.edu	emerrit@gmail.com	Healthcare Risk Management	447901394
+Oliver	Shryock	oshryock	oshryock@iastate.edu	oshryock@gmail.com	Learning Communities	478826811
+Sindy	Lonergan	slonergan	slonergan@iastate.edu	slonergan@gmail.com	Foreign Language	269235374
+Clair	Cockett	ccockett	ccockett@iastate.edu	ccockett@gmail.com	Oceanography	197885523
+Leonard	Legrand	llegrand	llegrand@iastate.edu	llegrand@gmail.com	Management	909836650
+Jerrica	Busby	jbusby	jbusby@iastate.edu	jbusby@gmail.com	Chiropractic Medicine	559104382
+Olen	Gamino	ogamino	ogamino@iastate.edu	ogamino@gmail.com	Advanced Manufacturing	288181893
+Chelsea	Nastasi	cnastasi	cnastasi@iastate.edu	cnastasi@gmail.com	Sociology 	645083776
+Kanesha	Pichardo	kpichardo	kpichardo@iastate.edu	kpichardo@gmail.com	Occupational Therapy	835335701
+Chandra	Joslin	cjoslin	cjoslin@iastate.edu	cjoslin@gmail.com	Early Childhood Education	118736297
+Dwayne	Lineberry	dlineberry	dlineberry@iastate.edu	dlineberry@gmail.com	Accounting	116078068
+Evia	Montiel	emontiel	emontiel@iastate.edu	emontiel@gmail.com	Mathematics	231815566
+Genaro	Cayton	gcayton	gcayton@iastate.edu	gcayton@gmail.com	Philosophy	746951925
+Noelle	Schlabach	nschlabach	nschlabach@iastate.edu	nschlabach@gmail.com	History 	244204833
+Elva	Andress	eandress	eandress@iastate.edu	eandress@gmail.com	Print Making	734145065
+Rudolph	Knoblock	rknoblock	rknoblock@iastate.edu	rknoblock@gmail.com	Painting	710358215
+Henry	Jaco	hjaco	hjaco@iastate.edu	hjaco@gmail.com	Finance	590231947
+Horace	Leonhardt	hleonhardt	hleonhardt@iastate.edu	hleonhardt@gmail.com	Dental Hygiene	298539773
+Alyson	Matthias	amatthias	amatthias@iastate.edu	amatthias@gmail.com	Business Administration	978035066
+Elwood	Gehringer	egehringer	egehringer@iastate.edu	egehringer@gmail.com	Radiologic Tech 	818029771
+Clarinda	Kilby	ckilby	ckilby@iastate.edu	ckilby@gmail.com	Emergency Medical Technician (EMT)	564939565
+Deandre	Marek	dmarek	dmarek@iastate.edu	dmarek@gmail.com	World Languages	300876202
+Hoyt	Chabolla	hchabolla	hchabolla@iastate.edu	hchabolla@gmail.com	Green Programs 	683655776
+Mike	Winslett	mwinslett	mwinslett@iastate.edu	mwinslett@gmail.com	Engineering	455408208
+Cathern	Mcmorris	cmcmorris	cmcmorris@iastate.edu	cmcmorris@gmail.com	Ceramics	618261366
+Judson	Centers	jcenters	jcenters@iastate.edu	jcenters@gmail.com	Criminal Justice 	389121228
+Marisol	Parrish	mparrish	mparrish@iastate.edu	mparrish@gmail.com	Veterinary Medicine 	667853075
+Cordell	Stalls	cstalls	cstalls@iastate.edu	cstalls@gmail.com	Project Management	152906604
+Barbie	Kehl	bkehl	bkehl@iastate.edu	bkehl@gmail.com	Psychology 	368745354
+Audry	Vanwagner	avanwagner	avanwagner@iastate.edu	avanwagner@gmail.com	Pharmacy	971112979
+Jonell	Blann	jblann	jblann@iastate.edu	jblann@gmail.com	Graphic Design	887980819
+Rosalinda	Meany	rmeany	rmeany@iastate.edu	rmeany@gmail.com	Chemistry	375747958
+Darcel	Hersman	dhersman	dhersman@iastate.edu	dhersman@gmail.com	Communication Studies (Speech)	872662965
+Amos	Kohlmeier	akohlmeier	akohlmeier@iastate.edu	akohlmeier@gmail.com	Atmospheric Science	379327264
+Leif	Ripple	lripple	lripple@iastate.edu	lripple@gmail.com	Tech Prep	945359588
+Bertie	Than	bthan	bthan@iastate.edu	bthan@gmail.com	Speech (Now Communication Studies)	769457906
+Colton	Viau	cviau	cviau@iastate.edu	cviau@gmail.com	Nutrition	474555036
+Charlie	Blodgett	cblodgett	cblodgett@iastate.edu	cblodgett@gmail.com	Studio Arts	327122292
+Angela	Locust	alocust	alocust@iastate.edu	alocust@gmail.com	ORCA (Ocean Research College Academy)	107632236
+Erline	You	eyou	eyou@iastate.edu	eyou@gmail.com	Theatre 	890846108
+Hosea	Miley	hmiley	hmiley@iastate.edu	hmiley@gmail.com	Written Arts	134124877
+Luis	Cioffi	lcioffi	lcioffi@iastate.edu	lcioffi@gmail.com	Art	837472699
+Jenise	Oriley	joriley	joriley@iastate.edu	joriley@gmail.com	Sculpture	965981012
+Aisha	Younts	ayounts	ayounts@iastate.edu	ayounts@gmail.com	Global Studies	613252513
+Elise	Depriest	edepriest	edepriest@iastate.edu	edepriest@gmail.com	Drawing	254365385
+Mauro	Nishioka	mnishioka	mnishioka@iastate.edu	mnishioka@gmail.com	WorkFirst   	881002957
+Cinderella	Preston	cpreston	cpreston@iastate.edu	cpreston@gmail.com	Biology	976397712
+Karin	Oberholtzer	koberholtzer	koberholtzer@iastate.edu	koberholtzer@gmail.com	Phlebotomy	733620828
+Alvina	Sitz	asitz	asitz@iastate.edu	asitz@gmail.com	Astronomy	557986371
+Sara	Moir	smoir	smoir@iastate.edu	smoir@gmail.com	Medicine	440171950
+Johna	Vu	jvu	jvu@iastate.edu	jvu@gmail.com	Education (Elementary and Secondary)  	412237796
+Rafael	Ehrhardt	rehrhardt	rehrhardt@iastate.edu	rehrhardt@gmail.com	Composites	285185581
+Katherine	Sewell	ksewell	ksewell@iastate.edu	ksewell@gmail.com	Corporate & Continuing Education Center	706737712
+Philip	Coltrane	pcoltrane	pcoltrane@iastate.edu	pcoltrane@gmail.com	Botany   	489655108
+Nancy	Paille	npaille	npaille@iastate.edu	npaille@gmail.com	Economics	274706780
+Adrianna	Hettinger	ahettinger	ahettinger@iastate.edu	ahettinger@gmail.com	Geoscience	193981800
+Marco	Lasch	mlasch	mlasch@iastate.edu	mlasch@gmail.com	Nursing (RN)	699361775
+Dolly	Monzo	dmonzo	dmonzo@iastate.edu	dmonzo@gmail.com	Computer Information Systems (CIS)	366465405
+Bryant	Kitchell	bkitchell	bkitchell@iastate.edu	bkitchell@gmail.com	Multimedia: Web Design	549819930
+Beau	Janelle	bjanelle	bjanelle@iastate.edu	bjanelle@gmail.com	Natural Science	392811089
+Elma	Cronk	ecronk	ecronk@iastate.edu	ecronk@gmail.com	Reading and Study Skills	884459356
+Elissa	Dunneback	edunneback	edunneback@iastate.edu	edunneback@gmail.com	Office Support certificate  	909710442
+Maple	Kohut	mkohut	mkohut@iastate.edu	mkohut@gmail.com	Business Technology 	116283685
+Irvin	Ditto	iditto	iditto@iastate.edu	iditto@gmail.com	Geography	280767710
+Eliana	Hayles	ehayles	ehayles@iastate.edu	ehayles@gmail.com	Digital Illustration	394966634
+Isreal	Primer	iprimer	iprimer@iastate.edu	iprimer@gmail.com	Tribal Enterprise Management	988344746
+Migdalia	Raymond	mraymond	mraymond@iastate.edu	mraymond@gmail.com	Music	804430338
+Terry	Palmer	tpalmer	tpalmer@iastate.edu	tpalmer@gmail.com	Legal Office Assistant certificate  	405186083
+Randa	Hakala	rhakala	rhakala@iastate.edu	rhakala@gmail.com	Physical Education	291726816
+Cami	Martindale	cmartindale	cmartindale@iastate.edu	cmartindale@gmail.com	Service Learning	707009562
+Sona	Ostrom	sostrom	sostrom@iastate.edu	sostrom@gmail.com	Creative Writing	853930963
+Richard	Derouen	rderouen	rderouen@iastate.edu	rderouen@gmail.com	Cosmetology	938968724
+Amalia	Lusk	alusk	alusk@iastate.edu	alusk@gmail.com	Nursing Assistant Certified	409464833
+Stasia	Fritch	sfritch	sfritch@iastate.edu	sfritch@gmail.com	Environmental Studies	894153882
+Deanne	Muise	dmuise	dmuise@iastate.edu	dmuise@gmail.com	Political Science	718399163
+Cathryn	Landreth	clandreth	clandreth@iastate.edu	clandreth@gmail.com	Visual Communications	536048850
+Inocencia	Denmon	idenmon	idenmon@iastate.edu	idenmon@gmail.com	Aviation	986957406
+Jarod	Marron	jmarron	jmarron@iastate.edu	jmarron@gmail.com	East County Campus	311176391
+Cammy	Stotts	cstotts	cstotts@iastate.edu	cstotts@gmail.com	Computer Science	752918667
+Columbus	Rusnak	crusnak	crusnak@iastate.edu	crusnak@gmail.com	Anthropology  	176212207
+Dominque	Nagata	dnagata	dnagata@iastate.edu	dnagata@gmail.com	Multi-Occupational Trades	252724727
+Omer	Hinson	ohinson	ohinson@iastate.edu	ohinson@gmail.com	Precision Machining	919889005
+Hien	Pitt	hpitt	hpitt@iastate.edu	hpitt@gmail.com	Optometry	291671375
+Markita	Morter	mmorter	mmorter@iastate.edu	mmorter@gmail.com	Apprenticeships	783204564
+Christiane	Peng	cpeng	cpeng@iastate.edu	cpeng@gmail.com	College in the High School	640187947
+Dale	Markert	dmarkert	dmarkert@iastate.edu	dmarkert@gmail.com	Web Design (Visual Arts)	857018976
+Angelena	Albarado	aalbarado	aalbarado@iastate.edu	aalbarado@gmail.com	Photography	431297199
+Bianca	Pickerel	bpickerel	bpickerel@iastate.edu	bpickerel@gmail.com	Marketing	406256711
+Genoveva	Cavanaugh	gcavanaugh	gcavanaugh@iastate.edu	gcavanaugh@gmail.com	Acting/Theatre	362093758
+Minna	Provenzano	mprovenzano	mprovenzano@iastate.edu	mprovenzano@gmail.com	Journalism  	880677841
+Arnoldo	Poff	apoff	apoff@iastate.edu	apoff@gmail.com	Fire Science  	643584276
+Enoch	Linscott	elinscott	elinscott@iastate.edu	elinscott@gmail.com	Physics	958876711
+Amberly	Hibdon	ahibdon	ahibdon@iastate.edu	ahibdon@gmail.com	GIS 	898538594
+Alba	Otten	aotten	aotten@iastate.edu	aotten@gmail.com	Computer Aided Design (CAD)	221811379
+Winston	Pike	wpike	wpike@iastate.edu	wpike@gmail.com	Administrative Support certificate	596053426
+Stephen	Schwabe	sschwabe	sschwabe@iastate.edu	sschwabe@gmail.com	Dentistry 	193847498
+Edward	Maye	emaye	emaye@iastate.edu	emaye@gmail.com	Physical Therapy  	135224018
+Maryetta	Familia	mfamilia	mfamilia@iastate.edu	mfamilia@gmail.com	English	165874076
+Genny	Streich	gstreich	gstreich@iastate.edu	gstreich@gmail.com	Welding and Fabrication	879551521
+Phebe	Ruck	pruck	pruck@iastate.edu	pruck@gmail.com	Legal Office Support	809304803
+Alphonse	Minjarez	aminjarez	aminjarez@iastate.edu	aminjarez@gmail.com	Humanities	845655374
+Hong	Hysmith	hhysmith	hhysmith@iastate.edu	hhysmith@gmail.com	Healthcare Risk Management	406807717
+Allegra	Bradt	abradt	abradt@iastate.edu	abradt@gmail.com	Learning Communities	653667429
+Isabell	Abramowitz	iabramowitz	iabramowitz@iastate.edu	iabramowitz@gmail.com	Foreign Language	803713241
+Cassondra	Aguiniga	caguiniga	caguiniga@iastate.edu	caguiniga@gmail.com	Oceanography	440235665
+Jamison	Edsall	jedsall	jedsall@iastate.edu	jedsall@gmail.com	Management	613703373
+Lindsay	Accardi	laccardi	laccardi@iastate.edu	laccardi@gmail.com	Chiropractic Medicine	301342665
+Catherine	Gillon	cgillon	cgillon@iastate.edu	cgillon@gmail.com	Advanced Manufacturing	173568936
+Octavia	Weinberg	oweinberg	oweinberg@iastate.edu	oweinberg@gmail.com	Sociology 	340051278
+Lon	Platter	lplatter	lplatter@iastate.edu	lplatter@gmail.com	Occupational Therapy	901691315
+Lynn	Bernal	lbernal	lbernal@iastate.edu	lbernal@gmail.com	Early Childhood Education	608002149
+Catarina	Voyles	cvoyles	cvoyles@iastate.edu	cvoyles@gmail.com	Accounting	932560481
+Adeline	Sokoloski	asokoloski	asokoloski@iastate.edu	asokoloski@gmail.com	Mathematics	511992333
+Renna	Dulmage	rdulmage	rdulmage@iastate.edu	rdulmage@gmail.com	Philosophy	349464489
+Maudie	Leibowitz	mleibowitz	mleibowitz@iastate.edu	mleibowitz@gmail.com	History 	808313197
+Stacey	Lawson	slawson	slawson@iastate.edu	slawson@gmail.com	Print Making	844991340
+Marylynn	Cocco	mcocco	mcocco@iastate.edu	mcocco@gmail.com	Painting	111143570
+Shaquita	Babich	sbabich	sbabich@iastate.edu	sbabich@gmail.com	Finance	703370475
+Jed	Hadden	jhadden	jhadden@iastate.edu	jhadden@gmail.com	Dental Hygiene	182514810
+Karri	Glasscock	kglasscock	kglasscock@iastate.edu	kglasscock@gmail.com	Business Administration	203592248
+Marquitta	Allender	mallender	mallender@iastate.edu	mallender@gmail.com	Radiologic Tech 	896554063
+Sana	Shorty	sshorty	sshorty@iastate.edu	sshorty@gmail.com	Emergency Medical Technician (EMT)	136021183
+Denyse	Mcdonnell	dmcdonnell	dmcdonnell@iastate.edu	dmcdonnell@gmail.com	World Languages	315670028
+Jimmie	Shaikh	jshaikh	jshaikh@iastate.edu	jshaikh@gmail.com	Green Programs 	989342648
+Timmy	Malcolm	tmalcolm	tmalcolm@iastate.edu	tmalcolm@gmail.com	Engineering	478912228
+Emilee	Kerfoot	ekerfoot	ekerfoot@iastate.edu	ekerfoot@gmail.com	Ceramics	204002362
+Annalisa	Noll	anoll	anoll@iastate.edu	anoll@gmail.com	Criminal Justice 	250645093
+Clay	Peachey	cpeachey	cpeachey@iastate.edu	cpeachey@gmail.com	Veterinary Medicine 	317278256
+Page	Redding	predding	predding@iastate.edu	predding@gmail.com	Project Management	769605774
+Gabriele	Rainey	grainey	grainey@iastate.edu	grainey@gmail.com	Psychology 	192550731
+Mellissa	Crace	mcrace	mcrace@iastate.edu	mcrace@gmail.com	Pharmacy	919687976
+Brendan	Nagler	bnagler	bnagler@iastate.edu	bnagler@gmail.com	Graphic Design	440449543
+Cristy	Mcgrady	cmcgrady	cmcgrady@iastate.edu	cmcgrady@gmail.com	Chemistry	973237632
+Nathanael	Mcilrath	nmcilrath	nmcilrath@iastate.edu	nmcilrath@gmail.com	Communication Studies (Speech)	918300455
+Claire	Goodson	cgoodson	cgoodson@iastate.edu	cgoodson@gmail.com	Atmospheric Science	364621226
+Bree	Roy	broy	broy@iastate.edu	broy@gmail.com	Tech Prep	328069122
+Hershel	Hufnagel	hhufnagel	hhufnagel@iastate.edu	hhufnagel@gmail.com	Speech (Now Communication Studies)	529309086
+Maurice	Southwick	msouthwick	msouthwick@iastate.edu	msouthwick@gmail.com	Nutrition	190116229
+Craig	Eagan	ceagan	ceagan@iastate.edu	ceagan@gmail.com	Studio Arts	686845179
+Annabelle	Maltese	amaltese	amaltese@iastate.edu	amaltese@gmail.com	ORCA (Ocean Research College Academy)	135658192
+Felica	Wingfield	fwingfield	fwingfield@iastate.edu	fwingfield@gmail.com	Theatre 	109455536
+Brittany	Gadison	bgadison	bgadison@iastate.edu	bgadison@gmail.com	Written Arts	984325263
+Han	Rohn	hrohn	hrohn@iastate.edu	hrohn@gmail.com	Art	365994874
+Prudence	Digiacomo	pdigiacomo	pdigiacomo@iastate.edu	pdigiacomo@gmail.com	Sculpture	636913578
+Sean	Underwood	sunderwood	sunderwood@iastate.edu	sunderwood@gmail.com	Global Studies	504860081
+Haydee	Abrahams	habrahams	habrahams@iastate.edu	habrahams@gmail.com	Drawing	381952774
+Fredrick	Roehl	froehl	froehl@iastate.edu	froehl@gmail.com	WorkFirst   	156668311
+Russel	Griffen	rgriffen	rgriffen@iastate.edu	rgriffen@gmail.com	Biology	922052815
+Jung	Stilson	jstilson	jstilson@iastate.edu	jstilson@gmail.com	Phlebotomy	972831949
+Ara	Jamar	ajamar	ajamar@iastate.edu	ajamar@gmail.com	Astronomy	972816854
+Cari	Conti	cconti	cconti@iastate.edu	cconti@gmail.com	Medicine	200226079
+Elvira	Sum	esum	esum@iastate.edu	esum@gmail.com	Education (Elementary and Secondary)  	293673943
+Shawnda	Kersh	skersh	skersh@iastate.edu	skersh@gmail.com	Composites	656026192
+Eleonore	Mishoe	emishoe	emishoe@iastate.edu	emishoe@gmail.com	Corporate & Continuing Education Center	981957597
+Cletus	Janco	cjanco	cjanco@iastate.edu	cjanco@gmail.com	Botany   	588621877
+Jermaine	Brendle	jbrendle	jbrendle@iastate.edu	jbrendle@gmail.com	Economics	719370827
+Man	Moos	mmoos	mmoos@iastate.edu	mmoos@gmail.com	Geoscience	695650985
+Margarite	Sarkis	msarkis	msarkis@iastate.edu	msarkis@gmail.com	Nursing (RN)	333177392
+Rufina	Mathes	rmathes	rmathes@iastate.edu	rmathes@gmail.com	Computer Information Systems (CIS)	587442036
+Giuseppe	Carnahan	gcarnahan	gcarnahan@iastate.edu	gcarnahan@gmail.com	Multimedia: Web Design	376589006
+Ed	Avila	eavila	eavila@iastate.edu	eavila@gmail.com	Natural Science	321743076
+Kenny	Dunkin	kdunkin	kdunkin@iastate.edu	kdunkin@gmail.com	Reading and Study Skills	173231888
+Estelle	Garett	egarett	egarett@iastate.edu	egarett@gmail.com	Office Support certificate  	352708051
+Buffy	Farnes	bfarnes	bfarnes@iastate.edu	bfarnes@gmail.com	Business Technology 	985039045
+Nida	Dantzler	ndantzler	ndantzler@iastate.edu	ndantzler@gmail.com	Geography	503112016
+Theron	Pizzo	tpizzo	tpizzo@iastate.edu	tpizzo@gmail.com	Digital Illustration	686809481
+Gustavo	Leth	gleth	gleth@iastate.edu	gleth@gmail.com	Tribal Enterprise Management	679119472
+Emmitt	Dunaway	edunaway	edunaway@iastate.edu	edunaway@gmail.com	Music	946661070
+Olin	Oxford	ooxford	ooxford@iastate.edu	ooxford@gmail.com	Legal Office Assistant certificate  	451430696
+Dewitt	Zayac	dzayac	dzayac@iastate.edu	dzayac@gmail.com	Physical Education	376105865
+Odelia	Curling	ocurling	ocurling@iastate.edu	ocurling@gmail.com	Service Learning	394517273
+Dung	Hagar	dhagar	dhagar@iastate.edu	dhagar@gmail.com	Creative Writing	385061632
+Galen	Abernethy	gabernethy	gabernethy@iastate.edu	gabernethy@gmail.com	Cosmetology	862421289
+Rebbecca	Boatwright	rboatwright	rboatwright@iastate.edu	rboatwright@gmail.com	Nursing Assistant Certified	904150220
+Asia	Bergevin	abergevin	abergevin@iastate.edu	abergevin@gmail.com	Environmental Studies	372528396
+Esmeralda	Spicher	espicher	espicher@iastate.edu	espicher@gmail.com	Political Science	400900065
+Willis	Wellner	wwellner	wwellner@iastate.edu	wwellner@gmail.com	Visual Communications	589802872
+Rueben	Breault	rbreault	rbreault@iastate.edu	rbreault@gmail.com	Aviation	621086892
+Numbers	Quill	nquill	nquill@iastate.edu	nquill@gmail.com	East County Campus	636366286
+Marcelo	Marek	mmarek	mmarek@iastate.edu	mmarek@gmail.com	Computer Science	320588203
+Cathryn	Breitenbach	cbreitenbach	cbreitenbach@iastate.edu	cbreitenbach@gmail.com	Anthropology  	118336625
+Buena	Dickerman	bdickerman	bdickerman@iastate.edu	bdickerman@gmail.com	Multi-Occupational Trades	319383369
+Adrianne	Hannum	ahannum	ahannum@iastate.edu	ahannum@gmail.com	Precision Machining	165094780
+Eneida	Hornbuckle	ehornbuckle	ehornbuckle@iastate.edu	ehornbuckle@gmail.com	Optometry	596084279
+Richie	Hoefler	rhoefler	rhoefler@iastate.edu	rhoefler@gmail.com	Apprenticeships	163824730
+Allen	Scotti	ascotti	ascotti@iastate.edu	ascotti@gmail.com	College in the High School	167616813
+Cathi	Bryan	cbryan	cbryan@iastate.edu	cbryan@gmail.com	Web Design (Visual Arts)	671843884
+Mirta	Northrup	mnorthrup	mnorthrup@iastate.edu	mnorthrup@gmail.com	Photography	361739395
+Darla	Fearn	dfearn	dfearn@iastate.edu	dfearn@gmail.com	Marketing	812966282
+Kacy	Schwandt	kschwandt	kschwandt@iastate.edu	kschwandt@gmail.com	Acting/Theatre	543934938
+Annabelle	Pancoast	apancoast	apancoast@iastate.edu	apancoast@gmail.com	Journalism  	876384080
+Denis	Demps	ddemps	ddemps@iastate.edu	ddemps@gmail.com	Fire Science  	238761636
+Rana	Lawerence	rlawerence	rlawerence@iastate.edu	rlawerence@gmail.com	Physics	551286627
+Floria	Joiner	fjoiner	fjoiner@iastate.edu	fjoiner@gmail.com	GIS 	815485144
+Jospeh	Dimaggio	jdimaggio	jdimaggio@iastate.edu	jdimaggio@gmail.com	Computer Aided Design (CAD)	169396287
+Ezequiel	Myers	emyers	emyers@iastate.edu	emyers@gmail.com	Administrative Support certificate	954305154
+Malcom	Riddell	mriddell	mriddell@iastate.edu	mriddell@gmail.com	Dentistry 	255917897
+Kendrick	Defoor	kdefoor	kdefoor@iastate.edu	kdefoor@gmail.com	Physical Therapy  	798588084
+Karol	Marc	kmarc	kmarc@iastate.edu	kmarc@gmail.com	English	986406284
+William	Merrihew	wmerrihew	wmerrihew@iastate.edu	wmerrihew@gmail.com	Welding and Fabrication	839395130
+Cedric	Manfredi	cmanfredi	cmanfredi@iastate.edu	cmanfredi@gmail.com	Legal Office Support	387805602
+Mohamed	Locklear	mlocklear	mlocklear@iastate.edu	mlocklear@gmail.com	Humanities	196189961
+Melani	Bates	mbates	mbates@iastate.edu	mbates@gmail.com	Healthcare Risk Management	562922425
+Doretha	Morvant	dmorvant	dmorvant@iastate.edu	dmorvant@gmail.com	Learning Communities	927421245
+Earle	Puffer	epuffer	epuffer@iastate.edu	epuffer@gmail.com	Foreign Language	364140544
+Sha	Kluesner	skluesner	skluesner@iastate.edu	skluesner@gmail.com	Oceanography	904382917
+Josh	Redeker	jredeker	jredeker@iastate.edu	jredeker@gmail.com	Management	227512582
+Hazel	Hakes	hhakes	hhakes@iastate.edu	hhakes@gmail.com	Chiropractic Medicine	919433506
+Katelin	Beutler	kbeutler	kbeutler@iastate.edu	kbeutler@gmail.com	Advanced Manufacturing	128583951
+Nery	Mast	nmast	nmast@iastate.edu	nmast@gmail.com	Sociology 	384461809
+Cora	Nicholls	cnicholls	cnicholls@iastate.edu	cnicholls@gmail.com	Occupational Therapy	912779455
+Rhonda	Avants	ravants	ravants@iastate.edu	ravants@gmail.com	Early Childhood Education	823470652
+Bryanna	Defelice	bdefelice	bdefelice@iastate.edu	bdefelice@gmail.com	Accounting	916438390
+Agnes	Fogal	afogal	afogal@iastate.edu	afogal@gmail.com	Mathematics	856646670
+Chauncey	Miraglia	cmiraglia	cmiraglia@iastate.edu	cmiraglia@gmail.com	Philosophy	771566396
+Blaine	Grosvenor	bgrosvenor	bgrosvenor@iastate.edu	bgrosvenor@gmail.com	History 	720635661
+Monnie	Arrington	marrington	marrington@iastate.edu	marrington@gmail.com	Print Making	260339379
+Birgit	Tripodi	btripodi	btripodi@iastate.edu	btripodi@gmail.com	Painting	489374200
+Brandon	Teeter	bteeter	bteeter@iastate.edu	bteeter@gmail.com	Finance	242107249
+Kacy	Collard	kcollard	kcollard@iastate.edu	kcollard@gmail.com	Dental Hygiene	743342006
+Doreen	Ress	dress	dress@iastate.edu	dress@gmail.com	Business Administration	701000865
+Gaynell	Joyal	gjoyal	gjoyal@iastate.edu	gjoyal@gmail.com	Radiologic Tech 	327327767
+Brittney	Arakaki	barakaki	barakaki@iastate.edu	barakaki@gmail.com	Emergency Medical Technician (EMT)	157972774
+Gerard	Ealey	gealey	gealey@iastate.edu	gealey@gmail.com	World Languages	967047294
+Maynard	Diederich	mdiederich	mdiederich@iastate.edu	mdiederich@gmail.com	Green Programs 	827427365
+Michelina	Galles	mgalles	mgalles@iastate.edu	mgalles@gmail.com	Engineering	594342938
+Felipe	Keach	fkeach	fkeach@iastate.edu	fkeach@gmail.com	Ceramics	587239886
+Rosita	Perrigo	rperrigo	rperrigo@iastate.edu	rperrigo@gmail.com	Criminal Justice 	866163399
+Ronald	Speirs	rspeirs	rspeirs@iastate.edu	rspeirs@gmail.com	Veterinary Medicine 	507978709
+Shery	Cilley	scilley	scilley@iastate.edu	scilley@gmail.com	Project Management	456139400
+Johnson	Perrella	jperrella	jperrella@iastate.edu	jperrella@gmail.com	Psychology 	404802230
+August	Vonruden	avonruden	avonruden@iastate.edu	avonruden@gmail.com	Pharmacy	332172183
+Bonny	Hertzler	bhertzler	bhertzler@iastate.edu	bhertzler@gmail.com	Graphic Design	121967652
+Ian	Brabant	ibrabant	ibrabant@iastate.edu	ibrabant@gmail.com	Chemistry	681794959
+Colin	Even	ceven	ceven@iastate.edu	ceven@gmail.com	Communication Studies (Speech)	475015494
+Renea	Xu	rxu	rxu@iastate.edu	rxu@gmail.com	Atmospheric Science	613543268
+Celia	Greenhalgh	cgreenhalgh	cgreenhalgh@iastate.edu	cgreenhalgh@gmail.com	Tech Prep	156089467
+Buck	Neuendorf	bneuendorf	bneuendorf@iastate.edu	bneuendorf@gmail.com	Speech (Now Communication Studies)	419449099
+Ezekiel	Augustine	eaugustine	eaugustine@iastate.edu	eaugustine@gmail.com	Nutrition	224455702
+Ka	Goins	kgoins	kgoins@iastate.edu	kgoins@gmail.com	Studio Arts	212616113
+Savannah	Pancake	spancake	spancake@iastate.edu	spancake@gmail.com	ORCA (Ocean Research College Academy)	333201672
+Arlie	Griffey	agriffey	agriffey@iastate.edu	agriffey@gmail.com	Theatre 	846040942
+Rolanda	Milliman	rmilliman	rmilliman@iastate.edu	rmilliman@gmail.com	Written Arts	458017581
+Miriam	Frahm	mfrahm	mfrahm@iastate.edu	mfrahm@gmail.com	Art	460973936
+Elisa	Brunke	ebrunke	ebrunke@iastate.edu	ebrunke@gmail.com	Sculpture	651200430
+Garfield	Sires	gsires	gsires@iastate.edu	gsires@gmail.com	Global Studies	310176687
+Kraig	Welk	kwelk	kwelk@iastate.edu	kwelk@gmail.com	Drawing	106729455
+Erasmo	Summa	esumma	esumma@iastate.edu	esumma@gmail.com	WorkFirst   	575831565
+Cecila	Friese	cfriese	cfriese@iastate.edu	cfriese@gmail.com	Biology	550809657
+Cody	Sandoz	csandoz	csandoz@iastate.edu	csandoz@gmail.com	Phlebotomy	683955633
+Glenn	Cannady	gcannady	gcannady@iastate.edu	gcannady@gmail.com	Astronomy	494485260
+Greta	Romberger	gromberger	gromberger@iastate.edu	gromberger@gmail.com	Medicine	717861817
+Roxanne	Michelson	rmichelson	rmichelson@iastate.edu	rmichelson@gmail.com	Education (Elementary and Secondary)  	758279754
+Albert	Marcellus	amarcellus	amarcellus@iastate.edu	amarcellus@gmail.com	Composites	314537207
+Donetta	Daughtrey	ddaughtrey	ddaughtrey@iastate.edu	ddaughtrey@gmail.com	Corporate & Continuing Education Center	545565025
+Enda	Westbrook	ewestbrook	ewestbrook@iastate.edu	ewestbrook@gmail.com	Botany   	530944198
+Rosalva	Insley	rinsley	rinsley@iastate.edu	rinsley@gmail.com	Economics	302555876
+Amado	Sellner	asellner	asellner@iastate.edu	asellner@gmail.com	Geoscience	471021519
+Marcus	Knobloch	mknobloch	mknobloch@iastate.edu	mknobloch@gmail.com	Nursing (RN)	604366691
