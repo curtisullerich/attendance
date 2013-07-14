@@ -798,13 +798,6 @@ public class DirectorServlet extends AbstractBaseServlet {
 		PageBuilder page = new PageBuilder(Page.attendance, SERVLET_PATH);
 
 		List<User> students = train.getUsersManager().get(User.Type.Student);
-		// List<Event> events = train.getEventManager().readAll();
-		List<Absence> absences = train.getAbsenceManager().getAll();
-
-		// Map<User, Map<Event, List<Absence>>> absenceMap =
-		// this.makeAbsenceMap(
-		// students, events, absences);
-
 		Map<User, List<Absence>> absenceList = new HashMap<User, List<Absence>>();
 
 		for (User s : students) {
@@ -814,15 +807,9 @@ public class DirectorServlet extends AbstractBaseServlet {
 			absenceList.put(s, a);
 		}
 
-		// Map<User, Map<Event, List<Absence>>> absenceMap =
-		// this.createStudentEventAbsMapOld(absences, events, students,
-		// train.getAbsenceController());
 
 		page.setAttribute("students", students);
-		// page.setAttribute("absenceMap", absenceMap);
 		page.setAttribute("absenceList", absenceList);
-		// page.setAttribute("absences", absences);
-		// page.setAttribute("events", events);
 		page.setPageTitle("Attendance");
 		page.setAttribute("error_messages", errors);
 		page.setAttribute("success_message", success);
@@ -1117,186 +1104,4 @@ public class DirectorServlet extends AbstractBaseServlet {
 		page.passOffToJsp(req, resp);
 	}
 
-	private Map<User, Map<Event, List<Absence>>> makeAbsenceMap(
-			List<User> students, List<Event> events, List<Absence> absences) {
-
-		Comparator<User> studentComparator = new Comparator<User>() {
-			public int compare(User a, User b) {
-				if (a == null) {
-					return -1;
-				} else if (b == null) {
-					return 1;
-				} else if (!a.getLastName().equalsIgnoreCase(b.getLastName())) {
-					return a.getLastName().compareToIgnoreCase(b.getLastName());
-				} else {
-					return a.getFirstName().compareToIgnoreCase(
-							b.getFirstName());
-				}
-			}
-		};
-
-		Comparator<Absence> absenceComparator = new Comparator<Absence>() {
-
-			@Override
-			public int compare(Absence lhs, Absence rhs) {
-				User lhsStudent = lhs.getStudent();
-				User rhsStudent = rhs.getStudent();
-
-				// Order first by student
-				if (!lhsStudent.getLastName().equalsIgnoreCase(
-						rhsStudent.getLastName())) {
-					return lhsStudent.getLastName().compareToIgnoreCase(
-							rhsStudent.getLastName());
-				}
-				if (!lhsStudent.getFirstName().equalsIgnoreCase(
-						rhsStudent.getFirstName())) {
-					return lhsStudent.getFirstName().compareToIgnoreCase(
-							rhsStudent.getFirstName());
-				}
-				// Then by time
-				else if (!lhs.getStart().equals(rhs.getStart())) {
-					return lhs.getStart().compareTo(rhs.getStart());
-				} else {
-					return (lhs.getEnd() != null) ? lhs.getEnd().compareTo(
-							rhs.getEnd()) : 0;
-				}
-			}
-
-		};
-
-		Comparator<Event> eventComparator = new Comparator<Event>() {
-			public int compare(Event a, Event b) {
-				if (a == null) {
-					return -1;
-				} else if (b == null) {
-					return 1;
-				} else if (!a.getStart().equals(b.getStart())) {
-					return a.getStart().compareTo(b.getStart());
-				} else {
-					return (a.getEnd() != null) ? a.getEnd().compareTo(
-							b.getEnd()) : 0;
-				}
-			}
-		};
-
-		Collections.sort(students, studentComparator);
-		Collections.sort(absences, absenceComparator);
-		Collections.sort(events, eventComparator);
-
-		Map<User, Map<Event, List<Absence>>> ret = new HashMap<User, Map<Event, List<Absence>>>();
-
-		for (User s : students) {
-			ret.put(s,
-					createStudentEventAbsMap(getStudentAbsences(absences, s),
-							events));
-		}
-		return ret;
-	}
-
-	private Map<User, Map<Event, List<Absence>>> createStudentEventAbsMapOld(
-			List<Absence> absences, List<Event> events, List<User> students,
-			AbsenceManager ac) {
-		Comparator<User> studentComparator = new Comparator<User>() {
-			public int compare(User a, User b) {
-				if (a == null) {
-					return -1;
-				} else if (b == null) {
-					return 1;
-				} else {
-					return a.getLastName().compareToIgnoreCase(b.getLastName());
-				}
-			}
-		};
-
-		Comparator<Event> eventComparator = new Comparator<Event>() {
-			public int compare(Event a, Event b) {
-				if (a == null) {
-					return -1;
-				} else if (b == null) {
-					return 1;
-				} else {
-					if (a.getStart().before(b.getStart())) {
-						return -1;
-					} else if (b.getStart().before(a.getStart())) {
-						return 1;
-					} else {
-						return 0;
-					}
-				}
-			}
-		};
-		// TODO https://github.com/curtisullerich/attendance/issues/117
-		// is there better way to do this? Note that otherwise, events
-		// print in the order of creation, NOT date order.
-		Collections.sort(students, studentComparator);
-		Collections.sort(events, eventComparator);
-		Map<User, Map<Event, List<Absence>>> absenceMap = new HashMap<User, Map<Event, List<Absence>>>();
-		for (User s : students) {
-
-			Map<Event, List<Absence>> eventAbsencesMap = new HashMap<Event, List<Absence>>();
-
-			// for each event, create a Map that will contain a list of all
-			// Absences for this student AND this event
-			for (Event e : events) {
-				// HashMap<Event, List<Absence>> eventAbsencesMap = new
-				// HashMap<Event,List<Absence>>();
-
-				List<Absence> currentEventAbsences = ac.getAll(e, s);
-
-				eventAbsencesMap.put(e, currentEventAbsences);
-			}
-			absenceMap.put(s, eventAbsencesMap);
-		}
-		return absenceMap;
-	}
-
-	// Expects absences to only have one student's absences sorted by time
-	private Map<Event, List<Absence>> createStudentEventAbsMap(
-			List<Absence> absences, List<Event> events) {
-		int eventPtr = 0;
-		int absPtr = 0;
-		boolean done = false;
-		Map<Event, List<Absence>> studentAbsMap = new HashMap<Event, List<Absence>>();
-
-		if (absences.size() == 0 || events.size() == 0) {
-			return studentAbsMap;
-		}
-
-		while (!done) {
-			Absence curAbs = absences.get(absPtr);
-			Event event = events.get(eventPtr);
-
-			if (curAbs.getEvent() != null && curAbs.getEvent().equals(event)) {
-				List<Absence> studentAbs = studentAbsMap.get(event);
-				if (studentAbs == null) {
-					studentAbs = new ArrayList<Absence>();
-					studentAbs.add(curAbs);
-					studentAbsMap.put(event, studentAbs);
-				} else {
-					studentAbs.add(curAbs);
-				}
-				++absPtr;
-			} else if (event.getStart().before((curAbs.getStart()))) {
-				++eventPtr;
-			} else {
-				++absPtr;
-			}
-			if (absPtr >= absences.size() || eventPtr >= events.size()) {
-				done = true;
-			}
-		}
-		return studentAbsMap;
-	}
-
-	private List<Absence> getStudentAbsences(List<Absence> absences,
-			User student) {
-		List<Absence> abs = new ArrayList<Absence>();
-		for (int i = 0; i < absences.size(); ++i) {
-			Absence cur = absences.get(i);
-			if (cur.getStudent().equals(student)) {
-				abs.add(cur);
-			}
-		}
-		return abs;
-	}
 }
