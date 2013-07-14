@@ -52,9 +52,6 @@ public class AbsenceController extends AbstractController {
 		return storeAbsence(absence, student);
 	}
 
-	// TODO https://github.com/curtisullerich/attendance/issues/109
-	// TEST THIS! probably by getting all and making sure there aren't any
-	// other unanchoreds running around somewher
 	public List<Absence> getUnanchored() {
 		List<Absence> absences = this.train.find(Absence.class)
 				.addFilter(Absence.FIELD_EVENT, FilterOperator.EQUAL, null)
