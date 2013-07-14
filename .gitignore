@@ -4,3 +4,4 @@ war/WEB-INF/lib/appengine*.jar
 .settings/*
 .project
 .classpath
+bin

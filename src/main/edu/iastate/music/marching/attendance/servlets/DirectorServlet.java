@@ -727,7 +727,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 			} else {
 				data.setTitle(title);
 			}
-			
+
 			cronExportEnabled = null != req.getParameter("CronExportEnabled");
 			data.setCronExportEnabled(cronExportEnabled);
 
@@ -801,19 +801,29 @@ public class DirectorServlet extends AbstractBaseServlet {
 		PageBuilder page = new PageBuilder(Page.attendance, SERVLET_PATH);
 
 		List<User> students = train.getUsersController().get(User.Type.Student);
-		List<Event> events = train.getEventController().readAll();
+		//List<Event> events = train.getEventController().readAll();
 		List<Absence> absences = train.getAbsenceController().getAll();
 
-		Map<User, Map<Event, List<Absence>>> absenceMap = this.makeAbsenceMap(
-				students, events, absences);
+//		Map<User, Map<Event, List<Absence>>> absenceMap = this.makeAbsenceMap(
+//				students, events, absences);
+
+		Map<User, List<Absence>> absenceList = new HashMap<User, List<Absence>>();
+		
+		for (User s : students) {
+			//TODO may be more efficient to just get them all and then split here
+			List<Absence> a = train.getAbsenceController().get(s);
+			absenceList.put(s, a);
+		}
+
 		// Map<User, Map<Event, List<Absence>>> absenceMap =
 		// this.createStudentEventAbsMapOld(absences, events, students,
 		// train.getAbsenceController());
 
 		page.setAttribute("students", students);
-		page.setAttribute("absenceMap", absenceMap);
-		page.setAttribute("absences", absences);
-		page.setAttribute("events", events);
+//		page.setAttribute("absenceMap", absenceMap);
+		page.setAttribute("absenceList", absenceList);
+		//page.setAttribute("absences", absences);
+//		page.setAttribute("events", events);
 		page.setPageTitle("Attendance");
 		page.setAttribute("error_messages", errors);
 		page.setAttribute("success_message", success);

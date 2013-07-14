@@ -1,6 +1,7 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java"
+	isELIgnored="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <fmt:setTimeZone value="${pagetemplate.timeZoneID}" />
 
 <html>
@@ -8,49 +9,71 @@
 <jsp:include page="/WEB-INF/template/head.jsp" />
 
 <style type="text/css">
-#container
-{
-	width:auto;
-	display:inline-block;
-	margin-left: 50px;
-	margin-right: 50px;
-}
-#container-inner {
-	width:auto;
-	overflow:visible;
-}
-#container div.sidebar {
-	position: fixed;
-	background-color: white;
-}
-#content {
-	width:auto;
-	margin-left:210px;
+/* #container */
+/* { */
+/* 	width:auto; */
+/* 	display:inline-block; */
+/* 	margin-left: 50px; */
+/* 	margin-right: 50px; */
+/* } */
+/* #container-inner { */
+/* 	width:auto; */
+/* 	overflow:visible; */
+/* } */
+/* #container div.sidebar { */
+/* 	position: fixed; */
+/* 	background-color: white; */
+/* } */
+/* #content { */
+/* 	width:auto; */
+/* 	margin-left:210px; */
+/* } */
+td .show-absence-onhover {
+	color: #333;
+	display: none;
 }
 
-td .show-absence-onhover {
-	color:#333;
-	display:none;
-}
 td:hover .show-absence-onhover {
-	visibility:visible;
+	visibility: visible;
 }
+
 td:hover .show-absence-onhover a {
-	color:#333;
+	color: #333;
 }
+
 td .show-add-onhover {
-	color:#aaa;
-	visibility:hidden;
+	color: #aaa;
+	visibility: hidden;
 }
+
 td:hover .show-add-onhover {
-	visibility:visible;
+	visibility: visible;
 }
+
 td:hover .show-add-onhover a {
-	color:#aaa;
+	color: #aaa;
 }
-table.gray tr:nth-child(odd) td.highlight, table.gray tr:nth-child(even) td.highlight {
+
+table.gray tr:nth-child(odd) td.highlight,table.gray tr:nth-child(even) td.highlight
+	{
 	background-color: e2e2c5;
-}<%// e0e0e0 is another option for the color%>
+}
+<%//
+e0e0e0
+ 
+is
+ 
+another
+ 
+option
+ 
+for
+ 
+the
+ 
+color
+%
+>
 </style>
 
 </head>
@@ -87,11 +110,12 @@ table.gray tr:nth-child(odd) td.highlight, table.gray tr:nth-child(even) td.high
 				<th>Section</th>
 				<th>University ID</th>
 				<!-- all events. TODO will need to link this -->
-				<c:forEach items="${events}" var="event">
-						<th class="sorttable_nosort" title="<fmt:formatDate value="${event.date}" pattern="EEEE"/>"><a target="_blank" href="/director/viewevent?id=${event.id }&newindow=true"><c:out value="${event.type}" /><br />
-						<fmt:formatDate value="${event.date}" pattern="M/dd/yyyy" /></a></th>
-				</c:forEach>
+<%-- 				<c:forEach items="${events}" var="event"> --%>
+<%-- 						<th class="sorttable_nosort" title="<fmt:formatDate value="${event.date}" pattern="EEEE"/>"><a target="_blank" href="/director/viewevent?id=${event.id }&newindow=true"><c:out value="${event.type}" /><br /> --%>
+<%-- 						<fmt:formatDate value="${event.date}" pattern="M/dd/yyyy" /></a></th> --%>
+<%-- 				</c:forEach> --%>
 				<th>Grade</th>
+				<th>Absences</th>
 				<!-- headers are now done -->
 			</tr>
 		</thead>
@@ -99,14 +123,15 @@ table.gray tr:nth-child(odd) td.highlight, table.gray tr:nth-child(even) td.high
 			<c:forEach items="${students }" var="student">
 				<tr>
 					<td><a target="_blank" href="/director/student?id=${student.id }&newindow=true">${student.lastName }</a></td>
-					<td><a target="_blank" href="/director/student?id=${student.id }&newindow=true">${student.firstName }</td>
+					<td><a target="_blank" href="/director/student?id=${student.id }&newindow=true">${student.firstName }</a></td>
 					<td>${student.section.displayName }</td>
 					<td>${student.universityID }</td>
-					<c:forEach items="${events}" var="event">
+					<td>${student.grade.displayName }</td>
+<%-- 					<c:forEach items="${events}" var="event"> --%>
 					
 						<c:set var="cellcontents" value="" />
 							
-						<c:forEach items="${absenceMap[student][event]}" var="absence">
+						<c:forEach items="${absenceList[student]}" var="absence">
 							<c:choose>
 								<c:when test="${absence.type.tardy && !absence.status.approved}">
 									<c:set var="cellcontents">
@@ -158,16 +183,15 @@ table.gray tr:nth-child(odd) td.highlight, table.gray tr:nth-child(even) td.high
 					// TODO make them clickable and hoverable only if there was nothing for that day%>
 					<%//class="${(empty absenceMap[student][event])?'show-add-onhover':''}" onClick="${cellonclick}" %>
 						<td class="${(event.type.performance)?'highlight':''}">
-							<c:if test="${empty absenceMap[student][event] }">
+							<c:if test="${empty absenceList[student][event] }">
 								<span class="show-add-onhover">
 									<a target="_blank" href="/director/viewabsence?absenceid=new&eventid=${event.id}&studentid=${student.id}&newindow=true" >Add Absence</a>
 									<br/>
 								</span>
 							</c:if>		
-							${cellcontents}
+							${cellcontents}&nbsp;
 						</td>
-					</c:forEach>
-					<td>${student.grade.displayName }</td>
+<%-- 					</c:forEach> --%>
 				</tr>
 			</c:forEach>
 		</tbody>
