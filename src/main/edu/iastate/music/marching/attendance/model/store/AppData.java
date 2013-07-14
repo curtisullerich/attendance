@@ -53,14 +53,6 @@ public class AppData implements Serializable {
 		this.title = title;
 	}
 
-	public List<String> getTimeWorkedEmails() {
-		return this.timeWorkedEmails;
-	}
-
-	public void setTimeWorkedEmails(List<String> timeWorkedEmails) {
-		this.timeWorkedEmails = timeWorkedEmails;
-	}
-
 	public Date getFormSubmissionCutoff() {
 		return this.formCutoff;
 	}

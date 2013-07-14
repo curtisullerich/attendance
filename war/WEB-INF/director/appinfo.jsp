@@ -54,7 +54,7 @@
 				Please enter the <b>last</b> acceptable day/time for submitting Performance Absence Requests.
 			</dd>
 			
-			<dt><label for="Timezone">Timezone</label></dt>
+ 			<dt><label for="Timezone">Timezone</label></dt>
 			<dd>
 				<select name="Timezone">
 					<c:forEach items="${timezones}" var="zone">
@@ -63,39 +63,18 @@
 					</c:forEach>
 				</select>
 			</dd>			
-			
-			
-			<dt><label for="TimeWorkedEmails">Valid Time Worked Emails for Form D</label></dt>
-			<dd>
-				<select id="TimeWorkedEmails" name="TimeWorkedEmails" size="10">
-<%-- 					<c:forEach items="${daysOfWeek}" var="day"> --%>
-<%-- 						<option ${DayOfWeek eq day ? 'selected' : ''}>${day}</option> --%>
-<%-- 					</c:forEach> --%>
-					<c:forEach items="${emails}" var="email">
-						<option ${email }>${email}</option>
-					</c:forEach>
-				</select>
-				<input type="button" value="Remove Selected" name="Back" onclick="deleteTimeWorkedEmails()"/>
-				<br/>
-				<input type="email" id="TimeWorkedEmail" />
-				<input type="button" value="Add Email" onclick="addTimeWorkedEmail()"/>
-				<br/>
-			</dd>
-			
+
 			<dt><label for="StatusMessage">Status Message</label></dt>
 			<dd>
 				<textarea rows="12" cols="60" name="StatusMessage">${StatusMessage }</textarea>
 			</dd>
-			
-
 		</dl>
-				<input type="submit" value="Save Info" name="SaveInfo" onclick="preprocessInfo();"/>
-				<input id='Year' size='5' type='hidden' name='Year' value='<c:out value="${year}" />' />
-				<input type="hidden" id="hiddenEmails" name="hiddenEmails" value="">
-				<input type="hidden" id="hashedPass" name="hashedPass" value="">
-				<input type="hidden" id="hashedPassConf" name = "hashedPassConf" value ="">
+		<input type="submit" value="Save Info" name="SaveInfo" onclick="preprocessInfo();"/>
+		<input id='Year' size='5' type='hidden' name='Year' value='<c:out value="${year}" />' />
+		<input type="hidden" id="hiddenEmails" name="hiddenEmails" value="">
+		<input type="hidden" id="hashedPass" name="hashedPass" value="">
+		<input type="hidden" id="hashedPassConf" name = "hashedPassConf" value ="">
 		</form>		
 		<jsp:include page="/WEB-INF/template/footer.jsp" />
 	</body>
-
 </html>

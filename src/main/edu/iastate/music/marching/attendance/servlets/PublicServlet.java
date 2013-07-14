@@ -1,8 +1,6 @@
 package edu.iastate.music.marching.attendance.servlets;
 
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -10,8 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import edu.iastate.music.marching.attendance.beans.PageTemplateBean;
 import edu.iastate.music.marching.attendance.model.interact.DataTrain;
-import edu.iastate.music.marching.attendance.model.interact.FormManager;
-import edu.iastate.music.marching.attendance.model.store.Form;
 import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.util.PageBuilder;
 
@@ -23,7 +19,7 @@ public class PublicServlet extends AbstractBaseServlet {
 	private static final long serialVersionUID = 9184644423443871525L;
 
 	private enum Page {
-		verify, bugreport, faq;
+		bugreport, faq;
 	}
 
 	private static final String SERVLET_PATH = "public";
@@ -39,9 +35,6 @@ public class PublicServlet extends AbstractBaseServlet {
 		}
 
 		switch (page) {
-		case verify:
-			verifyFormD(req, resp);
-			break;
 		case faq:
 			faq(req, resp);
 			break;
@@ -84,8 +77,7 @@ public class PublicServlet extends AbstractBaseServlet {
 		String severity = req.getParameter("Severity");
 		String description = req.getParameter("Description");
 		String redir = req.getParameter("Redirect");
-		User user = datatrain.getAuthManager().getCurrentUser(
-				req.getSession());
+		User user = datatrain.getAuthManager().getCurrentUser(req.getSession());
 		String userAgent = req.getHeader("User-Agent");
 		String error_messages = req.getParameter("error_messages");
 		String field_values = req.getParameter("FieldValues");
@@ -120,49 +112,5 @@ public class PublicServlet extends AbstractBaseServlet {
 
 		resp.sendRedirect(redir + append
 				+ "success_message=Bug+report+submitted+successfully.+Thanks!");
-	}
-
-	private void verifyFormD(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		DataTrain train = DataTrain.getAndStartTrain();
-		FormManager fc = new FormManager(train);
-		List<String> errors = new LinkedList<String>();
-		String success_message = null;
-		boolean isValid = true;
-		String status = req.getParameter("s");
-		long hashedId = 0;
-		try {
-			hashedId = Long.parseLong(req.getParameter("i"));
-		} catch (NumberFormatException e) {
-			errors.add("Unable to identify form.");
-			isValid = false;
-		}
-		if (isValid) {
-			Form f = fc.getByHashedId(hashedId);
-			if (f != null) { // doesn't need to be pending
-				if (status.equals("a")) {
-					f.setEmailStatus(Form.Status.Approved);
-					success_message = "Successfully approved the form.";
-				} else {
-					f.setEmailStatus(Form.Status.Denied);
-					success_message = "Successfully denied the form.";
-				}
-				fc.update(f);
-			} else {
-				if (f == null)
-					errors.add("Unable to identify form.");
-				else {
-					errors.add("Once a form is approved or denied it cannot be changed.");
-					errors.add("If you made a mistake you should contact the directors.");
-				}
-
-			}
-		}
-
-		PageBuilder page = new PageBuilder(Page.verify, SERVLET_PATH);
-		page.setPageTitle("Form D Validation");
-		page.setAttribute("error_messages", errors);
-		page.setAttribute("success_message", success_message);
-		page.passOffToJsp(req, resp);
 	}
 }

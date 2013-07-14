@@ -102,12 +102,6 @@
 					<dd>${form.absenceType}</dd>
 				</c:if>
 				<c:if test="${form.type.displayName eq 'D'}">
-					<dt><label>Email To</label></dt>
-					<dd>${form.emailTo}</dd>
-					
-					<dt><label>Approved by this person?</label></dt>
-					<dd>${form.emailStatus}</dd>
-					
 					<dt><label>Total minutes worked</label></dt>
 					<dd>${form.minutesWorked}</dd>
 					

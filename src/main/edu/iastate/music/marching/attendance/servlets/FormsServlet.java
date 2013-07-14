@@ -596,7 +596,6 @@ public class FormsServlet extends AbstractBaseServlet {
 
 	private void handleFormD(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		String email = null;
 		int minutes = 0;
 		Date date = null;
 		String details = null;
@@ -613,7 +612,6 @@ public class FormsServlet extends AbstractBaseServlet {
 			validForm = false;
 		} else {
 			// Extract all basic parameters
-			email = req.getParameter("Email");
 			details = req.getParameter("Details");
 
 			try {
@@ -642,7 +640,7 @@ public class FormsServlet extends AbstractBaseServlet {
 			Form form = null;
 			try {
 				// hash the id for use in the accepting and declining forms
-				form = train.getFormsManager().createFormD(student, email,
+				form = train.getFormsManager().createFormD(student,
 						date, minutes, details);
 			} catch (IllegalArgumentException e) {
 				validForm = false;
@@ -667,10 +665,6 @@ public class FormsServlet extends AbstractBaseServlet {
 
 			page.setAttribute("error_messages", errors);
 
-			page.setAttribute("verifiers", train.getAppDataManager().get()
-					.getTimeWorkedEmails());
-
-			page.setAttribute("Email", email);
 			page.setAttribute("AmountWorked", minutes);
 			setStartDate(date, page, train.getAppDataManager().get()
 					.getTimeZone());

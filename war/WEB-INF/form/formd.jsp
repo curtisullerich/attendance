@@ -22,18 +22,6 @@
 		
 			<dl class="block-layout">
 	
-				<dt><label class="required">Who needs to verify?</label></dt>
-				<label>If the person for whom your worked off time is not listed, put his or her contact<br/>
-				 information in the details box below and select the director here.</label>
-				<dd>
-					<select name="Email" autofocus>
-						<option value="">(Select)</option>
-						<c:forEach items="${verifiers}" var="verifier">
-							<option><c:out value="${verifier}" /></option>
-						</c:forEach>
-					</select>
-				</dd>
-				
 				<dt><label for="AmountWorked" class="required">Total amount of work</label></dt>
 				<label>If you worked on more than one day, just select one of them here and make note of it below.</label>
 				<dd>

@@ -87,8 +87,6 @@ public class Form {
 	@Id
 	private long id;
 
-	private long hashedId;
-
 	@Index
 	private User student;
 
@@ -112,8 +110,6 @@ public class Form {
 	
 	private Absence.Type absenceType;
 	
-	private Status emailStatus;
-
 	@com.google.code.twig.annotation.Type(Text.class)
 	private String details;
 
@@ -126,14 +122,6 @@ public class Form {
 	private String section;
 	private String building;
 	private int day;
-
-	public void setHashedId(long id) {
-		hashedId = id;
-	}
-
-	public long getHashedId() {
-		return hashedId;
-	}
 
 	public void setDay(int day) {
 		this.day = day;
@@ -175,8 +163,6 @@ public class Form {
 		return building;
 	}
 
-	// String to be used by Form D
-	private String emailTo;
 	private int minutesWorked;
 	private int minutesToOrFrom;
 
@@ -236,14 +222,6 @@ public class Form {
 		this.course = course;
 	}
 
-	public String getEmailTo() {
-		return emailTo;
-	}
-
-	public void setEmailTo(String emailTo) {
-		this.emailTo = emailTo;
-	}
-
 	public int getMinutesWorked() {
 		return minutesWorked;
 	}
@@ -280,27 +258,8 @@ public class Form {
 		this.section = section;
 	}
 
-	public Status getEmailStatus() {
-		return emailStatus;
-	}
-
-	public void setEmailStatus(Status emailStatus) {
-		this.emailStatus = emailStatus;
-	}
-
-	public long generateHashedId() {
-		long ret = 23;
-		ret = ret * 31 + startTime.hashCode();
-		ret = ret * 31 + endTime.hashCode();
-		ret = ret * 31 + details.hashCode();
-		ret = ret * 31 + emailTo.hashCode();
-		ret = ret * 31 + minutesWorked;
-		return ret;
-	}
-
 	public void setMinutesToOrFrom(int minutesToOrFrom) {
 		this.minutesToOrFrom = minutesToOrFrom;
-
 	}
 
 	public int getMinutesToOrFrom() {
@@ -314,5 +273,4 @@ public class Form {
 	public void setAbsenceType(Absence.Type absenceType) {
 		this.absenceType = absenceType;
 	}
-
 }

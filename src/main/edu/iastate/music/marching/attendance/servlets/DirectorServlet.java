@@ -646,30 +646,9 @@ public class DirectorServlet extends AbstractBaseServlet {
 		String timezone = null;
 		String title = null;
 		String statusMessage = null;
-		List<String> emailList = null;
 		if (!ValidationUtil.isPost(req)) {
 			validForm = false;
 		} else {
-			// All of this emailList checking should be abstracted out probably
-
-			// Check and update the emails. Need to use the constructor of
-			// LinkedList otherwise
-			// Its runtime type is AbstractSequentialList...and basically no
-			// methods are supported
-			emailList = new LinkedList<String>(Arrays.asList(req.getParameter(
-					"hiddenEmails").split("delimit")));
-			// If they remove all the emails it adds an empty string to the
-			// appdata so we need to remove them
-			for (int i = 0; i < emailList.size(); ++i) {
-				if (emailList.get(i).equals(""))
-					emailList.remove(i--);
-			}
-			if (emailList == null || emailList.size() <= 0) {
-				validForm = false;
-				errors.add("Invalid Input: There must be at least one valid email. Emails will remain unchanged.");
-			} else {
-				data.setTimeWorkedEmails(emailList);
-			}
 			timezone = req.getParameter("Timezone");
 
 			if (timezone == null || timezone.equals("")) {
@@ -747,8 +726,6 @@ public class DirectorServlet extends AbstractBaseServlet {
 		page.setAttribute("appinfo", data);
 
 		page.setAttribute("timezone", data.getTimeZone());
-
-		page.setAttribute("emails", data.getTimeWorkedEmails());
 
 		page.setAttribute("Month", cutoffDate.get(Calendar.MONTH) + 1);
 

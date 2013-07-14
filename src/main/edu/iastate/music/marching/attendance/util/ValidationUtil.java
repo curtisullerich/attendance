@@ -112,10 +112,6 @@ public class ValidationUtil {
 		return "POST".equals(req.getMethod());
 	}
 
-	public static boolean isValidFormDEmail(String email, AppData appData) {
-		return appData.getTimeWorkedEmails().contains(email);
-	}
-
 	/**
 	 * Validation check for form C submission date. Verifies that it is no more
 	 * than three weekdays since the absence.

@@ -26,20 +26,17 @@ public class FormDTest extends AbstractTest {
 	// absence SHOULD be approved. We instead increment the number of available
 	// minutes in the student object.
 
-	// just need to test that the form is emailapproved and approved.
+	// just need to test that the form is approved.
 	// if it's approved twice, the minutes should not increment further
 
 	/**
-	 * Approve and emailapprove, test that the minutes increment.
+	 * Approve, test that the minutes increment.
 	 */
 	@Test
 	public void testApprove() {
 		DataTrain train = getDataTrain();
 		AppDataManager adc = train.getAppDataManager();
 		AppData ad = adc.get();
-		List<String> emails = new ArrayList<String>();
-		emails.add("user@domain.com");
-		ad.setTimeWorkedEmails(emails);
 		adc.save(ad);
 
 		UserManager uc = train.getUsersManager();
@@ -55,144 +52,10 @@ public class FormDTest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormD(student, "user@domain.com", date.getTime(),
-				10, "details");
+		Form form = fc.createFormD(student, date.getTime(), 10, "details");
 
 		assertEquals(0, student.getMinutesAvailable());
 		form.setStatus(Form.Status.Approved);
-		fc.update(form);
-		assertEquals(0, student.getMinutesAvailable());
-
-		form.setEmailStatus(Form.Status.Approved);
-		fc.update(form);
-		assertEquals(10, student.getMinutesAvailable());
-	}
-
-	/**
-	 * test that exception is thrown when an email is used that doesn't exist
-	 */
-	@Test
-	public void testWrongEmail() {
-		DataTrain train = getDataTrain();
-		AppDataManager adc = train.getAppDataManager();
-		AppData ad = adc.get();
-		List<String> emails = new ArrayList<String>();
-		emails.add("user@domain.com");
-		ad.setTimeWorkedEmails(emails);
-		adc.save(ad);
-
-		UserManager uc = train.getUsersManager();
-		FormManager fc = train.getFormsManager();
-
-		User student = Users.createStudent(uc, "student1", "123456789", "John",
-				"Cox", 2, "major", User.Section.AltoSax);
-
-		Calendar date = Calendar.getInstance();
-		date.set(2012, 7, 7, 0, 0, 0);
-		Calendar start = Calendar.getInstance();
-		start.set(2012, 7, 7, 16, 30, 0);
-		Calendar end = Calendar.getInstance();
-		end.set(2012, 7, 7, 17, 50, 0);
-
-		boolean caught = false;
-		try {
-			Form form = fc.createFormD(student, "user2@domain.com",
-					date.getTime(), 10, "details");
-		} catch (ValidationExceptions v) {
-			caught = true;
-		}
-		assertEquals(true, caught);
-	}
-
-	/**
-	 * Test that it fails to increment twice when you try to emailapprove a form
-	 * twice
-	 */
-	@Test
-	public void testEmailApproveTwice() {
-		DataTrain train = getDataTrain();
-		AppDataManager adc = train.getAppDataManager();
-		AppData ad = adc.get();
-		List<String> emails = new ArrayList<String>();
-		emails.add("user@domain.com");
-		ad.setTimeWorkedEmails(emails);
-		adc.save(ad);
-
-		UserManager uc = train.getUsersManager();
-		FormManager fc = train.getFormsManager();
-
-		User student = Users.createStudent(uc, "student1", "123456789", "John",
-				"Cox", 2, "major", User.Section.AltoSax);
-
-		Calendar date = Calendar.getInstance();
-		date.set(2012, 7, 7, 0, 0, 0);
-		Calendar start = Calendar.getInstance();
-		start.set(2012, 7, 7, 16, 30, 0);
-		Calendar end = Calendar.getInstance();
-		end.set(2012, 7, 7, 17, 50, 0);
-
-		Form form = fc.createFormD(student, "user@domain.com", date.getTime(),
-				10, "details");
-
-		assertEquals(0, student.getMinutesAvailable());
-		form.setStatus(Form.Status.Approved);
-		fc.update(form);
-		assertEquals(0, student.getMinutesAvailable());
-
-		form.setEmailStatus(Form.Status.Approved);
-		fc.update(form);
-		assertEquals(10, student.getMinutesAvailable());
-
-		form.setEmailStatus(Form.Status.Approved);
-		fc.update(form);
-		assertEquals(10, student.getMinutesAvailable());
-
-	}
-
-	/**
-	 * Test that it fails to increment twice when you try to emaildeny after
-	 * emailapproving
-	 */
-	@Test
-	public void testEmailApproveDeny() {
-		DataTrain train = getDataTrain();
-		AppDataManager adc = train.getAppDataManager();
-		AppData ad = adc.get();
-		List<String> emails = new ArrayList<String>();
-		emails.add("user@domain.com");
-		ad.setTimeWorkedEmails(emails);
-		adc.save(ad);
-
-		UserManager uc = train.getUsersManager();
-		FormManager fc = train.getFormsManager();
-
-		User student = Users.createStudent(uc, "student1", "123456789", "John",
-				"Cox", 2, "major", User.Section.AltoSax);
-
-		Calendar date = Calendar.getInstance();
-		date.set(2012, 7, 7, 0, 0, 0);
-		Calendar start = Calendar.getInstance();
-		start.set(2012, 7, 7, 16, 30, 0);
-		Calendar end = Calendar.getInstance();
-		end.set(2012, 7, 7, 17, 50, 0);
-
-		Form form = fc.createFormD(student, "user@domain.com", date.getTime(),
-				10, "details");
-
-		assertEquals(0, student.getMinutesAvailable());
-		form.setStatus(Form.Status.Approved);
-		fc.update(form);
-		assertEquals(0, student.getMinutesAvailable());
-
-		form.setEmailStatus(Form.Status.Approved);
-		fc.update(form);
-		assertEquals(10, student.getMinutesAvailable());
-
-		form.setEmailStatus(Form.Status.Denied);
-		fc.update(form);
-		assertEquals(10, student.getMinutesAvailable());
-
-		form.setEmailStatus(Form.Status.Approved);
 		fc.update(form);
 		assertEquals(10, student.getMinutesAvailable());
 	}
@@ -206,9 +69,6 @@ public class FormDTest extends AbstractTest {
 		DataTrain train = getDataTrain();
 		AppDataManager adc = train.getAppDataManager();
 		AppData ad = adc.get();
-		List<String> emails = new ArrayList<String>();
-		emails.add("user@domain.com");
-		ad.setTimeWorkedEmails(emails);
 		adc.save(ad);
 
 		UserManager uc = train.getUsersManager();
@@ -224,14 +84,9 @@ public class FormDTest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormD(student, "user@domain.com", date.getTime(),
-				10, "details");
+		Form form = fc.createFormD(student, date.getTime(), 10, "details");
 
 		assertEquals(0, student.getMinutesAvailable());
-		form.setEmailStatus(Form.Status.Approved);
-		fc.update(form);
-		assertEquals(0, student.getMinutesAvailable());
-
 		form.setStatus(Form.Status.Approved);
 		fc.update(form);
 		assertEquals(10, student.getMinutesAvailable());
@@ -251,9 +106,6 @@ public class FormDTest extends AbstractTest {
 		DataTrain train = getDataTrain();
 		AppDataManager adc = train.getAppDataManager();
 		AppData ad = adc.get();
-		List<String> emails = new ArrayList<String>();
-		emails.add("user@domain.com");
-		ad.setTimeWorkedEmails(emails);
 		adc.save(ad);
 
 		UserManager uc = train.getUsersManager();
@@ -269,14 +121,9 @@ public class FormDTest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormD(student, "user@domain.com", date.getTime(),
-				10, "details");
+		Form form = fc.createFormD(student, date.getTime(), 10, "details");
 
 		assertEquals(0, student.getMinutesAvailable());
-		form.setEmailStatus(Form.Status.Approved);
-		fc.update(form);
-		assertEquals(0, student.getMinutesAvailable());
-
 		form.setStatus(Form.Status.Approved);
 		fc.update(form);
 		assertEquals(10, student.getMinutesAvailable());
