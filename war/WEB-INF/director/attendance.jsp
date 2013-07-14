@@ -8,25 +8,25 @@
 <jsp:include page="/WEB-INF/template/head.jsp" />
 
 <style type="text/css">
-#container
-{
-	width:auto;
-	display:inline-block;
-	margin-left: 50px;
-	margin-right: 50px;
-}
-#container-inner {
-	width:auto;
-	overflow:visible;
-}
-#container div.sidebar {
-	position: fixed;
-	background-color: white;
-}
-#content {
-	width:auto;
-	margin-left:210px;
-}
+/* #container */
+/* { */
+/* 	width:auto; */
+/* 	display:inline-block; */
+/* 	margin-left: 50px; */
+/* 	margin-right: 50px; */
+/* } */
+/* #container-inner { */
+/* 	width:auto; */
+/* 	overflow:visible; */
+/* } */
+/* #container div.sidebar { */
+/* 	position: fixed; */
+/* 	background-color: white; */
+/* } */
+/* #content { */
+/* 	width:auto; */
+/* 	margin-left:210px; */
+/* } */
 
 td .show-absence-onhover {
 	color:#333;
@@ -159,7 +159,7 @@ table.gray tr:nth-child(odd) td.highlight, table.gray tr:nth-child(even) td.high
 						//</c:set>
 					// TODO make them clickable and hoverable only if there was nothing for that day%>
 					<%//class="${(empty absenceMap[student][event])?'show-add-onhover':''}" onClick="${cellonclick}" %>
-<%-- 						<td class="${(event.type.performance)?'highlight':''}"> --%>
+						<td class="${(event.type.performance)?'highlight':''}">
 							<c:if test="${empty absenceList[student][event] }">
 								<span class="show-add-onhover">
 									<a target="_blank" href="/director/viewabsence?absenceid=new&eventid=${event.id}&studentid=${student.id}&newindow=true" >Add Absence</a>
