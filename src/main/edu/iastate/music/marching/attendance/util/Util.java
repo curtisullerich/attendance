@@ -6,6 +6,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
+import edu.iastate.music.marching.attendance.model.interact.DataTrain;
+import edu.iastate.music.marching.attendance.model.store.AppData;
+
 public class Util {
 
 	public static final SimpleDateFormat sdf = new SimpleDateFormat(
@@ -97,13 +100,18 @@ public class Util {
 		return calendar.getTime();
 	}
 
+	public static String formatDateTime(Date datetime, TimeZone timeZone) {
+		AppData data = DataTrain.getAndStartTrain().getAppDataManager().get();
+		sdf.setTimeZone(data.getTimeZone());
+		return sdf.format(data.getFormSubmissionCutoff());
+	}
+
 	public static Date parseDateTime(String datetime, TimeZone timeZone) {
 
-		// TODO does this handle time zones correctly?
 		Calendar calendar = Calendar.getInstance(timeZone);
 		Date d;
+		sdf.setTimeZone(timeZone);
 
-		// Do validate first and store any problems to this exception
 		ValidationExceptions exp = new ValidationExceptions();
 		try {
 			d = sdf.parse(datetime);

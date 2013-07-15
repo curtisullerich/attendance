@@ -664,8 +664,8 @@ public class DirectorServlet extends AbstractBaseServlet {
 			Date testDate = null;
 			try {
 				String datetime = req.getParameter("datetime");
-				testDate = Util.parseDateTime(datetime,
-						train.getAppDataManager().get().getTimeZone());
+				testDate = Util.parseDateTime(datetime, train
+						.getAppDataManager().get().getTimeZone());
 				data.setFormSubmissionCutoff(testDate);
 			} catch (ValidationExceptions e) {
 				validForm = false;
@@ -723,8 +723,10 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		page.setAttribute("timezone", data.getTimeZone());
 
-		page.setAttribute("datetime", Util.sdf.format(data.getFormSubmissionCutoff()));
-		
+		Util.sdf.setTimeZone(data.getTimeZone());
+		page.setAttribute("datetime",
+				Util.formatDateTime(cutoffDate.getTime(), data.getTimeZone()));
+
 		page.setAttribute("timezones", data.getTimezoneOptions());
 
 		page.setAttribute("StatusMessage", data.getStatusMessage());
