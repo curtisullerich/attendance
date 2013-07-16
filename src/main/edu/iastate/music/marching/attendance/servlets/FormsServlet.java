@@ -282,7 +282,7 @@ public class FormsServlet extends AbstractBaseServlet {
 
 			String url = getIndexURL() + "?success_message="
 					+ URLEncoder.encode(success, "UTF-8");
-			 url = resp.encodeRedirectURL(url);
+			url = resp.encodeRedirectURL(url);
 
 			resp.sendRedirect(url);
 		} else {
@@ -374,38 +374,29 @@ public class FormsServlet extends AbstractBaseServlet {
 			}
 
 			try {
-				startDate = Util.parseDate(req.getParameter("StartMonth"),
-						req.getParameter("StartDay"),
-						req.getParameter("StartYear"), "0", "AM", "0", train
-								.getAppDataManager().get().getTimeZone());
+				startDate = Util.parseNewDate(req.getParameter("startdate"),
+						train.getAppDataManager().get().getTimeZone());
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add("The start date is invalid.");
 			}
 			try {
-				endDate = Util.parseDate(req.getParameter("EndMonth"),
-						req.getParameter("EndDay"),
-						req.getParameter("EndYear"), "0", "AM", "0", train
-								.getAppDataManager().get().getTimeZone());
+				endDate = Util.parseNewDate(req.getParameter("enddate"), train
+						.getAppDataManager().get().getTimeZone());
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add("The end date is invalid.");
 			}
 			try {
-				fromTime = Util.parseDate("1", "1", "1000",
-						req.getParameter("FromHour"),
-						req.getParameter("FromAMPM"),
-						req.getParameter("FromMinute"), train
-								.getAppDataManager().get().getTimeZone());
+				fromTime = Util.parseTime(req.getParameter("starttime"), train
+						.getAppDataManager().get().getTimeZone());
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add("The start time is invalid.");
 			}
 			try {
-				toTime = Util.parseDate("1", "1", "1000",
-						req.getParameter("ToHour"), req.getParameter("ToAMPM"),
-						req.getParameter("ToMinute"), train
-								.getAppDataManager().get().getTimeZone());
+				toTime = Util.parseTime(req.getParameter("endtime"), train
+						.getAppDataManager().get().getTimeZone());
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add("The end time is invalid.");
@@ -420,10 +411,10 @@ public class FormsServlet extends AbstractBaseServlet {
 
 			Form form = null;
 			try {
-				form = train.getFormsManager().createFormB(student,
-						department, course, section, building, startDate,
-						endDate, day, fromTime, toTime, comments,
-						minutesToOrFrom, absenceType);
+				form = train.getFormsManager().createFormB(student, department,
+						course, section, building, startDate, endDate, day,
+						fromTime, toTime, comments, minutesToOrFrom,
+						absenceType);
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add(e.getMessage());
@@ -441,6 +432,7 @@ public class FormsServlet extends AbstractBaseServlet {
 			resp.sendRedirect(url);
 		} else {
 			// Show form
+			TimeZone timeZone = train.getAppDataManager().get().getTimeZone();
 			PageBuilder page = new PageBuilder(Page.formb, SERVLET_PATH);
 
 			page.setPageTitle("Form B");
@@ -450,10 +442,8 @@ public class FormsServlet extends AbstractBaseServlet {
 			page.setAttribute("Course", course);
 			page.setAttribute("Section", section);
 			page.setAttribute("Building", building);
-			setStartDate(startDate, page, train.getAppDataManager().get()
-					.getTimeZone());
-			setEndDate(endDate, page, train.getAppDataManager().get()
-					.getTimeZone());
+			page.setAttribute("startdate", Util.formatDate(startDate, timeZone));
+			page.setAttribute("enddate", Util.formatDate(endDate, timeZone));
 			page.setAttribute("Type", Form.Type.B);
 			page.setAttribute("Comments", comments);
 			page.setAttribute("MinutesToOrFrom", minutesToOrFrom);
@@ -461,23 +451,12 @@ public class FormsServlet extends AbstractBaseServlet {
 			page.setAttribute("types", Absence.Type.values());
 
 			if (fromTime != null) {
-				Calendar from = Calendar.getInstance(train
-						.getAppDataManager().get().getTimeZone());
-				from.setTime(fromTime);
-				page.setAttribute("FromHour", from.get(Calendar.HOUR));
-				page.setAttribute("FromMinute", from.get(Calendar.MINUTE));
-				page.setAttribute("FromAMPM",
-						from.get(Calendar.AM_PM) == 0 ? "AM" : "PM");
+				page.setAttribute("starttime",
+						Util.formatTime(fromTime, timeZone));
 			}
 
 			if (toTime != null) {
-				Calendar to = Calendar.getInstance(train.getAppDataManager()
-						.get().getTimeZone());
-				to.setTime(toTime);
-				page.setAttribute("ToHour", to.get(Calendar.HOUR));
-				page.setAttribute("ToMinute", to.get(Calendar.MINUTE));
-				page.setAttribute("ToAMPM", to.get(Calendar.AM_PM) == 0 ? "AM"
-						: "PM");
+				page.setAttribute("endtime", Util.formatTime(toTime, timeZone));
 			}
 
 			page.passOffToJsp(req, resp);
@@ -525,15 +504,11 @@ public class FormsServlet extends AbstractBaseServlet {
 									.getTimeZone());
 
 				} else {
-					date = Util
-							.parseDate(req.getParameter("Month"),
-									req.getParameter("Day"),
-									req.getParameter("Year"),
-									req.getParameter("Hour"),
-									req.getParameter("AMPM"),
-									req.getParameter("Minute"), train
-											.getAppDataManager().get()
-											.getTimeZone());
+					date = Util.parseDate(req.getParameter("Month"),
+							req.getParameter("Day"), req.getParameter("Year"),
+							req.getParameter("Hour"), req.getParameter("AMPM"),
+							req.getParameter("Minute"), train
+									.getAppDataManager().get().getTimeZone());
 				}
 			} catch (IllegalArgumentException e) {
 				validForm = false;
@@ -622,17 +597,14 @@ public class FormsServlet extends AbstractBaseServlet {
 			}
 
 			try {
-				date = Util.parseDate(req.getParameter("StartMonth"),
-						req.getParameter("StartDay"),
-						req.getParameter("StartYear"), "0", "AM", "0", train
-								.getAppDataManager().get().getTimeZone());
+				date = Util.parseNewDate(req.getParameter("startdate"), train
+						.getAppDataManager().get().getTimeZone());
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add("Invalid Input: The input date is invalid.");
 			}
 		}
-		User student = train.getAuthManager().getCurrentUser(
-				req.getSession());
+		User student = train.getAuthManager().getCurrentUser(req.getSession());
 
 		if (validForm) {
 			// Store our new form to the data store
@@ -640,8 +612,8 @@ public class FormsServlet extends AbstractBaseServlet {
 			Form form = null;
 			try {
 				// hash the id for use in the accepting and declining forms
-				form = train.getFormsManager().createFormD(student,
-						date, minutes, details);
+				form = train.getFormsManager().createFormD(student, date,
+						minutes, details);
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add(e.getMessage());
@@ -666,8 +638,10 @@ public class FormsServlet extends AbstractBaseServlet {
 			page.setAttribute("error_messages", errors);
 
 			page.setAttribute("AmountWorked", minutes);
-			setStartDate(date, page, train.getAppDataManager().get()
-					.getTimeZone());
+			page.setAttribute(
+					"startdate",
+					Util.formatDate(date, train.getAppDataManager().get()
+							.getTimeZone()));
 			page.setAttribute("Details", details);
 
 			page.passOffToJsp(req, resp);

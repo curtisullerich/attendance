@@ -10,6 +10,8 @@
 <html>
 	<head>
 		<jsp:include page="/WEB-INF/template/head.jsp" />
+        <link rel="stylesheet" media="all" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+        <link rel="stylesheet" media="all" type="text/css" href="/css/jquery-ui-timepicker-addon.css" />
 	</head>
 
 	<body>
@@ -52,27 +54,19 @@
 					<input type="text" name="Building" value="<c:out value="${Building}"/>" />
 				</dd>
 			
-				<dt><label for="StartMonth" class="required">Starting Date:</label></dt>
-				<dd>
-					<input id='startMonth' size='5' type='number' name='StartMonth' min='01' max='12' placeholder='MM' value='<c:out value="${empty StartMonth ? '' : StartMonth+1}" />' />
-					/
-					<input id='startDay' size='5' type='number' name='StartDay' min='01' max='31' step='1' placeholder='DD' value='<c:out value="${StartDay}" />' />
-					/
-					<input id='startYear' size='5' type='number' name='StartYear' min='${year}' max='${year+1}' step='1' placeholder='YYYY' value='<c:out value="${StartYear}" />' />
-					<br/>
-					Please enter the <b>first</b> day that the class meets.
-				</dd>
+				<dt><label for="startdate" class="required">Starting Date:</label></dt>
+                <dd>
+                  <input type="text" name="startdate" id="startdate" value='<c:out value="${startdate}" />' />
+                  <br/>
+                  Please enter the <b>first</b> day that the class meets.
+                </dd>
 				
-				<dt><label for="EndMonth" class="required">Ending Date:</label></dt>
-				<dd>
-					<input size='5' type='number' name='EndMonth' min='01' max='12' placeholder='MM' value='<c:out value="${empty EndMonth ? '' : EndMonth+1}" />' />
-					/
-					<input size='5' type='number' name='EndDay' min='01' max='31' step='1' placeholder='DD' value='<c:out value="${EndDay}" />' />
-					/
-					<input size='5' type='number' name='EndYear' min='${year}' max='${year+1}' step='1' placeholder='YYYY' value='<c:out value="${EndYear}" />' />
-					<br/>
-					Please enter the <b>last</b> day that the class meets.
-				</dd>
+				<dt><label for="enddate" class="required">Ending Date:</label></dt>
+                <dd>
+                  <input type="text" name="enddate" id="enddate" value='<c:out value="${enddate}" />' />
+                  <br/>
+                  Please enter the <b>end</b> day that the class meets.
+                </dd>
 				
 				<dt><label class="required">On:</label></dt>
 				<dd>
@@ -87,29 +81,15 @@
 					Please enter the day and time period that the class meets each week.
 				</dd>
 				
-				<dt><label class="required">From:</label></dt>
-				<dd>
-					<input size='5' type='number' name='FromHour' min='01' max='12' placeholder='HH' value='<c:out value="${FromHour}" />' />
-					:
-					<input size='5' type='number' name='FromMinute' min='00' max='59' step='1' placeholder='MM' value='<c:out value="${FromMinute}" />' />
-					
-					<select name="FromAMPM">
-						<option ${FromAMPM eq 'AM' ? 'selected' : ''}>AM</option>
-						<option ${FromAMPM eq 'AM' ? '' : 'selected'}>PM</option>
-					</select>
-				</dd>
-				
-				<dt><label class="required">To:</label></dt>
-				<dd>
-					<input size='5' type='number' name='ToHour' min='01' max='12' placeholder='HH' value='<c:out value="${ToHour}" />' />
-					:
-					<input size='5' type='number' name='ToMinute' min='00' max='59' step='1' placeholder='MM' value='<c:out value="${ToMinute}" />' />
-					
-					<select name="ToAMPM">
-						<option ${ToAMPM eq 'AM' ? 'selected' : ''}>AM</option>
-						<option ${ToAMPM eq 'AM' ? '' : 'selected'}>PM</option>
-					</select>
-				</dd>
+                <dt><label for="starttime" class="required">From:</label></dt>
+                <dd>
+                  <input type="text" name="starttime" id="starttime" value='<c:out value="${starttime}" />' />
+                </dd>
+
+                <dt><label for="endtime" class="required">To:</label></dt>
+                <dd>
+                  <input type="text" name="endtime" id="endtime" value='<c:out value="${endtime}" />' />
+                </dd>
 
 				<dt><label class="required">Minutes to travel between class and rehearsal</label></dt>
 				<dd>
@@ -141,6 +121,23 @@
 		</form>		
 		
 		<jsp:include page="/WEB-INF/template/footer.jsp" />
+        <script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="/js/jquery-ui-timepicker-addon.js"></script>
+        <script>
+          $('#startdate').datepicker({
+            });
+          //because it starts out with a filled value (today's date) for some reason
+          $('#startdate').val('');
+          $('#enddate').val('');
+          $('#enddate').datepicker({
+            });
+          $('#starttime').timepicker({
+              timeFormat: "h:mm TT"
+            });
+          $('#endtime').timepicker({
+              timeFormat: "h:mm TT"
+            });
+        </script>
 	</body>
 
 </html>

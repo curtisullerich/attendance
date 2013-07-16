@@ -405,17 +405,17 @@ public class DirectorServlet extends AbstractBaseServlet {
 		String success = "";
 
 		try {
-			Date start = Util.parseDate(req.getParameter("Month"),
-					req.getParameter("Day"), req.getParameter("Year"),
-					req.getParameter("StartHour"),
-					req.getParameter("StartAMPM"),
-					req.getParameter("StartMinute"), train.getAppDataManager()
-							.get().getTimeZone());
-			Date end = Util.parseDate(req.getParameter("Month"),
-					req.getParameter("Day"), req.getParameter("Year"),
-					req.getParameter("EndHour"), req.getParameter("EndAMPM"),
-					req.getParameter("EndMinute"), train.getAppDataManager()
-							.get().getTimeZone());
+			Date start = Util.parseDateTime(req.getParameter("startdatetime"),
+					train.getAppDataManager().get().getTimeZone());
+			Date end = Util.parseDateTime(req.getParameter("enddatetime"),
+					train.getAppDataManager().get().getTimeZone());
+			// TODO may be timezone issues here. check edge cases.
+			if ((start.getDay() != end.getDay())
+					|| (start.getMonth() != end.getMonth())
+					|| (start.getYear() != end.getYear())) {
+				errors.add("The event must start and end on the same day.");
+			}
+
 			Event.Type type = req.getParameter("Type").equals(
 					Event.Type.Rehearsal.getDisplayName()) ? Event.Type.Rehearsal
 					: Event.Type.Performance;
@@ -516,15 +516,11 @@ public class DirectorServlet extends AbstractBaseServlet {
 					User student = train.getUsersManager().get(sid);
 					Absence.Type atype = Absence.Type.valueOf(type);
 					if (student != null) {
-						Date time = Util.parseDate(
-								req.getParameter("StartMonth"),
-								req.getParameter("StartDay"),
-								req.getParameter("StartYear"),
-								req.getParameter("StartHour"),
-								req.getParameter("StartAMPM"),
-								req.getParameter("StartMinute"), train
-										.getAppDataManager().get()
-										.getTimeZone());
+						// TODO might want to split this up and the combine date
+						// and time with Calendar methods
+						Date time = Util.parseDateTime(req.getParameter("date")
+								+ " " + req.getParameter("time"), train
+								.getAppDataManager().get().getTimeZone());
 						switch (atype) {
 						case Absence:
 							toUpdate = ac.createOrUpdateAbsence(student, event);
@@ -539,22 +535,17 @@ public class DirectorServlet extends AbstractBaseServlet {
 						}
 					}
 				} else {
-
 					aid = Long.parseLong(absid);
 					toUpdate = ac.get(aid);
 				}
 				if (toUpdate != null) {
-
 					try {
-						toUpdate.setDatetime(Util.parseDate(
-								req.getParameter("StartMonth"),
-								req.getParameter("StartDay"),
-								req.getParameter("StartYear"),
-								req.getParameter("StartHour"),
-								req.getParameter("StartAMPM"),
-								req.getParameter("StartMinute"), train
-										.getAppDataManager().get()
-										.getTimeZone()));
+						// TODO same concern as above
+
+						Date d = Util.parseDateTime(req.getParameter("date")
+								+ " " + req.getParameter("time"), train
+								.getAppDataManager().get().getTimeZone());
+						toUpdate.setDatetime(d);
 						toUpdate.setType(Absence.Type.valueOf(type));
 						toUpdate.setStatus(Absence.Status.valueOf(status));
 					} catch (ValidationExceptions e) {
@@ -723,7 +714,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		page.setAttribute("timezone", data.getTimeZone());
 
-		Util.sdf.setTimeZone(data.getTimeZone());
+		Util.datetimeFormat.setTimeZone(data.getTimeZone());
 		page.setAttribute("datetime",
 				Util.formatDateTime(cutoffDate.getTime(), data.getTimeZone()));
 
@@ -1003,6 +994,11 @@ public class DirectorServlet extends AbstractBaseServlet {
 		page.setAttribute("status", Absence.Status.values());
 		page.setAttribute("error_messages", incomingErrors);
 		page.setAttribute("success_message", success_message);
+		TimeZone timeZone = train.getAppDataManager().get().getTimeZone();
+		page.setAttribute("date",
+				Util.formatDate(checkedAbsence.getDatetime(), timeZone));
+		page.setAttribute("time",
+				Util.formatTime(checkedAbsence.getDatetime(), timeZone));
 		page.passOffToJsp(req, resp);
 		// } else {
 		// showAttendance(req, resp, errors, success_message);

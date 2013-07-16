@@ -6,6 +6,8 @@
 <html>
 	<head>
 		<jsp:include page="/WEB-INF/template/head.jsp" />
+        <link rel="stylesheet" media="all" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+        <link rel="stylesheet" media="all" type="text/css" href="/css/jquery-ui-timepicker-addon.css" />
 	</head>
 	
 	<body>
@@ -22,19 +24,8 @@
 				Note that this time is irrelevant if this is not a tardy or early checkout. This field is here so you can change it to a tardy or early checkout if desired.
 				<dd><fmt:formatDate value="${absence.start}" pattern="M/d/yyyy"/>
 					<%//hidden because these should never be changed %>
-					<input size='5' type='hidden' name='StartMonth' min='01' max='12' value='<fmt:formatDate value="${absence.start}" pattern="M"/>'/>
-					<input size='5' type='hidden' name='StartDay' min='01' max='31' value='<fmt:formatDate value="${absence.start}" pattern="d"/>'/>
-					<input size='5' type='hidden' name='StartYear' min='${arst}' max='${arst+1}' value='<fmt:formatDate value="${absence.start}" pattern="yyyy"/>'/>
-					at   
-					<input size='5' type='number' name='StartHour' min='01' max='12' value='<fmt:formatDate value="${absence.start}" pattern="h"/>'/>
-					:
-					<input size='5' type='number' name='StartMinute' min='00' max='59' value='<fmt:formatDate value="${absence.start}" pattern="mm"/>'/>
-					
-					<select name="StartAMPM">
-					<fmt:formatDate var="SAMPM"  value="${absence.start}" pattern="a"/></option>
-						<option ${SAMPM eq 'AM' ? 'selected' : ''}>AM</option>
-						<option ${SAMPM eq 'AM' ? '' : 'selected'}>PM</option>				
-					</select>
+                    <input type="hidden" name="date" id="date" value='<c:out value="${date}" />' />
+                    <input type="text" name="time" id="time" value='<c:out value="${time}" />' />
 				</dd>
 				
 				<dt><label for="Type" class="required">Type</label></dt>
@@ -84,5 +75,14 @@
 		<br/>
 	
 		<jsp:include page="/WEB-INF/template/footer.jsp" />	
+        <script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="/js/jquery-ui-timepicker-addon.js"></script>
+        <script>
+        $('#time').timepicker({
+            timeFormat: "h:mm TT"
+          });
+        $('#date').datepicker({
+          });
+        </script>
 	</body>
 </html>	

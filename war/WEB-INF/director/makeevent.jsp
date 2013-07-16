@@ -6,6 +6,8 @@
 <html>
 	<head>
 		<jsp:include page="/WEB-INF/template/head.jsp" />
+        <link rel="stylesheet" media="all" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+        <link rel="stylesheet" media="all" type="text/css" href="/css/jquery-ui-timepicker-addon.css" />
 	</head>
 	
 	<body>
@@ -18,36 +20,15 @@
 			<dt><label></label></dt>
 
 
-				<dt><label for="Date" class="required">Date</label></dt>
-				<dd>
-					<input size='5' type='number' name='Month' min='01' max='12' value='<fmt:formatDate value="${today}" pattern="M"/>'/>
-					<input size='5' type='number' name='Day' min='01' max='31' value='<fmt:formatDate value="${today}" pattern="d"/>'/>
-					<input size='5' type='number' name='Year' min='${arst}' max='${arst+1}' value='<fmt:formatDate value="${today}" pattern="yyyy"/>'/>
-				</dd>
+                <dt><label for="startdatetime" class="required">Start date and time</label></dt>
+                <dd>
+                  <input type="text" name="startdatetime" id="startdatetime" value='<c:out value="${startdatetime}" />' />
+                </dd>
+                <dt><label for="enddatetime" class="required">End date and time</label></dt>
+                <dd>
+                  <input type="text" name="enddatetime" id="enddatetime" value='<c:out value="${enddatetime}" />' />
+                </dd>
 			
-				<dt><label for="StartTime" class="required">Start Time</label></dt>
-				<dd>
-					<input size='5' type='number' name='StartHour' min='01' max='12' value='4'/>
-					:
-					<input size='5' type='number' name='StartMinute' min='00' max='59' value='30'/>
-					
-					<select name="StartAMPM">
-						<option>AM</option>
-						<option selected>PM</option>				
-					</select>
-				</dd>
-				<dt><label for="EndTime" class="required">End Time</label></dt>
-				<dd>   
-					<input size='5' type='number' name='EndHour' min='01' max='12' value='5'/>
-					:
-					<input size='5' type='number' name='EndMinute' min='00' max='59' value='50'/>
-					
-					<select name="EndAMPM">
-						<option>AM</option>
-						<option selected>PM</option>				
-					</select>
-				</dd>
-
 				
 				<dt><label for="Type" class="required">Type</label></dt>
 				<dd>
@@ -65,5 +46,15 @@
 	
 	
 		<jsp:include page="/WEB-INF/template/footer.jsp" />	
+        <script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="/js/jquery-ui-timepicker-addon.js"></script>
+        <script>
+        $('#startdatetime').datetimepicker({
+            timeFormat: "h:mm TT"
+          });
+        $('#enddatetime').datetimepicker({
+            timeFormat: "h:mm TT"
+          });
+        </script>
 	</body>
 </html>	

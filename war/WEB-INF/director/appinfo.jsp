@@ -11,9 +11,6 @@
 		<jsp:include page="/WEB-INF/template/head.jsp" />
         <link rel="stylesheet" media="all" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
         <link rel="stylesheet" media="all" type="text/css" href="/css/jquery-ui-timepicker-addon.css" />
-        <script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
-        <script type="text/javascript" src="/js/jquery-ui-timepicker-addon.js"></script>
-        
 	</head>
 
 	<body>		
@@ -38,30 +35,10 @@
 			<dt><label for="CronExportEnabled">Backups:</label></dt>
 			<dd><label>Daily data backups enabled: <input type="checkbox" name="CronExportEnabled" <c:if test="${appinfo.cronExportEnabled}">checked="checked"</c:if> align="right"></label></dd>
 			
-			<dt><label for="Month" class="required">Form A Submission Cutoff</label></dt>
-			
-          
+			<dt><label for="datetime" class="required">Form A Submission Cutoff</label></dt>
             <dd>
               <input type="text" name="datetime" id="datetime" value='<c:out value="${datetime}" />' />
             </dd>
-	    <!--<dd>
-				<input size='5' type='number' name='Month' min='01' max='12' placeholder='MM' value='<c:out value="${Month}" />' />
-				/
-				<input size='5' type='number' name='Day' min='01' max='31' step='1' placeholder='DD' value='<c:out value="${Day}" />' />
-				/
-				${year}
-				<br/>at<br/>
-				<input size='5' type='number' name='ToHour' min='01' max='12' placeholder='HH' value='<c:out value="${ToHour}" />' />
-				:
-				<input size='5' type='number' name='ToMinute' min='00' max='59' step='1' placeholder='MM' value='<c:out value="${ToMinute}" />' />
-				
-				<select name="ToAMPM">
-					<option ${ToAMPM eq 'AM' ? 'selected' : ''}>AM</option>
-					<option ${ToAMPM eq 'AM' ? '' : 'selected'}>PM</option>
-				</select>
-				<br/>
-				Please enter the <b>last</b> acceptable day/time for submitting Performance Absence Requests.
-			</dd-->
 			
  			<dt><label for="Timezone">Timezone</label></dt>
 			<dd>
@@ -85,8 +62,10 @@
 		<input type="hidden" id="hashedPassConf" name = "hashedPassConf" value ="">
 		</form>		
 		<jsp:include page="/WEB-INF/template/footer.jsp" />
+
+        <script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="/js/jquery-ui-timepicker-addon.js"></script>
         <script>
-          //$('#datetime').datetimepicker();
           $('#datetime').datetimepicker({
         		timeFormat: "h:mm TT"
           });

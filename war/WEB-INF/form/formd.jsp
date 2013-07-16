@@ -10,6 +10,8 @@
 <html>
 	<head>
 		<jsp:include page="/WEB-INF/template/head.jsp" />
+        <link rel="stylesheet" media="all" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+        <link rel="stylesheet" media="all" type="text/css" href="/css/jquery-ui-timepicker-addon.css" />
 	</head>
 
 	<body>
@@ -29,15 +31,11 @@
 					<label for="AmountWorked">Minutes</label>
 				</dd>
 				
-				<dt><label for="StartMonth" class="required">Date of the absence</label></dt>
-				<dd>
-					<input id='startMonth' size='5' type='number' name='StartMonth' min='01' max='12' placeholder='MM' value='<c:out value="${empty StartMonth ? '' : StartMonth+1}" />' />
-					/
-					<input id='startDay' size='5' type='number' name='StartDay' min='01' max='31' step='1' placeholder='DD' value='<c:out value="${StartDay}" />' />
-					/
-					<input id='startYear' size='5' type='number' name='StartYear' min='${year}' max='${year+1}' step='1' placeholder='YYYY' value='<c:out value="${StartYear}" />' />
-				</dd>
-				
+                <dt><label for="startdate" class="required">Date of the absence</label></dt>
+                <dd>
+                  <input type="text" name="startdate" id="startdate" value='<c:out value="${startdate}" />' />
+                </dd>
+        
 				<dt><label class='required' for="Details">Work Details</label></dt>
 				<dd>
 					<textarea rows="6" cols="50" name="Details" wrap="physical"><c:out value="${Details}" /></textarea>
@@ -51,6 +49,14 @@
 		</form>		
 		
 		<jsp:include page="/WEB-INF/template/footer.jsp" />
+        <script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="/js/jquery-ui-timepicker-addon.js"></script>
+        <script>
+          $('#startdate').datepicker({
+            });
+          //because it starts out with a filled value (today's date) for some reason
+          $('#startdate').val('');
+        </script>
 	</body>
 
 </html>

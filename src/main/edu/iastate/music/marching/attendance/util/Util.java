@@ -10,9 +10,14 @@ import edu.iastate.music.marching.attendance.model.interact.DataTrain;
 import edu.iastate.music.marching.attendance.model.store.AppData;
 
 public class Util {
-
-	public static final SimpleDateFormat sdf = new SimpleDateFormat(
-			"MM/dd/yyyy hh:mm aa");
+	private static final String dateString = "MM/dd/yyyy";
+	private static final String timeString = "h:mm aa";
+	public static final SimpleDateFormat datetimeFormat = new SimpleDateFormat(
+			dateString + " " + timeString);
+	public static final SimpleDateFormat dateFormat = new SimpleDateFormat(
+			dateString);
+	public static final SimpleDateFormat timeFormat = new SimpleDateFormat(
+			timeString);
 
 	public static Date parseDate(String sMonth, String sDay, String sYear,
 			String hour, String AMPM, String minute, TimeZone timeZone) {
@@ -102,19 +107,30 @@ public class Util {
 
 	public static String formatDateTime(Date datetime, TimeZone timeZone) {
 		AppData data = DataTrain.getAndStartTrain().getAppDataManager().get();
-		sdf.setTimeZone(data.getTimeZone());
-		return sdf.format(data.getFormSubmissionCutoff());
+		datetimeFormat.setTimeZone(data.getTimeZone());
+		return datetimeFormat.format(data.getFormSubmissionCutoff());
+	}
+
+	public static String formatTime(Date datetime, TimeZone timeZone) {
+		AppData data = DataTrain.getAndStartTrain().getAppDataManager().get();
+		timeFormat.setTimeZone(data.getTimeZone());
+		return timeFormat.format(data.getFormSubmissionCutoff());
+	}
+
+	public static String formatDate(Date datetime, TimeZone timeZone) {
+		AppData data = DataTrain.getAndStartTrain().getAppDataManager().get();
+		dateFormat.setTimeZone(data.getTimeZone());
+		return dateFormat.format(data.getFormSubmissionCutoff());
 	}
 
 	public static Date parseDateTime(String datetime, TimeZone timeZone) {
-
 		Calendar calendar = Calendar.getInstance(timeZone);
 		Date d;
-		sdf.setTimeZone(timeZone);
+		datetimeFormat.setTimeZone(timeZone);
 
 		ValidationExceptions exp = new ValidationExceptions();
 		try {
-			d = sdf.parse(datetime);
+			d = datetimeFormat.parse(datetime);
 			calendar.setTime(d);
 		} catch (ParseException e) {
 			exp.getErrors().add("Invalid date.");
@@ -122,6 +138,83 @@ public class Util {
 
 		calendar.set(Calendar.MILLISECOND, 0);
 		calendar.setLenient(false);
+
+		Calendar cutoff = Calendar.getInstance(timeZone);
+		cutoff.set(Calendar.YEAR, 1900);
+		cutoff.set(Calendar.MONTH, 1);
+		cutoff.set(Calendar.DAY_OF_MONTH, 1);
+		cutoff.set(Calendar.HOUR, 0);
+		cutoff.set(Calendar.MINUTE, 0);
+		cutoff.set(Calendar.SECOND, 0);
+		cutoff.set(Calendar.MILLISECOND, 0);
+
+		if (calendar.before(cutoff)) {
+			exp.getErrors().add("Date was before 1900.");
+		}
+
+		if (exp.getErrors().size() > 0) {
+			throw exp;
+		}
+		Date ret = calendar.getTime();
+		return ret;
+	}
+
+	public static Date parseTime(String time, TimeZone timeZone) {
+		Calendar calendar = Calendar.getInstance(timeZone);
+		Date d;
+		timeFormat.setTimeZone(timeZone);
+
+		ValidationExceptions exp = new ValidationExceptions();
+		try {
+			d = timeFormat.parse(time);
+			calendar.setTime(d);
+		} catch (ParseException e) {
+			exp.getErrors().add("Invalid time.");
+		}
+
+//		calendar.set(Calendar.YEAR, 0);
+//		calendar.set(Calendar.MONTH, 0);
+//		calendar.set(Calendar.DAY_OF_MONTH, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		calendar.setLenient(false);
+
+		if (exp.getErrors().size() > 0) {
+			throw exp;
+		}
+		Date ret = calendar.getTime();
+		return ret;
+	}
+
+	public static Date parseNewDate(String date, TimeZone timeZone) {
+		Calendar calendar = Calendar.getInstance(timeZone);
+		Date d;
+		dateFormat.setTimeZone(timeZone);
+
+		ValidationExceptions exp = new ValidationExceptions();
+		try {
+			d = dateFormat.parse(date);
+			calendar.setTime(d);
+		} catch (ParseException e) {
+			exp.getErrors().add("Invalid date.");
+		}
+		calendar.set(Calendar.HOUR, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		calendar.setLenient(false);
+
+		Calendar cutoff = Calendar.getInstance(timeZone);
+		cutoff.set(Calendar.YEAR, 1900);
+		cutoff.set(Calendar.MONTH, 1);
+		cutoff.set(Calendar.DAY_OF_MONTH, 1);
+//		cutoff.set(Calendar.HOUR, 0);
+//		cutoff.set(Calendar.MINUTE, 0);
+//		cutoff.set(Calendar.SECOND, 0);
+//		cutoff.set(Calendar.MILLISECOND, 0);
+
+		if (calendar.before(cutoff)) {
+			exp.getErrors().add("Date was before 1900.");
+		}
 
 		if (exp.getErrors().size() > 0) {
 			throw exp;
