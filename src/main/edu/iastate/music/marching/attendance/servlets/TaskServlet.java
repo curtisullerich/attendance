@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import edu.iastate.music.marching.attendance.model.interact.DataTrain;
+import edu.iastate.music.marching.attendance.model.store.ImportData;
 import edu.iastate.music.marching.attendance.tasks.Export;
 import edu.iastate.music.marching.attendance.tasks.Import;
 
@@ -17,6 +18,8 @@ public class TaskServlet extends AbstractBaseServlet {
 	private static final long serialVersionUID = 2390747813204817960L;
 
 	private static final String SERVLET_PATH = "task";
+
+	public static final String IMPORT_PARAM_STOREID = "datastore_id";
 
 	private static final Logger LOG = Logger.getLogger(TaskServlet.class
 			.getName());
@@ -100,14 +103,21 @@ public class TaskServlet extends AbstractBaseServlet {
 
 	private void doImport(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
-
 		LOG.info("Doing full data import.");
 
+		DataTrain dt = DataTrain.getAndStartTrain();
+
+		long id = Long.parseLong(req.getParameter(IMPORT_PARAM_STOREID));
+		ImportData importData = dt.getDataManager().getImportData(id);
+
 		try {
-			Import.performImport(req.getInputStream());
+			Import.performImport(importData);
 		} catch (Exception e) {
 			LOG.log(Level.SEVERE, "Encountered exception doing data import", e);
 		} finally {
+			// Always delete the import data afterwards
+			dt.getDataManager().removeImportData(importData);
+
 			// Never retry, avoids infinite loops
 			resp.sendError(200);
 		}

@@ -9,16 +9,12 @@ import com.google.code.twig.annotation.Version;
 
 
 @Version(AttendanceDatastore.VERSION)
-@Entity(kind = "MobileDataUpload", allocateIdsBy = 0)
-public class MobileDataUpload {
+@Entity(kind = "ImportData", allocateIdsBy = 0)
+public class ImportData {
 
-	public static final String FIELD_UPLOADER = "uploader";
-
-	MobileDataUpload() {
+	ImportData() {
 	}
-
-	private User uploader;
-
+	
 	private Date timestamp;
 
 	@Type(Text.class)
@@ -26,14 +22,6 @@ public class MobileDataUpload {
 	
 	@Type(Text.class)
 	private String error;
-
-	public void setUploader(User uploader) {
-		this.uploader = uploader;
-	}
-	
-	public User getUploader() {
-		return this.uploader;
-	}
 
 	public void setTimestamp(Date uploadTime) {
 		this.timestamp = uploadTime;
