@@ -134,26 +134,22 @@ public class DataManager extends AbstractManager {
 		importAll(dump.appData);
 		importAll(dump.users);
 		importAll(dump.events);
-		importAll(dump.mobileData);
 
 		// Then things that depend on the previous
 		// injecting the previous things first
-		importAll(dump.absences);
-		importAll(dump.forms);
-
-		// Re-import a couple things that probably got messed up by the
-		// references
-		importAll(dump.users);
-		importAll(dump.events);
 		inject(dump.absences);
 		inject(dump.forms);
+		inject(dump.mobileData);
+		
 		importAll(dump.absences);
 		importAll(dump.forms);
-
+		importAll(dump.mobileData);
 		// Done!
 	}
 
 	private <T> void inject(List<T> src) {
+		if (src == null)
+			return;
 		for (T item : src) {
 			Class<?> clazz = item.getClass();
 
