@@ -3,7 +3,6 @@ package edu.iastate.music.marching.attendance.model.store;
 import java.util.Date;
 
 import com.google.appengine.api.datastore.Text;
-import com.google.appengine.api.datastore.Blob;
 import com.google.code.twig.annotation.Entity;
 import com.google.code.twig.annotation.Type;
 import com.google.code.twig.annotation.Version;

@@ -21,6 +21,7 @@ import org.mortbay.log.Log;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.common.collect.Lists;
 
 import edu.iastate.music.marching.attendance.Configuration;
 import edu.iastate.music.marching.attendance.model.GsonWithPartials;
@@ -130,30 +131,35 @@ public class DataManager extends AbstractManager {
 		deleteEverthingInTheEntireDatabaseEvenThoughYouCannotUndoThis();
 
 		// Insert all things that don't link to other objects first
-		importAll(dump.versions);
-		importAll(dump.appData);
-		importAll(dump.users);
-		importAll(dump.events);
+		
+		importAll(DatastoreVersion.class, dump.versions);
+		importAll(AppData.class, dump.appData);
+		importAll(User.class, dump.users);
+		importAll(Event.class, dump.events);
 
 		// Then things that depend on the previous
 		// injecting the previous things first
-		inject(dump.absences);
-		inject(dump.forms);
-		inject(dump.mobileData);
-		
-		importAll(dump.absences);
-		importAll(dump.forms);
-		importAll(dump.mobileData);
+		inject(Absence.class, dump.absences);
+		inject(Form.class, dump.forms);
+		inject(MobileDataUpload.class, dump.mobileData);
+
+		// Final set of imports, with injected references
+		importAll(Absence.class, dump.absences);
+		importAll(Form.class, dump.forms);
+		importAll(MobileDataUpload.class, dump.mobileData);
 		// Done!
 	}
 
-	private <T> void inject(List<T> src) {
+	private <T> void inject(Class<?> clazz, List<T> src) {
 		if (src == null)
 			return;
+		
+		LOG.info("Injecting " + src.size() + " " + clazz.getSimpleName() + " objects");
+		
+		Field[] fields = clazz.getDeclaredFields();
+		
 		for (T item : src) {
-			Class<?> clazz = item.getClass();
-
-			for (Field field : clazz.getDeclaredFields()) {
+			for (Field field : fields) {
 				try {
 					field.setAccessible(true);
 
@@ -161,9 +167,12 @@ public class DataManager extends AbstractManager {
 
 					if (Object[].class.equals(type)) {
 						Object[] innerValues = (Object[]) field.get(item);
-						if (innerValues != null) {
+						
+						if (innerValues != null && innerValues.length > 0)
+						{
 							List<?> innerList = Arrays.asList(innerValues);
-							inject(innerList);
+							Class<?> innerType = innerList.get(0).getClass();
+							inject(innerType, innerList);
 							field.set(item, innerList.toArray());
 						}
 					} else if (User.class.equals(type)) {
@@ -200,27 +209,23 @@ public class DataManager extends AbstractManager {
 		}
 	}
 
-	private <T> void importAll(T... src) {
+	private <T> void importAll(Class<T> clazz, T... src) {
 		if (src == null)
 			return;
-		for (T item : src) {
-			try {
-				dataTrain.getDataStore().storeOrUpdate(item);
-			} catch (Exception ex) {
-				LOG.log(Level.WARNING, "Encountered error during import", ex);
-			}
-		}
+		else
+			importAll(clazz, Lists.newArrayList(src));
 	}
 
-	private <T> void importAll(List<T> src) {
+	private <T> void importAll(Class<T> clazz, List<T> src) {
 		if (src == null)
 			return;
-		for (T item : src) {
-			try {
-				dataTrain.getDataStore().storeOrUpdate(item);
-			} catch (Exception ex) {
-				LOG.log(Level.WARNING, "Encountered error during import", ex);
-			}
+
+		LOG.info("Importing " + src.size() + " " + clazz.getSimpleName() + " objects");
+		
+		try {
+			dataTrain.getDataStore().storeAll(src);
+		} catch (Exception ex) {
+			LOG.log(Level.WARNING, "Encountered error during import", ex);
 		}
 	}
 
