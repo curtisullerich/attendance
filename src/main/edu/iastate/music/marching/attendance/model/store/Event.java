@@ -5,20 +5,17 @@ import java.util.Date;
 import com.google.code.twig.annotation.Entity;
 import com.google.code.twig.annotation.Id;
 import com.google.code.twig.annotation.Index;
-import com.google.code.twig.annotation.Version;
 
-
-@Version(AttendanceDatastore.VERSION)
-@Entity(kind="Event", allocateIdsBy=0)
+@Entity(kind = "Event", allocateIdsBy = 0)
 public class Event {
 
 	public static final String FIELD_START = "start";
 	public static final String FIELD_END = "end";
 	public static final String FIELD_TYPE = "type";
-	
+
 	/**
-	 * Assuming an event only spans a single day,
-	 * this field is always set to 12am of the day the event happens on.
+	 * Assuming an event only spans a single day, this field is always set to
+	 * 12am of the day the event happens on.
 	 * 
 	 * This makes it easier to query for events on any given day.
 	 */
@@ -42,8 +39,8 @@ public class Event {
 	private Date end;
 
 	/**
-	 * Assuming an event only spans a single day,
-	 * this field is always set to 12am of the day the event happens on.
+	 * Assuming an event only spans a single day, this field is always set to
+	 * 12am of the day the event happens on.
 	 * 
 	 * This makes it easier to query for events on any given day.
 	 */
@@ -85,7 +82,7 @@ public class Event {
 	public Date getEnd() {
 		return end;
 	}
-	
+
 	public void setEnd(Date end) {
 		this.end = end;
 	}
@@ -127,13 +124,15 @@ public class Event {
 	public Type getType() {
 		return this.type;
 	}
-	
+
 	public boolean absIsDuring(Absence a) {
-		return (start.compareTo(a.getStart()) <= 0 && a.getStart().compareTo(end) <= 0) 
-				&& (a.getEnd() == null //Tardies and Ecos don't have end dates
-				|| (start.compareTo(a.getEnd()) <= 0 && a.getEnd().compareTo(end) <= 0));
+		return (start.compareTo(a.getStart()) <= 0 && a.getStart().compareTo(
+				end) <= 0)
+				&& (a.getEnd() == null // Tardies and Ecos don't have end dates
+				|| (start.compareTo(a.getEnd()) <= 0 && a.getEnd().compareTo(
+						end) <= 0));
 	}
-	
+
 	public String toString() {
 		return "Start: " + start.toString() + " End: " + end.toString();
 	}

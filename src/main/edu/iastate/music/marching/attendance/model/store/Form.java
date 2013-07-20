@@ -3,16 +3,13 @@ package edu.iastate.music.marching.attendance.model.store;
 import java.util.Date;
 
 import com.google.appengine.api.datastore.Text;
+import com.google.code.twig.annotation.Activate;
 import com.google.code.twig.annotation.Entity;
 import com.google.code.twig.annotation.Id;
 import com.google.code.twig.annotation.Index;
-import com.google.code.twig.annotation.Version;
 
-@Version(AttendanceDatastore.VERSION)
 @Entity(kind = "Form", allocateIdsBy = 0)
 public class Form {
-
-	static final int VERSION = 0;
 
 	public static enum Status {
 		Pending, Approved, Denied;
@@ -83,6 +80,7 @@ public class Form {
 	private long id;
 
 	@Index
+	@Activate
 	private User student;
 
 	@Index

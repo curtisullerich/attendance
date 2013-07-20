@@ -114,10 +114,12 @@ public class TaskServlet extends AbstractBaseServlet {
 			Import.performImport(importData);
 		} catch (Exception e) {
 			LOG.log(Level.SEVERE, "Encountered exception doing data import", e);
-		} finally {
+		}
+
+		try {
 			// Always delete the import data afterwards
 			dt.getDataManager().removeImportData(importData);
-
+		} finally {
 			// Never retry, avoids infinite loops
 			resp.sendError(200);
 		}

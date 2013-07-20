@@ -6,16 +6,10 @@ import com.google.appengine.api.datastore.Email;
 import com.google.code.twig.annotation.Entity;
 import com.google.code.twig.annotation.Id;
 import com.google.code.twig.annotation.Index;
-import com.google.code.twig.annotation.Version;
 
-
-@Version(AttendanceDatastore.VERSION)
 @Entity(kind = "User", allocateIdsBy = 0)
 public class User implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1421557192976557704L;
 
 	public static final String FIELD_TYPE = "type";

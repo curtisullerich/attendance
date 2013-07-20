@@ -2,16 +2,14 @@ package edu.iastate.music.marching.attendance.model.store;
 
 import java.util.Date;
 
+import com.google.code.twig.annotation.Activate;
 import com.google.code.twig.annotation.Entity;
 import com.google.code.twig.annotation.Id;
 import com.google.code.twig.annotation.Index;
-import com.google.code.twig.annotation.Version;
 
-
-@Version(AttendanceDatastore.VERSION)
-@Entity(kind="Absence", allocateIdsBy=0)
+@Entity(kind = "Absence", allocateIdsBy = 0)
 public class Absence {
-
+	
 	public enum Type {
 		Absence, Tardy, EarlyCheckOut;
 
@@ -94,9 +92,11 @@ public class Absence {
 	private Status status;
 
 	@Index
+	@Activate
 	private Event event;
 
 	@Index
+	@Activate
 	private User student;
 
 	private Date start;
@@ -167,9 +167,10 @@ public class Absence {
 	public void setStatus(Status status) {
 		this.status = status;
 	}
-	
+
 	@Override
 	public String toString() {
-		return student.toString() + " Start: " + start.toString() + " End: " + end.toString();
+		return student.toString() + " Start: " + start.toString() + " End: "
+				+ end.toString();
 	}
 }
