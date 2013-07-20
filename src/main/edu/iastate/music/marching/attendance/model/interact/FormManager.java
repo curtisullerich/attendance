@@ -57,7 +57,7 @@ public class FormManager extends AbstractManager {
 
 	private void updateFormD(Form f) {
 		User student = f.getStudent();
-		if (f.getType() == Form.Type.D && student != null) {
+		if (f.getType() == Form.Type.TimeWorked && student != null) {
 			if (!f.isApplied()) {
 				if (f.getStatus() == Form.Status.Approved) {
 					student.setMinutesAvailable(student.getMinutesAvailable()
@@ -213,7 +213,7 @@ public class FormManager extends AbstractManager {
 		temp.add(Calendar.MILLISECOND, -1);
 		Date endDate = temp.getTime();
 
-		Form form = ModelFactory.newForm(Form.Type.A, student);
+		Form form = ModelFactory.newForm(Form.Type.PerformanceAbsence, student);
 
 		form.setStart(startDate);
 		form.setEnd(endDate);
@@ -272,7 +272,7 @@ public class FormManager extends AbstractManager {
 			exp.getErrors().add("Day with value of " + day + " is not valid.");
 		}
 
-		Form form = ModelFactory.newForm(Form.Type.B, student);
+		Form form = ModelFactory.newForm(Form.Type.ClassConflict, student);
 
 		startDateTime.setTime(startDate);
 		startDateTime.set(Calendar.HOUR_OF_DAY,
@@ -381,7 +381,7 @@ public class FormManager extends AbstractManager {
 		calendar.roll(Calendar.MILLISECOND, false);
 		Date endDate = calendar.getTime();
 
-		Form form = ModelFactory.newForm(Form.Type.D, student);
+		Form form = ModelFactory.newForm(Form.Type.TimeWorked, student);
 
 		form.setStart(startDate);
 		form.setEnd(endDate);

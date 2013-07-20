@@ -35,7 +35,7 @@
 			<dt><label for="CronExportEnabled">Backups:</label></dt>
 			<dd><label>Daily data backups enabled: <input type="checkbox" name="CronExportEnabled" <c:if test="${appinfo.cronExportEnabled}">checked="checked"</c:if> align="right"></label></dd>
 			
-			<dt><label for="datetime" class="required">Form A Submission Cutoff</label></dt>
+			<dt><label for="datetime" class="required">Performance Absence Form Submission Cutoff</label></dt>
             <dd>
               <input type="text" name="datetime" id="datetime" value='<c:out value="${datetime}" />' />
             </dd>

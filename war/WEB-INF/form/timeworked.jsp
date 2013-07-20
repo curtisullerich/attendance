@@ -18,8 +18,8 @@
 	
 		<jsp:include page="/WEB-INF/template/header.jsp" />
 	
-		<h1>Time Worked | Form D</h1>
-				
+		<h1>Time Worked Form</h1>
+
 		<form method="post" accept-charset="utf-8">
 		
 			<dl class="block-layout">

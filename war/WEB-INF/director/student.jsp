@@ -49,7 +49,7 @@
 					<dt><label for="UniversityID">University ID</label></dt>
 					<dd><input type="text" name="UniversityID" value="<c:out value="${user.universityID}" />" disabled readonly/></dd>
 					
-					<dt><label for="MinutesAvailable">Minutes Available from Form D Submissions</label></dt>
+					<dt><label for="MinutesAvailable">Minutes Available from Time Worked Form Submissions</label></dt>
 					<dd><input type="number" name="MinutesAvailable" value="<c:out value="${user.minutesAvailable}" />"/></dd>
 						
 					

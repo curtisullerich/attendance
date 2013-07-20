@@ -18,7 +18,7 @@
 	
 		<jsp:include page="/WEB-INF/template/header.jsp" />
 	
-		<h1>Class Conflict Request | Form B</h1>
+		<h1>Class Conflict Form</h1>
 		
 		<p>First year members are only allowed one conflict.</p>
 		<p>Note: If you have a class that meets multiple times per week (Tuesday and Thursday, for instance)

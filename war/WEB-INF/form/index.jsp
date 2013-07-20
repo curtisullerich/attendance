@@ -20,9 +20,9 @@
 		<c:if test="${auth.user.type.student or auth.user.type.ta}">
 			<p>
 				Create a new form:
-				<a href="/student/forms/forma" title="Performance Absence Request">Form A</a>
-				| <a href="/student/forms/formb" title="Class Conflict Request">Form B</a>
-				| <a href="/student/forms/formd" title="Time Worked">Form D</a>
+				<a href="/student/forms/forma" title="Performance Absence Form">Performance Absence Form</a>
+				| <a href="/student/forms/formb" title="Class Conflict Form">Class Conflict Form</a>
+				| <a href="/student/forms/formd" title="Time Worked Form">Time Worked Form</a>
 			</p>
 		</c:if>
 		

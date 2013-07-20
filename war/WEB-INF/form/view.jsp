@@ -29,9 +29,9 @@
 				<c:choose>
 					<c:when test="${auth.user.type.director}">
 						<select name = "status" id= "status"}>
-							<option value="Approved" ${form.status.displayName eq 'Approved' ? 'selected="true"': ''}>Approved</option>
-							<option value="Pending" ${form.status.displayName eq 'Pending' ? 'selected="true"': ''}>Pending</option>
-							<option value="Denied" ${form.status.displayName eq 'Denied' ? 'selected="true"': ''}>Denied</option>
+							<option value="Approved" ${form.status.approved ? 'selected="true"': ''}>Approved</option>
+							<option value="Pending" ${form.status.pending ? 'selected="true"': ''}>Pending</option>
+							<option value="Denied" ${form.status.denied ? 'selected="true"': ''}>Denied</option>
 						</select>
 					</c:when>
 					<c:otherwise>
@@ -40,13 +40,13 @@
 				</c:choose>
 				<dd>
 				
-				<c:if test="${form.type.displayName eq 'A'}">
+				<c:if test="${form.type.performanceAbsence}">
 					<dt><label>Date</label></dt>
 					<dd>
 						<fmt:formatDate value="${form.start}" pattern="M/d/yyyy"/>
 					</dd>
 				</c:if>
-				<c:if test="${form.type.displayName eq 'B'}">
+				<c:if test="${form.type.classConflict}">
 					<dt><label>Department</label></dt>
 					<dd>${form.dept}</dd>
 					
@@ -80,7 +80,7 @@
 					<dt><label>Absence Type</label>
 					<dd>${form.absenceType}</dd>
 				</c:if>
-				<c:if test="${form.type.displayName eq 'D'}">
+				<c:if test="${form.type.timeWorked}">
 					<dt><label>Total minutes worked</label></dt>
 					<dd>${form.minutesWorked}</dd>
 					

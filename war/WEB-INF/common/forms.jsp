@@ -44,13 +44,13 @@
 							<td onclick="window.open('<c:out value="${form_url_view}" />')">
 							<p style="overflow:hidden;">								
 								<c:choose>
-									<c:when test="${form.type.a}">							
+									<c:when test="${form.type.performanceAbsence}">
 										<fmt:formatDate value="${form.start}" pattern="M/d/yyyy" /> <c:if test="${not empty form.details }"> - ${form.details }</c:if>
 									</c:when>
-									<c:when test ="${form.type.b }">
+									<c:when test ="${form.type.classConflict }">
 										${form.dept} ${form.course } <c:if test="${not empty form.details }"> - ${form.details }</c:if>
 									</c:when>
-									<c:when test ="${form.type.d }">
+									<c:when test ="${form.type.timeWorked }">
 										<fmt:formatDate value="${form.start}" pattern="M/d/yyyy" /> - ${form.minutesWorked } minutes worked <c:if test="${not empty form.details }"> - ${form.details } </c:if>
 									</c:when>
 								</c:choose>

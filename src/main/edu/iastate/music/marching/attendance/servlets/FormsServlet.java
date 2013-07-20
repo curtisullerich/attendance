@@ -25,23 +25,20 @@ import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
 public class FormsServlet extends AbstractBaseServlet {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -4738485557840953301L;
 
 	private static final Logger log = Logger.getLogger(FormsServlet.class
 			.getName());
 
 	private enum Page {
-		forma, formb, formd, index, view, remove;
+		performanceabsence, classconflict, timeworked, index, view, remove;
 	}
 
 	private static final String SERVLET_PATH = "form";
 
-	private static final String SUCCESS_FORMA = "Submitted new Form A";
-	private static final String SUCCESS_FORMB = "Submitted new Form B";
-	private static final String SUCCESS_FORMD = "Submitted new Form D";
+	private static final String SUCCESS_PERFORMANCE_ABSENCE_FORM = "Submitted new Performance Absence Form";
+	private static final String SUCCESS_CLASS_CONFLICT_FORM = "Submitted new Class Conflict Form";
+	private static final String SUCCESS_TIME_WORKED_FORM = "Submitted new Time Worked Form";
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -62,14 +59,14 @@ public class FormsServlet extends AbstractBaseServlet {
 		}
 
 		switch (page) {
-		case forma:
-			postFormA(req, resp);
+		case performanceabsence:
+			postPerformanceAbsenceForm(req, resp);
 			break;
-		case formb:
-			handleFormB(req, resp);
+		case classconflict:
+			handleClassConflictForm(req, resp);
 			break;
-		case formd:
-			handleFormD(req, resp);
+		case timeworked:
+			handleTimeWorkedForm(req, resp);
 			break;
 		case index:
 			showIndex(req, resp);
@@ -103,7 +100,7 @@ public class FormsServlet extends AbstractBaseServlet {
 				errors.add("Could not find form number " + id + ".");
 				page.setAttribute("error_messages", errors);
 			} else {
-				page.setPageTitle("Form " + form.getType());
+				page.setPageTitle(form.getType().toString() + " Form");
 				page.setAttribute("form", form);
 				page.setAttribute("day", form.getDayAsString());
 				page.setAttribute("isDirector", currentUser.getType()
@@ -141,14 +138,14 @@ public class FormsServlet extends AbstractBaseServlet {
 			case index:
 				showIndex(req, resp);
 				break;
-			case forma:
-				postFormA(req, resp);
+			case performanceabsence:
+				postPerformanceAbsenceForm(req, resp);
 				break;
-			case formb:
-				handleFormB(req, resp);
+			case classconflict:
+				handleClassConflictForm(req, resp);
 				break;
-			case formd:
-				handleFormD(req, resp);
+			case timeworked:
+				handleTimeWorkedForm(req, resp);
 				break;
 			case view:
 				updateStatus(req, resp);
@@ -209,7 +206,7 @@ public class FormsServlet extends AbstractBaseServlet {
 
 	}
 
-	private void postFormA(HttpServletRequest req, HttpServletResponse resp)
+	private void postPerformanceAbsenceForm(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		String reason = null;
 		Date date = null;
@@ -268,7 +265,7 @@ public class FormsServlet extends AbstractBaseServlet {
 
 		if (validForm) {
 
-			String success = SUCCESS_FORMA;
+			String success = SUCCESS_PERFORMANCE_ABSENCE_FORM;
 			if (!Calendar.getInstance(timezone).before(cutoff)) {
 				success = "PLEASE NOTE: This form was submitted after the deadline, so AttendBot 2.0 marked it as late and denied. The director will see this and choose to approve it or leave it as denied.";
 			}
@@ -280,9 +277,10 @@ public class FormsServlet extends AbstractBaseServlet {
 			resp.sendRedirect(url);
 		} else {
 			// Show form
-			PageBuilder page = new PageBuilder(Page.forma, SERVLET_PATH);
+			PageBuilder page = new PageBuilder(Page.performanceabsence, SERVLET_PATH);
 
-			page.setPageTitle("Form A");
+			String displayName = Form.Type.PerformanceAbsence.getDisplayName();
+			page.setPageTitle(displayName);
 
 			page.setAttribute("error_messages", errors);
 
@@ -292,14 +290,14 @@ public class FormsServlet extends AbstractBaseServlet {
 			page.setAttribute("Reason", reason);
 			setStartDate(date, page, timezone);
 			if (!Calendar.getInstance(timezone).before(cutoff)) {
-				errors.add("PLEASE NOTE: The deadline for submitting form A has passed. You can still submit one, but it will be marked as late by AttendBot 2.0. Be sure to explain your circumstances when you submit.");
+				errors.add("PLEASE NOTE: The deadline for submitting " + displayName + " has passed. You can still submit one, but it will be marked as late by AttendBot 2.0. Be sure to explain your circumstances when you submit.");
 			}
 
 			page.passOffToJsp(req, resp);
 		}
 	}
 
-	private void handleFormB(HttpServletRequest req, HttpServletResponse resp)
+	private void handleClassConflictForm(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		String department = null;
 		String course = null;
@@ -420,15 +418,15 @@ public class FormsServlet extends AbstractBaseServlet {
 		}
 		if (validForm) {
 			String url = getIndexURL() + "?success_message="
-					+ URLEncoder.encode(SUCCESS_FORMB, "UTF-8");
+					+ URLEncoder.encode(SUCCESS_CLASS_CONFLICT_FORM, "UTF-8");
 			url = resp.encodeRedirectURL(url);
 			resp.sendRedirect(url);
 		} else {
 			// Show form
 			TimeZone timeZone = train.getAppDataManager().get().getTimeZone();
-			PageBuilder page = new PageBuilder(Page.formb, SERVLET_PATH);
+			PageBuilder page = new PageBuilder(Page.classconflict, SERVLET_PATH);
 
-			page.setPageTitle("Form B");
+			page.setPageTitle(Form.Type.ClassConflict.getDisplayName());
 			page.setAttribute("daysOfWeek", App.getDaysOfTheWeek());
 			page.setAttribute("error_messages", errors);
 			page.setAttribute("Department", department);
@@ -437,7 +435,7 @@ public class FormsServlet extends AbstractBaseServlet {
 			page.setAttribute("Building", building);
 			page.setAttribute("startdate", Util.formatDate(startDate, timeZone));
 			page.setAttribute("enddate", Util.formatDate(endDate, timeZone));
-			page.setAttribute("Type", Form.Type.B);
+			page.setAttribute("Type", Form.Type.ClassConflict);
 			page.setAttribute("Comments", comments);
 			page.setAttribute("MinutesToOrFrom", minutesToOrFrom);
 			page.setAttribute("Type", absenceType);
@@ -456,7 +454,7 @@ public class FormsServlet extends AbstractBaseServlet {
 		}
 	}
 
-	private void handleFormD(HttpServletRequest req, HttpServletResponse resp)
+	private void handleTimeWorkedForm(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		int minutes = 0;
 		Date date = null;
@@ -513,14 +511,14 @@ public class FormsServlet extends AbstractBaseServlet {
 		}
 		if (validForm) {
 			String url = getIndexURL() + "?success_message="
-					+ URLEncoder.encode(SUCCESS_FORMD, "UTF-8");
+					+ URLEncoder.encode(SUCCESS_TIME_WORKED_FORM, "UTF-8");
 			url = resp.encodeRedirectURL(url);
 			resp.sendRedirect(url);
 		} else {
 			// Show form
-			PageBuilder page = new PageBuilder(Page.formd, SERVLET_PATH);
+			PageBuilder page = new PageBuilder(Page.timeworked, SERVLET_PATH);
 
-			page.setPageTitle("Form D");
+			page.setPageTitle(Form.Type.TimeWorked.getDisplayName());
 
 			page.setAttribute("error_messages", errors);
 
@@ -535,17 +533,7 @@ public class FormsServlet extends AbstractBaseServlet {
 		}
 	}
 
-	private void setEndDate(Date date, PageBuilder page, TimeZone timezone) {
-		if (date == null)
-			return;
-
-		Calendar c = Calendar.getInstance(timezone);
-		c.setTime(date);
-		page.setAttribute("EndYear", c.get(Calendar.YEAR));
-		page.setAttribute("EndMonth", c.get(Calendar.MONTH));
-		page.setAttribute("EndDay", c.get(Calendar.DATE));
-	}
-
+	//TODO remove this
 	private void setStartDate(Date date, PageBuilder page, TimeZone timezone) {
 		if (date == null)
 			return;

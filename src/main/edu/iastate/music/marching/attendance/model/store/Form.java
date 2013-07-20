@@ -8,11 +8,10 @@ import com.google.code.twig.annotation.Id;
 import com.google.code.twig.annotation.Index;
 import com.google.code.twig.annotation.Version;
 
-
 @Version(AttendanceDatastore.VERSION)
-@Entity(kind="Form", allocateIdsBy=0)
+@Entity(kind = "Form", allocateIdsBy = 0)
 public class Form {
-	
+
 	static final int VERSION = 0;
 
 	public static enum Status {
@@ -37,7 +36,7 @@ public class Form {
 	};
 
 	public static enum Type {
-		A, B, D;
+		PerformanceAbsence, ClassConflict, TimeWorked;
 
 		private String mDisplayString;
 
@@ -57,16 +56,16 @@ public class Form {
 			return name();
 		}
 
-		public boolean isA() {
-			return this == A;
+		public boolean isPerformanceAbsence() {
+			return this == PerformanceAbsence;
 		}
 
-		public boolean isB() {
-			return this == B;
+		public boolean isClassConflict() {
+			return this == ClassConflict;
 		}
 
-		public boolean isD() {
-			return this == D;
+		public boolean isTimeWorked() {
+			return this == TimeWorked;
 		}
 	};
 
@@ -96,23 +95,24 @@ public class Form {
 	}
 
 	public void setApplied(boolean applied) {
-		if (this.applied){
-			throw new IllegalArgumentException("Once a Form D has been applied, it can never change again.");
+		if (this.applied) {
+			throw new IllegalArgumentException(
+					"Once a Form D has been applied, it can never change again.");
 		}
 		this.applied = applied;
 	}
 
 	private boolean applied;
-	
+
 	private Absence.Type absenceType;
-	
+
 	@com.google.code.twig.annotation.Type(Text.class)
 	private String details;
 
 	private Date startTime;
 	private Date endTime;
 
-	// Strings to be used by Form B
+	// Strings to be used by Class Conflict Form
 	private String dept;
 	private String course;
 	private String section;

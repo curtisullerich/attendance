@@ -27,7 +27,7 @@
 
 	<jsp:include page="/WEB-INF/template/header.jsp" />
 
-	<h1>Performance Absence Request | Form A</h1>
+	<h1>Performance Absence Form</h1>
 
 	<p>
 		This form includes all performances through any post-season activity

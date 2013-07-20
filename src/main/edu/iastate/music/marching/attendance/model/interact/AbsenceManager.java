@@ -376,7 +376,7 @@ public class AbsenceManager extends AbstractManager {
 		}
 
 		switch (form.getType()) {
-		case A:
+		case PerformanceAbsence:
 			// Performance absence request
 			if (absence.getEvent().getType() != Event.Type.Performance) {
 				// nope!
@@ -395,7 +395,7 @@ public class AbsenceManager extends AbstractManager {
 				}
 			}
 			break;
-		case B:
+		case ClassConflict:
 			Event e = absence.getEvent();
 			if (e != null && e.getType() == Event.Type.Rehearsal) {
 
@@ -561,7 +561,7 @@ public class AbsenceManager extends AbstractManager {
 				}
 			}
 			break;
-		case D:
+		case TimeWorked:
 			// this does not auto-approve here. It does that upon an update of a
 			// Form D in the forms controller
 			break;
