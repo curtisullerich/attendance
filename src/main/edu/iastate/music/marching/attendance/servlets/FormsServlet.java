@@ -224,6 +224,9 @@ public class FormsServlet extends AbstractBaseServlet {
 		} else {
 			// Extract all basic parameters
 			reason = req.getParameter("Reason");
+			if (reason.trim().equals("")) {
+				reason = null;
+			}
 
 			try {
 				date = Util.parseNewDate(req.getParameter("startdate"),
