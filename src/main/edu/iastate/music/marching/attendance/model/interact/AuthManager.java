@@ -63,8 +63,7 @@ public class AuthManager {
 			this.currentUser = getUserFromSession(session);
 
 			if (this.currentUser != null
-					&& null == train.getDataStore().associatedKey(
-							this.currentUser)) {
+					&& !train.getDataStore().isAssociated(this.currentUser)) {
 				train.getDataStore().associate(this.currentUser);
 			}
 		}
