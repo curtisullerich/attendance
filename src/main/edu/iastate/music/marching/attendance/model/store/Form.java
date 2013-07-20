@@ -97,7 +97,7 @@ public class Form {
 	public void setApplied(boolean applied) {
 		if (this.applied) {
 			throw new IllegalArgumentException(
-					"Once a Form D has been applied, it can never change again.");
+					"Once a Time Worked Form has been applied, it can never change again.");
 		}
 		this.applied = applied;
 	}

@@ -20,14 +20,13 @@
 		<c:if test="${auth.user.type.student or auth.user.type.ta}">
 			<p>
 				Create a new form:
-				<a href="/student/forms/forma" title="Performance Absence Form">Performance Absence Form</a>
-				| <a href="/student/forms/formb" title="Class Conflict Form">Class Conflict Form</a>
-				| <a href="/student/forms/formd" title="Time Worked Form">Time Worked Form</a>
+				<a href="/student/forms/performanceabsence" title="Performance Absence Form">Performance Absence Form</a>
+				| <a href="/student/forms/classconflict" title="Class Conflict Form">Class Conflict Form</a>
+				| <a href="/student/forms/timeworked" title="Time Worked Form">Time Worked Form</a>
 			</p>
 		</c:if>
 		
 		<jsp:include page="/WEB-INF/common/forms.jsp" />
 		<jsp:include page="/WEB-INF/template/footer.jsp" />
 	</body>
-
 </html>
