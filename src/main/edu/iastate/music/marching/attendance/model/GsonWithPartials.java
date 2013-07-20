@@ -21,7 +21,6 @@ import com.google.gson.JsonSerializer;
 
 import edu.iastate.music.marching.attendance.model.store.Absence;
 import edu.iastate.music.marching.attendance.model.store.AppData;
-import edu.iastate.music.marching.attendance.model.store.DatastoreVersion;
 import edu.iastate.music.marching.attendance.model.store.Event;
 import edu.iastate.music.marching.attendance.model.store.Form;
 import edu.iastate.music.marching.attendance.model.store.MobileDataUpload;
@@ -42,7 +41,6 @@ public class GsonWithPartials {
 		OuterTypeAdapter adapter = new OuterTypeAdapter();
 		gson.registerTypeAdapter(Absence.class, adapter);
 		gson.registerTypeAdapter(AppData.class, adapter);
-		gson.registerTypeAdapter(DatastoreVersion.class, adapter);
 		gson.registerTypeAdapter(Event.class, adapter);
 		gson.registerTypeAdapter(Form.class, adapter);
 		gson.registerTypeAdapter(Message.class, adapter);
@@ -56,7 +54,6 @@ public class GsonWithPartials {
 		InnerTypeAdapter adapter = new InnerTypeAdapter();
 		gson.registerTypeAdapter(Absence.class, adapter);
 		gson.registerTypeAdapter(AppData.class, adapter);
-		gson.registerTypeAdapter(DatastoreVersion.class, adapter);
 		gson.registerTypeAdapter(Event.class, adapter);
 		gson.registerTypeAdapter(Form.class, adapter);
 		gson.registerTypeAdapter(Message.class, adapter);

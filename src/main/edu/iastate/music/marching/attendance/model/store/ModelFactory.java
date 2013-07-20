@@ -56,12 +56,6 @@ public class ModelFactory {
 		return new AttendanceDatastore();
 	}
 
-	public static DatastoreVersion newDatastoreVersion(int version) {
-		DatastoreVersion v = new DatastoreVersion();
-		v.setVersion(version);
-		return v;
-	}
-
 	public static Object newInstance(Class<?> toType)
 			throws InstantiationException, IllegalAccessException {
 		return toType.newInstance();

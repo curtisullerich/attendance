@@ -10,16 +10,10 @@ import com.google.appengine.api.datastore.Text;
 import com.google.code.twig.annotation.Entity;
 import com.google.code.twig.annotation.Id;
 import com.google.code.twig.annotation.Type;
-import com.google.code.twig.annotation.Version;
 
-
-@Version(AttendanceDatastore.VERSION)
 @Entity(kind = "AppData", allocateIdsBy = 0)
 public class AppData implements Serializable {
-
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 6536920800348300644L;
 
 	/**
@@ -32,8 +26,6 @@ public class AppData implements Serializable {
 	private String title;
 
 	private Date formCutoff;
-
-	private List<String> timeWorkedEmails;
 
 	private String timeZoneID;
 

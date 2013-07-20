@@ -5,7 +5,6 @@ import java.util.TimeZone;
 
 import edu.iastate.music.marching.attendance.model.store.AppData;
 import edu.iastate.music.marching.attendance.model.store.AttendanceDatastore;
-import edu.iastate.music.marching.attendance.model.store.DatastoreVersion;
 import edu.iastate.music.marching.attendance.model.store.ModelFactory;
 
 public class AppDataManager extends AbstractManager {
@@ -23,17 +22,13 @@ public class AppDataManager extends AbstractManager {
 	 * @return
 	 */
 	public AppData get() {
-
-		int id = this.dataTrain.getVersionManager().getCurrent()
-				.getVersion();
-
 		// Try cache first
-		AppData appData = this.dataTrain.loadFromCache(AppData.class, id);
+		AppData appData = this.dataTrain.loadFromCache(AppData.class, AttendanceDatastore.VERSION);
 
 		if (appData == null) {
 			appData = dataTrain.getDataStore().find().type(AppData.class)
 					.returnUnique().now();
-			this.dataTrain.updateCache(id, appData);
+			this.dataTrain.updateCache(AttendanceDatastore.VERSION, appData);
 		}
 
 		if (appData == null) {
@@ -63,7 +58,7 @@ public class AppDataManager extends AbstractManager {
 			appData.setFormSubmissionCutoff(calendar.getTime());
 
 			this.dataTrain.getDataStore().store(appData);
-			this.dataTrain.updateCache(id, appData);
+			this.dataTrain.updateCache(AttendanceDatastore.VERSION, appData);
 		}
 
 		// We have some app data from the store

@@ -30,11 +30,6 @@ public class DataTrain {
 
 	public static DataTrain getAndStartTrain() {
 		DataTrain train = new DataTrain();
-
-		// Force version model object to
-		// be created and associated
-		train.getVersionManager().getCurrent();
-
 		return train;
 	}
 
@@ -74,10 +69,6 @@ public class DataTrain {
 		return new UserManager(this);
 	}
 
-	public VersionManager getVersionManager() {
-		return new VersionManager(this);
-	}
-
 	StandardObjectDatastore getDataStore() {
 		return this.datastore;
 	}
@@ -92,7 +83,6 @@ public class DataTrain {
 			return null;
 	}
 
-	@SuppressWarnings("unchecked")
 	<CachedType> boolean updateCache(int id, CachedType object) {
 
 		if (object == null) {
@@ -124,7 +114,9 @@ public class DataTrain {
 			this.id = id;
 		}
 
+		@SuppressWarnings("unused")
 		public String clazz;
+		@SuppressWarnings("unused")
 		public int id;
 	}
 
@@ -151,12 +143,12 @@ public class DataTrain {
 		return getDataStore().find().type(type);
 	}
 
-	Key getTie(java.lang.reflect.Type type, long id) {
+	Key getTie(Class<?> type, long id) {
 		return new KeyFactory.Builder(this.datastore.getConfiguration()
 				.typeToKind(type), id).getKey();
 	}
 
-	Key getTie(java.lang.reflect.Type type, String id) {
+	Key getTie(Class<?> type, String id) {
 		return new KeyFactory.Builder(this.datastore.getConfiguration()
 				.typeToKind(type), id).getKey();
 	}
