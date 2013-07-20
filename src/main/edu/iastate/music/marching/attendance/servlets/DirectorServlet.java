@@ -113,6 +113,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 				break;
 			case export:
 				showGradeExport(req, resp);
+				break;
 			default:
 				ErrorServlet.showError(req, resp, 404);
 			}

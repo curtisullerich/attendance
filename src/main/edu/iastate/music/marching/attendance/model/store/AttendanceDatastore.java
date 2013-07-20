@@ -17,6 +17,42 @@ public class AttendanceDatastore extends StandardObjectDatastore {
 	public static final int VERSION = 1;
 	public static final String MODEL_OBJECTS_PACKAGE = "edu.iastate.music.marching.attendance.model.store";
 
+	public static String typeToKind(Type type) {
+		String kind = typeToName(type);
+
+		// replace . with _ and _ with __
+		kind = kind.replace('.', ' ');
+		kind = kind.replaceAll("_", "__");
+		kind = kind.replace(' ', '_');
+
+		int version = version(type);
+		if (version > 0) {
+			kind = "v" + version + "_" + kind;
+		}
+		return kind;
+	}
+	
+	private static String typeToName(Type type) {
+		Class<?> erased = GenericTypeReflector.erase(type);
+		Entity annotation = erased.getAnnotation(Entity.class);
+		if (annotation != null && annotation.kind().length() > 0) {
+			return annotation.kind();
+		}
+
+		Class<?> clazz = GenericTypeReflector.erase(type);
+		String kind = clazz.getName();
+		return kind;
+	}
+	
+	private static int version(java.lang.reflect.Type type) {
+		Class<?> clazz = GenericTypeReflector.erase(type);
+		if (clazz.isAnnotationPresent(Version.class)) {
+			return clazz.getAnnotation(Version.class).value();
+		} else {
+			return AttendanceDatastore.VERSION;
+		}
+	}
+	
 	AttendanceDatastore() {
 		super(new Configuration());
 	}
@@ -34,27 +70,7 @@ public class AttendanceDatastore extends StandardObjectDatastore {
 
 		@Override
 		public String typeToKind(Type type) {
-			String kind = typeToName(type);
-
-			// replace . with _ and _ with __
-			kind = kind.replace('.', ' ');
-			kind = kind.replaceAll("_", "__");
-			kind = kind.replace(' ', '_');
-
-			int version = version(type);
-			if (version > 0) {
-				kind = "v" + version + "_" + kind;
-			}
-			return kind;
-		}
-
-		protected int version(java.lang.reflect.Type type) {
-			Class<?> clazz = GenericTypeReflector.erase(type);
-			if (clazz.isAnnotationPresent(Version.class)) {
-				return clazz.getAnnotation(Version.class).value();
-			} else {
-				return AttendanceDatastore.VERSION;
-			}
+			return AttendanceDatastore.typeToKind(type);
 		}
 
 		private final static Pattern pattern = Pattern.compile("v(\\d+)_");
@@ -73,18 +89,6 @@ public class AttendanceDatastore extends StandardObjectDatastore {
 			kind = kind.replace('_', '.');
 			kind = kind.replace(' ', '_');
 			return nameToType(kind, version);
-		}
-
-		protected String typeToName(Type type) {
-			Class<?> erased = GenericTypeReflector.erase(type);
-			Entity annotation = erased.getAnnotation(Entity.class);
-			if (annotation != null && annotation.kind().length() > 0) {
-				return annotation.kind();
-			}
-
-			Class<?> clazz = GenericTypeReflector.erase(type);
-			String kind = clazz.getName();
-			return kind;
 		}
 
 		protected Type nameToType(String name, int version) {

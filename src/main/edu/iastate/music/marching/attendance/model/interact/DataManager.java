@@ -1,10 +1,12 @@
 package edu.iastate.music.marching.attendance.model.interact;
 
-import java.io.Reader;
+import java.io.StringReader;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -17,22 +19,27 @@ import javax.mail.internet.MimeMessage;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.mortbay.log.Log;
 
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
+
 import edu.iastate.music.marching.attendance.Configuration;
 import edu.iastate.music.marching.attendance.model.GsonWithPartials;
 import edu.iastate.music.marching.attendance.model.store.Absence;
 import edu.iastate.music.marching.attendance.model.store.AppData;
+import edu.iastate.music.marching.attendance.model.store.AttendanceDatastore;
 import edu.iastate.music.marching.attendance.model.store.DatastoreVersion;
 import edu.iastate.music.marching.attendance.model.store.Event;
 import edu.iastate.music.marching.attendance.model.store.Form;
+import edu.iastate.music.marching.attendance.model.store.ImportData;
 import edu.iastate.music.marching.attendance.model.store.MobileDataUpload;
 import edu.iastate.music.marching.attendance.model.store.User;
-
-@interface FullyExport {
-}
 
 public class DataManager extends AbstractManager {
 
 	private static final int DUMP_FORMAT_VERSION = 2;
+
+	private static final Logger LOG = Logger.getLogger(DataManager.class
+			.getName());
 
 	private DataTrain dataTrain;
 
@@ -108,9 +115,10 @@ public class DataManager extends AbstractManager {
 		GsonWithPartials.toJson(dump, out);
 	}
 
-	public void importJSONDatabaseDump(Reader input) {
-		
-		Dump dump = GsonWithPartials.fromJson(input, Dump.class);
+	public void importJSONDatabaseDump(String string) {
+
+		Dump dump = GsonWithPartials.fromJson(new StringReader(string),
+				Dump.class);
 
 		if (dump.format_version < DUMP_FORMAT_VERSION) {
 			// Old dump, probably not compatible with current database format
@@ -126,26 +134,22 @@ public class DataManager extends AbstractManager {
 		importAll(dump.appData);
 		importAll(dump.users);
 		importAll(dump.events);
-		importAll(dump.mobileData);
 
 		// Then things that depend on the previous
 		// injecting the previous things first
-		importAll(dump.absences);
-		importAll(dump.forms);
-
-		// Re-import a couple things that probably got messed up by the
-		// references
-		importAll(dump.users);
-		importAll(dump.events);
 		inject(dump.absences);
 		inject(dump.forms);
+		inject(dump.mobileData);
+		
 		importAll(dump.absences);
 		importAll(dump.forms);
-
+		importAll(dump.mobileData);
 		// Done!
 	}
 
 	private <T> void inject(List<T> src) {
+		if (src == null)
+			return;
 		for (T item : src) {
 			Class<?> clazz = item.getClass();
 
@@ -197,17 +201,25 @@ public class DataManager extends AbstractManager {
 	}
 
 	private <T> void importAll(T... src) {
-		for (T item : src) {
-			dataTrain.getDataStore().storeOrUpdate(item);
-		}
-	}
-
-	private <T> void importAll(List<T> src) {
+		if (src == null)
+			return;
 		for (T item : src) {
 			try {
 				dataTrain.getDataStore().storeOrUpdate(item);
 			} catch (Exception ex) {
-				Log.warn("Encountered error during import", ex);
+				LOG.log(Level.WARNING, "Encountered error during import", ex);
+			}
+		}
+	}
+
+	private <T> void importAll(List<T> src) {
+		if (src == null)
+			return;
+		for (T item : src) {
+			try {
+				dataTrain.getDataStore().storeOrUpdate(item);
+			} catch (Exception ex) {
+				LOG.log(Level.WARNING, "Encountered error during import", ex);
 			}
 		}
 	}
@@ -235,5 +247,19 @@ public class DataManager extends AbstractManager {
 		this.dataTrain.getDataStore().deleteAll(User.class);
 
 		this.dataTrain.getMemCache().clear();
+	}
+
+	public Key storeImportData(ImportData iData) {
+		return dataTrain.getDataStore().store(iData);
+	}
+
+	public ImportData getImportData(long id) {
+		return dataTrain.getDataStore().load(
+				KeyFactory.createKey(
+						AttendanceDatastore.typeToKind(ImportData.class), id));
+	}
+
+	public void removeImportData(ImportData importData) {
+		dataTrain.getDataStore().delete(importData);
 	}
 }

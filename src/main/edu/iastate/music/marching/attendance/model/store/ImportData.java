@@ -3,37 +3,25 @@ package edu.iastate.music.marching.attendance.model.store;
 import java.util.Date;
 
 import com.google.appengine.api.datastore.Text;
+import com.google.appengine.api.datastore.Blob;
 import com.google.code.twig.annotation.Entity;
 import com.google.code.twig.annotation.Type;
 import com.google.code.twig.annotation.Version;
 
 
 @Version(AttendanceDatastore.VERSION)
-@Entity(kind = "MobileDataUpload", allocateIdsBy = 0)
-public class MobileDataUpload {
+@Entity(kind = "ImportData", allocateIdsBy = 0)
+public class ImportData {
 
-	public static final String FIELD_UPLOADER = "uploader";
-
-	MobileDataUpload() {
+	ImportData() {
 	}
-
-	private User uploader;
-
+	
 	private Date timestamp;
 
 	@Type(Text.class)
-	private String data;
+	private String importData;
 	
-	@Type(Text.class)
-	private String error;
-
-	public void setUploader(User uploader) {
-		this.uploader = uploader;
-	}
-	
-	public User getUploader() {
-		return this.uploader;
-	}
+	private String errorMessage;
 
 	public void setTimestamp(Date uploadTime) {
 		this.timestamp = uploadTime;
@@ -44,18 +32,18 @@ public class MobileDataUpload {
 	}
 
 	public void setData(String uploadData) {
-		this.data = uploadData;
+		this.importData = uploadData;
 	}
 
 	public String getData() {
-		return this.data;
+		return this.importData;
 	}
 
 	public void setErrorMessage(String message) {
-		this.error = message;
+		this.errorMessage = message;
 	}
 	
 	public String getErrorMessage() {
-		return this.error;
+		return this.errorMessage;
 	}
 }

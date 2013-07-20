@@ -1,6 +1,5 @@
 package edu.iastate.music.marching.attendance.model.store;
 
-import java.util.Calendar;
 import java.util.Date;
 
 import com.google.appengine.api.datastore.Email;
@@ -66,5 +65,9 @@ public class ModelFactory {
 	public static Object newInstance(Class<?> toType)
 			throws InstantiationException, IllegalAccessException {
 		return toType.newInstance();
+	}
+
+	public static ImportData newImportData() {
+		return new ImportData();
 	}
 }

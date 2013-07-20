@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import json, random
 random.seed(1)
 
