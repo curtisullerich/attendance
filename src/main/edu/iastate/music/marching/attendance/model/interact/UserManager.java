@@ -331,6 +331,9 @@ public class UserManager extends AbstractManager {
 
 		validateUser(u);
 
+		//TODO investigate why this is necessary
+		this.datatrain.getDataStore().activate(u);
+		
 		// I make this redundant call because the call chain in updateUserGrade
 		// wipes the changes from the User
 		this.datatrain.getDataStore().update(u);
