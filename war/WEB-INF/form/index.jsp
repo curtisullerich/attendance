@@ -22,7 +22,6 @@
 				Create a new form:
 				<a href="/student/forms/forma" title="Performance Absence Request">Form A</a>
 				| <a href="/student/forms/formb" title="Class Conflict Request">Form B</a>
-				| <a href="/student/forms/formc" title="Request for Excuse from Rehearsal">Form C</a>
 				| <a href="/student/forms/formd" title="Time Worked">Form D</a>
 			</p>
 		</c:if>

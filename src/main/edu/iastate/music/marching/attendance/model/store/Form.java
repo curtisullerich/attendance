@@ -37,7 +37,7 @@ public class Form {
 	};
 
 	public static enum Type {
-		A, B, C, D;
+		A, B, D;
 
 		private String mDisplayString;
 
@@ -63,10 +63,6 @@ public class Form {
 
 		public boolean isB() {
 			return this == B;
-		}
-
-		public boolean isC() {
-			return this == C;
 		}
 
 		public boolean isD() {

@@ -561,55 +561,6 @@ public class AbsenceManager extends AbstractManager {
 				}
 			}
 			break;
-		case C:
-			if (absence.getEvent().getType() != Event.Type.Rehearsal) {
-				// nope!
-				return absence;
-			} else {
-				SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-				// This is a lot of date logic and is probably wrong somehow.
-				// Test it extensively.
-				if (fmt.format(absence.getEvent().getDate()).equals(
-						fmt.format(form.getStart()))) {
-					if (absence.getType() == Absence.Type.Absence) {
-						// the dates matched above, so it's approved
-						if (form.getAbsenceType() == Absence.Type.Absence) {
-							absence.setStatus(Absence.Status.Approved);
-						} else {
-							// throw new IllegalArgumentException(
-							// "Wrong form type!");
-						}
-					} else if (absence.getType() == Absence.Type.Tardy) {
-						if (!absence.getDatetime().after(form.getEnd())
-								&& !absence.getDatetime().before(
-										form.getStart())) {
-
-							// absence forms autoapprove tardies
-							if (form.getAbsenceType() == Absence.Type.Tardy
-									|| form.getAbsenceType() == Absence.Type.Absence) {
-								absence.setStatus(Absence.Status.Approved);
-							} else {
-								// throw new IllegalArgumentException(
-								// "Wrong form type!");
-							}
-						}
-					} else if (absence.getType() == Absence.Type.EarlyCheckOut) {
-						if (!absence.getDatetime().before(form.getStart())
-								&& !absence.getDatetime().after(form.getEnd())) {
-
-							// absence forms autoapprove earlycheckouts
-							if (form.getAbsenceType() == Absence.Type.EarlyCheckOut
-									|| form.getAbsenceType() == Absence.Type.Absence) {
-								absence.setStatus(Absence.Status.Approved);
-							} else {
-								// throw new IllegalArgumentException(
-								// "Wrong form type!");
-							}
-						}
-					}
-				}
-			}
-			break;
 		case D:
 			// this does not auto-approve here. It does that upon an update of a
 			// Form D in the forms controller

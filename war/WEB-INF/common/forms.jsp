@@ -44,7 +44,7 @@
 							<td onclick="window.open('<c:out value="${form_url_view}" />')">
 							<p style="overflow:hidden;">								
 								<c:choose>
-									<c:when test="${form.type.a || form.type.c}">							
+									<c:when test="${form.type.a}">							
 										<fmt:formatDate value="${form.start}" pattern="M/d/yyyy" /> <c:if test="${not empty form.details }"> - ${form.details }</c:if>
 									</c:when>
 									<c:when test ="${form.type.b }">

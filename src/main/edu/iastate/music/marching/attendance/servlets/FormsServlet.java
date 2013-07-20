@@ -34,14 +34,13 @@ public class FormsServlet extends AbstractBaseServlet {
 			.getName());
 
 	private enum Page {
-		forma, formb, formc, formd, index, view, remove;
+		forma, formb, formd, index, view, remove;
 	}
 
 	private static final String SERVLET_PATH = "form";
 
 	private static final String SUCCESS_FORMA = "Submitted new Form A";
 	private static final String SUCCESS_FORMB = "Submitted new Form B";
-	private static final String SUCCESS_FORMC = "Submitted new Form C";
 	private static final String SUCCESS_FORMD = "Submitted new Form D";
 
 	@Override
@@ -68,9 +67,6 @@ public class FormsServlet extends AbstractBaseServlet {
 			break;
 		case formb:
 			handleFormB(req, resp);
-			break;
-		case formc:
-			handleFormC(req, resp);
 			break;
 		case formd:
 			handleFormD(req, resp);
@@ -150,9 +146,6 @@ public class FormsServlet extends AbstractBaseServlet {
 				break;
 			case formb:
 				handleFormB(req, resp);
-				break;
-			case formc:
-				handleFormC(req, resp);
 				break;
 			case formd:
 				handleFormD(req, resp);
@@ -458,112 +451,6 @@ public class FormsServlet extends AbstractBaseServlet {
 			if (toTime != null) {
 				page.setAttribute("endtime", Util.formatTime(toTime, timeZone));
 			}
-
-			page.passOffToJsp(req, resp);
-		}
-	}
-
-	private void handleFormC(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		Date date = null;
-		String reason = null;
-		Absence.Type type = null;
-
-		DataTrain train = DataTrain.getAndStartTrain();
-
-		// Parse out all data from form and validate
-		boolean validForm = true;
-		List<String> errors = new LinkedList<String>();
-
-		if (!ValidationUtil.isPost(req)) {
-			// This is not a post request to create a new form, no need to
-			// validate
-			validForm = false;
-		} else {
-			// Extract all basic parameters
-			reason = req.getParameter("Reason");
-
-			String stype = req.getParameter("Type");
-			if (stype != null && !stype.equals("")) {
-				if (stype.equals(Absence.Type.Absence.getValue())) {
-					type = Absence.Type.Absence;
-				} else if (stype.equals(Absence.Type.Tardy.getValue())) {
-					type = Absence.Type.Tardy;
-				} else if (stype.equals(Absence.Type.EarlyCheckOut.getValue())) {
-					type = Absence.Type.EarlyCheckOut;
-				}
-			} else {
-				errors.add("Invalid type.");
-			}
-
-			try {
-				if (type == Absence.Type.Absence) {
-					date = Util.parseDate(req.getParameter("Month"),
-							req.getParameter("Day"), req.getParameter("Year"),
-							"0", "AM", "0", train.getAppDataManager().get()
-									.getTimeZone());
-
-				} else {
-					date = Util.parseDate(req.getParameter("Month"),
-							req.getParameter("Day"), req.getParameter("Year"),
-							req.getParameter("Hour"), req.getParameter("AMPM"),
-							req.getParameter("Minute"), train
-									.getAppDataManager().get().getTimeZone());
-				}
-			} catch (IllegalArgumentException e) {
-				validForm = false;
-				errors.add("The date is invalid.");
-			}
-		}
-		FormManager fc = train.getFormsManager();
-		boolean late = false;
-		if (validForm) {
-			// Store our new form to the data store
-			User student = train.getAuthManager().getCurrentUser(
-					req.getSession());
-
-			Form form = null;
-			try {
-				form = fc.createFormC(student, date, type, reason);
-			} catch (IllegalArgumentException e) {
-				validForm = false;
-				errors.add(e.getMessage());
-			}
-
-			if (form == null) {
-				validForm = false;
-				errors.add("Fix any errors above and try to resubmit. If you're still having issues, submit a bug report using the form at the bottom of the page.");
-			} else {
-				TimeZone timezone = train.getAppDataManager().get()
-						.getTimeZone();
-
-				if (!ValidationUtil.canStillSubmitFormC(form.getStart(),
-						Calendar.getInstance(timezone).getTime(), timezone)) {
-					late = true;
-				}
-			}
-		}
-		if (validForm) {
-
-			String success = SUCCESS_FORMC;
-			if (late) {
-				success = "PLEASE NOTE: This form C was submitted more than 3 weekdays after the absence in question. AttendBot 2.0 has marked it as denied and late, but a director could still approve it at his or her discretion. You probably want to add a message explaining the circumstances if you didn't do that already.";
-			}
-			String url = getIndexURL() + "?success_message="
-					+ URLEncoder.encode(success, "UTF-8");
-			url = resp.encodeRedirectURL(url);
-			resp.sendRedirect(url);
-		} else {
-			// Show form
-			PageBuilder page = new PageBuilder(Page.formc, SERVLET_PATH);
-
-			page.setPageTitle("Form C");
-
-			page.setAttribute("error_messages", errors);
-			page.setAttribute("types", Absence.Type.values());
-			setStartDate(date, page, train.getAppDataManager().get()
-					.getTimeZone());
-			page.setAttribute("Reason", reason);
 
 			page.passOffToJsp(req, resp);
 		}
