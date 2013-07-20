@@ -64,7 +64,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 17, 8, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -112,7 +112,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 40, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -167,7 +167,7 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 27, 17, 10, 0);
 		tardytime.set(Calendar.MILLISECOND, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -215,7 +215,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 17, 30, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -263,7 +263,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 15, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -311,7 +311,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 8, 15, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -359,7 +359,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 45, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -407,7 +407,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 9, 29, 13, 15, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -455,7 +455,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 8, 15, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -503,7 +503,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 20, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -551,7 +551,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 27, 16, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -601,7 +601,7 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 6, 16, 30, 0);
 		tardytime.set(Calendar.MILLISECOND, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -649,7 +649,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 17, 0, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -697,7 +697,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 17, 5, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -752,7 +752,7 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 17, 10, 0);
 		tardytime.set(Calendar.MILLISECOND, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -800,7 +800,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 17, 15, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -849,7 +849,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 25, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -897,7 +897,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 30, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -945,7 +945,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 40, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -998,7 +998,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 17, 50, 0);
 		tardytime.set(Calendar.MILLISECOND, 0);
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -1046,7 +1046,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 18, 10, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -1095,7 +1095,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 35, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -1143,7 +1143,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 55, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -1191,7 +1191,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 17, 10, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -1239,7 +1239,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 17, 23, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -1287,7 +1287,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 17, 40, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -1335,7 +1335,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 18, 10, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -1384,7 +1384,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 10, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -1432,7 +1432,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -1481,7 +1481,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 40, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -1529,7 +1529,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 17, 10, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -1577,7 +1577,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 17, 55, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -1626,7 +1626,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 10, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -1675,7 +1675,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 28, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -1723,7 +1723,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 30, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -1772,7 +1772,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 40, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -1820,7 +1820,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -1869,7 +1869,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 17, 52, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -1921,7 +1921,7 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 17, 50, 0);
 		tardytime.set(Calendar.MILLISECOND, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -1970,7 +1970,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 17, 53, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -2018,7 +2018,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 18, 10, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -2067,7 +2067,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 8, 15, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -2116,7 +2116,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 45, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -2165,7 +2165,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 13, 15, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -2214,7 +2214,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 8, 15, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -2263,7 +2263,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 20, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -2312,7 +2312,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -2361,7 +2361,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 10, 26, 16, 30, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -2410,7 +2410,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 17, 0, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -2459,7 +2459,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 11, 17, 17, 5, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -2509,7 +2509,7 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 17, 10, 0);
 		tardytime.set(Calendar.MILLISECOND, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -2558,7 +2558,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 17, 15, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -2608,7 +2608,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 25, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -2657,7 +2657,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 30, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -2706,7 +2706,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 40, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -2757,7 +2757,7 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 20, 17, 50, 0);
 		tardytime.set(Calendar.MILLISECOND, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -2806,7 +2806,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 18, 10, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -2856,7 +2856,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 35, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -2905,7 +2905,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 55, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -2954,7 +2954,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 17, 10, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -3003,7 +3003,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 17, 23, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -3052,7 +3052,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 17, 40, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -3101,7 +3101,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 18, 10, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -3151,7 +3151,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 10, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -3200,7 +3200,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -3250,7 +3250,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 40, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -3299,7 +3299,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 17, 10, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -3348,7 +3348,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 17, 55, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -3398,7 +3398,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 10, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -3448,7 +3448,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 28, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -3497,7 +3497,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 30, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -3547,7 +3547,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 40, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -3596,7 +3596,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -3646,7 +3646,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 17, 52, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -3696,7 +3696,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -3746,7 +3746,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 17, 53, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -3795,7 +3795,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 18, 10, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -3842,7 +3842,7 @@ public class FormBTest extends AbstractTest {
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -3887,7 +3887,7 @@ public class FormBTest extends AbstractTest {
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2012, 11, 17, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -3934,7 +3934,7 @@ public class FormBTest extends AbstractTest {
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -3979,7 +3979,7 @@ public class FormBTest extends AbstractTest {
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -4026,7 +4026,7 @@ public class FormBTest extends AbstractTest {
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -4071,7 +4071,7 @@ public class FormBTest extends AbstractTest {
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -4118,7 +4118,7 @@ public class FormBTest extends AbstractTest {
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -4164,7 +4164,7 @@ public class FormBTest extends AbstractTest {
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -4211,7 +4211,7 @@ public class FormBTest extends AbstractTest {
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -4259,7 +4259,7 @@ public class FormBTest extends AbstractTest {
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -4305,7 +4305,7 @@ public class FormBTest extends AbstractTest {
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -4353,7 +4353,7 @@ public class FormBTest extends AbstractTest {
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -4399,7 +4399,7 @@ public class FormBTest extends AbstractTest {
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -4447,7 +4447,7 @@ public class FormBTest extends AbstractTest {
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2012, 8, 10, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -4497,7 +4497,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.TUESDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -4545,7 +4545,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 17, 15, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.TUESDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -4593,7 +4593,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 20, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.THURSDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -4642,7 +4642,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.SUNDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -4688,7 +4688,7 @@ public class FormBTest extends AbstractTest {
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2012, 11, 17, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.SATURDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -4733,7 +4733,7 @@ public class FormBTest extends AbstractTest {
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.FRIDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -4778,7 +4778,7 @@ public class FormBTest extends AbstractTest {
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.WEDNESDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -4824,7 +4824,7 @@ public class FormBTest extends AbstractTest {
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.THURSDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -4874,7 +4874,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 6, 13, 8, 15, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -4922,7 +4922,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2011, 7, 18, 16, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -4970,7 +4970,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 6, 13, 16, 45, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -5019,7 +5019,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2011, 7, 25, 16, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -5065,7 +5065,7 @@ public class FormBTest extends AbstractTest {
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2011, 7, 25, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -5110,7 +5110,7 @@ public class FormBTest extends AbstractTest {
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2012, 6, 6, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -5155,7 +5155,7 @@ public class FormBTest extends AbstractTest {
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2001, 7, 30, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -5201,7 +5201,7 @@ public class FormBTest extends AbstractTest {
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2012, 5, 18, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -5251,7 +5251,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2013, 7, 22, 16, 30, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -5299,7 +5299,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 11, 27, 16, 25, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -5347,7 +5347,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 11, 24, 16, 30, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -5396,7 +5396,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2013, 7, 29, 17, 15, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -5442,7 +5442,7 @@ public class FormBTest extends AbstractTest {
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2013, 1, 9, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -5487,7 +5487,7 @@ public class FormBTest extends AbstractTest {
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2014, 7, 14, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -5532,7 +5532,7 @@ public class FormBTest extends AbstractTest {
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2037, 7, 20, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -5579,7 +5579,7 @@ public class FormBTest extends AbstractTest {
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2012, 11, 31, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -5629,7 +5629,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 30, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -5677,7 +5677,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 18, 10, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -5725,7 +5725,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 25, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -5774,7 +5774,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 30, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -5820,7 +5820,7 @@ public class FormBTest extends AbstractTest {
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -5865,7 +5865,7 @@ public class FormBTest extends AbstractTest {
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -5910,7 +5910,7 @@ public class FormBTest extends AbstractTest {
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -5956,7 +5956,7 @@ public class FormBTest extends AbstractTest {
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2012, 8, 10, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -6006,7 +6006,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 35, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -6054,7 +6054,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 55, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -6102,7 +6102,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 16, 40, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -6151,7 +6151,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 18, 10, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -6197,7 +6197,7 @@ public class FormBTest extends AbstractTest {
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2012, 11, 17, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -6242,7 +6242,7 @@ public class FormBTest extends AbstractTest {
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -6287,7 +6287,7 @@ public class FormBTest extends AbstractTest {
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -6333,7 +6333,7 @@ public class FormBTest extends AbstractTest {
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -6383,7 +6383,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 17, 10, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -6431,7 +6431,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 17, 40, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Tardy);
@@ -6479,7 +6479,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 17, 23, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -6528,7 +6528,7 @@ public class FormBTest extends AbstractTest {
 		Calendar tardytime = Calendar.getInstance();
 		tardytime.set(2012, 7, 20, 17, 40, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.EarlyCheckOut);
@@ -6574,7 +6574,7 @@ public class FormBTest extends AbstractTest {
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -6619,7 +6619,7 @@ public class FormBTest extends AbstractTest {
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -6664,7 +6664,7 @@ public class FormBTest extends AbstractTest {
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -6711,7 +6711,7 @@ public class FormBTest extends AbstractTest {
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2012, 7, 20, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -6757,7 +6757,7 @@ public class FormBTest extends AbstractTest {
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2012, 11, 17, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -6802,7 +6802,7 @@ public class FormBTest extends AbstractTest {
 		abs.setStatus(Absence.Status.Denied);
 		ac.updateAbsence(abs);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startDate, endDate, Calendar.MONDAY, startDate,
 				endDate, "details", 10, Absence.Type.Absence);
 		form.setStatus(Form.Status.Approved);
@@ -6838,7 +6838,7 @@ public class FormBTest extends AbstractTest {
 		}
 
 		ec.createOrUpdate(Event.Type.Rehearsal, startDate, endDate);
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startDate, endDate, Calendar.MONDAY, startDate,
 				endDate, "details", 10, Absence.Type.Absence);
 
@@ -6877,7 +6877,7 @@ public class FormBTest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", date.getTime(), date.getTime(), Calendar.MONDAY,
 				start.getTime(), end.getTime(), "details", 10,
 				Absence.Type.Absence);
@@ -6925,7 +6925,7 @@ public class FormBTest extends AbstractTest {
 		Calendar eventend = Calendar.getInstance();
 		eventend.set(2012, 7, 23, 17, 50, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.THURSDAY, starttime.getTime(), endtime.getTime(),
 				"details", 15, Absence.Type.Absence);
@@ -6977,7 +6977,7 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 6, 17, 30, 0);
 		tardytime.set(Calendar.MILLISECOND, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -7029,7 +7029,7 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 6, 17, 30, 0);
 		tardytime.set(Calendar.MILLISECOND, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -7082,7 +7082,7 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 6, 17, 30, 0);
 		tardytime.set(Calendar.MILLISECOND, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -7133,7 +7133,7 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 6, 17, 30, 0);
 		tardytime.set(Calendar.MILLISECOND, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -7185,7 +7185,7 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 6, 17, 30, 0);
 		tardytime.set(Calendar.MILLISECOND, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);
@@ -7236,7 +7236,7 @@ public class FormBTest extends AbstractTest {
 		tardytime.set(2012, 7, 6, 17, 30, 0);
 		tardytime.set(Calendar.MILLISECOND, 0);
 
-		Form form = fc.createFormB(student, "department", "course", "section",
+		Form form = fc.createClassConflictForm(student, "department", "course", "section",
 				"building", startdate.getTime(), enddate.getTime(),
 				Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
 				"details", 10, Absence.Type.Absence);

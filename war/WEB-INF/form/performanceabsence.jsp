@@ -10,17 +10,9 @@
 
 <html>
 <head>
-<jsp:include page="/WEB-INF/template/head.jsp" />
-<script>
-	function goahead() {
-		<c:if test="${late}">
-			return confirm("It's past the deadline to submit this form. If you think you have a valid excuse, you can go ahead and submit. The form will be marked as denied without notifying the director.");
-		</c:if>
-		<c:if test="${not late}">
-			return true;
-		</c:if>
-	}
-</script>
+  <jsp:include page="/WEB-INF/template/head.jsp" />
+  <link rel="stylesheet" media="all" type="text/css" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+  <link rel="stylesheet" media="all" type="text/css" href="/css/jquery-ui-timepicker-addon.css" />
 </head>
 
 <body>
@@ -31,10 +23,9 @@
 
 	<p>
 		This form includes all performances through any post-season activity
-		ending January 30, ${year+1}, and it must be submitted by
-		<fmt:formatDate value="${cutoff}"
-			pattern="hh:mm a 'on' E, MMMMM d, yyyy" />
-		. Documentation must be submitted to the director for all absences
+		ending January 30th. It must be submitted by
+		<fmt:formatDate value="${cutoff}" pattern="hh:mm a 'on' E, MMMMM d, yyyy" />. 
+		Documentation must be submitted to the director for all absences
 		(doctor's note, obituary, wedding program, etc.).
 	</p>
 
@@ -42,20 +33,10 @@
 
 		<dl class="block-layout">
 
-			<dt>
-				<label class='required'>Date of the absence:</label>
-			</dt>
-			<dd>
-				<input autofocus id='startMonth' size='5' type='number'
-					name='StartMonth' min='01' max='12' placeholder='MM'
-					value='<c:out value="${empty StartMonth ? '' : StartMonth+1}" />' />
-				/ <input id='startDay' size='5' type='number' name='StartDay'
-					min='01' max='31' step='1' placeholder='DD'
-					value='<c:out value="${StartDay}" />' /> / <input id='startYear'
-					size='5' type='number' name='StartYear' min='${year}'
-					max='${year+1}' step='1' placeholder='YYYY'
-					value='<c:out value="${StartYear}" />' />
-			</dd>
+            <dt><label for="startdate" class="required">Date of the absence</label></dt>
+            <dd>
+              <input type="text" name="startdate" id="startdate" value='<c:out value="${startdate}" />' />
+            </dd>
 
 			<dt>
 				<label class='required'>Reasons:</label>
@@ -63,18 +44,21 @@
 			<dd>
 				<textarea rows="6" cols="50" id="reason" name="Reason"
 					wrap="physical">
-					<c:out value="${Reason}" />
-				</textarea>
-				<br /> Please be specific and be thorough.
+					<c:out value="${Reason}" /></textarea>
+				<br/> Please be specific and be thorough.
 			</dd>
-
 		</dl>
-
-		<input type="submit" value="Save Info" name="SaveInfo"
-			onclick="return goahead()" />
+		<input type="submit" value="Save Info" name="SaveInfo"/>
 	</form>
 
 	<jsp:include page="/WEB-INF/template/footer.jsp" />
+        <script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="/js/jquery-ui-timepicker-addon.js"></script>
+        <script>
+          $('#startdate').datepicker({
+            });
+          //because it starts out with a filled value (today's date) for some reason
+          $('#startdate').val('');
+        </script>
 </body>
-
 </html>

@@ -109,6 +109,7 @@ public class Form {
 
 	private Date startTime;
 	private Date endTime;
+	private Date submissionTime;
 
 	// Strings to be used by Class Conflict Form
 	private String dept;
@@ -266,5 +267,13 @@ public class Form {
 
 	public void setAbsenceType(Absence.Type absenceType) {
 		this.absenceType = absenceType;
+	}
+
+	public Date getSubmissionTime() {
+		return submissionTime;
+	}
+
+	public void setSubmissionTime(Date submissionTime) {
+		this.submissionTime = submissionTime;
 	}
 }

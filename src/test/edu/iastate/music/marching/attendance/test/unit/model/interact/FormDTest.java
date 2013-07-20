@@ -52,7 +52,7 @@ public class FormDTest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormD(student, date.getTime(), 10, "details");
+		Form form = fc.createTimeWorkedForm(student, date.getTime(), 10, "details");
 
 		assertEquals(0, student.getMinutesAvailable());
 		form.setStatus(Form.Status.Approved);
@@ -84,7 +84,7 @@ public class FormDTest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormD(student, date.getTime(), 10, "details");
+		Form form = fc.createTimeWorkedForm(student, date.getTime(), 10, "details");
 
 		assertEquals(0, student.getMinutesAvailable());
 		form.setStatus(Form.Status.Approved);
@@ -121,7 +121,7 @@ public class FormDTest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormD(student, date.getTime(), 10, "details");
+		Form form = fc.createTimeWorkedForm(student, date.getTime(), 10, "details");
 
 		assertEquals(0, student.getMinutesAvailable());
 		form.setStatus(Form.Status.Approved);

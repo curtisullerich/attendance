@@ -114,7 +114,7 @@ public class UserManagerTest extends AbstractTest {
 		ac.createOrUpdateAbsence(student1, null);
 		ac.createOrUpdateAbsence(student1, null);
 
-		Form student1Form = fc.createFormA(student1, new Date(), "Some reason");
+		Form student1Form = fc.createPerformanceAbsenceForm(student1, new Date(), "Some reason");
 
 		mdc.pushMobileData(SINGLE_ABSENCE_STUDENT1_TESTDATA, student1);
 
@@ -124,7 +124,7 @@ public class UserManagerTest extends AbstractTest {
 						"A Student2", 10, "Being Silly2", User.Section.AltoSax);
 		ac.createOrUpdateAbsence(student2, null);
 
-		Form student2Form = fc.createFormA(student2, new Date(),
+		Form student2Form = fc.createPerformanceAbsenceForm(student2, new Date(),
 				"Some other reason");
 
 		mdc.pushMobileData(SINGLE_ABSENCE_STUDENT2_TESTDATA, student2);

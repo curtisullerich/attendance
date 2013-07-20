@@ -25,6 +25,6 @@ public class AttendanceDatastore extends StandardObjectDatastore {
 	}
 	
 	public AttendanceDatastore() {
-		super(Settings.builder().build(), CONFIGURATION, 0, true);
+		super(Settings.builder().build(), CONFIGURATION, 1, true);
 	}
 }

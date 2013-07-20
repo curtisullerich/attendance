@@ -61,7 +61,7 @@ public class FormATest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		Event e = ec.createOrUpdate(Event.Type.Performance, start.getTime(),
 				end.getTime());
@@ -96,7 +96,7 @@ public class FormATest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		Event e = ec.createOrUpdate(Event.Type.Performance, start.getTime(),
 				end.getTime());
@@ -134,7 +134,7 @@ public class FormATest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		Event e = ec.createOrUpdate(Event.Type.Performance, start.getTime(),
 				end.getTime());
@@ -173,7 +173,7 @@ public class FormATest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		Event e = ec.createOrUpdate(Event.Type.Performance, start.getTime(),
 				end.getTime());
@@ -212,7 +212,7 @@ public class FormATest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		Event e = ec.createOrUpdate(Event.Type.Performance, start.getTime(),
 				end.getTime());
@@ -250,7 +250,7 @@ public class FormATest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		Event e = ec.createOrUpdate(Event.Type.Performance, start.getTime(),
 				end.getTime());
@@ -292,7 +292,7 @@ public class FormATest extends AbstractTest {
 				end.getTime());
 		Absence a = ac.createOrUpdateAbsence(student, e);
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		form.setStatus(Form.Status.Approved);
 		fc.update(form);
@@ -326,7 +326,7 @@ public class FormATest extends AbstractTest {
 				end.getTime());
 		Absence a = ac.createOrUpdateAbsence(student, e);
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		form.setStatus(Form.Status.Denied);
 		fc.update(form);
@@ -362,7 +362,7 @@ public class FormATest extends AbstractTest {
 				end.getTime());
 		Absence a = ac.createOrUpdateAbsence(student, e);
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		assertEquals(Absence.Status.Pending, ac.get(a.getId()).getStatus());
 
@@ -394,7 +394,7 @@ public class FormATest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		Absence a = ac.createOrUpdateAbsence(student, start.getTime(),
 				end.getTime());
@@ -432,7 +432,7 @@ public class FormATest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		Absence a = ac.createOrUpdateAbsence(student, start.getTime(),
 				end.getTime());
@@ -468,7 +468,7 @@ public class FormATest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		Absence a = ac.createOrUpdateAbsence(student, start.getTime(),
 				end.getTime());
@@ -505,7 +505,7 @@ public class FormATest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		Absence a = ac.createOrUpdateAbsence(student, start.getTime(),
 				end.getTime());
@@ -547,7 +547,7 @@ public class FormATest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		Absence a = ac.createOrUpdateAbsence(student, start.getTime(),
 				end.getTime());
@@ -586,7 +586,7 @@ public class FormATest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		Absence a = ac.createOrUpdateAbsence(student, start.getTime(),
 				end.getTime());
@@ -628,7 +628,7 @@ public class FormATest extends AbstractTest {
 		Absence a = ac.createOrUpdateAbsence(student, start.getTime(),
 				end.getTime());
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		form.setStatus(Form.Status.Approved);
 		fc.update(form);
@@ -663,7 +663,7 @@ public class FormATest extends AbstractTest {
 		Absence a = ac.createOrUpdateAbsence(student, start.getTime(),
 				end.getTime());
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		form.setStatus(Form.Status.Denied);
 		fc.update(form);
@@ -698,7 +698,7 @@ public class FormATest extends AbstractTest {
 		Absence a = ac.createOrUpdateAbsence(student, start.getTime(),
 				end.getTime());
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		assertEquals(Absence.Status.Pending, ac.get(a.getId()).getStatus());
 
@@ -733,7 +733,7 @@ public class FormATest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormA(student2, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student2, date.getTime(), "I love band.");
 
 		Event e = ec.createOrUpdate(Event.Type.Performance, start.getTime(),
 				end.getTime());
@@ -770,7 +770,7 @@ public class FormATest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		Event e = ec.createOrUpdate(Event.Type.Performance, start.getTime(),
 				end.getTime());
@@ -814,7 +814,7 @@ public class FormATest extends AbstractTest {
 				end.getTime());
 		Absence a = ac.createOrUpdateAbsence(student2, e);
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		form.setStatus(Form.Status.Approved);
 		fc.update(form);
@@ -845,7 +845,7 @@ public class FormATest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
 				end.getTime());
@@ -880,7 +880,7 @@ public class FormATest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
 				end.getTime());
@@ -918,7 +918,7 @@ public class FormATest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
 				end.getTime());
@@ -956,7 +956,7 @@ public class FormATest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
 				end.getTime());
@@ -995,7 +995,7 @@ public class FormATest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
 				end.getTime());
@@ -1033,7 +1033,7 @@ public class FormATest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		Event e = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
 				end.getTime());
@@ -1075,7 +1075,7 @@ public class FormATest extends AbstractTest {
 				end.getTime());
 		Absence a = ac.createOrUpdateAbsence(student, e);
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		form.setStatus(Form.Status.Approved);
 		fc.update(form);
@@ -1109,7 +1109,7 @@ public class FormATest extends AbstractTest {
 				end.getTime());
 		Absence a = ac.createOrUpdateAbsence(student, e);
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		form.setStatus(Form.Status.Denied);
 		fc.update(form);
@@ -1145,7 +1145,7 @@ public class FormATest extends AbstractTest {
 				end.getTime());
 		Absence a = ac.createOrUpdateAbsence(student, e);
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		assertEquals(Absence.Status.Pending, ac.get(a.getId()).getStatus());
 
@@ -1173,7 +1173,7 @@ public class FormATest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		Absence a = ac.createOrUpdateAbsence(student, start.getTime(),
 				end.getTime());
@@ -1213,7 +1213,7 @@ public class FormATest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		Event e = ec.createOrUpdate(Event.Type.Performance, start.getTime(),
 				end.getTime());
@@ -1250,7 +1250,7 @@ public class FormATest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		Event e = ec.createOrUpdate(Event.Type.Performance, start.getTime(),
 				end.getTime());
@@ -1289,7 +1289,7 @@ public class FormATest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		Event e = ec.createOrUpdate(Event.Type.Performance, start.getTime(),
 				end.getTime());
@@ -1329,7 +1329,7 @@ public class FormATest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		Event e = ec.createOrUpdate(Event.Type.Performance, start.getTime(),
 				end.getTime());
@@ -1369,7 +1369,7 @@ public class FormATest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		Event e = ec.createOrUpdate(Event.Type.Performance, start.getTime(),
 				end.getTime());
@@ -1408,7 +1408,7 @@ public class FormATest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		Event e = ec.createOrUpdate(Event.Type.Performance, start.getTime(),
 				end.getTime());
@@ -1452,7 +1452,7 @@ public class FormATest extends AbstractTest {
 		start.add(Calendar.MINUTE, 20);
 		Absence a = ac.createOrUpdateTardy(student, start.getTime());
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		form.setStatus(Form.Status.Approved);
 		fc.update(form);
@@ -1487,7 +1487,7 @@ public class FormATest extends AbstractTest {
 		start.add(Calendar.MINUTE, 20);
 		Absence a = ac.createOrUpdateTardy(student, start.getTime());
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		form.setStatus(Form.Status.Denied);
 		fc.update(form);
@@ -1524,7 +1524,7 @@ public class FormATest extends AbstractTest {
 		start.add(Calendar.MINUTE, 20);
 		Absence a = ac.createOrUpdateTardy(student, start.getTime());
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		assertEquals(Absence.Status.Pending, ac.get(a.getId()).getStatus());
 
@@ -1554,7 +1554,7 @@ public class FormATest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		Event e = ec.createOrUpdate(Event.Type.Performance, start.getTime(),
 				end.getTime());
@@ -1591,7 +1591,7 @@ public class FormATest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		Event e = ec.createOrUpdate(Event.Type.Performance, start.getTime(),
 				end.getTime());
@@ -1630,7 +1630,7 @@ public class FormATest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		Event e = ec.createOrUpdate(Event.Type.Performance, start.getTime(),
 				end.getTime());
@@ -1670,7 +1670,7 @@ public class FormATest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		Event e = ec.createOrUpdate(Event.Type.Performance, start.getTime(),
 				end.getTime());
@@ -1710,7 +1710,7 @@ public class FormATest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		Event e = ec.createOrUpdate(Event.Type.Performance, start.getTime(),
 				end.getTime());
@@ -1749,7 +1749,7 @@ public class FormATest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		Event e = ec.createOrUpdate(Event.Type.Performance, start.getTime(),
 				end.getTime());
@@ -1793,7 +1793,7 @@ public class FormATest extends AbstractTest {
 		start.add(Calendar.MINUTE, 20);
 		Absence a = ac.createOrUpdateEarlyCheckout(student, start.getTime());
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		form.setStatus(Form.Status.Approved);
 		fc.update(form);
@@ -1828,7 +1828,7 @@ public class FormATest extends AbstractTest {
 		start.add(Calendar.MINUTE, 20);
 		Absence a = ac.createOrUpdateEarlyCheckout(student, start.getTime());
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		form.setStatus(Form.Status.Denied);
 		fc.update(form);
@@ -1865,7 +1865,7 @@ public class FormATest extends AbstractTest {
 		start.add(Calendar.MINUTE, 20);
 		Absence a = ac.createOrUpdateEarlyCheckout(student, start.getTime());
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		assertEquals(Absence.Status.Pending, ac.get(a.getId()).getStatus());
 
@@ -1893,7 +1893,7 @@ public class FormATest extends AbstractTest {
 		Calendar end = Calendar.getInstance();
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 
 		Event e = ec.createOrUpdate(Event.Type.Performance, start.getTime(),
 				end.getTime());
@@ -1939,7 +1939,7 @@ public class FormATest extends AbstractTest {
 		a.setStatus(Absence.Status.Denied);
 		ac.updateAbsence(a);
 	
-		Form form = fc.createFormA(student, startDate, "Oh god, how did I get in here, I am a cat :3");
+		Form form = fc.createPerformanceAbsenceForm(student, startDate, "Oh god, how did I get in here, I am a cat :3");
 		form.setStatus(Form.Status.Approved);
 		fc.update(form);
 		
@@ -1974,7 +1974,7 @@ public class FormATest extends AbstractTest {
 		
 		ec.createOrUpdate(Event.Type.Performance, startDate, endDate);
 		
-		Form form = fc.createFormA(student, startDate, "Meow!");
+		Form form = fc.createPerformanceAbsenceForm(student, startDate, "Meow!");
 		
 		Absence a = ac.createOrUpdateAbsence(student, startDate, endDate);
 		a.setStatus(Absence.Status.Denied);

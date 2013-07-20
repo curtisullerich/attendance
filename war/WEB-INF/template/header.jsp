@@ -3,27 +3,6 @@
 <c:if test="${not pagetemplate.mobileSite}">
 	<div class="skip"><a accesskey="2" href="#container">Skip Navigation</a></div>
 	<div class="hwrapper" id="header">
-		<div id="top-strip">
-			<div class="grids-24">
-				<div class="grid-8">
-					<ul class="left">
-						<li><a href="http://cymail.iastate.edu/">CyMail</a></li>
-						<li><a href="http://exchange.iastate.edu/">Outlook</a></li>
-						<li><a href="http://webct.its.iastate.edu/">WebCT</a></li>
-						<li><a href="http://bb.its.iastate.edu/">Blackboard</a></li>
-						<li class="last"><a href="http://accessplus.iastate.edu/">AccessPlus</a></li>
-					</ul>
-				</div>
-				<div class="grid-16">
-					<ul class="right">
-						<li class="idx"><a href="http://www.iastate.edu/index/A/">A</a></li><li class="idx"><a href="http://www.iastate.edu/index/B/">B</a></li><li class="idx"><a href="http://www.iastate.edu/index/C/">C</a></li><li class="idx"><a href="http://www.iastate.edu/index/D/">D</a></li><li class="idx"><a href="http://www.iastate.edu/index/E/">E</a></li><li class="idx"><a href="http://www.iastate.edu/index/F/">F</a></li><li class="idx"><a href="http://www.iastate.edu/index/G/">G</a></li><li class="idx"><a href="http://www.iastate.edu/index/H/">H</a></li><li class="idx"><a href="http://www.iastate.edu/index/I/">I</a></li><li class="idx"><a href="http://www.iastate.edu/index/J/">J</a></li><li class="idx"><a href="http://www.iastate.edu/index/K/">K</a></li><li class="idx"><a href="http://www.iastate.edu/index/L/">L</a></li><li class="idx"><a href="http://www.iastate.edu/index/M/">M</a></li><li class="idx"><a href="http://www.iastate.edu/index/N/">N</a></li><li class="idx"><a href="http://www.iastate.edu/index/O/">O</a></li><li class="idx"><a href="http://www.iastate.edu/index/P/">P</a></li><li class="idx"><a href="http://www.iastate.edu/index/Q/">Q</a></li><li class="idx"><a href="http://www.iastate.edu/index/R/">R</a></li><li class="idx"><a href="http://www.iastate.edu/index/S/">S</a></li><li class="idx"><a href="http://www.iastate.edu/index/T/">T</a></li><li class="idx"><a href="http://www.iastate.edu/index/U/">U</a></li><li class="idx"><a href="http://www.iastate.edu/index/V/">V</a></li><li class="idx"><a href="http://www.iastate.edu/index/W/">W</a></li><li class="idx"><a href="http://www.iastate.edu/index/X/">X</a></li><li class="idx"><a href="http://www.iastate.edu/index/Y/">Y</a></li><li class="idx"><a href="http://www.iastate.edu/index/Z/">Z</a></li>
-						<li class="border first"><a href="http://info.iastate.edu/">Directory</a></li>
-						<li class="border"><a href="http://www.fpm.iastate.edu/maps/">Maps</a></li>
-						<li class="border last"><a href="http://www.iastate.edu/contact/">Contact Us</a></li>
-					</ul>
-				</div>
-			</div>
-		</div>
 		<div id="ribbon">
 			<div class="grids-24">
 				<div class="grid-16">

@@ -60,7 +60,7 @@ public class FormsServlet extends AbstractBaseServlet {
 
 		switch (page) {
 		case performanceabsence:
-			postPerformanceAbsenceForm(req, resp);
+			handlePerformanceAbsenceForm(req, resp);
 			break;
 		case classconflict:
 			handleClassConflictForm(req, resp);
@@ -139,7 +139,7 @@ public class FormsServlet extends AbstractBaseServlet {
 				showIndex(req, resp);
 				break;
 			case performanceabsence:
-				postPerformanceAbsenceForm(req, resp);
+				handlePerformanceAbsenceForm(req, resp);
 				break;
 			case classconflict:
 				handleClassConflictForm(req, resp);
@@ -206,8 +206,8 @@ public class FormsServlet extends AbstractBaseServlet {
 
 	}
 
-	private void postPerformanceAbsenceForm(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
+	private void handlePerformanceAbsenceForm(HttpServletRequest req,
+			HttpServletResponse resp) throws ServletException, IOException {
 		String reason = null;
 		Date date = null;
 
@@ -226,10 +226,8 @@ public class FormsServlet extends AbstractBaseServlet {
 			reason = req.getParameter("Reason");
 
 			try {
-				date = Util.parseDate(req.getParameter("StartMonth"),
-						req.getParameter("StartDay"),
-						req.getParameter("StartYear"), "0", "AM", "0", train
-								.getAppDataManager().get().getTimeZone());
+				date = Util.parseNewDate(req.getParameter("startdate"),
+						train.getAppDataManager().get().getTimeZone());
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add("Invalid Input: The input date is invalid.");
@@ -243,8 +241,8 @@ public class FormsServlet extends AbstractBaseServlet {
 
 			Form form = null;
 			try {
-				form = train.getFormsManager().createFormA(student, date,
-						reason);
+				form = train.getFormsManager().createPerformanceAbsenceForm(
+						student, date, reason);
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add(e.getMessage());
@@ -253,7 +251,7 @@ public class FormsServlet extends AbstractBaseServlet {
 			if (form == null) {
 				validForm = false;
 				errors.add("--------");
-				errors.add("If any of the errors above are fixable, please address them and try to resubmit. If you're still having issues, submit a bug report using the form at the bottom of the page");
+				errors.add("If any of the errors above are fixable, please address them and try to resubmit. If you're still having issues, submit a bug report using the form at the bottom of the page.");
 			}
 		}
 
@@ -277,7 +275,8 @@ public class FormsServlet extends AbstractBaseServlet {
 			resp.sendRedirect(url);
 		} else {
 			// Show form
-			PageBuilder page = new PageBuilder(Page.performanceabsence, SERVLET_PATH);
+			PageBuilder page = new PageBuilder(Page.performanceabsence,
+					SERVLET_PATH);
 
 			String displayName = Form.Type.PerformanceAbsence.getDisplayName();
 			page.setPageTitle(displayName);
@@ -290,15 +289,17 @@ public class FormsServlet extends AbstractBaseServlet {
 			page.setAttribute("Reason", reason);
 			setStartDate(date, page, timezone);
 			if (!Calendar.getInstance(timezone).before(cutoff)) {
-				errors.add("PLEASE NOTE: The deadline for submitting " + displayName + " has passed. You can still submit one, but it will be marked as late by AttendBot 2.0. Be sure to explain your circumstances when you submit.");
+				errors.add("PLEASE NOTE: The deadline for submitting "
+						+ displayName
+						+ " has passed. You can still submit one, but it will be marked as late by AttendBot 2.0. Be sure to explain your circumstances when you submit.");
 			}
 
 			page.passOffToJsp(req, resp);
 		}
 	}
 
-	private void handleClassConflictForm(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
+	private void handleClassConflictForm(HttpServletRequest req,
+			HttpServletResponse resp) throws ServletException, IOException {
 		String department = null;
 		String course = null;
 		String section = null;
@@ -402,10 +403,10 @@ public class FormsServlet extends AbstractBaseServlet {
 
 			Form form = null;
 			try {
-				form = train.getFormsManager().createFormB(student, department,
-						course, section, building, startDate, endDate, day,
-						fromTime, toTime, comments, minutesToOrFrom,
-						absenceType);
+				form = train.getFormsManager().createClassConflictForm(student,
+						department, course, section, building, startDate,
+						endDate, day, fromTime, toTime, comments,
+						minutesToOrFrom, absenceType);
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add(e.getMessage());
@@ -454,8 +455,8 @@ public class FormsServlet extends AbstractBaseServlet {
 		}
 	}
 
-	private void handleTimeWorkedForm(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
+	private void handleTimeWorkedForm(HttpServletRequest req,
+			HttpServletResponse resp) throws ServletException, IOException {
 		int minutes = 0;
 		Date date = null;
 		String details = null;
@@ -497,8 +498,8 @@ public class FormsServlet extends AbstractBaseServlet {
 			Form form = null;
 			try {
 				// hash the id for use in the accepting and declining forms
-				form = train.getFormsManager().createFormD(student, date,
-						minutes, details);
+				form = train.getFormsManager().createTimeWorkedForm(student,
+						date, minutes, details);
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add(e.getMessage());
@@ -533,7 +534,7 @@ public class FormsServlet extends AbstractBaseServlet {
 		}
 	}
 
-	//TODO remove this
+	// TODO remove this
 	private void setStartDate(Date date, PageBuilder page, TimeZone timezone) {
 		if (date == null)
 			return;

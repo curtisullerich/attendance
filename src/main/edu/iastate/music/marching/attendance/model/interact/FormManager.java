@@ -1,19 +1,9 @@
 package edu.iastate.music.marching.attendance.model.interact;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Properties;
 import java.util.TimeZone;
-
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.AddressException;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.code.twig.FindCommand.RootFindCommand;
@@ -129,41 +119,8 @@ public class FormManager extends AbstractManager {
 		// }
 	}
 
-	// /**
-	// * Does not store form, just creates and validates
-	// *
-	// * @param type
-	// * @param student
-	// * @param startDate
-	// * @param endDate
-	// * @return
-	// */
-	// private Form createForm(Form.Type type, User student, Date startDate,
-	// Date endDate) {
-	//
-	// if (type == null)
-	// throw new IllegalArgumentException("Null type given for form");
-	//
-	// if (student == null)
-	// throw new IllegalArgumentException("Null student given for form");
-	//
-	// if (startDate == null)
-	// throw new IllegalArgumentException("Null startDate given for form");
-	//
-	// if (endDate == null)
-	// throw new IllegalArgumentException("Null endDate given for form");
-	//
-	// more validation of start/end dates
-	// Form form = ModelFactory.newForm(type, student);
-	//
-	// form.setStart(startDate);
-	// form.setEnd(endDate);
-	//
-	//
-	// return form;
-	// }
-
-	public Form createFormA(User student, Date date, String reason) {
+	public Form createPerformanceAbsenceForm(User student, Date date,
+			String reason) {
 
 		TimeZone timezone = this.dataTrain.getAppDataManager().get()
 				.getTimeZone();
@@ -218,6 +175,9 @@ public class FormManager extends AbstractManager {
 		form.setStart(startDate);
 		form.setEnd(endDate);
 
+		// current
+		form.setSubmissionTime(new Date());
+
 		// Set remaining fields
 		form.setDetails(reason);
 		form.setStatus(Form.Status.Pending);
@@ -234,10 +194,10 @@ public class FormManager extends AbstractManager {
 		// return formACHelper(student, date, reason, Form.Type.A);
 	}
 
-	public Form createFormB(User student, String department, String course,
-			String section, String building, Date startDate, Date endDate,
-			int day, Date startTime, Date endTime, String details,
-			int minutesToOrFrom, Absence.Type absenceType) {
+	public Form createClassConflictForm(User student, String department,
+			String course, String section, String building, Date startDate,
+			Date endDate, int day, Date startTime, Date endTime,
+			String details, int minutesToOrFrom, Absence.Type absenceType) {
 
 		TimeZone timezone = this.dataTrain.getAppDataManager().get()
 				.getTimeZone();
@@ -325,6 +285,9 @@ public class FormManager extends AbstractManager {
 			throw exp;
 		}
 
+		// current
+		form.setSubmissionTime(new Date());
+
 		form.setDay(day);
 		form.setDetails(details);
 		form.setStatus(Form.Status.Pending);
@@ -346,7 +309,7 @@ public class FormManager extends AbstractManager {
 	 * @param details
 	 * @return
 	 */
-	public Form createFormD(User student, Date date, int minutes,
+	public Form createTimeWorkedForm(User student, Date date, int minutes,
 			String details) {
 		TimeZone timezone = this.dataTrain.getAppDataManager().get()
 				.getTimeZone();
@@ -385,6 +348,9 @@ public class FormManager extends AbstractManager {
 
 		form.setStart(startDate);
 		form.setEnd(endDate);
+
+		// current
+		form.setSubmissionTime(new Date());
 
 		// Set remaining fields
 		form.setDetails(details);
@@ -426,5 +392,4 @@ public class FormManager extends AbstractManager {
 		List<Form> forms = this.get(user);
 		this.dataTrain.getDataStore().deleteAll(forms);
 	}
-
 }

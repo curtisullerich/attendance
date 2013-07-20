@@ -1297,7 +1297,7 @@ public class AbsenceManagerTest extends AbstractTest {
 		Calendar end = Calendar.getInstance(timezone);
 		end.set(2012, 7, 7, 17, 50, 0);
 
-		Form form = fc.createFormA(student, date.getTime(), "I love band.");
+		Form form = fc.createPerformanceAbsenceForm(student, date.getTime(), "I love band.");
 		form.setStatus(Form.Status.Approved);
 		fc.update(form);
 
