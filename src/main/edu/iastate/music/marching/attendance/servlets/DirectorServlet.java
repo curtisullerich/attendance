@@ -714,7 +714,6 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		page.setAttribute("timezone", data.getTimeZone());
 
-		Util.datetimeFormat.setTimeZone(data.getTimeZone());
 		page.setAttribute("datetime",
 				Util.formatDateTime(cutoffDate.getTime(), data.getTimeZone()));
 

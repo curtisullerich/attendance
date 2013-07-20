@@ -10,13 +10,21 @@ import edu.iastate.music.marching.attendance.model.interact.DataTrain;
 import edu.iastate.music.marching.attendance.model.store.AppData;
 
 public class Util {
+	private static class StrictDateFormat extends SimpleDateFormat {
+		private static final long serialVersionUID = -5225913517433307430L;
+
+		public StrictDateFormat(String string) {
+			super(string);
+			super.setLenient(false);
+		}
+	}
 	private static final String dateString = "MM/dd/yyyy";
 	private static final String timeString = "h:mm aa";
-	public static final SimpleDateFormat datetimeFormat = new SimpleDateFormat(
+	private static final StrictDateFormat datetimeFormat = new StrictDateFormat(
 			dateString + " " + timeString);
-	public static final SimpleDateFormat dateFormat = new SimpleDateFormat(
+	private static final StrictDateFormat dateFormat = new StrictDateFormat(
 			dateString);
-	public static final SimpleDateFormat timeFormat = new SimpleDateFormat(
+	private static final StrictDateFormat timeFormat = new StrictDateFormat(
 			timeString);
 
 	public static Date parseDate(String sMonth, String sDay, String sYear,
