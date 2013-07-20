@@ -224,10 +224,13 @@ public class FormsServlet extends AbstractBaseServlet {
 		} else {
 			// Extract all basic parameters
 			reason = req.getParameter("Reason");
+			if (reason.trim().equals("")) {
+				reason = null;
+			}
 
 			try {
-				date = Util.parseNewDate(req.getParameter("startdate"),
-						train.getAppDataManager().get().getTimeZone());
+				date = Util.parseNewDate(req.getParameter("startdate"), train
+						.getAppDataManager().get().getTimeZone());
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add("Invalid Input: The input date is invalid.");
@@ -287,7 +290,9 @@ public class FormsServlet extends AbstractBaseServlet {
 					.getFormSubmissionCutoff());
 
 			page.setAttribute("Reason", reason);
-			setStartDate(date, page, timezone);
+			if (date != null) {
+				page.setAttribute("startdate", Util.formatDate(date, timezone));
+			}
 			if (!Calendar.getInstance(timezone).before(cutoff)) {
 				errors.add("PLEASE NOTE: The deadline for submitting "
 						+ displayName
