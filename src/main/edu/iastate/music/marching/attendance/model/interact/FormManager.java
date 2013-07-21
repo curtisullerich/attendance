@@ -177,6 +177,9 @@ public class FormManager extends AbstractManager {
 
 		// current
 		form.setSubmissionTime(new Date());
+		form.setLate(form.getSubmissionTime().after(
+				DataTrain.getAndStartTrain().getAppDataManager().get()
+						.getPerformanceAbsenceFormCutoff()));
 
 		// Set remaining fields
 		form.setDetails(reason);
@@ -287,6 +290,9 @@ public class FormManager extends AbstractManager {
 
 		// current
 		form.setSubmissionTime(new Date());
+		form.setLate(form.getSubmissionTime().after(
+				DataTrain.getAndStartTrain().getAppDataManager().get()
+						.getPerformanceAbsenceFormCutoff()));
 
 		form.setDay(day);
 		form.setDetails(details);
@@ -351,6 +357,9 @@ public class FormManager extends AbstractManager {
 
 		// current
 		form.setSubmissionTime(new Date());
+		form.setLate(form.getSubmissionTime().after(
+				DataTrain.getAndStartTrain().getAppDataManager().get()
+						.getPerformanceAbsenceFormCutoff()));
 
 		// Set remaining fields
 		form.setDetails(details);
