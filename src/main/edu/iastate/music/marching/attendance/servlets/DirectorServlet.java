@@ -734,7 +734,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		page.setAttribute("appinfo", data);
 
-		page.setAttribute("timezone", data.getTimeZone());
+		page.setAttribute("timezone", data.getTimeZone().toTimeZone());
 
 		if (data.getPerformanceAbsenceFormCutoff() != null) {
 			page.setAttribute("performanceAbsenceDatetime", Util
