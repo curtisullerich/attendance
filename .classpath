@@ -7,12 +7,12 @@
 	<classpathentry kind="lib" path="lib/mockito-all-1.9.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gson-2.1.jar" sourcepath="war/WEB-INF/lib/gson-2.1-sources.jar">
 		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/attendance/war/WEB-INF/lib/gson-2.1-javadoc.jar!/"/>
+			<attribute name="javadoc_location" value="jar:platform:/resource/attendance/lib/gson-2.1-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/twig-persist-2.0-rc.jar" sourcepath="war/WEB-INF/lib/twig-persist-2.0-rc-sources.jar">
+	<classpathentry kind="lib" path="war/WEB-INF/lib/twig-persist-2.0-rc.jar" sourcepath="lib/twig-persist-2.0-rc-sources.jar">
 		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/attendance/war/WEB-INF/lib/twig-persist-2.0-rc-sources.jar!/"/>
+			<attribute name="javadoc_location" value="jar:platform:/resource/attendance/lib/twig-persist-2.0-rc-sources.jar!/"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/yamlbeans-1.06.jar"/>
@@ -23,5 +23,10 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guava-10.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/appengine-testing-1.8.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/appengine-api-stubs-1.8.1.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/joda-time-2.2.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/attendance/lib/joda-time-2.2-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
