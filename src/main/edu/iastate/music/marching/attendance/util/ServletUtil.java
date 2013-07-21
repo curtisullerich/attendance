@@ -10,8 +10,6 @@ import org.apache.commons.fileupload.FileItemStream;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
-import edu.iastate.music.marching.attendance.tasks.Tasks;
-
 public class ServletUtil {
 
 	public static InputStream getInputStream(HttpServletRequest req)

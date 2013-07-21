@@ -20,9 +20,6 @@ import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
 public class AuthServlet extends AbstractBaseServlet {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -4587683490944456397L;
 
 	private static final String SERVLET_PATH = "auth";
@@ -35,7 +32,7 @@ public class AuthServlet extends AbstractBaseServlet {
 			SERVLET_PATH);
 
 	private enum Page {
-		index, login, login_callback, logout, register_pre, register, register_post, login_fail;
+		index, login, login_callback, logout, welcome, register, register_post, login_fail;
 	}
 
 	public static String getLoginUrl() {
@@ -80,12 +77,13 @@ public class AuthServlet extends AbstractBaseServlet {
 
 		Page page = parsePathInfo(req.getPathInfo(), Page.class);
 
-		if (page == null)
+		if (page == null) {
 			ErrorServlet.showError(req, resp, 404);
-		else
+		} else {
 			switch (page) {
 			case index:
-				resp.sendRedirect(URL_LOGIN);
+				handleWelcome(req, resp);
+				// resp.sendRedirect(URL_LOGIN);
 				break;
 			case login:
 				handleLogin(req, resp, true);
@@ -102,7 +100,24 @@ public class AuthServlet extends AbstractBaseServlet {
 			default:
 				ErrorServlet.showError(req, resp, 404);
 			}
+		}
+	}
 
+	private void handleWelcome(HttpServletRequest req, HttpServletResponse resp)
+			throws IOException, ServletException {
+		DataTrain train = DataTrain.getAndStartTrain();
+		AuthManager am = train.getAuthManager();
+
+		if (AuthManager.getGoogleUser() == null) {
+			new PageBuilder(Page.welcome, SERVLET_PATH).passOffToJsp(req, resp);
+			return;
+		} if (am.login(req.getSession())) {
+			redirectPostLogin(req, resp, true);
+			return;
+		} else {
+			new PageBuilder(Page.welcome, SERVLET_PATH).passOffToJsp(req, resp);
+			return;
+		}
 	}
 
 	@Override
@@ -175,8 +190,7 @@ public class AuthServlet extends AbstractBaseServlet {
 		} else {
 			// No valid google login, show a welcome page prompting them to
 			// login
-			new PageBuilder(Page.register_pre, SERVLET_PATH).passOffToJsp(req,
-					resp);
+			new PageBuilder(Page.welcome, SERVLET_PATH).passOffToJsp(req, resp);
 		}
 	}
 
@@ -222,11 +236,12 @@ public class AuthServlet extends AbstractBaseServlet {
 		if (!ValidationUtil.isValidUniversityID(univID)) {
 			errors.add("University ID was not valid");
 		}
-		
-		if(!ValidationUtil.isUniqueId(univID, new Email(google_user.getEmail()))) {
+
+		if (!ValidationUtil.isUniqueId(univID,
+				new Email(google_user.getEmail()))) {
 			errors.add("University ID was not unique");
 		}
-		
+
 		try {
 			year = Integer.parseInt(req.getParameter("Year"));
 		} catch (NumberFormatException e) {
@@ -249,15 +264,16 @@ public class AuthServlet extends AbstractBaseServlet {
 		if (!ValidationUtil.validSecondaryEmail(secondEmail, train)) {
 			errors.add("Invalid secondary email");
 		}
-		if (!ValidationUtil.isUniqueSecondaryEmail(secondEmail, new Email(google_user.getEmail()), train)) {
+		if (!ValidationUtil.isUniqueSecondaryEmail(secondEmail, new Email(
+				google_user.getEmail()), train)) {
 			errors.add("Non-unique secondary email");
 		}
 
 		if (errors.size() == 0) {
 			try {
-				new_user = train.getUsersManager().createStudent(
-						google_user, univID, firstName, lastName, year, major,
-						section, secondEmail);
+				new_user = train.getUsersManager().createStudent(google_user,
+						univID, firstName, lastName, year, major, section,
+						secondEmail);
 
 			} catch (IllegalArgumentException e) {
 				// Save validation errors
