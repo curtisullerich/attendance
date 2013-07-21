@@ -169,7 +169,7 @@ public class AdminServlet extends AbstractBaseServlet {
 		try {
 			uc.update(localUser);
 
-			// Update user in session if we just changed the currently logged in
+			// UpDateTime user in session if we just changed the currently logged in
 			// user
 			if (localUser.equals(train.getAuthManager().getCurrentUser(
 					req.getSession())))

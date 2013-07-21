@@ -1,14 +1,19 @@
 package edu.iastate.music.marching.attendance.model.interact;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
+
+import org.joda.time.DateMidnight;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.Interval;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
 
 import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.code.twig.FindCommand.RootFindCommand;
 import com.google.code.twig.ObjectDatastore;
 
+import edu.iastate.music.marching.attendance.App.WeekDay;
 import edu.iastate.music.marching.attendance.model.store.Absence;
 import edu.iastate.music.marching.attendance.model.store.Form;
 import edu.iastate.music.marching.attendance.model.store.ModelFactory;
@@ -18,15 +23,15 @@ import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
 public class FormManager extends AbstractManager {
 
-	private DataTrain dataTrain;
+	private DataTrain train;
 
 	public FormManager(DataTrain dataTrain) {
-		this.dataTrain = dataTrain;
+		this.train = dataTrain;
 	}
 
 	public List<Form> getAll() {
-		return this.dataTrain.getDataStore().find().type(Form.class)
-				.returnAll().now();
+		return this.train.getDataStore().find().type(Form.class).returnAll()
+				.now();
 	}
 
 	/**
@@ -36,7 +41,7 @@ public class FormManager extends AbstractManager {
 	 * @return
 	 */
 	public List<Form> get(User user) {
-		ObjectDatastore od = this.dataTrain.getDataStore();
+		ObjectDatastore od = this.train.getDataStore();
 		RootFindCommand<Form> find = od.find().type(Form.class);
 
 		// Set the ancestor for this form, automatically limits results to be
@@ -52,7 +57,7 @@ public class FormManager extends AbstractManager {
 				if (f.getStatus() == Form.Status.Approved) {
 					student.setMinutesAvailable(student.getMinutesAvailable()
 							+ f.getMinutesWorked());
-					this.dataTrain.getUsersManager().update(student);
+					this.train.getUsersManager().update(student);
 					f.setApplied(true);
 				}
 			}
@@ -61,9 +66,9 @@ public class FormManager extends AbstractManager {
 
 	public void update(Form f) {
 		updateFormD(f);
-		this.dataTrain.getDataStore().update(f);
+		this.train.getDataStore().update(f);
 
-		AbsenceManager ac = this.dataTrain.getAbsenceManager();
+		AbsenceManager ac = this.train.getAbsenceManager();
 
 		// TODO https://github.com/curtisullerich/attendance/issues/106
 		// what if the student is null?
@@ -74,14 +79,14 @@ public class FormManager extends AbstractManager {
 	}
 
 	public Form getByHashedId(long id) {
-		return this.dataTrain.getDataStore().find().type(Form.class)
+		return this.train.getDataStore().find().type(Form.class)
 				.addFilter(Form.HASHED_ID, FilterOperator.EQUAL, id)
 				.returnUnique().now();
 	}
 
 	private void storeForm(Form form) {
 		// TODO: https://github.com/curtisullerich/attendance/issues/114
-		// Perform store of this new form and update of student's grade in a
+		// Perform store of this new form and upDateTime of student's grade in a
 		// transaction to prevent inconsistent states
 		// Track transaction = dataTrain.switchTracksInternal();
 		//
@@ -90,14 +95,14 @@ public class FormManager extends AbstractManager {
 		updateFormD(form);
 
 		// Store
-		dataTrain.getDataStore().store(form);
+		train.getDataStore().store(form);
 
-		// Update grade, it may have changed
-		dataTrain.getUsersManager().update(form.getStudent());
+		// UpDateTime grade, it may have changed
+		train.getUsersManager().update(form.getStudent());
 
 		// TODO https://github.com/curtisullerich/attendance/issues/106
 		// what if the student is null?
-		AbsenceManager ac = this.dataTrain.getAbsenceManager();
+		AbsenceManager ac = this.train.getAbsenceManager();
 		for (Absence absence : ac.get(form.getStudent())) {
 			// TODO https://github.com/curtisullerich/attendance/issues/106
 			// I wrote a (private) method in Absence controller that could
@@ -105,7 +110,8 @@ public class FormManager extends AbstractManager {
 			// and specific absence. We /could/ expose it as protected, but
 			// that may introduce bugs elsewhere because we're not forced to
 			// call updateAbsence in order to perform checks and thus may forget
-			// to update it or perform all necessary validation. This applies to
+			// to upDateTime it or perform all necessary validation. This
+			// applies to
 			// all forms
 			ac.updateAbsence(absence);
 		}
@@ -119,14 +125,8 @@ public class FormManager extends AbstractManager {
 		// }
 	}
 
-	public Form createPerformanceAbsenceForm(User student, Date date,
+	public Form createPerformanceAbsenceForm(User student, LocalDate date,
 			String reason) {
-
-		TimeZone timezone = this.dataTrain.getAppDataManager().get()
-				.getTimeZone();
-
-		Calendar calendar = Calendar.getInstance(timezone);
-		calendar.setTime(date);
 
 		// Simple validation first
 		ValidationExceptions exp = new ValidationExceptions();
@@ -135,48 +135,22 @@ public class FormManager extends AbstractManager {
 			exp.getErrors().add("Invalid reason");
 		}
 
-		Calendar cutoff = Calendar.getInstance(timezone);
-		cutoff.setTime(dataTrain.getAppDataManager().get()
-				.getFormSubmissionCutoff());
+		DateTime cutoff = train.getAppDataManager().get()
+				.getFormSubmissionCutoff();
 
-		boolean late = false;
-
-		// TODO https://github.com/curtisullerich/attendance/issues/103
-		// is timezone correct?
-		if (!Calendar.getInstance(timezone).before(cutoff)) {
-			late = true;
-		}
+		boolean late = cutoff.isBeforeNow();
 
 		if (exp.getErrors().size() > 0) {
 			throw exp;
 		}
 
-		Calendar temp = Calendar.getInstance(timezone);
-		temp.setTime(date);
-
-		// Parsed date starts at beginning of day
-		temp.set(Calendar.HOUR_OF_DAY, 0);
-		temp.set(Calendar.MINUTE, 0);
-		temp.set(Calendar.SECOND, 0);
-		temp.set(Calendar.MILLISECOND, 0);
-		Date startDate = temp.getTime();
-
-		// TODO https://github.com/curtisullerich/attendance/issues/103
-		// app engine stores this as midnight on August 9th. This should
-		// never cause an error, but should we fix it? Probably. Maybe the
-		// resolution of time on app engine doesn't go to milliseconds?
-		// End exactly one time unit before the next day starts
-		temp.add(Calendar.DATE, 1);
-		temp.add(Calendar.MILLISECOND, -1);
-		Date endDate = temp.getTime();
-
 		Form form = ModelFactory.newForm(Form.Type.PerformanceAbsence, student);
 
-		form.setStart(startDate);
-		form.setEnd(endDate);
+		form.setInterval(date.toInterval(this.train.getAppDataManager().get()
+				.getTimeZone()));
 
 		// current
-		form.setSubmissionTime(new Date());
+		form.setSubmissionTime(DateTime.now());
 
 		// Set remaining fields
 		form.setDetails(reason);
@@ -195,21 +169,11 @@ public class FormManager extends AbstractManager {
 	}
 
 	public Form createClassConflictForm(User student, String department,
-			String course, String section, String building, Date startDate,
-			Date endDate, int day, Date startTime, Date endTime,
-			String details, int minutesToOrFrom, Absence.Type absenceType) {
-
-		TimeZone timezone = this.dataTrain.getAppDataManager().get()
-				.getTimeZone();
-
-		Calendar startDateTime = Calendar.getInstance(timezone);
-		Calendar endDateTime = Calendar.getInstance(timezone);
-
-		Calendar startTimeCalendar = Calendar.getInstance(timezone);
-		Calendar endTimeCalendar = Calendar.getInstance(timezone);
-
-		startTimeCalendar.setTime(startTime);
-		endTimeCalendar.setTime(endTime);
+			String course, String section, String building,
+			LocalDate startDate, LocalDate endDate, LocalTime startTime,
+			LocalTime endTime, WeekDay dayOfWeek, String details,
+			int minutesToOrFrom, Absence.Type absenceType) {
+		DateTimeZone zone = this.train.getAppDataManager().get().getTimeZone();
 
 		// TODO https://github.com/curtisullerich/attendance/issues/108
 		// NEEDS MORE PARAMETERS and LOTS OF VALIDATION
@@ -220,7 +184,7 @@ public class FormManager extends AbstractManager {
 		// Simple validation first
 		ValidationExceptions exp = new ValidationExceptions();
 
-		if (endTimeCalendar.before(startTimeCalendar)) {
+		if (endTime.isBefore(startTime)) {
 			exp.getErrors().add("End time was before start time.");
 		}
 
@@ -228,29 +192,17 @@ public class FormManager extends AbstractManager {
 			exp.getErrors().add("Invalid details.");
 		}
 
-		if (day < 1 || day > 7) {
-			exp.getErrors().add("Day with value of " + day + " is not valid.");
-		}
-
 		Form form = ModelFactory.newForm(Form.Type.ClassConflict, student);
 
-		startDateTime.setTime(startDate);
-		startDateTime.set(Calendar.HOUR_OF_DAY,
-				startTimeCalendar.get(Calendar.HOUR_OF_DAY));
-		startDateTime.set(Calendar.MINUTE,
-				startTimeCalendar.get(Calendar.MINUTE));
-
-		endDateTime.setTime(endDate);
-		endDateTime.set(Calendar.HOUR_OF_DAY,
-				endTimeCalendar.get(Calendar.HOUR_OF_DAY));
-		endDateTime.set(Calendar.MINUTE, endTimeCalendar.get(Calendar.MINUTE));
-
-		if (endDateTime.before(startDateTime)) {
-			exp.getErrors().add("End date time was before start date time.");
+		if (endTime.isBefore(startTime)) {
+			exp.getErrors().add(
+					"End DateTime time was before start DateTime time.");
 		}
 
-		form.setStart(startDateTime.getTime());
-		form.setEnd(endDateTime.getTime());
+		DateTime startDateTime = startDate.toDateTimeAtStartOfDay(zone);
+		DateTime endDateTime = endDate.toDateTimeAtStartOfDay(zone).withTime(
+				23, 59, 59, 999);
+		form.setInterval(new Interval(startDateTime, endDateTime));
 		if (absenceType != null) {
 			form.setAbsenceType(absenceType);
 		} else {
@@ -286,9 +238,9 @@ public class FormManager extends AbstractManager {
 		}
 
 		// current
-		form.setSubmissionTime(new Date());
+		form.setSubmissionTime(DateTime.now());
 
-		form.setDay(day);
+		form.setDayOfWeek(dayOfWeek);
 		form.setDetails(details);
 		form.setStatus(Form.Status.Pending);
 		form.setMinutesToOrFrom(minutesToOrFrom);
@@ -309,13 +261,9 @@ public class FormManager extends AbstractManager {
 	 * @param details
 	 * @return
 	 */
-	public Form createTimeWorkedForm(User student, Date date, int minutes,
+	public Form createTimeWorkedForm(User student, LocalDate date, int minutes,
 			String details) {
-		TimeZone timezone = this.dataTrain.getAppDataManager().get()
-				.getTimeZone();
-
-		Calendar calendar = Calendar.getInstance(timezone);
-		calendar.setTime(date);
+		DateTimeZone zone = this.train.getAppDataManager().get().getTimeZone();
 
 		// Simple validation first
 		ValidationExceptions exp = new ValidationExceptions();
@@ -332,25 +280,12 @@ public class FormManager extends AbstractManager {
 			throw exp;
 		}
 
-		// Parsed date starts at beginning of day
-		calendar.set(Calendar.HOUR_OF_DAY, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
-		Date startDate = calendar.getTime();
-
-		// End exactly one time unit before the next day starts
-		calendar.roll(Calendar.DATE, true);
-		calendar.roll(Calendar.MILLISECOND, false);
-		Date endDate = calendar.getTime();
-
 		Form form = ModelFactory.newForm(Form.Type.TimeWorked, student);
 
-		form.setStart(startDate);
-		form.setEnd(endDate);
+		form.setInterval(date.toInterval(zone));
 
 		// current
-		form.setSubmissionTime(new Date());
+		form.setSubmissionTime(DateTime.now());
 
 		// Set remaining fields
 		form.setDetails(details);
@@ -364,14 +299,14 @@ public class FormManager extends AbstractManager {
 	}
 
 	public Form get(long id) {
-		ObjectDatastore od = this.dataTrain.getDataStore();
-		Form form = od.load(this.dataTrain.getTie(Form.class, id));
+		ObjectDatastore od = this.train.getDataStore();
+		Form form = od.load(this.train.getTie(Form.class, id));
 		return form;
 	}
 
 	public boolean removeForm(Long id) {
-		ObjectDatastore od = this.dataTrain.getDataStore();
-		Form form = od.load(this.dataTrain.getTie(Form.class, id));
+		ObjectDatastore od = this.train.getDataStore();
+		Form form = od.load(this.train.getTie(Form.class, id));
 		if (form.getStatus() == Form.Status.Approved) {
 			// Only Directors can remove forms
 			return false;
@@ -390,6 +325,6 @@ public class FormManager extends AbstractManager {
 
 	void delete(User user) {
 		List<Form> forms = this.get(user);
-		this.dataTrain.getDataStore().deleteAll(forms);
+		this.train.getDataStore().deleteAll(forms);
 	}
 }

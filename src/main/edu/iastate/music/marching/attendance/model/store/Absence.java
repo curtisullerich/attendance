@@ -2,14 +2,19 @@ package edu.iastate.music.marching.attendance.model.store;
 
 import java.util.Date;
 
+import org.joda.time.DateTime;
+import org.joda.time.Interval;
+import org.joda.time.ReadableInterval;
+
 import com.google.code.twig.annotation.Activate;
 import com.google.code.twig.annotation.Entity;
 import com.google.code.twig.annotation.Id;
 import com.google.code.twig.annotation.Index;
+import com.google.code.twig.annotation.Store;
 
 @Entity(kind = "Absence", allocateIdsBy = 0)
 public class Absence {
-	
+
 	public enum Type {
 		Absence, Tardy, EarlyCheckOut;
 
@@ -103,6 +108,13 @@ public class Absence {
 
 	private Date end;
 
+	@Store(false)
+	private DateTime cachedCheckout;
+	@Store(false)
+	private DateTime cachedCheckin;
+	@Store(false)
+	private Interval cachedInterval;
+
 	public long getId() {
 		return id;
 	}
@@ -132,32 +144,56 @@ public class Absence {
 	}
 
 	/**
-	 * The time of a tardy or earlycheckout.
-	 * 
-	 * @return time of a tardy or earlycheckout.
+	 * Time-span of an absence
 	 */
-	public Date getDatetime() {
-		return this.start;
+	public Interval getInterval() {
+		if (getType().isAbsence()) {
+			return new Interval(new DateTime(this.start),
+					new DateTime(this.end));
+
+		} else
+			throw new IllegalStateException("Intervals only valid for absences");
 	}
 
-	public void setDatetime(Date time) {
-		this.start = time;
+	public void setInterval(Interval interval) {
+		if (getType().isAbsence()) {
+			this.end = interval.getEnd().toDate();
+			this.start = interval.getStart().toDate();
+		} else
+			throw new IllegalStateException("Intervals only valid for absences");
+
 	}
 
-	public Date getStart() {
-		return this.start;
+	public DateTime getCheckin() {
+		if (getType().isTardy())
+			return new DateTime(this.start);
+		else
+			throw new IllegalStateException("Intervals only valid for absences");
+
 	}
 
-	public void setStart(Date start) {
-		this.start = start;
+	public void setCheckin(DateTime datetime) {
+		if (getType().isTardy())
+			this.start = datetime.toDate();
+		else
+			throw new IllegalStateException("Intervals only valid for absences");
+
 	}
 
-	public Date getEnd() {
-		return this.end;
+	public DateTime getCheckout() {
+		if (getType().isEarlyCheckOut())
+			return new DateTime(this.end);
+		else
+			throw new IllegalStateException("Intervals only valid for absences");
+
 	}
 
-	public void setEnd(Date end) {
-		this.end = end;
+	public void setCheckout(DateTime datetime) {
+		if (getType().isEarlyCheckOut())
+			this.end = datetime.toDate();
+		else
+			throw new IllegalStateException("Intervals only valid for absences");
+
 	}
 
 	public Status getStatus() {
@@ -166,6 +202,22 @@ public class Absence {
 
 	public void setStatus(Status status) {
 		this.status = status;
+	}
+
+	public boolean containedIn(ReadableInterval interval) {
+		if (this.getType() == null || interval == null)
+			return false;
+
+		switch (this.getType()) {
+		case Absence:
+			return interval.contains(this.getInterval());
+		case EarlyCheckOut:
+			return interval.contains(this.getCheckout());
+		case Tardy:
+			return interval.contains(this.getCheckin());
+		default:
+			throw new UnsupportedOperationException();
+		}
 	}
 
 	@Override

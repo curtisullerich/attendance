@@ -119,7 +119,7 @@ public class DataManager extends AbstractManager {
 		if (dump.format_version < DUMP_FORMAT_VERSION) {
 			// Old dump, probably not compatible with current database format
 			throw new IllegalStateException(
-					"Tried to import out-of-date dump not compatible with current database structure");
+					"Tried to import out-of-DateTime dump not compatible with current database structure");
 		}
 
 		// Yup

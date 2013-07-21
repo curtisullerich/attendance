@@ -25,7 +25,7 @@ import edu.iastate.music.marching.attendance.test.util.Users;
 @SuppressWarnings("deprecation")
 public class FormATest extends AbstractTest {
 
-	// test that it approves a performance absence only, not a rehearsal
+	/*// test that it approves a performance absence only, not a rehearsal
 	// absence
 	// only if the form is approved, obviously
 	// only if student on form and absence is the same
@@ -37,11 +37,11 @@ public class FormATest extends AbstractTest {
 	// answer: both absences will be approved, if there are indeed two. they are
 	// treated independently.
 
-	/* ANCHORED */
-	/**
+	 ANCHORED 
+	*//**
 	 * Add a form A, add an absence, approve the form, check the absence is
 	 * approved.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA1() {
 		DataTrain train = getDataTrain();
@@ -54,7 +54,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -73,10 +73,10 @@ public class FormATest extends AbstractTest {
 		assertEquals(Absence.Status.Approved, a.getStatus());
 	}
 
-	/**
+	*//**
 	 * Add a form A, add an absence, deny the absence, approve the form, check
 	 * the absence is still denied.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA2() {
 		DataTrain train = getDataTrain();
@@ -89,7 +89,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -111,10 +111,10 @@ public class FormATest extends AbstractTest {
 		assertEquals(Absence.Status.Denied, a.getStatus());
 	}
 
-	/**
+	*//**
 	 * Add a form A, add an approved absence, approve the form, check the
 	 * absence is approved.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA3() {
 		DataTrain train = getDataTrain();
@@ -127,7 +127,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -149,11 +149,11 @@ public class FormATest extends AbstractTest {
 		assertEquals(Absence.Status.Approved, a.getStatus());
 	}
 
-	/**
+	*//**
 	 * Add a form A, add an absence, approve the form, check the absence is
-	 * approved, set the absence as pending, update it, check that it is
+	 * approved, set the absence as pending, upDateTime it, check that it is
 	 * approved.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA4() {
 		DataTrain train = getDataTrain();
@@ -166,7 +166,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -189,10 +189,10 @@ public class FormATest extends AbstractTest {
 
 	}
 
-	/**
+	*//**
 	 * Add a form A, add an absence, approve the form, check the absence is
-	 * approved, set the absence as DENIED, update it, check that it is DENIED.
-	 */
+	 * approved, set the absence as DENIED, upDateTime it, check that it is DENIED.
+	 *//*
 	@Test
 	public void testApproveWithFormA5() {
 		DataTrain train = getDataTrain();
@@ -205,7 +205,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -227,10 +227,10 @@ public class FormATest extends AbstractTest {
 		assertEquals(Absence.Status.Denied, a.getStatus());
 	}
 
-	/**
+	*//**
 	 * Add a form A, add an absence, deny the form, check the absence is
 	 * pending, approve the form, check the absence is approved.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA6() {
 		DataTrain train = getDataTrain();
@@ -243,7 +243,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -265,10 +265,10 @@ public class FormATest extends AbstractTest {
 		assertEquals(Absence.Status.Approved, ac.get(a.getId()).getStatus());
 	}
 
-	/**
+	*//**
 	 * Add an absence, add a form A, approve the form, check the absence is
 	 * approved.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA7() {
 		DataTrain train = getDataTrain();
@@ -281,7 +281,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -299,10 +299,10 @@ public class FormATest extends AbstractTest {
 		assertEquals(Absence.Status.Approved, ac.get(a.getId()).getStatus());
 	}
 
-	/**
+	*//**
 	 * Add an absence, add a form A, deny the form, check the absence is
 	 * pending.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA8() {
 		DataTrain train = getDataTrain();
@@ -315,7 +315,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -335,10 +335,10 @@ public class FormATest extends AbstractTest {
 
 	}
 
-	/**
+	*//**
 	 * Add an absence, add a form A, do nothing to the form, check the absence
 	 * is pending.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA9() {
 		DataTrain train = getDataTrain();
@@ -351,7 +351,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -368,14 +368,14 @@ public class FormATest extends AbstractTest {
 
 	}
 
-	/*
+	
 	 * Same tests, just ORPHANED (using the deprecated method that doesn't take
 	 * an event as a param)
-	 */
-	/**
+	 
+	*//**
 	 * Add a form A, add an absence, approve the form, check the absence is
 	 * approved.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA11() {
 		DataTrain train = getDataTrain();
@@ -387,7 +387,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -410,10 +410,10 @@ public class FormATest extends AbstractTest {
 
 	}
 
-	/**
+	*//**
 	 * Add a form A, add an absence, deny the absence, approve the form, check
 	 * the absence is still denied.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA12() {
 		DataTrain train = getDataTrain();
@@ -425,7 +425,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -446,10 +446,10 @@ public class FormATest extends AbstractTest {
 		assertEquals(Absence.Status.Denied, ac.get(a.getId()).getStatus());
 	}
 
-	/**
+	*//**
 	 * Add a form A, add an approved absence, approve the form, check the
 	 * absence is approved.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA13() {
 		DataTrain train = getDataTrain();
@@ -461,7 +461,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -482,11 +482,11 @@ public class FormATest extends AbstractTest {
 		assertEquals(Absence.Status.Approved, ac.get(a.getId()).getStatus());
 	}
 
-	/**
+	*//**
 	 * Add a form A, add an absence, approve the form, check the absence is
-	 * approved, set the absence as pending, update it, check that it is
+	 * approved, set the absence as pending, upDateTime it, check that it is
 	 * approved.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA14() {
 		DataTrain train = getDataTrain();
@@ -498,7 +498,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -524,10 +524,10 @@ public class FormATest extends AbstractTest {
 
 	}
 
-	/**
+	*//**
 	 * Add a form A, add an absence, approve the form, check the absence is
-	 * approved, set the absence as DENIED, update it, check that it is DENIED.
-	 */
+	 * approved, set the absence as DENIED, upDateTime it, check that it is DENIED.
+	 *//*
 	@Test
 	public void testApproveWithFormA15() {
 		DataTrain train = getDataTrain();
@@ -540,7 +540,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -563,10 +563,10 @@ public class FormATest extends AbstractTest {
 		assertEquals(Absence.Status.Denied, a.getStatus());
 	}
 
-	/**
+	*//**
 	 * Add a form A, add an absence, deny the form, check the absence is
 	 * pending, approve the form, check the absence is approved.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA16() {
 		DataTrain train = getDataTrain();
@@ -579,7 +579,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -602,10 +602,10 @@ public class FormATest extends AbstractTest {
 		assertEquals(Absence.Status.Approved, ac.get(a.getId()).getStatus());
 	}
 
-	/**
+	*//**
 	 * Add an absence, add a form A, approve the form, check the absence is
 	 * approved.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA17() {
 		DataTrain train = getDataTrain();
@@ -618,7 +618,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -637,10 +637,10 @@ public class FormATest extends AbstractTest {
 		assertEquals(Absence.Status.Approved, ac.get(a.getId()).getStatus());
 	}
 
-	/**
+	*//**
 	 * Add an absence, add a form A, deny the form, check the absence is
 	 * pending.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA18() {
 		DataTrain train = getDataTrain();
@@ -653,7 +653,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -672,10 +672,10 @@ public class FormATest extends AbstractTest {
 
 	}
 
-	/**
+	*//**
 	 * Add an absence, add a form A, do nothing to the form, check the absence
 	 * is pending.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA19() {
 		DataTrain train = getDataTrain();
@@ -688,7 +688,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -704,14 +704,14 @@ public class FormATest extends AbstractTest {
 
 	}
 
-	/*
+	
 	 * Subset of the original tests, with a different student on the form and
 	 * absence
-	 */
-	/**
+	 
+	*//**
 	 * Add a form A with student 1, add an absence with student 2, approve the
 	 * form, check the absence is pending.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA21() {
 		DataTrain train = getDataTrain();
@@ -726,7 +726,7 @@ public class FormATest extends AbstractTest {
 		User student2 = Users.createStudent(uc, "student2", "123456781",
 				"John", "Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -745,10 +745,10 @@ public class FormATest extends AbstractTest {
 		assertEquals(Absence.Status.Pending, ac.get(a.getId()).getStatus());
 	}
 
-	/**
+	*//**
 	 * Add a form A with student 1, add an absence with student 2, deny the
 	 * absence, approve the form, check the absence is still denied.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA22() {
 		DataTrain train = getDataTrain();
@@ -763,7 +763,7 @@ public class FormATest extends AbstractTest {
 		User student2 = Users.createStudent(uc, "student2", "123456781",
 				"John", "Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -785,10 +785,10 @@ public class FormATest extends AbstractTest {
 		assertEquals(Absence.Status.Denied, ac.get(a.getId()).getStatus());
 	}
 
-	/**
+	*//**
 	 * Add an absence with student 1, add a form A with student 2, approve the
 	 * form, check the absence is pending.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA27() {
 		DataTrain train = getDataTrain();
@@ -803,7 +803,7 @@ public class FormATest extends AbstractTest {
 		User student2 = Users.createStudent(uc, "student2", "123456781",
 				"John", "Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -821,11 +821,11 @@ public class FormATest extends AbstractTest {
 		assertEquals(Absence.Status.Pending, ac.get(a.getId()).getStatus());
 	}
 
-	/* Tests the same set, but with a rehearsal absence instead of a performance */
-	/**
+	 Tests the same set, but with a rehearsal absence instead of a performance 
+	*//**
 	 * Add a form A, add an absence, approve the form, check the absence is
 	 * pending.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA31() {
 		DataTrain train = getDataTrain();
@@ -838,7 +838,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -857,10 +857,10 @@ public class FormATest extends AbstractTest {
 		assertEquals(Absence.Status.Pending, a.getStatus());
 	}
 
-	/**
+	*//**
 	 * Add a form A, add an absence, deny the absence, approve the form, check
 	 * the absence is still denied.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA32() {
 		DataTrain train = getDataTrain();
@@ -873,7 +873,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -895,10 +895,10 @@ public class FormATest extends AbstractTest {
 		assertEquals(Absence.Status.Denied, a.getStatus());
 	}
 
-	/**
+	*//**
 	 * Add a form A, add an approved absence, approve the form, check the
 	 * absence is pending.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA33() {
 		DataTrain train = getDataTrain();
@@ -911,7 +911,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -933,10 +933,10 @@ public class FormATest extends AbstractTest {
 		assertEquals(Absence.Status.Approved, a.getStatus());
 	}
 
-	/**
+	*//**
 	 * Add a form A, add an absence, approve the form, check the absence is
-	 * pending, set the absence as pending, update it, check that it is pending.
-	 */
+	 * pending, set the absence as pending, upDateTime it, check that it is pending.
+	 *//*
 	@Test
 	public void testApproveWithFormA34() {
 		DataTrain train = getDataTrain();
@@ -949,7 +949,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -972,10 +972,10 @@ public class FormATest extends AbstractTest {
 
 	}
 
-	/**
+	*//**
 	 * Add a form A, add an absence, approve the form, check the absence is
-	 * pending, set the absence as DENIED, update it, check that it is DENIED.
-	 */
+	 * pending, set the absence as DENIED, upDateTime it, check that it is DENIED.
+	 *//*
 	@Test
 	public void testApproveWithFormA35() {
 		DataTrain train = getDataTrain();
@@ -988,7 +988,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -1010,10 +1010,10 @@ public class FormATest extends AbstractTest {
 		assertEquals(Absence.Status.Denied, a.getStatus());
 	}
 
-	/**
+	*//**
 	 * Add a form A, add an absence, deny the form, check the absence is
 	 * pending, approve the form, check the absence is pending.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA36() {
 		DataTrain train = getDataTrain();
@@ -1026,7 +1026,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -1048,10 +1048,10 @@ public class FormATest extends AbstractTest {
 		assertEquals(Absence.Status.Pending, ac.get(a.getId()).getStatus());
 	}
 
-	/**
+	*//**
 	 * Add an absence, add a form A, approve the form, check the absence is
 	 * pending.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA37() {
 		DataTrain train = getDataTrain();
@@ -1064,7 +1064,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -1082,10 +1082,10 @@ public class FormATest extends AbstractTest {
 		assertEquals(Absence.Status.Pending, ac.get(a.getId()).getStatus());
 	}
 
-	/**
+	*//**
 	 * Add an absence, add a form A, deny the form, check the absence is
 	 * pending.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA38() {
 		DataTrain train = getDataTrain();
@@ -1098,7 +1098,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -1118,10 +1118,10 @@ public class FormATest extends AbstractTest {
 
 	}
 
-	/**
+	*//**
 	 * Add an absence, add a form A, do nothing to the form, check the absence
 	 * is pending.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA39() {
 		DataTrain train = getDataTrain();
@@ -1134,7 +1134,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -1151,10 +1151,10 @@ public class FormATest extends AbstractTest {
 
 	}
 
-	/**
+	*//**
 	 * Add a form A, add an absence, approve the form, check the absence is
 	 * approved. Same test, but with orphaned and rehearsal.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA41() {
 		DataTrain train = getDataTrain();
@@ -1166,7 +1166,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -1189,11 +1189,11 @@ public class FormATest extends AbstractTest {
 
 	}
 
-	/* same subset, just with tardies */
-	/**
+	 same subset, just with tardies 
+	*//**
 	 * Add a form A, add an absence, approve the form, check the absence is
 	 * approved.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA51() {
 		DataTrain train = getDataTrain();
@@ -1206,7 +1206,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -1227,10 +1227,10 @@ public class FormATest extends AbstractTest {
 		assertEquals(Absence.Status.Approved, a.getStatus());
 	}
 
-	/**
+	*//**
 	 * Add a form A, add an absence, deny the absence, approve the form, check
 	 * the absence is still denied.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA52() {
 		DataTrain train = getDataTrain();
@@ -1243,7 +1243,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -1266,10 +1266,10 @@ public class FormATest extends AbstractTest {
 		assertEquals(Absence.Status.Denied, a.getStatus());
 	}
 
-	/**
+	*//**
 	 * Add a form A, add an approved absence, approve the form, check the
 	 * absence is approved.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA53() {
 		DataTrain train = getDataTrain();
@@ -1282,7 +1282,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -1305,11 +1305,11 @@ public class FormATest extends AbstractTest {
 		assertEquals(Absence.Status.Approved, a.getStatus());
 	}
 
-	/**
+	*//**
 	 * Add a form A, add an absence, approve the form, check the absence is
-	 * approved, set the absence as pending, update it, check that it is
+	 * approved, set the absence as pending, upDateTime it, check that it is
 	 * approved.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA54() {
 		DataTrain train = getDataTrain();
@@ -1322,7 +1322,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -1346,10 +1346,10 @@ public class FormATest extends AbstractTest {
 
 	}
 
-	/**
+	*//**
 	 * Add a form A, add an absence, approve the form, check the absence is
-	 * approved, set the absence as DENIED, update it, check that it is DENIED.
-	 */
+	 * approved, set the absence as DENIED, upDateTime it, check that it is DENIED.
+	 *//*
 	@Test
 	public void testApproveWithFormA55() {
 		DataTrain train = getDataTrain();
@@ -1362,7 +1362,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -1385,10 +1385,10 @@ public class FormATest extends AbstractTest {
 		assertEquals(Absence.Status.Denied, a.getStatus());
 	}
 
-	/**
+	*//**
 	 * Add a form A, add an absence, deny the form, check the absence is
 	 * pending, approve the form, check the absence is approved.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA56() {
 		DataTrain train = getDataTrain();
@@ -1401,7 +1401,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -1424,10 +1424,10 @@ public class FormATest extends AbstractTest {
 		assertEquals(Absence.Status.Approved, ac.get(a.getId()).getStatus());
 	}
 
-	/**
+	*//**
 	 * Add an absence, add a form A, approve the form, check the absence is
 	 * approved.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA57() {
 		DataTrain train = getDataTrain();
@@ -1440,7 +1440,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -1459,10 +1459,10 @@ public class FormATest extends AbstractTest {
 		assertEquals(Absence.Status.Approved, ac.get(a.getId()).getStatus());
 	}
 
-	/**
+	*//**
 	 * Add an absence, add a form A, deny the form, check the absence is
 	 * pending.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA58() {
 		DataTrain train = getDataTrain();
@@ -1475,7 +1475,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -1496,10 +1496,10 @@ public class FormATest extends AbstractTest {
 
 	}
 
-	/**
+	*//**
 	 * Add an absence, add a form A, do nothing to the form, check the absence
 	 * is pending.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA59() {
 		DataTrain train = getDataTrain();
@@ -1512,7 +1512,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -1530,11 +1530,11 @@ public class FormATest extends AbstractTest {
 
 	}
 
-	/* same subset, just with earlycheckouts */
-	/**
+	 same subset, just with earlycheckouts 
+	*//**
 	 * Add a form A, add an absence, approve the form, check the absence is
 	 * approved.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA61() {
 		DataTrain train = getDataTrain();
@@ -1547,7 +1547,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -1568,10 +1568,10 @@ public class FormATest extends AbstractTest {
 		assertEquals(Absence.Status.Approved, a.getStatus());
 	}
 
-	/**
+	*//**
 	 * Add a form A, add an absence, deny the absence, approve the form, check
 	 * the absence is still denied.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA62() {
 		DataTrain train = getDataTrain();
@@ -1584,7 +1584,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -1607,10 +1607,10 @@ public class FormATest extends AbstractTest {
 		assertEquals(Absence.Status.Denied, a.getStatus());
 	}
 
-	/**
+	*//**
 	 * Add a form A, add an approved absence, approve the form, check the
 	 * absence is approved.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA63() {
 		DataTrain train = getDataTrain();
@@ -1623,7 +1623,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -1646,11 +1646,11 @@ public class FormATest extends AbstractTest {
 		assertEquals(Absence.Status.Approved, a.getStatus());
 	}
 
-	/**
+	*//**
 	 * Add a form A, add an absence, approve the form, check the absence is
-	 * approved, set the absence as pending, update it, check that it is
+	 * approved, set the absence as pending, upDateTime it, check that it is
 	 * approved.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA64() {
 		DataTrain train = getDataTrain();
@@ -1663,7 +1663,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -1687,10 +1687,10 @@ public class FormATest extends AbstractTest {
 
 	}
 
-	/**
+	*//**
 	 * Add a form A, add an absence, approve the form, check the absence is
-	 * approved, set the absence as DENIED, update it, check that it is DENIED.
-	 */
+	 * approved, set the absence as DENIED, upDateTime it, check that it is DENIED.
+	 *//*
 	@Test
 	public void testApproveWithFormA65() {
 		DataTrain train = getDataTrain();
@@ -1703,7 +1703,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -1726,10 +1726,10 @@ public class FormATest extends AbstractTest {
 		assertEquals(Absence.Status.Denied, a.getStatus());
 	}
 
-	/**
+	*//**
 	 * Add a form A, add an absence, deny the form, check the absence is
 	 * pending, approve the form, check the absence is approved.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA66() {
 		DataTrain train = getDataTrain();
@@ -1742,7 +1742,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -1765,10 +1765,10 @@ public class FormATest extends AbstractTest {
 		assertEquals(Absence.Status.Approved, ac.get(a.getId()).getStatus());
 	}
 
-	/**
+	*//**
 	 * Add an absence, add a form A, approve the form, check the absence is
 	 * approved.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA67() {
 		DataTrain train = getDataTrain();
@@ -1781,7 +1781,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -1800,10 +1800,10 @@ public class FormATest extends AbstractTest {
 		assertEquals(Absence.Status.Approved, ac.get(a.getId()).getStatus());
 	}
 
-	/**
+	*//**
 	 * Add an absence, add a form A, deny the form, check the absence is
 	 * pending.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA68() {
 		DataTrain train = getDataTrain();
@@ -1816,7 +1816,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -1837,10 +1837,10 @@ public class FormATest extends AbstractTest {
 
 	}
 
-	/**
+	*//**
 	 * Add an absence, add a form A, do nothing to the form, check the absence
 	 * is pending.
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA69() {
 		DataTrain train = getDataTrain();
@@ -1853,7 +1853,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -1871,9 +1871,9 @@ public class FormATest extends AbstractTest {
 
 	}
 
-	/**
+	*//**
 	 * With two absences (tardy and EOC)
-	 */
+	 *//*
 	@Test
 	public void testApproveWithFormA71() {
 		DataTrain train = getDataTrain();
@@ -1886,7 +1886,7 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -1922,13 +1922,13 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 		
-		String sDate = "2012-09-21 0600";
-		String eDate = "2012-09-21 0700";
-		Date startDate = null;
-		Date endDate = null;
+		String sDateTime = "2012-09-21 0600";
+		String eDateTime = "2012-09-21 0700";
+		DateTime startDateTime = null;
+		DateTime endDateTime = null;
 		try {
-			startDate = new SimpleDateFormat("yyyy-MM-dd HHmm").parse(sDate);
-			endDate = new SimpleDateFormat("yyyy-MM-dd HHmm").parse(eDate);
+			startDateTime = new SimpleDateFormat("yyyy-MM-dd HHmm").parse(sDate);
+			endDateTime = new SimpleDateFormat("yyyy-MM-dd HHmm").parse(eDate);
 			
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -1960,13 +1960,13 @@ public class FormATest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 		
-		String sDate = "2012-09-21 0600";
-		String eDate = "2012-09-21 0700";
-		Date startDate = null;
-		Date endDate = null;
+		String sDateTime = "2012-09-21 0600";
+		String eDateTime = "2012-09-21 0700";
+		DateTime startDateTime = null;
+		DateTime endDateTime = null;
 		try {
-			startDate = new SimpleDateFormat("yyyy-MM-dd HHmm").parse(sDate);
-			endDate = new SimpleDateFormat("yyyy-MM-dd HHmm").parse(eDate);
+			startDateTime = new SimpleDateFormat("yyyy-MM-dd HHmm").parse(sDate);
+			endDateTime = new SimpleDateFormat("yyyy-MM-dd HHmm").parse(eDate);
 			
 		} catch (ParseException e) {
 			e.printStackTrace();
@@ -1986,5 +1986,5 @@ public class FormATest extends AbstractTest {
 		List<Absence> abs = ac.get(student);
 		
 		assertEquals(Absence.Status.Denied, abs.get(0).getStatus());
-	}
+	}*/
 }

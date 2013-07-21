@@ -3,6 +3,7 @@ package edu.iastate.music.marching.attendance.model.store;
 import java.util.Date;
 
 import com.google.appengine.api.datastore.Text;
+import org.joda.time.DateTime;
 import com.google.code.twig.annotation.Entity;
 import com.google.code.twig.annotation.Type;
 
@@ -19,12 +20,12 @@ public class ImportData {
 
 	private String errorMessage;
 
-	public void setTimestamp(Date uploadTime) {
-		this.timestamp = uploadTime;
+	public void setTimestamp(DateTime uploadTime) {
+		this.timestamp = uploadTime.toDate();
 	}
 
-	public Date getTimestamp() {
-		return this.timestamp;
+	public DateTime getTimestamp() {
+		return new DateTime(this.timestamp);
 	}
 
 	public void setData(String uploadData) {

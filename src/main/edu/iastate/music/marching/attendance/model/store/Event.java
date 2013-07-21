@@ -2,6 +2,9 @@ package edu.iastate.music.marching.attendance.model.store;
 
 import java.util.Date;
 
+import org.joda.time.DateTime;
+import org.joda.time.Interval;
+
 import com.google.code.twig.annotation.Entity;
 import com.google.code.twig.annotation.Id;
 import com.google.code.twig.annotation.Index;
@@ -12,15 +15,6 @@ public class Event {
 	public static final String FIELD_START = "start";
 	public static final String FIELD_END = "end";
 	public static final String FIELD_TYPE = "type";
-
-	/**
-	 * Assuming an event only spans a single day, this field is always set to
-	 * 12am of the day the event happens on.
-	 * 
-	 * This makes it easier to query for events on any given day.
-	 */
-	@Deprecated
-	public static final String FIELD_DATE = "date";
 
 	/**
 	 * No-args constructor for datastore
@@ -38,53 +32,19 @@ public class Event {
 	@Index
 	private Date end;
 
-	/**
-	 * Assuming an event only spans a single day, this field is always set to
-	 * 12am of the day the event happens on.
-	 * 
-	 * This makes it easier to query for events on any given day.
-	 */
-	@SuppressWarnings("unused")
-	@Index
-	@Deprecated
-	private Date date;
-
 	private Type type;
-
-	/**
-	 * Absent students
-	 * 
-	 */
-	// HACK: DANIEL
-	// @Activate(0)
-	// private List<Absence> absences;
 
 	public long getId() {
 		return this.id;
 	}
 
-	public Date getDate() {
-		return start;
+	public Interval getInterval() {
+		return new Interval(new DateTime(start), new DateTime(end));
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
-	public Date getStart() {
-		return start;
-	}
-
-	public void setStart(Date start) {
-		this.start = start;
-	}
-
-	public Date getEnd() {
-		return end;
-	}
-
-	public void setEnd(Date end) {
-		this.end = end;
+	public void setInterval(Interval interval) {
+		this.start = interval.getStart().toDate();
+		this.end = interval.getEnd().toDate();
 	}
 
 	public enum Type {
@@ -123,14 +83,6 @@ public class Event {
 
 	public Type getType() {
 		return this.type;
-	}
-
-	public boolean absIsDuring(Absence a) {
-		return (start.compareTo(a.getStart()) <= 0 && a.getStart().compareTo(
-				end) <= 0)
-				&& (a.getEnd() == null // Tardies and Ecos don't have end dates
-				|| (start.compareTo(a.getEnd()) <= 0 && a.getEnd().compareTo(
-						end) <= 0));
 	}
 
 	public String toString() {

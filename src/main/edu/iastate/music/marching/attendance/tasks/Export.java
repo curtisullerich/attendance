@@ -25,10 +25,11 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+import org.joda.time.DateTime;
+
 import edu.iastate.music.marching.attendance.Configuration;
 import edu.iastate.music.marching.attendance.model.interact.DataTrain;
 import edu.iastate.music.marching.attendance.model.store.User;
-import edu.iastate.music.marching.attendance.servlets.DirectorServlet;
 
 public class Export {
 
@@ -41,7 +42,7 @@ public class Export {
 			DataTrain train = DataTrain.getAndStartTrain();
 
 			String appTitle = train.getAppDataManager().get().getTitle();
-			Date exportTime = new Date();
+			DateTime exportTime = new DateTime();
 			String humanExportTime = DateFormat.getDateTimeInstance().format(
 					new Date());
 			String filenameExportTime = new SimpleDateFormat("yyMMddHHmmssZ")
@@ -52,7 +53,6 @@ public class Export {
 			String subject = "Data export for " + appTitle;
 			String msgBody = "Attached is a file containing all data for "
 					+ appTitle + " exported at " + humanExportTime;
-			String to = Configuration.Emails.DATA_EXPORT_RECIPIENT;
 			String from = Configuration.Emails.DATA_EXPORT_SENDER;
 			String fileName = "data-export-for-" + appTitle + "-"
 					+ filenameExportTime + ".json";

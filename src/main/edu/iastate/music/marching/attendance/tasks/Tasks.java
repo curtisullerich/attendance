@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.util.Date;
 
 import org.apache.commons.io.IOUtils;
+import org.joda.time.DateTime;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.taskqueue.Queue;
@@ -28,7 +29,7 @@ public class Tasks {
 
 		ImportData iData = ModelFactory.newImportData();
 
-		iData.setTimestamp(new Date());
+		iData.setTimestamp(new DateTime());
 		iData.setData(IOUtils.toString(stream));
 
 		Key k = DataTrain.getAndStartTrain().getDataManager()

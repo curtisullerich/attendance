@@ -3,10 +3,7 @@ package edu.iastate.music.marching.attendance.servlets;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -20,6 +17,11 @@ import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.Interval;
+import org.joda.time.LocalTime;
 
 import com.google.appengine.api.datastore.Email;
 
@@ -167,7 +169,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 	private void showMakeEvent(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		PageBuilder page = new PageBuilder(Page.makeevent, SERVLET_PATH);
-		Date today = new Date();
+		DateTime today = DateTime.now();
 
 		page.setAttribute("arst", today.getYear() + 1900);
 		page.setAttribute("today", today);
@@ -406,26 +408,25 @@ public class DirectorServlet extends AbstractBaseServlet {
 		String success = "";
 
 		try {
-			Date start = Util.parseDateTime(req.getParameter("startdatetime"),
+			DateTime start = Util.parseDateTime(
+					req.getParameter("startdatetime"), train
+							.getAppDataManager().get().getTimeZone());
+			DateTime end = Util.parseDateTime(req.getParameter("enddatetime"),
 					train.getAppDataManager().get().getTimeZone());
-			Date end = Util.parseDateTime(req.getParameter("enddatetime"),
-					train.getAppDataManager().get().getTimeZone());
-			// TODO may be timezone issues here. check edge cases.
-			if ((start.getDay() != end.getDay())
-					|| (start.getMonth() != end.getMonth())
-					|| (start.getYear() != end.getYear())) {
+
+			if (!start.toDateMidnight().equals(end.toDateMidnight())) {
 				errors.add("The event must start and end on the same day.");
 			}
 
 			Event.Type type = req.getParameter("Type").equals(
 					Event.Type.Rehearsal.getDisplayName()) ? Event.Type.Rehearsal
 					: Event.Type.Performance;
-			ec.createOrUpdate(type, start, end);
+			ec.createOrUpdate(type, new Interval(start, end));
 			success = "Event created.";
 		} catch (ValidationExceptions e) {
-			errors.add("Invalid Input: The input date was invalid.");
+			errors.add("Invalid Input: The input DateTime was invalid.");
 		} catch (IllegalArgumentException e) {
-			errors.add("Invalid Input: The input date is invalid.");
+			errors.add("Invalid Input: The input DateTime is invalid.");
 		}
 		// show success message?
 		resp.sendRedirect("/director/unanchored");
@@ -454,14 +455,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 					// retrieve the event and link it up
 					Event e = ec.get(Long.parseLong(eventID));
 					Absence a = ac.get(Long.parseLong(absenceID));
-					Calendar eventCal = Calendar.getInstance();
-					Calendar absenceCal = Calendar.getInstance();
-					eventCal.setTime(e.getDate());
-					absenceCal.setTime(a.getDatetime());
-					if (eventCal.get(Calendar.DAY_OF_YEAR) != absenceCal
-							.get(Calendar.DAY_OF_YEAR)
-							|| eventCal.get(Calendar.YEAR) != absenceCal
-									.get(Calendar.YEAR)) {
+					if (Util.overlapDays(a.getInterval(), e.getInterval())) {
 						errors.add("Absence was not the same day as the event.");
 					} else {
 						a.setEvent(e);
@@ -486,6 +480,8 @@ public class DirectorServlet extends AbstractBaseServlet {
 		DataTrain train = DataTrain.getAndStartTrain();
 
 		AbsenceManager ac = train.getAbsenceManager();
+
+		DateTimeZone zone = train.getAppDataManager().get().getTimeZone();
 
 		boolean validForm = true;
 
@@ -519,9 +515,11 @@ public class DirectorServlet extends AbstractBaseServlet {
 					if (student != null) {
 						// TODO might want to split this up and the combine date
 						// and time with Calendar methods
-						Date time = Util.parseDateTime(req.getParameter("date")
-								+ " " + req.getParameter("time"), train
-								.getAppDataManager().get().getTimeZone());
+						DateTime time = Util.parseDateTime(
+								req.getParameter("date") + " "
+										+ req.getParameter("time"), train
+										.getAppDataManager().get()
+										.getTimeZone());
 						switch (atype) {
 						case Absence:
 							toUpdate = ac.createOrUpdateAbsence(student, event);
@@ -542,19 +540,36 @@ public class DirectorServlet extends AbstractBaseServlet {
 				if (toUpdate != null) {
 					try {
 						// TODO same concern as above
+						LocalTime d = Util.parseTimeOnly(
+								req.getParameter("time"), train
+										.getAppDataManager().get()
+										.getTimeZone());
 
-						Date d = Util.parseDateTime(req.getParameter("date")
-								+ " " + req.getParameter("time"), train
-								.getAppDataManager().get().getTimeZone());
-						toUpdate.setDatetime(d);
+						switch (toUpdate.getType()) {
+						case EarlyCheckOut:
+							toUpdate.setCheckout(d.toDateTime(toUpdate
+									.getCheckout().withZone(zone)
+									.toDateMidnight()));
+							break;
+						case Tardy:
+							toUpdate.setCheckin(d.toDateTime(toUpdate
+									.getCheckin().withZone(zone)
+									.toDateMidnight()));
+							break;
+						default:
+							throw new IllegalStateException();
+						}
 						toUpdate.setType(Absence.Type.valueOf(type));
 						toUpdate.setStatus(Absence.Status.valueOf(status));
 					} catch (ValidationExceptions e) {
 						validForm = false;
-						errors.add("Invalid Input: The input date was invalid.");
+						errors.add("Invalid Input: The input DateTime was invalid.");
 					} catch (IllegalArgumentException e) {
 						validForm = false;
-						errors.add("Invalid Input: The input date is invalid.");
+						errors.add("Invalid Input: The input DateTime is invalid.");
+					} catch (IllegalStateException e) {
+						validForm = false;
+						errors.add("Invalid Input: Cannot set time for absence");
 					}
 				} else {
 					validForm = false;
@@ -566,7 +581,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 			}
 
 			if (validForm) {
-				// How about update the absence huh?
+				// How about upDateTime the absence huh?
 				ac.updateAbsence(toUpdate);
 
 				// Do not redirect if in a new window, instead show a success
@@ -627,7 +642,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		// no->//rebuild and return the page with errors
 		// yes->//parse and validate
 		// get the item from the controller
-		// update the item and save it
+		// upDateTime the item and save it
 		// return the jsp
 		boolean validForm = true;
 		boolean cronExportEnabled;
@@ -653,7 +668,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 			}
 
 			// Handle the thrown exception
-			Date testDate = null;
+			DateTime testDate = null;
 			try {
 				String datetime = req.getParameter("datetime");
 				testDate = Util.parseDateTime(datetime, train
@@ -666,7 +681,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 			// Thrown by Calendar.getTime() if we don't have a valid time
 			catch (IllegalArgumentException e) {
 				validForm = false;
-				errors.add("Invalid Input: The input date is invalid.");
+				errors.add("Invalid Input: The input DateTime is invalid.");
 			}
 
 			title = req.getParameter("Title");
@@ -708,15 +723,14 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		AppData data = train.getAppDataManager().get();
 
-		Calendar cutoffDate = Calendar.getInstance(data.getTimeZone());
-		cutoffDate.setTime(data.getFormSubmissionCutoff());
-
 		page.setAttribute("appinfo", data);
 
 		page.setAttribute("timezone", data.getTimeZone());
 
-		page.setAttribute("datetime",
-				Util.formatDateTime(cutoffDate.getTime(), data.getTimeZone()));
+		page.setAttribute(
+				"datetime",
+				Util.formatDateTime(data.getFormSubmissionCutoff(),
+						data.getTimeZone()));
 
 		page.setAttribute("timezones", data.getTimezoneOptions());
 
@@ -952,16 +966,13 @@ public class DirectorServlet extends AbstractBaseServlet {
 					// have to create the absence without storing it, or there
 					// will automatically be an absence created without clicking
 					// submit
-					// checkedAbsence = train.getAbsenceController()
-					// .createOrUpdateAbsence(student, e);
 					Absence absence = ModelFactory.newAbsence(
 							Absence.Type.Absence, student);
 					absence.setStatus(Absence.Status.Pending);
 
-					if (e != null && e.getStart() != null && e.getEnd() != null) {
+					if (e != null) {
 						absence.setEvent(e);
-						absence.setStart(e.getStart());
-						absence.setEnd(e.getEnd());
+						absence.setInterval(e.getInterval());
 						// associated with this event for this student
 					} else {
 						// the absence is orphaned if there's no event for it
@@ -994,11 +1005,25 @@ public class DirectorServlet extends AbstractBaseServlet {
 		page.setAttribute("status", Absence.Status.values());
 		page.setAttribute("error_messages", incomingErrors);
 		page.setAttribute("success_message", success_message);
-		TimeZone timeZone = train.getAppDataManager().get().getTimeZone();
-		page.setAttribute("date",
-				Util.formatDate(checkedAbsence.getDatetime(), timeZone));
-		page.setAttribute("time",
-				Util.formatTime(checkedAbsence.getDatetime(), timeZone));
+
+		DateTime setDateTime;
+		switch (checkedAbsence.getType()) {
+		default:
+		case Absence:
+			setDateTime = null;
+			break;
+		case EarlyCheckOut:
+			setDateTime = checkedAbsence.getCheckout();
+			break;
+		case Tardy:
+			setDateTime = checkedAbsence.getCheckin();
+			break;
+		}
+
+		DateTimeZone timeZone = train.getAppDataManager().get().getTimeZone();
+		page.setAttribute("date", Util.formatDateOnly(setDateTime, timeZone));
+		page.setAttribute("time", Util.formatTimeOnly(setDateTime, timeZone));
+
 		page.passOffToJsp(req, resp);
 		// } else {
 		// showAttendance(req, resp, errors, success_message);

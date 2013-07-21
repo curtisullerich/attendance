@@ -1,6 +1,7 @@
 package edu.iastate.music.marching.attendance.model.store;
 
-import java.util.Date;
+import org.joda.time.DateTime;
+import org.joda.time.Interval;
 
 import com.google.appengine.api.datastore.Email;
 import com.google.code.twig.standard.StandardObjectDatastore;
@@ -8,11 +9,10 @@ import com.google.code.twig.standard.StandardObjectDatastore;
 
 public class ModelFactory {
 
-	public static Event newEvent(Event.Type type, Date start, Date end) {
+	public static Event newEvent(Event.Type type, Interval interval) {
 		Event e = new Event();
 		e.setType(type);
-		e.setStart(start);
-		e.setEnd(end);
+		e.setInterval(interval);
 		return e;
 	}
 
@@ -44,7 +44,7 @@ public class ModelFactory {
 	}
 
 	public static MobileDataUpload newMobileDataUpload(User uploader,
-			Date uploadTime, String uploadData) {
+			DateTime uploadTime, String uploadData) {
 		MobileDataUpload upload = new MobileDataUpload();
 		upload.setUploader(uploader);
 		upload.setTimestamp(uploadTime);

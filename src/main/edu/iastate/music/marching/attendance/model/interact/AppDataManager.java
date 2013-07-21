@@ -3,6 +3,8 @@ package edu.iastate.music.marching.attendance.model.interact;
 import java.util.Calendar;
 import java.util.TimeZone;
 
+import org.joda.time.DateTime;
+
 import edu.iastate.music.marching.attendance.model.store.AppData;
 import edu.iastate.music.marching.attendance.model.store.AttendanceDatastore;
 import edu.iastate.music.marching.attendance.model.store.ModelFactory;
@@ -45,17 +47,9 @@ public class AppDataManager extends AbstractManager {
 			appData.setTimeZone(TimeZone.getDefault());
 
 			// Default form cutoff is the end of august
-			Calendar calendar = Calendar.getInstance(appData.getTimeZone());
-			calendar.set(Calendar.MONTH, Calendar.AUGUST);
-			calendar.set(Calendar.DATE, 0);
-			calendar.set(Calendar.HOUR_OF_DAY, 16);
-			calendar.set(Calendar.MINUTE, 35);
-			calendar.set(Calendar.MILLISECOND, 0);
-
-			//TODO if this is supposed to be roll(), then revert 
-			calendar.add(Calendar.MONTH, 1);
-			calendar.add(Calendar.MILLISECOND, -1);
-			appData.setFormSubmissionCutoff(calendar.getTime());
+			
+			DateTime cutoff = new DateTime(new DateTime().getYear(), 8, 1, 16, 35, 0, 0);
+			appData.setFormSubmissionCutoff(cutoff);
 
 			this.dataTrain.getDataStore().store(appData);
 			this.dataTrain.updateCache(AttendanceDatastore.VERSION, appData);

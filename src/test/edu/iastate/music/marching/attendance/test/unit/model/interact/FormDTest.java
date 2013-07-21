@@ -21,7 +21,7 @@ import edu.iastate.music.marching.attendance.util.ValidationExceptions;
 
 @SuppressWarnings("deprecation")
 public class FormDTest extends AbstractTest {
-
+/*
 	// note that form D does not autoapprove, because we can't know which
 	// absence SHOULD be approved. We instead increment the number of available
 	// minutes in the student object.
@@ -29,9 +29,9 @@ public class FormDTest extends AbstractTest {
 	// just need to test that the form is approved.
 	// if it's approved twice, the minutes should not increment further
 
-	/**
+	*//**
 	 * Approve, test that the minutes increment.
-	 */
+	 *//*
 	@Test
 	public void testApprove() {
 		DataTrain train = getDataTrain();
@@ -45,7 +45,7 @@ public class FormDTest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -60,10 +60,10 @@ public class FormDTest extends AbstractTest {
 		assertEquals(10, student.getMinutesAvailable());
 	}
 
-	/**
+	*//**
 	 * Test that it fails to increment twice when you try to approve a form
 	 * twice
-	 */
+	 *//*
 	@Test
 	public void testApproveTwice() {
 		DataTrain train = getDataTrain();
@@ -77,7 +77,7 @@ public class FormDTest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -97,10 +97,10 @@ public class FormDTest extends AbstractTest {
 
 	}
 
-	/**
+	*//**
 	 * Test that it fails to increment twice when you try to deny after
 	 * approving
-	 */
+	 *//*
 	@Test
 	public void testApproveDeny() {
 		DataTrain train = getDataTrain();
@@ -114,7 +114,7 @@ public class FormDTest extends AbstractTest {
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar date = Calendar.getInstance();
+		Calendar DateTime = Calendar.getInstance();
 		date.set(2012, 7, 7, 0, 0, 0);
 		Calendar start = Calendar.getInstance();
 		start.set(2012, 7, 7, 16, 30, 0);
@@ -135,5 +135,5 @@ public class FormDTest extends AbstractTest {
 		form.setStatus(Form.Status.Approved);
 		fc.update(form);
 		assertEquals(10, student.getMinutesAvailable());
-	}
+	}*/
 }

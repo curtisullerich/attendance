@@ -6,6 +6,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+
 import com.google.appengine.api.datastore.Text;
 import com.google.code.twig.annotation.Entity;
 import com.google.code.twig.annotation.Id;
@@ -13,7 +16,7 @@ import com.google.code.twig.annotation.Type;
 
 @Entity(kind = "AppData", allocateIdsBy = 0)
 public class AppData implements Serializable {
-	
+
 	private static final long serialVersionUID = 6536920800348300644L;
 
 	/**
@@ -45,16 +48,16 @@ public class AppData implements Serializable {
 		this.title = title;
 	}
 
-	public Date getFormSubmissionCutoff() {
-		return this.formCutoff;
+	public DateTime getFormSubmissionCutoff() {
+		return new DateTime(this.formCutoff);
 	}
 
-	public void setFormSubmissionCutoff(Date formCutoff) {
-		this.formCutoff = formCutoff;
+	public void setFormSubmissionCutoff(DateTime formCutoff) {
+		this.formCutoff = formCutoff.toDate();
 	}
 
-	public TimeZone getTimeZone() {
-		return TimeZone.getTimeZone(this.timeZoneID);
+	public DateTimeZone getTimeZone() {
+		return DateTimeZone.forTimeZone(TimeZone.getTimeZone(this.timeZoneID));
 	}
 
 	public void setTimeZone(TimeZone timezone) {

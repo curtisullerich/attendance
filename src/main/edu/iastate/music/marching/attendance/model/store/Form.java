@@ -2,11 +2,16 @@ package edu.iastate.music.marching.attendance.model.store;
 
 import java.util.Date;
 
+import org.joda.time.DateTime;
+import org.joda.time.Interval;
+
 import com.google.appengine.api.datastore.Text;
 import com.google.code.twig.annotation.Activate;
 import com.google.code.twig.annotation.Entity;
 import com.google.code.twig.annotation.Id;
 import com.google.code.twig.annotation.Index;
+
+import edu.iastate.music.marching.attendance.App.WeekDay;
 
 @Entity(kind = "Form", allocateIdsBy = 0)
 public class Form {
@@ -118,12 +123,12 @@ public class Form {
 	private String building;
 	private int day;
 
-	public void setDay(int day) {
-		this.day = day;
+	public void setDayOfWeek(WeekDay day) {
+		this.day = day.DayOfWeek;
 	}
 
-	public int getDayAsInt() {
-		return day;
+	public WeekDay getDayOfWeek() {
+		return WeekDay.valueOf(day);
 	}
 
 	public String getDayAsString() {
@@ -189,16 +194,13 @@ public class Form {
 		return this.details;
 	}
 
-	public Date getStart() {
-		return this.startTime;
+	public Interval getInterval() {
+		return new Interval(new DateTime(this.startTime), new DateTime(this.endTime));
 	}
 
-	public void setStart(Date startDate) {
-		this.startTime = startDate;
-	}
-
-	public Date getEnd() {
-		return this.endTime;
+	public void setInterval(Interval interval) {
+		this.startTime = interval.getStart().toDate();
+		this.endTime = interval.getEnd().toDate();
 	}
 
 	public String getDept() {
@@ -223,10 +225,6 @@ public class Form {
 
 	public void setMinutesWorked(int minutesWorked) {
 		this.minutesWorked = minutesWorked;
-	}
-
-	public void setEnd(Date endDate) {
-		this.endTime = endDate;
 	}
 
 	public Status getStatus() {
@@ -269,11 +267,11 @@ public class Form {
 		this.absenceType = absenceType;
 	}
 
-	public Date getSubmissionTime() {
-		return submissionTime;
+	public DateTime getSubmissionTime() {
+		return new DateTime(submissionTime);
 	}
 
-	public void setSubmissionTime(Date submissionTime) {
-		this.submissionTime = submissionTime;
+	public void setSubmissionTime(DateTime submissionTime) {
+		this.submissionTime = submissionTime.toDate();
 	}
 }

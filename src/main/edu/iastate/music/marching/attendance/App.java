@@ -1,11 +1,29 @@
 package edu.iastate.music.marching.attendance;
 
-import java.util.Arrays;
-import java.util.List;
+import org.joda.time.DateTimeConstants;
 
 public class App {
-	public static List<String> getDaysOfTheWeek() {
-		return Arrays.asList(new String[] { "Sunday", "Monday", "Tuesday", "Wednesday",
-				"Thursday", "Friday", "Saturday"});
+
+	public enum WeekDay {
+		Sunday(DateTimeConstants.SUNDAY), Monday(DateTimeConstants.MONDAY), Tuesday(
+				DateTimeConstants.TUESDAY), Wednesday(
+				DateTimeConstants.WEDNESDAY), Thursday(
+				DateTimeConstants.THURSDAY), Friday(DateTimeConstants.FRIDAY), Saturday(
+				DateTimeConstants.SATURDAY);
+		public final int DayOfWeek;
+
+		WeekDay(int jodaDayOfWeek) {
+			this.DayOfWeek = jodaDayOfWeek;
+		}
+
+		public static WeekDay valueOf(int day) {
+			for (WeekDay d : WeekDay.values()) {
+				if (d.DayOfWeek == day) {
+					return d;
+				}
+			}
+
+			return null;
+		}
 	}
 }

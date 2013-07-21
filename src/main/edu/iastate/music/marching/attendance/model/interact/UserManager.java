@@ -176,7 +176,7 @@ public class UserManager extends AbstractManager {
 	public User createDirector(String schoolEmail, String loginEmail,
 			String firstName, String lastName) throws IllegalArgumentException {
 
-		// Validate email
+		// ValiDateTime email
 		Email primaryEmail = new Email(schoolEmail);
 		Email secondaryEmail = new Email(loginEmail);
 		ValidationUtil.validPrimaryEmail(primaryEmail, this.datatrain);
