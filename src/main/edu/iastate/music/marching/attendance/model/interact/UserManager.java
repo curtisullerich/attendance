@@ -35,13 +35,6 @@ public class UserManager extends AbstractManager {
 		return find.returnAll().now();
 	}
 
-	public int getCount(Type type) {
-		RootFindCommand<User> find = this.datatrain.find(User.class);
-		find.addFilter(User.FIELD_TYPE, FilterOperator.EQUAL, type);
-
-		return find.returnCount().now();
-	}
-
 	public boolean isUniqueId(String id, Email primary) {
 		RootFindCommand<User> find = this.datatrain.find(User.class);
 		find.addFilter(User.FIELD_UNIVERSITY_ID, FilterOperator.EQUAL, id);

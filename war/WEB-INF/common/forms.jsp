@@ -94,6 +94,4 @@ table.gray tbody tr.late td {
 					$("#deleteForm").submit();
 				}
 			}
-		
-		</script>
-		
+		</script>		

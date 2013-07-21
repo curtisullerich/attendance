@@ -45,7 +45,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 	private static final Logger LOG = Logger.getLogger(DirectorServlet.class
 			.getName());
 
-	public enum Page {
+	private enum Page {
 		index, appinfo, attendance, export, forms, unanchored, users, user, info, viewabsence, student, makeevent, deletestudent, studentinfo, viewevent, deleteevent, postdelete;
 	}
 

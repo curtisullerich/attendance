@@ -30,7 +30,6 @@ public class FormManager extends AbstractManager {
 	}
 
 	/**
-	 * 
 	 * @param user
 	 *            Assume user is associated in data store
 	 * @return
@@ -71,12 +70,6 @@ public class FormManager extends AbstractManager {
 			ac.updateAbsence(absence);
 		}
 
-	}
-
-	public Form getByHashedId(long id) {
-		return this.dataTrain.getDataStore().find().type(Form.class)
-				.addFilter(Form.HASHED_ID, FilterOperator.EQUAL, id)
-				.returnUnique().now();
 	}
 
 	private void storeForm(Form form) {
