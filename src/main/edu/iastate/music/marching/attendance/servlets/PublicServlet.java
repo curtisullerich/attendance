@@ -13,9 +13,6 @@ import edu.iastate.music.marching.attendance.util.PageBuilder;
 
 public class PublicServlet extends AbstractBaseServlet {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 9184644423443871525L;
 
 	private enum Page {

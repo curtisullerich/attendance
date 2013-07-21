@@ -35,7 +35,6 @@ public class FormManager extends AbstractManager {
 	}
 
 	/**
-	 * 
 	 * @param user
 	 *            Assume user is associated in data store
 	 * @return
@@ -76,12 +75,6 @@ public class FormManager extends AbstractManager {
 			ac.updateAbsence(absence);
 		}
 
-	}
-
-	public Form getByHashedId(long id) {
-		return this.train.getDataStore().find().type(Form.class)
-				.addFilter(Form.HASHED_ID, FilterOperator.EQUAL, id)
-				.returnUnique().now();
 	}
 
 	private void storeForm(Form form) {
@@ -136,7 +129,7 @@ public class FormManager extends AbstractManager {
 		}
 
 		DateTime cutoff = train.getAppDataManager().get()
-				.getFormSubmissionCutoff();
+				.getPerformanceAbsenceFormCutoff();
 
 		boolean late = cutoff.isBeforeNow();
 
@@ -151,6 +144,9 @@ public class FormManager extends AbstractManager {
 
 		// current
 		form.setSubmissionTime(DateTime.now());
+		form.setLate(form.getSubmissionTime().isAfter(
+				DataTrain.getAndStartTrain().getAppDataManager().get()
+						.getPerformanceAbsenceFormCutoff()));
 
 		// Set remaining fields
 		form.setDetails(reason);
@@ -239,6 +235,9 @@ public class FormManager extends AbstractManager {
 
 		// current
 		form.setSubmissionTime(DateTime.now());
+		form.setLate(form.getSubmissionTime().isAfter(
+				DataTrain.getAndStartTrain().getAppDataManager().get()
+						.getPerformanceAbsenceFormCutoff()));
 
 		form.setDayOfWeek(dayOfWeek);
 		form.setDetails(details);
@@ -286,6 +285,9 @@ public class FormManager extends AbstractManager {
 
 		// current
 		form.setSubmissionTime(DateTime.now());
+		form.setLate(form.getSubmissionTime().isAfter(
+				DataTrain.getAndStartTrain().getAppDataManager().get()
+						.getPerformanceAbsenceFormCutoff()));
 
 		// Set remaining fields
 		form.setDetails(details);

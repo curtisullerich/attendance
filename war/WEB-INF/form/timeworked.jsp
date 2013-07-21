@@ -25,7 +25,7 @@
 			<dl class="block-layout">
 	
 				<dt><label for="AmountWorked" class="required">Total amount of work</label></dt>
-				<label>If you worked on more than one day, just select one of them here and make note of it below.</label>
+				<p>If you worked on more than one day/more than one time for this total, just make note of it below.</p>
 				<dd>
 					<input size='5' type='number' name='AmountWorked' value='<c:out value="${AmountWorked}" />' style="width:64pt" />
 					<label for="AmountWorked">Minutes</label>

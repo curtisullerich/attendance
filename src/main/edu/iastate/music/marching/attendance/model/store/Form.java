@@ -122,6 +122,7 @@ public class Form {
 	private String section;
 	private String building;
 	private int day;
+	private boolean late;
 
 	public void setDayOfWeek(WeekDay day) {
 		this.day = day.DayOfWeek;
@@ -273,5 +274,13 @@ public class Form {
 
 	public void setSubmissionTime(DateTime submissionTime) {
 		this.submissionTime = submissionTime.toDate();
+	}
+
+	public boolean isLate() {
+		return late;
+	}
+
+	public void setLate(boolean late) {
+		this.late = late;
 	}
 }

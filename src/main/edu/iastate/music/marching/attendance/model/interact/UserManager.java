@@ -35,13 +35,6 @@ public class UserManager extends AbstractManager {
 		return find.returnAll().now();
 	}
 
-	public int getCount(Type type) {
-		RootFindCommand<User> find = this.datatrain.find(User.class);
-		find.addFilter(User.FIELD_TYPE, FilterOperator.EQUAL, type);
-
-		return find.returnCount().now();
-	}
-
 	public boolean isUniqueId(String id, Email primary) {
 		RootFindCommand<User> find = this.datatrain.find(User.class);
 		find.addFilter(User.FIELD_UNIVERSITY_ID, FilterOperator.EQUAL, id);
@@ -331,6 +324,9 @@ public class UserManager extends AbstractManager {
 
 		validateUser(u);
 
+		//TODO investigate why this is necessary
+		this.datatrain.getDataStore().activate(u);
+		
 		// I make this redundant call because the call chain in updateUserGrade
 		// wipes the changes from the User
 		this.datatrain.getDataStore().update(u);
@@ -396,26 +392,12 @@ public class UserManager extends AbstractManager {
 		switch (count) {
 		case 0:
 			return User.Grade.A;
-		case 1:
-			return User.Grade.Aminus;
-		case 2:
-			return User.Grade.Bplus;
 		case 3:
 			return User.Grade.B;
-		case 4:
-			return User.Grade.Bminus;
-		case 5:
-			return User.Grade.Cplus;
 		case 6:
 			return User.Grade.C;
-		case 7:
-			return User.Grade.Cminus;
-		case 8:
-			return User.Grade.Dplus;
 		case 9:
 			return User.Grade.D;
-		case 10:
-			return User.Grade.Dminus;
 		default:
 			return User.Grade.F;
 		}

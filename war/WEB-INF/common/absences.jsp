@@ -6,13 +6,7 @@
 	<c:choose>
 	<c:when test="${fn:length(absences) > 0}">
 
-		<table class="gray full-width gray-hover" style="table-layout:fixed;"><!-- white-space:nowrap;overflow:hidden; -->
-			<colgroup>
-				<col width="35%" />
-				<col width="15%" />
-				<col width="10%" />
-				<col width="12%" />
-			</colgroup>
+		<table class="gray full-width gray-hover" style="table-layout:auto;"><!-- white-space:nowrap;overflow:hidden; -->
 			<thead>
 				<tr class="dark-title">
 					<th>Event</th>

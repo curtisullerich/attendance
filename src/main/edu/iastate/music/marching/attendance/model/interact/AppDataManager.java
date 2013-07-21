@@ -47,9 +47,8 @@ public class AppDataManager extends AbstractManager {
 			appData.setTimeZone(TimeZone.getDefault());
 
 			// Default form cutoff is the end of august
-			
 			DateTime cutoff = new DateTime(new DateTime().getYear(), 8, 1, 16, 35, 0, 0);
-			appData.setFormSubmissionCutoff(cutoff);
+			appData.setPerformanceAbsenceFormCutoff(cutoff);
 
 			this.dataTrain.getDataStore().store(appData);
 			this.dataTrain.updateCache(AttendanceDatastore.VERSION, appData);

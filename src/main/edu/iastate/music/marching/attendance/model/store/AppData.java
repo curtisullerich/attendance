@@ -25,13 +25,17 @@ public class AppData implements Serializable {
 	 */
 	AppData() {
 	}
-
+	
 	private String title;
-
-	private Date formCutoff;
-
+	
+	private Date performanceAbsenceFormCutoff;
+	
+	private Date classConflictFormCutoff;
+	
+	private Date timeWorkedFormCutoff;
+	
 	private String timeZoneID;
-
+	
 	@Type(Text.class)
 	private String statusMessage;
 
@@ -48,12 +52,12 @@ public class AppData implements Serializable {
 		this.title = title;
 	}
 
-	public DateTime getFormSubmissionCutoff() {
-		return new DateTime(this.formCutoff);
+	public DateTime getPerformanceAbsenceFormCutoff() {
+		return new DateTime(this.performanceAbsenceFormCutoff);
 	}
 
-	public void setFormSubmissionCutoff(DateTime formCutoff) {
-		this.formCutoff = formCutoff.toDate();
+	public void setPerformanceAbsenceFormCutoff(DateTime formCutoff) {
+		this.performanceAbsenceFormCutoff = formCutoff.toDate();
 	}
 
 	public DateTimeZone getTimeZone() {
@@ -92,5 +96,21 @@ public class AppData implements Serializable {
 
 	public void setCronExportEnabled(boolean isEnabled) {
 		this.isCronExportEnabled = isEnabled;
+	}
+
+	public DateTime getClassConflictFormCutoff() {
+		return new DateTime(classConflictFormCutoff);
+	}
+
+	public void setClassConflictFormCutoff(DateTime classConflictFormCutoff) {
+		this.classConflictFormCutoff = classConflictFormCutoff.toDate();
+	}
+
+	public DateTime getTimeWorkedFormCutoff() {
+		return new DateTime(timeWorkedFormCutoff);
+	}
+
+	public void setTimeWorkedFormCutoff(DateTime timeWorkedFormCutoff) {
+		this.timeWorkedFormCutoff = timeWorkedFormCutoff.toDate();
 	}
 }
