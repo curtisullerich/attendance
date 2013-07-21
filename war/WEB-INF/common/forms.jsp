@@ -19,6 +19,7 @@ table.gray tbody tr.late td {
 								<th>netID</th>
 								<th>Type</th>
 								<th>Status</th>
+                                <th>Submitted</th>
 								<th>About</th>
 								<th class="sorttable_nosort"></th>
 							</tr>
@@ -38,7 +39,8 @@ table.gray tbody tr.late td {
 							<td onclick="window.open('<c:out value="${form_url_view}" />')">${form.student.id}</td>
 							<td onclick="window.open('<c:out value="${form_url_view}" />')">${form.type}</td>
 							<td onclick="window.open('<c:out value="${form_url_view}" />')">${form.status}</td>
-							<td onclick="window.open('<c:out value="${form_url_view}" />')">
+							<td style="white-space: nowrap" onclick="window.open('<c:out value="${form_url_view}" />')"><fmt:formatDate value="${form.submissionTime}" pattern="M/d h:mm a" /></td>
+                            <td onclick="window.open('<c:out value="${form_url_view}" />')">
 							<p style="overflow:hidden;">
                                 <c:if test="${form.late}"><b>LATE SUBMISSION.</b> </c:if>
 								<c:choose>
