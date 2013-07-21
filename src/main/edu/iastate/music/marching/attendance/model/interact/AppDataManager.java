@@ -55,7 +55,7 @@ public class AppDataManager extends AbstractManager {
 			//TODO if this is supposed to be roll(), then revert 
 			calendar.add(Calendar.MONTH, 1);
 			calendar.add(Calendar.MILLISECOND, -1);
-			appData.setFormSubmissionCutoff(calendar.getTime());
+			appData.setPerformanceAbsenceFormCutoff(calendar.getTime());
 
 			this.dataTrain.getDataStore().store(appData);
 			this.dataTrain.updateCache(AttendanceDatastore.VERSION, appData);

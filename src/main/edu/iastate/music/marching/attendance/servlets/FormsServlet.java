@@ -254,7 +254,8 @@ public class FormsServlet extends AbstractBaseServlet {
 			if (form == null) {
 				validForm = false;
 				errors.add("--------");
-				errors.add("If any of the errors above are fixable, please address them and try to resubmit. If you're still having issues, submit a bug report using the form at the bottom of the page.");
+				errors.add("If any of the errors above are fixable, please address them and try to resubmit. "
+						+ "If you're still having issues, submit a bug report using the form at the bottom of the page.");
 			}
 		}
 
@@ -262,13 +263,13 @@ public class FormsServlet extends AbstractBaseServlet {
 
 		Calendar cutoff = Calendar.getInstance(timezone);
 		cutoff.setTime(train.getAppDataManager().get()
-				.getFormSubmissionCutoff());
+				.getPerformanceAbsenceFormCutoff());
 
 		if (validForm) {
 
 			String success = SUCCESS_PERFORMANCE_ABSENCE_FORM;
 			if (!Calendar.getInstance(timezone).before(cutoff)) {
-				success = "PLEASE NOTE: This form was submitted after the deadline, so AttendBot 2.0 marked it as late and denied. The director will see this and choose to approve it or leave it as denied.";
+				success = "PLEASE NOTE: This form was submitted after the deadline, it has been marked as late.";
 			}
 
 			String url = getIndexURL() + "?success_message="
@@ -287,16 +288,18 @@ public class FormsServlet extends AbstractBaseServlet {
 			page.setAttribute("error_messages", errors);
 
 			page.setAttribute("cutoff", train.getAppDataManager().get()
-					.getFormSubmissionCutoff());
+					.getPerformanceAbsenceFormCutoff());
 
 			page.setAttribute("Reason", reason);
 			if (date != null) {
 				page.setAttribute("startdate", Util.formatDate(date, timezone));
 			}
+
 			if (!Calendar.getInstance(timezone).before(cutoff)) {
 				errors.add("PLEASE NOTE: The deadline for submitting "
 						+ displayName
-						+ " has passed. You can still submit one, but it will be marked as late by AttendBot 2.0. Be sure to explain your circumstances when you submit.");
+						+ " has passed. You can still submit one, but it will be marked as late. "
+						+ "You need to talk to the director prior to submitting or it will be denied right away.");
 			}
 
 			page.passOffToJsp(req, resp);

@@ -8,14 +8,7 @@
  				<div>
 					<p>Number of Forms Submitted: ${fn:length(forms)}</p>
 					<br/>
-					<table class="sortable gray full-width gray-hover" style="table-layout:fixed;"><!-- white-space:nowrap;overflow:hidden; -->
-						<colgroup>
-							<col width="12%" />
-							<col width="7%" />
-							<col width="12%"/>
-							<col width="44%" />
-							<col width="10%" />
-						</colgroup>
+					<table class="sortable gray full-width gray-hover" style="table-auto;"><!-- white-space:nowrap;overflow:hidden; -->
 						<thead>
 							<tr class="dark-title">
 								<th>netID</th>

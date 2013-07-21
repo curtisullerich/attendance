@@ -31,14 +31,11 @@
     registration page.
     </p>
 	<center>
-	<p>
-	<a style="font-size:large" href="/auth/login">Login with NetID and Register</a>
-	</p>
+  	  <p>
+    	<a style="font-size:large" href="/auth/login">Login with NetID and Register</a>
+      </p>
 	</center>
-	
-	<br/>
-	<br/>
-	
+
 	<p>
 	<i>Note that if you are currently logged in to a gmail account, you will first need to <a href="/auth/logout">log out of it</a>
 	so that you can login with your NetID and access the attendance system.</i>

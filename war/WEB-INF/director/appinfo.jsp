@@ -21,13 +21,6 @@
 		<%//Put the form down here so the MobilePassword wasn't getting posted in the form %>
 		<form method="post" accept-charset="utf-8">	
 		<dl class="block-layout">
-<!-- 			<dt><label for="Timezone" class="required">Timezone</label></dt> -->
-<!-- 			<dd> -->
-<!-- 				<select name="Timezone"> -->
-<%-- 					<option selected>${timezone }</option> --%>
-				
-<!-- 				</select> -->
-<!-- 			</dd> -->
 
 			<dt><label class="required" for="Title">Title</label></dt>
 			<dd><input type="text" name="Title" value="<c:out value="${appinfo.title}" />" /></dd>
@@ -35,9 +28,19 @@
 			<dt><label for="CronExportEnabled">Backups:</label></dt>
 			<dd><label>Daily data backups enabled: <input type="checkbox" name="CronExportEnabled" <c:if test="${appinfo.cronExportEnabled}">checked="checked"</c:if> align="right"></label></dd>
 			
-			<dt><label for="datetime" class="required">Performance Absence Form Submission Cutoff</label></dt>
+			<dt><label for="performanceAbsenceDatetime" class="required">Performance Absence Form Submission Cutoff</label></dt>
             <dd>
-              <input type="text" name="datetime" id="datetime" value='<c:out value="${datetime}" />' />
+              <input type="text" name="performanceAbsenceDatetime" id="performanceAbsenceDatetime" value='<c:out value="${performanceAbsenceDatetime}" />' />
+            </dd>
+            
+            <dt><label for="classConflictDatetime" class="required">Class Conflict Form Submission Cutoff</label></dt>
+            <dd>
+              <input type="text" name="classConflictDatetime" id="classConflictDatetime" value='<c:out value="${classConflictDatetime}" />' />
+            </dd>
+            
+            <dt><label for="timeWorkedDatetime" class="required">Time Worked Form Submission Cutoff</label></dt>
+            <dd>
+              <input type="text" name="timeWorkedDatetime" id="timeWorkedDatetime" value='<c:out value="${timeWorkedDatetime}" />' />
             </dd>
 			
  			<dt><label for="Timezone">Timezone</label></dt>
@@ -66,9 +69,15 @@
         <script type="text/javascript" src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
         <script type="text/javascript" src="/js/jquery-ui-timepicker-addon.js"></script>
         <script>
-          $('#datetime').datetimepicker({
-        		timeFormat: "h:mm TT"
-          });
+        $('#performanceAbsenceDatetime').datetimepicker({
+    		timeFormat: "h:mm TT"
+      	});
+        $('#classConflictDatetime').datetimepicker({
+    		timeFormat: "h:mm TT"
+    	});
+        $('#timeWorkedDatetime').datetimepicker({
+    		timeFormat: "h:mm TT"
+	    });
         </script>
 	</body>
 </html>

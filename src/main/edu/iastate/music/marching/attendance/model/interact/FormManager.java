@@ -137,7 +137,7 @@ public class FormManager extends AbstractManager {
 
 		Calendar cutoff = Calendar.getInstance(timezone);
 		cutoff.setTime(dataTrain.getAppDataManager().get()
-				.getFormSubmissionCutoff());
+				.getPerformanceAbsenceFormCutoff());
 
 		boolean late = false;
 

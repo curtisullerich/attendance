@@ -18,6 +18,7 @@ public class Util {
 			super.setLenient(false);
 		}
 	}
+
 	private static final String dateString = "MM/dd/yyyy";
 	private static final String timeString = "h:mm aa";
 	private static final StrictDateFormat datetimeFormat = new StrictDateFormat(
@@ -116,19 +117,19 @@ public class Util {
 	public static String formatDateTime(Date datetime, TimeZone timeZone) {
 		AppData data = DataTrain.getAndStartTrain().getAppDataManager().get();
 		datetimeFormat.setTimeZone(data.getTimeZone());
-		return datetimeFormat.format(data.getFormSubmissionCutoff());
+		return datetimeFormat.format(datetime);
 	}
 
 	public static String formatTime(Date datetime, TimeZone timeZone) {
 		AppData data = DataTrain.getAndStartTrain().getAppDataManager().get();
 		timeFormat.setTimeZone(data.getTimeZone());
-		return timeFormat.format(data.getFormSubmissionCutoff());
+		return timeFormat.format(datetime);
 	}
 
 	public static String formatDate(Date datetime, TimeZone timeZone) {
 		AppData data = DataTrain.getAndStartTrain().getAppDataManager().get();
 		dateFormat.setTimeZone(data.getTimeZone());
-		return dateFormat.format(data.getFormSubmissionCutoff());
+		return dateFormat.format(datetime);
 	}
 
 	public static Date parseDateTime(String datetime, TimeZone timeZone) {
@@ -180,9 +181,9 @@ public class Util {
 			exp.getErrors().add("Invalid time.");
 		}
 
-//		calendar.set(Calendar.YEAR, 0);
-//		calendar.set(Calendar.MONTH, 0);
-//		calendar.set(Calendar.DAY_OF_MONTH, 0);
+		// calendar.set(Calendar.YEAR, 0);
+		// calendar.set(Calendar.MONTH, 0);
+		// calendar.set(Calendar.DAY_OF_MONTH, 0);
 		calendar.set(Calendar.MILLISECOND, 0);
 		calendar.setLenient(false);
 
@@ -215,10 +216,10 @@ public class Util {
 		cutoff.set(Calendar.YEAR, 1900);
 		cutoff.set(Calendar.MONTH, 1);
 		cutoff.set(Calendar.DAY_OF_MONTH, 1);
-//		cutoff.set(Calendar.HOUR, 0);
-//		cutoff.set(Calendar.MINUTE, 0);
-//		cutoff.set(Calendar.SECOND, 0);
-//		cutoff.set(Calendar.MILLISECOND, 0);
+		// cutoff.set(Calendar.HOUR, 0);
+		// cutoff.set(Calendar.MINUTE, 0);
+		// cutoff.set(Calendar.SECOND, 0);
+		// cutoff.set(Calendar.MILLISECOND, 0);
 
 		if (calendar.before(cutoff)) {
 			exp.getErrors().add("Date was before 1900.");

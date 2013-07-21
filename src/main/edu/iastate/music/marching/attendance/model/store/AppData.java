@@ -22,13 +22,17 @@ public class AppData implements Serializable {
 	 */
 	AppData() {
 	}
-
+	
 	private String title;
-
-	private Date formCutoff;
-
+	
+	private Date performanceAbsenceFormCutoff;
+	
+	private Date classConflictFormCutoff;
+	
+	private Date timeWorkedFormCutoff;
+	
 	private String timeZoneID;
-
+	
 	@Type(Text.class)
 	private String statusMessage;
 
@@ -45,12 +49,12 @@ public class AppData implements Serializable {
 		this.title = title;
 	}
 
-	public Date getFormSubmissionCutoff() {
-		return this.formCutoff;
+	public Date getPerformanceAbsenceFormCutoff() {
+		return this.performanceAbsenceFormCutoff;
 	}
 
-	public void setFormSubmissionCutoff(Date formCutoff) {
-		this.formCutoff = formCutoff;
+	public void setPerformanceAbsenceFormCutoff(Date formCutoff) {
+		this.performanceAbsenceFormCutoff = formCutoff;
 	}
 
 	public TimeZone getTimeZone() {
@@ -89,5 +93,21 @@ public class AppData implements Serializable {
 
 	public void setCronExportEnabled(boolean isEnabled) {
 		this.isCronExportEnabled = isEnabled;
+	}
+
+	public Date getClassConflictFormCutoff() {
+		return classConflictFormCutoff;
+	}
+
+	public void setClassConflictFormCutoff(Date classConflictFormCutoff) {
+		this.classConflictFormCutoff = classConflictFormCutoff;
+	}
+
+	public Date getTimeWorkedFormCutoff() {
+		return timeWorkedFormCutoff;
+	}
+
+	public void setTimeWorkedFormCutoff(Date timeWorkedFormCutoff) {
+		this.timeWorkedFormCutoff = timeWorkedFormCutoff;
 	}
 }

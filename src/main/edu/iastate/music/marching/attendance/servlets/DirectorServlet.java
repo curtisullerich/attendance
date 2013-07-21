@@ -3,10 +3,7 @@ package edu.iastate.music.marching.attendance.servlets;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -43,9 +40,6 @@ import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
 public class DirectorServlet extends AbstractBaseServlet {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 6100206975846317440L;
 
 	private static final Logger LOG = Logger.getLogger(DirectorServlet.class
@@ -653,12 +647,22 @@ public class DirectorServlet extends AbstractBaseServlet {
 			}
 
 			// Handle the thrown exception
-			Date testDate = null;
 			try {
-				String datetime = req.getParameter("datetime");
-				testDate = Util.parseDateTime(datetime, train
-						.getAppDataManager().get().getTimeZone());
-				data.setFormSubmissionCutoff(testDate);
+				TimeZone storedZone = train.getAppDataManager().get()
+						.getTimeZone();
+				Date performanceAbsenceDatetime = Util.parseDateTime(
+						req.getParameter("performanceAbsenceDatetime"),
+						storedZone);
+				data.setPerformanceAbsenceFormCutoff(performanceAbsenceDatetime);
+
+				Date classConflictDatetime = Util.parseDateTime(
+						req.getParameter("classConflictDatetime"), storedZone);
+				data.setClassConflictFormCutoff(classConflictDatetime);
+
+				Date timeWorkedDatetime = Util.parseDateTime(
+						req.getParameter("timeWorkedDatetime"), storedZone);
+				data.setTimeWorkedFormCutoff(timeWorkedDatetime);
+
 			} catch (ValidationExceptions e) {
 				validForm = false;
 				errors.add(e.getMessage());
@@ -690,6 +694,8 @@ public class DirectorServlet extends AbstractBaseServlet {
 		}
 		if (validForm) {
 			appDataController.save(data);
+		} else {
+			errors.add("There was a problem.");
 		}
 
 		if (errors.size() == 0) {
@@ -708,21 +714,34 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		AppData data = train.getAppDataManager().get();
 
-		Calendar cutoffDate = Calendar.getInstance(data.getTimeZone());
-		cutoffDate.setTime(data.getFormSubmissionCutoff());
-
 		page.setAttribute("appinfo", data);
 
 		page.setAttribute("timezone", data.getTimeZone());
 
-		page.setAttribute("datetime",
-				Util.formatDateTime(cutoffDate.getTime(), data.getTimeZone()));
+		if (data.getPerformanceAbsenceFormCutoff() != null) {
+			page.setAttribute("performanceAbsenceDatetime", Util
+					.formatDateTime(data.getPerformanceAbsenceFormCutoff(),
+							data.getTimeZone()));
+		}
+
+		if (data.getClassConflictFormCutoff() != null) {
+			page.setAttribute(
+					"classConflictDatetime",
+					Util.formatDateTime(data.getClassConflictFormCutoff(),
+							data.getTimeZone()));
+		}
+
+		if (data.getTimeWorkedFormCutoff() != null) {
+			page.setAttribute(
+					"timeWorkedDatetime",
+					Util.formatDateTime(data.getTimeWorkedFormCutoff(),
+							data.getTimeZone()));
+		}
 
 		page.setAttribute("timezones", data.getTimezoneOptions());
 
 		page.setAttribute("StatusMessage", data.getStatusMessage());
 
-		// page.setAttribute("cutoffTime", data.getFormSubmissionCutoff());
 		page.setAttribute("error_messages", errors);
 		page.setAttribute("success_message", success);
 		page.setPageTitle("Application Info");

@@ -117,6 +117,7 @@ public class Form {
 	private String section;
 	private String building;
 	private int day;
+	private boolean late;
 
 	public void setDay(int day) {
 		this.day = day;
@@ -275,5 +276,13 @@ public class Form {
 
 	public void setSubmissionTime(Date submissionTime) {
 		this.submissionTime = submissionTime;
+	}
+
+	public boolean isLate() {
+		return late;
+	}
+
+	public void setLate(boolean late) {
+		this.late = late;
 	}
 }
