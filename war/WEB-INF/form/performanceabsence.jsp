@@ -39,7 +39,7 @@
             </dd>
 
 			<dt>
-				<label class='required'>Reasons:</label>
+				<label class='required'>Reason:</label>
 			</dt>
 			<dd>
 				<textarea rows="6" cols="50" id="reason" name="Reason"
