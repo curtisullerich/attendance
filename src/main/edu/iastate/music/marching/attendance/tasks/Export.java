@@ -33,6 +33,39 @@ import edu.iastate.music.marching.attendance.model.store.User;
 
 public class Export {
 
+	public static class ExportDataSource implements javax.activation.DataSource {
+
+		private final String data;
+		private final String name;
+
+		public ExportDataSource(String name, StringWriter dataStream) {
+			this.name = name;
+			this.data = dataStream.toString();
+		}
+
+		@Override
+		public String getContentType() {
+			return "text/plain";
+		}
+
+		@Override
+		public InputStream getInputStream() throws IOException {
+			return new ByteArrayInputStream(data.getBytes());
+		}
+
+		@Override
+		public String getName() {
+			return this.name;
+		}
+
+		@Override
+		public OutputStream getOutputStream() throws IOException {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+	}
+
 	private static final Logger LOG = Logger.getLogger(Export.class.getName());
 
 	public static boolean performExport() {
@@ -101,39 +134,6 @@ public class Export {
 		}
 
 		return true;
-	}
-
-	public static class ExportDataSource implements javax.activation.DataSource {
-
-		private final String data;
-		private final String name;
-
-		public ExportDataSource(String name, StringWriter dataStream) {
-			this.name = name;
-			this.data = dataStream.toString();
-		}
-
-		@Override
-		public String getContentType() {
-			return "text/plain";
-		}
-
-		@Override
-		public InputStream getInputStream() throws IOException {
-			return new ByteArrayInputStream(data.getBytes());
-		}
-
-		@Override
-		public String getName() {
-			return this.name;
-		}
-
-		@Override
-		public OutputStream getOutputStream() throws IOException {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
 	}
 
 }

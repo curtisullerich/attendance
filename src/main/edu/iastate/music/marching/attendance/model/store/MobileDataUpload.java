@@ -14,9 +14,6 @@ public class MobileDataUpload {
 
 	public static final String FIELD_UPLOADER = "uploader";
 
-	MobileDataUpload() {
-	}
-
 	@Activate
 	private User uploader;
 
@@ -28,35 +25,38 @@ public class MobileDataUpload {
 	@Type(Text.class)
 	private String error;
 
-	public void setUploader(User uploader) {
-		this.uploader = uploader;
-	}
-
-	public User getUploader() {
-		return this.uploader;
-	}
-
-	public void setTimestamp(DateTime uploadTime) {
-		this.timestamp = uploadTime.toDate();
-	}
-
-	public DateTime getTimestamp() {
-		return new DateTime(this.timestamp);
-	}
-
-	public void setData(String uploadData) {
-		this.data = uploadData;
+	MobileDataUpload() {
 	}
 
 	public String getData() {
 		return this.data;
 	}
 
+	public String getErrorMessage() {
+		return this.error;
+	}
+
+	public DateTime getTimestamp() {
+		return new DateTime(this.timestamp);
+	}
+
+	public User getUploader() {
+		return this.uploader;
+	}
+
+	public void setData(String uploadData) {
+		this.data = uploadData;
+	}
+
 	public void setErrorMessage(String message) {
 		this.error = message;
 	}
 
-	public String getErrorMessage() {
-		return this.error;
+	public void setTimestamp(DateTime uploadTime) {
+		this.timestamp = uploadTime.toDate();
+	}
+
+	public void setUploader(User uploader) {
+		this.uploader = uploader;
 	}
 }

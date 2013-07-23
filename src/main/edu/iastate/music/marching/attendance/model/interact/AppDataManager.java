@@ -1,6 +1,5 @@
 package edu.iastate.music.marching.attendance.model.interact;
 
-import java.util.Calendar;
 import java.util.TimeZone;
 
 import org.joda.time.DateTime;
@@ -25,7 +24,8 @@ public class AppDataManager extends AbstractManager {
 	 */
 	public AppData get() {
 		// Try cache first
-		AppData appData = this.dataTrain.loadFromCache(AppData.class, AttendanceDatastore.VERSION);
+		AppData appData = this.dataTrain.loadFromCache(AppData.class,
+				AttendanceDatastore.VERSION);
 
 		if (appData == null) {
 			appData = dataTrain.getDataStore().find().type(AppData.class)
@@ -47,7 +47,8 @@ public class AppDataManager extends AbstractManager {
 			appData.setTimeZone(TimeZone.getDefault());
 
 			// Default form cutoff is the end of august
-			DateTime cutoff = new DateTime(new DateTime().getYear(), 8, 1, 16, 35, 0, 0);
+			DateTime cutoff = new DateTime(new DateTime().getYear(), 8, 1, 16,
+					35, 0, 0);
 			appData.setPerformanceAbsenceFormCutoff(cutoff);
 
 			this.dataTrain.getDataStore().store(appData);

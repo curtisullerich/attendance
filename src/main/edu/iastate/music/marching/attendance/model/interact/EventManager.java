@@ -1,9 +1,6 @@
 package edu.iastate.music.marching.attendance.model.interact;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -192,14 +189,15 @@ public class EventManager extends AbstractManager {
 		// here, either
 	}
 
-	public List<Event> readAll() {
-		return this.train.getDataStore().find().type(Event.class).returnAll()
-				.now();
+	public Event get(long id) {
+		ObjectDatastore od = this.train.getDataStore();
+		Event e = od.load(this.train.getTie(Event.class, id));
+		return e;
 	}
 
-	public Integer getCount() {
-		return this.train.getDataStore().find().type(Event.class).returnCount()
-				.now();
+	public List<Event> getAll() {
+		ObjectDatastore od = this.train.getDataStore();
+		return od.find().type(Event.class).returnAll().now();
 	}
 
 	/**
@@ -214,6 +212,11 @@ public class EventManager extends AbstractManager {
 		find.addFilter(Event.FIELD_START, FilterOperator.LESS_THAN_OR_EQUAL, d);
 		find.addFilter(Event.FIELD_END, FilterOperator.GREATER_THAN_OR_EQUAL, d);
 		return find.returnAll().now();
+	}
+
+	public Integer getCount() {
+		return this.train.getDataStore().find().type(Event.class).returnCount()
+				.now();
 	}
 
 	/**
@@ -231,15 +234,9 @@ public class EventManager extends AbstractManager {
 		return find.returnAll().now();
 	}
 
-	public Event get(long id) {
-		ObjectDatastore od = this.train.getDataStore();
-		Event e = od.load(this.train.getTie(Event.class, id));
-		return e;
-	}
-
-	public List<Event> getAll() {
-		ObjectDatastore od = this.train.getDataStore();
-		return od.find().type(Event.class).returnAll().now();
+	public List<Event> readAll() {
+		return this.train.getDataStore().find().type(Event.class).returnAll()
+				.now();
 	}
 
 }

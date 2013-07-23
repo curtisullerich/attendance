@@ -15,40 +15,6 @@ import com.google.code.twig.annotation.Store;
 @Entity(kind = "Absence", allocateIdsBy = 0)
 public class Absence {
 
-	public enum Type {
-		Absence, Tardy, EarlyCheckOut;
-
-		private String mDisplayString;
-
-		private Type() {
-			mDisplayString = this.toString();
-		}
-
-		private Type(String display_string) {
-			mDisplayString = display_string;
-		}
-
-		public boolean isAbsence() {
-			return Absence.equals(this);
-		}
-
-		public boolean isTardy() {
-			return Tardy.equals(this);
-		}
-
-		public boolean isEarlyCheckOut() {
-			return EarlyCheckOut.equals(this);
-		}
-
-		public String getDisplayName() {
-			return mDisplayString;
-		}
-
-		public String getValue() {
-			return name();
-		}
-	}
-
 	public static enum Status {
 		Pending, Approved, Denied;
 
@@ -66,10 +32,6 @@ public class Absence {
 			return name();
 		}
 
-		public boolean isPending() {
-			return this == Pending;
-		}
-
 		public boolean isApproved() {
 			return this == Approved;
 		}
@@ -77,17 +39,49 @@ public class Absence {
 		public boolean isDenied() {
 			return this == Denied;
 		}
+
+		public boolean isPending() {
+			return this == Pending;
+		}
+	}
+
+	public enum Type {
+		Absence, Tardy, EarlyCheckOut;
+
+		private String mDisplayString;
+
+		private Type() {
+			mDisplayString = this.toString();
+		}
+
+		private Type(String display_string) {
+			mDisplayString = display_string;
+		}
+
+		public String getDisplayName() {
+			return mDisplayString;
+		}
+
+		public String getValue() {
+			return name();
+		}
+
+		public boolean isAbsence() {
+			return Absence.equals(this);
+		}
+
+		public boolean isEarlyCheckOut() {
+			return EarlyCheckOut.equals(this);
+		}
+
+		public boolean isTardy() {
+			return Tardy.equals(this);
+		}
 	};
 
 	public static final String FIELD_EVENT = "event";
 	public static final String FIELD_STUDENT = "student";
 	public static final String FIELD_TYPE = "type";
-
-	/**
-	 * Create absence through AbsenceController (DataModel.absence().create(...)
-	 */
-	Absence() {
-	}
 
 	@Id
 	private long id;
@@ -110,98 +104,15 @@ public class Absence {
 
 	@Store(false)
 	private DateTime cachedCheckout;
+
 	@Store(false)
 	private DateTime cachedCheckin;
 	@Store(false)
 	private Interval cachedInterval;
-
-	public long getId() {
-		return id;
-	}
-
-	public User getStudent() {
-		return student;
-	}
-
-	public void setStudent(User student) {
-		this.student = student;
-	}
-
-	public Event getEvent() {
-		return event;
-	}
-
-	public void setEvent(Event event) {
-		this.event = event;
-	}
-
-	public Type getType() {
-		return this.type;
-	}
-
-	public void setType(Type type) {
-		this.type = type;
-	}
-
 	/**
-	 * Time-span of an absence
+	 * Create absence through AbsenceController (DataModel.absence().create(...)
 	 */
-	public Interval getInterval() {
-		if (getType().isAbsence()) {
-			return new Interval(new DateTime(this.start),
-					new DateTime(this.end));
-
-		} else
-			throw new IllegalStateException("Intervals only valid for absences");
-	}
-
-	public void setInterval(Interval interval) {
-		if (getType().isAbsence()) {
-			this.end = interval.getEnd().toDate();
-			this.start = interval.getStart().toDate();
-		} else
-			throw new IllegalStateException("Intervals only valid for absences");
-
-	}
-
-	public DateTime getCheckin() {
-		if (getType().isTardy())
-			return new DateTime(this.start);
-		else
-			throw new IllegalStateException("Intervals only valid for absences");
-
-	}
-
-	public void setCheckin(DateTime datetime) {
-		if (getType().isTardy())
-			this.start = datetime.toDate();
-		else
-			throw new IllegalStateException("Intervals only valid for absences");
-
-	}
-
-	public DateTime getCheckout() {
-		if (getType().isEarlyCheckOut())
-			return new DateTime(this.end);
-		else
-			throw new IllegalStateException("Intervals only valid for absences");
-
-	}
-
-	public void setCheckout(DateTime datetime) {
-		if (getType().isEarlyCheckOut())
-			this.end = datetime.toDate();
-		else
-			throw new IllegalStateException("Intervals only valid for absences");
-
-	}
-
-	public Status getStatus() {
-		return this.status;
-	}
-
-	public void setStatus(Status status) {
-		this.status = status;
+	Absence() {
 	}
 
 	public boolean containedIn(ReadableInterval interval) {
@@ -218,6 +129,110 @@ public class Absence {
 		default:
 			throw new UnsupportedOperationException();
 		}
+	}
+
+	public DateTime getCheckin() {
+		if (getType().isTardy())
+			return new DateTime(this.start);
+		else
+			throw new IllegalStateException("Intervals only valid for absences");
+
+	}
+
+	public DateTime getCheckout() {
+		if (getType().isEarlyCheckOut())
+			return new DateTime(this.start);
+		else
+			throw new IllegalStateException("Intervals only valid for absences");
+
+	}
+
+	@Deprecated
+	public Date getDatetime() {
+		return start;
+	}
+
+	@Deprecated
+	public Date getEnd() {
+		return end;
+	}
+
+	public Event getEvent() {
+		return event;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	/**
+	 * Time-span of an absence
+	 */
+	public Interval getInterval() {
+		if (getType().isAbsence()) {
+			return new Interval(new DateTime(this.start),
+					new DateTime(this.end));
+
+		} else
+			throw new IllegalStateException("Intervals only valid for absences");
+	}
+
+	@Deprecated
+	public Date getStart() {
+		return start;
+	}
+
+	public Status getStatus() {
+		return this.status;
+	}
+
+	public User getStudent() {
+		return student;
+	}
+
+	public Type getType() {
+		return this.type;
+	}
+
+	public void setCheckin(DateTime datetime) {
+		if (getType().isTardy())
+			this.start = datetime.toDate();
+		else
+			throw new IllegalStateException("Intervals only valid for absences");
+
+	}
+
+	public void setCheckout(DateTime datetime) {
+		if (getType().isEarlyCheckOut())
+			this.start = datetime.toDate();
+		else
+			throw new IllegalStateException("Intervals only valid for absences");
+
+	}
+
+	public void setEvent(Event event) {
+		this.event = event;
+	}
+
+	public void setInterval(Interval interval) {
+		if (getType().isAbsence()) {
+			this.end = interval.getEnd().toDate();
+			this.start = interval.getStart().toDate();
+		} else
+			throw new IllegalStateException("Intervals only valid for absences");
+
+	}
+
+	public void setStatus(Status status) {
+		this.status = status;
+	}
+
+	public void setStudent(User student) {
+		this.student = student;
+	}
+
+	public void setType(Type type) {
+		this.type = type;
 	}
 
 	@Override

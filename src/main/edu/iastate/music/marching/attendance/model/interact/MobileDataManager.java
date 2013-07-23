@@ -1,6 +1,5 @@
 package edu.iastate.music.marching.attendance.model.interact;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -31,6 +30,12 @@ public class MobileDataManager {
 	private static final String SEPARATOR = "&split&";
 	private static final DateTimeFormatter MOBILE_DATETIME_FORMATTER = DateTimeFormat
 			.forPattern("yyyy-MM-dd HHmm");
+
+	private static DateTime ParseDateTime(String datetext, String timetext,
+			DateTimeZone zone) {
+		return MOBILE_DATETIME_FORMATTER.withZone(zone).parseDateTime(
+				datetext + " " + timetext);
+	}
 
 	private DataTrain train;
 
@@ -80,6 +85,17 @@ public class MobileDataManager {
 		return sb.toString();
 	}
 
+	public List<MobileDataUpload> getUploads() {
+		return this.train.find(MobileDataUpload.class).returnAll().now();
+	}
+
+	public List<MobileDataUpload> getUploads(User uploader) {
+		return this.train
+				.find(MobileDataUpload.class)
+				.addFilter(MobileDataUpload.FIELD_UPLOADER,
+						FilterOperator.EQUAL, uploader).returnAll().now();
+	}
+
 	public String pushMobileData(String data, User uploader)
 			throws IllegalArgumentException {
 		// First let's log what is being uploaded
@@ -109,6 +125,15 @@ public class MobileDataManager {
 			upload.setErrorMessage(e.toString());
 
 			throw e;
+		}
+	}
+
+	public void scrubUploader(User uploader) {
+		List<MobileDataUpload> uploads = getUploads(uploader);
+
+		for (MobileDataUpload upload : uploads) {
+			upload.setUploader(null);
+			this.train.getDataStore().update(upload);
 		}
 	}
 
@@ -202,8 +227,8 @@ public class MobileDataManager {
 			Absence a = null;
 
 			if (s.contains("tardy")) {
-				//String firstName = parts[1];
-				//String lastName = parts[2];
+				// String firstName = parts[1];
+				// String lastName = parts[2];
 				String netid = parts[3];
 				String strDateTime = parts[4];
 				String strTime = parts[5];
@@ -224,8 +249,8 @@ public class MobileDataManager {
 
 			} else if (s.contains("absent")) {
 
-				//String firstName = parts[1];
-				//String lastName = parts[2];
+				// String firstName = parts[1];
+				// String lastName = parts[2];
 				String netid = parts[3];
 				String strDateTime = parts[4];
 				String strStartTime = parts[5];
@@ -253,8 +278,8 @@ public class MobileDataManager {
 				updatedStudents.add(student);
 
 			} else if (s.toLowerCase().contains("earlycheckout")) {
-				//String firstName = parts[1];
-				//String lastName = parts[2];
+				// String firstName = parts[1];
+				// String lastName = parts[2];
 				String netid = parts[3];
 				String strDateTime = parts[4];
 				String strTime = parts[5];
@@ -309,31 +334,5 @@ public class MobileDataManager {
 				+ " events." + "\n" + "Inserted " + successfulAbscenses + "/"
 				+ otherLines.size() + " absences/tardies/early checkouts."
 				+ "\n" + errorString;
-	}
-
-	public List<MobileDataUpload> getUploads() {
-		return this.train.find(MobileDataUpload.class).returnAll().now();
-	}
-
-	public List<MobileDataUpload> getUploads(User uploader) {
-		return this.train
-				.find(MobileDataUpload.class)
-				.addFilter(MobileDataUpload.FIELD_UPLOADER,
-						FilterOperator.EQUAL, uploader).returnAll().now();
-	}
-
-	public void scrubUploader(User uploader) {
-		List<MobileDataUpload> uploads = getUploads(uploader);
-
-		for (MobileDataUpload upload : uploads) {
-			upload.setUploader(null);
-			this.train.getDataStore().update(upload);
-		}
-	}
-
-	private static DateTime ParseDateTime(String datetext, String timetext,
-			DateTimeZone zone) {
-		return MOBILE_DATETIME_FORMATTER.withZone(zone).parseDateTime(
-				datetext + " " + timetext);
 	}
 }

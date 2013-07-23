@@ -2,7 +2,6 @@ package edu.iastate.music.marching.attendance.model.interact;
 
 import java.util.List;
 
-import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
@@ -29,139 +28,9 @@ public class FormManager extends AbstractManager {
 		this.train = dataTrain;
 	}
 
-	public List<Form> getAll() {
-		return this.train.getDataStore().find().type(Form.class).returnAll()
-				.now();
-	}
-
-	/**
-	 * @param user
-	 *            Assume user is associated in data store
-	 * @return
-	 */
-	public List<Form> get(User user) {
-		ObjectDatastore od = this.train.getDataStore();
-		RootFindCommand<Form> find = od.find().type(Form.class);
-
-		// Set the ancestor for this form, automatically limits results to be
-		// forms of the user
-		find = find.addFilter(Form.FIELD_STUDENT, FilterOperator.EQUAL, user);
-		return find.returnAll().now();
-	}
-
-	private void updateFormD(Form f) {
-		User student = f.getStudent();
-		if (f.getType() == Form.Type.TimeWorked && student != null) {
-			if (!f.isApplied()) {
-				if (f.getStatus() == Form.Status.Approved) {
-					student.setMinutesAvailable(student.getMinutesAvailable()
-							+ f.getMinutesWorked());
-					this.train.getUsersManager().update(student);
-					f.setApplied(true);
-				}
-			}
-		}
-	}
-
-	public void update(Form f) {
-		updateFormD(f);
-		this.train.getDataStore().update(f);
-
-		AbsenceManager ac = this.train.getAbsenceManager();
-
-		// TODO https://github.com/curtisullerich/attendance/issues/106
-		// what if the student is null?
-		for (Absence absence : ac.get(f.getStudent())) {
-			ac.updateAbsence(absence);
-		}
-
-	}
-
-	private void storeForm(Form form) {
-		// TODO: https://github.com/curtisullerich/attendance/issues/114
-		// Perform store of this new form and upDateTime of student's grade in a
-		// transaction to prevent inconsistent states
-		// Track transaction = dataTrain.switchTracksInternal();
-		//
-		// try {
-
-		updateFormD(form);
-
-		// Store
-		train.getDataStore().store(form);
-
-		// UpDateTime grade, it may have changed
-		train.getUsersManager().update(form.getStudent());
-
-		// TODO https://github.com/curtisullerich/attendance/issues/106
-		// what if the student is null?
-		AbsenceManager ac = this.train.getAbsenceManager();
-		for (Absence absence : ac.get(form.getStudent())) {
-			// TODO https://github.com/curtisullerich/attendance/issues/106
-			// I wrote a (private) method in Absence controller that could
-			// do this more efficiently because it checks for a specific form
-			// and specific absence. We /could/ expose it as protected, but
-			// that may introduce bugs elsewhere because we're not forced to
-			// call updateAbsence in order to perform checks and thus may forget
-			// to upDateTime it or perform all necessary validation. This
-			// applies to
-			// all forms
-			ac.updateAbsence(absence);
-		}
-
-		// Commit
-		// transaction.bendIronBack();
-
-		// } catch (RuntimeException ex) {
-		// transaction.derail();
-		// throw ex;
-		// }
-	}
-
-	public Form createPerformanceAbsenceForm(User student, LocalDate date,
-			String reason) {
-
-		// Simple validation first
-		ValidationExceptions exp = new ValidationExceptions();
-
-		if (!ValidationUtil.isValidText(reason, true)) {
-			exp.getErrors().add("Invalid reason");
-		}
-
-		DateTime cutoff = train.getAppDataManager().get()
-				.getPerformanceAbsenceFormCutoff();
-
-		boolean late = cutoff.isBeforeNow();
-
-		if (exp.getErrors().size() > 0) {
-			throw exp;
-		}
-
-		Form form = ModelFactory.newForm(Form.Type.PerformanceAbsence, student);
-
-		form.setInterval(date.toInterval(this.train.getAppDataManager().get()
-				.getTimeZone()));
-
-		// current
-		form.setSubmissionTime(DateTime.now());
-		form.setLate(form.getSubmissionTime().isAfter(
-				DataTrain.getAndStartTrain().getAppDataManager().get()
-						.getPerformanceAbsenceFormCutoff()));
-
-		// Set remaining fields
-		form.setDetails(reason);
-		form.setStatus(Form.Status.Pending);
-
-		if (late) {
-			form.setStatus(Form.Status.Denied);
-			// Perform store
-			storeForm(form);
-		} else {
-			storeForm(form);
-		}
-
-		return form;
-		// return formACHelper(student, date, reason, Form.Type.A);
+	public void approve(Form form) {
+		form.setStatus(Form.Status.Approved);
+		this.update(form);
 	}
 
 	public Form createClassConflictForm(User student, String department,
@@ -235,7 +104,7 @@ public class FormManager extends AbstractManager {
 
 		// current
 		form.setSubmissionTime(DateTime.now());
-		form.setLate(form.getSubmissionTime().isAfter(
+		form.setLate(form.getSubmissionDateTime().isAfter(
 				DataTrain.getAndStartTrain().getAppDataManager().get()
 						.getPerformanceAbsenceFormCutoff()));
 
@@ -247,6 +116,52 @@ public class FormManager extends AbstractManager {
 		storeForm(form);
 
 		return form;
+	}
+
+	public Form createPerformanceAbsenceForm(User student, LocalDate date,
+			String reason) {
+
+		// Simple validation first
+		ValidationExceptions exp = new ValidationExceptions();
+
+		if (!ValidationUtil.isValidText(reason, true)) {
+			exp.getErrors().add("Invalid reason");
+		}
+
+		DateTime cutoff = train.getAppDataManager().get()
+				.getPerformanceAbsenceFormCutoff();
+
+		boolean late = cutoff.isBeforeNow();
+
+		if (exp.getErrors().size() > 0) {
+			throw exp;
+		}
+
+		Form form = ModelFactory.newForm(Form.Type.PerformanceAbsence, student);
+
+		form.setInterval(date.toInterval(this.train.getAppDataManager().get()
+				.getTimeZone()));
+
+		// current
+		form.setSubmissionTime(DateTime.now());
+		form.setLate(form.getSubmissionDateTime().isAfter(
+				DataTrain.getAndStartTrain().getAppDataManager().get()
+						.getPerformanceAbsenceFormCutoff()));
+
+		// Set remaining fields
+		form.setDetails(reason);
+		form.setStatus(Form.Status.Pending);
+
+		if (late) {
+			form.setStatus(Form.Status.Denied);
+			// Perform store
+			storeForm(form);
+		} else {
+			storeForm(form);
+		}
+
+		return form;
+		// return formACHelper(student, date, reason, Form.Type.A);
 	}
 
 	/**
@@ -285,7 +200,7 @@ public class FormManager extends AbstractManager {
 
 		// current
 		form.setSubmissionTime(DateTime.now());
-		form.setLate(form.getSubmissionTime().isAfter(
+		form.setLate(form.getSubmissionDateTime().isAfter(
 				DataTrain.getAndStartTrain().getAppDataManager().get()
 						.getPerformanceAbsenceFormCutoff()));
 
@@ -300,10 +215,35 @@ public class FormManager extends AbstractManager {
 		return form;
 	}
 
+	void delete(User user) {
+		List<Form> forms = this.get(user);
+		this.train.getDataStore().deleteAll(forms);
+	}
+
 	public Form get(long id) {
 		ObjectDatastore od = this.train.getDataStore();
 		Form form = od.load(this.train.getTie(Form.class, id));
 		return form;
+	}
+
+	/**
+	 * @param user
+	 *            Assume user is associated in data store
+	 * @return
+	 */
+	public List<Form> get(User user) {
+		ObjectDatastore od = this.train.getDataStore();
+		RootFindCommand<Form> find = od.find().type(Form.class);
+
+		// Set the ancestor for this form, automatically limits results to be
+		// forms of the user
+		find = find.addFilter(Form.FIELD_STUDENT, FilterOperator.EQUAL, user);
+		return find.returnAll().now();
+	}
+
+	public List<Form> getAll() {
+		return this.train.getDataStore().find().type(Form.class).returnAll()
+				.now();
 	}
 
 	public boolean removeForm(Long id) {
@@ -320,13 +260,72 @@ public class FormManager extends AbstractManager {
 		}
 	}
 
-	public void approve(Form form) {
-		form.setStatus(Form.Status.Approved);
-		this.update(form);
+	private void storeForm(Form form) {
+		// TODO: https://github.com/curtisullerich/attendance/issues/114
+		// Perform store of this new form and upDateTime of student's grade in a
+		// transaction to prevent inconsistent states
+		// Track transaction = dataTrain.switchTracksInternal();
+		//
+		// try {
+
+		updateFormD(form);
+
+		// Store
+		train.getDataStore().store(form);
+
+		// UpDateTime grade, it may have changed
+		train.getUsersManager().update(form.getStudent());
+
+		// TODO https://github.com/curtisullerich/attendance/issues/106
+		// what if the student is null?
+		AbsenceManager ac = this.train.getAbsenceManager();
+		for (Absence absence : ac.get(form.getStudent())) {
+			// TODO https://github.com/curtisullerich/attendance/issues/106
+			// I wrote a (private) method in Absence controller that could
+			// do this more efficiently because it checks for a specific form
+			// and specific absence. We /could/ expose it as protected, but
+			// that may introduce bugs elsewhere because we're not forced to
+			// call updateAbsence in order to perform checks and thus may forget
+			// to upDateTime it or perform all necessary validation. This
+			// applies to
+			// all forms
+			ac.updateAbsence(absence);
+		}
+
+		// Commit
+		// transaction.bendIronBack();
+
+		// } catch (RuntimeException ex) {
+		// transaction.derail();
+		// throw ex;
+		// }
 	}
 
-	void delete(User user) {
-		List<Form> forms = this.get(user);
-		this.train.getDataStore().deleteAll(forms);
+	public void update(Form f) {
+		updateFormD(f);
+		this.train.getDataStore().update(f);
+
+		AbsenceManager ac = this.train.getAbsenceManager();
+
+		// TODO https://github.com/curtisullerich/attendance/issues/106
+		// what if the student is null?
+		for (Absence absence : ac.get(f.getStudent())) {
+			ac.updateAbsence(absence);
+		}
+
+	}
+
+	private void updateFormD(Form f) {
+		User student = f.getStudent();
+		if (f.getType() == Form.Type.TimeWorked && student != null) {
+			if (!f.isApplied()) {
+				if (f.getStatus() == Form.Status.Approved) {
+					student.setMinutesAvailable(student.getMinutesAvailable()
+							+ f.getMinutesWorked());
+					this.train.getUsersManager().update(student);
+					f.setApplied(true);
+				}
+			}
+		}
 	}
 }

@@ -28,14 +28,14 @@ import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
 public class FormsServlet extends AbstractBaseServlet {
 
+	private enum Page {
+		performanceabsence, classconflict, timeworked, index, view, remove;
+	}
+
 	private static final long serialVersionUID = -4738485557840953301L;
 
 	private static final Logger log = Logger.getLogger(FormsServlet.class
 			.getName());
-
-	private enum Page {
-		performanceabsence, classconflict, timeworked, index, view, remove;
-	}
 
 	private static final String SERVLET_PATH = "form";
 
@@ -85,41 +85,6 @@ public class FormsServlet extends AbstractBaseServlet {
 		}
 	}
 
-	private void viewForm(HttpServletRequest req, HttpServletResponse resp,
-			List<String> errors, String success_message)
-			throws ServletException, IOException {
-		DataTrain train = DataTrain.getAndStartTrain();
-		User currentUser = train.getAuthManager().getCurrentUser(
-				req.getSession());
-		Form form = null;
-		try {
-			long id = Long.parseLong(req.getParameter("id"));
-			form = train.getFormsManager().get(id);
-
-			PageBuilder page = new PageBuilder(Page.view, SERVLET_PATH);
-
-			if (form == null) {
-				log.warning("Could not find form number " + id + ".");
-				errors.add("Could not find form number " + id + ".");
-				page.setAttribute("error_messages", errors);
-			} else {
-				page.setPageTitle(form.getType().toString() + " Form");
-				page.setAttribute("form", form);
-				page.setAttribute("day", form.getDayAsString());
-				page.setAttribute("isDirector", currentUser.getType()
-						.isDirector());
-
-				page.setAttribute("error_messages", errors);
-				page.setAttribute("success_message", success_message);
-			}
-			page.passOffToJsp(req, resp);
-		} catch (NumberFormatException nfe) {
-			log.warning("Could not parse view form id: "
-					+ req.getParameter("id"));
-			ErrorServlet.showError(req, resp, 500);
-		}
-	}
-
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -158,153 +123,41 @@ public class FormsServlet extends AbstractBaseServlet {
 			}
 	}
 
-	private void updateStatus(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		DataTrain train = DataTrain.getAndStartTrain();
-		FormManager fc = train.getFormsManager();
-
-		List<String> errors = new LinkedList<String>();
-		String success_message = "";
-		boolean validForm = true;
-
-		Form f = null;
-		Form.Status status = null;
-		long id = 0;
-		if (!ValidationUtil.isPost(req)) {
-			validForm = false;
-		}
-		if (validForm) {
-			try {
-				id = Long.parseLong(req.getParameter("id"));
-				f = fc.get(id);
-				String strStat = req.getParameter("status");
-				if (strStat.equalsIgnoreCase("Approved"))
-					status = Form.Status.Approved;
-				else if (strStat.equalsIgnoreCase("Pending"))
-					status = Form.Status.Pending;
-				else if (strStat.equalsIgnoreCase("Denied"))
-					status = Form.Status.Denied;
-				else {
-					validForm = false;
-					errors.add("Invalid form status.");
-				}
-
-			} catch (NumberFormatException e) {
-				errors.add("Unable to find form.");
-				validForm = false;
-			} catch (NullPointerException e) {
-				errors.add("Unable to find form.");
-				validForm = false;
-			}
-		}
-
-		if (validForm) {
-			// Send them back to their Form page
-			f.setStatus(status);
-			fc.update(f);
-			success_message = "Successfully updated form.";
-		}
-
-		viewForm(req, resp, errors, success_message);
-
+	/**
+	 * Have to use a method since this servlet can be mapped from different
+	 * paths
+	 */
+	private String getIndexURL() {
+		return pageToUrl(Page.index, getInitParameter("path"));
 	}
 
-	private void handlePerformanceAbsenceForm(HttpServletRequest req,
-			HttpServletResponse resp) throws ServletException, IOException {
-		String reason = null;
-		LocalDate date = null;
+	/**
+	 * This servlet can be used for multiple user types, this grabs the type of
+	 * user this specific servlet instance is for
+	 * 
+	 * @return
+	 */
+	private User.Type getServletUserType() {
+		String value = getInitParameter("userType");
 
-		DataTrain train = DataTrain.getAndStartTrain();
+		return User.Type.valueOf(value);
+	}
 
-		// Parse out all data from form and validate
-		boolean validForm = true;
-		List<String> errors = new LinkedList<String>();
+	/**
+	 * This servlet can be used for multiple user types, this grabs the type of
+	 * user this specific servlet instance can be accessed by
+	 * 
+	 * @return
+	 */
+	private User.Type[] getServletUserTypes() {
+		User.Type userType = getServletUserType();
 
-		if (!ValidationUtil.isPost(req)) {
-			// This is not a post request to create a new form, no need to
-			// validate
-			validForm = false;
-		} else {
-			// Extract all basic parameters
-			reason = req.getParameter("Reason");
-			if (reason.trim().equals("")) {
-				reason = null;
-			}
-
-			try {
-				date = Util.parseDateOnly(req.getParameter("startdate"), train
-						.getAppDataManager().get().getTimeZone());
-			} catch (IllegalArgumentException e) {
-				validForm = false;
-				errors.add("Invalid Input: The input DateTime is invalid.");
-			}
-		}
-
-		if (validForm) {
-			// Store our new form to the data store
-			User student = train.getAuthManager().getCurrentUser(
-					req.getSession());
-
-			Form form = null;
-			try {
-				form = train.getFormsManager().createPerformanceAbsenceForm(
-						student, date, reason);
-			} catch (IllegalArgumentException e) {
-				validForm = false;
-				errors.add(e.getMessage());
-			}
-
-			if (form == null) {
-				validForm = false;
-				errors.add("--------");
-				errors.add("If any of the errors above are fixable, please address them and try to resubmit. "
-						+ "If you're still having issues, submit a bug report using the form at the bottom of the page.");
-			}
-		}
-
-		DateTimeZone timezone = train.getAppDataManager().get().getTimeZone();
-
-		DateTime cutoff = train.getAppDataManager().get()
-				.getPerformanceAbsenceFormCutoff();
-
-		if (validForm) {
-
-			String success = SUCCESS_PERFORMANCE_ABSENCE_FORM;
-			if (cutoff.isBeforeNow()) {
-				success = "PLEASE NOTE: This form was submitted after the deadline, it has been marked as late.";
-			}
-
-			String url = getIndexURL() + "?success_message="
-					+ URLEncoder.encode(success, "UTF-8");
-			url = resp.encodeRedirectURL(url);
-
-			resp.sendRedirect(url);
-		} else {
-			// Show form
-			PageBuilder page = new PageBuilder(Page.performanceabsence,
-					SERVLET_PATH);
-
-			String displayName = Form.Type.PerformanceAbsence.getDisplayName();
-			page.setPageTitle(displayName);
-
-			page.setAttribute("error_messages", errors);
-
-			page.setAttribute("cutoff", train.getAppDataManager().get()
-					.getPerformanceAbsenceFormCutoff());
-
-			page.setAttribute("Reason", reason);
-			if (date != null) {
-				page.setAttribute("startdate", Util.formatDateOnly(date));
-			}
-			if (cutoff.isBeforeNow()) {
-				errors.add("PLEASE NOTE: The deadline for submitting "
-						+ displayName
-						+ " has passed. You can still submit one, but it will be marked as late. "
-						+ "You need to talk to the director prior to submitting or it will be denied right away.");
-			}
-
-			page.passOffToJsp(req, resp);
-		}
+		// Since a TA is also a student, we also allow them access to their
+		// student forms
+		if (userType == User.Type.Student)
+			return new User.Type[] { User.Type.Student, User.Type.TA };
+		else
+			return new User.Type[] { userType };
 	}
 
 	private void handleClassConflictForm(HttpServletRequest req,
@@ -451,6 +304,104 @@ public class FormsServlet extends AbstractBaseServlet {
 		}
 	}
 
+	private void handlePerformanceAbsenceForm(HttpServletRequest req,
+			HttpServletResponse resp) throws ServletException, IOException {
+		String reason = null;
+		LocalDate date = null;
+
+		DataTrain train = DataTrain.getAndStartTrain();
+
+		// Parse out all data from form and validate
+		boolean validForm = true;
+		List<String> errors = new LinkedList<String>();
+
+		if (!ValidationUtil.isPost(req)) {
+			// This is not a post request to create a new form, no need to
+			// validate
+			validForm = false;
+		} else {
+			// Extract all basic parameters
+			reason = req.getParameter("Reason");
+			if (reason.trim().equals("")) {
+				reason = null;
+			}
+
+			try {
+				date = Util.parseDateOnly(req.getParameter("startdate"), train
+						.getAppDataManager().get().getTimeZone());
+			} catch (IllegalArgumentException e) {
+				validForm = false;
+				errors.add("Invalid Input: The input DateTime is invalid.");
+			}
+		}
+
+		if (validForm) {
+			// Store our new form to the data store
+			User student = train.getAuthManager().getCurrentUser(
+					req.getSession());
+
+			Form form = null;
+			try {
+				form = train.getFormsManager().createPerformanceAbsenceForm(
+						student, date, reason);
+			} catch (IllegalArgumentException e) {
+				validForm = false;
+				errors.add(e.getMessage());
+			}
+
+			if (form == null) {
+				validForm = false;
+				errors.add("--------");
+				errors.add("If any of the errors above are fixable, please address them and try to resubmit. "
+						+ "If you're still having issues, submit a bug report using the form at the bottom of the page.");
+			}
+		}
+
+		DateTimeZone timezone = train.getAppDataManager().get().getTimeZone();
+
+		DateTime cutoff = train.getAppDataManager().get()
+				.getPerformanceAbsenceFormCutoff();
+
+		if (validForm) {
+
+			String success = SUCCESS_PERFORMANCE_ABSENCE_FORM;
+			if (cutoff.isBeforeNow()) {
+				success = "PLEASE NOTE: This form was submitted after the deadline, it has been marked as late.";
+			}
+
+			String url = getIndexURL() + "?success_message="
+					+ URLEncoder.encode(success, "UTF-8");
+			url = resp.encodeRedirectURL(url);
+
+			resp.sendRedirect(url);
+		} else {
+			// Show form
+			PageBuilder page = new PageBuilder(Page.performanceabsence,
+					SERVLET_PATH);
+
+			String displayName = Form.Type.PerformanceAbsence.getDisplayName();
+			page.setPageTitle(displayName);
+
+			page.setAttribute("error_messages", errors);
+
+			page.setAttribute("cutoff", train.getAppDataManager().get()
+					.getPerformanceAbsenceFormCutoff());
+
+			page.setAttribute("Reason", reason);
+			if (date != null) {
+				page.setAttribute("startdate", Util.formatDateOnly(date));
+			}
+			if (cutoff.isBeforeNow()) {
+				errors.add("PLEASE NOTE: The deadline for submitting "
+						+ displayName
+						+ " has passed. You can still submit one, but it will be marked as late. "
+						+ "You need to talk to the director prior to submitting or it will be denied right away.");
+			}
+
+			page.passOffToJsp(req, resp);
+		}
+	}
+
 	private void handleTimeWorkedForm(HttpServletRequest req,
 			HttpServletResponse resp) throws ServletException, IOException {
 		int minutes = 0;
@@ -576,41 +527,90 @@ public class FormsServlet extends AbstractBaseServlet {
 		page.passOffToJsp(req, resp);
 	}
 
-	/**
-	 * This servlet can be used for multiple user types, this grabs the type of
-	 * user this specific servlet instance is for
-	 * 
-	 * @return
-	 */
-	private User.Type getServletUserType() {
-		String value = getInitParameter("userType");
+	private void updateStatus(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		DataTrain train = DataTrain.getAndStartTrain();
+		FormManager fc = train.getFormsManager();
 
-		return User.Type.valueOf(value);
+		List<String> errors = new LinkedList<String>();
+		String success_message = "";
+		boolean validForm = true;
+
+		Form f = null;
+		Form.Status status = null;
+		long id = 0;
+		if (!ValidationUtil.isPost(req)) {
+			validForm = false;
+		}
+		if (validForm) {
+			try {
+				id = Long.parseLong(req.getParameter("id"));
+				f = fc.get(id);
+				String strStat = req.getParameter("status");
+				if (strStat.equalsIgnoreCase("Approved"))
+					status = Form.Status.Approved;
+				else if (strStat.equalsIgnoreCase("Pending"))
+					status = Form.Status.Pending;
+				else if (strStat.equalsIgnoreCase("Denied"))
+					status = Form.Status.Denied;
+				else {
+					validForm = false;
+					errors.add("Invalid form status.");
+				}
+
+			} catch (NumberFormatException e) {
+				errors.add("Unable to find form.");
+				validForm = false;
+			} catch (NullPointerException e) {
+				errors.add("Unable to find form.");
+				validForm = false;
+			}
+		}
+
+		if (validForm) {
+			// Send them back to their Form page
+			f.setStatus(status);
+			fc.update(f);
+			success_message = "Successfully updated form.";
+		}
+
+		viewForm(req, resp, errors, success_message);
+
 	}
 
-	/**
-	 * This servlet can be used for multiple user types, this grabs the type of
-	 * user this specific servlet instance can be accessed by
-	 * 
-	 * @return
-	 */
-	private User.Type[] getServletUserTypes() {
-		User.Type userType = getServletUserType();
+	private void viewForm(HttpServletRequest req, HttpServletResponse resp,
+			List<String> errors, String success_message)
+			throws ServletException, IOException {
+		DataTrain train = DataTrain.getAndStartTrain();
+		User currentUser = train.getAuthManager().getCurrentUser(
+				req.getSession());
+		Form form = null;
+		try {
+			long id = Long.parseLong(req.getParameter("id"));
+			form = train.getFormsManager().get(id);
 
-		// Since a TA is also a student, we also allow them access to their
-		// student forms
-		if (userType == User.Type.Student)
-			return new User.Type[] { User.Type.Student, User.Type.TA };
-		else
-			return new User.Type[] { userType };
-	}
+			PageBuilder page = new PageBuilder(Page.view, SERVLET_PATH);
 
-	/**
-	 * Have to use a method since this servlet can be mapped from different
-	 * paths
-	 */
-	private String getIndexURL() {
-		return pageToUrl(Page.index, getInitParameter("path"));
+			if (form == null) {
+				log.warning("Could not find form number " + id + ".");
+				errors.add("Could not find form number " + id + ".");
+				page.setAttribute("error_messages", errors);
+			} else {
+				page.setPageTitle(form.getType().toString() + " Form");
+				page.setAttribute("form", form);
+				page.setAttribute("day", form.getDayAsString());
+				page.setAttribute("isDirector", currentUser.getType()
+						.isDirector());
+
+				page.setAttribute("error_messages", errors);
+				page.setAttribute("success_message", success_message);
+			}
+			page.passOffToJsp(req, resp);
+		} catch (NumberFormatException nfe) {
+			log.warning("Could not parse view form id: "
+					+ req.getParameter("id"));
+			ErrorServlet.showError(req, resp, 500);
+		}
 	}
 
 }

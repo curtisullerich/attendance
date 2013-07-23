@@ -14,14 +14,32 @@ import edu.iastate.music.marching.attendance.model.store.User;
 
 public class MobileAppDataServlet extends AbstractBaseServlet {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -3138258973922548889L;
+	private class ClassListResult {
+		@SuppressWarnings("unused")
+		public ResultErrorType error;
+		@SuppressWarnings("unused")
+		public String data;
+	}
 
 	public enum Page {
 		index;
 	}
+
+	private enum ResultErrorType {
+		success, login, exception, empty
+	}
+
+	private class UploadResult {
+		@SuppressWarnings("unused")
+		public ResultErrorType error;
+		@SuppressWarnings("unused")
+		public String message;
+	}
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3138258973922548889L;
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -79,10 +97,8 @@ public class MobileAppDataServlet extends AbstractBaseServlet {
 				result.error = ResultErrorType.success;
 
 				try {
-					result.message = mdc.pushMobileData(
-							data,
-							train.getAuthManager().getCurrentUser(
-									req.getSession()));
+					result.message = mdc.pushMobileData(data, train
+							.getAuthManager().getCurrentUser(req.getSession()));
 				} catch (IllegalArgumentException e) {
 					result.error = ResultErrorType.exception;
 					result.message = e.getMessage();
@@ -97,23 +113,5 @@ public class MobileAppDataServlet extends AbstractBaseServlet {
 		// Print out JSON of result
 		resp.getOutputStream().print(new Gson().toJson(result));
 
-	}
-
-	private enum ResultErrorType {
-		success, login, exception, empty
-	}
-
-	private class UploadResult {
-		@SuppressWarnings("unused")
-		public ResultErrorType error;
-		@SuppressWarnings("unused")
-		public String message;
-	}
-
-	private class ClassListResult {
-		@SuppressWarnings("unused")
-		public ResultErrorType error;
-		@SuppressWarnings("unused")
-		public String data;
 	}
 }

@@ -27,81 +27,6 @@ import edu.iastate.music.marching.attendance.model.store.MobileDataUpload;
 import edu.iastate.music.marching.attendance.model.store.User;
 
 public class GsonWithPartials {
-	
-	public static <T> void toJson(T src, Appendable writer) {
-		getInstance().toJson(src, writer);
-	}
-	
-	public static <T> T fromJson(Reader json, Class<T> clazz) {
-		return getInstance().fromJson(json, clazz);
-	}
-
-	private static Gson getInstance() {
-		GsonBuilder gson = new GsonBuilder();
-		OuterTypeAdapter adapter = new OuterTypeAdapter();
-		gson.registerTypeAdapter(Absence.class, adapter);
-		gson.registerTypeAdapter(AppData.class, adapter);
-		gson.registerTypeAdapter(Event.class, adapter);
-		gson.registerTypeAdapter(Form.class, adapter);
-		gson.registerTypeAdapter(Message.class, adapter);
-		gson.registerTypeAdapter(MobileDataUpload.class, adapter);
-		gson.registerTypeAdapter(User.class, adapter);
-		return gson.create();
-	}
-
-	private static Gson getInnerGson() {
-		GsonBuilder gson = new GsonBuilder();
-		InnerTypeAdapter adapter = new InnerTypeAdapter();
-		gson.registerTypeAdapter(Absence.class, adapter);
-		gson.registerTypeAdapter(AppData.class, adapter);
-		gson.registerTypeAdapter(Event.class, adapter);
-		gson.registerTypeAdapter(Form.class, adapter);
-		gson.registerTypeAdapter(Message.class, adapter);
-		gson.registerTypeAdapter(MobileDataUpload.class, adapter);
-		gson.registerTypeAdapter(User.class, adapter);
-		return gson.create();
-	}
-
-	private static class OuterTypeAdapter implements JsonSerializer<Object>,
-			JsonDeserializer<Object> {
-
-		@Override
-		public Object deserialize(JsonElement json, Type typeOfT,
-				JsonDeserializationContext context) throws JsonParseException {
-			return getInnerGson().fromJson(json, typeOfT);
-		}
-
-		@Override
-		public JsonElement serialize(Object src, Type typeOfSrc,
-				JsonSerializationContext context) {
-
-			if (src == null) {
-				return JsonNull.INSTANCE;
-			}
-
-			Class<?> clazz = (Class<?>) typeOfSrc;
-			JsonObject object = new JsonObject();
-
-			for (Field field : clazz.getDeclaredFields()) {
-				try {
-					field.setAccessible(true);
-
-					if (!Modifier.isStatic(field.getModifiers())) {
-						object.add(
-								field.getName(),
-								getInnerGson().toJsonTree(field.get(src),
-										field.getType()));
-					}
-				} catch (IllegalArgumentException e) {
-					// Skip field
-				} catch (IllegalAccessException e) {
-					// Skip field
-				}
-			}
-
-			return object;
-		}
-	}
 
 	private static class InnerTypeAdapter implements JsonSerializer<Object>,
 			JsonDeserializer<Object> {
@@ -162,5 +87,80 @@ public class GsonWithPartials {
 			object.addProperty("id", id);
 			return object;
 		}
+	}
+
+	private static class OuterTypeAdapter implements JsonSerializer<Object>,
+			JsonDeserializer<Object> {
+
+		@Override
+		public Object deserialize(JsonElement json, Type typeOfT,
+				JsonDeserializationContext context) throws JsonParseException {
+			return getInnerGson().fromJson(json, typeOfT);
+		}
+
+		@Override
+		public JsonElement serialize(Object src, Type typeOfSrc,
+				JsonSerializationContext context) {
+
+			if (src == null) {
+				return JsonNull.INSTANCE;
+			}
+
+			Class<?> clazz = (Class<?>) typeOfSrc;
+			JsonObject object = new JsonObject();
+
+			for (Field field : clazz.getDeclaredFields()) {
+				try {
+					field.setAccessible(true);
+
+					if (!Modifier.isStatic(field.getModifiers())) {
+						object.add(
+								field.getName(),
+								getInnerGson().toJsonTree(field.get(src),
+										field.getType()));
+					}
+				} catch (IllegalArgumentException e) {
+					// Skip field
+				} catch (IllegalAccessException e) {
+					// Skip field
+				}
+			}
+
+			return object;
+		}
+	}
+
+	public static <T> T fromJson(Reader json, Class<T> clazz) {
+		return getInstance().fromJson(json, clazz);
+	}
+
+	private static Gson getInnerGson() {
+		GsonBuilder gson = new GsonBuilder();
+		InnerTypeAdapter adapter = new InnerTypeAdapter();
+		gson.registerTypeAdapter(Absence.class, adapter);
+		gson.registerTypeAdapter(AppData.class, adapter);
+		gson.registerTypeAdapter(Event.class, adapter);
+		gson.registerTypeAdapter(Form.class, adapter);
+		gson.registerTypeAdapter(Message.class, adapter);
+		gson.registerTypeAdapter(MobileDataUpload.class, adapter);
+		gson.registerTypeAdapter(User.class, adapter);
+		return gson.create();
+	}
+
+	private static Gson getInstance() {
+		GsonBuilder gson = new GsonBuilder();
+		OuterTypeAdapter adapter = new OuterTypeAdapter();
+		gson.registerTypeAdapter(Absence.class, adapter);
+		gson.registerTypeAdapter(AppData.class, adapter);
+		gson.registerTypeAdapter(Event.class, adapter);
+		gson.registerTypeAdapter(Form.class, adapter);
+		gson.registerTypeAdapter(Message.class, adapter);
+		gson.registerTypeAdapter(MobileDataUpload.class, adapter);
+		gson.registerTypeAdapter(User.class, adapter);
+		return gson.create();
+	}
+
+	public static <T> void toJson(T src, Appendable writer) {
+		getInstance().toJson(src, writer);
 	}
 }

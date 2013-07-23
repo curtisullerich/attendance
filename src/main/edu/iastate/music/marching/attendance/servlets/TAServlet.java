@@ -16,6 +16,10 @@ import edu.iastate.music.marching.attendance.util.PageBuilder;
 
 public class TAServlet extends AbstractBaseServlet {
 
+	private enum Page {
+		index, setranks;
+	}
+
 	/**
 	 * 
 	 */
@@ -24,10 +28,6 @@ public class TAServlet extends AbstractBaseServlet {
 	private static final String SERVLET_PATH = "ta";
 
 	public static final String INDEX_URL = pageToUrl(Page.index, SERVLET_PATH);
-
-	private enum Page {
-		index, setranks;
-	}
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -86,32 +86,8 @@ public class TAServlet extends AbstractBaseServlet {
 
 	}
 
-	private void showIndex(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		PageBuilder page = new PageBuilder(Page.index, SERVLET_PATH);
-
-		page.setAttribute("success_message",
-				req.getParameter("success_message"));
-
-		page.setPageTitle("Staff");
-		page.setAttribute("StatusMessage", DataTrain.getAndStartTrain().getAppDataManager().get().getStatusMessage());
-
-
-		page.passOffToJsp(req, resp);
-	}
-
-	private void showSetRanks(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-
-		DataTrain train = DataTrain.getAndStartTrain();
-		PageBuilder page = new PageBuilder(Page.setranks, SERVLET_PATH);
-
-		List<User> students = train.getUsersManager().get(User.Type.Student);
-		page.setAttribute("students", students);
-
-		page.setPageTitle("Set Ranks");
-
-		page.passOffToJsp(req, resp);
+	private String getIndexURL() {
+		return pageToUrl(Page.index, getInitParameter("path"));
 	}
 
 	private void postSetRanks(HttpServletRequest req, HttpServletResponse resp)
@@ -160,8 +136,32 @@ public class TAServlet extends AbstractBaseServlet {
 
 	}
 
-	private String getIndexURL() {
-		return pageToUrl(Page.index, getInitParameter("path"));
+	private void showIndex(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		PageBuilder page = new PageBuilder(Page.index, SERVLET_PATH);
+
+		page.setAttribute("success_message",
+				req.getParameter("success_message"));
+
+		page.setPageTitle("Staff");
+		page.setAttribute("StatusMessage", DataTrain.getAndStartTrain()
+				.getAppDataManager().get().getStatusMessage());
+
+		page.passOffToJsp(req, resp);
+	}
+
+	private void showSetRanks(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+
+		DataTrain train = DataTrain.getAndStartTrain();
+		PageBuilder page = new PageBuilder(Page.setranks, SERVLET_PATH);
+
+		List<User> students = train.getUsersManager().get(User.Type.Student);
+		page.setAttribute("students", students);
+
+		page.setPageTitle("Set Ranks");
+
+		page.passOffToJsp(req, resp);
 	}
 
 }

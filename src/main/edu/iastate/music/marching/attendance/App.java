@@ -10,12 +10,6 @@ public class App {
 				DateTimeConstants.WEDNESDAY), Thursday(
 				DateTimeConstants.THURSDAY), Friday(DateTimeConstants.FRIDAY), Saturday(
 				DateTimeConstants.SATURDAY);
-		public final int DayOfWeek;
-
-		WeekDay(int jodaDayOfWeek) {
-			this.DayOfWeek = jodaDayOfWeek;
-		}
-
 		public static WeekDay valueOf(int day) {
 			for (WeekDay d : WeekDay.values()) {
 				if (d.DayOfWeek == day) {
@@ -24,6 +18,12 @@ public class App {
 			}
 
 			return null;
+		}
+
+		public final int DayOfWeek;
+
+		WeekDay(int jodaDayOfWeek) {
+			this.DayOfWeek = jodaDayOfWeek;
 		}
 	}
 }

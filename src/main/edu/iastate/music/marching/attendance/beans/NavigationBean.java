@@ -22,15 +22,6 @@ public class NavigationBean implements java.io.Serializable {
 
 	private static Map<String, Object> rootMapSingleton = null;
 
-	private Map<String, Object> map;
-
-	private User user;
-
-	private NavigationBean(Map<String, Object> yamlRoot, User user) {
-		this.map = yamlRoot;
-		this.user = user;
-	}
-
 	@SuppressWarnings("unchecked")
 	public static NavigationBean getInstance(User currentUser) {
 
@@ -55,16 +46,44 @@ public class NavigationBean implements java.io.Serializable {
 		return new NavigationBean(map, currentUser);
 	}
 
+	private Map<String, Object> map;
+
+	private User user;
+
+	private NavigationBean(Map<String, Object> yamlRoot, User user) {
+		this.map = yamlRoot;
+		this.user = user;
+	}
+
+	private boolean checkAuth(Object authDescriptor) {
+
+		if (authDescriptor instanceof ArrayList) {
+			@SuppressWarnings("unchecked")
+			ArrayList<String> auths = (ArrayList<String>) authDescriptor;
+
+			for (String auth : auths) {
+				if (this.user != null
+						&& this.user.getType().toString().toLowerCase()
+								.equals(auth.toLowerCase()))
+					return true;
+				else if ("Admin".equals(auth)) {
+					UserService userService = UserServiceFactory
+							.getUserService();
+					if (userService.isUserLoggedIn()
+							&& userService.isUserAdmin())
+						return true;
+				}
+			}
+
+			return false;
+		}
+
+		return false;
+	}
+
 	public String getHref() {
 		if (this.map.containsKey("href"))
 			return this.map.get("href").toString();
-		else
-			return null;
-	}
-
-	public String getText() {
-		if (this.map.containsKey("text"))
-			return this.map.get("text").toString();
 		else
 			return null;
 	}
@@ -96,30 +115,11 @@ public class NavigationBean implements java.io.Serializable {
 		return links;
 	}
 
-	private boolean checkAuth(Object authDescriptor) {
-
-		if (authDescriptor instanceof ArrayList) {
-			@SuppressWarnings("unchecked")
-			ArrayList<String> auths = (ArrayList<String>) authDescriptor;
-
-			for (String auth : auths) {
-				if (this.user != null
-						&& this.user.getType().toString().toLowerCase()
-								.equals(auth.toLowerCase()))
-					return true;
-				else if ("Admin".equals(auth)) {
-					UserService userService = UserServiceFactory
-							.getUserService();
-					if (userService.isUserLoggedIn()
-							&& userService.isUserAdmin())
-						return true;
-				}
-			}
-
-			return false;
-		}
-
-		return false;
+	public String getText() {
+		if (this.map.containsKey("text"))
+			return this.map.get("text").toString();
+		else
+			return null;
 	}
 
 }

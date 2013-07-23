@@ -4,7 +4,6 @@ import static com.google.appengine.api.taskqueue.TaskOptions.Builder.withUrl;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Date;
 
 import org.apache.commons.io.IOUtils;
 import org.joda.time.DateTime;
@@ -36,8 +35,8 @@ public class Tasks {
 				.storeImportData(iData);
 
 		Queue queue = QueueFactory.getDefaultQueue();
-		queue.add(withUrl(TaskServlet.IMPORT_DATA_URL)
-				.param(TaskServlet.IMPORT_PARAM_STOREID, Long.toString(k.getId())));
+		queue.add(withUrl(TaskServlet.IMPORT_DATA_URL).param(
+				TaskServlet.IMPORT_PARAM_STOREID, Long.toString(k.getId())));
 	}
 
 }

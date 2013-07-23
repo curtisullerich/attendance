@@ -12,41 +12,6 @@ import com.google.code.twig.annotation.Index;
 @Entity(kind = "Event", allocateIdsBy = 0)
 public class Event {
 
-	public static final String FIELD_START = "start";
-	public static final String FIELD_END = "end";
-	public static final String FIELD_TYPE = "type";
-
-	/**
-	 * No-args constructor for datastore
-	 */
-	Event() {
-
-	}
-
-	@Id
-	private long id;
-
-	@Index
-	private Date start;
-
-	@Index
-	private Date end;
-
-	private Type type;
-
-	public long getId() {
-		return this.id;
-	}
-
-	public Interval getInterval() {
-		return new Interval(new DateTime(start), new DateTime(end));
-	}
-
-	public void setInterval(Interval interval) {
-		this.start = interval.getStart().toDate();
-		this.end = interval.getEnd().toDate();
-	}
-
 	public enum Type {
 		Rehearsal, Performance;
 		private String mDisplayString;
@@ -59,14 +24,6 @@ public class Event {
 			mDisplayString = display_string;
 		}
 
-		public boolean isRehearsal() {
-			return Rehearsal.equals(this);
-		}
-
-		public boolean isPerformance() {
-			return Performance.equals(this);
-		}
-
 		public String getDisplayName() {
 			return mDisplayString;
 		}
@@ -75,16 +32,75 @@ public class Event {
 			return name();
 		}
 
+		public boolean isPerformance() {
+			return Performance.equals(this);
+		}
+
+		public boolean isRehearsal() {
+			return Rehearsal.equals(this);
+		}
+
+	}
+	public static final String FIELD_START = "start";
+	public static final String FIELD_END = "end";
+
+	public static final String FIELD_TYPE = "type";
+
+	@Id
+	private long id;
+
+	@Index
+	private Date start;
+
+	@Index
+	private Date end;
+
+	private Type type;
+
+	/**
+	 * No-args constructor for datastore
+	 */
+	Event() {
+
 	}
 
-	public void setType(Event.Type type) {
-		this.type = type;
+	@Deprecated
+	public Date getDate() {
+		return start;
+	}
+
+	@Deprecated
+	public Date getEnd() {
+		return end;
+	}
+
+	public long getId() {
+		return this.id;
+	}
+
+	public Interval getInterval() {
+		return new Interval(new DateTime(start), new DateTime(end));
+	}
+
+	@Deprecated
+	public Date getStart() {
+		return start;
 	}
 
 	public Type getType() {
 		return this.type;
 	}
 
+	public void setInterval(Interval interval) {
+		this.start = interval.getStart().toDate();
+		this.end = interval.getEnd().toDate();
+	}
+
+	public void setType(Event.Type type) {
+		this.type = type;
+	}
+
+	@Override
 	public String toString() {
 		return "Start: " + start.toString() + " End: " + end.toString();
 	}

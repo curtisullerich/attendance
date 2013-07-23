@@ -10,34 +10,6 @@ import com.google.code.twig.annotation.Index;
 @Entity(kind = "User", allocateIdsBy = 0)
 public class User implements Serializable {
 
-	private static final long serialVersionUID = 1421557192976557704L;
-
-	public static final String FIELD_TYPE = "type";
-
-	public static final String FIELD_ID = "id";
-
-	public static final String FIELD_PRIMARY_EMAIL = "email";
-
-	public static final String FIELD_SECONDARY_EMAIL = "secondEmail";
-
-	public static final String FIELD_UNIVERSITY_ID = "universityID";
-
-	public enum Type {
-		Student, TA, Director;
-
-		public boolean isStudent() {
-			return this.equals(Student);
-		}
-
-		public boolean isTa() {
-			return this.equals(TA);
-		}
-
-		public boolean isDirector() {
-			return this.equals(Director);
-		}
-	}
-
 	public enum Grade {
 		A, Aminus("A-"), Bplus("B+"), B, Bminus("B-"), Cplus("C+"), C, Cminus(
 				"C-"), Dplus("D+"), D, Dminus("D-"), F;
@@ -85,12 +57,33 @@ public class User implements Serializable {
 		}
 	}
 
-	/**
-	 * Create users through UserController (DataModel.users().create(...)
-	 */
-	User() {
+	public enum Type {
+		Student, TA, Director;
 
+		public boolean isDirector() {
+			return this.equals(Director);
+		}
+
+		public boolean isStudent() {
+			return this.equals(Student);
+		}
+
+		public boolean isTa() {
+			return this.equals(TA);
+		}
 	}
+
+	private static final long serialVersionUID = 1421557192976557704L;
+
+	public static final String FIELD_TYPE = "type";
+
+	public static final String FIELD_ID = "id";
+
+	public static final String FIELD_PRIMARY_EMAIL = "email";
+
+	public static final String FIELD_SECONDARY_EMAIL = "secondEmail";
+
+	public static final String FIELD_UNIVERSITY_ID = "universityID";
 
 	private Type type;
 
@@ -124,145 +117,11 @@ public class User implements Serializable {
 
 	private int minutesAvailable;
 
-	public int getMinutesAvailable() {
-		return minutesAvailable;
-	}
-
-	public void setMinutesAvailable(int minutesAvailable) {
-		this.minutesAvailable = minutesAvailable;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public boolean isShowApproved() {
-		return this.showApproved;
-	}
-
-	public void setShowApproved(boolean show) {
-		this.showApproved = show;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getName() {
-		return this.getFirstName() + " " + this.getLastName();
-	}
-
-	public Type getType() {
-		return this.type;
-	}
-
-	public void setType(Type type) {
-		this.type = type;
-	}
-
-	public void setGrade(Grade grade) {
-		this.grade = grade;
-	}
-
-	public Grade getGrade() {
-
-		return this.grade;
-	}
-
-	public int getYear() {
-		return year;
-	}
-
-	public void setYear(int year) {
-		this.year = year;
-	}
-
-	public String getMajor() {
-		return major;
-	}
-
-	public void setMajor(String major) {
-		this.major = major;
-	}
-
-	public Section getSection() {
-		return section;
-	}
-
-	public void setSection(Section section) {
-		this.section = section;
-	}
-
-	public void setUniversityID(String new_universityID) {
-		this.universityID = new_universityID;
-	}
-
-	public String getUniversityID() {
-		return universityID;
-	}
-
-	public String getRank() {
-		return this.rank;
-	}
-
-	public void setRank(String rank) {
-		this.rank = rank;
-	}
-
-	public String getId() {
-		return this.id;
-	}
-
 	/**
-	 * Iowa State specific, instead use getId()
-	 * 
-	 * @return net id of the user
+	 * Create users through UserController (DataModel.users().create(...)
 	 */
-	@Deprecated
-	public String getNetID() {
-		return this.id;
-	}
+	User() {
 
-	public void setPrimaryEmail(Email email) {
-		this.email = email;
-		// TODO https://github.com/curtisullerich/attendance/issues/170
-		// This shouldn't be in the model, it should happen in the controllers
-		// somehow
-		if (email.getEmail().indexOf('%') == -1) {
-			this.id = email.getEmail().substring(0,
-					email.getEmail().indexOf('@'));
-		} else {
-			this.id = email.getEmail().substring(0,
-					email.getEmail().indexOf('%'));
-		}
-	}
-
-	public Email getPrimaryEmail() {
-		return this.email;
-	}
-
-	public void setSecondaryEmail(Email email) {
-		this.secondEmail = email;
-	}
-
-	public Email getSecondaryEmail() {
-		return this.secondEmail;
-	}
-
-	@Override
-	public int hashCode() {
-		if (this.email == null || this.email.getEmail() == null)
-			return 0;
-		else
-			return this.email.hashCode();
 	}
 
 	@Override
@@ -290,6 +149,147 @@ public class User implements Serializable {
 				return true;
 		}
 		return false;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public Grade getGrade() {
+
+		return this.grade;
+	}
+
+	public String getId() {
+		return this.id;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public String getMajor() {
+		return major;
+	}
+
+	public int getMinutesAvailable() {
+		return minutesAvailable;
+	}
+
+	public String getName() {
+		return this.getFirstName() + " " + this.getLastName();
+	}
+
+	/**
+	 * Iowa State specific, instead use getId()
+	 * 
+	 * @return net id of the user
+	 */
+	@Deprecated
+	public String getNetID() {
+		return this.id;
+	}
+
+	public Email getPrimaryEmail() {
+		return this.email;
+	}
+
+	public String getRank() {
+		return this.rank;
+	}
+
+	public Email getSecondaryEmail() {
+		return this.secondEmail;
+	}
+
+	public Section getSection() {
+		return section;
+	}
+
+	public Type getType() {
+		return this.type;
+	}
+
+	public String getUniversityID() {
+		return universityID;
+	}
+
+	public int getYear() {
+		return year;
+	}
+
+	@Override
+	public int hashCode() {
+		if (this.email == null || this.email.getEmail() == null)
+			return 0;
+		else
+			return this.email.hashCode();
+	}
+
+	public boolean isShowApproved() {
+		return this.showApproved;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public void setGrade(Grade grade) {
+		this.grade = grade;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public void setMajor(String major) {
+		this.major = major;
+	}
+
+	public void setMinutesAvailable(int minutesAvailable) {
+		this.minutesAvailable = minutesAvailable;
+	}
+
+	public void setPrimaryEmail(Email email) {
+		this.email = email;
+		// TODO https://github.com/curtisullerich/attendance/issues/170
+		// This shouldn't be in the model, it should happen in the controllers
+		// somehow
+		if (email.getEmail().indexOf('%') == -1) {
+			this.id = email.getEmail().substring(0,
+					email.getEmail().indexOf('@'));
+		} else {
+			this.id = email.getEmail().substring(0,
+					email.getEmail().indexOf('%'));
+		}
+	}
+
+	public void setRank(String rank) {
+		this.rank = rank;
+	}
+
+	public void setSecondaryEmail(Email email) {
+		this.secondEmail = email;
+	}
+
+	public void setSection(Section section) {
+		this.section = section;
+	}
+
+	public void setShowApproved(boolean show) {
+		this.showApproved = show;
+	}
+
+	public void setType(Type type) {
+		this.type = type;
+	}
+
+	public void setUniversityID(String new_universityID) {
+		this.universityID = new_universityID;
+	}
+
+	public void setYear(int year) {
+		this.year = year;
 	}
 
 	@Override

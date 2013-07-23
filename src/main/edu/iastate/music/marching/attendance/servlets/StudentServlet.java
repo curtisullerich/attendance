@@ -23,6 +23,10 @@ import edu.iastate.music.marching.attendance.util.PageBuilder;
 
 public class StudentServlet extends AbstractBaseServlet {
 
+	private enum Page {
+		index, attendance, forms, info, viewabsence;
+	}
+
 	/**
 	 * 
 	 */
@@ -34,10 +38,6 @@ public class StudentServlet extends AbstractBaseServlet {
 	private static final String SERVLET_PATH = "student";
 
 	public static final String INDEX_URL = pageToUrl(Page.index, SERVLET_PATH);
-
-	private enum Page {
-		index, attendance, forms, info, viewabsence;
-	}
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -72,75 +72,6 @@ public class StudentServlet extends AbstractBaseServlet {
 				viewAbsence(req, resp, new ArrayList<String>(), "");
 				break;
 			}
-	}
-
-	private void viewAbsence(HttpServletRequest req, HttpServletResponse resp,
-			List<String> incomingErrors, String success_message)
-			throws ServletException, IOException {
-		DataTrain train = DataTrain.getAndStartTrain();
-
-		AbsenceManager ac = train.getAbsenceManager();
-
-		boolean validInput = true;
-
-		List<String> errors = new LinkedList<String>();
-
-		String sabsenceid = req.getParameter("absenceid");
-
-		Absence checkedAbsence = null;
-
-		long absenceid;
-		PageBuilder page = new PageBuilder(Page.viewabsence, SERVLET_PATH,
-				train);
-
-		if (sabsenceid != null) {
-
-			absenceid = Long.parseLong(sabsenceid);
-			checkedAbsence = ac.get(absenceid);
-
-		} else {
-			validInput = false;
-			errors.add("No absence to look for");
-		}
-
-		// Shouldn't ever happen since the id is sent by us from the jsp
-		if (checkedAbsence == null) {
-			validInput = false;
-			errors.add("Could not find the absence.");
-		}
-
-		if (validInput) {
-			page.setPageTitle("View Absence");
-			page.setAttribute("absence", checkedAbsence);
-			page.setAttribute("types", Absence.Type.values());
-			page.setAttribute("status", Absence.Status.values());
-			page.setAttribute("error_messages", incomingErrors);
-			page.setAttribute("success_message", success_message);
-			page.passOffToJsp(req, resp);
-		} else {
-			showAttendance(req, resp);
-		}
-	}
-
-	private void showAttendance(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-
-		DataTrain train = DataTrain.getAndStartTrain();
-
-		PageBuilder page = new PageBuilder(Page.attendance, SERVLET_PATH);
-
-		User currentUser = train.getAuthManager().getCurrentUser(
-				req.getSession());
-
-		page.setPageTitle("Attendance");
-
-		List<Absence> a = train.getAbsenceManager().get(currentUser);
-
-		page.setAttribute("user", currentUser);
-		page.setAttribute("forms", train.getFormsManager().get(currentUser));
-		page.setAttribute("absences", a);
-
-		page.passOffToJsp(req, resp);
 	}
 
 	@Override
@@ -196,8 +127,8 @@ public class StudentServlet extends AbstractBaseServlet {
 			}
 		}
 
-		User localUser = train.getAuthManager().getCurrentUser(
-				req.getSession());
+		User localUser = train.getAuthManager()
+				.getCurrentUser(req.getSession());
 
 		try {
 			year = Integer.parseInt(req.getParameter("Year"));
@@ -232,20 +163,23 @@ public class StudentServlet extends AbstractBaseServlet {
 
 	}
 
-	private void showInfo(HttpServletRequest req, HttpServletResponse resp,
-			List<String> errors, String succex) throws IOException,
-			ServletException {
+	private void showAttendance(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
 
-		PageBuilder page = new PageBuilder(Page.info, SERVLET_PATH);
+		DataTrain train = DataTrain.getAndStartTrain();
 
-		page.setAttribute("user", DataTrain.getAndStartTrain()
-				.getAuthManager().getCurrentUser(req.getSession()));
+		PageBuilder page = new PageBuilder(Page.attendance, SERVLET_PATH);
 
-		page.setAttribute("sections", User.Section.values());
+		User currentUser = train.getAuthManager().getCurrentUser(
+				req.getSession());
 
-		page.setAttribute("error_messages", errors);
+		page.setPageTitle("Attendance");
 
-		page.setAttribute("success_message", succex);
+		List<Absence> a = train.getAbsenceManager().get(currentUser);
+
+		page.setAttribute("user", currentUser);
+		page.setAttribute("forms", train.getFormsManager().get(currentUser));
+		page.setAttribute("absences", a);
 
 		page.passOffToJsp(req, resp);
 	}
@@ -264,6 +198,72 @@ public class StudentServlet extends AbstractBaseServlet {
 				.getAppDataManager().get().getStatusMessage());
 
 		page.passOffToJsp(req, resp);
+	}
+
+	private void showInfo(HttpServletRequest req, HttpServletResponse resp,
+			List<String> errors, String succex) throws IOException,
+			ServletException {
+
+		PageBuilder page = new PageBuilder(Page.info, SERVLET_PATH);
+
+		page.setAttribute("user", DataTrain.getAndStartTrain().getAuthManager()
+				.getCurrentUser(req.getSession()));
+
+		page.setAttribute("sections", User.Section.values());
+
+		page.setAttribute("error_messages", errors);
+
+		page.setAttribute("success_message", succex);
+
+		page.passOffToJsp(req, resp);
+	}
+
+	private void viewAbsence(HttpServletRequest req, HttpServletResponse resp,
+			List<String> incomingErrors, String success_message)
+			throws ServletException, IOException {
+		DataTrain train = DataTrain.getAndStartTrain();
+
+		AbsenceManager ac = train.getAbsenceManager();
+
+		boolean validInput = true;
+
+		List<String> errors = new LinkedList<String>();
+
+		String sabsenceid = req.getParameter("absenceid");
+
+		Absence checkedAbsence = null;
+
+		long absenceid;
+		PageBuilder page = new PageBuilder(Page.viewabsence, SERVLET_PATH,
+				train);
+
+		if (sabsenceid != null) {
+
+			absenceid = Long.parseLong(sabsenceid);
+			checkedAbsence = ac.get(absenceid);
+
+		} else {
+			validInput = false;
+			errors.add("No absence to look for");
+		}
+
+		// Shouldn't ever happen since the id is sent by us from the jsp
+		if (checkedAbsence == null) {
+			validInput = false;
+			errors.add("Could not find the absence.");
+		}
+
+		if (validInput) {
+			page.setPageTitle("View Absence");
+			page.setAttribute("absence", checkedAbsence);
+			page.setAttribute("types", Absence.Type.values());
+			page.setAttribute("status", Absence.Status.values());
+			page.setAttribute("error_messages", incomingErrors);
+			page.setAttribute("success_message", success_message);
+			page.passOffToJsp(req, resp);
+		} else {
+			showAttendance(req, resp);
+		}
 	}
 
 }

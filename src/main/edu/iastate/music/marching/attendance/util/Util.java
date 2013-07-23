@@ -18,10 +18,6 @@ public class Util {
 	private static final DateTimeFormatter DATETIMEFORMAT = DateTimeFormat
 			.forPattern("MM/dd/yyyy h:mm aa");
 
-	public static String formatDateTime(DateTime datetime, DateTimeZone zone) {
-		return DATETIMEFORMAT.withZone(zone).print(datetime);
-	}
-
 	public static String formatDateOnly(DateTime datetime, DateTimeZone zone) {
 		return DATEFORMAT.withZone(zone).print(datetime);
 	}
@@ -30,24 +26,16 @@ public class Util {
 		return DATEFORMAT.print(date);
 	}
 
+	public static String formatDateTime(DateTime datetime, DateTimeZone zone) {
+		return DATETIMEFORMAT.withZone(zone).print(datetime);
+	}
+
 	public static String formatTimeOnly(DateTime datetime, DateTimeZone zone) {
 		return TIMEFORMAT.withZone(zone).print(datetime);
 	}
 
 	public static String formatTimeOnly(LocalTime datetime) {
 		return TIMEFORMAT.print(datetime);
-	}
-	
-	public static DateTime parseDateTime(String text, DateTimeZone zone) {
-		return DATETIMEFORMAT.withZone(zone).parseDateTime(text);
-	}
-
-	public static LocalTime parseTimeOnly(String text, DateTimeZone zone) {
-		return TIMEFORMAT.parseLocalTime(text);
-	}
-
-	public static LocalDate parseDateOnly(String text, DateTimeZone zone) {
-		return DATEFORMAT.parseLocalDate(text);
 	}
 
 	public static boolean overlapDays(ReadableInterval interval1,
@@ -60,5 +48,17 @@ public class Util {
 
 		// Simply compare for any overlap
 		return interval1FullDays.overlaps(interval2);
+	}
+
+	public static LocalDate parseDateOnly(String text, DateTimeZone zone) {
+		return DATEFORMAT.parseLocalDate(text);
+	}
+
+	public static DateTime parseDateTime(String text, DateTimeZone zone) {
+		return DATETIMEFORMAT.withZone(zone).parseDateTime(text);
+	}
+
+	public static LocalTime parseTimeOnly(String text, DateTimeZone zone) {
+		return TIMEFORMAT.parseLocalTime(text);
 	}
 }

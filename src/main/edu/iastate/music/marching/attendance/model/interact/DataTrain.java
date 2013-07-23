@@ -19,6 +19,132 @@ import edu.iastate.music.marching.attendance.model.store.ModelFactory;
 
 public class DataTrain {
 
+	private static class CacheKey implements Serializable {
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -8879640511900898415L;
+
+		@SuppressWarnings("unused")
+		public String clazz;
+
+		@SuppressWarnings("unused")
+		public int id;
+		public CacheKey(Class<?> clazz, int id) {
+			this.clazz = clazz.getName();
+			this.id = id;
+		}
+	}
+
+	/**
+	 * Transaction wrapper to keep in the train theme
+	 * 
+	 * For internal use in controllers when the outside code has already started
+	 * a transaction when the controller tries to start one
+	 * 
+	 * Thus to deal with this nested transaction problem, we just linearize
+	 * everything and let the outside code call the actual commit to commit
+	 * everything.
+	 * 
+	 */
+	private class InternalTrack extends Track {
+
+		protected InternalTrack(Track t) {
+			super(t.getTransaction());
+		}
+
+		/**
+		 * Does nothing, this is a nested transaction
+		 */
+		@Override
+		public void bendIronBack() {
+			// Do nothing, this is a nested transaction
+		}
+
+		/**
+		 * Does nothing, this is a nested transaction
+		 */
+		@Override
+		public Future<Void> bendIronBackAsync() {
+			// Do nothing, this is a nested transaction
+			return null;
+		}
+
+	}
+
+	/**
+	 * Transaction wrapper to keep in the train theme
+	 * 
+	 */
+	public class Track {
+
+		private Transaction transaction;
+
+		protected Track(Transaction t) {
+			this.transaction = t;
+		}
+
+		/**
+		 * Commits this transaction to the datastore
+		 */
+		public void bendIronBack() {
+			this.transaction.commit();
+		}
+
+		/**
+		 * Commits this transaction to the datastore asynchronously
+		 */
+		public Future<Void> bendIronBackAsync() {
+			return this.transaction.commitAsync();
+		}
+
+		/**
+		 * End this transaction without committing any of the changes made
+		 */
+		public void derail() {
+			this.transaction.rollback();
+		}
+
+		/**
+		 * End this transaction asynchronously without committing any of the
+		 * changes made
+		 */
+		public Future<Void> derailAsync() {
+			return this.transaction.rollbackAsync();
+		}
+
+		/**
+		 * 
+		 * @return The application id for the Transaction.
+		 */
+		public String getApp() {
+			return this.transaction.getApp();
+		}
+
+		/**
+		 * 
+		 * @return The globally unique identifier for the Transaction.
+		 */
+		public String getId() {
+			return this.transaction.getId();
+		}
+
+		protected Transaction getTransaction() {
+			return this.transaction;
+		}
+
+		public boolean isActive() {
+			return this.transaction.isActive();
+		}
+
+	}
+
+	public static DataTrain getAndStartTrain() {
+		DataTrain train = new DataTrain();
+		return train;
+	}
+
 	private StandardObjectDatastore datastore = null;
 
 	private Cache cache = null;
@@ -28,13 +154,12 @@ public class DataTrain {
 	 */
 	private Track track = null;
 
-	public static DataTrain getAndStartTrain() {
-		DataTrain train = new DataTrain();
-		return train;
-	}
-
 	public DataTrain() {
 		datastore = ModelFactory.newObjectDatastore();
+	}
+
+	<T> RootFindCommand<T> find(Class<T> type) {
+		return getDataStore().find().type(type);
 	}
 
 	public AbsenceManager getAbsenceManager() {
@@ -53,71 +178,16 @@ public class DataTrain {
 		return new DataManager(this);
 	}
 
+	StandardObjectDatastore getDataStore() {
+		return this.datastore;
+	}
+
 	public EventManager getEventManager() {
 		return new EventManager(this);
 	}
 
 	public FormManager getFormsManager() {
 		return new FormManager(this);
-	}
-
-	public MobileDataManager getMobileDataManager() {
-		return new MobileDataManager(this);
-	}
-
-	public UserManager getUsersManager() {
-		return new UserManager(this);
-	}
-
-	StandardObjectDatastore getDataStore() {
-		return this.datastore;
-	}
-
-	@SuppressWarnings("unchecked")
-	<CachedType> CachedType loadFromCache(Class<CachedType> clazz, int id) {
-		Cache cache = getMemCache();
-
-		if (cache != null)
-			return (CachedType) cache.get(new CacheKey(clazz, id));
-		else
-			return null;
-	}
-
-	<CachedType> boolean updateCache(int id, CachedType object) {
-
-		if (object == null) {
-			return false;
-		}
-
-		Class<?> clazz = object.getClass();
-
-		Cache cache = getMemCache();
-
-		if (cache != null) {
-			cache.put(new CacheKey(clazz, id), object);
-
-			return true;
-		}
-
-		return false;
-	}
-
-	private static class CacheKey implements Serializable {
-
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = -8879640511900898415L;
-
-		public CacheKey(Class<?> clazz, int id) {
-			this.clazz = clazz.getName();
-			this.id = id;
-		}
-
-		@SuppressWarnings("unused")
-		public String clazz;
-		@SuppressWarnings("unused")
-		public int id;
 	}
 
 	Cache getMemCache() {
@@ -134,14 +204,14 @@ public class DataTrain {
 		return this.cache;
 	}
 
+	public MobileDataManager getMobileDataManager() {
+		return new MobileDataManager(this);
+	}
+
 	// For implementing transaction support
 	// Object getAncestor() {
 	// return getVersionController().getCurrent();
 	// }
-
-	<T> RootFindCommand<T> find(Class<T> type) {
-		return getDataStore().find().type(type);
-	}
 
 	Key getTie(Class<?> type, long id) {
 		return new KeyFactory.Builder(this.datastore.getConfiguration()
@@ -151,6 +221,20 @@ public class DataTrain {
 	Key getTie(Class<?> type, String id) {
 		return new KeyFactory.Builder(this.datastore.getConfiguration()
 				.typeToKind(type), id).getKey();
+	}
+
+	public UserManager getUsersManager() {
+		return new UserManager(this);
+	}
+
+	@SuppressWarnings("unchecked")
+	<CachedType> CachedType loadFromCache(Class<CachedType> clazz, int id) {
+		Cache cache = getMemCache();
+
+		if (cache != null)
+			return (CachedType) cache.get(new CacheKey(clazz, id));
+		else
+			return null;
 	}
 
 	/**
@@ -183,104 +267,22 @@ public class DataTrain {
 			return switchTracks();
 	}
 
-	/**
-	 * Transaction wrapper to keep in the train theme
-	 * 
-	 */
-	public class Track {
+	<CachedType> boolean updateCache(int id, CachedType object) {
 
-		private Transaction transaction;
-
-		protected Track(Transaction t) {
-			this.transaction = t;
+		if (object == null) {
+			return false;
 		}
 
-		/**
-		 * Commits this transaction to the datastore
-		 */
-		public void bendIronBack() {
-			this.transaction.commit();
+		Class<?> clazz = object.getClass();
+
+		Cache cache = getMemCache();
+
+		if (cache != null) {
+			cache.put(new CacheKey(clazz, id), object);
+
+			return true;
 		}
 
-		/**
-		 * Commits this transaction to the datastore asynchronously
-		 */
-		public Future<Void> bendIronBackAsync() {
-			return this.transaction.commitAsync();
-		}
-
-		/**
-		 * 
-		 * @return The application id for the Transaction.
-		 */
-		public String getApp() {
-			return this.transaction.getApp();
-		}
-
-		/**
-		 * 
-		 * @return The globally unique identifier for the Transaction.
-		 */
-		public String getId() {
-			return this.transaction.getId();
-		}
-
-		public boolean isActive() {
-			return this.transaction.isActive();
-		}
-
-		/**
-		 * End this transaction without committing any of the changes made
-		 */
-		public void derail() {
-			this.transaction.rollback();
-		}
-
-		/**
-		 * End this transaction asynchronously without committing any of the
-		 * changes made
-		 */
-		public Future<Void> derailAsync() {
-			return this.transaction.rollbackAsync();
-		}
-
-		protected Transaction getTransaction() {
-			return this.transaction;
-		}
-
-	}
-
-	/**
-	 * Transaction wrapper to keep in the train theme
-	 * 
-	 * For internal use in controllers when the outside code has already started
-	 * a transaction when the controller tries to start one
-	 * 
-	 * Thus to deal with this nested transaction problem, we just linearize
-	 * everything and let the outside code call the actual commit to commit
-	 * everything.
-	 * 
-	 */
-	private class InternalTrack extends Track {
-
-		protected InternalTrack(Track t) {
-			super(t.getTransaction());
-		}
-
-		/**
-		 * Does nothing, this is a nested transaction
-		 */
-		public void bendIronBack() {
-			// Do nothing, this is a nested transaction
-		}
-
-		/**
-		 * Does nothing, this is a nested transaction
-		 */
-		public Future<Void> bendIronBackAsync() {
-			// Do nothing, this is a nested transaction
-			return null;
-		}
-
+		return false;
 	}
 }
