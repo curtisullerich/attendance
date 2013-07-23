@@ -31,8 +31,7 @@ public class Tasks {
 		iData.setTimestamp(new DateTime());
 		iData.setData(IOUtils.toString(stream));
 
-		Key k = DataTrain.getAndStartTrain().getDataManager()
-				.storeImportData(iData);
+		Key k = DataTrain.depart().data().storeImportData(iData);
 
 		Queue queue = QueueFactory.getDefaultQueue();
 		queue.add(withUrl(TaskServlet.IMPORT_DATA_URL).param(

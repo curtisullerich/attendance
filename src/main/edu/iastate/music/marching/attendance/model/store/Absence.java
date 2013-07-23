@@ -109,6 +109,7 @@ public class Absence {
 	private DateTime cachedCheckin;
 	@Store(false)
 	private Interval cachedInterval;
+
 	/**
 	 * Create absence through AbsenceController (DataModel.absence().create(...)
 	 */

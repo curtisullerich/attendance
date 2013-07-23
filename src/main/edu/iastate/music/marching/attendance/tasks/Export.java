@@ -72,9 +72,9 @@ public class Export {
 
 		try {
 
-			DataTrain train = DataTrain.getAndStartTrain();
+			DataTrain train = DataTrain.depart();
 
-			String appTitle = train.getAppDataManager().get().getTitle();
+			String appTitle = train.appData().get().getTitle();
 			DateTime exportTime = new DateTime();
 			String humanExportTime = DateFormat.getDateTimeInstance().format(
 					new Date());
@@ -91,7 +91,7 @@ public class Export {
 					+ filenameExportTime + ".json";
 			StringWriter dataStream = new StringWriter();
 
-			train.getDataManager().dumpDatabaseAsJSON(dataStream);
+			train.data().dumpDatabaseAsJSON(dataStream);
 
 			MimeMessage msg = new MimeMessage(session);
 			msg.setFrom(new InternetAddress(from));

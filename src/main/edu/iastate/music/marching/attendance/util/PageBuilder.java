@@ -50,16 +50,16 @@ public class PageBuilder {
 
 		mDataTrain = train;
 
-		mAppData = mDataTrain.getAppDataManager().get();
+		mAppData = mDataTrain.appData().get();
 
 		mPageTemplateBean = new PageTemplateBean(jsp_simple_path, mAppData,
-				mDataTrain.getAuthManager());
+				mDataTrain.auth());
 
 		mPageTemplateBean.setTitle(mAppData.getTitle());
 	}
 
 	public <T extends Enum<T>> PageBuilder(T page, String jsp_servlet_path) {
-		this(jsp_servlet_path + "/" + page.name(), DataTrain.getAndStartTrain());
+		this(jsp_servlet_path + "/" + page.name(), DataTrain.depart());
 	}
 
 	public <T extends Enum<T>> PageBuilder(T page, String jsp_servlet_path,

@@ -31,6 +31,7 @@ public class DataTrain {
 
 		@SuppressWarnings("unused")
 		public int id;
+
 		public CacheKey(Class<?> clazz, int id) {
 			this.clazz = clazz.getName();
 			this.id = id;
@@ -140,7 +141,7 @@ public class DataTrain {
 
 	}
 
-	public static DataTrain getAndStartTrain() {
+	public static DataTrain depart() {
 		DataTrain train = new DataTrain();
 		return train;
 	}
@@ -162,19 +163,19 @@ public class DataTrain {
 		return getDataStore().find().type(type);
 	}
 
-	public AbsenceManager getAbsenceManager() {
+	public AbsenceManager absences() {
 		return new AbsenceManager(this);
 	}
 
-	public AppDataManager getAppDataManager() {
+	public AppDataManager appData() {
 		return new AppDataManager(this);
 	}
 
-	public AuthManager getAuthManager() {
+	public AuthManager auth() {
 		return new AuthManager(this);
 	}
 
-	public DataManager getDataManager() {
+	public DataManager data() {
 		return new DataManager(this);
 	}
 
@@ -182,11 +183,11 @@ public class DataTrain {
 		return this.datastore;
 	}
 
-	public EventManager getEventManager() {
+	public EventManager events() {
 		return new EventManager(this);
 	}
 
-	public FormManager getFormsManager() {
+	public FormManager forms() {
 		return new FormManager(this);
 	}
 

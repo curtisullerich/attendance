@@ -175,7 +175,7 @@ public class FormsServlet extends AbstractBaseServlet {
 		String comments = null;
 		Absence.Type absenceType = null;
 
-		DataTrain train = DataTrain.getAndStartTrain();
+		DataTrain train = DataTrain.depart();
 
 		// Parse out all data from form and validate
 		boolean validForm = true;
@@ -218,28 +218,28 @@ public class FormsServlet extends AbstractBaseServlet {
 
 			try {
 				startDate = Util.parseDateOnly(req.getParameter("startdate"),
-						train.getAppDataManager().get().getTimeZone());
+						train.appData().get().getTimeZone());
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add("The start DateTime is invalid.");
 			}
 			try {
 				endDate = Util.parseDateOnly(req.getParameter("enddate"), train
-						.getAppDataManager().get().getTimeZone());
+						.appData().get().getTimeZone());
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add("The end DateTime is invalid.");
 			}
 			try {
 				fromTime = Util.parseTimeOnly(req.getParameter("starttime"),
-						train.getAppDataManager().get().getTimeZone());
+						train.appData().get().getTimeZone());
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add("The start time is invalid.");
 			}
 			try {
 				toTime = Util.parseTimeOnly(req.getParameter("endtime"), train
-						.getAppDataManager().get().getTimeZone());
+						.appData().get().getTimeZone());
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add("The end time is invalid.");
@@ -249,12 +249,11 @@ public class FormsServlet extends AbstractBaseServlet {
 
 		if (validForm) {
 			// Store our new form to the datastore
-			User student = train.getAuthManager().getCurrentUser(
-					req.getSession());
+			User student = train.auth().getCurrentUser(req.getSession());
 
 			Form form = null;
 			try {
-				form = train.getFormsManager().createClassConflictForm(student,
+				form = train.forms().createClassConflictForm(student,
 						department, course, section, building, startDate,
 						endDate, fromTime, toTime, dayOfWeek, comments,
 						minutesToOrFrom, absenceType);
@@ -309,7 +308,7 @@ public class FormsServlet extends AbstractBaseServlet {
 		String reason = null;
 		LocalDate date = null;
 
-		DataTrain train = DataTrain.getAndStartTrain();
+		DataTrain train = DataTrain.depart();
 
 		// Parse out all data from form and validate
 		boolean validForm = true;
@@ -328,7 +327,7 @@ public class FormsServlet extends AbstractBaseServlet {
 
 			try {
 				date = Util.parseDateOnly(req.getParameter("startdate"), train
-						.getAppDataManager().get().getTimeZone());
+						.appData().get().getTimeZone());
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add("Invalid Input: The input DateTime is invalid.");
@@ -337,13 +336,12 @@ public class FormsServlet extends AbstractBaseServlet {
 
 		if (validForm) {
 			// Store our new form to the data store
-			User student = train.getAuthManager().getCurrentUser(
-					req.getSession());
+			User student = train.auth().getCurrentUser(req.getSession());
 
 			Form form = null;
 			try {
-				form = train.getFormsManager().createPerformanceAbsenceForm(
-						student, date, reason);
+				form = train.forms().createPerformanceAbsenceForm(student,
+						date, reason);
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add(e.getMessage());
@@ -357,9 +355,9 @@ public class FormsServlet extends AbstractBaseServlet {
 			}
 		}
 
-		DateTimeZone timezone = train.getAppDataManager().get().getTimeZone();
+		DateTimeZone timezone = train.appData().get().getTimeZone();
 
-		DateTime cutoff = train.getAppDataManager().get()
+		DateTime cutoff = train.appData().get()
 				.getPerformanceAbsenceFormCutoff();
 
 		if (validForm) {
@@ -384,7 +382,7 @@ public class FormsServlet extends AbstractBaseServlet {
 
 			page.setAttribute("error_messages", errors);
 
-			page.setAttribute("cutoff", train.getAppDataManager().get()
+			page.setAttribute("cutoff", train.appData().get()
 					.getPerformanceAbsenceFormCutoff());
 
 			page.setAttribute("Reason", reason);
@@ -408,7 +406,7 @@ public class FormsServlet extends AbstractBaseServlet {
 		LocalDate date = null;
 		String details = null;
 
-		DataTrain train = DataTrain.getAndStartTrain();
+		DataTrain train = DataTrain.depart();
 
 		// Parse out all data from form and validate
 		boolean validForm = true;
@@ -431,13 +429,13 @@ public class FormsServlet extends AbstractBaseServlet {
 
 			try {
 				date = Util.parseDateOnly(req.getParameter("startdate"), train
-						.getAppDataManager().get().getTimeZone());
+						.appData().get().getTimeZone());
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add("Invalid Input: The input DateTime is invalid.");
 			}
 		}
-		User student = train.getAuthManager().getCurrentUser(req.getSession());
+		User student = train.auth().getCurrentUser(req.getSession());
 
 		if (validForm) {
 			// Store our new form to the data store
@@ -445,8 +443,8 @@ public class FormsServlet extends AbstractBaseServlet {
 			Form form = null;
 			try {
 				// hash the id for use in the accepting and declining forms
-				form = train.getFormsManager().createTimeWorkedForm(student,
-						date, minutes, details);
+				form = train.forms().createTimeWorkedForm(student, date,
+						minutes, details);
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add(e.getMessage());
@@ -481,8 +479,8 @@ public class FormsServlet extends AbstractBaseServlet {
 	private void showIndex(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		DataTrain train = DataTrain.getAndStartTrain();
-		FormManager fc = train.getFormsManager();
+		DataTrain train = DataTrain.depart();
+		FormManager fc = train.forms();
 
 		PageBuilder page = new PageBuilder(Page.index, SERVLET_PATH);
 
@@ -491,8 +489,7 @@ public class FormsServlet extends AbstractBaseServlet {
 		page.setAttribute("success_message",
 				req.getParameter("success_message"));
 
-		User currentUser = train.getAuthManager().getCurrentUser(
-				req.getSession());
+		User currentUser = train.auth().getCurrentUser(req.getSession());
 
 		String removeid = req.getParameter("removeid");
 		if (removeid != null && removeid != "") {
@@ -529,8 +526,8 @@ public class FormsServlet extends AbstractBaseServlet {
 
 	private void updateStatus(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		DataTrain train = DataTrain.getAndStartTrain();
-		FormManager fc = train.getFormsManager();
+		DataTrain train = DataTrain.depart();
+		FormManager fc = train.forms();
 
 		List<String> errors = new LinkedList<String>();
 		String success_message = "";
@@ -581,13 +578,12 @@ public class FormsServlet extends AbstractBaseServlet {
 	private void viewForm(HttpServletRequest req, HttpServletResponse resp,
 			List<String> errors, String success_message)
 			throws ServletException, IOException {
-		DataTrain train = DataTrain.getAndStartTrain();
-		User currentUser = train.getAuthManager().getCurrentUser(
-				req.getSession());
+		DataTrain train = DataTrain.depart();
+		User currentUser = train.auth().getCurrentUser(req.getSession());
 		Form form = null;
 		try {
 			long id = Long.parseLong(req.getParameter("id"));
-			form = train.getFormsManager().get(id);
+			form = train.forms().get(id);
 
 			PageBuilder page = new PageBuilder(Page.view, SERVLET_PATH);
 

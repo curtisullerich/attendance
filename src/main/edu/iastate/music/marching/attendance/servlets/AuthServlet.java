@@ -144,7 +144,7 @@ public class AuthServlet extends AbstractBaseServlet {
 	private void doRegistrationPost(HttpServletRequest req,
 			HttpServletResponse resp) throws ServletException, IOException {
 
-		DataTrain train = DataTrain.getAndStartTrain();
+		DataTrain train = DataTrain.depart();
 
 		String firstName;
 		String lastName;
@@ -248,11 +248,11 @@ public class AuthServlet extends AbstractBaseServlet {
 	private void handleLogin(HttpServletRequest req, HttpServletResponse resp,
 			boolean allow_redirect) throws ServletException, IOException {
 
-		DataTrain train = DataTrain.getAndStartTrain();
+		DataTrain train = DataTrain.depart();
 
 		try {
 
-			if (train.getAuthManager().login(req.getSession())) {
+			if (train.auth().login(req.getSession())) {
 				// Successful login
 				redirectPostLogin(req, resp, allow_redirect);
 			} else {
@@ -280,12 +280,12 @@ public class AuthServlet extends AbstractBaseServlet {
 	private void handleRegistration(HttpServletRequest req,
 			HttpServletResponse resp) throws ServletException, IOException {
 
-		DataTrain train = DataTrain.getAndStartTrain();
+		DataTrain train = DataTrain.depart();
 
 		if (AuthManager.getGoogleUser() != null) {
 			// Have a valid google login
 			// Check if current user is already registered
-			User u = train.getAuthManager().getCurrentUser(req.getSession());
+			User u = train.auth().getCurrentUser(req.getSession());
 			if (u == null) {
 				// Not yet registered
 				showRegistration(req, resp);
@@ -302,8 +302,8 @@ public class AuthServlet extends AbstractBaseServlet {
 
 	private void handleWelcome(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException, ServletException {
-		DataTrain train = DataTrain.getAndStartTrain();
-		AuthManager am = train.getAuthManager();
+		DataTrain train = DataTrain.depart();
+		AuthManager am = train.auth();
 
 		if (AuthManager.getGoogleUser() == null) {
 			new PageBuilder(Page.welcome, SERVLET_PATH).passOffToJsp(req, resp);
@@ -322,8 +322,7 @@ public class AuthServlet extends AbstractBaseServlet {
 			HttpServletResponse resp, boolean redirect) throws IOException,
 			ServletException {
 
-		User user = DataTrain.getAndStartTrain().getAuthManager()
-				.getCurrentUser(req.getSession());
+		User user = DataTrain.depart().auth().getCurrentUser(req.getSession());
 
 		if (user == null)
 			resp.sendRedirect(URL_REGISTER);

@@ -41,6 +41,7 @@ public class Event {
 		}
 
 	}
+
 	public static final String FIELD_START = "start";
 	public static final String FIELD_END = "end";
 

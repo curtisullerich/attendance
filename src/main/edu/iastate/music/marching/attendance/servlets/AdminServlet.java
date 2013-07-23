@@ -45,7 +45,7 @@ public class AdminServlet extends AbstractBaseServlet {
 
 	private void bulkmake(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		DataTrain train = DataTrain.getAndStartTrain();
+		DataTrain train = DataTrain.depart();
 		List<String> errors = new LinkedList<String>();
 		if (req.getParameter("Go") != null) {
 
@@ -89,7 +89,7 @@ public class AdminServlet extends AbstractBaseServlet {
 		} else if (req.getParameter("DeleteAll") != null) {
 			String success = null;
 			try {
-				train.getDataManager()
+				train.data()
 						.deleteEverthingInTheEntireDatabaseEvenThoughYouCannotUndoThis();
 				success = "Successfully, irrevocably, and unequivically removed everything.";
 			} catch (Throwable aDuh) {
@@ -108,7 +108,7 @@ public class AdminServlet extends AbstractBaseServlet {
 			page.passOffToJsp(req, resp);
 		} else if (req.getParameter("RefreshAbsences") != null) {
 			String succex = null;
-			AbsenceManager ac = train.getAbsenceManager();
+			AbsenceManager ac = train.absences();
 			try {
 				for (Absence a : ac.getAll()) {
 					ac.updateAbsence(a);
@@ -130,7 +130,7 @@ public class AdminServlet extends AbstractBaseServlet {
 			page.passOffToJsp(req, resp);
 		} else if (req.getParameter("RefreshForms") != null) {
 			String succex = null;
-			FormManager fc = train.getFormsManager();
+			FormManager fc = train.forms();
 			try {
 				for (Form f : fc.getAll()) {
 					fc.update(f);
@@ -191,7 +191,7 @@ public class AdminServlet extends AbstractBaseServlet {
 	private void doDirectorRegistration(HttpServletRequest req,
 			HttpServletResponse resp) throws ServletException, IOException {
 
-		DataTrain train = DataTrain.getAndStartTrain();
+		DataTrain train = DataTrain.depart();
 
 		String firstName;
 		String lastName;
@@ -349,7 +349,7 @@ public class AdminServlet extends AbstractBaseServlet {
 	private void doStudentRegistration(HttpServletRequest req,
 			HttpServletResponse resp) throws ServletException, IOException {
 
-		DataTrain train = DataTrain.getAndStartTrain();
+		DataTrain train = DataTrain.depart();
 
 		String firstName;
 		String lastName;
@@ -452,7 +452,7 @@ public class AdminServlet extends AbstractBaseServlet {
 
 		String netID, strType, firstName, lastName;
 
-		DataTrain train = DataTrain.getAndStartTrain();
+		DataTrain train = DataTrain.depart();
 
 		List<String> errors = new ArrayList<String>();
 		String success = "";
@@ -480,8 +480,7 @@ public class AdminServlet extends AbstractBaseServlet {
 			// UpDateTime user in session if we just changed the currently
 			// logged in
 			// user
-			if (localUser.equals(train.getAuthManager().getCurrentUser(
-					req.getSession())))
+			if (localUser.equals(train.auth().getCurrentUser(req.getSession())))
 				AuthManager.updateCurrentUser(localUser, req.getSession());
 			success = "User information saved";
 		} catch (IllegalArgumentException e) {
@@ -515,7 +514,7 @@ public class AdminServlet extends AbstractBaseServlet {
 	private void showDataPage(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		DataTrain train = DataTrain.getAndStartTrain();
+		DataTrain train = DataTrain.depart();
 
 		PageBuilder page = new PageBuilder(Page.data, SERVLET_PATH);
 
@@ -559,7 +558,7 @@ public class AdminServlet extends AbstractBaseServlet {
 	private void showUserInfo(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException, ServletException {
 
-		DataTrain train = DataTrain.getAndStartTrain();
+		DataTrain train = DataTrain.depart();
 
 		PageBuilder page = new PageBuilder(Page.user, SERVLET_PATH);
 
@@ -590,7 +589,7 @@ public class AdminServlet extends AbstractBaseServlet {
 			List<String> errors, String success) throws ServletException,
 			IOException {
 
-		DataTrain train = DataTrain.getAndStartTrain();
+		DataTrain train = DataTrain.depart();
 
 		PageBuilder page = new PageBuilder(Page.users, SERVLET_PATH);
 

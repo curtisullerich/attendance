@@ -69,12 +69,12 @@ public class PublicServlet extends AbstractBaseServlet {
 
 	private void reportBug(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		DataTrain datatrain = DataTrain.getAndStartTrain();
+		DataTrain datatrain = DataTrain.depart();
 
 		String severity = req.getParameter("Severity");
 		String description = req.getParameter("Description");
 		String redir = req.getParameter("Redirect");
-		User user = datatrain.getAuthManager().getCurrentUser(req.getSession());
+		User user = datatrain.auth().getCurrentUser(req.getSession());
 		String userAgent = req.getHeader("User-Agent");
 		String error_messages = req.getParameter("error_messages");
 		String field_values = req.getParameter("FieldValues");
@@ -96,8 +96,8 @@ public class PublicServlet extends AbstractBaseServlet {
 					+ description + "\n";
 		}
 
-		datatrain.getDataManager().sendBugReportEmail(user, severity, redir,
-				userAgent, mobileSite, description);
+		datatrain.data().sendBugReportEmail(user, severity, redir, userAgent,
+				mobileSite, description);
 
 		String append = "?";
 		if (redir.contains("?")) {

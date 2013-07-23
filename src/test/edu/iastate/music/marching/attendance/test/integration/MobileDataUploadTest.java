@@ -198,9 +198,9 @@ public class MobileDataUploadTest extends AbstractTest {
 				ta);
 
 		// Verify insertion lengths
-		assertEquals(0, train.getEventManager().getCount().intValue());
+		assertEquals(0, train.events().getCount().intValue());
 
-		assertEquals(6, train.getAbsenceManager().getCount().intValue());
+		assertEquals(6, train.absences().getCount().intValue());
 
 		// TODO: https://github.com/curtisullerich/attendance/issues/123
 		// Check actual data returned

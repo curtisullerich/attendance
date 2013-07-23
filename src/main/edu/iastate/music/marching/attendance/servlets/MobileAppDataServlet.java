@@ -51,7 +51,7 @@ public class MobileAppDataServlet extends AbstractBaseServlet {
 		if (!isLoggedIn(req, resp, User.Type.TA, User.Type.Director)) {
 			result.error = ResultErrorType.login;
 		} else {
-			DataTrain train = DataTrain.getAndStartTrain();
+			DataTrain train = DataTrain.depart();
 
 			MobileDataManager mdc = train.getMobileDataManager();
 
@@ -74,7 +74,7 @@ public class MobileAppDataServlet extends AbstractBaseServlet {
 			result.error = ResultErrorType.login;
 		} else {
 
-			DataTrain train = DataTrain.getAndStartTrain();
+			DataTrain train = DataTrain.depart();
 
 			MobileDataManager mdc = train.getMobileDataManager();
 
@@ -97,8 +97,8 @@ public class MobileAppDataServlet extends AbstractBaseServlet {
 				result.error = ResultErrorType.success;
 
 				try {
-					result.message = mdc.pushMobileData(data, train
-							.getAuthManager().getCurrentUser(req.getSession()));
+					result.message = mdc.pushMobileData(data, train.auth()
+							.getCurrentUser(req.getSession()));
 				} catch (IllegalArgumentException e) {
 					result.error = ResultErrorType.exception;
 					result.message = e.getMessage();

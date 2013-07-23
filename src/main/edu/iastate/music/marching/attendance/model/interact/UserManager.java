@@ -166,10 +166,10 @@ public class UserManager extends AbstractManager {
 		ObjectDatastore od = this.datatrain.getDataStore();
 
 		// Absences
-		this.datatrain.getAbsenceManager().delete(user);
+		this.datatrain.absences().delete(user);
 
 		// Forms
-		this.datatrain.getFormsManager().delete(user);
+		this.datatrain.forms().delete(user);
 
 		// Remove any Mobile Data uploads
 		this.datatrain.getMobileDataManager().scrubUploader(user);
@@ -337,7 +337,7 @@ public class UserManager extends AbstractManager {
 	 * Note that this DOES NOT currently refresh the student in the database.
 	 */
 	public void updateUserGrade(User student) {
-		AbsenceManager ac = this.datatrain.getAbsenceManager();
+		AbsenceManager ac = this.datatrain.absences();
 		int count = 0;
 		List<Absence> absences = ac.get(student);
 		for (Absence a : absences) {

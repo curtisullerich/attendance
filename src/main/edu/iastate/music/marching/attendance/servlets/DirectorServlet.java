@@ -93,11 +93,11 @@ public class DirectorServlet extends AbstractBaseServlet {
 		String sid = req.getParameter("id");
 		List<String> errors = new ArrayList<String>();
 		String success = "";
-		DataTrain train = DataTrain.getAndStartTrain();
+		DataTrain train = DataTrain.depart();
 		PageBuilder page = new PageBuilder(Page.attendance, SERVLET_PATH);
 		String sremoveAnchored = req.getParameter("RemoveAnchored");
 		boolean bRemoveAnchored;
-		EventManager ec = train.getEventManager();
+		EventManager ec = train.events();
 		if (sid != null && !sid.equals("")) {
 			Event event = null;
 			try {
@@ -143,7 +143,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		String success = "";
 		List<String> errors = new ArrayList<String>();
 		if (sid != null) {
-			UserManager uc = DataTrain.getAndStartTrain().getUsersManager();
+			UserManager uc = DataTrain.depart().getUsersManager();
 			User todie = uc.get(sid);
 			uc.delete(todie);
 			success = "Student successfully deleted.";
@@ -270,11 +270,11 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 	private void postAbsenceInfo(HttpServletRequest req,
 			HttpServletResponse resp) throws ServletException, IOException {
-		DataTrain train = DataTrain.getAndStartTrain();
+		DataTrain train = DataTrain.depart();
 
-		AbsenceManager ac = train.getAbsenceManager();
+		AbsenceManager ac = train.absences();
 
-		DateTimeZone zone = train.getAppDataManager().get().getTimeZone();
+		DateTimeZone zone = train.appData().get().getTimeZone();
 
 		boolean validForm = true;
 
@@ -297,7 +297,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 				Event event = null;
 				try {
 					long eid = Long.parseLong(eventid);
-					event = train.getEventManager().get(eid);
+					event = train.events().get(eid);
 				} catch (NumberFormatException nfe) {
 					errors.add("No event to add. Can't create absence.");
 				}
@@ -311,8 +311,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 						DateTime time = Util.parseDateTime(
 								req.getParameter("date") + " "
 										+ req.getParameter("time"), train
-										.getAppDataManager().get()
-										.getTimeZone());
+										.appData().get().getTimeZone());
 						switch (atype) {
 						case Absence:
 							toUpdate = ac.createOrUpdateAbsence(student, event);
@@ -334,8 +333,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 					try {
 						// TODO same concern as above
 						LocalTime d = Util.parseTimeOnly(
-								req.getParameter("time"), train
-										.getAppDataManager().get()
+								req.getParameter("time"), train.appData().get()
 										.getTimeZone());
 
 						switch (toUpdate.getType()) {
@@ -396,8 +394,8 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 	private void postAppInfo(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		DataTrain train = DataTrain.getAndStartTrain();
-		AppDataManager appDataController = train.getAppDataManager();
+		DataTrain train = DataTrain.depart();
+		AppDataManager appDataController = train.appData();
 		AppData data = appDataController.get();
 		// get the train
 
@@ -432,8 +430,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 			// Handle the thrown exception
 			try {
-				DateTimeZone storedZone = train.getAppDataManager().get()
-						.getTimeZone();
+				DateTimeZone storedZone = train.appData().get().getTimeZone();
 				DateTime performanceAbsenceDatetime = Util.parseDateTime(
 						req.getParameter("performanceAbsenceDatetime"),
 						storedZone);
@@ -490,12 +487,12 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 	private void postDirectorInfo(HttpServletRequest req,
 			HttpServletResponse resp) throws IOException, ServletException {
-		DataTrain train = DataTrain.getAndStartTrain();
+		DataTrain train = DataTrain.depart();
 		String first = req.getParameter("FirstName");
 		String last = req.getParameter("LastName");
 		String secondEmail = req.getParameter("SecondEmail");
 		String success = null;
-		User director = train.getAuthManager().getCurrentUser(req.getSession());
+		User director = train.auth().getCurrentUser(req.getSession());
 		List<String> errors = new ArrayList<String>();
 		if (first == null || first.equals("")) {
 			errors.add("Please supply a first name.");
@@ -520,17 +517,17 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 	private void postEvent(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		DataTrain train = DataTrain.getAndStartTrain();
-		EventManager ec = train.getEventManager();
+		DataTrain train = DataTrain.depart();
+		EventManager ec = train.events();
 		List<String> errors = new LinkedList<String>();
 		String success = "";
 
 		try {
 			DateTime start = Util.parseDateTime(
-					req.getParameter("startdatetime"), train
-							.getAppDataManager().get().getTimeZone());
+					req.getParameter("startdatetime"), train.appData().get()
+							.getTimeZone());
 			DateTime end = Util.parseDateTime(req.getParameter("enddatetime"),
-					train.getAppDataManager().get().getTimeZone());
+					train.appData().get().getTimeZone());
 
 			if (!start.toDateMidnight().equals(end.toDateMidnight())) {
 				errors.add("The event must start and end on the same day.");
@@ -553,7 +550,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 	private void postStudentInfo(HttpServletRequest req,
 			HttpServletResponse resp) throws ServletException, IOException {
-		DataTrain train = DataTrain.getAndStartTrain();
+		DataTrain train = DataTrain.depart();
 
 		List<String> errors = new ArrayList<String>();
 		String success = "";
@@ -624,9 +621,9 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 	private void postUnanchored(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		DataTrain train = DataTrain.getAndStartTrain();
-		AbsenceManager ac = train.getAbsenceManager();
-		EventManager ec = train.getEventManager();
+		DataTrain train = DataTrain.depart();
+		AbsenceManager ac = train.absences();
+		EventManager ec = train.events();
 		int count = -1;
 
 		try {
@@ -679,7 +676,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		User.Type type = User.Type.valueOf(strType);
 
-		UserManager uc = DataTrain.getAndStartTrain().getUsersManager();
+		UserManager uc = DataTrain.depart().getUsersManager();
 
 		User localUser = uc.get(netID);
 
@@ -700,11 +697,11 @@ public class DirectorServlet extends AbstractBaseServlet {
 			List<String> errors, String success) throws ServletException,
 			IOException {
 
-		DataTrain train = DataTrain.getAndStartTrain();
+		DataTrain train = DataTrain.depart();
 
 		PageBuilder page = new PageBuilder(Page.appinfo, SERVLET_PATH);
 
-		AppData data = train.getAppDataManager().get();
+		AppData data = train.appData().get();
 
 		page.setAttribute("appinfo", data);
 
@@ -745,7 +742,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 			HttpServletResponse resp, List<String> errors, String success)
 			throws ServletException, IOException {
 
-		DataTrain train = DataTrain.getAndStartTrain();
+		DataTrain train = DataTrain.depart();
 
 		PageBuilder page = new PageBuilder(Page.attendance, SERVLET_PATH);
 
@@ -755,7 +752,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		for (User s : students) {
 			// TODO may be more efficient to just get them all and then split
 			// here
-			List<Absence> a = train.getAbsenceManager().get(s);
+			List<Absence> a = train.absences().get(s);
 			absenceList.put(s, a);
 		}
 
@@ -765,7 +762,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		page.setAttribute("error_messages", errors);
 		page.setAttribute("success_message", success);
 		// so if the page arrives with ?=showApproved=true then we display them
-		User me = train.getAuthManager().getCurrentUser(req.getSession());
+		User me = train.auth().getCurrentUser(req.getSession());
 		if (ValidationUtil.isPost(req)) {
 			String show = req.getParameter("approved");
 			boolean showb = Boolean.parseBoolean(show);
@@ -789,8 +786,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 					+ suggestedBaseFileName + ".csv");
 
 			resp.setContentType(GradeExport.CONTENT_TYPE_CSV);
-			GradeExport.exportCSV(DataTrain.getAndStartTrain(),
-					resp.getOutputStream());
+			GradeExport.exportCSV(DataTrain.depart(), resp.getOutputStream());
 		} else {
 			new PageBuilder(Page.export, SERVLET_PATH).setPageTitle(
 					"Grade Export").passOffToJsp(req, resp);
@@ -803,8 +799,8 @@ public class DirectorServlet extends AbstractBaseServlet {
 		PageBuilder page = new PageBuilder(Page.index, SERVLET_PATH);
 
 		page.setPageTitle("Director");
-		page.setAttribute("StatusMessage", DataTrain.getAndStartTrain()
-				.getAppDataManager().get().getStatusMessage());
+		page.setAttribute("StatusMessage", DataTrain.depart().appData().get()
+				.getStatusMessage());
 
 		page.passOffToJsp(req, resp);
 	}
@@ -815,8 +811,8 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		PageBuilder page = new PageBuilder(Page.info, SERVLET_PATH);
 
-		page.setAttribute("user", DataTrain.getAndStartTrain().getAuthManager()
-				.getCurrentUser(req.getSession()));
+		page.setAttribute("user",
+				DataTrain.depart().auth().getCurrentUser(req.getSession()));
 
 		page.setAttribute("errors", errors);
 		page.setAttribute("success_message", success);
@@ -839,11 +835,11 @@ public class DirectorServlet extends AbstractBaseServlet {
 			List<String> errors, String success) throws ServletException,
 			IOException {
 
-		DataTrain train = DataTrain.getAndStartTrain();
+		DataTrain train = DataTrain.depart();
 
 		PageBuilder page = new PageBuilder(Page.student, SERVLET_PATH);
 
-		FormManager fc = train.getFormsManager();
+		FormManager fc = train.forms();
 		String netid = req.getParameter("id");
 
 		if (netid == null || netid.equals("")) {
@@ -853,7 +849,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 			page.setPageTitle("Attendance");
 
-			List<Absence> absences = train.getAbsenceManager().get(student);
+			List<Absence> absences = train.absences().get(student);
 
 			page.setAttribute("user", student);
 			page.setAttribute("forms", fc.get(student));
@@ -883,13 +879,13 @@ public class DirectorServlet extends AbstractBaseServlet {
 			HttpServletResponse resp, List<String> errors, String success)
 			throws ServletException, IOException {
 
-		DataTrain train = DataTrain.getAndStartTrain();
+		DataTrain train = DataTrain.depart();
 
 		PageBuilder page = new PageBuilder(Page.unanchored, SERVLET_PATH);
-		List<Event> events = train.getEventManager().readAll();
+		List<Event> events = train.events().readAll();
 		page.setAttribute("events", events);
 
-		List<Absence> unanchored = train.getAbsenceManager().getAll();
+		List<Absence> unanchored = train.absences().getAll();
 		Set<Absence> set = new HashSet<Absence>();
 		for (Absence a : unanchored) {
 			if (a.getEvent() != null) {
@@ -909,7 +905,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 	private void showUserInfo(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException, ServletException {
 
-		DataTrain train = DataTrain.getAndStartTrain();
+		DataTrain train = DataTrain.depart();
 
 		PageBuilder page = new PageBuilder(Page.user, SERVLET_PATH);
 
@@ -939,7 +935,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 	private void showUsers(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		DataTrain train = DataTrain.getAndStartTrain();
+		DataTrain train = DataTrain.depart();
 
 		PageBuilder page = new PageBuilder(Page.users, SERVLET_PATH);
 
@@ -952,9 +948,9 @@ public class DirectorServlet extends AbstractBaseServlet {
 	private void viewAbsence(HttpServletRequest req, HttpServletResponse resp,
 			List<String> incomingErrors, String success_message)
 			throws ServletException, IOException {
-		DataTrain train = DataTrain.getAndStartTrain();
+		DataTrain train = DataTrain.depart();
 
-		AbsenceManager ac = train.getAbsenceManager();
+		AbsenceManager ac = train.absences();
 
 		boolean validInput = true;
 
@@ -980,7 +976,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 				User student = null;
 				if (seventid != null && !seventid.equals("")
 						&& sstudentid != null && !sstudentid.equals("")) {
-					e = train.getEventManager().get(Long.parseLong(seventid));
+					e = train.events().get(Long.parseLong(seventid));
 					student = train.getUsersManager().get(sstudentid);
 				}
 				if (e != null && student != null) {
@@ -1041,7 +1037,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 			break;
 		}
 
-		DateTimeZone timeZone = train.getAppDataManager().get().getTimeZone();
+		DateTimeZone timeZone = train.appData().get().getTimeZone();
 		page.setAttribute("date", Util.formatDateOnly(setDateTime, timeZone));
 		page.setAttribute("time", Util.formatTimeOnly(setDateTime, timeZone));
 
@@ -1053,16 +1049,16 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 	private void viewEvent(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		DataTrain train = DataTrain.getAndStartTrain();
+		DataTrain train = DataTrain.depart();
 		String sid = req.getParameter("id");
 
 		List<String> errors = new ArrayList<String>();
 		PageBuilder page = new PageBuilder(Page.viewevent, SERVLET_PATH);
 		if (sid != null && !sid.equals("")) {
 			try {
-				Event event = train.getEventManager().get(Long.parseLong(sid));
+				Event event = train.events().get(Long.parseLong(sid));
 				page.setAttribute("event", event);
-				AbsenceManager ac = train.getAbsenceManager();
+				AbsenceManager ac = train.absences();
 				List<Absence> absences = ac.getAll(event);
 				int absent = 0;
 				int tardy = 0;

@@ -93,7 +93,7 @@ public class TAServlet extends AbstractBaseServlet {
 	private void postSetRanks(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		DataTrain train = DataTrain.getAndStartTrain();
+		DataTrain train = DataTrain.depart();
 
 		UserManager uc = train.getUsersManager();
 
@@ -144,8 +144,8 @@ public class TAServlet extends AbstractBaseServlet {
 				req.getParameter("success_message"));
 
 		page.setPageTitle("Staff");
-		page.setAttribute("StatusMessage", DataTrain.getAndStartTrain()
-				.getAppDataManager().get().getStatusMessage());
+		page.setAttribute("StatusMessage", DataTrain.depart().appData().get()
+				.getStatusMessage());
 
 		page.passOffToJsp(req, resp);
 	}
@@ -153,7 +153,7 @@ public class TAServlet extends AbstractBaseServlet {
 	private void showSetRanks(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		DataTrain train = DataTrain.getAndStartTrain();
+		DataTrain train = DataTrain.depart();
 		PageBuilder page = new PageBuilder(Page.setranks, SERVLET_PATH);
 
 		List<User> students = train.getUsersManager().get(User.Type.Student);

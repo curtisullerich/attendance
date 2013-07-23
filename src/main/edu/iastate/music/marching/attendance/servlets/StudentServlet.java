@@ -104,7 +104,7 @@ public class StudentServlet extends AbstractBaseServlet {
 	private void postInfo(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException, ServletException {
 
-		DataTrain train = DataTrain.getAndStartTrain();
+		DataTrain train = DataTrain.depart();
 
 		List<String> errors = new ArrayList<String>();
 		String success = "";
@@ -127,8 +127,7 @@ public class StudentServlet extends AbstractBaseServlet {
 			}
 		}
 
-		User localUser = train.getAuthManager()
-				.getCurrentUser(req.getSession());
+		User localUser = train.auth().getCurrentUser(req.getSession());
 
 		try {
 			year = Integer.parseInt(req.getParameter("Year"));
@@ -166,19 +165,18 @@ public class StudentServlet extends AbstractBaseServlet {
 	private void showAttendance(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		DataTrain train = DataTrain.getAndStartTrain();
+		DataTrain train = DataTrain.depart();
 
 		PageBuilder page = new PageBuilder(Page.attendance, SERVLET_PATH);
 
-		User currentUser = train.getAuthManager().getCurrentUser(
-				req.getSession());
+		User currentUser = train.auth().getCurrentUser(req.getSession());
 
 		page.setPageTitle("Attendance");
 
-		List<Absence> a = train.getAbsenceManager().get(currentUser);
+		List<Absence> a = train.absences().get(currentUser);
 
 		page.setAttribute("user", currentUser);
-		page.setAttribute("forms", train.getFormsManager().get(currentUser));
+		page.setAttribute("forms", train.forms().get(currentUser));
 		page.setAttribute("absences", a);
 
 		page.passOffToJsp(req, resp);
@@ -188,14 +186,13 @@ public class StudentServlet extends AbstractBaseServlet {
 			throws ServletException, IOException {
 
 		PageBuilder page = new PageBuilder(Page.index, SERVLET_PATH);
-		DataTrain train = DataTrain.getAndStartTrain();
-		User currentUser = train.getAuthManager().getCurrentUser(
-				req.getSession());
+		DataTrain train = DataTrain.depart();
+		User currentUser = train.auth().getCurrentUser(req.getSession());
 
 		page.setAttribute("user", currentUser);
 		page.setPageTitle("Student");
-		page.setAttribute("StatusMessage", DataTrain.getAndStartTrain()
-				.getAppDataManager().get().getStatusMessage());
+		page.setAttribute("StatusMessage", DataTrain.depart().appData().get()
+				.getStatusMessage());
 
 		page.passOffToJsp(req, resp);
 	}
@@ -206,8 +203,8 @@ public class StudentServlet extends AbstractBaseServlet {
 
 		PageBuilder page = new PageBuilder(Page.info, SERVLET_PATH);
 
-		page.setAttribute("user", DataTrain.getAndStartTrain().getAuthManager()
-				.getCurrentUser(req.getSession()));
+		page.setAttribute("user",
+				DataTrain.depart().auth().getCurrentUser(req.getSession()));
 
 		page.setAttribute("sections", User.Section.values());
 
@@ -221,9 +218,9 @@ public class StudentServlet extends AbstractBaseServlet {
 	private void viewAbsence(HttpServletRequest req, HttpServletResponse resp,
 			List<String> incomingErrors, String success_message)
 			throws ServletException, IOException {
-		DataTrain train = DataTrain.getAndStartTrain();
+		DataTrain train = DataTrain.depart();
 
-		AbsenceManager ac = train.getAbsenceManager();
+		AbsenceManager ac = train.absences();
 
 		boolean validInput = true;
 

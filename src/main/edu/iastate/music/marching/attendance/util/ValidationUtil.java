@@ -30,8 +30,7 @@ public class ValidationUtil {
 	}
 
 	public static boolean isUniqueId(String id, Email primary) {
-		return DataTrain.getAndStartTrain().getUsersManager()
-				.isUniqueId(id, primary);
+		return DataTrain.depart().getUsersManager().isUniqueId(id, primary);
 	}
 
 	public static boolean isUniqueSecondaryEmail(Email checkEmail,

@@ -145,7 +145,7 @@ public class MobileDataManager {
 			throw new IllegalArgumentException("Empty data uploaded");
 		}
 
-		DateTimeZone zone = this.train.getAppDataManager().get().getTimeZone();
+		DateTimeZone zone = this.train.appData().get().getTimeZone();
 
 		String[] fullLines = data.split(NEWLINE);
 
@@ -175,8 +175,8 @@ public class MobileDataManager {
 
 		// try {
 
-		EventManager ec = this.train.getEventManager();
-		AbsenceManager ac = this.train.getAbsenceManager();
+		EventManager ec = this.train.events();
+		AbsenceManager ac = this.train.absences();
 		UserManager uc = this.train.getUsersManager();
 
 		// List<Event> localEvents = new LinkedList<Event>();

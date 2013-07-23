@@ -88,7 +88,7 @@ public class EventManager extends AbstractManager {
 		// overlapping.add(e);
 		// }
 		// }
-		AbsenceManager ac = train.getAbsenceManager();
+		AbsenceManager ac = train.absences();
 		List<Absence> unanchored = ac.getUnanchored();
 
 		List<Event> all = getAll();
@@ -153,7 +153,7 @@ public class EventManager extends AbstractManager {
 	public void delete(Event event, boolean deleteLinkedAbsences) {
 		ObjectDatastore od = this.train.getDataStore();
 
-		AbsenceManager ac = train.getAbsenceManager();
+		AbsenceManager ac = train.absences();
 
 		List<Absence> todie = ac.getAll(event);
 		if (deleteLinkedAbsences) {

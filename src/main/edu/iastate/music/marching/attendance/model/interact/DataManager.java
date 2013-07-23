@@ -75,13 +75,13 @@ public class DataManager extends AbstractManager {
 
 		dump.format_version = DUMP_FORMAT_VERSION;
 
-		dump.absences = dataTrain.getAbsenceManager().getAll();
+		dump.absences = dataTrain.absences().getAll();
 
-		dump.appData = dataTrain.getAppDataManager().get();
+		dump.appData = dataTrain.appData().get();
 
-		dump.events = dataTrain.getEventManager().getAll();
+		dump.events = dataTrain.events().getAll();
 
-		dump.forms = dataTrain.getFormsManager().getAll();
+		dump.forms = dataTrain.forms().getAll();
 
 		dump.mobileData = dataTrain.getMobileDataManager().getUploads();
 
@@ -181,16 +181,14 @@ public class DataManager extends AbstractManager {
 						// Try to load Absence
 						Absence absence = (Absence) field.get(item);
 						if (absence != null) {
-							absence = dataTrain.getAbsenceManager().get(
-									absence.getId());
+							absence = dataTrain.absences().get(absence.getId());
 							field.set(item, absence);
 						}
 					} else if (Event.class.equals(type)) {
 						// Try to load Event
 						Event event = (Event) field.get(item);
 						if (event != null) {
-							event = dataTrain.getEventManager().get(
-									(event).getId());
+							event = dataTrain.events().get((event).getId());
 							field.set(item, event);
 						}
 					}

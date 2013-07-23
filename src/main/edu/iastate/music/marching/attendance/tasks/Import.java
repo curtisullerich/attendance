@@ -10,7 +10,6 @@ public class Import {
 	private static final Logger LOG = Logger.getLogger(Import.class.getName());
 
 	public static void performImport(ImportData importData) {
-		DataTrain.getAndStartTrain().getDataManager()
-				.importJSONDatabaseDump(importData.getData());
+		DataTrain.depart().data().importJSONDatabaseDump(importData.getData());
 	}
 }

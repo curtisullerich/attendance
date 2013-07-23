@@ -16,6 +16,7 @@ public class AuthBean implements java.io.Serializable {
 	private static final long serialVersionUID = -6300883251650797582L;
 
 	private static final String ATTRIBUTE_NAME = "auth";
+
 	public static AuthBean getBean(HttpSession session, DataTrain train) {
 		return new AuthBean(session, train);
 	}
@@ -41,7 +42,7 @@ public class AuthBean implements java.io.Serializable {
 	}
 
 	public User getUser() {
-		return this.train.getAuthManager().getCurrentUser(this.session);
+		return this.train.auth().getCurrentUser(this.session);
 	}
 
 	public boolean isAdmin() {

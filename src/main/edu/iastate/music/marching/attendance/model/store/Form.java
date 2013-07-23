@@ -109,6 +109,7 @@ public class Form {
 	private boolean late;
 	private int minutesWorked;
 	private int minutesToOrFrom;
+
 	/**
 	 * Create users through FormController
 	 * (DataTrain.get().getFormsController().createFormA(...)
@@ -159,6 +160,7 @@ public class Form {
 	public WeekDay getDayOfWeek() {
 		return WeekDay.valueOf(day);
 	}
+
 	public String getDept() {
 		return dept;
 	}

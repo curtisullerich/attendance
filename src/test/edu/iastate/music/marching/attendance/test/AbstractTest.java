@@ -22,7 +22,7 @@ public class AbstractTest {
 	@Before
 	public void setUp() {
 		helper.setUp();
-		datatrain = DataTrain.getAndStartTrain();
+		datatrain = DataTrain.depart();
 	}
 
 	@After

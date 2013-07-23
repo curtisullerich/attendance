@@ -58,7 +58,7 @@ public class AbsenceManager extends AbstractManager {
 			// "Can't valiDateTime Absence with null student");
 		}
 
-		List<Form> forms = train.getFormsManager().get(student);
+		List<Form> forms = train.forms().get(student);
 
 		for (Form form : forms) {
 			checkForAutoApproval(absence, form);
@@ -77,7 +77,7 @@ public class AbsenceManager extends AbstractManager {
 	 */
 	private Absence checkForAutoApproval(Absence absence, Form form) {
 
-		DateTimeZone zone = this.train.getAppDataManager().get().getTimeZone();
+		DateTimeZone zone = this.train.appData().get().getTimeZone();
 
 		if (form.getStatus() != Form.Status.Approved) {
 			// must be approved!
@@ -672,7 +672,7 @@ public class AbsenceManager extends AbstractManager {
 
 			// Associate with event
 			// else the absence is orphaned
-			events = train.getEventManager().getExactlyAt(interval);
+			events = train.events().getExactlyAt(interval);
 			if (events.size() == 1) {
 				absence.setEvent(events.get(0));
 				// associated with this event for this student
@@ -684,7 +684,7 @@ public class AbsenceManager extends AbstractManager {
 			DateTime checkout = absence.getCheckout();
 
 			// Associate with event
-			events = this.train.getEventManager().getContains(checkout);
+			events = this.train.events().getContains(checkout);
 
 			if (events.size() == 1) {
 				absence.setEvent(events.get(0));
@@ -697,7 +697,7 @@ public class AbsenceManager extends AbstractManager {
 			DateTime checkin = absence.getCheckin();
 
 			// Associate with event
-			events = train.getEventManager().getContains(checkin);
+			events = train.events().getContains(checkin);
 			absence.setStatus(Absence.Status.Pending);
 
 			// else the absence is orphaned, because we can't know which one is
@@ -811,7 +811,7 @@ public class AbsenceManager extends AbstractManager {
 			return null;
 		}
 
-		AbsenceManager ac = train.getAbsenceManager();
+		AbsenceManager ac = train.absences();
 		List<Absence> conflicts = ac.getAll(linked, student);
 
 		if (conflicts.size() > 2) {

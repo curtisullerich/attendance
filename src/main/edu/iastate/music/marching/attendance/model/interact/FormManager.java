@@ -38,7 +38,7 @@ public class FormManager extends AbstractManager {
 			LocalDate startDate, LocalDate endDate, LocalTime startTime,
 			LocalTime endTime, WeekDay dayOfWeek, String details,
 			int minutesToOrFrom, Absence.Type absenceType) {
-		DateTimeZone zone = this.train.getAppDataManager().get().getTimeZone();
+		DateTimeZone zone = this.train.appData().get().getTimeZone();
 
 		// TODO https://github.com/curtisullerich/attendance/issues/108
 		// NEEDS MORE PARAMETERS and LOTS OF VALIDATION
@@ -105,7 +105,7 @@ public class FormManager extends AbstractManager {
 		// current
 		form.setSubmissionTime(DateTime.now());
 		form.setLate(form.getSubmissionDateTime().isAfter(
-				DataTrain.getAndStartTrain().getAppDataManager().get()
+				DataTrain.depart().appData().get()
 						.getPerformanceAbsenceFormCutoff()));
 
 		form.setDayOfWeek(dayOfWeek);
@@ -128,7 +128,7 @@ public class FormManager extends AbstractManager {
 			exp.getErrors().add("Invalid reason");
 		}
 
-		DateTime cutoff = train.getAppDataManager().get()
+		DateTime cutoff = train.appData().get()
 				.getPerformanceAbsenceFormCutoff();
 
 		boolean late = cutoff.isBeforeNow();
@@ -139,13 +139,13 @@ public class FormManager extends AbstractManager {
 
 		Form form = ModelFactory.newForm(Form.Type.PerformanceAbsence, student);
 
-		form.setInterval(date.toInterval(this.train.getAppDataManager().get()
+		form.setInterval(date.toInterval(this.train.appData().get()
 				.getTimeZone()));
 
 		// current
 		form.setSubmissionTime(DateTime.now());
 		form.setLate(form.getSubmissionDateTime().isAfter(
-				DataTrain.getAndStartTrain().getAppDataManager().get()
+				DataTrain.depart().appData().get()
 						.getPerformanceAbsenceFormCutoff()));
 
 		// Set remaining fields
@@ -177,7 +177,7 @@ public class FormManager extends AbstractManager {
 	 */
 	public Form createTimeWorkedForm(User student, LocalDate date, int minutes,
 			String details) {
-		DateTimeZone zone = this.train.getAppDataManager().get().getTimeZone();
+		DateTimeZone zone = this.train.appData().get().getTimeZone();
 
 		// Simple validation first
 		ValidationExceptions exp = new ValidationExceptions();
@@ -201,7 +201,7 @@ public class FormManager extends AbstractManager {
 		// current
 		form.setSubmissionTime(DateTime.now());
 		form.setLate(form.getSubmissionDateTime().isAfter(
-				DataTrain.getAndStartTrain().getAppDataManager().get()
+				DataTrain.depart().appData().get()
 						.getPerformanceAbsenceFormCutoff()));
 
 		// Set remaining fields
@@ -278,7 +278,7 @@ public class FormManager extends AbstractManager {
 
 		// TODO https://github.com/curtisullerich/attendance/issues/106
 		// what if the student is null?
-		AbsenceManager ac = this.train.getAbsenceManager();
+		AbsenceManager ac = this.train.absences();
 		for (Absence absence : ac.get(form.getStudent())) {
 			// TODO https://github.com/curtisullerich/attendance/issues/106
 			// I wrote a (private) method in Absence controller that could
@@ -305,7 +305,7 @@ public class FormManager extends AbstractManager {
 		updateFormD(f);
 		this.train.getDataStore().update(f);
 
-		AbsenceManager ac = this.train.getAbsenceManager();
+		AbsenceManager ac = this.train.absences();
 
 		// TODO https://github.com/curtisullerich/attendance/issues/106
 		// what if the student is null?

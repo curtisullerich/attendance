@@ -40,10 +40,10 @@ public class TaskServlet extends AbstractBaseServlet {
 
 			LOG.info("Performing the daily full data export.");
 
-			DataTrain train = DataTrain.getAndStartTrain();
+			DataTrain train = DataTrain.depart();
 
 			// Check if we should perform an export based on preferences
-			if (train.getAppDataManager().get().isCronExportEnabled()) {
+			if (train.appData().get().isCronExportEnabled()) {
 
 				Export.performExport();
 
@@ -82,10 +82,10 @@ public class TaskServlet extends AbstractBaseServlet {
 			throws IOException {
 		LOG.info("Doing full data import.");
 
-		DataTrain dt = DataTrain.getAndStartTrain();
+		DataTrain dt = DataTrain.depart();
 
 		long id = Long.parseLong(req.getParameter(IMPORT_PARAM_STOREID));
-		ImportData importData = dt.getDataManager().getImportData(id);
+		ImportData importData = dt.data().getImportData(id);
 
 		try {
 			Import.performImport(importData);
@@ -95,7 +95,7 @@ public class TaskServlet extends AbstractBaseServlet {
 
 		try {
 			// Always delete the import data afterwards
-			dt.getDataManager().removeImportData(importData);
+			dt.data().removeImportData(importData);
 		} finally {
 			// Never retry, avoids infinite loops
 			resp.sendError(200);
