@@ -4,6 +4,12 @@ import java.io.Reader;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 import javax.mail.Message;
 
@@ -16,8 +22,11 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonPrimitive;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
+import com.google.gson.JsonSyntaxException;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 
 import edu.iastate.music.marching.attendance.model.store.Absence;
 import edu.iastate.music.marching.attendance.model.store.AppData;
@@ -34,8 +43,7 @@ public class GsonWithPartials {
 		@Override
 		public Object deserialize(JsonElement json, Type typeOfT,
 				JsonDeserializationContext context) throws JsonParseException {
-			// TODO Auto-generated method stub
-			return new Gson().fromJson(json, typeOfT);
+			return getFieldGson().fromJson(json, typeOfT);
 		}
 
 		@Override
@@ -133,6 +141,12 @@ public class GsonWithPartials {
 	public static <T> T fromJson(Reader json, Class<T> clazz) {
 		return getInstance().fromJson(json, clazz);
 	}
+	
+	private static Gson getFieldGson() {
+		GsonBuilder gson = new GsonBuilder();
+		gson.registerTypeAdapter(java.util.Date.class, new UTCDateAdaptor());
+		return gson.create();
+	}
 
 	private static Gson getInnerGson() {
 		GsonBuilder gson = new GsonBuilder();
@@ -162,5 +176,45 @@ public class GsonWithPartials {
 
 	public static <T> void toJson(T src, Appendable writer) {
 		getInstance().toJson(src, writer);
+	}
+
+	private static class UTCDateAdaptor implements JsonSerializer<Date>,
+			JsonDeserializer<Date> {
+		private final DateFormat defaultDateFormatUTC;
+
+		UTCDateAdaptor() {
+			this.defaultDateFormatUTC = DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.US);
+			this.defaultDateFormatUTC.setTimeZone(TimeZone.getTimeZone("UTC"));
+		}
+
+		public JsonElement serialize(Date src, Type typeOfSrc,
+				JsonSerializationContext context) {
+			String dateFormatAsString = defaultDateFormatUTC.format(src);
+			return new JsonPrimitive(dateFormatAsString);
+		}
+
+		public Date deserialize(JsonElement json, Type typeOfT,
+				JsonDeserializationContext context) throws JsonParseException {
+			if (!(json instanceof JsonPrimitive)) {
+				throw new JsonParseException(
+						"The date should be a string value");
+			}
+			Date date = deserializeToDate(json);
+			if (typeOfT == Date.class) {
+				return date;
+			} else {
+				throw new IllegalArgumentException(getClass()
+						+ " cannot deserialize to " + typeOfT);
+			}
+		}
+
+		private Date deserializeToDate(JsonElement json) {
+			try {
+				return defaultDateFormatUTC.parse(json.getAsString());
+			} catch (ParseException e) {
+				throw new JsonSyntaxException(json.getAsString(), e);
+			}
+		}
+
 	}
 }

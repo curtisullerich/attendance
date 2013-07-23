@@ -24,6 +24,7 @@ import org.joda.time.LocalTime;
 
 import com.google.appengine.api.datastore.Email;
 
+import edu.iastate.music.marching.attendance.App;
 import edu.iastate.music.marching.attendance.model.interact.AbsenceManager;
 import edu.iastate.music.marching.attendance.model.interact.AppDataManager;
 import edu.iastate.music.marching.attendance.model.interact.DataTrain;
@@ -702,16 +703,15 @@ public class DirectorServlet extends AbstractBaseServlet {
 		PageBuilder page = new PageBuilder(Page.appinfo, SERVLET_PATH);
 
 		AppData data = train.appData().get();
+		
+		DateTimeZone zone = data.getTimeZone();
 
 		page.setAttribute("appinfo", data);
 
-		page.setAttribute("timezone", data.getTimeZone().toTimeZone());
+		page.setAttribute("timezone", zone.toTimeZone());
 
-		if (data.getPerformanceAbsenceFormCutoff() != null) {
-			page.setAttribute("performanceAbsenceDatetime", Util
-					.formatDateTime(data.getPerformanceAbsenceFormCutoff(),
-							data.getTimeZone()));
-		}
+		page.setAttribute("performanceAbsenceDatetime", Util.formatDateTime(
+				data.getPerformanceAbsenceFormCutoff(), zone));
 
 		if (data.getClassConflictFormCutoff() != null) {
 			page.setAttribute(
@@ -727,7 +727,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 							data.getTimeZone()));
 		}
 
-		page.setAttribute("timezones", data.getTimezoneOptions());
+		page.setAttribute("timezones", App.getTimezoneOptions());
 
 		page.setAttribute("StatusMessage", data.getStatusMessage());
 

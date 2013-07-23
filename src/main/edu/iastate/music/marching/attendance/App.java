@@ -1,5 +1,9 @@
 package edu.iastate.music.marching.attendance;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TimeZone;
+
 import org.joda.time.DateTimeConstants;
 
 public class App {
@@ -25,5 +29,11 @@ public class App {
 		WeekDay(int jodaDayOfWeek) {
 			this.DayOfWeek = jodaDayOfWeek;
 		}
+	}
+	
+	public static List<TimeZone> getTimezoneOptions() {
+		List<TimeZone> opts = new ArrayList<TimeZone>();
+		opts.add(TimeZone.getTimeZone("CST"));
+		return opts;
 	}
 }
