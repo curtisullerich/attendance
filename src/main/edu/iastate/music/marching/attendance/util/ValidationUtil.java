@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.google.appengine.api.datastore.Email;
 
+import edu.iastate.music.marching.attendance.App;
 import edu.iastate.music.marching.attendance.model.interact.DataTrain;
 import edu.iastate.music.marching.attendance.model.store.User;
 
@@ -113,7 +114,7 @@ public class ValidationUtil {
 
 		// TODO https://github.com/curtisullerich/attendance/issues/122
 		// This should be an application setting
-		String domain = "iastate.edu";
+		String domain = App.DOMAIN;
 
 		if (email == null | email.getEmail() == null)
 			return false;

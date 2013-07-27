@@ -22,7 +22,7 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.common.collect.Lists;
 
-import edu.iastate.music.marching.attendance.Configuration;
+import edu.iastate.music.marching.attendance.App;
 import edu.iastate.music.marching.attendance.model.GsonWithPartials;
 import edu.iastate.music.marching.attendance.model.store.Absence;
 import edu.iastate.music.marching.attendance.model.store.AppData;
@@ -231,9 +231,9 @@ public class DataManager extends AbstractManager {
 		try {
 			MimeMessage msg = new MimeMessage(session);
 			msg.setFrom(new InternetAddress(
-					Configuration.Emails.BUGREPORT_EMAIL_FROM));
+					App.Emails.BUGREPORT_EMAIL_FROM));
 			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
-					Configuration.Emails.BUGREPORT_EMAIL_TO));
+					App.Emails.BUGREPORT_EMAIL_TO));
 
 			msg.setSubject("Attendance Bug Report");
 			msg.setContent(msgBody, "text/html");

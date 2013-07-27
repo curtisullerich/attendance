@@ -27,7 +27,7 @@ import javax.mail.internet.MimeMultipart;
 
 import org.joda.time.DateTime;
 
-import edu.iastate.music.marching.attendance.Configuration;
+import edu.iastate.music.marching.attendance.App;
 import edu.iastate.music.marching.attendance.model.interact.DataTrain;
 import edu.iastate.music.marching.attendance.model.store.User;
 
@@ -86,7 +86,7 @@ public class Export {
 			String subject = "Data export for " + appTitle;
 			String msgBody = "Attached is a file containing all data for "
 					+ appTitle + " exported at " + humanExportTime;
-			String from = Configuration.Emails.DATA_EXPORT_SENDER;
+			String from = App.Emails.DATA_EXPORT_SENDER;
 			String fileName = "data-export-for-" + appTitle + "-"
 					+ filenameExportTime + ".json";
 			StringWriter dataStream = new StringWriter();
