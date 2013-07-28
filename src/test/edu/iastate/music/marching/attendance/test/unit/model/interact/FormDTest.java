@@ -1,11 +1,8 @@
 package edu.iastate.music.marching.attendance.test.unit.model.interact;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-
+import org.joda.time.LocalDate;
 import org.junit.Test;
 
 import edu.iastate.music.marching.attendance.model.interact.AppDataManager;
@@ -17,9 +14,7 @@ import edu.iastate.music.marching.attendance.model.store.Form;
 import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.test.AbstractDatastoreTest;
 import edu.iastate.music.marching.attendance.test.util.Users;
-import edu.iastate.music.marching.attendance.util.ValidationExceptions;
 
-@SuppressWarnings("deprecation")
 public class FormDTest extends AbstractDatastoreTest {
 /*
 	// note that form D does not autoapprove, because we can't know which
@@ -31,28 +26,23 @@ public class FormDTest extends AbstractDatastoreTest {
 
 	*//**
 	 * Approve, test that the minutes increment.
-	 *//*
+	 */
 	@Test
 	public void testApprove() {
 		DataTrain train = getDataTrain();
-		AppDataManager adc = train.getAppDataManager();
+		AppDataManager adc = train.appData();
 		AppData ad = adc.get();
 		adc.save(ad);
 
-		UserManager uc = train.getUsersManager();
-		FormManager fc = train.getFormsManager();
+		UserManager uc = train.users();
+		FormManager fc = train.forms();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar DateTime = Calendar.getInstance();
-		date.set(2012, 7, 7, 0, 0, 0);
-		Calendar start = Calendar.getInstance();
-		start.set(2012, 7, 7, 16, 30, 0);
-		Calendar end = Calendar.getInstance();
-		end.set(2012, 7, 7, 17, 50, 0);
+		LocalDate date = new LocalDate(2012, 7, 7);
 
-		Form form = fc.createTimeWorkedForm(student, date.getTime(), 10, "details");
+		Form form = fc.createTimeWorkedForm(student, date, 10, "details");
 
 		assertEquals(0, student.getMinutesAvailable());
 		form.setStatus(Form.Status.Approved);
@@ -60,31 +50,26 @@ public class FormDTest extends AbstractDatastoreTest {
 		assertEquals(10, student.getMinutesAvailable());
 	}
 
-	*//**
+	/**
 	 * Test that it fails to increment twice when you try to approve a form
 	 * twice
-	 *//*
+	 */
 	@Test
 	public void testApproveTwice() {
 		DataTrain train = getDataTrain();
-		AppDataManager adc = train.getAppDataManager();
+		AppDataManager adc = train.appData();
 		AppData ad = adc.get();
 		adc.save(ad);
 
-		UserManager uc = train.getUsersManager();
-		FormManager fc = train.getFormsManager();
+		UserManager uc = train.users();
+		FormManager fc = train.forms();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar DateTime = Calendar.getInstance();
-		date.set(2012, 7, 7, 0, 0, 0);
-		Calendar start = Calendar.getInstance();
-		start.set(2012, 7, 7, 16, 30, 0);
-		Calendar end = Calendar.getInstance();
-		end.set(2012, 7, 7, 17, 50, 0);
+		LocalDate date = new LocalDate(2012, 7, 7);
 
-		Form form = fc.createTimeWorkedForm(student, date.getTime(), 10, "details");
+		Form form = fc.createTimeWorkedForm(student, date, 10, "details");
 
 		assertEquals(0, student.getMinutesAvailable());
 		form.setStatus(Form.Status.Approved);
@@ -97,31 +82,26 @@ public class FormDTest extends AbstractDatastoreTest {
 
 	}
 
-	*//**
+	/**
 	 * Test that it fails to increment twice when you try to deny after
 	 * approving
-	 *//*
+	 */
 	@Test
 	public void testApproveDeny() {
 		DataTrain train = getDataTrain();
-		AppDataManager adc = train.getAppDataManager();
+		AppDataManager adc = train.appData();
 		AppData ad = adc.get();
 		adc.save(ad);
 
-		UserManager uc = train.getUsersManager();
-		FormManager fc = train.getFormsManager();
+		UserManager uc = train.users();
+		FormManager fc = train.forms();
 
 		User student = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
-		Calendar DateTime = Calendar.getInstance();
-		date.set(2012, 7, 7, 0, 0, 0);
-		Calendar start = Calendar.getInstance();
-		start.set(2012, 7, 7, 16, 30, 0);
-		Calendar end = Calendar.getInstance();
-		end.set(2012, 7, 7, 17, 50, 0);
+		LocalDate date = new LocalDate(2012, 7, 7);
 
-		Form form = fc.createTimeWorkedForm(student, date.getTime(), 10, "details");
+		Form form = fc.createTimeWorkedForm(student, date, 10, "details");
 
 		assertEquals(0, student.getMinutesAvailable());
 		form.setStatus(Form.Status.Approved);
@@ -135,5 +115,5 @@ public class FormDTest extends AbstractDatastoreTest {
 		form.setStatus(Form.Status.Approved);
 		fc.update(form);
 		assertEquals(10, student.getMinutesAvailable());
-	}*/
+	}
 }

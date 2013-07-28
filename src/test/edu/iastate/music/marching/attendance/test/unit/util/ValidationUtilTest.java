@@ -5,10 +5,28 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import com.google.appengine.api.datastore.Email;
+
+import edu.iastate.music.marching.attendance.model.interact.DataTrain;
+import edu.iastate.music.marching.attendance.test.AbstractDatastoreTest;
+import edu.iastate.music.marching.attendance.test.TestConfig;
 import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
-public class ValidationUtilTest {
+public class ValidationUtilTest extends AbstractDatastoreTest {
 
+	@Test
+	public void testValidGoogleUsers() {
+		DataTrain train = getDataTrain();
+		
+		String validIaStateEmail = "bmax@" + TestConfig.getEmailDomain();
+		String nonValidRealEmail = "bmax921@gmail.com";
+		String nonValidMadeUpEmail = "lkajslkfdjasdf@lkasdlkfj.com";
+		
+		assertTrue(ValidationUtil.validPrimaryEmail(new Email(validIaStateEmail), train));
+		assertFalse(ValidationUtil.validPrimaryEmail(new Email(nonValidRealEmail), train));
+		assertFalse(ValidationUtil.validPrimaryEmail(new Email(nonValidMadeUpEmail), train));
+	}
+	
 	@Test
 	public void testIsValidName() {
 		assertTrue(ValidationUtil.isValidName("Test Name-Complicated"));
