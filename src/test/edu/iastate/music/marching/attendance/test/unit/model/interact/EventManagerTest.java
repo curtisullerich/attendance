@@ -4,75 +4,76 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.Interval;
 import org.junit.Test;
 
 import edu.iastate.music.marching.attendance.model.interact.AbsenceManager;
 import edu.iastate.music.marching.attendance.model.interact.DataTrain;
 import edu.iastate.music.marching.attendance.model.interact.EventManager;
 import edu.iastate.music.marching.attendance.model.interact.UserManager;
-import edu.iastate.music.marching.attendance.model.store.Absence;
 import edu.iastate.music.marching.attendance.model.store.Event;
 import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.test.AbstractDatastoreTest;
 import edu.iastate.music.marching.attendance.test.util.Users;
 
 public class EventManagerTest extends AbstractDatastoreTest {
-	
-/*
+
 	@Test
 	public void testOverlappingEventsRehersal() {
 		DataTrain train = getDataTrain();
 
-		EventManager ec = train.getEventManager();
+		EventManager ec = train.events();
+		DateTimeZone zone = train.appData().get().getTimeZone();
 
-		DateTime startOverlap = makeDate("2012-09-21 0600");
-		DateTime endOverlap = makeDate("2012-09-21 0700");
+		DateTime start = new DateTime(2012, 9, 21, 6, 0, zone);
+		DateTime end = new DateTime(2012, 9, 21, 7, 0, zone);
 
-		ec.createOrUpdate(Event.Type.Rehearsal, startOverlap, endOverlap);
-		ec.createOrUpdate(Event.Type.Rehearsal, startOverlap, endOverlap);
+		ec.createOrUpdate(Event.Type.Rehearsal, new Interval(start, end));
+		ec.createOrUpdate(Event.Type.Rehearsal, new Interval(start, end));
 
 		List<Event> events = ec.getAll();
 
 		assertEquals(1, events.size());
-		assertEquals(startOverlap, events.get(0).getStart());
-		assertEquals(endOverlap, events.get(0).getEnd());
+		assertEquals(start, events.get(0).getInterval(zone).getStart());
+		assertEquals(end, events.get(0).getInterval(zone).getEnd());
 	}
 
 	@Test
 	public void testOverlappingEventsPerformance() {
 		DataTrain train = getDataTrain();
 
-		EventManager ec = train.getEventManager();
+		EventManager ec = train.events();
+		DateTimeZone zone = train.appData().get().getTimeZone();
 
-		DateTime startOverlap = makeDate("2012-09-21 0600");
-		DateTime endOverlap = makeDate("2012-09-21 0700");
+		DateTime start = new DateTime(2012, 9, 21, 6, 0, zone);
+		DateTime end = new DateTime(2012, 9, 21, 7, 0, zone);
 
-		ec.createOrUpdate(Event.Type.Performance, startOverlap, endOverlap);
-		ec.createOrUpdate(Event.Type.Performance, startOverlap, endOverlap);
+		ec.createOrUpdate(Event.Type.Performance, new Interval(start, end));
+		ec.createOrUpdate(Event.Type.Performance, new Interval(start, end));
 
 		List<Event> events = ec.getAll();
 
 		assertEquals(1, events.size());
-		assertEquals(startOverlap, events.get(0).getStart());
-		assertEquals(endOverlap, events.get(0).getEnd());
+		assertEquals(start, events.get(0).getInterval(zone).getStart());
+		assertEquals(end, events.get(0).getInterval(zone).getEnd());
 	}
 
 	@Test
 	public void testOverlappingEventsDifferentTypes() {
 		DataTrain train = getDataTrain();
 
-		EventManager ec = train.getEventManager();
+		EventManager ec = train.events();
+		DateTimeZone zone = train.appData().get().getTimeZone();
 
-		DateTime startOverlap = makeDate("2012-09-21 0600");
-		DateTime endOverlap = makeDate("2012-09-21 0700");
+		DateTime start = new DateTime(2012, 9, 21, 6, 0, zone);
+		DateTime end = new DateTime(2012, 9, 21, 7, 0, zone);
 
-		ec.createOrUpdate(Event.Type.Rehearsal, startOverlap, endOverlap);
-		ec.createOrUpdate(Event.Type.Performance, startOverlap, endOverlap);
+		ec.createOrUpdate(Event.Type.Rehearsal, new Interval(start, end));
+		ec.createOrUpdate(Event.Type.Performance, new Interval(start, end));
 
 		List<Event> events = ec.getAll();
 
@@ -80,140 +81,145 @@ public class EventManagerTest extends AbstractDatastoreTest {
 
 		assertTrue(events.get(0).getType() == Event.Type.Rehearsal
 				|| events.get(0).getType() == Event.Type.Performance);
-		assertEquals(startOverlap, events.get(0).getStart());
-		assertEquals(endOverlap, events.get(0).getEnd());
+		assertEquals(start, events.get(0).getInterval(zone).getStart());
+		assertEquals(end, events.get(0).getInterval(zone).getEnd());
 
 		assertTrue(events.get(1).getType() == Event.Type.Rehearsal
 				|| events.get(1).getType() == Event.Type.Performance);
-		assertEquals(startOverlap, events.get(1).getStart());
-		assertEquals(endOverlap, events.get(1).getEnd());
+		assertEquals(start, events.get(1).getInterval(zone).getStart());
+		assertEquals(end, events.get(1).getInterval(zone).getEnd());
 	}
 
 	@Test
 	public void testNonOverlappingEventsRehearsal() {
 		DataTrain train = getDataTrain();
 
-		EventManager ec = train.getEventManager();
+		EventManager ec = train.events();
+		DateTimeZone zone = train.appData().get().getTimeZone();
 
-		DateTime startFirst = makeDate("2012-09-21 0600");
-		DateTime endFirst = makeDate("2012-09-21 0700");
+		DateTime startFirst = new DateTime(2012, 9, 21, 6, 0, zone);
+		DateTime endFirst = new DateTime(2012, 9, 21, 7, 0, zone);
 
-		DateTime startSecond = makeDate("2012-09-22 0600");
-		DateTime endSecond = makeDate("2012-09-22 0700");
+		DateTime startSecond = new DateTime(2012, 9, 22, 6, 0, zone);
+		DateTime endSecond = new DateTime(2012, 9, 22, 7, 0, zone);
 
-		ec.createOrUpdate(Event.Type.Rehearsal, startFirst, endFirst);
-		ec.createOrUpdate(Event.Type.Rehearsal, startSecond, endSecond);
+		ec.createOrUpdate(Event.Type.Rehearsal, new Interval(startFirst,
+				endFirst));
+		ec.createOrUpdate(Event.Type.Rehearsal, new Interval(startSecond,
+				endSecond));
 
 		List<Event> events = ec.getAll();
 
-		Event first = (events.get(0).getStart().equals(startFirst)) ? events
-				.get(0) : events.get(1);
-		Event second = (events.get(0).getStart().equals(startSecond)) ? events
-				.get(0) : events.get(1);
+		Event first = (events.get(0).getInterval(zone).getStart()
+				.equals(startFirst)) ? events.get(0) : events.get(1);
+		Event second = (events.get(0).getInterval(zone).getStart()
+				.equals(startSecond)) ? events.get(0) : events.get(1);
 
 		assertEquals(2, events.size());
 
 		assertEquals(Event.Type.Rehearsal, first.getType());
-		assertEquals(startFirst, first.getStart());
-		assertEquals(endFirst, first.getEnd());
+		assertEquals(startFirst, first.getInterval(zone).getStart());
+		assertEquals(endFirst, first.getInterval(zone).getEnd());
 
 		assertEquals(Event.Type.Rehearsal, second.getType());
-		assertEquals(startSecond, second.getStart());
-		assertEquals(endSecond, second.getEnd());
+		assertEquals(startSecond, second.getInterval(zone).getStart());
+		assertEquals(endSecond, second.getInterval(zone).getEnd());
 	}
 
 	@Test
 	public void testNonOverlappingEventsPerformance() {
 		DataTrain train = getDataTrain();
 
-		EventManager ec = train.getEventManager();
+		EventManager ec = train.events();
+		DateTimeZone zone = train.appData().get().getTimeZone();
 
-		DateTime startFirst = makeDate("2012-09-21 0600");
-		DateTime endFirst = makeDate("2012-09-21 0700");
+		DateTime startFirst = new DateTime(2012, 9, 21, 6, 0, zone);
+		DateTime endFirst = new DateTime(2012, 9, 21, 7, 0, zone);
 
-		DateTime startSecond = makeDate("2012-09-22 0600");
-		DateTime endSecond = makeDate("2012-09-22 0700");
+		DateTime startSecond = new DateTime(2012, 9, 22, 6, 0, zone);
+		DateTime endSecond = new DateTime(2012, 9, 22, 7, 0, zone);
 
-		ec.createOrUpdate(Event.Type.Performance, startFirst, endFirst);
-		ec.createOrUpdate(Event.Type.Performance, startSecond, endSecond);
+		ec.createOrUpdate(Event.Type.Performance, new Interval(startFirst,
+				endFirst));
+		ec.createOrUpdate(Event.Type.Performance, new Interval(startSecond,
+				endSecond));
 
 		List<Event> events = ec.getAll();
 
-		Event first = (events.get(0).getStart().equals(startFirst)) ? events
-				.get(0) : events.get(1);
-		Event second = (events.get(0).getStart().equals(startSecond)) ? events
-				.get(0) : events.get(1);
+		Event first = (events.get(0).getInterval(zone).getStart()
+				.equals(startFirst)) ? events.get(0) : events.get(1);
+		Event second = (events.get(0).getInterval(zone).getStart()
+				.equals(startSecond)) ? events.get(0) : events.get(1);
 
 		assertEquals(2, events.size());
 
 		assertEquals(Event.Type.Performance, first.getType());
-		assertEquals(startFirst, first.getStart());
-		assertEquals(endFirst, first.getEnd());
+		assertEquals(startFirst, first.getInterval(zone).getStart());
+		assertEquals(endFirst, first.getInterval(zone).getEnd());
 
 		assertEquals(Event.Type.Performance, second.getType());
-		assertEquals(startSecond, second.getStart());
-		assertEquals(endSecond, second.getEnd());
+		assertEquals(startSecond, second.getInterval(zone).getStart());
+		assertEquals(endSecond, second.getInterval(zone).getEnd());
 	}
 
 	@Test
 	public void testNonOverlappingDiffTypes() {
 		DataTrain train = getDataTrain();
 
-		EventManager ec = train.getEventManager();
+		EventManager ec = train.events();
+		DateTimeZone zone = train.appData().get().getTimeZone();
 
-		DateTime startFirst = makeDate("2012-09-21 0600");
-		DateTime endFirst = makeDate("2012-09-21 0700");
+		DateTime startFirst = new DateTime(2012, 9, 21, 6, 0, zone);
+		DateTime endFirst = new DateTime(2012, 9, 21, 7, 0, zone);
 
-		DateTime startSecond = makeDate("2012-09-22 0600");
-		DateTime endSecond = makeDate("2012-09-22 0700");
+		DateTime startSecond = new DateTime(2012, 9, 22, 6, 0, zone);
+		DateTime endSecond = new DateTime(2012, 9, 22, 7, 0, zone);
 
-		ec.createOrUpdate(Event.Type.Performance, startFirst, endFirst);
-		ec.createOrUpdate(Event.Type.Rehearsal, startSecond, endSecond);
+		ec.createOrUpdate(Event.Type.Performance, new Interval(startFirst,
+				endFirst));
+		ec.createOrUpdate(Event.Type.Rehearsal, new Interval(startSecond,
+				endSecond));
 
 		List<Event> events = ec.getAll();
 
-		Event first = (events.get(0).getStart().equals(startFirst)) ? events
-				.get(0) : events.get(1);
-		Event second = (events.get(0).getStart().equals(startSecond)) ? events
-				.get(0) : events.get(1);
+		Event first = (events.get(0).getInterval(zone).getStart()
+				.equals(startFirst)) ? events.get(0) : events.get(1);
+		Event second = (events.get(0).getInterval(zone).getStart()
+				.equals(startSecond)) ? events.get(0) : events.get(1);
 
 		assertEquals(2, events.size());
 
 		assertEquals(Event.Type.Performance, first.getType());
-		assertEquals(startFirst, first.getStart());
-		assertEquals(endFirst, first.getEnd());
+		assertEquals(startFirst, first.getInterval(zone).getStart());
+		assertEquals(endFirst, first.getInterval(zone).getEnd());
 
 		assertEquals(Event.Type.Rehearsal, second.getType());
-		assertEquals(startSecond, second.getStart());
-		assertEquals(endSecond, second.getEnd());
+		assertEquals(startSecond, second.getInterval(zone).getStart());
+		assertEquals(endSecond, second.getInterval(zone).getEnd());
 	}
 
 	@Test
 	public void testCreateEvent() throws ParseException {
 		// Arrange
 		DataTrain train = getDataTrain();
+		DateTimeZone zone = train.appData().get().getTimeZone();
 
-		DateTime eventStart = null;
-		DateTime eventEnd = null;
-
-		eventStart = new SimpleDateFormat("yyyy-MM-dd HHmm")
-				.parse("2012-06-16 0500");
-		eventEnd = new SimpleDateFormat("yyyy-MM-dd HHmm")
-				.parse("2012-06-16 0700");
+		DateTime start = new DateTime(2012, 6, 16, 5, 0, zone);
+		DateTime end = new DateTime(2012, 6, 16, 7, 0, zone);
 
 		// Act
-		train.getEventManager().createOrUpdate(Event.Type.Performance,
-				eventStart, eventEnd);
+		train.events().createOrUpdate(Event.Type.Performance,
+				new Interval(start, end));
 
 		// Assert
-		List<Event> events = train.getEventManager().getAll();
+		List<Event> events = train.events().getAll();
 
 		assertEquals(1, events.size());
 
 		Event e = events.get(0);
 
-		assertEquals(eventStart, e.getStart());
-		assertEquals(eventEnd, e.getEnd());
+		assertEquals(start, e.getInterval(zone).getStart());
+		assertEquals(end, e.getInterval(zone).getEnd());
 		assertEquals(Event.Type.Performance, e.getType());
 	}
 
@@ -222,30 +228,26 @@ public class EventManagerTest extends AbstractDatastoreTest {
 
 		// Arrange
 		DataTrain train = getDataTrain();
+		DateTimeZone zone = train.appData().get().getTimeZone();
 
-		DateTime eventStart = null;
-		DateTime eventEnd = null;
-
-		eventStart = new SimpleDateFormat("yyyy-MM-dd HHmm")
-				.parse("2012-06-16 0500");
-		eventEnd = new SimpleDateFormat("yyyy-MM-dd HHmm")
-				.parse("2012-06-16 0700");
+		DateTime start = new DateTime(2012, 6, 16, 5, 0, zone);
+		DateTime end = new DateTime(2012, 6, 16, 7, 0, zone);
 
 		// Act
-		train.getEventManager().createOrUpdate(Event.Type.Performance,
-				eventStart, eventEnd);
-		train.getEventManager().createOrUpdate(Event.Type.Performance,
-				eventStart, eventEnd);
+		train.events().createOrUpdate(Event.Type.Performance,
+				new Interval(start, end));
+		train.events().createOrUpdate(Event.Type.Performance,
+				new Interval(start, end));
 
 		// Assert
-		List<Event> events = train.getEventManager().getAll();
+		List<Event> events = train.events().getAll();
 
 		assertEquals(1, events.size());
 
 		Event e = events.get(0);
 
-		assertEquals(eventStart, e.getStart());
-		assertEquals(eventEnd, e.getEnd());
+		assertEquals(start, e.getInterval(zone).getStart());
+		assertEquals(end, e.getInterval(zone).getEnd());
 		assertEquals(Event.Type.Performance, e.getType());
 	}
 
@@ -253,9 +255,15 @@ public class EventManagerTest extends AbstractDatastoreTest {
 	public void testAutomaticLinking() {
 		DataTrain train = getDataTrain();
 
-		UserManager uc = train.getUsersManager();
-		EventManager ec = train.getEventManager();
-		AbsenceManager ac = train.getAbsenceManager();
+		UserManager uc = train.users();
+		EventManager ec = train.events();
+		AbsenceManager ac = train.absences();
+		DateTimeZone zone = train.appData().get().getTimeZone();
+
+		DateTime start = new DateTime(2012, 9, 18, 16, 30, zone);
+		DateTime end = new DateTime(2012, 9, 18, 17, 50, zone);
+		DateTime tardy1 = new DateTime(2012, 9, 18, 16, 40, zone);
+		DateTime tardy2 = new DateTime(2012, 9, 18, 16, 35, zone);
 
 		User s1 = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -263,38 +271,38 @@ public class EventManagerTest extends AbstractDatastoreTest {
 		// should be A initially
 		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
 
-		Calendar start = Calendar.getInstance();
-		start.set(2012, 9, 18, 16, 30);
-		Calendar end = Calendar.getInstance();
-		end.set(2012, 9, 18, 17, 50);
-
-		Calendar tardy = Calendar.getInstance();
-		tardy.set(2012, 9, 18, 16, 40);
-		Absence a1 = ac.createOrUpdateEarlyCheckout(s1, tardy.getTime());
+		ac.createOrUpdateEarlyCheckout(s1, tardy1);
 
 		uc.update(s1);
 
 		// there's a tardy, but it's not linked
 		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
-		Event e1 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
-				end.getTime());
+		ec.createOrUpdate(Event.Type.Rehearsal, new Interval(start, end));
 
 		// now that there's a matching event, it should link
 		assertEquals(User.Grade.Aminus, uc.get(s1.getId()).getGrade());
 
-		tardy.set(2012, 9, 18, 16, 35);
-		ac.createOrUpdateTardy(s1, tardy.getTime());
+		ac.createOrUpdateTardy(s1, tardy2);
 		uc.update(s1);
 		assertEquals(User.Grade.Bplus, uc.get(s1.getId()).getGrade());
 	}
 
+	@SuppressWarnings("deprecation")
 	@Test
 	public void testAutomaticAbsenceLinking() {
 		DataTrain train = getDataTrain();
 
-		UserManager uc = train.getUsersManager();
-		EventManager ec = train.getEventManager();
-		AbsenceManager ac = train.getAbsenceManager();
+		UserManager uc = train.users();
+		EventManager ec = train.events();
+		AbsenceManager ac = train.absences();
+		DateTimeZone zone = train.appData().get().getTimeZone();
+
+		DateTime start = new DateTime(2012, 9, 18, 16, 30, zone);
+		DateTime end = new DateTime(2012, 9, 18, 17, 50, zone);
+		DateTime start2 = start.plusDays(1);
+		DateTime end2 = end.plusDays(1);
+		DateTime start3 = start.plusDays(18);
+		DateTime end3 = end.plusDays(18);
 
 		User s1 = Users.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
@@ -302,67 +310,45 @@ public class EventManagerTest extends AbstractDatastoreTest {
 		// should be A initially
 		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
 
-		Calendar start = Calendar.getInstance();
-		start.set(2012, 9, 18, 16, 30);
-		Calendar end = Calendar.getInstance();
-		end.set(2012, 9, 18, 17, 50);
-
 		// we test the deprecated method because the mobile app uses it, and you
 		// can't create an absence otherwise without an event
-		ac.createOrUpdateAbsence(s1, start.getTime(), end.getTime());
+		ac.createOrUpdateAbsence(s1, new Interval(start, end));
 		uc.update(s1);
 
 		assertEquals(1, ac.get(s1).size());
 
 		// there's an absence, but it's not linked
 		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
-		ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(), end.getTime());
+		ec.createOrUpdate(Event.Type.Rehearsal, new Interval(start, end));
 		// now that there's a matching event, it should link
 		assertEquals(User.Grade.B, uc.get(s1.getId()).getGrade());
 
-		start.add(Calendar.DATE, 1);
-		end.add(Calendar.DATE, 1);
-		ac.createOrUpdateAbsence(s1, start.getTime(), end.getTime());
+		ac.createOrUpdateAbsence(s1, new Interval(start2, end2));
 
 		assertEquals(2, ac.get(s1).size());
 
 		// duplicate. But we can't exclude it automatically because it could
 		// always be a performance OR rehearsal....
-		ac.createOrUpdateAbsence(s1, start.getTime(), end.getTime());
+		ac.createOrUpdateAbsence(s1, new Interval(start2, end2));
 		assertEquals(3, ac.get(s1).size());
 
-		ec.createOrUpdate(Event.Type.Performance, start.getTime(),
-				end.getTime());
+		ec.createOrUpdate(Event.Type.Performance, new Interval(start2, end2));
 
 		// now the absences are excluded
 		assertEquals(2, ac.get(s1).size());
 		// TODO there's gotta be a better way to verify that they linked
 		// correctly
 		assertEquals(User.Grade.D, uc.get(s1.getId()).getGrade());
-		start.add(Calendar.DATE, 17);
-		end.add(Calendar.DATE, 17);
-		ac.createOrUpdateAbsence(s1, start.getTime(), end.getTime());
+
+		ac.createOrUpdateAbsence(s1, new Interval(start3, end3));
 		assertEquals(3, ac.get(s1).size());
 
-		Absence a = ac.createOrUpdateAbsence(
-				s1,
-				ec.createOrUpdate(Event.Type.Performance, start.getTime(),
-						end.getTime()));
+		ac.createOrUpdateAbsence(s1, ec.createOrUpdate(Event.Type.Performance,
+				new Interval(start3, end3)));
 		assertEquals(3, ac.get(s1).size());
 
 		// TODO there's gotta be a better way to verify that they linked
 		// correctly
 		assertEquals(User.Grade.F, uc.get(s1.getId()).getGrade());
 	}
-
-	private DateTime makeDate(String sDate) {
-		// Private method to make dates out of strings following the format I
-		// always use
-		try {
-			return new SimpleDateFormat("yyyy-MM-dd HHmm").parse(sDate);
-		} catch (ParseException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}*/
 }
