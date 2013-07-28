@@ -47,9 +47,10 @@
 			<dd>
 				<select name="Timezone">
 					<c:forEach items="${timezones}" var="zone">
-						<option value="${zone.ID}" ${timezone.ID} ${timezone.ID eq zone.ID ? 'selected' : ''}>${zone.displayName}</option>
+						<option value="${zone.ID}" ${timezone.ID eq zone.ID ? 'selected' : ''}>${zone.displayName}</option>
 					</c:forEach>
 				</select>
+				Currently: ${timezone.displayName}
 			</dd>			
 
 			<dt><label for="StatusMessage">Status Message</label></dt>
