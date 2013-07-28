@@ -105,7 +105,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		UserManager uc = train.users();
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
-		MobileDataManager mdc = train.getMobileDataManager();
+		MobileDataManager mdc = train.mobileData();
 
 		// Student 1 setup, the user to be deleted
 		User student1 = Users.createStudent(uc, "studenttt", "123456789",

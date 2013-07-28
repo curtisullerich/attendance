@@ -59,7 +59,7 @@ public class MobileDataUploadTest extends AbstractDatastoreTest {
 		Users.createStudent(train.users(), "zf", "123456782",
 				"first", "last", 1, "major", User.Section.Drumline_Bass);
 
-		train.getMobileDataManager().pushMobileData(SIMPLE_ABSENCE_TESTDATA,
+		train.mobileData().pushMobileData(SIMPLE_ABSENCE_TESTDATA,
 				ta);
 
 		simpleAbsenceInsertionVerification();
@@ -192,7 +192,7 @@ public class MobileDataUploadTest extends AbstractDatastoreTest {
 		User ta = Users.createTA(uc, "ta", "123456783", "test1", "tester", 1,
 				"major", User.Section.AltoSax);
 
-		train.getMobileDataManager().pushMobileData(SIMPLE_TARDY_TESTDATA,
+		train.mobileData().pushMobileData(SIMPLE_TARDY_TESTDATA,
 				ta);
 
 		// Verify insertion lengths

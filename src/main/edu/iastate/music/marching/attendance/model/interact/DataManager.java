@@ -83,7 +83,7 @@ public class DataManager extends AbstractManager {
 
 		dump.forms = dataTrain.forms().getAll();
 
-		dump.mobileData = dataTrain.getMobileDataManager().getUploads();
+		dump.mobileData = dataTrain.mobileData().getUploads();
 
 		dump.users = dataTrain.users().getAll();
 

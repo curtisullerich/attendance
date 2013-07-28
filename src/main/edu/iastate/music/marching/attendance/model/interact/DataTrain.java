@@ -205,7 +205,7 @@ public class DataTrain {
 		return this.cache;
 	}
 
-	public MobileDataManager getMobileDataManager() {
+	public MobileDataManager mobileData() {
 		return new MobileDataManager(this);
 	}
 

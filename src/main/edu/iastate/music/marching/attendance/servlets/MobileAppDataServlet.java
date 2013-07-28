@@ -53,7 +53,7 @@ public class MobileAppDataServlet extends AbstractBaseServlet {
 		} else {
 			DataTrain train = DataTrain.depart();
 
-			MobileDataManager mdc = train.getMobileDataManager();
+			MobileDataManager mdc = train.mobileData();
 
 			result.data = mdc.getClassList();
 			result.error = ResultErrorType.success;
@@ -76,7 +76,7 @@ public class MobileAppDataServlet extends AbstractBaseServlet {
 
 			DataTrain train = DataTrain.depart();
 
-			MobileDataManager mdc = train.getMobileDataManager();
+			MobileDataManager mdc = train.mobileData();
 
 			// data here is the posted content delimited by "&newline&". Those
 			// values in turn are

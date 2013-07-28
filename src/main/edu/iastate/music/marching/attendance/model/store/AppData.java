@@ -1,9 +1,7 @@
 package edu.iastate.music.marching.attendance.model.store;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.TimeZone;
 
 import org.joda.time.DateTime;
