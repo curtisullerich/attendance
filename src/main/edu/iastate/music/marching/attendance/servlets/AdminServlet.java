@@ -514,8 +514,6 @@ public class AdminServlet extends AbstractBaseServlet {
 	private void showDataPage(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		DataTrain train = DataTrain.depart();
-
 		PageBuilder page = new PageBuilder(Page.data, SERVLET_PATH);
 
 		page.setPageTitle("Data Export/Import");

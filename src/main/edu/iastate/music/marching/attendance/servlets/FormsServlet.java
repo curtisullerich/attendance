@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
@@ -354,8 +353,6 @@ public class FormsServlet extends AbstractBaseServlet {
 						+ "If you're still having issues, submit a bug report using the form at the bottom of the page.");
 			}
 		}
-
-		DateTimeZone timezone = train.appData().get().getTimeZone();
 
 		DateTime cutoff = train.appData().get()
 				.getPerformanceAbsenceFormCutoff();

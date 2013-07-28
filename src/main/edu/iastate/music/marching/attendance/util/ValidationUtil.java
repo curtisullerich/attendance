@@ -22,8 +22,6 @@ public class ValidationUtil {
 	private static final Pattern PATTERN_GTEMPEMAIL = Pattern
 			.compile("^([a-zA-Z0-9._%+-]+)%40([a-zA-Z0-9.-]+)@gtempaccount.com$");
 
-	private static final int MAX_STRING_LENGTH = 500;
-
 	private static final int MAX_TEXT_LENGTH = 50000;
 
 	public static boolean isPost(HttpServletRequest req) {
