@@ -7,10 +7,10 @@ import org.junit.Test;
 import com.google.appengine.api.datastore.Email;
 
 import edu.iastate.music.marching.attendance.model.interact.DataTrain;
-import edu.iastate.music.marching.attendance.test.AbstractTest;
+import edu.iastate.music.marching.attendance.test.AbstractDatastoreTest;
 import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
-public class AuthManagerTest extends AbstractTest{
+public class AuthManagerTest extends AbstractDatastoreTest{
 
 	@Test
 	public void testValidGoogleUsers() {

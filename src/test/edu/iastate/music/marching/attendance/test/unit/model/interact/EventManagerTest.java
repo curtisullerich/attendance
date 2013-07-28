@@ -18,10 +18,10 @@ import edu.iastate.music.marching.attendance.model.interact.UserManager;
 import edu.iastate.music.marching.attendance.model.store.Absence;
 import edu.iastate.music.marching.attendance.model.store.Event;
 import edu.iastate.music.marching.attendance.model.store.User;
-import edu.iastate.music.marching.attendance.test.AbstractTest;
+import edu.iastate.music.marching.attendance.test.AbstractDatastoreTest;
 import edu.iastate.music.marching.attendance.test.util.Users;
 
-public class EventManagerTest extends AbstractTest {
+public class EventManagerTest extends AbstractDatastoreTest {
 	
 /*
 	@Test

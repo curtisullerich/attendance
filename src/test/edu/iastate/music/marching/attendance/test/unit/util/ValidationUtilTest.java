@@ -3,15 +3,11 @@ package edu.iastate.music.marching.attendance.test.unit.util;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.TimeZone;
-
 import org.junit.Test;
 
 import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
 public class ValidationUtilTest {
-
-	private final static TimeZone TIMEZONE = TimeZone.getTimeZone("UTC");
 
 	@Test
 	public void testIsValidName() {

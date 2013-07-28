@@ -11,7 +11,7 @@ import com.google.appengine.tools.development.testing.LocalUserServiceTestConfig
 import edu.iastate.music.marching.attendance.model.interact.DataTrain;
 
 @Ignore
-public class AbstractTest {
+public class AbstractDatastoreTest {
 	
 	private DataTrain datatrain = null;
 
@@ -34,7 +34,7 @@ public class AbstractTest {
 	protected final DataTrain getDataTrain() {
 		if(datatrain == null)
 		{
-			throw new IllegalAccessError("Access data train outside of test case itself is not allowed.");
+			throw new IllegalAccessError("Access data train outside of a test case is not allowed.");
 		} else {
 			return datatrain;
 		}

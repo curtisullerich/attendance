@@ -19,10 +19,10 @@ import edu.iastate.music.marching.attendance.model.store.Absence;
 import edu.iastate.music.marching.attendance.model.store.Event;
 import edu.iastate.music.marching.attendance.model.store.Form;
 import edu.iastate.music.marching.attendance.model.store.User;
-import edu.iastate.music.marching.attendance.test.AbstractTest;
+import edu.iastate.music.marching.attendance.test.AbstractDatastoreTest;
 import edu.iastate.music.marching.attendance.test.util.Users;
 
-public class FormBTest extends AbstractTest {
+public class FormBTest extends AbstractDatastoreTest {
 /*
 	// absence: class times + to/from buffer must eclipse event
 	// tardy: checkin time must be before class end time + from buffer

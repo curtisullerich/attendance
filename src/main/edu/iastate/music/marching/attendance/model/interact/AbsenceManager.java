@@ -215,6 +215,8 @@ public class AbsenceManager extends AbstractManager {
 
 					}
 					// withDayOfWeek(form.getDayOfWeek().DayOfWeek)
+				default:
+					throw new UnsupportedOperationException();
 				}
 
 				// TODO TODO TODO
@@ -327,29 +329,23 @@ public class AbsenceManager extends AbstractManager {
 	 * @return
 	 */
 	@Deprecated
-	public Absence createOrUpdateAbsence(User student, DateTime start,
-			DateTime end) {
+	public Absence createOrUpdateAbsence(User student, Interval interval) {
 
 		if (student == null) {
 			throw new IllegalArgumentException(
 					"Tried to create absence for null user");
 		}
-		if (!end.isAfter(start)) {
-			// this should handle the case of equality
-			throw new IllegalArgumentException(
-					"End DateTime was not after start date.");
-		}
 
 		Absence absence = ModelFactory
 				.newAbsence(Absence.Type.Absence, student);
-		absence.setInterval(new Interval(start, end));
+		absence.setInterval(interval);
 		absence.setStatus(Absence.Status.Pending);
 
 		// Associate with event
 		if (!tryLink(absence)) {
 			LOG.log(Level.WARNING,
-					"Orphaned absence being created for timespan: " + start
-							+ " to " + end);
+					"Orphaned absence being created for timespan: "
+							+ interval.getStart() + " to " + interval.getEnd());
 		}
 
 		return storeAbsence(absence, student);

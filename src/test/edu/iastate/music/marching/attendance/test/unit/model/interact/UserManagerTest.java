@@ -19,11 +19,11 @@ import edu.iastate.music.marching.attendance.model.store.Absence;
 import edu.iastate.music.marching.attendance.model.store.Event;
 import edu.iastate.music.marching.attendance.model.store.Form;
 import edu.iastate.music.marching.attendance.model.store.User;
-import edu.iastate.music.marching.attendance.test.AbstractTest;
+import edu.iastate.music.marching.attendance.test.AbstractDatastoreTest;
 import edu.iastate.music.marching.attendance.test.TestConfig;
 import edu.iastate.music.marching.attendance.test.util.Users;
 
-public class UserManagerTest extends AbstractTest {
+public class UserManagerTest extends AbstractDatastoreTest {
 /*
 	public static final String SINGLE_ABSENCE_STUDENT1_TESTDATA = "tardyStudent&split&el&split&Starster&split&studenttt&split&2012-05-03&split&0109&split&|&split&null&newline&";
 

@@ -273,7 +273,7 @@ public class MobileDataManager {
 
 				User student = uc.get(netid);
 
-				a = ac.createOrUpdateAbsence(student, start, end);
+				a = ac.createOrUpdateAbsence(student, new Interval(start, end));
 
 				updatedStudents.add(student);
 

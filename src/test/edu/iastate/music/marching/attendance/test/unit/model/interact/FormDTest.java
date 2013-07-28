@@ -15,12 +15,12 @@ import edu.iastate.music.marching.attendance.model.interact.UserManager;
 import edu.iastate.music.marching.attendance.model.store.AppData;
 import edu.iastate.music.marching.attendance.model.store.Form;
 import edu.iastate.music.marching.attendance.model.store.User;
-import edu.iastate.music.marching.attendance.test.AbstractTest;
+import edu.iastate.music.marching.attendance.test.AbstractDatastoreTest;
 import edu.iastate.music.marching.attendance.test.util.Users;
 import edu.iastate.music.marching.attendance.util.ValidationExceptions;
 
 @SuppressWarnings("deprecation")
-public class FormDTest extends AbstractTest {
+public class FormDTest extends AbstractDatastoreTest {
 /*
 	// note that form D does not autoapprove, because we can't know which
 	// absence SHOULD be approved. We instead increment the number of available

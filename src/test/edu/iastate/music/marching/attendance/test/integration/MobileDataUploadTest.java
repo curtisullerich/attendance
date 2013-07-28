@@ -28,13 +28,13 @@ import edu.iastate.music.marching.attendance.model.store.Absence;
 import edu.iastate.music.marching.attendance.model.store.Event;
 import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.servlets.MobileAppDataServlet;
-import edu.iastate.music.marching.attendance.test.AbstractTest;
+import edu.iastate.music.marching.attendance.test.AbstractDatastoreTest;
 import edu.iastate.music.marching.attendance.test.TestConfig;
-import edu.iastate.music.marching.attendance.test.mock.MockServletInputStream;
-import edu.iastate.music.marching.attendance.test.mock.ServletMock;
+import edu.iastate.music.marching.attendance.test.util.MockServletInputStream;
+import edu.iastate.music.marching.attendance.test.util.ServletMocks;
 import edu.iastate.music.marching.attendance.test.util.Users;
 
-public class MobileDataUploadTest extends AbstractTest {
+public class MobileDataUploadTest extends AbstractDatastoreTest {
 
 	private static String SIMPLE_ABSENCE_TESTDATA = "absentStudentRehearsal&split&el&split&Starster&split&s&split&2012-05-03&split&1630&split&1750&split&null&newline&"
 			+ "storedRehearsal&split&rehearsal&split&|&split&|&split&2012-05-03&split&1630&split&1750&split&|&newline&"
@@ -47,10 +47,10 @@ public class MobileDataUploadTest extends AbstractTest {
 			+ "tardyStudent&split&el&split&Starster&split&s&split&2012-05-03&split&0108&split&|&split&null&newline&"
 			+ "tardyStudent&split&P1&split&Z&split&zf&split&2012-05-03&split&0108&split&|&split&4&newline&";
 
-	/*@Test
-	public void simpleAbsenceInsertionThroughController() {
+	@Test
+	public void testSimpleAbsenceInsertionThroughController() {
 
-		DataTrain train = DataTrain.getAndStartTrain();
+		DataTrain train = getDataTrain();
 
 		User ta = Users.createTA(train.getUsersManager(), "ta", "123456780",
 				"first", "last", 2, "major", User.Section.Staff);
@@ -63,10 +63,10 @@ public class MobileDataUploadTest extends AbstractTest {
 				ta);
 
 		simpleAbsenceInsertionVerification();
-	}*/
+	}
 
-	/*@Test
-	public void simpleAbsenceInsertionThroughServlet()
+	@Test
+	public void testSimpleAbsenceInsertionThroughServlet()
 			throws InstantiationException, IllegalAccessException,
 			ServletException, IOException {
 
@@ -87,13 +87,13 @@ public class MobileDataUploadTest extends AbstractTest {
 		ServletOutputStream os = mock(ServletOutputStream.class);
 		when(resp.getOutputStream()).thenReturn(os);
 
-		ServletMock.doPost(MobileAppDataServlet.class, req, resp);
+		ServletMocks.doPost(MobileAppDataServlet.class, req, resp);
 
 		verify(os)
 				.print("{\"error\":\"success\",\"message\":\"Inserted 1/1 events.\\nInserted 2/2 absences/tardies/early checkouts.\\n\"}");
 
 		simpleAbsenceInsertionVerification();
-	}*/
+	}
 
 	@Test
 	public void simpleAbsenceInsertionThroughServlet_NullStudent()
@@ -110,14 +110,12 @@ public class MobileDataUploadTest extends AbstractTest {
 		ServletOutputStream os = mock(ServletOutputStream.class);
 		when(resp.getOutputStream()).thenReturn(os);
 
-		ServletMock.doPost(MobileAppDataServlet.class, req, resp);
+		ServletMocks.doPost(MobileAppDataServlet.class, req, resp);
 
 		verify(os)
 				.print("{\"error\":\"exception\",\"message\":\"Tried to create absence for null user\"}");
 
-		// ObjectDatastore datastore = getObjectDataStore();
-
-		// Verify insertion lengths
+		// TODO: Verify insertion lengths
 		// When transactional support is re-added, uncomment this
 		// assertEquals(0,
 		// datastore.find().type(Event.class).returnCount().now()
@@ -126,23 +124,23 @@ public class MobileDataUploadTest extends AbstractTest {
 		// .now().intValue());
 	}
 
-/*	private void simpleAbsenceInsertionVerification() {
+	private void simpleAbsenceInsertionVerification() {
 		Event event;
 		DataTrain train = getDataTrain();
-		DateTimeZone timezone = train.getAppDataManager().get()
+		DateTimeZone timezone = train.appData().get()
 				.getTimeZone();
 
 		// Verify insertion lengths
-		assertEquals(1, train.getEventManager().getCount().intValue());
-		assertEquals(2, train.getAbsenceManager().getCount().intValue());
+		assertEquals(1, train.events().getCount().intValue());
+		assertEquals(2, train.absences().getCount().intValue());
 
 		// Verify event
-		List<Event> events = train.getEventManager().getAll();
+		List<Event> events = train.events().getAll();
 		assertEquals(1, events.size());
 
 		event = events.get(0);
 
-		Calendar cal = Calendar.getInstance(timezone);
+		Calendar cal = Calendar.getInstance(timezone.toTimeZone());
 		cal.setTimeInMillis(0);
 
 		cal.set(2012, 04, 03, 16, 30, 0);
@@ -154,7 +152,7 @@ public class MobileDataUploadTest extends AbstractTest {
 		assertEquals(Event.Type.Rehearsal, event.getType());
 
 		// Verify absences
-		List<Absence> absences = train.getAbsenceManager().getAll();
+		List<Absence> absences = train.absences().getAll();
 		assertEquals(2, absences.size());
 
 		boolean foundS = false;
@@ -177,7 +175,7 @@ public class MobileDataUploadTest extends AbstractTest {
 			} else
 				fail("Found an absence we didn't insert");
 		}
-	}*/
+	}
 
 	@Test
 	public void simpleTardyInsertionThroughController() {
