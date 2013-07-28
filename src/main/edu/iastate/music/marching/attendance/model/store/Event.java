@@ -3,6 +3,7 @@ package edu.iastate.music.marching.attendance.model.store;
 import java.util.Date;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 
 import com.google.code.twig.annotation.Entity;
@@ -79,8 +80,8 @@ public class Event {
 		return this.id;
 	}
 
-	public Interval getInterval() {
-		return new Interval(new DateTime(start), new DateTime(end));
+	public Interval getInterval(DateTimeZone zone) {
+		return new Interval(new DateTime(start, zone), new DateTime(end, zone));
 	}
 
 	@Deprecated

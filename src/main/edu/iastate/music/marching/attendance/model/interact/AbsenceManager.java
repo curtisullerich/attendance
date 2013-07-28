@@ -110,7 +110,7 @@ public class AbsenceManager extends AbstractManager {
 				return absence;
 			} else {
 				if (form.getInterval().contains(
-						absence.getEvent().getInterval())) {
+						absence.getEvent().getInterval(zone))) {
 					absence.setStatus(Absence.Status.Approved);
 				}
 			}
@@ -197,9 +197,9 @@ public class AbsenceManager extends AbstractManager {
 				switch (absence.getType()) {
 				case Absence:
 
-					DateTime aStartz = absence.getInterval().getStart()
+					DateTime aStartz = absence.getInterval(zone).getStart()
 							.withZone(zone);
-					DateTime aEndz = absence.getInterval().getEnd()
+					DateTime aEndz = absence.getInterval(zone).getEnd()
 							.withZone(zone);
 
 					int formDayOfWeek = form.getDayOfWeek().DayOfWeek;
@@ -210,7 +210,7 @@ public class AbsenceManager extends AbstractManager {
 
 					if (formDayOfWeek == aStartz.getDayOfWeek()
 							&& form.getInterval().contains(
-									absence.getInterval())
+									absence.getInterval(zone))
 							&& form.getAbsenceType() == Absence.Type.Absence) {
 
 					}
@@ -363,6 +363,8 @@ public class AbsenceManager extends AbstractManager {
 			throw new IllegalArgumentException(
 					"Tried to create absence for null user");
 		}
+		
+		DateTimeZone zone = this.train.appData().get().getTimeZone();
 
 		Absence absence = ModelFactory
 				.newAbsence(Absence.Type.Absence, student);
@@ -370,7 +372,7 @@ public class AbsenceManager extends AbstractManager {
 
 		if (e != null) {
 			absence.setEvent(e);
-			absence.setInterval(e.getInterval());
+			absence.setInterval(e.getInterval(zone));
 			// associated with this event for this student
 		} else {
 			LOG.log(Level.SEVERE,
@@ -567,6 +569,8 @@ public class AbsenceManager extends AbstractManager {
 			// not a conflict
 			return true;
 		}
+		
+		DateTimeZone zone = train.appData().get().getTimeZone();
 
 		// Basic tenants:
 		// - Anything beats an absence
@@ -594,7 +598,7 @@ public class AbsenceManager extends AbstractManager {
 				remove(contester);
 				return true;
 			case Tardy:
-				if (contester.getCheckin().equals(current.getCheckin())) {
+				if (contester.getCheckin(zone).equals(current.getCheckin(zone))) {
 					if (contester.getStatus() == Absence.Status.Approved) {
 						return false;
 					} else {
@@ -616,7 +620,7 @@ public class AbsenceManager extends AbstractManager {
 			case Tardy:
 				return true;
 			case EarlyCheckOut:
-				if (contester.getCheckout().equals(current.getCheckout())) {
+				if (contester.getCheckout(zone).equals(current.getCheckout(zone))) {
 					if (contester.getStatus() == Absence.Status.Approved) {
 						return false;
 					} else {
@@ -660,11 +664,12 @@ public class AbsenceManager extends AbstractManager {
 	}
 
 	private boolean tryLink(Absence absence) {
+		DateTimeZone zone = train.appData().get().getTimeZone();
 		List<Event> events;
 
 		switch (absence.getType()) {
 		case Absence:
-			Interval interval = absence.getInterval();
+			Interval interval = absence.getInterval(zone);
 
 			// Associate with event
 			// else the absence is orphaned
@@ -677,7 +682,7 @@ public class AbsenceManager extends AbstractManager {
 				return false;
 			}
 		case EarlyCheckOut:
-			DateTime checkout = absence.getCheckout();
+			DateTime checkout = absence.getCheckout(zone);
 
 			// Associate with event
 			events = this.train.events().getContains(checkout);
@@ -690,7 +695,7 @@ public class AbsenceManager extends AbstractManager {
 				return false;
 			}
 		case Tardy:
-			DateTime checkin = absence.getCheckin();
+			DateTime checkin = absence.getCheckin(zone);
 
 			// Associate with event
 			events = train.events().getContains(checkin);

@@ -2,7 +2,9 @@ package edu.iastate.music.marching.attendance.model.store;
 
 import java.util.Date;
 
+import org.joda.time.Chronology;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.joda.time.ReadableInterval;
 
@@ -122,30 +124,42 @@ public class Absence {
 
 		switch (this.getType()) {
 		case Absence:
-			return interval.contains(this.getInterval());
+			return interval.contains(this.getInterval(interval.getChronology()));
 		case EarlyCheckOut:
-			return interval.contains(this.getCheckout());
+			return interval.contains(this.getCheckout(interval.getChronology()));
 		case Tardy:
-			return interval.contains(this.getCheckin());
+			return interval.contains(this.getCheckin(interval.getChronology()));
 		default:
 			throw new UnsupportedOperationException();
 		}
 	}
 
-	public DateTime getCheckin() {
+	public DateTime getCheckin(DateTimeZone zone) {
 		if (getType().isTardy())
-			return new DateTime(this.start);
+			return new DateTime(this.start, zone);
 		else
 			throw new IllegalStateException("Intervals only valid for absences");
-
+	}
+	
+	public DateTime getCheckin(Chronology chron) {
+		if (getType().isTardy())
+			return new DateTime(this.start, chron);
+		else
+			throw new IllegalStateException("Intervals only valid for absences");
 	}
 
-	public DateTime getCheckout() {
+	public DateTime getCheckout(DateTimeZone zone) {
 		if (getType().isEarlyCheckOut())
-			return new DateTime(this.start);
+			return new DateTime(this.start, zone);
 		else
 			throw new IllegalStateException("Intervals only valid for absences");
-
+	}
+	
+	public DateTime getCheckout(Chronology chron) {
+		if (getType().isEarlyCheckOut())
+			return new DateTime(this.start, chron);
+		else
+			throw new IllegalStateException("Intervals only valid for absences");
 	}
 
 	@Deprecated
@@ -169,10 +183,22 @@ public class Absence {
 	/**
 	 * Time-span of an absence
 	 */
-	public Interval getInterval() {
+	public Interval getInterval(DateTimeZone zone) {
 		if (getType().isAbsence()) {
-			return new Interval(new DateTime(this.start),
-					new DateTime(this.end));
+			return new Interval(new DateTime(this.start, zone), new DateTime(
+					this.end, zone));
+
+		} else
+			throw new IllegalStateException("Intervals only valid for absences");
+	}
+	
+	/**
+	 * Time-span of an absence
+	 */
+	public Interval getInterval(Chronology chron) {
+		if (getType().isAbsence()) {
+			return new Interval(new DateTime(this.start, chron), new DateTime(
+					this.end, chron));
 
 		} else
 			throw new IllegalStateException("Intervals only valid for absences");

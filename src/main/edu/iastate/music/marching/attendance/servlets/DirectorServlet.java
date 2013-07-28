@@ -340,12 +340,12 @@ public class DirectorServlet extends AbstractBaseServlet {
 						switch (toUpdate.getType()) {
 						case EarlyCheckOut:
 							toUpdate.setCheckout(d.toDateTime(toUpdate
-									.getCheckout().withZone(zone)
+									.getCheckout(zone)
 									.toDateMidnight()));
 							break;
 						case Tardy:
 							toUpdate.setCheckin(d.toDateTime(toUpdate
-									.getCheckin().withZone(zone)
+									.getCheckin(zone)
 									.toDateMidnight()));
 							break;
 						default:
@@ -625,6 +625,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		DataTrain train = DataTrain.depart();
 		AbsenceManager ac = train.absences();
 		EventManager ec = train.events();
+		DateTimeZone zone = train.appData().get().getTimeZone();
 		int count = -1;
 
 		try {
@@ -642,7 +643,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 					// retrieve the event and link it up
 					Event e = ec.get(Long.parseLong(eventID));
 					Absence a = ac.get(Long.parseLong(absenceID));
-					if (Util.overlapDays(a.getInterval(), e.getInterval())) {
+					if (Util.overlapDays(a.getInterval(zone), e.getInterval(zone))) {
 						errors.add("Absence was not the same day as the event.");
 					} else {
 						a.setEvent(e);
@@ -949,7 +950,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 			List<String> incomingErrors, String success_message)
 			throws ServletException, IOException {
 		DataTrain train = DataTrain.depart();
-
+		DateTimeZone zone = train.appData().get().getTimeZone();
 		AbsenceManager ac = train.absences();
 
 		boolean validInput = true;
@@ -989,7 +990,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 					if (e != null) {
 						absence.setEvent(e);
-						absence.setInterval(e.getInterval());
+						absence.setInterval(e.getInterval(zone));
 						// associated with this event for this student
 					} else {
 						// the absence is orphaned if there's no event for it
@@ -1030,10 +1031,10 @@ public class DirectorServlet extends AbstractBaseServlet {
 			setDateTime = null;
 			break;
 		case EarlyCheckOut:
-			setDateTime = checkedAbsence.getCheckout();
+			setDateTime = checkedAbsence.getCheckout(zone);
 			break;
 		case Tardy:
-			setDateTime = checkedAbsence.getCheckin();
+			setDateTime = checkedAbsence.getCheckin(zone);
 			break;
 		}
 

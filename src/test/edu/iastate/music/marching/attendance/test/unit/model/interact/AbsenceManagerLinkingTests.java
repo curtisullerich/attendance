@@ -203,9 +203,9 @@ public class AbsenceManagerLinkingTests extends AbstractDatastoreTest {
 		Absence firstAbsence = null;
 		Absence secondAbsence = null;
 		for (Absence a : allAbs) {
-			if (firstInterval.equals(a.getInterval())) {
+			if (firstInterval.equals(a.getInterval(zone))) {
 				firstAbsence = a;
-			} else if (secondInterval.equals(a.getInterval())) {
+			} else if (secondInterval.equals(a.getInterval(zone))) {
 				secondAbsence = a;
 			}
 		}
@@ -255,9 +255,9 @@ public class AbsenceManagerLinkingTests extends AbstractDatastoreTest {
 		Absence firstAbsence = null;
 		Absence secondAbsence = null;
 		for (Absence a : allAbs) {
-			if (absenceTime1.equals(a.getCheckin())) {
+			if (absenceTime1.equals(a.getCheckin(zone))) {
 				firstAbsence = a;
-			} else if (absenceTime2.equals(a.getCheckin())) {
+			} else if (absenceTime2.equals(a.getCheckin(zone))) {
 				secondAbsence = a;
 			}
 		}
@@ -307,9 +307,9 @@ public class AbsenceManagerLinkingTests extends AbstractDatastoreTest {
 		Absence firstAbsence = null;
 		Absence secondAbsence = null;
 		for (Absence a : allAbs) {
-			if (absenceTime1.equals(a.getCheckout())) {
+			if (absenceTime1.equals(a.getCheckout(zone))) {
 				firstAbsence = a;
-			} else if (absenceTime2.equals(a.getCheckout())) {
+			} else if (absenceTime2.equals(a.getCheckout(zone))) {
 				secondAbsence = a;
 			}
 		}
@@ -462,7 +462,7 @@ public class AbsenceManagerLinkingTests extends AbstractDatastoreTest {
 
 			abs = ac.get(student);
 			assertEquals(1, abs.size());
-			assertEquals(absenceTime, abs.get(0).getCheckout());
+			assertEquals(absenceTime, abs.get(0).getCheckout(zone));
 
 			break;
 		case Tardy:
@@ -470,7 +470,7 @@ public class AbsenceManagerLinkingTests extends AbstractDatastoreTest {
 
 			abs = ac.get(student);
 			assertEquals(1, abs.size());
-			assertEquals(absenceTime, abs.get(0).getCheckin());
+			assertEquals(absenceTime, abs.get(0).getCheckin(zone));
 
 			break;
 		case Absence:
@@ -483,7 +483,7 @@ public class AbsenceManagerLinkingTests extends AbstractDatastoreTest {
 			assertEquals(1, abs.size());
 			// The events overlap so we say they can deal with it 8|
 			assertTrue(abs.get(0).getEvent() == null);
-			assertEquals(abscenseInterval, abs.get(0).getInterval());
+			assertEquals(abscenseInterval, abs.get(0).getInterval(zone));
 
 			break;
 		default:
@@ -496,11 +496,11 @@ public class AbsenceManagerLinkingTests extends AbstractDatastoreTest {
 		switch (expectedLink) {
 		case First:
 			assertNotNull(event);
-			assertEquals(firstInterval, event.getInterval());
+			assertEquals(firstInterval, event.getInterval(zone));
 			break;
 		case Second:
 			assertNotNull(event);
-			assertEquals(secondInterval, event.getInterval());
+			assertEquals(secondInterval, event.getInterval(zone));
 			break;
 		case Neither:
 			assertNull(event);

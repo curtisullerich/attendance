@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 
 import com.google.appengine.api.datastore.Query.FilterOperator;
@@ -51,6 +52,8 @@ public class EventManager extends AbstractManager {
 	// }
 
 	public Event createOrUpdate(Type type, Interval interval) {
+		DateTimeZone zone = this.train.appData().get().getTimeZone();
+		
 		Event event = null;
 
 		List<Event> similarEvents = getExactlyAt(interval);
@@ -100,7 +103,7 @@ public class EventManager extends AbstractManager {
 				// absences.... need to match start and end times.
 				switch (a.getType()) {
 				case Absence:
-					if (a.getInterval().equals(e.getInterval())) {
+					if (a.getInterval(zone).equals(e.getInterval(zone))) {
 						// match!
 						if (foundOne) {
 							// we can't link it, because there are multiple
@@ -116,7 +119,7 @@ public class EventManager extends AbstractManager {
 					// break omitted intentionally so we fall through to the EOC
 					// logic!
 				case EarlyCheckOut:
-					if (e.getInterval().contains(a.getCheckout())) {
+					if (e.getInterval(zone).contains(a.getCheckout(zone))) {
 						// must be within the event
 						if (foundOne) {
 							one = null;
@@ -151,9 +154,9 @@ public class EventManager extends AbstractManager {
 	}
 
 	public void delete(Event event, boolean deleteLinkedAbsences) {
+		DateTimeZone zone = this.train.appData().get().getTimeZone();
 		ObjectDatastore od = this.train.getDataStore();
-
-		AbsenceManager ac = train.absences();
+		AbsenceManager ac = this.train.absences();
 
 		List<Absence> todie = ac.getAll(event);
 		if (deleteLinkedAbsences) {
@@ -167,7 +170,7 @@ public class EventManager extends AbstractManager {
 			}
 		}
 
-		Interval eventInterval = event.getInterval();
+		Interval eventInterval = event.getInterval(zone);
 
 		od.delete(event);
 

@@ -127,7 +127,7 @@ public class MobileDataUploadTest extends AbstractDatastoreTest {
 	private void simpleAbsenceInsertionVerification() {
 		Event event;
 		DataTrain train = getDataTrain();
-		DateTimeZone timezone = train.appData().get()
+		DateTimeZone zone = train.appData().get()
 				.getTimeZone();
 
 		// Verify insertion lengths
@@ -140,14 +140,14 @@ public class MobileDataUploadTest extends AbstractDatastoreTest {
 
 		event = events.get(0);
 
-		Calendar cal = Calendar.getInstance(timezone.toTimeZone());
+		Calendar cal = Calendar.getInstance(zone.toTimeZone());
 		cal.setTimeInMillis(0);
 
 		cal.set(2012, 04, 03, 16, 30, 0);
-		assertEquals(cal.getTime(), event.getInterval().getStart().toDate());
+		assertEquals(cal.getTime(), event.getInterval(zone).getStart().toDate());
 
 		cal.set(2012, 04, 03, 17, 50, 0);
-		assertEquals(0, cal.getTime().compareTo(event.getInterval().getEnd().toDate()));
+		assertEquals(0, cal.getTime().compareTo(event.getInterval(zone).getEnd().toDate()));
 
 		assertEquals(Event.Type.Rehearsal, event.getType());
 
