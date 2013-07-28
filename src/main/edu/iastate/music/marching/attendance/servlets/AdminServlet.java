@@ -52,7 +52,7 @@ public class AdminServlet extends AbstractBaseServlet {
 			String data = req.getParameter("Data").replaceAll("\\s+", "");
 
 			String[] lines = data.split(";");
-			UserManager uc = train.getUsersManager();
+			UserManager uc = train.users();
 
 			int i = 0;
 
@@ -152,7 +152,7 @@ public class AdminServlet extends AbstractBaseServlet {
 			page.passOffToJsp(req, resp);
 		} else if (req.getParameter("RefreshUsers") != null) {
 			String succex = null;
-			UserManager uc = train.getUsersManager();
+			UserManager uc = train.users();
 			try {
 				for (User u : uc.getAll()) {
 					uc.update(u);
@@ -219,7 +219,7 @@ public class AdminServlet extends AbstractBaseServlet {
 
 		if (errors.size() == 0) {
 			try {
-				new_user = train.getUsersManager().createDirector(
+				new_user = train.users().createDirector(
 						primaryEmail.getEmail(), secondEmail.getEmail(),
 						firstName, lastName);
 
@@ -406,7 +406,7 @@ public class AdminServlet extends AbstractBaseServlet {
 
 		if (errors.size() == 0) {
 			try {
-				new_user = train.getUsersManager().createStudent(primaryEmail,
+				new_user = train.users().createStudent(primaryEmail,
 						univID, firstName, lastName, year, major, section,
 						secondEmail);
 
@@ -465,7 +465,7 @@ public class AdminServlet extends AbstractBaseServlet {
 
 		User.Type type = User.Type.valueOf(strType);
 
-		UserManager uc = train.getUsersManager();
+		UserManager uc = train.users();
 
 		User localUser = uc.get(netID);
 
@@ -568,7 +568,7 @@ public class AdminServlet extends AbstractBaseServlet {
 
 		if (parts.length >= 3) {
 			String netid = parts[2];
-			u = train.getUsersManager().get(netid);
+			u = train.users().get(netid);
 		}
 
 		if (u == null)
@@ -593,7 +593,7 @@ public class AdminServlet extends AbstractBaseServlet {
 
 		PageBuilder page = new PageBuilder(Page.users, SERVLET_PATH);
 
-		page.setAttribute("users", train.getUsersManager().getAll());
+		page.setAttribute("users", train.users().getAll());
 
 		page.setAttribute("error_messages", errors);
 

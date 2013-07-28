@@ -1179,7 +1179,7 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		DataTrain train = getDataTrain();
 		DateTimeZone zone = train.appData().get().getTimeZone();
 
-		UserManager uc = train.getUsersManager();
+		UserManager uc = train.users();
 		EventManager ec = train.events();
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();

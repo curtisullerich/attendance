@@ -224,7 +224,7 @@ public class DataTrain {
 				.typeToKind(type), id).getKey();
 	}
 
-	public UserManager getUsersManager() {
+	public UserManager users() {
 		return new UserManager(this);
 	}
 

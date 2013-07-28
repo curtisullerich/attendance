@@ -138,7 +138,7 @@ public class StudentServlet extends AbstractBaseServlet {
 			errors.add("Unable to save year.");
 		}
 
-		UserManager uc = train.getUsersManager();
+		UserManager uc = train.users();
 
 		localUser.setMajor(major);
 		localUser.setSection(section);

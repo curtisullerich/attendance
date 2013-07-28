@@ -133,7 +133,7 @@ public class AuthManager {
 
 			// Check if there is a user in the system already for this
 			// google user
-			matchedUser = train.getUsersManager().get(google_users_email);
+			matchedUser = train.users().get(google_users_email);
 
 		} else if (ValidationUtil.validSecondaryEmail(google_users_email,
 				this.train)) {
@@ -141,7 +141,7 @@ public class AuthManager {
 
 			// Check if there is a user in the system already for this
 			// google user
-			matchedUser = train.getUsersManager().getSecondary(
+			matchedUser = train.users().getSecondary(
 					google_users_email);
 		} else {
 			throw new GoogleAccountException("Not a valid google account",

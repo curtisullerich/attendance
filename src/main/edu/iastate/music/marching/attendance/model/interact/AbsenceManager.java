@@ -509,12 +509,12 @@ public class AbsenceManager extends AbstractManager {
 
 		// Finally check for side-effects caused by absence
 		// this also checks the students grade
-		train.getUsersManager().update(todie.getStudent());
+		train.users().update(todie.getStudent());
 	}
 
 	public void remove(List<Absence> todie) {
 		ObjectDatastore od = this.train.getDataStore();
-		UserManager uc = this.train.getUsersManager();
+		UserManager uc = this.train.users();
 
 		HashSet<User> users = new HashSet<User>();
 		for (Absence a : todie) {
@@ -647,7 +647,7 @@ public class AbsenceManager extends AbstractManager {
 			this.train.getDataStore().storeOrUpdate(resolvedAbsence);
 
 			// Finally check for side-effects caused by absence
-			train.getUsersManager().updateUserGrade(student);
+			train.users().updateUserGrade(student);
 
 			// Done.
 			return resolvedAbsence;
@@ -732,7 +732,7 @@ public class AbsenceManager extends AbstractManager {
 					this.train.getDataStore().storeOrUpdate(a);
 
 					// Finally check for side-effects caused by absence
-					train.getUsersManager().updateUserGrade(a.getStudent());
+					train.users().updateUserGrade(a.getStudent());
 				}
 			}
 		}
@@ -769,7 +769,7 @@ public class AbsenceManager extends AbstractManager {
 			// this.train.getDataStore().store(resolvedAbsence);
 
 			// Finally check for side-effects caused by absence
-			train.getUsersManager().update(resolvedAbsence.getStudent());
+			train.users().update(resolvedAbsence.getStudent());
 
 			// Success.
 			return resolvedAbsence;

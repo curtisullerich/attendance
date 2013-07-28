@@ -97,7 +97,7 @@ public class Export {
 			msg.setFrom(new InternetAddress(from));
 
 			// Add all directors as recipients
-			for (User d : train.getUsersManager().get(User.Type.Director)) {
+			for (User d : train.users().get(User.Type.Director)) {
 				msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
 						d.getPrimaryEmail().getEmail()));
 			}

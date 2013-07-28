@@ -142,7 +142,7 @@ public class EventManager extends AbstractManager {
 				// performance. Another possible solution is keeping a list of
 				// all students and updating each one before returning
 				this.train.getDataStore().refresh(event);
-				this.train.getUsersManager().update(a.getStudent());
+				this.train.users().update(a.getStudent());
 			}
 		}
 

@@ -204,7 +204,7 @@ public class AuthServlet extends AbstractBaseServlet {
 
 		if (errors.size() == 0) {
 			try {
-				new_user = train.getUsersManager().createStudent(google_user,
+				new_user = train.users().createStudent(google_user,
 						univID, firstName, lastName, year, major, section,
 						secondEmail);
 

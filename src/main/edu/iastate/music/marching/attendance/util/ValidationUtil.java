@@ -31,12 +31,12 @@ public class ValidationUtil {
 	}
 
 	public static boolean isUniqueId(String id, Email primary) {
-		return DataTrain.depart().getUsersManager().isUniqueId(id, primary);
+		return DataTrain.depart().users().isUniqueId(id, primary);
 	}
 
 	public static boolean isUniqueSecondaryEmail(Email checkEmail,
 			Email primary, DataTrain train) {
-		return train.getUsersManager().isUniqueSecondaryEmail(checkEmail,
+		return train.users().isUniqueSecondaryEmail(checkEmail,
 				primary);
 
 	}

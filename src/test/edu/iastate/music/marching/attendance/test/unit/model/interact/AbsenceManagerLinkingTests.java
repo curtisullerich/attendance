@@ -170,7 +170,7 @@ public class AbsenceManagerLinkingTests extends AbstractDatastoreTest {
 	public void testAbsenceDOESNTAutoLinkEventDeleted() {
 
 		DataTrain train = getDataTrain();
-		UserManager uc = train.getUsersManager();
+		UserManager uc = train.users();
 		EventManager ec = train.events();
 		AbsenceManager ac = train.absences();
 		DateTimeZone zone = train.appData().get().getTimeZone();
@@ -219,7 +219,7 @@ public class AbsenceManagerLinkingTests extends AbstractDatastoreTest {
 	@Test
 	public void testTardyDOESNTAutoLinkEventDeleted() {
 		DataTrain train = getDataTrain();
-		UserManager uc = train.getUsersManager();
+		UserManager uc = train.users();
 		EventManager ec = train.events();
 		AbsenceManager ac = train.absences();
 		DateTimeZone zone = train.appData().get().getTimeZone();
@@ -271,7 +271,7 @@ public class AbsenceManagerLinkingTests extends AbstractDatastoreTest {
 	@Test
 	public void testEarlyDOESNTAutoLinkEventDeleted() {
 		DataTrain train = getDataTrain();
-		UserManager uc = train.getUsersManager();
+		UserManager uc = train.users();
 		EventManager ec = train.events();
 		AbsenceManager ac = train.absences();
 		DateTimeZone zone = train.appData().get().getTimeZone();
@@ -389,7 +389,7 @@ public class AbsenceManagerLinkingTests extends AbstractDatastoreTest {
 			LocalDateTime eventStart, LocalDateTime eventEnd,
 			Event.Type eventType, Absence.Type absenceType, boolean shouldLink) {
 		DataTrain train = getDataTrain();
-		UserManager uc = train.getUsersManager();
+		UserManager uc = train.users();
 		EventManager ec = train.events();
 		AbsenceManager ac = train.absences();
 		DateTimeZone zone = train.appData().get().getTimeZone();
@@ -438,7 +438,7 @@ public class AbsenceManagerLinkingTests extends AbstractDatastoreTest {
 			OverlapLink expectedLink) {
 
 		DataTrain train = getDataTrain();
-		UserManager uc = train.getUsersManager();
+		UserManager uc = train.users();
 		EventManager ec = train.events();
 		AbsenceManager ac = train.absences();
 		DateTimeZone zone = train.appData().get().getTimeZone();

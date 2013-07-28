@@ -274,7 +274,7 @@ public class FormManager extends AbstractManager {
 		train.getDataStore().store(form);
 
 		// UpDateTime grade, it may have changed
-		train.getUsersManager().update(form.getStudent());
+		train.users().update(form.getStudent());
 
 		// TODO https://github.com/curtisullerich/attendance/issues/106
 		// what if the student is null?
@@ -322,7 +322,7 @@ public class FormManager extends AbstractManager {
 				if (f.getStatus() == Form.Status.Approved) {
 					student.setMinutesAvailable(student.getMinutesAvailable()
 							+ f.getMinutesWorked());
-					this.train.getUsersManager().update(student);
+					this.train.users().update(student);
 					f.setApplied(true);
 				}
 			}

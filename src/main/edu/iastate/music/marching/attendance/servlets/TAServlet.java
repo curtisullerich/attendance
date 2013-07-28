@@ -95,7 +95,7 @@ public class TAServlet extends AbstractBaseServlet {
 
 		DataTrain train = DataTrain.depart();
 
-		UserManager uc = train.getUsersManager();
+		UserManager uc = train.users();
 
 		List<User> students = uc.get(User.Type.Student);
 
@@ -156,7 +156,7 @@ public class TAServlet extends AbstractBaseServlet {
 		DataTrain train = DataTrain.depart();
 		PageBuilder page = new PageBuilder(Page.setranks, SERVLET_PATH);
 
-		List<User> students = train.getUsersManager().get(User.Type.Student);
+		List<User> students = train.users().get(User.Type.Student);
 		page.setAttribute("students", students);
 
 		page.setPageTitle("Set Ranks");

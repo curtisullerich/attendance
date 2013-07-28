@@ -85,7 +85,7 @@ public class DataManager extends AbstractManager {
 
 		dump.mobileData = dataTrain.getMobileDataManager().getUploads();
 
-		dump.users = dataTrain.getUsersManager().getAll();
+		dump.users = dataTrain.users().getAll();
 
 		GsonWithPartials.toJson(dump, out);
 	}
@@ -173,7 +173,7 @@ public class DataManager extends AbstractManager {
 						// Try to load user
 						User user = (User) field.get(item);
 						if (user != null) {
-							user = dataTrain.getUsersManager().get(
+							user = dataTrain.users().get(
 									(user).getId());
 							field.set(item, user);
 						}

@@ -19,7 +19,7 @@ public class GradeExport {
 		// Header
 		writer.println("Email" + "\t" + "UniversityID" + "\t" + "Grade");
 
-		for (User student : train.getUsersManager().get(User.Type.Student)) {
+		for (User student : train.users().get(User.Type.Student)) {
 
 			String line = "";
 			line += student.getPrimaryEmail().getEmail();

@@ -46,7 +46,7 @@ public class MobileDataManager {
 	public String getClassList() {
 
 		// Get all students and TA's
-		List<User> users = this.train.getUsersManager().get(User.Type.Student,
+		List<User> users = this.train.users().get(User.Type.Student,
 				User.Type.TA);
 
 		StringBuilder sb = new StringBuilder();
@@ -177,7 +177,7 @@ public class MobileDataManager {
 
 		EventManager ec = this.train.events();
 		AbsenceManager ac = this.train.absences();
-		UserManager uc = this.train.getUsersManager();
+		UserManager uc = this.train.users();
 
 		// List<Event> localEvents = new LinkedList<Event>();
 

@@ -52,11 +52,11 @@ public class MobileDataUploadTest extends AbstractDatastoreTest {
 
 		DataTrain train = getDataTrain();
 
-		User ta = Users.createTA(train.getUsersManager(), "ta", "123456780",
+		User ta = Users.createTA(train.users(), "ta", "123456780",
 				"first", "last", 2, "major", User.Section.Staff);
-		Users.createStudent(train.getUsersManager(), "s", "123456719",
+		Users.createStudent(train.users(), "s", "123456719",
 				"first", "last", 1, "major", User.Section.Baritone);
-		Users.createStudent(train.getUsersManager(), "zf", "123456782",
+		Users.createStudent(train.users(), "zf", "123456782",
 				"first", "last", 1, "major", User.Section.Drumline_Bass);
 
 		train.getMobileDataManager().pushMobileData(SIMPLE_ABSENCE_TESTDATA,
@@ -72,9 +72,9 @@ public class MobileDataUploadTest extends AbstractDatastoreTest {
 
 		DataTrain train = getDataTrain();
 
-		Users.createStudent(train.getUsersManager(), "s", "123456788",
+		Users.createStudent(train.users(), "s", "123456788",
 				"first", "last", 1, "major", User.Section.Clarinet);
-		Users.createStudent(train.getUsersManager(), "zf", "123456782",
+		Users.createStudent(train.users(), "zf", "123456782",
 				"first", "last", 1, "major", User.Section.TenorSax);
 
 		HttpServletRequest req = mock(HttpServletRequest.class);
@@ -181,7 +181,7 @@ public class MobileDataUploadTest extends AbstractDatastoreTest {
 	public void simpleTardyInsertionThroughController() {
 		DataTrain train = getDataTrain();
 
-		UserManager uc = train.getUsersManager();
+		UserManager uc = train.users();
 
 		Users.createStudent(uc, "s", "123456780", "test1", "tester", 1,
 				"major", User.Section.AltoSax);
@@ -207,7 +207,7 @@ public class MobileDataUploadTest extends AbstractDatastoreTest {
 	private HttpServletRequest setTASession(HttpServletRequest req) {
 		HttpSession session = mock(HttpSession.class);
 		when(session.getAttribute("authenticated_user")).thenReturn(
-				Users.createTA(getDataTrain().getUsersManager(), "ta",
+				Users.createTA(getDataTrain().users(), "ta",
 						"123456789", "I am", "A TA", 10, "Being Silly",
 						User.Section.AltoSax));
 		when(req.getSession()).thenReturn(session);

@@ -193,7 +193,7 @@ public class ServletAccess extends AbstractDatastoreTest {
 	private HttpServletRequest setStudentSession(HttpServletRequest req) {
 		HttpSession session = mock(HttpSession.class);
 		when(session.getAttribute("authenticated_user")).thenReturn(
-				Users.createStudent(getDataTrain().getUsersManager(),
+				Users.createStudent(getDataTrain().users(),
 						"studenttt", "123456789", "I am", "A Student", 10,
 						"Being Silly", User.Section.AltoSax));
 		when(req.getSession()).thenReturn(session);
@@ -203,7 +203,7 @@ public class ServletAccess extends AbstractDatastoreTest {
 	private HttpServletRequest setDirectorSession(HttpServletRequest req) {
 		HttpSession session = mock(HttpSession.class);
 		when(session.getAttribute("authenticated_user")).thenReturn(
-				Users.createDirector(getDataTrain().getUsersManager(),
+				Users.createDirector(getDataTrain().users(),
 						"director", "I am", "The Director"));
 		when(req.getSession()).thenReturn(session);
 		return req;
@@ -212,7 +212,7 @@ public class ServletAccess extends AbstractDatastoreTest {
 	private HttpServletRequest setTASession(HttpServletRequest req) {
 		HttpSession session = mock(HttpSession.class);
 		when(session.getAttribute("authenticated_user")).thenReturn(
-				Users.createTA(getDataTrain().getUsersManager(), "ta",
+				Users.createTA(getDataTrain().users(), "ta",
 						"123456789", "I am", "A TA", 10, "Being Silly",
 						User.Section.AltoSax));
 		when(req.getSession()).thenReturn(session);

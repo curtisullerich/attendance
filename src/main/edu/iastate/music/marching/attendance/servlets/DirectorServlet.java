@@ -144,7 +144,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		String success = "";
 		List<String> errors = new ArrayList<String>();
 		if (sid != null) {
-			UserManager uc = DataTrain.depart().getUsersManager();
+			UserManager uc = DataTrain.depart().users();
 			User todie = uc.get(sid);
 			uc.delete(todie);
 			success = "Student successfully deleted.";
@@ -304,7 +304,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 				}
 				if (absid.equals("new")) {
 					String sid = req.getParameter("studentid");
-					User student = train.getUsersManager().get(sid);
+					User student = train.users().get(sid);
 					Absence.Type atype = Absence.Type.valueOf(type);
 					if (student != null) {
 						// TODO might want to split this up and the combine date
@@ -509,7 +509,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		} else {
 			director.setFirstName(first);
 			director.setLastName(last);
-			train.getUsersManager().update(director);
+			train.users().update(director);
 			// req.setAttribute("success_message", "Info saved successfully.");
 			success = "Info saved.";
 		}
@@ -584,7 +584,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 			errors.add("Unable to save minutes available.");
 		}
 
-		UserManager uc = train.getUsersManager();
+		UserManager uc = train.users();
 
 		User user = uc.get(netid);
 
@@ -677,7 +677,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		User.Type type = User.Type.valueOf(strType);
 
-		UserManager uc = DataTrain.depart().getUsersManager();
+		UserManager uc = DataTrain.depart().users();
 
 		User localUser = uc.get(netID);
 
@@ -746,7 +746,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		PageBuilder page = new PageBuilder(Page.attendance, SERVLET_PATH);
 
-		List<User> students = train.getUsersManager().get(User.Type.Student);
+		List<User> students = train.users().get(User.Type.Student);
 		Map<User, List<Absence>> absenceList = new HashMap<User, List<Absence>>();
 
 		for (User s : students) {
@@ -767,7 +767,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 			String show = req.getParameter("approved");
 			boolean showb = Boolean.parseBoolean(show);
 			me.setShowApproved(showb);
-			train.getUsersManager().update(me);
+			train.users().update(me);
 		}
 
 		page.setAttribute("showApproved", me.isShowApproved());
@@ -845,7 +845,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		if (netid == null || netid.equals("")) {
 			errors.add("The netID was missing.");
 		} else {
-			User student = train.getUsersManager().get(netid);
+			User student = train.users().get(netid);
 
 			page.setPageTitle("Attendance");
 
@@ -915,7 +915,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		if (parts.length >= 3) {
 			String netid = parts[2];
-			u = train.getUsersManager().get(netid);
+			u = train.users().get(netid);
 		}
 
 		if (u == null)
@@ -939,7 +939,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		PageBuilder page = new PageBuilder(Page.users, SERVLET_PATH);
 
-		page.setAttribute("users", train.getUsersManager().getAll());
+		page.setAttribute("users", train.users().getAll());
 
 		page.passOffToJsp(req, resp);
 
@@ -977,7 +977,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 				if (seventid != null && !seventid.equals("")
 						&& sstudentid != null && !sstudentid.equals("")) {
 					e = train.events().get(Long.parseLong(seventid));
-					student = train.getUsersManager().get(sstudentid);
+					student = train.users().get(sstudentid);
 				}
 				if (e != null && student != null) {
 					// have to create the absence without storing it, or there
