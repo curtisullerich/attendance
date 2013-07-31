@@ -118,17 +118,22 @@ public class Absence {
 	Absence() {
 	}
 
-	public boolean containedIn(ReadableInterval interval) {
-		if (this.getType() == null || interval == null)
+	public static boolean isContainedIn(Absence a, ReadableInterval i) {
+		if (a.getType() == null || i == null)
 			return false;
 
-		switch (this.getType()) {
+		Chronology chron = i.getChronology();
+		DateTime end = i.getEnd();
+
+		switch (a.getType()) {
 		case Absence:
-			return interval.contains(this.getInterval(interval.getChronology()));
+			return i.contains(a.getInterval(chron));
 		case EarlyCheckOut:
-			return interval.contains(this.getCheckout(interval.getChronology()));
+			DateTime checkout = a.getCheckout(chron);
+			return i.contains(checkout) || end.equals(checkout);
 		case Tardy:
-			return interval.contains(this.getCheckin(interval.getChronology()));
+			DateTime checkin = a.getCheckin(chron);
+			return i.contains(checkin) || end.equals(checkin);
 		default:
 			throw new UnsupportedOperationException();
 		}
@@ -140,7 +145,7 @@ public class Absence {
 		else
 			throw new IllegalStateException("Intervals only valid for absences");
 	}
-	
+
 	public DateTime getCheckin(Chronology chron) {
 		if (getType().isTardy())
 			return new DateTime(this.start, chron);
@@ -152,9 +157,10 @@ public class Absence {
 		if (getType().isEarlyCheckOut())
 			return new DateTime(this.start, zone);
 		else
-			throw new IllegalStateException("Intervals only valid for absences");
+			throw new IllegalStateException(
+					"Checkouts only valid for early checkouts");
 	}
-	
+
 	public DateTime getCheckout(Chronology chron) {
 		if (getType().isEarlyCheckOut())
 			return new DateTime(this.start, chron);
@@ -191,7 +197,7 @@ public class Absence {
 		} else
 			throw new IllegalStateException("Intervals only valid for absences");
 	}
-	
+
 	/**
 	 * Time-span of an absence
 	 */

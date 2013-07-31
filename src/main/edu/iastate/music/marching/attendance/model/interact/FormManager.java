@@ -14,6 +14,7 @@ import com.google.code.twig.ObjectDatastore;
 
 import edu.iastate.music.marching.attendance.App.WeekDay;
 import edu.iastate.music.marching.attendance.model.store.Absence;
+import edu.iastate.music.marching.attendance.model.store.AppData;
 import edu.iastate.music.marching.attendance.model.store.Form;
 import edu.iastate.music.marching.attendance.model.store.ModelFactory;
 import edu.iastate.music.marching.attendance.model.store.User;
@@ -34,10 +35,10 @@ public class FormManager extends AbstractManager {
 	}
 
 	public Form createClassConflictForm(User student, String department,
-			String course, String section, String building,
-			Interval interval, LocalTime startTime,
-			LocalTime endTime, WeekDay dayOfWeek, String details,
-			int minutesToOrFrom, Absence.Type absenceType) {
+			String course, String section, String building, Interval interval,
+			LocalTime startTime, LocalTime endTime, WeekDay dayOfWeek,
+			String details, int minutesToOrFrom, Absence.Type absenceType) {
+		AppData appData = DataTrain.depart().appData().get();
 
 		// TODO https://github.com/curtisullerich/attendance/issues/108
 		// NEEDS MORE PARAMETERS and LOTS OF VALIDATION
@@ -63,34 +64,23 @@ public class FormManager extends AbstractManager {
 					"End DateTime time was before start DateTime time.");
 		}
 
-		form.setInterval(interval);
-		if (absenceType != null) {
-			form.setAbsenceType(absenceType);
-		} else {
+		if (absenceType == null) {
 			exp.getErrors().add("Absence type was null.");
 		}
 
-		if (ValidationUtil.isValidText(department, false)) {
-			form.setDept(department);
-		} else {
+		if (!ValidationUtil.isValidText(department, false)) {
 			exp.getErrors().add("Invalid department.");
 		}
 
-		if (ValidationUtil.isValidText(course, false)) {
-			form.setCourse(course);
-		} else {
+		if (!ValidationUtil.isValidText(course, false)) {
 			exp.getErrors().add("Invalid course.");
 		}
 
-		if (ValidationUtil.isValidText(section, false)) {
-			form.setSection(section);
-		} else {
+		if (!ValidationUtil.isValidText(section, false)) {
 			exp.getErrors().add("Invalid section.");
 		}
 
-		if (ValidationUtil.isValidText(building, false)) {
-			form.setBuilding(building);
-		} else {
+		if (!ValidationUtil.isValidText(building, false)) {
 			exp.getErrors().add("Invalid building.");
 		}
 
@@ -98,11 +88,19 @@ public class FormManager extends AbstractManager {
 			throw exp;
 		}
 
+		form.setStartTime(startTime);
+		form.setEndTime(endTime);
+		form.setInterval(interval);
+		form.setAbsenceType(absenceType);
+		form.setDept(department);
+		form.setCourse(course);
+		form.setSection(section);
+		form.setBuilding(building);
+
 		// current
 		form.setSubmissionTime(DateTime.now());
 		form.setLate(form.getSubmissionDateTime().isAfter(
-				DataTrain.depart().appData().get()
-						.getPerformanceAbsenceFormCutoff()));
+				appData.getPerformanceAbsenceFormCutoff()));
 
 		form.setDayOfWeek(dayOfWeek);
 		form.setDetails(details);

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
@@ -40,29 +41,32 @@ public class AbsenceManager extends AbstractManager {
 	 * @param absence
 	 * @return
 	 */
-	private void checkForAutoApproval(Absence absence) {
+	private boolean shouldBeAutoApproved(Absence absence) {
 		Event linked = absence.getEvent();
+		User student = absence.getStudent();
+
 		if (absence.getStatus() != Absence.Status.Pending) {
-			// only pending absences can be autoapproved
-			return;
+			// only pending absences can be auto-approved
+			return false;
 		}
 		if (linked == null) {
-			return;
-			// throw new IllegalArgumentException(
-			// "Can't valiDateTime an orphaned Absence.");
+			// Can only auto-approve linked absences
+			return false;
 		}
-		User student = absence.getStudent();
+
 		if (student == null) {
-			return;
-			// throw new IllegalArgumentException(
-			// "Can't valiDateTime Absence with null student");
+			// Has to have a student associated
+			return false;
 		}
 
-		List<Form> forms = train.forms().get(student);
-
-		for (Form form : forms) {
-			checkForAutoApproval(absence, form);
+		// True if approved by any form
+		for (Form form : train.forms().get(student)) {
+			if (shouldBeAutoApproved(absence, form)) {
+				return true;
+			}
 		}
+
+		return false;
 	}
 
 	/**
@@ -75,17 +79,17 @@ public class AbsenceManager extends AbstractManager {
 	 * @param form
 	 * @return
 	 */
-	private Absence checkForAutoApproval(Absence absence, Form form) {
+	private boolean shouldBeAutoApproved(Absence absence, Form form) {
 
 		DateTimeZone zone = this.train.appData().get().getTimeZone();
 
 		if (form.getStatus() != Form.Status.Approved) {
-			// must be approved!
-			return absence;
+			// form must be approved!
+			return false;
 		}
 		if (absence.getStatus() != Absence.Status.Pending) {
-			// only pending absences can be autoapproved
-			return absence;
+			// only pending absences can be auto-approved
+			return false;
 		}
 
 		if (form.getStudent() == null || absence.getStudent() == null) {
@@ -107,215 +111,71 @@ public class AbsenceManager extends AbstractManager {
 			// Performance absence request
 			if (absence.getEvent().getType() != Event.Type.Performance) {
 				// nope!
-				return absence;
+				return false;
 			} else {
-				if (form.getInterval().contains(
+				if (form.getInterval(zone).contains(
 						absence.getEvent().getInterval(zone))) {
-					absence.setStatus(Absence.Status.Approved);
+					return true;
 				}
 			}
 			break;
 		case ClassConflict:
 			Event e = absence.getEvent();
 
-			if (e != null && e.getType() == Event.Type.Rehearsal) {
+			if (e.getType() != Event.Type.Rehearsal) {
+				return false;
+			}
 
-				// take the DateTime from the absence and the time-of-day from
-				// the
-				// form
-				// DateTime formStartDateTime = fo
-				// Calendar formTimeStart = Calendar.getInstance(timezone);
-				// formTimeStart.setTime(absence.getStart());
-				// Calendar formstarttmp = Calendar.getInstance(timezone);
-				// formstarttmp.setTime(form.getStart());
-				// formTimeStart.set(Calendar.HOUR,
-				// formstarttmp.get(Calendar.HOUR));
-				// formTimeStart.set(Calendar.HOUR_OF_DAY,
-				// formstarttmp.get(Calendar.HOUR_OF_DAY));
-				// formTimeStart.set(Calendar.MINUTE,
-				// formstarttmp.get(Calendar.MINUTE));
-				// formTimeStart.set(Calendar.SECOND,
-				// formstarttmp.get(Calendar.SECOND));
-				// formTimeStart.set(Calendar.MILLISECOND,
-				// formstarttmp.get(Calendar.MILLISECOND));
-				// // to include the buffer
-				// formTimeStart.add(Calendar.MINUTE, form.getMinutesToOrFrom()
-				// * -1);
-				//
-				// Calendar formTimeEnd = Calendar.getInstance(timezone);
-				//
-				// // this just sets the fields to lock into the necessary DATE.
-				// // For the current implementation, this should always be the
-				// // same
-				// // result, because we don't support multi-day events
-				// if (absence.getEnd() == null) {
-				// formTimeEnd.setTime(absence.getStart());
-				// } else {
-				// formTimeEnd.setTime(absence.getEnd());
-				// }
-				//
-				// // take the DateTime from the absence and the time-of-day
-				// from
-				// // the
-				// // form
-				// Calendar formendtmp = Calendar.getInstance(timezone);
-				// formendtmp.setTime(form.getEnd());
-				// formTimeEnd.set(Calendar.HOUR,
-				// formendtmp.get(Calendar.HOUR));
-				// formTimeEnd.set(Calendar.HOUR_OF_DAY,
-				// formendtmp.get(Calendar.HOUR_OF_DAY));
-				// formTimeEnd.set(Calendar.MINUTE,
-				// formendtmp.get(Calendar.MINUTE));
-				// formTimeEnd.set(Calendar.SECOND,
-				// formendtmp.get(Calendar.SECOND));
-				// formTimeEnd.set(Calendar.MILLISECOND,
-				// formendtmp.get(Calendar.MILLISECOND));
-				// // to include the buffer
-				// formTimeEnd.add(Calendar.MINUTE, form.getMinutesToOrFrom());
-				//
-				// Calendar formDateStart = Calendar.getInstance(timezone);
-				// formDateStart.setTime(form.getStart());
-				// formDateStart.set(Calendar.HOUR, 0);
-				// formDateStart.set(Calendar.HOUR_OF_DAY, 0);
-				// formDateStart.set(Calendar.MINUTE, 0);
-				// formDateStart.set(Calendar.SECOND, 0);
-				// formDateStart.set(Calendar.MILLISECOND, 0);
-				//
-				// Calendar formDateEnd = Calendar.getInstance(timezone);
-				// formDateEnd.setTime(form.getEnd());
-				// formDateEnd.set(Calendar.HOUR, 0);
-				// formDateEnd.set(Calendar.HOUR_OF_DAY, 0);
-				// formDateEnd.set(Calendar.MINUTE, 0);
-				// formDateEnd.set(Calendar.SECOND, 0);
-				// formDateEnd.set(Calendar.MILLISECOND, 0);
+			int formDayOfWeek = form.getDayOfWeek().DayOfWeek;
 
-				// absence DateTime must fall on a valid form DateTime
-				// repetition (same
-				// day of week)
+			DateMidnight formDayOnAbsenceWeek;
+			switch (absence.getType()) {
+			case Absence:
 
-				// if
-				switch (absence.getType()) {
-				case Absence:
+				DateTime aStart = absence.getInterval(zone).getStart();
+				DateTime aEnd = absence.getInterval(zone).getEnd();
 
-					DateTime aStartz = absence.getInterval(zone).getStart()
-							.withZone(zone);
-					DateTime aEndz = absence.getInterval(zone).getEnd()
-							.withZone(zone);
-
-					int formDayOfWeek = form.getDayOfWeek().DayOfWeek;
-
-					if (aStartz.getDayOfWeek() != aEndz.getDayOfWeek()) {
-						LOG.warning("BLERG");
-					}
-
-					if (formDayOfWeek == aStartz.getDayOfWeek()
-							&& form.getInterval().contains(
-									absence.getInterval(zone))
-							&& form.getAbsenceType() == Absence.Type.Absence) {
-
-					}
-					// withDayOfWeek(form.getDayOfWeek().DayOfWeek)
-				default:
-					throw new UnsupportedOperationException();
+				if (aStart.getDayOfWeek() != aEnd.getDayOfWeek()) {
+					LOG.warning("BLERG");
 				}
 
-				// TODO TODO TODO
-
-				// if (formTimeStart.get(Calendar.DAY_OF_WEEK) > 0
-				// && formTimeStart.get(Calendar.DAY_OF_WEEK) < 8
-				// && form.getDayAsInt() == formTimeStart
-				// .get(Calendar.DAY_OF_WEEK)
-				// && !dayOfAbsence.getTime().after(formDateEnd.getTime())
-				// && !dayOfAbsence.getTime().before(
-				// formDateStart.getTime())) {
-				//
-				// if (absence.getType() == Absence.Type.Absence) {
-				// if (formTimeEnd != null
-				// && !formTimeStart.getTime().after(
-				// absence.getStart())
-				// && !formTimeEnd.getTime().before(
-				// absence.getEnd())
-				// && form.getAbsenceType() == Absence.Type.Absence) {
-				// absence.setStatus(Absence.Status.Approved);
-				// } else if (!formTimeEnd.getTime().before(
-				// absence.getStart())
-				// && !formTimeStart.getTime().after(
-				// absence.getEnd())
-				// && form.getAbsenceType() == Absence.Type.Absence) {
-				// // this case is specifically to cover the time when
-				// // a class conflict does not actually cover an
-				// // entire rehearsal, but it's close enough that
-				// // students don't go
-				//
-				// // in prose, this means that if there is any overlap
-				// // of the form B start and end (including buffer)
-				// // and the rehearsal, then the absence will be
-				// // approved
-				// absence.setStatus(Absence.Status.Approved);
-				// }
-				// } else if (absence.getType() == Absence.Type.Tardy) {
-				//
-				// if (formTimeEnd != null
-				// && !absence.getDatetime().before(
-				// formTimeStart.getTime())
-				// && !absence.getDatetime().after(
-				// formTimeEnd.getTime())
-				// && (form.getAbsenceType() == Absence.Type.Absence || form
-				// .getAbsenceType() == Absence.Type.Tardy)) {
-				// absence.setStatus(Absence.Status.Approved);
-				// }
-				//
-				// // if event and form times overlap, and if absence time
-				// // falls within the event
-				// if (!absence.getEvent().getEnd()
-				// .before(absence.getDatetime())
-				// && !absence.getEvent().getStart()
-				// .after(absence.getDatetime())
-				// && !formTimeEnd.getTime().before(
-				// absence.getEvent().getStart())
-				// && !formTimeStart.getTime().after(
-				// absence.getEvent().getEnd())
-				// && form.getAbsenceType() == Absence.Type.Absence) {
-				// absence.setStatus(Absence.Status.Approved);
-				// }
-				//
-				// } else if (absence.getType() == Absence.Type.EarlyCheckOut) {
-				//
-				// if (formTimeEnd != null
-				// && !absence.getDatetime().before(
-				// formTimeStart.getTime())
-				// && !absence.getDatetime().after(// TODO
-				// formTimeEnd.getTime())
-				// && (form.getAbsenceType() == Absence.Type.Absence || form
-				// .getAbsenceType() == Absence.Type.EarlyCheckOut)) {
-				// absence.setStatus(Absence.Status.Approved);
-				// }
-				//
-				// // if the time is during the event and the form is
-				// // approved, then approve the form
-				// if (!absence.getEvent().getEnd()
-				// .before(absence.getDatetime())
-				// && !absence.getEvent().getStart()
-				// .after(absence.getDatetime())
-				// && !formTimeEnd.getTime().before(
-				// absence.getEvent().getStart())
-				// && !formTimeStart.getTime().after(
-				// absence.getEvent().getEnd())
-				// && form.getAbsenceType() == Absence.Type.Absence) {
-				// absence.setStatus(Absence.Status.Approved);
-				// }
-				//
-				// }
-				// }
+				formDayOnAbsenceWeek = aStart.withDayOfWeek(formDayOfWeek)
+						.toDateMidnight();
+				break;
+			case Tardy:
+				DateTime checkin = absence.getCheckin(zone);
+				formDayOnAbsenceWeek = checkin.withDayOfWeek(formDayOfWeek)
+						.toDateMidnight();
+				break;
+			case EarlyCheckOut:
+				DateTime checkout = absence.getCheckout(zone);
+				formDayOnAbsenceWeek = checkout.withDayOfWeek(formDayOfWeek)
+						.toDateMidnight();
+				break;
+			default:
+				throw new UnsupportedOperationException();
 			}
-			break;
+
+			int minutesToOrFrom = form.getMinutesToOrFrom();
+			DateTime effectiveStartTime = form.getStartTime()
+					.toDateTime(formDayOnAbsenceWeek)
+					.minusMinutes(minutesToOrFrom);
+			DateTime effectiveEndTime = form.getEndTime()
+					.toDateTime(formDayOnAbsenceWeek)
+					.plusMinutes(minutesToOrFrom);
+
+			Interval effectiveFormInterval = new Interval(effectiveStartTime,
+					effectiveEndTime);
+
+			return Absence.isContainedIn(absence, effectiveFormInterval);
 		case TimeWorked:
 			// this does not auto-approve here. It does that upon an upDateTime
 			// of a
 			// Form D in the forms controller
 			break;
 		}
-		return absence;
+
+		return false;
 	}
 
 	/**
@@ -363,7 +223,7 @@ public class AbsenceManager extends AbstractManager {
 			throw new IllegalArgumentException(
 					"Tried to create absence for null user");
 		}
-		
+
 		DateTimeZone zone = this.train.appData().get().getTimeZone();
 
 		Absence absence = ModelFactory
@@ -569,7 +429,7 @@ public class AbsenceManager extends AbstractManager {
 			// not a conflict
 			return true;
 		}
-		
+
 		DateTimeZone zone = train.appData().get().getTimeZone();
 
 		// Basic tenants:
@@ -620,7 +480,8 @@ public class AbsenceManager extends AbstractManager {
 			case Tardy:
 				return true;
 			case EarlyCheckOut:
-				if (contester.getCheckout(zone).equals(current.getCheckout(zone))) {
+				if (contester.getCheckout(zone).equals(
+						current.getCheckout(zone))) {
 					if (contester.getStatus() == Absence.Status.Approved) {
 						return false;
 					} else {
@@ -644,8 +505,9 @@ public class AbsenceManager extends AbstractManager {
 		// Then do some validation
 		Absence resolvedAbsence = validateAbsence(absence);
 		if (resolvedAbsence != null) {
-			// And check for side-effects on the absence
-			checkForAutoApproval(resolvedAbsence);
+			if (shouldBeAutoApproved(resolvedAbsence)) {
+				resolvedAbsence.setStatus(Absence.Status.Approved);
+			}
 
 			// Then do actual store
 			this.train.getDataStore().storeOrUpdate(resolvedAbsence);
@@ -685,7 +547,7 @@ public class AbsenceManager extends AbstractManager {
 			DateTime checkout = absence.getCheckout(zone);
 
 			// Associate with event
-			events = this.train.events().getContains(checkout);
+			events = this.train.events().getContaining(checkout, 2);
 
 			if (events.size() == 1) {
 				absence.setEvent(events.get(0));
@@ -698,7 +560,7 @@ public class AbsenceManager extends AbstractManager {
 			DateTime checkin = absence.getCheckin(zone);
 
 			// Associate with event
-			events = train.events().getContains(checkin);
+			events = train.events().getContaining(checkin, 2);
 			absence.setStatus(Absence.Status.Pending);
 
 			// else the absence is orphaned, because we can't know which one is
@@ -731,7 +593,7 @@ public class AbsenceManager extends AbstractManager {
 	 */
 	public void tryLinkUnanchoredInInterval(Interval eventInterval) {
 		for (Absence a : getUnanchored()) {
-			if (a.containedIn(eventInterval)) {
+			if (Absence.isContainedIn(a, eventInterval)) {
 				if (tryLink(a)) {
 					// Then do actual store
 					this.train.getDataStore().storeOrUpdate(a);
@@ -767,7 +629,9 @@ public class AbsenceManager extends AbstractManager {
 			return null;
 		} else {
 			// And check for side-effects on the absence
-			checkForAutoApproval(resolvedAbsence);
+			if (shouldBeAutoApproved(resolvedAbsence)) {
+				resolvedAbsence.setStatus(Absence.Status.Approved);
+			}
 
 			// Then do actual store
 			this.train.getDataStore().storeOrUpdate(resolvedAbsence);
@@ -808,7 +672,7 @@ public class AbsenceManager extends AbstractManager {
 
 		User student = absence.getStudent();
 		if (student == null) {
-			LOG.severe("Can't valiDateTime Absence with null student");
+			LOG.severe("Can't validate Absence with null student");
 			return null;
 		}
 
@@ -816,7 +680,7 @@ public class AbsenceManager extends AbstractManager {
 		List<Absence> conflicts = ac.getAll(linked, student);
 
 		if (conflicts.size() > 2) {
-			LOG.severe("Absence conflicting with more than two others, this indicates a possibly inconsistant database");
+			LOG.severe("Absence conflicting with more than two others, this indicates a possibly inconsistent database");
 		}
 
 		// this loop should remove any conflicting absences and leave us with

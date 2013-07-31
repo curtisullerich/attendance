@@ -1,6 +1,6 @@
 package edu.iastate.music.marching.attendance.model.interact;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -10,6 +10,8 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 
 import com.google.appengine.api.datastore.Query.FilterOperator;
+import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.QueryResultIterator;
 import com.google.code.twig.FindCommand.RootFindCommand;
 import com.google.code.twig.ObjectDatastore;
 
@@ -29,31 +31,9 @@ public class EventManager extends AbstractManager {
 		this.train = dataTrain;
 	}
 
-	// public boolean create(Type type, DateTime start, DateTime end) {
-	// Event event = ModelFactory.newEvent(type, start, end);
-	// ObjectDatastore od = this.train.getDataStore();
-	// od.store(event);
-	// return true;
-	// }
-
-	// /**
-	// * Checks if two DateTime ranges intersect at all.
-	// *
-	// * @param e1
-	// * @param e2
-	// * @return
-	// */
-	// private boolean overlaps(Event e1, Event e2) {
-	// boolean a = e1.getStart().after(e2.getEnd());
-	// boolean b = e1.getEnd().before(e2.getStart());
-	// // if a and b are both true, then no instant in time is found in both
-	// // DateTime ranges.
-	// return !(a || b);
-	// }
-
 	public Event createOrUpdate(Type type, Interval interval) {
 		DateTimeZone zone = this.train.appData().get().getTimeZone();
-		
+
 		Event event = null;
 
 		List<Event> similarEvents = getExactlyAt(interval);
@@ -116,8 +96,16 @@ public class EventManager extends AbstractManager {
 					}
 					break;
 				case Tardy:
-					// break omitted intentionally so we fall through to the EOC
-					// logic!
+					if (e.getInterval(zone).contains(a.getCheckin(zone))) {
+						// must be within the event
+						if (foundOne) {
+							one = null;
+						} else {
+							foundOne = true;
+							one = e;
+						}
+					}
+					break;
 				case EarlyCheckOut:
 					if (e.getInterval(zone).contains(a.getCheckout(zone))) {
 						// must be within the event
@@ -206,15 +194,33 @@ public class EventManager extends AbstractManager {
 	/**
 	 * Gets a list of events that contain the specified time
 	 */
-	public List<Event> getContains(DateTime time) {
+	public List<Event> getContaining(DateTime instant, int limit) {
+		List<Event> containingEvents = new ArrayList<Event>();
+		DateTimeZone zone = this.train.appData().get().getTimeZone();
+
 		RootFindCommand<Event> find = this.train.getDataStore().find()
 				.type(Event.class);
 
-		Date d = time.toDate();
+		find.addFilter(Event.FIELD_START, FilterOperator.LESS_THAN_OR_EQUAL,
+				instant.toDate());
+		// TODO: Sort order and this whole method needs some looking at
+		find.addSort(Event.FIELD_START, SortDirection.ASCENDING);
 
-		find.addFilter(Event.FIELD_START, FilterOperator.LESS_THAN_OR_EQUAL, d);
-		find.addFilter(Event.FIELD_END, FilterOperator.GREATER_THAN_OR_EQUAL, d);
-		return find.returnAll().now();
+		QueryResultIterator<Event> qri = find.now();
+		while (qri.hasNext()) {
+			Event e = qri.next();
+
+			if (e.getInterval(zone).contains(instant)) {
+
+				containingEvents.add(e);
+
+				if (containingEvents.size() == limit)
+					return containingEvents;
+			} else
+				return containingEvents;
+		}
+
+		return containingEvents;
 	}
 
 	public Integer getCount() {

@@ -34,8 +34,8 @@ public class FormClassConflictSimpleTest extends AbstractDatastoreTest {
 
 	private static final WeekDay FORM_WEEKDAY = WeekDay.Monday;
 	private static final int FORM_TRAVEL_TIME = 10; // 10 minutes
-	private static final LocalDate FORM_START_DATE = new LocalDate(2012, 7, 20);
-	private static final LocalDate FORM_END_DATE = new LocalDate(2012, 11, 20);
+	private static final LocalDate FORM_START_DATE = new LocalDate(2012, 8, 20);
+	private static final LocalDate FORM_END_DATE = new LocalDate(2012, 12, 20);
 
 	private static final LocalDate EVENT_DATE = FORM_START_DATE;
 	private static final LocalTime EVENT_START_TIME = new LocalTime(16, 30, 0);
@@ -176,7 +176,7 @@ public class FormClassConflictSimpleTest extends AbstractDatastoreTest {
 	 */
 	@Test
 	public void testTardyWithFormB03() {
-		LocalDate eventDate = new LocalDate(2012, 7, 29);
+		LocalDate eventDate = new LocalDate(2012, 8, 29);
 		LocalTime eventStartTime = new LocalTime(16, 30, 0);
 		LocalTime eventStopTime = new LocalTime(17, 50, 0);
 
@@ -231,7 +231,7 @@ public class FormClassConflictSimpleTest extends AbstractDatastoreTest {
 	 */
 	@Test
 	public void testTardyWithFormB06() {
-		LocalDate eventDate = new LocalDate(2012, 7, 27);
+		LocalDate eventDate = new LocalDate(2012, 8, 27);
 		LocalTime eventStartTime = new LocalTime(16, 30, 0);
 		LocalTime eventStopTime = new LocalTime(17, 50, 0);
 
@@ -250,7 +250,7 @@ public class FormClassConflictSimpleTest extends AbstractDatastoreTest {
 	 */
 	@Test
 	public void testTardyWithFormB07() {
-		LocalDate formStartDate = new LocalDate(2012, 7, 6);
+		LocalDate formStartDate = new LocalDate(2012, 8, 6);
 		LocalDate formEndDate = FORM_END_DATE;
 		LocalTime formStartTime = new LocalTime(16, 10, 0);
 		LocalTime formEndTime = new LocalTime(17, 0, 0);
@@ -459,7 +459,7 @@ public class FormClassConflictSimpleTest extends AbstractDatastoreTest {
 		LocalTime formStartTime = new LocalTime(17, 0, 0);
 		LocalTime formStopTime = new LocalTime(17, 20, 0);
 
-		LocalTime absenceTime = new LocalTime(16, 35, 0);
+		LocalTime absenceTime = new LocalTime(16, 55, 0);
 
 		absenceWithClassConflictFormHelper(eventStartTime, eventStopTime,
 				formStartTime, formStopTime, absenceTime, Absence.Type.Tardy,
@@ -910,7 +910,7 @@ public class FormClassConflictSimpleTest extends AbstractDatastoreTest {
 	 */
 	@Test
 	public void testECOWithFormB07() {
-		LocalDate eventDate = new LocalDate(2012, 10, 26);
+		LocalDate eventDate = new LocalDate(2012, 11, 26);
 		LocalTime eventStartTime = new LocalTime(16, 30, 0);
 		LocalTime eventStopTime = new LocalTime(17, 50, 0);
 
@@ -947,7 +947,7 @@ public class FormClassConflictSimpleTest extends AbstractDatastoreTest {
 	 */
 	@Test
 	public void testECOWithFormB09() {
-		LocalDate eventDate = new LocalDate(2012, 11, 17);
+		LocalDate eventDate = new LocalDate(2012, 12, 17);
 		LocalTime eventStartTime = new LocalTime(16, 30, 0);
 		LocalTime eventStopTime = new LocalTime(17, 50, 0);
 

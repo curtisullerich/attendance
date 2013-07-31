@@ -3,7 +3,9 @@ package edu.iastate.music.marching.attendance.model.store;
 import java.util.Date;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
+import org.joda.time.LocalTime;
 
 import com.google.appengine.api.datastore.Text;
 import com.google.code.twig.annotation.Activate;
@@ -93,11 +95,12 @@ public class Form {
 	@com.google.code.twig.annotation.Type(Text.class)
 	private String details;
 
-	private Date startTime;
-
-	private Date endTime;
-
+	private Date startDate;
+	private Date endDate;
 	private Date submissionTime;
+
+	private String startTime;
+	private String endTime;
 
 	// Strings to be used by Class Conflict Form
 	private String dept;
@@ -171,16 +174,16 @@ public class Form {
 
 	@Deprecated
 	public Date getEnd() {
-		return endTime;
+		return endDate;
 	}
 
 	public long getId() {
 		return id;
 	}
 
-	public Interval getInterval() {
-		return new Interval(new DateTime(this.startTime), new DateTime(
-				this.endTime));
+	public Interval getInterval(DateTimeZone zone) {
+		return new Interval(new DateTime(this.startDate, zone), new DateTime(
+				this.endDate, zone));
 	}
 
 	public int getMinutesToOrFrom() {
@@ -197,7 +200,7 @@ public class Form {
 
 	@Deprecated
 	public Date getStart() {
-		return startTime;
+		return startDate;
 	}
 
 	public Status getStatus() {
@@ -266,8 +269,8 @@ public class Form {
 	}
 
 	public void setInterval(Interval interval) {
-		this.startTime = interval.getStart().toDate();
-		this.endTime = interval.getEnd().toDate();
+		this.startDate = interval.getStart().toDate();
+		this.endDate = interval.getEnd().toDate();
 	}
 
 	public void setLate(boolean late) {
@@ -300,5 +303,33 @@ public class Form {
 
 	public void setType(Type type) {
 		this.type = type;
+	}
+
+	public LocalTime getStartTime() {
+		if (getType() != Type.ClassConflict)
+			throw new UnsupportedOperationException();
+		else
+			return LocalTime.parse(this.startTime);
+	}
+
+	public LocalTime getEndTime() {
+		if (getType() != Type.ClassConflict)
+			throw new UnsupportedOperationException();
+		else
+			return LocalTime.parse(this.endTime);
+	}
+
+	public void setStartTime(LocalTime startTime) {
+		if (getType() != Type.ClassConflict)
+			throw new UnsupportedOperationException();
+		else
+			this.startTime = startTime.toString();
+	}
+
+	public void setEndTime(LocalTime endTime) {
+		if (getType() != Type.ClassConflict)
+			throw new UnsupportedOperationException();
+		else
+			this.endTime = endTime.toString();
 	}
 }
