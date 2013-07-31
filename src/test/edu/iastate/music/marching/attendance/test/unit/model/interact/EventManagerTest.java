@@ -265,8 +265,7 @@ public class EventManagerTest extends AbstractDatastoreTest {
 		DateTime tardy1 = new DateTime(2012, 9, 18, 16, 40, zone);
 		DateTime tardy2 = new DateTime(2012, 9, 18, 16, 35, zone);
 
-		User s1 = Users.createStudent(uc, "student1", "123456789", "John",
-				"Cox", 2, "major", User.Section.AltoSax);
+		User s1 = Users.createDefaultStudent(uc);
 
 		// should be A initially
 		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
@@ -304,8 +303,7 @@ public class EventManagerTest extends AbstractDatastoreTest {
 		DateTime start3 = start.plusDays(18);
 		DateTime end3 = end.plusDays(18);
 
-		User s1 = Users.createStudent(uc, "student1", "123456789", "John",
-				"Cox", 2, "major", User.Section.AltoSax);
+		User s1 = Users.createDefaultStudent(uc);
 
 		// should be A initially
 		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());

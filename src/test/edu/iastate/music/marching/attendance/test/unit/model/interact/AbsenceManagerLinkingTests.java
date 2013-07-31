@@ -175,8 +175,7 @@ public class AbsenceManagerLinkingTests extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		DateTimeZone zone = train.appData().get().getTimeZone();
 
-		User student = Users.createStudent(uc, "student", "123456789", "First",
-				"last", 2, "major", User.Section.AltoSax);
+		User student = Users.createDefaultStudent(uc);
 
 		Interval firstInterval = new Interval(EDATETIME.toDateTime(zone),
 				new Period().plusHours(1));
@@ -224,8 +223,7 @@ public class AbsenceManagerLinkingTests extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		DateTimeZone zone = train.appData().get().getTimeZone();
 
-		User student = Users.createStudent(uc, "student", "123456789", "First",
-				"last", 2, "major", User.Section.AltoSax);
+		User student = Users.createDefaultStudent(uc);
 
 		Interval firstInterval = new Interval(EDATETIME.toDateTime(zone),
 				new Period().plusHours(1));
@@ -276,8 +274,7 @@ public class AbsenceManagerLinkingTests extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		DateTimeZone zone = train.appData().get().getTimeZone();
 
-		User student = Users.createStudent(uc, "student", "123456789", "First",
-				"last", 2, "major", User.Section.AltoSax);
+		User student = Users.createDefaultStudent(uc);
 
 		Interval firstInterval = new Interval(EDATETIME.toDateTime(zone),
 				new Period().plusHours(1));
@@ -394,8 +391,7 @@ public class AbsenceManagerLinkingTests extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		DateTimeZone zone = train.appData().get().getTimeZone();
 
-		User student = Users.createStudent(uc, "student", "123456789", "First",
-				"last", 2, "major", User.Section.AltoSax);
+		User student = Users.createDefaultStudent(uc);
 
 		Event event1 = ec.createOrUpdate(
 				eventType,
@@ -443,8 +439,7 @@ public class AbsenceManagerLinkingTests extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		DateTimeZone zone = train.appData().get().getTimeZone();
 
-		User student = Users.createStudent(uc, "student", "123456789", "First",
-				"last", 2, "major", User.Section.AltoSax);
+		User student = Users.createDefaultStudent(uc);
 
 		Interval firstInterval = new Interval(startFirst.toDateTime(zone),
 				endFirst.toDateTime(zone));

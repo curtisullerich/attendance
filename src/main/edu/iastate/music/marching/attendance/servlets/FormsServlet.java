@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.Interval;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
@@ -175,6 +177,7 @@ public class FormsServlet extends AbstractBaseServlet {
 		Absence.Type absenceType = null;
 
 		DataTrain train = DataTrain.depart();
+		DateTimeZone zone = train.appData().get().getTimeZone();
 
 		// Parse out all data from form and validate
 		boolean validForm = true;
@@ -250,12 +253,15 @@ public class FormsServlet extends AbstractBaseServlet {
 			// Store our new form to the datastore
 			User student = train.auth().getCurrentUser(req.getSession());
 
+			Interval interval = Util
+					.datesToFullDaysInterval(startDate, endDate, zone);
+
 			Form form = null;
 			try {
 				form = train.forms().createClassConflictForm(student,
-						department, course, section, building, startDate,
-						endDate, fromTime, toTime, dayOfWeek, comments,
-						minutesToOrFrom, absenceType);
+						department, course, section, building, interval,
+						fromTime, toTime, dayOfWeek, comments, minutesToOrFrom,
+						absenceType);
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add(e.getMessage());

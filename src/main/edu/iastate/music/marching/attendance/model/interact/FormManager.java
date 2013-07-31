@@ -35,10 +35,9 @@ public class FormManager extends AbstractManager {
 
 	public Form createClassConflictForm(User student, String department,
 			String course, String section, String building,
-			LocalDate startDate, LocalDate endDate, LocalTime startTime,
+			Interval interval, LocalTime startTime,
 			LocalTime endTime, WeekDay dayOfWeek, String details,
 			int minutesToOrFrom, Absence.Type absenceType) {
-		DateTimeZone zone = this.train.appData().get().getTimeZone();
 
 		// TODO https://github.com/curtisullerich/attendance/issues/108
 		// NEEDS MORE PARAMETERS and LOTS OF VALIDATION
@@ -64,10 +63,7 @@ public class FormManager extends AbstractManager {
 					"End DateTime time was before start DateTime time.");
 		}
 
-		DateTime startDateTime = startDate.toDateTimeAtStartOfDay(zone);
-		DateTime endDateTime = endDate.toDateTimeAtStartOfDay(zone).withTime(
-				23, 59, 59, 999);
-		form.setInterval(new Interval(startDateTime, endDateTime));
+		form.setInterval(interval);
 		if (absenceType != null) {
 			form.setAbsenceType(absenceType);
 		} else {

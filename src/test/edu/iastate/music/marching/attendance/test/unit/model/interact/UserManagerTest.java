@@ -209,8 +209,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		EventManager ec = train.events();
 		AbsenceManager ac = train.absences();
 
-		User s1 = Users.createStudent(uc, "student1", "123456789", "John",
-				"Cox", 2, "major", User.Section.AltoSax);
+		User s1 = Users.createDefaultStudent(uc);
 
 		// should be A initially
 		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
@@ -314,8 +313,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		DateTimeZone zone = train.appData().get().getTimeZone();
 
-		User s1 = Users.createStudent(uc, "student1", "123456789", "John",
-				"Cox", 2, "major", User.Section.AltoSax);
+		User s1 = Users.createDefaultStudent(uc);
 
 		// should be A initially
 		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
@@ -379,8 +377,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		DateTimeZone zone = train.appData().get().getTimeZone();
 
-		User s1 = Users.createStudent(uc, "student1", "123456789", "John",
-				"Cox", 2, "major", User.Section.AltoSax);
+		User s1 = Users.createDefaultStudent(uc);
 
 		DateTime start = new DateTime(2012, 7, 18, 16, 30, 0, 0, zone);
 		DateTime end = new DateTime(2012, 7, 18, 17, 50, 0, 0, zone);
@@ -414,8 +411,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		DateTimeZone zone = train.appData().get().getTimeZone();
 
-		User s1 = Users.createStudent(uc, "student1", "123456789", "John",
-				"Cox", 2, "major", User.Section.AltoSax);
+		User s1 = Users.createDefaultStudent(uc);
 
 		DateTime start = new DateTime(2012, 7, 18, 16, 30, 0, 0, zone);
 		DateTime end = new DateTime(2012, 7, 18, 17, 50, 0, 0, zone);

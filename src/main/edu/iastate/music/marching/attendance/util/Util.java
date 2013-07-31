@@ -61,4 +61,11 @@ public class Util {
 	public static LocalTime parseTimeOnly(String text, DateTimeZone zone) {
 		return TIMEFORMAT.parseLocalTime(text);
 	}
+
+	public static Interval datesToFullDaysInterval(LocalDate startDate,
+			LocalDate endDate, DateTimeZone zone) {
+		DateTime startOfFirstDay = startDate.toInterval(zone).getStart();
+		DateTime endOfFirstDay = endDate.toInterval(zone).getEnd();
+		return new Interval(startOfFirstDay, endOfFirstDay);
+	}
 }
