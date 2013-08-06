@@ -67,6 +67,12 @@ for obj in newforms:
   del obj['details']
   obj['details'] = ""
   obj['student']['id'] = u['netid']
+  if (obj['type'] == 'A'):
+    obj['type'] = 'PerformanceAbsence'
+  elif (obj['type'] == 'B'):
+    obj['type'] = 'ClassConflict'
+  elif (obj['type'] == 'D'):
+    obj['type'] = 'TimeWorked'
 
 del data['appData']
 data['absences'] = absences
