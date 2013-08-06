@@ -58,17 +58,19 @@ for obj in absences:
   #TODO kill this field, don't just nullify it
 #print json.dumps(absences, sort_keys=True, indent=2, separators=(',', ': '))  
 
-for obj in forms:
+newforms = [x for x in forms if x['type'] != 'C']
+
+for obj in newforms:
   newid = oldtonew[obj['student']['id']]
   u = newidentities[newid]
   del obj['messages']
+  del obj['details']
   obj['details'] = ""
   obj['student']['id'] = u['netid']
 
-
 del data['appData']
 data['absences'] = absences
-data['forms'] = forms
+data['forms'] = newforms
 data['events'] = events
 del data['messages']
 data['users'] = users
