@@ -92,7 +92,7 @@ public class FormClassConflictSimpleTest extends AbstractDatastoreTest {
 		LocalTime eventStart = new LocalTime(16, 30, 0);
 		LocalTime eventEnd = new LocalTime(17, 50, 0);
 
-		LocalTime absenceTime = new LocalTime(17, 10, 0);
+		LocalTime absenceTime = new LocalTime(17, 9, 59);
 
 		absenceWithClassConflictFormHelper(eventDate, eventStart, eventEnd,
 				formStartTime, formEndTime, absenceTime, Absence.Type.Tardy,
@@ -315,7 +315,7 @@ public class FormClassConflictSimpleTest extends AbstractDatastoreTest {
 		LocalTime formStartTime = new LocalTime(16, 10, 0);
 		LocalTime formEndTime = new LocalTime(17, 0, 0);
 
-		LocalTime absenceTime = new LocalTime(17, 10, 0);
+		LocalTime absenceTime = new LocalTime(17, 9, 59);
 
 		absenceWithClassConflictFormHelper(eventStartTime, eventStopTime,
 				formStartTime, formEndTime, absenceTime, Absence.Type.Tardy,
@@ -405,7 +405,7 @@ public class FormClassConflictSimpleTest extends AbstractDatastoreTest {
 		LocalTime formStartTime = new LocalTime(16, 30, 0);
 		LocalTime formStopTime = new LocalTime(17, 50, 0);
 
-		LocalTime absenceTime = new LocalTime(17, 50, 0);
+		LocalTime absenceTime = new LocalTime(17, 49, 59);
 
 		absenceWithClassConflictFormHelper(eventStartTime, eventStopTime,
 				formStartTime, formStopTime, absenceTime, Absence.Type.Tardy,
@@ -751,7 +751,7 @@ public class FormClassConflictSimpleTest extends AbstractDatastoreTest {
 		LocalTime formStartTime = new LocalTime(16, 35, 0);
 		LocalTime formStopTime = new LocalTime(17, 45, 0);
 
-		LocalTime absenceTime = new LocalTime(17, 50, 0);
+		LocalTime absenceTime = new LocalTime(17, 49, 59);
 
 		absenceWithClassConflictFormHelper(eventStartTime, eventStopTime,
 				formStartTime, formStopTime, absenceTime, Absence.Type.Tardy,
@@ -972,7 +972,7 @@ public class FormClassConflictSimpleTest extends AbstractDatastoreTest {
 		LocalTime formStartTime = new LocalTime(16, 10, 0);
 		LocalTime formEndTime = new LocalTime(17, 0, 0);
 
-		LocalTime absenceTime = new LocalTime(17, 10, 0);
+		LocalTime absenceTime = new LocalTime(17, 9, 59);
 
 		absenceWithClassConflictFormHelper(eventStartTime, eventStopTime,
 				formStartTime, formEndTime, absenceTime,
@@ -1062,7 +1062,7 @@ public class FormClassConflictSimpleTest extends AbstractDatastoreTest {
 		LocalTime formStartTime = new LocalTime(16, 30, 0);
 		LocalTime formStopTime = new LocalTime(17, 50, 0);
 
-		LocalTime absenceTime = new LocalTime(17, 50, 0);
+		LocalTime absenceTime = new LocalTime(17, 49, 59);
 
 		absenceWithClassConflictFormHelper(eventStartTime, eventStopTime,
 				formStartTime, formStopTime, absenceTime,
@@ -1102,7 +1102,7 @@ public class FormClassConflictSimpleTest extends AbstractDatastoreTest {
 
 		absenceWithClassConflictFormHelper(eventStartTime, eventStopTime,
 				formStartTime, formStopTime, absenceTime,
-				Absence.Type.EarlyCheckOut, Absence.Status.Pending);
+				Absence.Type.EarlyCheckOut, Absence.Status.Approved);
 	}
 
 	/**
@@ -1408,7 +1408,7 @@ public class FormClassConflictSimpleTest extends AbstractDatastoreTest {
 		LocalTime formStartTime = new LocalTime(16, 35, 0);
 		LocalTime formStopTime = new LocalTime(17, 45, 0);
 
-		LocalTime absenceTime = new LocalTime(17, 50, 0);
+		LocalTime absenceTime = new LocalTime(17, 49, 59);
 
 		absenceWithClassConflictFormHelper(eventStartTime, eventStopTime,
 				formStartTime, formStopTime, absenceTime,

@@ -138,13 +138,13 @@ public class AbsenceManagerLinkingTests extends AbstractDatastoreTest {
 
 	@Test
 	public void testOverlappingEventsWithEarlyDuringLaterEvent() {
-		LocalDateTime startFirst = EDATETIME;
-		LocalDateTime endFirst = EDATETIME.plusHours(1);
+		LocalDateTime startFirst = EDATETIME; //0:00
+		LocalDateTime endFirst = EDATETIME.plusHours(1); //1:00
 
-		LocalDateTime startSecond = EDATETIME.plusMinutes(45);
-		LocalDateTime endSecond = EDATETIME.plusHours(1).plusMinutes(45);
+		LocalDateTime startSecond = EDATETIME.plusMinutes(45);//0:45
+		LocalDateTime endSecond = EDATETIME.plusHours(1).plusMinutes(45);//1:45
 
-		LocalDateTime checkout = EDATETIME.plusHours(1).plusMinutes(30);
+		LocalDateTime checkout = EDATETIME.plusHours(1).plusMinutes(30);//1:30
 
 		overlappingEventsTestLinkingHelper(startFirst, endFirst, startSecond,
 				endSecond, checkout, Absence.Type.EarlyCheckOut,
@@ -341,7 +341,7 @@ public class AbsenceManagerLinkingTests extends AbstractDatastoreTest {
 
 	@Test
 	public void testTardyOnEnd() {
-		LocalDateTime absenceTime = ADATETIME.plusMinutes(1);
+		LocalDateTime absenceTime = ADATETIME.plusMinutes(1).minusSeconds(1);
 		LocalDateTime eventStart = ADATETIME;
 		LocalDateTime eventEnd = ADATETIME.plusMinutes(1);
 		boolean shouldLink = true;
@@ -352,7 +352,7 @@ public class AbsenceManagerLinkingTests extends AbstractDatastoreTest {
 
 	@Test
 	public void testECOOnEnd() {
-		LocalDateTime absenceTime = ADATETIME.plusMinutes(1);
+		LocalDateTime absenceTime = ADATETIME.plusMinutes(1).minusSeconds(1);
 		LocalDateTime eventStart = ADATETIME;
 		LocalDateTime eventEnd = ADATETIME.plusMinutes(1);
 		boolean shouldLink = true;
@@ -448,6 +448,7 @@ public class AbsenceManagerLinkingTests extends AbstractDatastoreTest {
 
 		ec.createOrUpdate(Event.Type.Rehearsal, firstInterval);
 		ec.createOrUpdate(Event.Type.Performance, secondInterval);
+		assertEquals(ec.getAll().size(), 2);
 
 		List<Absence> abs;
 		switch (absenceType) {
@@ -457,7 +458,7 @@ public class AbsenceManagerLinkingTests extends AbstractDatastoreTest {
 
 			abs = ac.get(student);
 			assertEquals(1, abs.size());
-			assertEquals(absenceTime, abs.get(0).getCheckout(zone));
+			assertEquals(absenceTime.toDateTime(zone), abs.get(0).getCheckout(zone));
 
 			break;
 		case Tardy:
@@ -465,7 +466,7 @@ public class AbsenceManagerLinkingTests extends AbstractDatastoreTest {
 
 			abs = ac.get(student);
 			assertEquals(1, abs.size());
-			assertEquals(absenceTime, abs.get(0).getCheckin(zone));
+			assertEquals(absenceTime.toDateTime(zone), abs.get(0).getCheckin(zone));
 
 			break;
 		case Absence:
@@ -487,7 +488,7 @@ public class AbsenceManagerLinkingTests extends AbstractDatastoreTest {
 
 		assertEquals(1, abs.size());
 		Event event = abs.get(0).getEvent();
-
+		assertEquals(ec.getAll().size(), 2);
 		switch (expectedLink) {
 		case First:
 			assertNotNull(event);

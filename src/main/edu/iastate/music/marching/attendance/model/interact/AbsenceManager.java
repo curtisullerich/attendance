@@ -113,6 +113,7 @@ public class AbsenceManager extends AbstractManager {
 				// nope!
 				return false;
 			} else {
+				//TODO use Absence.isContainedIn(...)?
 				if (form.getInterval(zone).contains(
 						absence.getEvent().getInterval(zone))) {
 					return true;

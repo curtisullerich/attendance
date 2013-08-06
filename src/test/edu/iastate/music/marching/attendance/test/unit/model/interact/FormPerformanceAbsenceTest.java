@@ -1592,7 +1592,8 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		ec.createOrUpdate(Event.Type.Performance, eventInterval);
 		Absence a = ac.createOrUpdateEarlyCheckout(student,
 				Dates.getDefaultAdjustedStartTime());
-		ac.createOrUpdateEarlyCheckout(student,
+
+		a = ac.createOrUpdateEarlyCheckout(student,
 				Dates.getDefaultAdjustedStartTime());
 
 		Form form = fc.createPerformanceAbsenceForm(student, date,
@@ -1661,7 +1662,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		Absence a = ac.createOrUpdateEarlyCheckout(student,
 				Dates.getDefaultAdjustedStartTime());
 		Absence b = ac.createOrUpdateTardy(student, Dates
-				.getDefaultAdjustedStartTime().minusMinutes(30));
+				.getDefaultAdjustedStartTime().minusMinutes(15));
 
 		form.setStatus(Form.Status.Approved);
 		fc.update(form);
@@ -1681,8 +1682,8 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = new LocalDate(2012, 9, 21);
-		LocalTime end = new LocalTime(6, 0, 0);
-		LocalTime start = new LocalTime(7, 0, 0);
+		LocalTime end = new LocalTime(7, 0, 0);
+		LocalTime start = new LocalTime(6, 0, 0);
 
 		DateTimeZone zone = DataTrain.depart().appData().get().getTimeZone();
 		Interval eventInterval = new Interval(date.toLocalDateTime(start)
@@ -1714,8 +1715,8 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = new LocalDate(2012, 9, 21);
-		LocalTime end = new LocalTime(6, 0, 0);
-		LocalTime start = new LocalTime(7, 0, 0);
+		LocalTime end = new LocalTime(7, 0, 0);
+		LocalTime start = new LocalTime(6, 0, 0);
 
 		DateTimeZone zone = DataTrain.depart().appData().get().getTimeZone();
 		Interval eventInterval = new Interval(date.toLocalDateTime(start)

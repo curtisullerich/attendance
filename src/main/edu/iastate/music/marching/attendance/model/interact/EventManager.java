@@ -207,17 +207,12 @@ public class EventManager extends AbstractManager {
 		find.addSort(Event.FIELD_START, SortDirection.ASCENDING);
 
 		QueryResultIterator<Event> qri = find.now();
-		while (qri.hasNext()) {
+		while (qri.hasNext() && containingEvents.size() < limit) {
 			Event e = qri.next();
 
 			if (e.getInterval(zone).contains(instant)) {
-
 				containingEvents.add(e);
-
-				if (containingEvents.size() == limit)
-					return containingEvents;
-			} else
-				return containingEvents;
+			}
 		}
 
 		return containingEvents;

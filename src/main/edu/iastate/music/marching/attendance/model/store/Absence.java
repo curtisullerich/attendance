@@ -123,17 +123,16 @@ public class Absence {
 			return false;
 
 		Chronology chron = i.getChronology();
-		DateTime end = i.getEnd();
 
 		switch (a.getType()) {
 		case Absence:
 			return i.contains(a.getInterval(chron));
 		case EarlyCheckOut:
 			DateTime checkout = a.getCheckout(chron);
-			return i.contains(checkout) || end.equals(checkout);
+			return i.contains(checkout);
 		case Tardy:
 			DateTime checkin = a.getCheckin(chron);
-			return i.contains(checkin) || end.equals(checkin);
+			return i.contains(checkin);
 		default:
 			throw new UnsupportedOperationException();
 		}

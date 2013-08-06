@@ -272,10 +272,22 @@ public class UserManager extends AbstractManager {
 		switch (count) {
 		case 0:
 			return User.Grade.A;
+		case 1:
+			return User.Grade.Aminus;
+		case 2:
+			return User.Grade.Bplus;
 		case 3:
 			return User.Grade.B;
+		case 4:
+			return User.Grade.Bminus;
+		case 5:
+			return User.Grade.Cplus;
 		case 6:
 			return User.Grade.C;
+		case 7:
+			return User.Grade.Cminus;
+		case 8:
+			return User.Grade.Dplus;
 		case 9:
 			return User.Grade.D;
 		default:
