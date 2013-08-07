@@ -213,7 +213,6 @@ public class FormsServlet extends AbstractBaseServlet {
 			// this is one-based! Starting on Monday as per ISO
 			try {
 				dayOfWeek = App.WeekDay.valueOf(req.getParameter("DayOfWeek"));
-
 			} catch (IllegalArgumentException nfe) {
 				errors.add("Weekday was invalid.");
 			}
@@ -223,15 +222,21 @@ public class FormsServlet extends AbstractBaseServlet {
 						train.appData().get().getTimeZone());
 			} catch (IllegalArgumentException e) {
 				validForm = false;
-				errors.add("The start DateTime is invalid.");
+				errors.add("The start date is invalid.");
 			}
 			try {
 				endDate = Util.parseDateOnly(req.getParameter("enddate"), train
 						.appData().get().getTimeZone());
 			} catch (IllegalArgumentException e) {
 				validForm = false;
-				errors.add("The end DateTime is invalid.");
+				errors.add("The end date is invalid.");
 			}
+
+			if (endDate.isBefore(startDate)) {
+				validForm = false;
+				errors.add("The end date is before the start date.");
+			}
+
 			try {
 				fromTime = Util.parseTimeOnly(req.getParameter("starttime"),
 						train.appData().get().getTimeZone());
@@ -239,12 +244,17 @@ public class FormsServlet extends AbstractBaseServlet {
 				validForm = false;
 				errors.add("The start time is invalid.");
 			}
+
 			try {
 				toTime = Util.parseTimeOnly(req.getParameter("endtime"), train
 						.appData().get().getTimeZone());
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add("The end time is invalid.");
+			}
+			if (toTime.isBefore(fromTime)) {
+				validForm = false;
+				errors.add("The end time was before the start time.");
 			}
 
 		}
@@ -253,8 +263,8 @@ public class FormsServlet extends AbstractBaseServlet {
 			// Store our new form to the datastore
 			User student = train.auth().getCurrentUser(req.getSession());
 
-			Interval interval = Util
-					.datesToFullDaysInterval(startDate, endDate, zone);
+			Interval interval = Util.datesToFullDaysInterval(startDate,
+					endDate, zone);
 
 			Form form = null;
 			try {
@@ -366,9 +376,10 @@ public class FormsServlet extends AbstractBaseServlet {
 		if (validForm) {
 
 			String success = SUCCESS_PERFORMANCE_ABSENCE_FORM;
-			if (cutoff.isBeforeNow()) {
-				success = "PLEASE NOTE: This form was submitted after the deadline, it has been marked as late.";
-			}
+			// if (cutoff.isBeforeNow()) {
+			// success =
+			// "PLEASE NOTE: This form was submitted after the deadline, it has been marked as late.";
+			// }
 
 			String url = getIndexURL() + "?success_message="
 					+ URLEncoder.encode(success, "UTF-8");
@@ -386,18 +397,20 @@ public class FormsServlet extends AbstractBaseServlet {
 			page.setAttribute("error_messages", errors);
 
 			page.setAttribute("cutoff", train.appData().get()
-					.getPerformanceAbsenceFormCutoff());
+					.getPerformanceAbsenceFormCutoff().toDate());
 
 			page.setAttribute("Reason", reason);
 			if (date != null) {
 				page.setAttribute("startdate", Util.formatDateOnly(date));
 			}
-			if (cutoff.isBeforeNow()) {
-				errors.add("PLEASE NOTE: The deadline for submitting "
-						+ displayName
-						+ " has passed. You can still submit one, but it will be marked as late. "
-						+ "You need to talk to the director prior to submitting or it will be denied right away.");
-			}
+			// if (cutoff.isBeforeNow()) {
+			// errors.add("PLEASE NOTE: The deadline for submitting "
+			// + displayName
+			// +
+			// " has passed. You can still submit one, but it will be marked as late. "
+			// +
+			// "You need to talk to the director prior to submitting or it will be denied right away.");
+			// }
 
 			page.passOffToJsp(req, resp);
 		}
@@ -597,6 +610,12 @@ public class FormsServlet extends AbstractBaseServlet {
 			} else {
 				page.setPageTitle(form.getType().toString() + " Form");
 				page.setAttribute("form", form);
+				if (form.getType() == Form.Type.ClassConflict) {
+					page.setAttribute("formStartTime",
+							Util.formatTimeOnly(form.getStartTime()));
+					page.setAttribute("formEndTime",
+							Util.formatTimeOnly(form.getEndTime()));
+				}
 				page.setAttribute("day", form.getDayAsString());
 				page.setAttribute("isDirector", currentUser.getType()
 						.isDirector());
@@ -611,5 +630,4 @@ public class FormsServlet extends AbstractBaseServlet {
 			ErrorServlet.showError(req, resp, 500);
 		}
 	}
-
 }

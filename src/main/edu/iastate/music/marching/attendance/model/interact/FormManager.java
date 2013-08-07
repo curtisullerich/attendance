@@ -100,7 +100,7 @@ public class FormManager extends AbstractManager {
 		// current
 		form.setSubmissionTime(DateTime.now());
 		form.setLate(form.getSubmissionDateTime().isAfter(
-				appData.getPerformanceAbsenceFormCutoff()));
+				appData.getClassConflictFormCutoff()));
 
 		form.setDayOfWeek(dayOfWeek);
 		form.setDetails(details);
@@ -122,11 +122,6 @@ public class FormManager extends AbstractManager {
 			exp.getErrors().add("Invalid reason");
 		}
 
-		DateTime cutoff = train.appData().get()
-				.getPerformanceAbsenceFormCutoff();
-
-		boolean late = cutoff.isBeforeNow();
-
 		if (exp.getErrors().size() > 0) {
 			throw exp;
 		}
@@ -146,13 +141,7 @@ public class FormManager extends AbstractManager {
 		form.setDetails(reason);
 		form.setStatus(Form.Status.Pending);
 
-		if (late) {
-			form.setStatus(Form.Status.Denied);
-			// Perform store
-			storeForm(form);
-		} else {
-			storeForm(form);
-		}
+		storeForm(form);
 
 		return form;
 		// return formACHelper(student, date, reason, Form.Type.A);
@@ -195,8 +184,7 @@ public class FormManager extends AbstractManager {
 		// current
 		form.setSubmissionTime(DateTime.now());
 		form.setLate(form.getSubmissionDateTime().isAfter(
-				DataTrain.depart().appData().get()
-						.getPerformanceAbsenceFormCutoff()));
+				train.appData().get().getTimeWorkedFormCutoff()));
 
 		// Set remaining fields
 		form.setDetails(details);

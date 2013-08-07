@@ -23,14 +23,23 @@ public class Util {
 	}
 
 	public static String formatDateOnly(LocalDate date) {
+		if (date == null) {
+			return "";
+		}
 		return DATEFORMAT.print(date);
 	}
 
 	public static String formatDateTime(DateTime datetime, DateTimeZone zone) {
+		if (datetime == null) {
+			return "";
+		}
 		return DATETIMEFORMAT.withZone(zone).print(datetime);
 	}
 
 	public static String formatTimeOnly(DateTime datetime, DateTimeZone zone) {
+		if (datetime == null) {
+			return "";
+		}
 		return TIMEFORMAT.withZone(zone).print(datetime);
 	}
 

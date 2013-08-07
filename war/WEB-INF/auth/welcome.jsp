@@ -20,7 +20,7 @@
   
     <p>This is the attendance system for the Iowa State University Cyclone Football 'Varsity' Marching Band.
     This was made by Daniel Stiner, Curtis Ullerich, Brandon Maxwell, and Todd Wegter.
-    If you're interested in how this was developed, visit the project's <a href="www.github.com/curtisullerich/attendance">page on Github</a>.
+    If you're interested in how this was developed, visit the project's <a href="http://www.github.com/curtisullerich/attendance">page on Github</a>.
     </p>
 
     <h2>Registering and Logging In</h2>

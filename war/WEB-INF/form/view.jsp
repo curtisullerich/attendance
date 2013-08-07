@@ -69,10 +69,10 @@
 					<dd>${day}</dd>
 					
 					<dt><label>From</label></dt>
-					<dd><fmt:formatDate value="${form.start}" pattern="h:mm a"/></dd>
+					<dd>${formStartTime}</dd>
 					
 					<dt><label>To</label>
-					<dd><fmt:formatDate value="${form.end}" pattern="h:mm a"/></dd>
+					<dd>${formEndTime}</dd>
 
 					<dt><label>Travel Time</label>
 					<dd>${form.minutesToOrFrom} minutes</dd>

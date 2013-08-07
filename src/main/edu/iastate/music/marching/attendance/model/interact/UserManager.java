@@ -78,7 +78,7 @@ public class UserManager extends AbstractManager {
 		String lastName = parts[1];
 		Email primaryEmail = new Email(parts[2]);
 		Email secondaryEmail = new Email(parts[3]);
-		//String type = parts[4];// just in case we want it
+		// String type = parts[4];// just in case we want it
 		User.Section section = User.Section.valueOf(parts[5]);
 		String univID = parts[6];
 		int year = Integer.parseInt(parts[7]);
@@ -333,7 +333,7 @@ public class UserManager extends AbstractManager {
 		validateUser(u);
 
 		// TODO investigate why this is necessary
-		this.datatrain.getDataStore().activate(u);
+		// this.datatrain.getDataStore().activate(u);
 
 		// I make this redundant call because the call chain in updateUserGrade
 		// wipes the changes from the User
