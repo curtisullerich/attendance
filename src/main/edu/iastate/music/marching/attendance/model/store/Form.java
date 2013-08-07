@@ -37,6 +37,14 @@ public class Form {
 		public boolean isPending() {
 			return this == Pending;
 		}
+
+		public boolean isApproved() {
+			return this == Approved;
+		}
+
+		public boolean isDenied() {
+			return this == Denied;
+		}
 	};
 
 	public static enum Type {

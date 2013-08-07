@@ -36,17 +36,45 @@ import edu.iastate.music.marching.attendance.test.util.Users;
 
 public class MobileDataUploadTest extends AbstractDatastoreTest {
 
-	private static String SIMPLE_ABSENCE_TESTDATA = "absentStudentRehearsal&split&el&split&Starster&split&s&split&2012-05-03&split&1630&split&1750&split&null&newline&"
+	private static final String SIMPLE_ABSENCE_TESTDATA = "absentStudentRehearsal&split&el&split&Starster&split&s&split&2012-05-03&split&1630&split&1750&split&null&newline&"
 			+ "storedRehearsal&split&rehearsal&split&|&split&|&split&2012-05-03&split&1630&split&1750&split&|&newline&"
 			+ "absentStudentRehearsal&split&P1&split&Z&split&zf&split&2012-05-03&split&1630&split&1750&split&4&newline&";
 
-	private static String SIMPLE_TARDY_TESTDATA = "tardyStudent&split&el&split&Starster&split&s&split&2012-05-03&split&0109&split&|&split&null&newline&"
+	private static final String SIMPLE_TARDY_TESTDATA = "tardyStudent&split&el&split&Starster&split&s&split&2012-05-03&split&0109&split&|&split&null&newline&"
 			+ "tardyStudent&split&el&split&Starster&split&s&split&2012-05-03&split&0116&split&|&split&null&newline&"
 			+ "tardyStudent&split&Bdog&split&Zemax&split&b&split&2012-05-03&split&0108&split&|&split&|&newline&"
 			+ "tardyStudent&split&el&split&Starster&split&s&split&2012-05-03&split&0107&split&|&split&null&newline&"
 			+ "tardyStudent&split&el&split&Starster&split&s&split&2012-05-03&split&0108&split&|&split&null&newline&"
 			+ "tardyStudent&split&P1&split&Z&split&zf&split&2012-05-03&split&0108&split&|&split&4&newline&";
+	@Test
+	public void simpleAbsenceInsertionThroughServlet_NullStudent()
+			throws InstantiationException, IllegalAccessException,
+			ServletException, IOException {
 
+		HttpServletRequest req = mock(HttpServletRequest.class);
+		HttpServletResponse resp = mock(HttpServletResponse.class);
+
+		setTASession(req);
+
+		setPostedContent(req, SIMPLE_ABSENCE_TESTDATA);
+
+		ServletOutputStream os = mock(ServletOutputStream.class);
+		when(resp.getOutputStream()).thenReturn(os);
+
+		ServletMocks.doPost(MobileAppDataServlet.class, req, resp);
+
+		verify(os)
+				.print("{\"error\":\"exception\",\"message\":\"Tried to create absence for null user\"}");
+
+		// TODO: Verify insertion lengths
+		// When transactional support is re-added, uncomment this
+		// assertEquals(0,
+		// datastore.find().type(Event.class).returnCount().now()
+		// .intValue());
+		// assertEquals(0, datastore.find().type(Absence.class).returnCount()
+		// .now().intValue());
+	}
+	
 	@Test
 	public void testSimpleAbsenceInsertionThroughController() {
 
@@ -64,6 +92,8 @@ public class MobileDataUploadTest extends AbstractDatastoreTest {
 
 		simpleAbsenceInsertionVerification();
 	}
+
+
 
 	@Test
 	public void testSimpleAbsenceInsertionThroughServlet()
@@ -95,34 +125,6 @@ public class MobileDataUploadTest extends AbstractDatastoreTest {
 		simpleAbsenceInsertionVerification();
 	}
 
-	@Test
-	public void simpleAbsenceInsertionThroughServlet_NullStudent()
-			throws InstantiationException, IllegalAccessException,
-			ServletException, IOException {
-
-		HttpServletRequest req = mock(HttpServletRequest.class);
-		HttpServletResponse resp = mock(HttpServletResponse.class);
-
-		setTASession(req);
-
-		setPostedContent(req, SIMPLE_ABSENCE_TESTDATA);
-
-		ServletOutputStream os = mock(ServletOutputStream.class);
-		when(resp.getOutputStream()).thenReturn(os);
-
-		ServletMocks.doPost(MobileAppDataServlet.class, req, resp);
-
-		verify(os)
-				.print("{\"error\":\"exception\",\"message\":\"Tried to create absence for null user\"}");
-
-		// TODO: Verify insertion lengths
-		// When transactional support is re-added, uncomment this
-		// assertEquals(0,
-		// datastore.find().type(Event.class).returnCount().now()
-		// .intValue());
-		// assertEquals(0, datastore.find().type(Absence.class).returnCount()
-		// .now().intValue());
-	}
 
 	private void simpleAbsenceInsertionVerification() {
 		Event event;
