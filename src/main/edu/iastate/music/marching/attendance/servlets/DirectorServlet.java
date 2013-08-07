@@ -3,7 +3,6 @@ package edu.iastate.music.marching.attendance.servlets;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,8 +17,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.Interval;
+import org.joda.time.LocalTime;
+
 import com.google.appengine.api.datastore.Email;
 
+import edu.iastate.music.marching.attendance.App;
 import edu.iastate.music.marching.attendance.model.interact.AbsenceManager;
 import edu.iastate.music.marching.attendance.model.interact.AppDataManager;
 import edu.iastate.music.marching.attendance.model.interact.DataTrain;
@@ -40,19 +45,116 @@ import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
 public class DirectorServlet extends AbstractBaseServlet {
 
+	private enum Page {
+		index, appinfo, attendance, export, forms, unanchored, users, user, info, viewabsence, student, makeevent, deletestudent, studentinfo, viewevent, deleteevent, postdelete;
+	}
+
 	private static final long serialVersionUID = 6100206975846317440L;
 
 	private static final Logger LOG = Logger.getLogger(DirectorServlet.class
 			.getName());
 
-	private enum Page {
-		index, appinfo, attendance, export, forms, unanchored, users, user, info, viewabsence, student, makeevent, deletestudent, studentinfo, viewevent, deleteevent, postdelete;
-	}
-
 	private static final String SERVLET_PATH = "director";
 
 	public static final String INDEX_URL = pageToUrl(
 			DirectorServlet.Page.index, SERVLET_PATH);
+
+	private void deleteAbsence(String absid, AbsenceManager ac,
+			HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		List<String> errors = new ArrayList<String>();
+		try {
+			Absence a = ac.get(Integer.parseInt(absid));
+			ac.remove(a);
+
+			// Do not redirect if in a new window, instead show a success
+			// message
+			// if ("true".equals(req.getParameter("newindow"))) {
+			new PageBuilder(Page.postdelete, SERVLET_PATH)
+					.setAttribute(
+							"success_message",
+							"Successfully deleted absence, close this window to return to the previous page.")
+					.passOffToJsp(req, resp);
+			// } else {
+			// // Redirect
+			// resp.sendRedirect(pageToUrl(Page.attendance, SERVLET_PATH));
+			// showStudent(req, resp, errors,
+			// "Successfully deleted absence.");
+			// }
+		} catch (NumberFormatException e) {
+			LOG.severe("Unable to find absence to delete.");
+			errors.add("Internal error, unable to delete absence.");
+			viewAbsence(req, resp, errors, "");
+		}
+
+	}
+
+	private void deleteEvent(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		String sid = req.getParameter("id");
+		List<String> errors = new ArrayList<String>();
+		String success = "";
+		DataTrain train = DataTrain.depart();
+		PageBuilder page = new PageBuilder(Page.attendance, SERVLET_PATH);
+		String sremoveAnchored = req.getParameter("RemoveAnchored");
+		boolean bRemoveAnchored;
+		EventManager ec = train.events();
+		if (sid != null && !sid.equals("")) {
+			Event event = null;
+			try {
+				event = ec.get(Long.parseLong(sid));
+			} catch (NumberFormatException nfe) {
+				errors.add("Invalid event id");
+			}
+			if (event != null) {
+				// page.setAttribute("success_message", "Event deleted");
+				success = "Event deleted";
+				if (sremoveAnchored != null && sremoveAnchored.equals("true")) {
+					bRemoveAnchored = true;
+				} else {
+					bRemoveAnchored = false;
+				}
+				ec.delete(event, bRemoveAnchored);
+
+				// this is set just in case we go back to the page with errors.
+				page.setAttribute("event", event);
+			}
+
+		} else {
+			errors.add("Invalid event id");
+			// page.setAttribute("errors", errors);
+		}
+
+		// Don't redirect to attendance if in a new window
+		if ("true".equals(req.getParameter("newindow"))) {
+			new PageBuilder(Page.postdelete, SERVLET_PATH)
+					.setAttribute(
+							"success_message",
+							success
+									+ ", please close this window to return to the previous page.")
+					.passOffToJsp(req, resp);
+		} else {
+			showStudent(req, resp, errors, success);
+		}
+	}
+
+	private void deleteStudent(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		String sid = req.getParameter("deleteid");
+		String success = "";
+		List<String> errors = new ArrayList<String>();
+		if (sid != null) {
+			UserManager uc = DataTrain.depart().users();
+			User todie = uc.get(sid);
+			uc.delete(todie);
+			success = "Student successfully deleted.";
+		} else {
+			errors.add("Unable to delete student.");
+		}
+
+		// add a success or error message
+		showStudent(req, resp, errors, success);
+	}
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -113,63 +215,6 @@ public class DirectorServlet extends AbstractBaseServlet {
 			}
 	}
 
-	private void viewEvent(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		DataTrain train = DataTrain.getAndStartTrain();
-		String sid = req.getParameter("id");
-
-		List<String> errors = new ArrayList<String>();
-		PageBuilder page = new PageBuilder(Page.viewevent, SERVLET_PATH);
-		if (sid != null && !sid.equals("")) {
-			try {
-				Event event = train.getEventManager().get(Long.parseLong(sid));
-				page.setAttribute("event", event);
-				AbsenceManager ac = train.getAbsenceManager();
-				List<Absence> absences = ac.getAll(event);
-				int absent = 0;
-				int tardy = 0;
-				int earlyout = 0;
-				for (Absence a : absences) {
-					switch (a.getType()) {
-					case Absence:
-						absent++;
-						break;
-					case Tardy:
-						tardy++;
-						break;
-					case EarlyCheckOut:
-						earlyout++;
-						break;
-					default:
-						break;
-					}
-				}
-				page.setAttribute("absent", absent);
-				page.setAttribute("tardy", tardy);
-				page.setAttribute("earlyout", earlyout);
-			} catch (NumberFormatException nfe) {
-				errors.add("Invalid event id");
-			}
-		} else {
-			errors.add("Invalid event id");
-			page.setAttribute("errors", errors);
-		}
-		page.setPageTitle("View Event");
-		page.passOffToJsp(req, resp);
-	}
-
-	private void showMakeEvent(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		PageBuilder page = new PageBuilder(Page.makeevent, SERVLET_PATH);
-		Date today = new Date();
-
-		page.setAttribute("arst", today.getYear() + 1900);
-		page.setAttribute("today", today);
-		page.setAttribute("types", Event.Type.values());
-		page.setPageTitle("Make Event");
-		page.passOffToJsp(req, resp);
-	}
-
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -224,63 +269,231 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 	}
 
-	private void deleteEvent(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		String sid = req.getParameter("id");
-		List<String> errors = new ArrayList<String>();
-		String success = "";
-		DataTrain train = DataTrain.getAndStartTrain();
-		PageBuilder page = new PageBuilder(Page.attendance, SERVLET_PATH);
-		String sremoveAnchored = req.getParameter("RemoveAnchored");
-		boolean bRemoveAnchored;
-		EventManager ec = train.getEventManager();
-		if (sid != null && !sid.equals("")) {
-			Event event = null;
-			try {
-				event = ec.get(Long.parseLong(sid));
-			} catch (NumberFormatException nfe) {
-				errors.add("Invalid event id");
+	private void postAbsenceInfo(HttpServletRequest req,
+			HttpServletResponse resp) throws ServletException, IOException {
+		DataTrain train = DataTrain.depart();
+
+		AbsenceManager ac = train.absences();
+
+		DateTimeZone zone = train.appData().get().getTimeZone();
+
+		boolean validForm = true;
+
+		List<String> errors = new LinkedList<String>();
+
+		if (!ValidationUtil.isPost(req)) {
+			validForm = false;
+		} else {
+			String absid = req.getParameter("absenceid");
+			if (req.getParameter("delete") != null) {
+				deleteAbsence(absid, ac, req, resp);
+				return;
 			}
-			if (event != null) {
-				// page.setAttribute("success_message", "Event deleted");
-				success = "Event deleted";
-				if (sremoveAnchored != null && sremoveAnchored.equals("true")) {
-					bRemoveAnchored = true;
-				} else {
-					bRemoveAnchored = false;
+			long aid;
+			Absence toUpdate = null;
+			if (absid != null) {
+				String type = req.getParameter("Type");
+				String status = req.getParameter("Status");
+				String eventid = req.getParameter("eventid");
+				Event event = null;
+				try {
+					long eid = Long.parseLong(eventid);
+					event = train.events().get(eid);
+				} catch (NumberFormatException nfe) {
+					errors.add("No event to add. Can't create absence.");
 				}
-				ec.delete(event, bRemoveAnchored);
+				if (absid.equals("new")) {
+					String sid = req.getParameter("studentid");
+					User student = train.users().get(sid);
+					Absence.Type atype = Absence.Type.valueOf(type);
+					if (student != null) {
+						// TODO might want to split this up and the combine date
+						// and time with Calendar methods
+						DateTime time = Util.parseDateTime(
+								req.getParameter("date") + " "
+										+ req.getParameter("time"), train
+										.appData().get().getTimeZone());
+						switch (atype) {
+						case Absence:
+							toUpdate = ac.createOrUpdateAbsence(student, event);
+							break;
+						case Tardy:
+							toUpdate = ac.createOrUpdateTardy(student, time);
+							break;
+						case EarlyCheckOut:
+							toUpdate = ac.createOrUpdateEarlyCheckout(student,
+									time);
+							break;
+						}
+					}
+				} else {
+					aid = Long.parseLong(absid);
+					toUpdate = ac.get(aid);
+				}
+				if (toUpdate != null) {
+					try {
+						// TODO same concern as above
+						LocalTime d = Util.parseTimeOnly(
+								req.getParameter("time"), train.appData().get()
+										.getTimeZone());
 
-				// this is set just in case we go back to the page with errors.
-				page.setAttribute("event", event);
+						switch (toUpdate.getType()) {
+						case EarlyCheckOut:
+							toUpdate.setCheckout(d.toDateTime(toUpdate
+									.getCheckout(zone)
+									.toDateMidnight()));
+							break;
+						case Tardy:
+							toUpdate.setCheckin(d.toDateTime(toUpdate
+									.getCheckin(zone)
+									.toDateMidnight()));
+							break;
+						default:
+							throw new IllegalStateException();
+						}
+						toUpdate.setType(Absence.Type.valueOf(type));
+						toUpdate.setStatus(Absence.Status.valueOf(status));
+					} catch (ValidationExceptions e) {
+						validForm = false;
+						errors.add("Invalid Input: The input DateTime was invalid.");
+					} catch (IllegalArgumentException e) {
+						validForm = false;
+						errors.add("Invalid Input: The input DateTime is invalid.");
+					} catch (IllegalStateException e) {
+						validForm = false;
+						errors.add("Invalid Input: Cannot set time for absence");
+					}
+				} else {
+					validForm = false;
+					errors.add("Could not find the Absence to update");
+				}
+			} else {
+				validForm = false;
+				errors.add("Could not find the Absence to update");
 			}
 
+			if (validForm) {
+				// How about upDateTime the absence huh?
+				ac.updateAbsence(toUpdate);
+
+				// Do not redirect if in a new window, instead show a success
+				// message
+				// if ("true".equals(req.getParameter("newindow"))) {
+				viewAbsence(
+						req,
+						resp,
+						errors,
+						"Successfully updated absence, close this window to return to the previous page");
+				// } else {
+				// resp.sendRedirect(pageToUrl(Page.attendance, SERVLET_PATH));
+				// }
+			} else {
+				viewAbsence(req, resp, errors, "");
+			}
+		}
+	}
+
+	private void postAppInfo(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		DataTrain train = DataTrain.depart();
+		AppDataManager appDataController = train.appData();
+		AppData data = appDataController.get();
+		// get the train
+
+		// check if there was a form submitted
+		// no->//rebuild and return the page with errors
+		// yes->//parse and validate
+		// get the item from the controller
+		// upDateTime the item and save it
+		// return the jsp
+		boolean validForm = true;
+		boolean cronExportEnabled;
+		List<String> errors = new LinkedList<String>();
+		String success = null;
+		String timezone = null;
+		String title = null;
+		String statusMessage = null;
+		if (!ValidationUtil.isPost(req)) {
+			validForm = false;
 		} else {
-			errors.add("Invalid event id");
-			// page.setAttribute("errors", errors);
+			timezone = req.getParameter("Timezone");
+
+			if (timezone == null || timezone.equals("")) {
+				errors.add("Invalid Input: Timezone can't be empty.");
+			}
+
+			TimeZone zone = TimeZone.getTimeZone(timezone);
+			if (zone == null) {
+				errors.add("Not a valid timezone.");
+			} else {
+				data.setTimeZone(zone);
+			}
+
+			// Handle the thrown exception
+			try {
+				DateTimeZone storedZone = train.appData().get().getTimeZone();
+				DateTime performanceAbsenceDatetime = Util.parseDateTime(
+						req.getParameter("performanceAbsenceDatetime"),
+						storedZone);
+				data.setPerformanceAbsenceFormCutoff(performanceAbsenceDatetime);
+
+				DateTime classConflictDatetime = Util.parseDateTime(
+						req.getParameter("classConflictDatetime"), storedZone);
+				data.setClassConflictFormCutoff(classConflictDatetime);
+
+				DateTime timeWorkedDatetime = Util.parseDateTime(
+						req.getParameter("timeWorkedDatetime"), storedZone);
+				data.setTimeWorkedFormCutoff(timeWorkedDatetime);
+
+			} catch (ValidationExceptions e) {
+				validForm = false;
+				errors.add(e.getMessage());
+			}
+			// Thrown by Calendar.getTime() if we don't have a valid time
+			catch (IllegalArgumentException e) {
+				validForm = false;
+				errors.add("Invalid Input: The input DateTime is invalid.");
+			}
+
+			title = req.getParameter("Title");
+			if (title == null || title.equals("")) {
+				errors.add("Must supply a title.");
+
+			} else {
+				data.setTitle(title);
+			}
+
+			cronExportEnabled = null != req.getParameter("CronExportEnabled");
+			data.setCronExportEnabled(cronExportEnabled);
+
+			statusMessage = req.getParameter("StatusMessage");
+			// if (statusMessage == null || statusMessage.equals("") ) {
+			// errors.add("Status message was empty.");
+			// } else {
+			data.setStatusMessage(statusMessage);
+			// }
+
+		}
+		if (validForm) {
+			appDataController.save(data);
+		} else {
+			errors.add("There was a problem.");
 		}
 
-		// Don't redirect to attendance if in a new window
-		if ("true".equals(req.getParameter("newindow"))) {
-			new PageBuilder(Page.postdelete, SERVLET_PATH)
-					.setAttribute(
-							"success_message",
-							success
-									+ ", please close this window to return to the previous page.")
-					.passOffToJsp(req, resp);
-		} else {
-			showStudent(req, resp, errors, success);
+		if (errors.size() == 0) {
+			success = "App info updated.";
 		}
+		showAppInfo(req, resp, errors, success);
 	}
 
 	private void postDirectorInfo(HttpServletRequest req,
 			HttpServletResponse resp) throws IOException, ServletException {
-		DataTrain train = DataTrain.getAndStartTrain();
+		DataTrain train = DataTrain.depart();
 		String first = req.getParameter("FirstName");
 		String last = req.getParameter("LastName");
 		String secondEmail = req.getParameter("SecondEmail");
 		String success = null;
-		User director = train.getAuthManager().getCurrentUser(req.getSession());
+		User director = train.auth().getCurrentUser(req.getSession());
 		List<String> errors = new ArrayList<String>();
 		if (first == null || first.equals("")) {
 			errors.add("Please supply a first name.");
@@ -296,16 +509,49 @@ public class DirectorServlet extends AbstractBaseServlet {
 		} else {
 			director.setFirstName(first);
 			director.setLastName(last);
-			train.getUsersManager().update(director);
+			train.users().update(director);
 			// req.setAttribute("success_message", "Info saved successfully.");
 			success = "Info saved.";
 		}
 		showInfo(req, resp, errors, success);
 	}
 
+	private void postEvent(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		DataTrain train = DataTrain.depart();
+		EventManager ec = train.events();
+		List<String> errors = new LinkedList<String>();
+		String success = "";
+
+		try {
+			DateTime start = Util.parseDateTime(
+					req.getParameter("startdatetime"), train.appData().get()
+							.getTimeZone());
+			DateTime end = Util.parseDateTime(req.getParameter("enddatetime"),
+					train.appData().get().getTimeZone());
+
+			if (!start.toDateMidnight().equals(end.toDateMidnight())) {
+				errors.add("The event must start and end on the same day.");
+			}
+
+			Event.Type type = req.getParameter("Type").equals(
+					Event.Type.Rehearsal.getDisplayName()) ? Event.Type.Rehearsal
+					: Event.Type.Performance;
+			ec.createOrUpdate(type, new Interval(start, end));
+			success = "Event created.";
+		} catch (ValidationExceptions e) {
+			errors.add("Invalid Input: The input DateTime was invalid.");
+		} catch (IllegalArgumentException e) {
+			errors.add("Invalid Input: The input DateTime is invalid.");
+		}
+		// show success message?
+		resp.sendRedirect("/director/unanchored");
+		showUnanchored(req, resp, errors, success);
+	}
+
 	private void postStudentInfo(HttpServletRequest req,
 			HttpServletResponse resp) throws ServletException, IOException {
-		DataTrain train = DataTrain.getAndStartTrain();
+		DataTrain train = DataTrain.depart();
 
 		List<String> errors = new ArrayList<String>();
 		String success = "";
@@ -338,7 +584,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 			errors.add("Unable to save minutes available.");
 		}
 
-		UserManager uc = train.getUsersManager();
+		UserManager uc = train.users();
 
 		User user = uc.get(netid);
 
@@ -374,63 +620,12 @@ public class DirectorServlet extends AbstractBaseServlet {
 		showStudent(req, resp, errors, success);
 	}
 
-	private void deleteStudent(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		String sid = req.getParameter("deleteid");
-		String success = "";
-		List<String> errors = new ArrayList<String>();
-		if (sid != null) {
-			UserManager uc = DataTrain.getAndStartTrain().getUsersManager();
-			User todie = uc.get(sid);
-			uc.delete(todie);
-			success = "Student successfully deleted.";
-		} else {
-			errors.add("Unable to delete student.");
-		}
-
-		// add a success or error message
-		showStudent(req, resp, errors, success);
-	}
-
-	private void postEvent(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		DataTrain train = DataTrain.getAndStartTrain();
-		EventManager ec = train.getEventManager();
-		List<String> errors = new LinkedList<String>();
-		String success = "";
-
-		try {
-			Date start = Util.parseDateTime(req.getParameter("startdatetime"),
-					train.getAppDataManager().get().getTimeZone());
-			Date end = Util.parseDateTime(req.getParameter("enddatetime"),
-					train.getAppDataManager().get().getTimeZone());
-			// TODO may be timezone issues here. check edge cases.
-			if ((start.getDay() != end.getDay())
-					|| (start.getMonth() != end.getMonth())
-					|| (start.getYear() != end.getYear())) {
-				errors.add("The event must start and end on the same day.");
-			}
-
-			Event.Type type = req.getParameter("Type").equals(
-					Event.Type.Rehearsal.getDisplayName()) ? Event.Type.Rehearsal
-					: Event.Type.Performance;
-			ec.createOrUpdate(type, start, end);
-			success = "Event created.";
-		} catch (ValidationExceptions e) {
-			errors.add("Invalid Input: The input date was invalid.");
-		} catch (IllegalArgumentException e) {
-			errors.add("Invalid Input: The input date is invalid.");
-		}
-		// show success message?
-		resp.sendRedirect("/director/unanchored");
-		showUnanchored(req, resp, errors, success);
-	}
-
 	private void postUnanchored(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		DataTrain train = DataTrain.getAndStartTrain();
-		AbsenceManager ac = train.getAbsenceManager();
-		EventManager ec = train.getEventManager();
+		DataTrain train = DataTrain.depart();
+		AbsenceManager ac = train.absences();
+		EventManager ec = train.events();
+		DateTimeZone zone = train.appData().get().getTimeZone();
 		int count = -1;
 
 		try {
@@ -448,14 +643,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 					// retrieve the event and link it up
 					Event e = ec.get(Long.parseLong(eventID));
 					Absence a = ac.get(Long.parseLong(absenceID));
-					Calendar eventCal = Calendar.getInstance();
-					Calendar absenceCal = Calendar.getInstance();
-					eventCal.setTime(e.getDate());
-					absenceCal.setTime(a.getDatetime());
-					if (eventCal.get(Calendar.DAY_OF_YEAR) != absenceCal
-							.get(Calendar.DAY_OF_YEAR)
-							|| eventCal.get(Calendar.YEAR) != absenceCal
-									.get(Calendar.YEAR)) {
+					if (Util.overlapDays(a.getInterval(zone), e.getInterval(zone))) {
 						errors.add("Absence was not the same day as the event.");
 					} else {
 						a.setEvent(e);
@@ -475,357 +663,6 @@ public class DirectorServlet extends AbstractBaseServlet {
 		}
 	}
 
-	private void postAbsenceInfo(HttpServletRequest req,
-			HttpServletResponse resp) throws ServletException, IOException {
-		DataTrain train = DataTrain.getAndStartTrain();
-
-		AbsenceManager ac = train.getAbsenceManager();
-
-		boolean validForm = true;
-
-		List<String> errors = new LinkedList<String>();
-
-		if (!ValidationUtil.isPost(req)) {
-			validForm = false;
-		} else {
-			String absid = req.getParameter("absenceid");
-			if (req.getParameter("delete") != null) {
-				deleteAbsence(absid, ac, req, resp);
-				return;
-			}
-			long aid;
-			Absence toUpdate = null;
-			if (absid != null) {
-				String type = req.getParameter("Type");
-				String status = req.getParameter("Status");
-				String eventid = req.getParameter("eventid");
-				Event event = null;
-				try {
-					long eid = Long.parseLong(eventid);
-					event = train.getEventManager().get(eid);
-				} catch (NumberFormatException nfe) {
-					errors.add("No event to add. Can't create absence.");
-				}
-				if (absid.equals("new")) {
-					String sid = req.getParameter("studentid");
-					User student = train.getUsersManager().get(sid);
-					Absence.Type atype = Absence.Type.valueOf(type);
-					if (student != null) {
-						// TODO might want to split this up and the combine date
-						// and time with Calendar methods
-						Date time = Util.parseDateTime(req.getParameter("date")
-								+ " " + req.getParameter("time"), train
-								.getAppDataManager().get().getTimeZone());
-						switch (atype) {
-						case Absence:
-							toUpdate = ac.createOrUpdateAbsence(student, event);
-							break;
-						case Tardy:
-							toUpdate = ac.createOrUpdateTardy(student, time);
-							break;
-						case EarlyCheckOut:
-							toUpdate = ac.createOrUpdateEarlyCheckout(student,
-									time);
-							break;
-						}
-					}
-				} else {
-					aid = Long.parseLong(absid);
-					toUpdate = ac.get(aid);
-				}
-				if (toUpdate != null) {
-					try {
-						// TODO same concern as above
-
-						Date d = Util.parseDateTime(req.getParameter("date")
-								+ " " + req.getParameter("time"), train
-								.getAppDataManager().get().getTimeZone());
-						toUpdate.setDatetime(d);
-						toUpdate.setType(Absence.Type.valueOf(type));
-						toUpdate.setStatus(Absence.Status.valueOf(status));
-					} catch (ValidationExceptions e) {
-						validForm = false;
-						errors.add("Invalid Input: The input date was invalid.");
-					} catch (IllegalArgumentException e) {
-						validForm = false;
-						errors.add("Invalid Input: The input date is invalid.");
-					}
-				} else {
-					validForm = false;
-					errors.add("Could not find the Absence to update");
-				}
-			} else {
-				validForm = false;
-				errors.add("Could not find the Absence to update");
-			}
-
-			if (validForm) {
-				// How about update the absence huh?
-				ac.updateAbsence(toUpdate);
-
-				// Do not redirect if in a new window, instead show a success
-				// message
-				// if ("true".equals(req.getParameter("newindow"))) {
-				viewAbsence(
-						req,
-						resp,
-						errors,
-						"Successfully updated absence, close this window to return to the previous page");
-				// } else {
-				// resp.sendRedirect(pageToUrl(Page.attendance, SERVLET_PATH));
-				// }
-			} else {
-				viewAbsence(req, resp, errors, "");
-			}
-		}
-	}
-
-	private void deleteAbsence(String absid, AbsenceManager ac,
-			HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		List<String> errors = new ArrayList<String>();
-		try {
-			Absence a = ac.get(Integer.parseInt(absid));
-			ac.remove(a);
-
-			// Do not redirect if in a new window, instead show a success
-			// message
-			// if ("true".equals(req.getParameter("newindow"))) {
-			new PageBuilder(Page.postdelete, SERVLET_PATH)
-					.setAttribute(
-							"success_message",
-							"Successfully deleted absence, close this window to return to the previous page.")
-					.passOffToJsp(req, resp);
-			// } else {
-			// // Redirect
-			// resp.sendRedirect(pageToUrl(Page.attendance, SERVLET_PATH));
-			// showStudent(req, resp, errors,
-			// "Successfully deleted absence.");
-			// }
-		} catch (NumberFormatException e) {
-			LOG.severe("Unable to find absence to delete.");
-			errors.add("Internal error, unable to delete absence.");
-			viewAbsence(req, resp, errors, "");
-		}
-
-	}
-
-	private void postAppInfo(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		DataTrain train = DataTrain.getAndStartTrain();
-		AppDataManager appDataController = train.getAppDataManager();
-		AppData data = appDataController.get();
-		// get the train
-
-		// check if there was a form submitted
-		// no->//rebuild and return the page with errors
-		// yes->//parse and validate
-		// get the item from the controller
-		// update the item and save it
-		// return the jsp
-		boolean validForm = true;
-		boolean cronExportEnabled;
-		List<String> errors = new LinkedList<String>();
-		String success = null;
-		String timezone = null;
-		String title = null;
-		String statusMessage = null;
-		if (!ValidationUtil.isPost(req)) {
-			validForm = false;
-		} else {
-			timezone = req.getParameter("Timezone");
-
-			if (timezone == null || timezone.equals("")) {
-				errors.add("Invalid Input: Timezone can't be empty.");
-			}
-
-			TimeZone zone = TimeZone.getTimeZone(timezone);
-			if (zone == null) {
-				errors.add("Not a valid timezone.");
-			} else {
-				data.setTimeZone(zone);
-			}
-
-			// Handle the thrown exception
-			try {
-				TimeZone storedZone = train.getAppDataManager().get()
-						.getTimeZone();
-				Date performanceAbsenceDatetime = Util.parseDateTime(
-						req.getParameter("performanceAbsenceDatetime"),
-						storedZone);
-				data.setPerformanceAbsenceFormCutoff(performanceAbsenceDatetime);
-
-				Date classConflictDatetime = Util.parseDateTime(
-						req.getParameter("classConflictDatetime"), storedZone);
-				data.setClassConflictFormCutoff(classConflictDatetime);
-
-				Date timeWorkedDatetime = Util.parseDateTime(
-						req.getParameter("timeWorkedDatetime"), storedZone);
-				data.setTimeWorkedFormCutoff(timeWorkedDatetime);
-
-			} catch (ValidationExceptions e) {
-				validForm = false;
-				errors.add(e.getMessage());
-			}
-			// Thrown by Calendar.getTime() if we don't have a valid time
-			catch (IllegalArgumentException e) {
-				validForm = false;
-				errors.add("Invalid Input: The input date is invalid.");
-			}
-
-			title = req.getParameter("Title");
-			if (title == null || title.equals("")) {
-				errors.add("Must supply a title.");
-
-			} else {
-				data.setTitle(title);
-			}
-
-			cronExportEnabled = null != req.getParameter("CronExportEnabled");
-			data.setCronExportEnabled(cronExportEnabled);
-
-			statusMessage = req.getParameter("StatusMessage");
-			// if (statusMessage == null || statusMessage.equals("") ) {
-			// errors.add("Status message was empty.");
-			// } else {
-			data.setStatusMessage(statusMessage);
-			// }
-
-		}
-		if (validForm) {
-			appDataController.save(data);
-		} else {
-			errors.add("There was a problem.");
-		}
-
-		if (errors.size() == 0) {
-			success = "App info updated.";
-		}
-		showAppInfo(req, resp, errors, success);
-	}
-
-	private void showAppInfo(HttpServletRequest req, HttpServletResponse resp,
-			List<String> errors, String success) throws ServletException,
-			IOException {
-
-		DataTrain train = DataTrain.getAndStartTrain();
-
-		PageBuilder page = new PageBuilder(Page.appinfo, SERVLET_PATH);
-
-		AppData data = train.getAppDataManager().get();
-
-		page.setAttribute("appinfo", data);
-
-		page.setAttribute("timezone", data.getTimeZone());
-
-		if (data.getPerformanceAbsenceFormCutoff() != null) {
-			page.setAttribute("performanceAbsenceDatetime", Util
-					.formatDateTime(data.getPerformanceAbsenceFormCutoff(),
-							data.getTimeZone()));
-		}
-
-		if (data.getClassConflictFormCutoff() != null) {
-			page.setAttribute(
-					"classConflictDatetime",
-					Util.formatDateTime(data.getClassConflictFormCutoff(),
-							data.getTimeZone()));
-		}
-
-		if (data.getTimeWorkedFormCutoff() != null) {
-			page.setAttribute(
-					"timeWorkedDatetime",
-					Util.formatDateTime(data.getTimeWorkedFormCutoff(),
-							data.getTimeZone()));
-		}
-
-		page.setAttribute("timezones", data.getTimezoneOptions());
-
-		page.setAttribute("StatusMessage", data.getStatusMessage());
-
-		page.setAttribute("error_messages", errors);
-		page.setAttribute("success_message", success);
-		page.setPageTitle("Application Info");
-
-		page.passOffToJsp(req, resp);
-	}
-
-	private void showAttendance(HttpServletRequest req,
-			HttpServletResponse resp, List<String> errors, String success)
-			throws ServletException, IOException {
-
-		DataTrain train = DataTrain.getAndStartTrain();
-
-		PageBuilder page = new PageBuilder(Page.attendance, SERVLET_PATH);
-
-		List<User> students = train.getUsersManager().get(User.Type.Student);
-		Map<User, List<Absence>> absenceList = new HashMap<User, List<Absence>>();
-
-		for (User s : students) {
-			// TODO may be more efficient to just get them all and then split
-			// here
-			List<Absence> a = train.getAbsenceManager().get(s);
-			absenceList.put(s, a);
-		}
-
-		page.setAttribute("students", students);
-		page.setAttribute("absenceList", absenceList);
-		page.setPageTitle("Attendance");
-		page.setAttribute("error_messages", errors);
-		page.setAttribute("success_message", success);
-		// so if the page arrives with ?=showApproved=true then we display them
-		User me = train.getAuthManager().getCurrentUser(req.getSession());
-		if (ValidationUtil.isPost(req)) {
-			String show = req.getParameter("approved");
-			boolean showb = Boolean.parseBoolean(show);
-			me.setShowApproved(showb);
-			train.getUsersManager().update(me);
-		}
-
-		page.setAttribute("showApproved", me.isShowApproved());
-		page.passOffToJsp(req, resp);
-	}
-
-	private void showUnanchored(HttpServletRequest req,
-			HttpServletResponse resp, List<String> errors, String success)
-			throws ServletException, IOException {
-
-		DataTrain train = DataTrain.getAndStartTrain();
-
-		PageBuilder page = new PageBuilder(Page.unanchored, SERVLET_PATH);
-		List<Event> events = train.getEventManager().readAll();
-		page.setAttribute("events", events);
-
-		List<Absence> unanchored = train.getAbsenceManager().getAll();
-		Set<Absence> set = new HashSet<Absence>();
-		for (Absence a : unanchored) {
-			if (a.getEvent() != null) {
-				set.add(a);
-			}
-		}
-		unanchored.removeAll(set);
-
-		page.setAttribute("absences", unanchored);
-		page.setPageTitle("Unanchored");
-		page.setAttribute("error_messages", errors);
-		page.setAttribute("success_message", success);
-
-		page.passOffToJsp(req, resp);
-	}
-
-	private void showInfo(HttpServletRequest req, HttpServletResponse resp,
-			List<String> errors, String success) throws IOException,
-			ServletException {
-
-		PageBuilder page = new PageBuilder(Page.info, SERVLET_PATH);
-
-		page.setAttribute("user", DataTrain.getAndStartTrain().getAuthManager()
-				.getCurrentUser(req.getSession()));
-
-		page.setAttribute("errors", errors);
-		page.setAttribute("success_message", success);
-		page.passOffToJsp(req, resp);
-	}
-
 	private void postUserInfo(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException, ServletException {
 
@@ -841,7 +678,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		User.Type type = User.Type.valueOf(strType);
 
-		UserManager uc = DataTrain.getAndStartTrain().getUsersManager();
+		UserManager uc = DataTrain.depart().users();
 
 		User localUser = uc.get(netID);
 
@@ -858,23 +695,218 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 	}
 
-	private void showUsers(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
+	private void showAppInfo(HttpServletRequest req, HttpServletResponse resp,
+			List<String> errors, String success) throws ServletException,
+			IOException {
 
-		DataTrain train = DataTrain.getAndStartTrain();
+		DataTrain train = DataTrain.depart();
 
-		PageBuilder page = new PageBuilder(Page.users, SERVLET_PATH);
+		PageBuilder page = new PageBuilder(Page.appinfo, SERVLET_PATH);
 
-		page.setAttribute("users", train.getUsersManager().getAll());
+		AppData data = train.appData().get();
+		
+		DateTimeZone zone = data.getTimeZone();
+
+		page.setAttribute("appinfo", data);
+
+		page.setAttribute("timezone", zone.toTimeZone());
+
+		page.setAttribute("performanceAbsenceDatetime", Util.formatDateTime(
+				data.getPerformanceAbsenceFormCutoff(), zone));
+
+		if (data.getClassConflictFormCutoff() != null) {
+			page.setAttribute(
+					"classConflictDatetime",
+					Util.formatDateTime(data.getClassConflictFormCutoff(),
+							data.getTimeZone()));
+		}
+
+		if (data.getTimeWorkedFormCutoff() != null) {
+			page.setAttribute(
+					"timeWorkedDatetime",
+					Util.formatDateTime(data.getTimeWorkedFormCutoff(),
+							data.getTimeZone()));
+		}
+
+		page.setAttribute("timezones", App.getTimezoneOptions());
+
+		page.setAttribute("StatusMessage", data.getStatusMessage());
+
+		page.setAttribute("error_messages", errors);
+		page.setAttribute("success_message", success);
+		page.setPageTitle("Application Info");
 
 		page.passOffToJsp(req, resp);
+	}
 
+	private void showAttendance(HttpServletRequest req,
+			HttpServletResponse resp, List<String> errors, String success)
+			throws ServletException, IOException {
+
+		DataTrain train = DataTrain.depart();
+
+		PageBuilder page = new PageBuilder(Page.attendance, SERVLET_PATH);
+
+		List<User> students = train.users().get(User.Type.Student);
+		Map<User, List<Absence>> absenceList = new HashMap<User, List<Absence>>();
+
+		for (User s : students) {
+			// TODO may be more efficient to just get them all and then split
+			// here
+			List<Absence> a = train.absences().get(s);
+			absenceList.put(s, a);
+		}
+
+		page.setAttribute("students", students);
+		page.setAttribute("absenceList", absenceList);
+		page.setPageTitle("Attendance");
+		page.setAttribute("error_messages", errors);
+		page.setAttribute("success_message", success);
+		// so if the page arrives with ?=showApproved=true then we display them
+		User me = train.auth().getCurrentUser(req.getSession());
+		if (ValidationUtil.isPost(req)) {
+			String show = req.getParameter("approved");
+			boolean showb = Boolean.parseBoolean(show);
+			me.setShowApproved(showb);
+			train.users().update(me);
+		}
+
+		page.setAttribute("showApproved", me.isShowApproved());
+		page.passOffToJsp(req, resp);
+	}
+
+	private void showGradeExport(HttpServletRequest req,
+			HttpServletResponse resp) throws ServletException, IOException {
+
+		String suggestedBaseFileName = "grades-"
+				+ new SimpleDateFormat("yyyy.MM.dd").format(new Date());
+
+		if ("csv".equals(req.getParameter("type"))) {
+
+			resp.addHeader("Content-Disposition", "attachment; filename="
+					+ suggestedBaseFileName + ".csv");
+
+			resp.setContentType(GradeExport.CONTENT_TYPE_CSV);
+			GradeExport.exportCSV(DataTrain.depart(), resp.getOutputStream());
+		} else {
+			new PageBuilder(Page.export, SERVLET_PATH).setPageTitle(
+					"Grade Export").passOffToJsp(req, resp);
+		}
+	}
+
+	private void showIndex(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+
+		PageBuilder page = new PageBuilder(Page.index, SERVLET_PATH);
+
+		page.setPageTitle("Director");
+		page.setAttribute("StatusMessage", DataTrain.depart().appData().get()
+				.getStatusMessage());
+
+		page.passOffToJsp(req, resp);
+	}
+
+	private void showInfo(HttpServletRequest req, HttpServletResponse resp,
+			List<String> errors, String success) throws IOException,
+			ServletException {
+
+		PageBuilder page = new PageBuilder(Page.info, SERVLET_PATH);
+
+		page.setAttribute("user",
+				DataTrain.depart().auth().getCurrentUser(req.getSession()));
+
+		page.setAttribute("errors", errors);
+		page.setAttribute("success_message", success);
+		page.passOffToJsp(req, resp);
+	}
+
+	private void showMakeEvent(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		PageBuilder page = new PageBuilder(Page.makeevent, SERVLET_PATH);
+		DateTime today = DateTime.now();
+
+		page.setAttribute("arst", today.getYear() + 1900);
+		page.setAttribute("today", today);
+		page.setAttribute("types", Event.Type.values());
+		page.setPageTitle("Make Event");
+		page.passOffToJsp(req, resp);
+	}
+
+	private void showStudent(HttpServletRequest req, HttpServletResponse resp,
+			List<String> errors, String success) throws ServletException,
+			IOException {
+
+		DataTrain train = DataTrain.depart();
+
+		PageBuilder page = new PageBuilder(Page.student, SERVLET_PATH);
+
+		FormManager fc = train.forms();
+		String netid = req.getParameter("id");
+
+		if (netid == null || netid.equals("")) {
+			errors.add("The netID was missing.");
+		} else {
+			User student = train.users().get(netid);
+
+			page.setPageTitle("Attendance");
+
+			List<Absence> absences = train.absences().get(student);
+
+			page.setAttribute("user", student);
+			page.setAttribute("forms", fc.get(student));
+			page.setAttribute("absences", absences);
+			page.setAttribute("sections", User.Section.values());
+
+			// Pass through any success message in the url parameters sent from
+			// a new form being created or deleted
+			page.setAttribute("success_message", success);
+		}
+		String removeid = req.getParameter("removeid");
+		if (removeid != null && removeid != "") {
+			long id = Long.parseLong(removeid);
+			if (fc.removeForm(id)) {
+				page.setAttribute("success_message",
+						"Form successfully deleted");
+			} else {
+				errors.add("Form not deleted. If the form was already approved then you can't delete it.");
+			}
+		}
+		page.setAttribute("error_messages", errors);
+
+		page.passOffToJsp(req, resp);
+	}
+
+	private void showUnanchored(HttpServletRequest req,
+			HttpServletResponse resp, List<String> errors, String success)
+			throws ServletException, IOException {
+
+		DataTrain train = DataTrain.depart();
+
+		PageBuilder page = new PageBuilder(Page.unanchored, SERVLET_PATH);
+		List<Event> events = train.events().readAll();
+		page.setAttribute("events", events);
+
+		List<Absence> unanchored = train.absences().getAll();
+		Set<Absence> set = new HashSet<Absence>();
+		for (Absence a : unanchored) {
+			if (a.getEvent() != null) {
+				set.add(a);
+			}
+		}
+		unanchored.removeAll(set);
+
+		page.setAttribute("absences", unanchored);
+		page.setPageTitle("Unanchored");
+		page.setAttribute("error_messages", errors);
+		page.setAttribute("success_message", success);
+
+		page.passOffToJsp(req, resp);
 	}
 
 	private void showUserInfo(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException, ServletException {
 
-		DataTrain train = DataTrain.getAndStartTrain();
+		DataTrain train = DataTrain.depart();
 
 		PageBuilder page = new PageBuilder(Page.user, SERVLET_PATH);
 
@@ -884,7 +916,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		if (parts.length >= 3) {
 			String netid = parts[2];
-			u = train.getUsersManager().get(netid);
+			u = train.users().get(netid);
 		}
 
 		if (u == null)
@@ -901,44 +933,25 @@ public class DirectorServlet extends AbstractBaseServlet {
 		page.passOffToJsp(req, resp);
 	}
 
-	private void showIndex(HttpServletRequest req, HttpServletResponse resp)
+	private void showUsers(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		PageBuilder page = new PageBuilder(Page.index, SERVLET_PATH);
+		DataTrain train = DataTrain.depart();
 
-		page.setPageTitle("Director");
-		page.setAttribute("StatusMessage", DataTrain.getAndStartTrain()
-				.getAppDataManager().get().getStatusMessage());
+		PageBuilder page = new PageBuilder(Page.users, SERVLET_PATH);
+
+		page.setAttribute("users", train.users().getAll());
 
 		page.passOffToJsp(req, resp);
-	}
 
-	private void showGradeExport(HttpServletRequest req,
-			HttpServletResponse resp) throws ServletException, IOException {
-
-		String suggestedBaseFileName = "grades-"
-				+ new SimpleDateFormat("yyyy.MM.dd").format(new Date());
-
-		if ("csv".equals(req.getParameter("type"))) {
-
-			resp.addHeader("Content-Disposition", "attachment; filename="
-					+ suggestedBaseFileName + ".csv");
-
-			resp.setContentType(GradeExport.CONTENT_TYPE_CSV);
-			GradeExport.exportCSV(DataTrain.getAndStartTrain(),
-					resp.getOutputStream());
-		} else {
-			new PageBuilder(Page.export, SERVLET_PATH).setPageTitle(
-					"Grade Export").passOffToJsp(req, resp);
-		}
 	}
 
 	private void viewAbsence(HttpServletRequest req, HttpServletResponse resp,
 			List<String> incomingErrors, String success_message)
 			throws ServletException, IOException {
-		DataTrain train = DataTrain.getAndStartTrain();
-
-		AbsenceManager ac = train.getAbsenceManager();
+		DataTrain train = DataTrain.depart();
+		DateTimeZone zone = train.appData().get().getTimeZone();
+		AbsenceManager ac = train.absences();
 
 		boolean validInput = true;
 
@@ -964,23 +977,20 @@ public class DirectorServlet extends AbstractBaseServlet {
 				User student = null;
 				if (seventid != null && !seventid.equals("")
 						&& sstudentid != null && !sstudentid.equals("")) {
-					e = train.getEventManager().get(Long.parseLong(seventid));
-					student = train.getUsersManager().get(sstudentid);
+					e = train.events().get(Long.parseLong(seventid));
+					student = train.users().get(sstudentid);
 				}
 				if (e != null && student != null) {
 					// have to create the absence without storing it, or there
 					// will automatically be an absence created without clicking
 					// submit
-					// checkedAbsence = train.getAbsenceController()
-					// .createOrUpdateAbsence(student, e);
 					Absence absence = ModelFactory.newAbsence(
 							Absence.Type.Absence, student);
 					absence.setStatus(Absence.Status.Pending);
 
-					if (e != null && e.getStart() != null && e.getEnd() != null) {
+					if (e != null) {
 						absence.setEvent(e);
-						absence.setStart(e.getStart());
-						absence.setEnd(e.getEnd());
+						absence.setInterval(e.getInterval(zone));
 						// associated with this event for this student
 					} else {
 						// the absence is orphaned if there's no event for it
@@ -1013,58 +1023,73 @@ public class DirectorServlet extends AbstractBaseServlet {
 		page.setAttribute("status", Absence.Status.values());
 		page.setAttribute("error_messages", incomingErrors);
 		page.setAttribute("success_message", success_message);
-		TimeZone timeZone = train.getAppDataManager().get().getTimeZone();
-		page.setAttribute("date",
-				Util.formatDate(checkedAbsence.getDatetime(), timeZone));
-		page.setAttribute("time",
-				Util.formatTime(checkedAbsence.getDatetime(), timeZone));
+
+		DateTime setDateTime;
+		switch (checkedAbsence.getType()) {
+		default:
+		case Absence:
+			setDateTime = null;
+			break;
+		case EarlyCheckOut:
+			setDateTime = checkedAbsence.getCheckout(zone);
+			break;
+		case Tardy:
+			setDateTime = checkedAbsence.getCheckin(zone);
+			break;
+		}
+
+		DateTimeZone timeZone = train.appData().get().getTimeZone();
+		page.setAttribute("date", Util.formatDateOnly(setDateTime, timeZone));
+		page.setAttribute("time", Util.formatTimeOnly(setDateTime, timeZone));
+
 		page.passOffToJsp(req, resp);
 		// } else {
 		// showAttendance(req, resp, errors, success_message);
 		// }
 	}
 
-	private void showStudent(HttpServletRequest req, HttpServletResponse resp,
-			List<String> errors, String success) throws ServletException,
-			IOException {
+	private void viewEvent(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		DataTrain train = DataTrain.depart();
+		String sid = req.getParameter("id");
 
-		DataTrain train = DataTrain.getAndStartTrain();
-
-		PageBuilder page = new PageBuilder(Page.student, SERVLET_PATH);
-
-		FormManager fc = train.getFormsManager();
-		String netid = req.getParameter("id");
-
-		if (netid == null || netid.equals("")) {
-			errors.add("The netID was missing.");
-		} else {
-			User student = train.getUsersManager().get(netid);
-
-			page.setPageTitle("Attendance");
-
-			List<Absence> absences = train.getAbsenceManager().get(student);
-
-			page.setAttribute("user", student);
-			page.setAttribute("forms", fc.get(student));
-			page.setAttribute("absences", absences);
-			page.setAttribute("sections", User.Section.values());
-
-			// Pass through any success message in the url parameters sent from
-			// a new form being created or deleted
-			page.setAttribute("success_message", success);
-		}
-		String removeid = req.getParameter("removeid");
-		if (removeid != null && removeid != "") {
-			long id = Long.parseLong(removeid);
-			if (fc.removeForm(id)) {
-				page.setAttribute("success_message",
-						"Form successfully deleted");
-			} else {
-				errors.add("Form not deleted. If the form was already approved then you can't delete it.");
+		List<String> errors = new ArrayList<String>();
+		PageBuilder page = new PageBuilder(Page.viewevent, SERVLET_PATH);
+		if (sid != null && !sid.equals("")) {
+			try {
+				Event event = train.events().get(Long.parseLong(sid));
+				page.setAttribute("event", event);
+				AbsenceManager ac = train.absences();
+				List<Absence> absences = ac.getAll(event);
+				int absent = 0;
+				int tardy = 0;
+				int earlyout = 0;
+				for (Absence a : absences) {
+					switch (a.getType()) {
+					case Absence:
+						absent++;
+						break;
+					case Tardy:
+						tardy++;
+						break;
+					case EarlyCheckOut:
+						earlyout++;
+						break;
+					default:
+						break;
+					}
+				}
+				page.setAttribute("absent", absent);
+				page.setAttribute("tardy", tardy);
+				page.setAttribute("earlyout", earlyout);
+			} catch (NumberFormatException nfe) {
+				errors.add("Invalid event id");
 			}
+		} else {
+			errors.add("Invalid event id");
+			page.setAttribute("errors", errors);
 		}
-		page.setAttribute("error_messages", errors);
-
+		page.setPageTitle("View Event");
 		page.passOffToJsp(req, resp);
 	}
 

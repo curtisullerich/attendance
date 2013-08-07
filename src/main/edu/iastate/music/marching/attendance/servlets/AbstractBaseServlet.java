@@ -17,6 +17,28 @@ public abstract class AbstractBaseServlet extends HttpServlet {
 	 */
 	private static final long serialVersionUID = -8295424643788812718L;
 
+	protected static boolean isLoggedIn(HttpServletRequest req,
+			HttpServletResponse resp, User.Type... allowed_types)
+			throws IOException {
+		if (!AuthManager.isLoggedIn(req.getSession(), allowed_types)) {
+			// User of correct type is not logged in
+			return false;
+		}
+		return true;
+	}
+
+	protected static <P extends Enum<P>> String pageToUrl(P path,
+			String jsp_path) {
+
+		String pagename = path.name();
+
+		if ("index".equals(pagename))
+			return "/" + jsp_path;
+		else
+			return "/" + jsp_path + "/" + pagename;
+
+	}
+
 	/**
 	 * 
 	 * @param pathInfo
@@ -53,36 +75,14 @@ public abstract class AbstractBaseServlet extends HttpServlet {
 
 	}
 
+	protected static void show404(HttpServletRequest req,
+			HttpServletResponse resp) throws IOException, ServletException {
+		ErrorServlet.showError(req, resp, 404);
+	}
+
 	protected <P extends Enum<P>> String urlFromPage(P page, String jsp_path) {
 
 		return pageToUrl(page, jsp_path);
 
-	}
-
-	protected static <P extends Enum<P>> String pageToUrl(P path,
-			String jsp_path) {
-
-		String pagename = path.name();
-
-		if ("index".equals(pagename))
-			return "/" + jsp_path;
-		else
-			return "/" + jsp_path + "/" + pagename;
-
-	}
-
-	protected static boolean isLoggedIn(HttpServletRequest req,
-			HttpServletResponse resp, User.Type... allowed_types)
-			throws IOException {
-		if (!AuthManager.isLoggedIn(req.getSession(), allowed_types)) {
-			// User of correct type is not logged in
-			return false;
-		}
-		return true;
-	}
-
-	protected static void show404(HttpServletRequest req,
-			HttpServletResponse resp) throws IOException, ServletException {
-		ErrorServlet.showError(req, resp, 404);
 	}
 }

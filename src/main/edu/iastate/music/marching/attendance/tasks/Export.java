@@ -25,12 +25,46 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
-import edu.iastate.music.marching.attendance.Configuration;
+import org.joda.time.DateTime;
+
+import edu.iastate.music.marching.attendance.App;
 import edu.iastate.music.marching.attendance.model.interact.DataTrain;
 import edu.iastate.music.marching.attendance.model.store.User;
-import edu.iastate.music.marching.attendance.servlets.DirectorServlet;
 
 public class Export {
+
+	public static class ExportDataSource implements javax.activation.DataSource {
+
+		private final String data;
+		private final String name;
+
+		public ExportDataSource(String name, StringWriter dataStream) {
+			this.name = name;
+			this.data = dataStream.toString();
+		}
+
+		@Override
+		public String getContentType() {
+			return "text/plain";
+		}
+
+		@Override
+		public InputStream getInputStream() throws IOException {
+			return new ByteArrayInputStream(data.getBytes());
+		}
+
+		@Override
+		public String getName() {
+			return this.name;
+		}
+
+		@Override
+		public OutputStream getOutputStream() throws IOException {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+	}
 
 	private static final Logger LOG = Logger.getLogger(Export.class.getName());
 
@@ -38,10 +72,10 @@ public class Export {
 
 		try {
 
-			DataTrain train = DataTrain.getAndStartTrain();
+			DataTrain train = DataTrain.depart();
 
-			String appTitle = train.getAppDataManager().get().getTitle();
-			Date exportTime = new Date();
+			String appTitle = train.appData().get().getTitle();
+			DateTime exportTime = new DateTime();
 			String humanExportTime = DateFormat.getDateTimeInstance().format(
 					new Date());
 			String filenameExportTime = new SimpleDateFormat("yyMMddHHmmssZ")
@@ -52,19 +86,18 @@ public class Export {
 			String subject = "Data export for " + appTitle;
 			String msgBody = "Attached is a file containing all data for "
 					+ appTitle + " exported at " + humanExportTime;
-			String to = Configuration.Emails.DATA_EXPORT_RECIPIENT;
-			String from = Configuration.Emails.DATA_EXPORT_SENDER;
+			String from = App.Emails.DATA_EXPORT_SENDER;
 			String fileName = "data-export-for-" + appTitle + "-"
 					+ filenameExportTime + ".json";
 			StringWriter dataStream = new StringWriter();
 
-			train.getDataManager().dumpDatabaseAsJSON(dataStream);
+			train.data().dumpDatabaseAsJSON(dataStream);
 
 			MimeMessage msg = new MimeMessage(session);
 			msg.setFrom(new InternetAddress(from));
 
 			// Add all directors as recipients
-			for (User d : train.getUsersManager().get(User.Type.Director)) {
+			for (User d : train.users().get(User.Type.Director)) {
 				msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
 						d.getPrimaryEmail().getEmail()));
 			}
@@ -101,39 +134,6 @@ public class Export {
 		}
 
 		return true;
-	}
-
-	public static class ExportDataSource implements javax.activation.DataSource {
-
-		private final String data;
-		private final String name;
-
-		public ExportDataSource(String name, StringWriter dataStream) {
-			this.name = name;
-			this.data = dataStream.toString();
-		}
-
-		@Override
-		public String getContentType() {
-			return "text/plain";
-		}
-
-		@Override
-		public InputStream getInputStream() throws IOException {
-			return new ByteArrayInputStream(data.getBytes());
-		}
-
-		@Override
-		public String getName() {
-			return this.name;
-		}
-
-		@Override
-		public OutputStream getOutputStream() throws IOException {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
 	}
 
 }

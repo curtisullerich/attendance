@@ -1,15 +1,17 @@
 package edu.iastate.music.marching.attendance.model.interact;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.Interval;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import com.google.appengine.api.datastore.Query.FilterOperator;
 
@@ -21,16 +23,19 @@ import edu.iastate.music.marching.attendance.model.store.User;
 
 public class MobileDataManager {
 
-	private static final Logger log = Logger
-			.getLogger(MobileDataManager.class.getName());
+	private static final Logger log = Logger.getLogger(MobileDataManager.class
+			.getName());
 
 	private static final String NEWLINE = "&newline&";
 	private static final String SEPARATOR = "&split&";
-	private static final SimpleDateFormat MOBILE_DATETIME_FORMAT = new SimpleDateFormat(
-			"yyyy-MM-dd HHmm");
-			
-	private static final Object EVENT_TYPE_REHERSAL = null;
-	private static final Object EVENT_TYPE_PERFORMANCE = null;
+	private static final DateTimeFormatter MOBILE_DATETIME_FORMATTER = DateTimeFormat
+			.forPattern("yyyy-MM-dd HHmm");
+
+	private static DateTime ParseDateTime(String datetext, String timetext,
+			DateTimeZone zone) {
+		return MOBILE_DATETIME_FORMATTER.withZone(zone).parseDateTime(
+				datetext + " " + timetext);
+	}
 
 	private DataTrain train;
 
@@ -41,8 +46,8 @@ public class MobileDataManager {
 	public String getClassList() {
 
 		// Get all students and TA's
-		List<User> users = this.train.getUsersManager().get(
-				User.Type.Student, User.Type.TA);
+		List<User> users = this.train.users().get(User.Type.Student,
+				User.Type.TA);
 
 		StringBuilder sb = new StringBuilder();
 
@@ -80,18 +85,22 @@ public class MobileDataManager {
 		return sb.toString();
 	}
 
+	public List<MobileDataUpload> getUploads() {
+		return this.train.find(MobileDataUpload.class).returnAll().now();
+	}
+
+	public List<MobileDataUpload> getUploads(User uploader) {
+		return this.train
+				.find(MobileDataUpload.class)
+				.addFilter(MobileDataUpload.FIELD_UPLOADER,
+						FilterOperator.EQUAL, uploader).returnAll().now();
+	}
+
 	public String pushMobileData(String data, User uploader)
 			throws IllegalArgumentException {
-				
-		// Set the correct timezone
-		MOBILE_DATETIME_FORMAT.setTimeZone(this.train.getAppDataManager().get().getTimeZone());
-
 		// First let's log what is being uploaded
-		MobileDataUpload upload = ModelFactory.newMobileDataUpload(
-				uploader,
-				Calendar.getInstance(
-						this.train.getAppDataManager().get().getTimeZone())
-						.getTime(), data);
+		MobileDataUpload upload = ModelFactory.newMobileDataUpload(uploader,
+				new DateTime(), data);
 		this.train.getDataStore().store(upload);
 
 		try {
@@ -119,6 +128,15 @@ public class MobileDataManager {
 		}
 	}
 
+	public void scrubUploader(User uploader) {
+		List<MobileDataUpload> uploads = getUploads(uploader);
+
+		for (MobileDataUpload upload : uploads) {
+			upload.setUploader(null);
+			this.train.getDataStore().update(upload);
+		}
+	}
+
 	private String uploadMobileDataImplementation(String data, User uploader)
 			throws IllegalArgumentException {
 		// Check we actually have something to work with
@@ -126,6 +144,8 @@ public class MobileDataManager {
 			log.log(Level.INFO, "Empty data upload by " + uploader.getId());
 			throw new IllegalArgumentException("Empty data uploaded");
 		}
+
+		DateTimeZone zone = this.train.appData().get().getTimeZone();
 
 		String[] fullLines = data.split(NEWLINE);
 
@@ -155,9 +175,9 @@ public class MobileDataManager {
 
 		// try {
 
-		EventManager ec = this.train.getEventManager();
-		AbsenceManager ac = this.train.getAbsenceManager();
-		UserManager uc = this.train.getUsersManager();
+		EventManager ec = this.train.events();
+		AbsenceManager ac = this.train.absences();
+		UserManager uc = this.train.users();
 
 		// List<Event> localEvents = new LinkedList<Event>();
 
@@ -167,22 +187,22 @@ public class MobileDataManager {
 			// the mobile app is re-done
 			String[] event = s.split(SEPARATOR);
 			String strType = event[1].toLowerCase().trim();
-			String strDate = event[4];
+			String strDateTime = event[4];
 			String startTime = event[5];
 			String endTime = event[6];
 
-			Date start;
+			DateTime start;
 			try {
-				start = MOBILE_DATETIME_FORMAT.parse(strDate + " " + startTime);
-			} catch (ParseException e) {
+				start = ParseDateTime(strDateTime, startTime, zone);
+			} catch (IllegalArgumentException e) {
 				throw new IllegalArgumentException(
 						"Unable to parse event start datetime from: " + s, e);
 			}
 
-			Date end;
+			DateTime end;
 			try {
-				end = MOBILE_DATETIME_FORMAT.parse(strDate + " " + endTime);
-			} catch (ParseException e) {
+				end = ParseDateTime(strDateTime, endTime, zone);
+			} catch (IllegalArgumentException e) {
 				throw new IllegalArgumentException(
 						"Unable to parse event end datetime from: " + s, e);
 			}
@@ -190,11 +210,11 @@ public class MobileDataManager {
 			Event.Type type = Event.Type.valueOf(strType.substring(0, 1)
 					.toUpperCase() + strType.substring(1));
 
-			Event newEvent = ec.createOrUpdate(type, start, end);
+			Event newEvent = ec.createOrUpdate(type, new Interval(start, end));
 
 			if (newEvent == null) {
 				errors.add("Insert of event failed: " + type.toString() + " "
-						+ strDate + " from " + startTime + " to " + endTime);
+						+ strDateTime + " from " + startTime + " to " + endTime);
 			} else {
 				successfulEvents++;
 			}
@@ -207,17 +227,16 @@ public class MobileDataManager {
 			Absence a = null;
 
 			if (s.contains("tardy")) {
-				String firstName = parts[1];
-				String lastName = parts[2];
+				// String firstName = parts[1];
+				// String lastName = parts[2];
 				String netid = parts[3];
-				String strDate = parts[4];
+				String strDateTime = parts[4];
 				String strTime = parts[5];
 
-				Date time;
+				DateTime time;
 				try {
-					time = MOBILE_DATETIME_FORMAT
-							.parse(strDate + " " + strTime);
-				} catch (ParseException e) {
+					time = ParseDateTime(strDateTime, strTime, zone);
+				} catch (IllegalArgumentException e) {
 					throw new IllegalArgumentException(
 							"Unable to parse start datetime in:" + s, e);
 				}
@@ -230,48 +249,45 @@ public class MobileDataManager {
 
 			} else if (s.contains("absent")) {
 
-				String firstName = parts[1];
-				String lastName = parts[2];
+				// String firstName = parts[1];
+				// String lastName = parts[2];
 				String netid = parts[3];
-				String strDate = parts[4];
+				String strDateTime = parts[4];
 				String strStartTime = parts[5];
 				String strEndTime = parts[6];
 
-				Date start;
+				DateTime start;
 				try {
-					start = MOBILE_DATETIME_FORMAT.parse(strDate + " "
-							+ strStartTime);
-				} catch (ParseException e) {
+					start = ParseDateTime(strDateTime, strStartTime, zone);
+				} catch (IllegalArgumentException e) {
 					throw new IllegalArgumentException(
 							"Unable to parse start datetime in:" + s, e);
 				}
-				Date end;
+				DateTime end;
 				try {
-					end = MOBILE_DATETIME_FORMAT.parse(strDate + " "
-							+ strEndTime);
-				} catch (ParseException e) {
+					end = ParseDateTime(strDateTime, strEndTime, zone);
+				} catch (IllegalArgumentException e) {
 					throw new IllegalArgumentException(
 							"Unable to parse end datetime in:" + s, e);
 				}
 
 				User student = uc.get(netid);
 
-				a = ac.createOrUpdateAbsence(student, start, end);
+				a = ac.createOrUpdateAbsence(student, new Interval(start, end));
 
 				updatedStudents.add(student);
 
 			} else if (s.toLowerCase().contains("earlycheckout")) {
-				String firstName = parts[1];
-				String lastName = parts[2];
+				// String firstName = parts[1];
+				// String lastName = parts[2];
 				String netid = parts[3];
-				String strDate = parts[4];
+				String strDateTime = parts[4];
 				String strTime = parts[5];
 
-				Date time;
+				DateTime time;
 				try {
-					time = MOBILE_DATETIME_FORMAT
-							.parse(strDate + " " + strTime);
-				} catch (ParseException e) {
+					time = ParseDateTime(strDateTime, strTime, zone);
+				} catch (IllegalArgumentException e) {
 					throw new IllegalArgumentException(
 							"Unable to parse start datetime in:" + s, e);
 				}
@@ -294,7 +310,7 @@ public class MobileDataManager {
 			}
 		}
 
-		// Update grades
+		// UpDateTime grades
 		for (User student : updatedStudents) {
 			// TODO we could optimize here by setting all the grades and then
 			// using an updateAll method in UserController. Just don't have time
@@ -318,25 +334,5 @@ public class MobileDataManager {
 				+ " events." + "\n" + "Inserted " + successfulAbscenses + "/"
 				+ otherLines.size() + " absences/tardies/early checkouts."
 				+ "\n" + errorString;
-	}
-
-	public List<MobileDataUpload> getUploads() {
-		return this.train.find(MobileDataUpload.class).returnAll().now();
-	}
-
-	public List<MobileDataUpload> getUploads(User uploader) {
-		return this.train
-				.find(MobileDataUpload.class)
-				.addFilter(MobileDataUpload.FIELD_UPLOADER,
-						FilterOperator.EQUAL, uploader).returnAll().now();
-	}
-
-	public void scrubUploader(User uploader) {
-		List<MobileDataUpload> uploads = getUploads(uploader);
-
-		for (MobileDataUpload upload : uploads) {
-			upload.setUploader(null);
-			this.train.getDataStore().update(upload);
-		}
 	}
 }

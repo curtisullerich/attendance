@@ -1,4 +1,4 @@
-package edu.iastate.music.marching.attendance.test.mock;
+package edu.iastate.music.marching.attendance.test.util;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -13,11 +13,11 @@ import edu.iastate.music.marching.attendance.util.PageBuilder;
 
 public class PublicServlet extends AbstractBaseServlet {
 
-	private static final long serialVersionUID = 9184644423443871525L;
-
 	private enum Page {
 		bugreport, faq;
 	}
+
+	private static final long serialVersionUID = 9184644423443871525L;
 
 	private static final String SERVLET_PATH = "public";
 
@@ -41,13 +41,6 @@ public class PublicServlet extends AbstractBaseServlet {
 
 	}
 
-	private void faq(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		PageBuilder page = new PageBuilder(Page.faq, SERVLET_PATH);
-		page.setPageTitle("Attendance FAQ");
-		page.passOffToJsp(req, resp);
-	}
-
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -67,14 +60,21 @@ public class PublicServlet extends AbstractBaseServlet {
 
 	}
 
+	private void faq(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		PageBuilder page = new PageBuilder(Page.faq, SERVLET_PATH);
+		page.setPageTitle("Attendance FAQ");
+		page.passOffToJsp(req, resp);
+	}
+
 	private void reportBug(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		DataTrain datatrain = DataTrain.getAndStartTrain();
+		DataTrain datatrain = DataTrain.depart();
 
 		String severity = req.getParameter("Severity");
 		String description = req.getParameter("Description");
 		String redir = req.getParameter("Redirect");
-		User user = datatrain.getAuthManager().getCurrentUser(req.getSession());
+		User user = datatrain.auth().getCurrentUser(req.getSession());
 		String userAgent = req.getHeader("User-Agent");
 		String error_messages = req.getParameter("error_messages");
 		String field_values = req.getParameter("FieldValues");
@@ -96,8 +96,8 @@ public class PublicServlet extends AbstractBaseServlet {
 					+ description + "\n";
 		}
 
-		datatrain.getDataManager().sendBugReportEmail(user, severity, redir,
-				userAgent, mobileSite, description);
+		datatrain.data().sendBugReportEmail(user, severity, redir, userAgent,
+				mobileSite, description);
 
 		String append = "?";
 		if (redir.contains("?")) {

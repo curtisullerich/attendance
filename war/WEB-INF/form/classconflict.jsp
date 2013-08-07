@@ -71,7 +71,7 @@
 						<c:forEach items="${daysOfWeek}" varStatus="status" var="day">
 							<%//the purpose of the varStatus is to put an integer as the value to be sent
 							//to the server so we can just to a parseInt instead of an iteration to get the day%>
-							<option value="${status.count}" ${DayOfWeek eq day ? 'selected' : ''}>${day}</option>
+							<option value="${day}" ${DayOfWeek eq day ? 'selected' : ''}>${day}</option>
 						</c:forEach>
 					</select>
 					<br/>

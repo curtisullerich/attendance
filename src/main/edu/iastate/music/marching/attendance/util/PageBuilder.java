@@ -47,39 +47,38 @@ public class PageBuilder {
 
 		// Save parameters
 		mJSPPath = JSP_PATH_PRE + jsp_simple_path + JSP_PATH_POST;
-		
-		mDataTrain = train;
-		
-		mAppData = mDataTrain.getAppDataManager().get();
 
-		mPageTemplateBean = new PageTemplateBean(jsp_simple_path, mAppData, mDataTrain.getAuthManager());
+		mDataTrain = train;
+
+		mAppData = mDataTrain.appData().get();
+
+		mPageTemplateBean = new PageTemplateBean(jsp_simple_path, mAppData,
+				mDataTrain.auth());
 
 		mPageTemplateBean.setTitle(mAppData.getTitle());
 	}
 
 	public <T extends Enum<T>> PageBuilder(T page, String jsp_servlet_path) {
-		this(jsp_servlet_path + "/" + page.name(), DataTrain.getAndStartTrain());
+		this(jsp_servlet_path + "/" + page.name(), DataTrain.depart());
 	}
-	
-	public <T extends Enum<T>> PageBuilder(T page, String jsp_servlet_path, DataTrain dataTrain) {
+
+	public <T extends Enum<T>> PageBuilder(T page, String jsp_servlet_path,
+			DataTrain dataTrain) {
 		this(jsp_servlet_path + "/" + page.name(), dataTrain);
 	}
 
-	public PageBuilder setPageTitle(String title) {
-		mPageTemplateBean.setTitle(title + " - " + mAppData.getTitle());
-
-		return this;
-	}
-
-	public PageBuilder setAttribute(String name, Object value) {
-		attribute_map.put(name, value);
-
-		return this;
+	private void initialPageSetup(HttpServletRequest req,
+			HttpServletResponse resp) {
+		// Copy over any success message or redirect url
+		req.setAttribute(ATTR_SUCCESS_MESSAGE,
+				req.getParameter((PARAM_SUCCESS_MESSAGE)));
+		req.setAttribute(ATTR_REDIRECT_URL,
+				req.getParameter((PARAM_REDIRECT_URL)));
 	}
 
 	public void passOffToJsp(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		
+
 		// Set some default attributes
 		initialPageSetup(req, resp);
 
@@ -98,11 +97,16 @@ public class PageBuilder {
 		d.forward(req, resp);
 	}
 
-	private void initialPageSetup(HttpServletRequest req,
-			HttpServletResponse resp) {
-		// Copy over any success message or redirect url
-		req.setAttribute(ATTR_SUCCESS_MESSAGE, req.getParameter((PARAM_SUCCESS_MESSAGE)));
-		req.setAttribute(ATTR_REDIRECT_URL, req.getParameter((PARAM_REDIRECT_URL)));
+	public PageBuilder setAttribute(String name, Object value) {
+		attribute_map.put(name, value);
+
+		return this;
+	}
+
+	public PageBuilder setPageTitle(String title) {
+		mPageTemplateBean.setTitle(title + " - " + mAppData.getTitle());
+
+		return this;
 	}
 
 }

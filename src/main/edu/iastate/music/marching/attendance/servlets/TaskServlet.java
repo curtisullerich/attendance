@@ -15,6 +15,10 @@ import edu.iastate.music.marching.attendance.tasks.Import;
 
 public class TaskServlet extends AbstractBaseServlet {
 
+	private enum Page {
+		export, import_, export_daily;
+	}
+
 	private static final long serialVersionUID = 2390747813204817960L;
 
 	private static final String SERVLET_PATH = "task";
@@ -24,38 +28,11 @@ public class TaskServlet extends AbstractBaseServlet {
 	private static final Logger LOG = Logger.getLogger(TaskServlet.class
 			.getName());
 
-	private enum Page {
-		export, import_, export_daily;
-	}
-
 	public static final String EXPORT_DATA_URL = pageToUrl(Page.export,
 			SERVLET_PATH);
 
 	public static final String IMPORT_DATA_URL = pageToUrl(Page.import_,
 			SERVLET_PATH);
-
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		Page page = parsePathInfo(req.getPathInfo(), Page.class);
-
-		if (page == null)
-			ErrorServlet.showError(req, resp, 404);
-		else
-			switch (page) {
-			case export:
-				doExport(req, resp);
-				break;
-			case export_daily:
-				doDailyExport(req, resp);
-				break;
-			case import_:
-				doImport(req, resp);
-				break;
-			default:
-				ErrorServlet.showError(req, resp, 404);
-			}
-	}
 
 	private void doDailyExport(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
@@ -63,10 +40,10 @@ public class TaskServlet extends AbstractBaseServlet {
 
 			LOG.info("Performing the daily full data export.");
 
-			DataTrain train = DataTrain.getAndStartTrain();
+			DataTrain train = DataTrain.depart();
 
 			// Check if we should perform an export based on preferences
-			if (train.getAppDataManager().get().isCronExportEnabled()) {
+			if (train.appData().get().isCronExportEnabled()) {
 
 				Export.performExport();
 
@@ -105,10 +82,10 @@ public class TaskServlet extends AbstractBaseServlet {
 			throws IOException {
 		LOG.info("Doing full data import.");
 
-		DataTrain dt = DataTrain.getAndStartTrain();
+		DataTrain dt = DataTrain.depart();
 
 		long id = Long.parseLong(req.getParameter(IMPORT_PARAM_STOREID));
-		ImportData importData = dt.getDataManager().getImportData(id);
+		ImportData importData = dt.data().getImportData(id);
 
 		try {
 			Import.performImport(importData);
@@ -118,10 +95,33 @@ public class TaskServlet extends AbstractBaseServlet {
 
 		try {
 			// Always delete the import data afterwards
-			dt.getDataManager().removeImportData(importData);
+			dt.data().removeImportData(importData);
 		} finally {
 			// Never retry, avoids infinite loops
 			resp.sendError(200);
 		}
+	}
+
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		Page page = parsePathInfo(req.getPathInfo(), Page.class);
+
+		if (page == null)
+			ErrorServlet.showError(req, resp, 404);
+		else
+			switch (page) {
+			case export:
+				doExport(req, resp);
+				break;
+			case export_daily:
+				doDailyExport(req, resp);
+				break;
+			case import_:
+				doImport(req, resp);
+				break;
+			default:
+				ErrorServlet.showError(req, resp, 404);
+			}
 	}
 }

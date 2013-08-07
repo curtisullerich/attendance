@@ -1,12 +1,13 @@
 package edu.iastate.music.marching.attendance.test.unit.model.interact;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.Interval;
+import org.joda.time.LocalDate;
 import org.junit.Test;
 
 import edu.iastate.music.marching.attendance.model.interact.AbsenceManager;
@@ -17,13 +18,12 @@ import edu.iastate.music.marching.attendance.model.interact.MobileDataManager;
 import edu.iastate.music.marching.attendance.model.interact.UserManager;
 import edu.iastate.music.marching.attendance.model.store.Absence;
 import edu.iastate.music.marching.attendance.model.store.Event;
-import edu.iastate.music.marching.attendance.model.store.Form;
 import edu.iastate.music.marching.attendance.model.store.User;
-import edu.iastate.music.marching.attendance.test.AbstractTest;
+import edu.iastate.music.marching.attendance.test.AbstractDatastoreTest;
 import edu.iastate.music.marching.attendance.test.TestConfig;
 import edu.iastate.music.marching.attendance.test.util.Users;
 
-public class UserManagerTest extends AbstractTest {
+public class UserManagerTest extends AbstractDatastoreTest {
 
 	public static final String SINGLE_ABSENCE_STUDENT1_TESTDATA = "tardyStudent&split&el&split&Starster&split&studenttt&split&2012-05-03&split&0109&split&|&split&null&newline&";
 
@@ -35,7 +35,7 @@ public class UserManagerTest extends AbstractTest {
 		// Setup
 		DataTrain train = getDataTrain();
 
-		UserManager uc = train.getUsersManager();
+		UserManager uc = train.users();
 
 		Users.createDirector(uc, "director", "I am", "The Director");
 
@@ -61,7 +61,7 @@ public class UserManagerTest extends AbstractTest {
 
 		DataTrain train = getDataTrain();
 
-		UserManager uc = train.getUsersManager();
+		UserManager uc = train.users();
 
 		Users.createStudent(uc, "studenttt", "123456789", "I am", "A Student",
 				10, "Being Silly", User.Section.AltoSax);
@@ -102,19 +102,20 @@ public class UserManagerTest extends AbstractTest {
 
 		DataTrain train = getDataTrain();
 
-		UserManager uc = train.getUsersManager();
-		AbsenceManager ac = train.getAbsenceManager();
-		FormManager fc = train.getFormsManager();
-		MobileDataManager mdc = train.getMobileDataManager();
+		UserManager uc = train.users();
+		AbsenceManager ac = train.absences();
+		FormManager fc = train.forms();
+		MobileDataManager mdc = train.mobileData();
 
 		// Student 1 setup, the user to be deleted
 		User student1 = Users.createStudent(uc, "studenttt", "123456789",
 				"I am", "A Student", 10, "Being Silly", User.Section.AltoSax);
 
-		ac.createOrUpdateAbsence(student1, null);
-		ac.createOrUpdateAbsence(student1, null);
+		ac.createOrUpdateAbsence(student1, (Event) null);
+		ac.createOrUpdateAbsence(student1, (Event) null);
 
-		Form student1Form = fc.createPerformanceAbsenceForm(student1, new Date(), "Some reason");
+		fc.createPerformanceAbsenceForm(student1, new LocalDate(),
+				"Some reason");
 
 		mdc.pushMobileData(SINGLE_ABSENCE_STUDENT1_TESTDATA, student1);
 
@@ -122,9 +123,9 @@ public class UserManagerTest extends AbstractTest {
 		User student2 = Users
 				.createStudent(uc, "studenttt2", "123456780", "I am2",
 						"A Student2", 10, "Being Silly2", User.Section.AltoSax);
-		ac.createOrUpdateAbsence(student2, null);
+		ac.createOrUpdateAbsence(student2, (Event) null);
 
-		Form student2Form = fc.createPerformanceAbsenceForm(student2, new Date(),
+		fc.createPerformanceAbsenceForm(student2, new LocalDate(),
 				"Some other reason");
 
 		mdc.pushMobileData(SINGLE_ABSENCE_STUDENT2_TESTDATA, student2);
@@ -165,7 +166,7 @@ public class UserManagerTest extends AbstractTest {
 
 		DataTrain train = getDataTrain();
 
-		UserManager uc = train.getUsersManager();
+		UserManager uc = train.users();
 
 		User s1 = Users.createStudent(uc, "student1", "123456789", "First",
 				"last", 2, "major", User.Section.AltoSax);
@@ -203,55 +204,45 @@ public class UserManagerTest extends AbstractTest {
 	public void testGrade() {
 		DataTrain train = getDataTrain();
 
-		UserManager uc = train.getUsersManager();
-		EventManager ec = train.getEventManager();
-		AbsenceManager ac = train.getAbsenceManager();
+		DateTimeZone zone = train.appData().get().getTimeZone();
+		UserManager uc = train.users();
+		EventManager ec = train.events();
+		AbsenceManager ac = train.absences();
 
-		User s1 = Users.createStudent(uc, "student1", "123456789", "John",
-				"Cox", 2, "major", User.Section.AltoSax);
+		User s1 = Users.createDefaultStudent(uc);
 
 		// should be A initially
 		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
 
-		Calendar start = Calendar.getInstance();
-		start.set(2012, 7, 18, 16, 30);
-		Calendar end = Calendar.getInstance();
-		end.set(2012, 7, 18, 17, 20);
+		DateTime start = new DateTime(2012, 7, 18, 16, 30, 0, 0, zone);
+		DateTime end = new DateTime(2012, 7, 18, 17, 20, 0, 0, zone);
 
-		Event e1 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
-				end.getTime());
+		Interval i1 = new Interval(start, end);
+		Event e1 = ec.createOrUpdate(Event.Type.Rehearsal, i1);
 		Absence a1 = ac.createOrUpdateAbsence(s1, e1);
 		uc.update(s1);
 		assertEquals(User.Grade.B, uc.get(s1.getId()).getGrade());
 
-		start.add(Calendar.DATE, 1);
-		end.add(Calendar.DATE, 1);
-		Event e2 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
-				end.getTime());
+		Interval i2 = new Interval(start.plusDays(1), end.plusDays(1));
+		Event e2 = ec.createOrUpdate(Event.Type.Rehearsal, i2);
 		Absence a2 = ac.createOrUpdateAbsence(s1, e2);
 		uc.update(s1);
 		assertEquals(User.Grade.C, uc.get(s1.getId()).getGrade());
 
-		start.add(Calendar.DATE, 1);
-		end.add(Calendar.DATE, 1);
-		Event e3 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
-				end.getTime());
+		Interval i3 = new Interval(start.plusDays(2), end.plusDays(2));
+		Event e3 = ec.createOrUpdate(Event.Type.Rehearsal, i3);
 		Absence a3 = ac.createOrUpdateAbsence(s1, e3);
 		uc.update(s1);
 		assertEquals(User.Grade.D, uc.get(s1.getId()).getGrade());
 
-		start.add(Calendar.DATE, 1);
-		end.add(Calendar.DATE, 1);
-		Event e4 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
-				end.getTime());
+		Interval i4 = new Interval(start.plusDays(3), end.plusDays(3));
+		Event e4 = ec.createOrUpdate(Event.Type.Rehearsal, i4);
 		Absence a4 = ac.createOrUpdateAbsence(s1, e4);
 		uc.update(s1);
 		assertEquals(User.Grade.F, uc.get(s1.getId()).getGrade());
 
-		start.add(Calendar.DATE, 1);
-		end.add(Calendar.DATE, 1);
-		Event e5 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
-				end.getTime());
+		Interval i5 = new Interval(start.plusDays(4), end.plusDays(4));
+		Event e5 = ec.createOrUpdate(Event.Type.Rehearsal, i5);
 		Absence a5 = ac.createOrUpdateAbsence(s1, e5);
 		uc.update(s1);
 		assertEquals(User.Grade.F, uc.get(s1.getId()).getGrade());
@@ -279,26 +270,23 @@ public class UserManagerTest extends AbstractTest {
 		ac.updateAbsence(a2);
 		assertEquals(User.Grade.Bminus, uc.get(s1.getId()).getGrade());
 
-		start.add(Calendar.DATE, 1);
-		end.add(Calendar.DATE, 1);
-		Calendar tardyTime = (Calendar) start.clone();
-		tardyTime.add(Calendar.MINUTE, 10);
-		Calendar outTime = (Calendar) start.clone();
+		Interval i6 = new Interval(start.plusDays(5), end.plusDays(5));
+		DateTime tardyTime = i6.getStart().plusMinutes(10);
+		DateTime outTime = i6.getStart().plusMinutes(20);
 
 		// creating an un-anchored tardy
-		Absence a6 = ac.createOrUpdateTardy(s1, tardyTime.getTime());
+		Absence a6 = ac.createOrUpdateTardy(s1, tardyTime);
 		ac.updateAbsence(a6);
 		assertEquals(User.Grade.Bminus, uc.get(s1.getId()).getGrade());
 
-		outTime.add(Calendar.MINUTE, 20);
-		Absence a7 = ac.createOrUpdateEarlyCheckout(s1, outTime.getTime());
+		Absence a7 = ac.createOrUpdateEarlyCheckout(s1, outTime);
 		a7 = ac.updateAbsence(a7);
 		assertEquals(Absence.Type.EarlyCheckOut, a7.getType());
 		assertEquals(User.Grade.Bminus, uc.get(s1.getId()).getGrade());
 
 		// auto-linking should happen here, upon creation
-		Event e6 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
-				end.getTime());
+		// Event e6 =
+		ec.createOrUpdate(Event.Type.Rehearsal, i6);
 		// a6.setEvent(e6);
 		// TODO my question here: is there a way to know for sure the types of
 		// a6 and a7 after creating the event? Because automatic linking
@@ -320,64 +308,56 @@ public class UserManagerTest extends AbstractTest {
 		// TODO test that grade is affected after linking, but not before
 		DataTrain train = getDataTrain();
 
-		UserManager uc = train.getUsersManager();
-		EventManager ec = train.getEventManager();
-		AbsenceManager ac = train.getAbsenceManager();
+		UserManager uc = train.users();
+		EventManager ec = train.events();
+		AbsenceManager ac = train.absences();
+		DateTimeZone zone = train.appData().get().getTimeZone();
 
-		User s1 = Users.createStudent(uc, "student1", "123456789", "John",
-				"Cox", 2, "major", User.Section.AltoSax);
+		User s1 = Users.createDefaultStudent(uc);
 
 		// should be A initially
 		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
 
-		Calendar start = Calendar.getInstance();
-		start.set(2012, 9, 18, 16, 30);
-		Calendar end = Calendar.getInstance();
-		end.set(2012, 9, 18, 17, 50);
+		DateTime start = new DateTime(2012, 9, 18, 16, 30, 0, 0, zone);
+		DateTime end = new DateTime(2012, 9, 18, 17, 50, 0, 0, zone);
+		DateTime tardy = new DateTime(2012, 9, 18, 16, 40, 0, 0, zone);
 
-		Calendar tardy = Calendar.getInstance();
-		tardy.set(2012, 9, 18, 16, 40);
-		ac.createOrUpdateTardy(s1, tardy.getTime());
-
+		ac.createOrUpdateTardy(s1, tardy);
 		uc.update(s1);
 
 		// there's a tardy, but it's not linked
 		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
-		ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(), end.getTime());
+		ec.createOrUpdate(Event.Type.Rehearsal, new Interval(start, end));
 
 		// now that there's a matching event, it should link
 		assertEquals(User.Grade.Aminus, uc.get(s1.getId()).getGrade());
 
-		start.add(Calendar.DATE, 1);
-		end.add(Calendar.DATE, 1);
-		tardy.add(Calendar.DATE, 1);
-		ac.createOrUpdateEarlyCheckout(s1, tardy.getTime());
-		ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(), end.getTime());
+		start = start.plusDays(1);
+		end = end.plusDays(1);
+		tardy = tardy.plusDays(1);
+		ac.createOrUpdateEarlyCheckout(s1, tardy);
+		ec.createOrUpdate(Event.Type.Rehearsal, new Interval(start, end));
 		assertEquals(User.Grade.Bplus, uc.get(s1.getId()).getGrade());
 
-		start.add(Calendar.DATE, 1);
-		end.add(Calendar.DATE, 1);
-		tardy.add(Calendar.DATE, 1);
-		ac.createOrUpdateEarlyCheckout(s1, tardy.getTime());
-		ec.createOrUpdate(Event.Type.Performance, start.getTime(),
-				end.getTime());
+		start = start.plusDays(1);
+		end = end.plusDays(1);
+		tardy = tardy.plusDays(1);
+		ac.createOrUpdateEarlyCheckout(s1, tardy);
+		ec.createOrUpdate(Event.Type.Performance, new Interval(start, end));
 		assertEquals(User.Grade.Bminus, uc.get(s1.getId()).getGrade());
 
-		start.add(Calendar.DATE, 1);
-		end.add(Calendar.DATE, 1);
-		tardy.add(Calendar.DATE, 1);
-		ac.createOrUpdateTardy(s1, tardy.getTime());
-		ec.createOrUpdate(Event.Type.Performance, start.getTime(),
-				end.getTime());
+		start = start.plusDays(1);
+		end = end.plusDays(1);
+		tardy = tardy.plusDays(1);
+		ac.createOrUpdateTardy(s1, tardy);
+		ec.createOrUpdate(Event.Type.Performance, new Interval(start, end));
 		assertEquals(User.Grade.C, uc.get(s1.getId()).getGrade());
 
-		start.add(Calendar.DATE, 1);
-		end.add(Calendar.DATE, 1);
-		tardy.add(Calendar.DATE, 1);
-		ac.createOrUpdateAbsence(
-				s1,
-				ec.createOrUpdate(Event.Type.Performance, start.getTime(),
-						end.getTime()));
+		start = start.plusDays(1);
+		end = end.plusDays(1);
+		tardy = tardy.plusDays(1);
+		ac.createOrUpdateAbsence(s1, ec.createOrUpdate(Event.Type.Performance,
+				new Interval(start, end)));
 		assertEquals(User.Grade.F, uc.get(s1.getId()).getGrade());
 
 		for (Absence a : ac.get(s1)) {
@@ -389,40 +369,30 @@ public class UserManagerTest extends AbstractTest {
 	}
 
 	@Test
-	public void nonOverLappingAbsencesTest() {
+	public void testNonOverlappingAbsences() {
 		DataTrain train = getDataTrain();
 
-		UserManager uc = train.getUsersManager();
-		EventManager ec = train.getEventManager();
-		AbsenceManager ac = train.getAbsenceManager();
+		UserManager uc = train.users();
+		EventManager ec = train.events();
+		AbsenceManager ac = train.absences();
+		DateTimeZone zone = train.appData().get().getTimeZone();
 
-		User s1 = Users.createStudent(uc, "student1", "123456789", "John",
-				"Cox", 2, "major", User.Section.AltoSax);
+		User s1 = Users.createDefaultStudent(uc);
 
-		Calendar start = Calendar.getInstance();
-		start.set(2012, 7, 18, 16, 30);
-		Calendar end = Calendar.getInstance();
-		end.set(2012, 7, 18, 17, 50);
+		DateTime start = new DateTime(2012, 7, 18, 16, 30, 0, 0, zone);
+		DateTime end = new DateTime(2012, 7, 18, 17, 50, 0, 0, zone);
+		DateTime tardy = start.plusMinutes(10);
+		DateTime early = start.plusMinutes(30);
 
-		Calendar tardy = (Calendar) start.clone();
-		Calendar early = (Calendar) start.clone();
-		System.out.println("tardy: " + tardy.getTime());
-		System.out.println("early: " + early.getTime());
-		tardy.add(Calendar.MINUTE, 10);
-		System.out.println("tardy: " + tardy.getTime());
-		System.out.println("early: " + early.getTime());
-		early.add(Calendar.MINUTE, 30);
-		System.out.println("tardy: " + tardy.getTime());
-		System.out.println("early: " + early.getTime());
 		// creating an un-anchored tardy
-		Absence a6 = ac.createOrUpdateTardy(s1, tardy.getTime());
+		Absence a6 = ac.createOrUpdateTardy(s1, tardy);
 		ac.updateAbsence(a6);
 
-		Absence a7 = ac.createOrUpdateEarlyCheckout(s1, early.getTime());
+		Absence a7 = ac.createOrUpdateEarlyCheckout(s1, early);
 		ac.updateAbsence(a7);
 
-		Event e6 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
-				end.getTime());
+		Event e6 = ec.createOrUpdate(Event.Type.Rehearsal, new Interval(start,
+				end));
 		a6.setEvent(e6);
 		a6 = ac.updateAbsence(a6);
 		assertEquals(Absence.Type.Tardy, a6.getType());
@@ -433,38 +403,33 @@ public class UserManagerTest extends AbstractTest {
 	}
 
 	@Test
-	public void overLappingAbsencesTest() {
+	public void testOverlappingAbsences() {
 		DataTrain train = getDataTrain();
 
-		UserManager uc = train.getUsersManager();
-		EventManager ec = train.getEventManager();
-		AbsenceManager ac = train.getAbsenceManager();
+		UserManager uc = train.users();
+		EventManager ec = train.events();
+		AbsenceManager ac = train.absences();
+		DateTimeZone zone = train.appData().get().getTimeZone();
 
-		User s1 = Users.createStudent(uc, "student1", "123456789", "John",
-				"Cox", 2, "major", User.Section.AltoSax);
+		User s1 = Users.createDefaultStudent(uc);
 
-		Calendar start = Calendar.getInstance();
-		start.set(2012, 7, 18, 16, 30);
-		Calendar end = Calendar.getInstance();
-		end.set(2012, 7, 18, 17, 50);
-
-		Calendar tardy = (Calendar) start.clone();
-		Calendar early = (Calendar) start.clone();
+		DateTime start = new DateTime(2012, 7, 18, 16, 30, 0, 0, zone);
+		DateTime end = new DateTime(2012, 7, 18, 17, 50, 0, 0, zone);
 
 		// so the check IN is AFTER the check OUT (shouldn't happen in real
 		// life)
-		tardy.add(Calendar.MINUTE, 20);
-		early.add(Calendar.MINUTE, 10);
+		DateTime tardy = start.plusMinutes(20);
+		DateTime early = start.plusMinutes(10);
 
 		// creating an un-anchored tardy
-		Absence a6 = ac.createOrUpdateTardy(s1, tardy.getTime());
+		Absence a6 = ac.createOrUpdateTardy(s1, tardy);
 		ac.updateAbsence(a6);
 
-		Absence a7 = ac.createOrUpdateEarlyCheckout(s1, early.getTime());
+		Absence a7 = ac.createOrUpdateEarlyCheckout(s1, early);
 		ac.updateAbsence(a7);
 
-		Event e6 = ec.createOrUpdate(Event.Type.Rehearsal, start.getTime(),
-				end.getTime());
+		// Event e6 =
+		ec.createOrUpdate(Event.Type.Rehearsal, new Interval(start, end));
 		assertEquals(Absence.Type.EarlyCheckOut, a7.getType());
 
 		// So, at this point, the logic in the event creation has automatically

@@ -10,6 +10,10 @@ import edu.iastate.music.marching.attendance.util.PageBuilder;
 
 public class ErrorServlet extends AbstractBaseServlet {
 
+	public enum Page {
+		index, unauthorized;
+	}
+
 	/**
 	 * 
 	 */
@@ -19,8 +23,15 @@ public class ErrorServlet extends AbstractBaseServlet {
 
 	public static final String URL = "/" + SERVLET_PATH;
 
-	public enum Page {
-		index, unauthorized;
+	public static String getLoginFailedUrl(HttpServletRequest req) {
+		return pageToUrl(Page.unauthorized, SERVLET_PATH);
+	}
+
+	public static void showError(HttpServletRequest req,
+			HttpServletResponse resp, int i) throws ServletException,
+			IOException {
+		new PageBuilder(Page.index, SERVLET_PATH).setPageTitle(
+				new Integer(i).toString() + " Error").passOffToJsp(req, resp);
 	}
 
 	@Override
@@ -40,17 +51,6 @@ public class ErrorServlet extends AbstractBaseServlet {
 		default:
 			showError(req, resp, 404);
 		}
-	}
-
-	public static void showError(HttpServletRequest req,
-			HttpServletResponse resp, int i) throws ServletException,
-			IOException {
-		new PageBuilder(Page.index, SERVLET_PATH).setPageTitle(
-				new Integer(i).toString() + " Error").passOffToJsp(req, resp);
-	}
-
-	public static String getLoginFailedUrl(HttpServletRequest req) {
-		return pageToUrl(Page.unauthorized, SERVLET_PATH);
 	}
 
 	private void showUnauthorized(HttpServletRequest req,
