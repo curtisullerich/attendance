@@ -71,6 +71,11 @@ for obj in newforms:
   u = newidentities[newid]
   del obj['messages']
   del obj['details']
+  obj['emailStatus'] = ""
+  obj['emailTo'] = ""
+  del obj ['emailStatus']
+  del obj['emailTo']
+
   obj['details'] = ""
   obj['student']['id'] = u['netid']
   if (obj['type'] == 'A'):
