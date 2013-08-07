@@ -18,11 +18,11 @@ import org.junit.Test;
 import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.servlets.DirectorServlet;
 import edu.iastate.music.marching.attendance.servlets.MobileAppDataServlet;
-import edu.iastate.music.marching.attendance.test.AbstractTest;
-import edu.iastate.music.marching.attendance.test.mock.ServletMock;
+import edu.iastate.music.marching.attendance.test.AbstractDatastoreTest;
+import edu.iastate.music.marching.attendance.test.util.ServletMocks;
 import edu.iastate.music.marching.attendance.test.util.Users;
 
-public class ServletAccess extends AbstractTest {
+public class ServletAccess extends AbstractDatastoreTest {
 
 	@Test
 	public void DirectorServlet_Student_ClassList_Test()
@@ -39,7 +39,7 @@ public class ServletAccess extends AbstractTest {
 
 		when(resp.getOutputStream()).thenReturn(sos);
 
-		ServletMock.doGet(MobileAppDataServlet.class, req, resp);
+		ServletMocks.doGet(MobileAppDataServlet.class, req, resp);
 
 		// Verify data is written to the servlet output stream
 		verify(sos).print("{\"error\":\"success\",\"data\":\"\"}");
@@ -59,7 +59,7 @@ public class ServletAccess extends AbstractTest {
 
 		when(resp.getOutputStream()).thenReturn(sos);
 
-		ServletMock.doGet(MobileAppDataServlet.class, req, resp);
+		ServletMocks.doGet(MobileAppDataServlet.class, req, resp);
 	}
 
 	@Test
@@ -77,7 +77,7 @@ public class ServletAccess extends AbstractTest {
 
 		when(resp.getOutputStream()).thenReturn(sos);
 
-		ServletMock.doGet(MobileAppDataServlet.class, req, resp);
+		ServletMocks.doGet(MobileAppDataServlet.class, req, resp);
 	}
 
 	@Test
@@ -88,7 +88,7 @@ public class ServletAccess extends AbstractTest {
 
 		setStudentSession(req);
 
-		ServletMock.doGet(DirectorServlet.class, req, resp);
+		ServletMocks.doGet(DirectorServlet.class, req, resp);
 
 		verifyUnauthorizedRedirect(req, resp, "director/index");
 	}
@@ -101,7 +101,7 @@ public class ServletAccess extends AbstractTest {
 
 		setTASession(req);
 
-		ServletMock.doGet(DirectorServlet.class, req, resp);
+		ServletMocks.doGet(DirectorServlet.class, req, resp);
 
 		verifyUnauthorizedRedirect(req, resp, "director/index");
 	}
@@ -114,7 +114,7 @@ public class ServletAccess extends AbstractTest {
 
 		setTASession(req);
 
-		ServletMock.doGet(DirectorServlet.class, req, resp);
+		ServletMocks.doGet(DirectorServlet.class, req, resp);
 
 		verifyUnauthorizedRedirect(req, resp, "director/nonexistant");
 	}
@@ -132,7 +132,7 @@ public class ServletAccess extends AbstractTest {
 		RequestDispatcher dispatcher = setupForwardTo(req, resp,
 				"/WEB-INF/director/index.jsp");
 
-		ServletMock.doGet(DirectorServlet.class, req, resp);
+		ServletMocks.doGet(DirectorServlet.class, req, resp);
 
 		verifyForwardTo(dispatcher, req, resp);
 	}
@@ -149,15 +149,9 @@ public class ServletAccess extends AbstractTest {
 
 		RequestDispatcher dispatcher = setupErrorRedirect(req, resp, 404);
 
-		ServletMock.doGet(DirectorServlet.class, req, resp);
+		ServletMocks.doGet(DirectorServlet.class, req, resp);
 
 		verifyErrorRedirect(dispatcher, req, resp, 404);
-	}
-
-	private void verifyLoginRedirect(HttpServletRequest req,
-			HttpServletResponse resp, String returnUrl)
-			throws ServletException, IOException {
-		verify(resp).sendRedirect("/auth/login");
 	}
 
 	private void verifyUnauthorizedRedirect(HttpServletRequest req,
@@ -199,9 +193,7 @@ public class ServletAccess extends AbstractTest {
 	private HttpServletRequest setStudentSession(HttpServletRequest req) {
 		HttpSession session = mock(HttpSession.class);
 		when(session.getAttribute("authenticated_user")).thenReturn(
-				Users.createStudent(getDataTrain().getUsersManager(),
-						"studenttt", "123456789", "I am", "A Student", 10,
-						"Being Silly", User.Section.AltoSax));
+				Users.createDefaultStudent(getDataTrain().users()));
 		when(req.getSession()).thenReturn(session);
 		return req;
 	}
@@ -209,18 +201,18 @@ public class ServletAccess extends AbstractTest {
 	private HttpServletRequest setDirectorSession(HttpServletRequest req) {
 		HttpSession session = mock(HttpSession.class);
 		when(session.getAttribute("authenticated_user")).thenReturn(
-				Users.createDirector(getDataTrain().getUsersManager(),
-						"director", "I am", "The Director"));
+				Users.createDefaultDirector(getDataTrain().users()));
 		when(req.getSession()).thenReturn(session);
 		return req;
 	}
 
 	private HttpServletRequest setTASession(HttpServletRequest req) {
 		HttpSession session = mock(HttpSession.class);
-		when(session.getAttribute("authenticated_user")).thenReturn(
-				Users.createTA(getDataTrain().getUsersManager(), "ta",
-						"123456789", "I am", "A TA", 10, "Being Silly",
-						User.Section.AltoSax));
+		when(session.getAttribute("authenticated_user"))
+				.thenReturn(
+						Users.createTA(getDataTrain().users(), "ta",
+								"123456789", "I am", "A TA", 10, "Being Silly",
+								User.Section.AltoSax));
 		when(req.getSession()).thenReturn(session);
 		return req;
 	}

@@ -14,17 +14,28 @@ public class AuthManager {
 
 	private static final String SESSION_USER_ATTRIBUTE = "authenticated_user";
 
-	private DataTrain train;
+	public static String getGoogleLoginURL(String redirect_url) {
+		UserService userService = UserServiceFactory.getUserService();
 
-	private User currentUser = null;
+		if (userService == null)
+			return null;
 
-	public AuthManager(DataTrain dataTrain) {
-		this.train = dataTrain;
+		return userService.createLoginURL(redirect_url);
 	}
 
-	private static void putUserInSession(User u, HttpSession session) {
-		if (session != null)
-			session.setAttribute(SESSION_USER_ATTRIBUTE, u);
+	public static String getGoogleLogoutURL(String redirect_url) {
+		UserService userService = UserServiceFactory.getUserService();
+
+		if (userService == null)
+			return null;
+
+		return userService.createLogoutURL(redirect_url);
+	}
+
+	public static com.google.appengine.api.users.User getGoogleUser() {
+		UserService userService = UserServiceFactory.getUserService();
+
+		return userService.getCurrentUser();
 	}
 
 	private static User getUserFromSession(HttpSession session) {
@@ -37,6 +48,15 @@ public class AuthManager {
 			return null;
 		else
 			return (User) u;
+	}
+
+	public static boolean isAdminLoggedIn() {
+		try {
+			UserService userService = UserServiceFactory.getUserService();
+			return userService.isUserAdmin();
+		} catch (IllegalStateException e) {
+			return false;
+		}
 	}
 
 	public static boolean isLoggedIn(HttpSession session,
@@ -57,6 +77,27 @@ public class AuthManager {
 		return false;
 	}
 
+	public static void logout(HttpSession session) {
+		session.removeAttribute(SESSION_USER_ATTRIBUTE);
+	}
+
+	private static void putUserInSession(User u, HttpSession session) {
+		if (session != null)
+			session.setAttribute(SESSION_USER_ATTRIBUTE, u);
+	}
+
+	public static void updateCurrentUser(User user, HttpSession session) {
+		putUserInSession(user, session);
+	}
+
+	private DataTrain train;
+
+	private User currentUser = null;
+
+	public AuthManager(DataTrain dataTrain) {
+		this.train = dataTrain;
+	}
+
 	public User getCurrentUser(HttpSession session) {
 
 		if (this.currentUser == null) {
@@ -69,20 +110,6 @@ public class AuthManager {
 		}
 
 		return currentUser;
-	}
-
-	public static com.google.appengine.api.users.User getGoogleUser() {
-		UserService userService = UserServiceFactory.getUserService();
-
-		return userService.getCurrentUser();
-	}
-
-	public static void updateCurrentUser(User user, HttpSession session) {
-		putUserInSession(user, session);
-	}
-
-	public static void logout(HttpSession session) {
-		session.removeAttribute(SESSION_USER_ATTRIBUTE);
 	}
 
 	public boolean login(HttpSession session) {
@@ -106,7 +133,7 @@ public class AuthManager {
 
 			// Check if there is a user in the system already for this
 			// google user
-			matchedUser = train.getUsersManager().get(google_users_email);
+			matchedUser = train.users().get(google_users_email);
 
 		} else if (ValidationUtil.validSecondaryEmail(google_users_email,
 				this.train)) {
@@ -114,7 +141,7 @@ public class AuthManager {
 
 			// Check if there is a user in the system already for this
 			// google user
-			matchedUser = train.getUsersManager().getSecondary(
+			matchedUser = train.users().getSecondary(
 					google_users_email);
 		} else {
 			throw new GoogleAccountException("Not a valid google account",
@@ -128,33 +155,6 @@ public class AuthManager {
 			// Did successful login
 			AuthManager.updateCurrentUser(matchedUser, session);
 			return true;
-		}
-	}
-
-	public static String getGoogleLoginURL(String redirect_url) {
-		UserService userService = UserServiceFactory.getUserService();
-
-		if (userService == null)
-			return null;
-
-		return userService.createLoginURL(redirect_url);
-	}
-
-	public static String getGoogleLogoutURL(String redirect_url) {
-		UserService userService = UserServiceFactory.getUserService();
-
-		if (userService == null)
-			return null;
-
-		return userService.createLogoutURL(redirect_url);
-	}
-
-	public static boolean isAdminLoggedIn() {
-		try {
-			UserService userService = UserServiceFactory.getUserService();
-			return userService.isUserAdmin();
-		} catch (IllegalStateException e) {
-			return false;
 		}
 	}
 

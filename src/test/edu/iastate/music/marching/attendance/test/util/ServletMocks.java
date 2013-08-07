@@ -1,4 +1,4 @@
-package edu.iastate.music.marching.attendance.test.mock;
+package edu.iastate.music.marching.attendance.test.util;
 
 import static org.mockito.Mockito.when;
 
@@ -9,14 +9,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class ServletMock {
+public class ServletMocks {
 	
 	public static <T extends HttpServlet> void doGet(Class<T> clazz,
 			HttpServletRequest req, HttpServletResponse resp)
 			throws InstantiationException, IllegalAccessException,
 			ServletException, IOException {
 
-		commonDoGetPostSetup(req, resp);
+		commonSetup(req, resp);
 
 		when(req.getMethod()).thenReturn("GET");
 
@@ -29,7 +29,7 @@ public class ServletMock {
 			throws InstantiationException, IllegalAccessException,
 			ServletException, IOException {
 
-		commonDoGetPostSetup(req, resp);
+		commonSetup(req, resp);
 
 		when(req.getMethod()).thenReturn("POST");
 
@@ -37,7 +37,7 @@ public class ServletMock {
 		s.service(req, resp);
 	}
 
-	private static void commonDoGetPostSetup(HttpServletRequest req,
+	private static void commonSetup(HttpServletRequest req,
 			HttpServletResponse resp) {
 		when(req.getHeader("User-Agent"))
 				.thenReturn(

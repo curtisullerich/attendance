@@ -1,8 +1,5 @@
 package edu.iastate.music.marching.attendance.util;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -10,8 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.google.appengine.api.datastore.Email;
 
+import edu.iastate.music.marching.attendance.App;
 import edu.iastate.music.marching.attendance.model.interact.DataTrain;
-import edu.iastate.music.marching.attendance.model.store.AppData;
 import edu.iastate.music.marching.attendance.model.store.User;
 
 public class ValidationUtil {
@@ -25,71 +22,51 @@ public class ValidationUtil {
 	private static final Pattern PATTERN_GTEMPEMAIL = Pattern
 			.compile("^([a-zA-Z0-9._%+-]+)%40([a-zA-Z0-9.-]+)@gtempaccount.com$");
 
-	private static final int MAX_STRING_LENGTH = 500;
-
 	private static final int MAX_TEXT_LENGTH = 50000;
+
+	public static boolean isPost(HttpServletRequest req) {
+		return "POST".equals(req.getMethod());
+	}
+
+	public static boolean isUniqueId(String id, Email primary) {
+		return DataTrain.depart().users().isUniqueId(id, primary);
+	}
+
+	public static boolean isUniqueSecondaryEmail(Email checkEmail,
+			Email primary, DataTrain train) {
+		return train.users().isUniqueSecondaryEmail(checkEmail,
+				primary);
+
+	}
+
+	public static boolean isValidMajor(String major) {
+		return isValidText(major, false);
+	}
+
+	// private static boolean validEmailDomain(String domain, DataTrain train) {
+
+	// AppData app = train.getAppDataController().get();
+
+	// }
 
 	public static boolean isValidName(String name) {
 		// Names are composed of characters (\w) and dashes
 		return PATTERN_NAME.matcher(name).matches();
 	}
 
-	public static boolean validPrimaryEmail(Email email, DataTrain train) {
-		
-		// TODO https://github.com/curtisullerich/attendance/issues/122
-		// This should be an application setting
-		String domain = "iastate.edu";
-
-		if (email == null | email.getEmail() == null)
-			return false;
-		
-		Matcher emailMatcher = PATTERN_EMAIL.matcher(email.getEmail());
-
-		// Check for valid email
-		if (!emailMatcher.matches())
-		{
-			return false;
-		}
-		
-		// Allow address@domain email's
-		if(domain.equals(emailMatcher.group(2)))
-		{
-			return true;
-		}
-		
-		// Allow address%40domain@gtempaccount.com email's
-		Matcher gTempMatcher = PATTERN_GTEMPEMAIL.matcher(email.getEmail());
-		if(gTempMatcher.matches() && domain.equals(gTempMatcher.group(2)))
-		{
-			return true;
-		}
-
-		return false;
+	public static boolean isValidRank(String rank) {
+		return true;
 	}
 
-	public static boolean validSecondaryEmail(Email email, DataTrain train) {
-
-		// Null or empty emails are okay for the secondary
-		if (email == null || email.getEmail() == null
-				|| email.getEmail().equals(""))
-			return true;
-
-		return PATTERN_EMAIL.matcher(email.getEmail()).matches();
+	public static boolean isValidSection(User.Section section) {
+		boolean ret = false;
+		for (User.Section sect : User.Section.values()) {
+			if (section == sect) {
+				ret = true;
+			}
+		}
+		return ret;
 	}
-
-	public static boolean isUniqueSecondaryEmail(Email checkEmail,
-			Email primary, DataTrain train) {
-		return train.getUsersManager().isUniqueSecondaryEmail(checkEmail,
-				primary);
-
-	}
-
-	//private static boolean validEmailDomain(String domain, DataTrain train) {
-		
-	//	AppData app = train.getAppDataController().get();
-		
-		
-	//}
 
 	public static boolean isValidText(String text, boolean canBeEmpty) {
 
@@ -108,10 +85,6 @@ public class ValidationUtil {
 		return true;
 	}
 
-	public static boolean isPost(HttpServletRequest req) {
-		return "POST".equals(req.getMethod());
-	}
-
 	public static boolean isValidUniversityID(String uId) {
 		if (uId.length() != 9) {
 			return false;
@@ -125,29 +98,6 @@ public class ValidationUtil {
 		}
 	}
 
-	public static boolean isUniqueId(String id, Email primary) {
-		return DataTrain.getAndStartTrain().getUsersManager()
-				.isUniqueId(id, primary);
-	}
-
-	public static boolean isValidMajor(String major) {
-		return isValidText(major, false);
-	}
-
-	public static boolean isValidRank(String rank) {
-		return true;
-	}
-
-	public static boolean isValidSection(User.Section section) {
-		boolean ret = false;
-		for (User.Section sect : User.Section.values()) {
-			if (section == sect) {
-				ret = true;
-			}
-		}
-		return ret;
-	}
-
 	public static boolean isValidYear(int year) {
 		boolean ret = false;
 		for (int i = 1; i <= 10; ++i) {
@@ -156,6 +106,46 @@ public class ValidationUtil {
 			}
 		}
 		return ret;
+	}
+
+	public static boolean validPrimaryEmail(Email email, DataTrain train) {
+
+		// TODO https://github.com/curtisullerich/attendance/issues/122
+		// This should be an application setting
+		String domain = App.DOMAIN;
+
+		if (email == null | email.getEmail() == null)
+			return false;
+
+		Matcher emailMatcher = PATTERN_EMAIL.matcher(email.getEmail());
+
+		// Check for valid email
+		if (!emailMatcher.matches()) {
+			return false;
+		}
+
+		// Allow address@domain email's
+		if (domain.equals(emailMatcher.group(2))) {
+			return true;
+		}
+
+		// Allow address%40domain@gtempaccount.com email's
+		Matcher gTempMatcher = PATTERN_GTEMPEMAIL.matcher(email.getEmail());
+		if (gTempMatcher.matches() && domain.equals(gTempMatcher.group(2))) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public static boolean validSecondaryEmail(Email email, DataTrain train) {
+
+		// Null or empty emails are okay for the secondary
+		if (email == null || email.getEmail() == null
+				|| email.getEmail().equals(""))
+			return true;
+
+		return PATTERN_EMAIL.matcher(email.getEmail()).matches();
 	}
 
 }

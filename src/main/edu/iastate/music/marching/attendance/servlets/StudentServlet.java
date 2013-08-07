@@ -23,6 +23,10 @@ import edu.iastate.music.marching.attendance.util.PageBuilder;
 
 public class StudentServlet extends AbstractBaseServlet {
 
+	private enum Page {
+		index, attendance, forms, info, viewabsence;
+	}
+
 	/**
 	 * 
 	 */
@@ -34,10 +38,6 @@ public class StudentServlet extends AbstractBaseServlet {
 	private static final String SERVLET_PATH = "student";
 
 	public static final String INDEX_URL = pageToUrl(Page.index, SERVLET_PATH);
-
-	private enum Page {
-		index, attendance, forms, info, viewabsence;
-	}
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -74,12 +74,153 @@ public class StudentServlet extends AbstractBaseServlet {
 			}
 	}
 
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+
+		if (!isLoggedIn(req, resp)) {
+			resp.sendRedirect(AuthServlet.getLoginUrl());
+			return;
+		} else if (!isLoggedIn(req, resp, User.Type.TA, User.Type.Student)) {
+			resp.sendRedirect(ErrorServlet.getLoginFailedUrl(req));
+			return;
+		}
+
+		Page page = parsePathInfo(req.getPathInfo(), Page.class);
+
+		if (page == null)
+			show404(req, resp);
+		else
+			switch (page) {
+			case info:
+				postInfo(req, resp);
+				break;
+			default:
+				show404(req, resp);
+			}
+
+	}
+
+	private void postInfo(HttpServletRequest req, HttpServletResponse resp)
+			throws IOException, ServletException {
+
+		DataTrain train = DataTrain.depart();
+
+		List<String> errors = new ArrayList<String>();
+		String success = "";
+
+		String firstName, lastName, major;
+		int year = -1;
+		User.Section section = null;
+		Email secondEmail;
+
+		// Grab all the data from the fields
+		firstName = req.getParameter("FirstName");
+		lastName = req.getParameter("LastName");
+		major = req.getParameter("Major");
+		secondEmail = new Email(req.getParameter("SecondEmail"));
+
+		String sectionString = req.getParameter("Section");
+		for (Section s : User.Section.values()) {
+			if (sectionString.equals(s.name())) {
+				section = s;
+			}
+		}
+
+		User localUser = train.auth().getCurrentUser(req.getSession());
+
+		try {
+			year = Integer.parseInt(req.getParameter("Year"));
+			localUser.setYear(year);
+		} catch (NumberFormatException nfe) {
+			LOG.severe(nfe.getStackTrace().toString());
+			LOG.severe(nfe.getMessage());
+			errors.add("Unable to save year.");
+		}
+
+		UserManager uc = train.users();
+
+		localUser.setMajor(major);
+		localUser.setSection(section);
+		localUser.setFirstName(firstName);
+		localUser.setLastName(lastName);
+		localUser.setSecondaryEmail(secondEmail);
+
+		// May throw validation exceptions
+		try {
+			uc.update(localUser);
+			success = (errors.size() == 0) ? "Successfully saved all data."
+					: "Successfully saved all data but the year.";
+		} catch (IllegalArgumentException e) {
+			errors.add("Unable to save "
+					+ ((errors.size() == 0) ? "data that wasn't the year."
+							: "any data."));
+		}
+		AuthManager.updateCurrentUser(localUser, req.getSession());
+
+		showInfo(req, resp, errors, success);
+
+	}
+
+	private void showAttendance(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+
+		DataTrain train = DataTrain.depart();
+
+		PageBuilder page = new PageBuilder(Page.attendance, SERVLET_PATH);
+
+		User currentUser = train.auth().getCurrentUser(req.getSession());
+
+		page.setPageTitle("Attendance");
+
+		List<Absence> a = train.absences().get(currentUser);
+
+		page.setAttribute("user", currentUser);
+		page.setAttribute("forms", train.forms().get(currentUser));
+		page.setAttribute("absences", a);
+
+		page.passOffToJsp(req, resp);
+	}
+
+	private void showIndex(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+
+		PageBuilder page = new PageBuilder(Page.index, SERVLET_PATH);
+		DataTrain train = DataTrain.depart();
+		User currentUser = train.auth().getCurrentUser(req.getSession());
+
+		page.setAttribute("user", currentUser);
+		page.setPageTitle("Student");
+		page.setAttribute("StatusMessage", DataTrain.depart().appData().get()
+				.getStatusMessage());
+
+		page.passOffToJsp(req, resp);
+	}
+
+	private void showInfo(HttpServletRequest req, HttpServletResponse resp,
+			List<String> errors, String succex) throws IOException,
+			ServletException {
+
+		PageBuilder page = new PageBuilder(Page.info, SERVLET_PATH);
+
+		page.setAttribute("user",
+				DataTrain.depart().auth().getCurrentUser(req.getSession()));
+
+		page.setAttribute("sections", User.Section.values());
+
+		page.setAttribute("error_messages", errors);
+
+		page.setAttribute("success_message", succex);
+
+		page.passOffToJsp(req, resp);
+	}
+
 	private void viewAbsence(HttpServletRequest req, HttpServletResponse resp,
 			List<String> incomingErrors, String success_message)
 			throws ServletException, IOException {
-		DataTrain train = DataTrain.getAndStartTrain();
+		DataTrain train = DataTrain.depart();
 
-		AbsenceManager ac = train.getAbsenceManager();
+		AbsenceManager ac = train.absences();
 
 		boolean validInput = true;
 
@@ -120,150 +261,6 @@ public class StudentServlet extends AbstractBaseServlet {
 		} else {
 			showAttendance(req, resp);
 		}
-	}
-
-	private void showAttendance(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-
-		DataTrain train = DataTrain.getAndStartTrain();
-
-		PageBuilder page = new PageBuilder(Page.attendance, SERVLET_PATH);
-
-		User currentUser = train.getAuthManager().getCurrentUser(
-				req.getSession());
-
-		page.setPageTitle("Attendance");
-
-		List<Absence> a = train.getAbsenceManager().get(currentUser);
-
-		page.setAttribute("user", currentUser);
-		page.setAttribute("forms", train.getFormsManager().get(currentUser));
-		page.setAttribute("absences", a);
-
-		page.passOffToJsp(req, resp);
-	}
-
-	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-
-		if (!isLoggedIn(req, resp)) {
-			resp.sendRedirect(AuthServlet.getLoginUrl());
-			return;
-		} else if (!isLoggedIn(req, resp, User.Type.TA, User.Type.Student)) {
-			resp.sendRedirect(ErrorServlet.getLoginFailedUrl(req));
-			return;
-		}
-
-		Page page = parsePathInfo(req.getPathInfo(), Page.class);
-
-		if (page == null)
-			show404(req, resp);
-		else
-			switch (page) {
-			case info:
-				postInfo(req, resp);
-				break;
-			default:
-				show404(req, resp);
-			}
-
-	}
-
-	private void postInfo(HttpServletRequest req, HttpServletResponse resp)
-			throws IOException, ServletException {
-
-		DataTrain train = DataTrain.getAndStartTrain();
-
-		List<String> errors = new ArrayList<String>();
-		String success = "";
-
-		String firstName, lastName, major;
-		int year = -1;
-		User.Section section = null;
-		Email secondEmail;
-
-		// Grab all the data from the fields
-		firstName = req.getParameter("FirstName");
-		lastName = req.getParameter("LastName");
-		major = req.getParameter("Major");
-		secondEmail = new Email(req.getParameter("SecondEmail"));
-
-		String sectionString = req.getParameter("Section");
-		for (Section s : User.Section.values()) {
-			if (sectionString.equals(s.name())) {
-				section = s;
-			}
-		}
-
-		User localUser = train.getAuthManager().getCurrentUser(
-				req.getSession());
-
-		try {
-			year = Integer.parseInt(req.getParameter("Year"));
-			localUser.setYear(year);
-		} catch (NumberFormatException nfe) {
-			LOG.severe(nfe.getStackTrace().toString());
-			LOG.severe(nfe.getMessage());
-			errors.add("Unable to save year.");
-		}
-
-		UserManager uc = train.getUsersManager();
-
-		localUser.setMajor(major);
-		localUser.setSection(section);
-		localUser.setFirstName(firstName);
-		localUser.setLastName(lastName);
-		localUser.setSecondaryEmail(secondEmail);
-
-		// May throw validation exceptions
-		try {
-			uc.update(localUser);
-			success = (errors.size() == 0) ? "Successfully saved all data."
-					: "Successfully saved all data but the year.";
-		} catch (IllegalArgumentException e) {
-			errors.add("Unable to save "
-					+ ((errors.size() == 0) ? "data that wasn't the year."
-							: "any data."));
-		}
-		AuthManager.updateCurrentUser(localUser, req.getSession());
-
-		showInfo(req, resp, errors, success);
-
-	}
-
-	private void showInfo(HttpServletRequest req, HttpServletResponse resp,
-			List<String> errors, String succex) throws IOException,
-			ServletException {
-
-		PageBuilder page = new PageBuilder(Page.info, SERVLET_PATH);
-
-		page.setAttribute("user", DataTrain.getAndStartTrain()
-				.getAuthManager().getCurrentUser(req.getSession()));
-
-		page.setAttribute("sections", User.Section.values());
-
-		page.setAttribute("error_messages", errors);
-
-		page.setAttribute("success_message", succex);
-
-		page.passOffToJsp(req, resp);
-	}
-
-	private void showIndex(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-
-		PageBuilder page = new PageBuilder(Page.index, SERVLET_PATH);
-		DataTrain train = DataTrain.getAndStartTrain();
-		User currentUser = train.getAuthManager().getCurrentUser(
-				req.getSession());
-
-		page.setAttribute("user", currentUser);
-		page.setPageTitle("Student");
-		page.setAttribute("StatusMessage", DataTrain.getAndStartTrain()
-				.getAppDataManager().get().getStatusMessage());
-
-		page.passOffToJsp(req, resp);
 	}
 
 }

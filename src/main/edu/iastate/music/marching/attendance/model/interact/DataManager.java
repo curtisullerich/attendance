@@ -22,7 +22,7 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.common.collect.Lists;
 
-import edu.iastate.music.marching.attendance.Configuration;
+import edu.iastate.music.marching.attendance.App;
 import edu.iastate.music.marching.attendance.model.GsonWithPartials;
 import edu.iastate.music.marching.attendance.model.store.Absence;
 import edu.iastate.music.marching.attendance.model.store.AppData;
@@ -33,6 +33,18 @@ import edu.iastate.music.marching.attendance.model.store.MobileDataUpload;
 import edu.iastate.music.marching.attendance.model.store.User;
 
 public class DataManager extends AbstractManager {
+
+	public static class Dump {
+
+		public int format_version = -1;
+
+		public List<Absence> absences;
+		public AppData appData;
+		public List<Event> events;
+		public List<Form> forms;
+		public List<MobileDataUpload> mobileData;
+		public List<User> users;
+	}
 
 	private static final int DUMP_FORMAT_VERSION = 2;
 
@@ -45,49 +57,16 @@ public class DataManager extends AbstractManager {
 		this.dataTrain = dataTrain;
 	}
 
-	public boolean sendBugReportEmail(User user, String severity, String url,
-			String userAgent, boolean mobileSite, String message) {
+	public void deleteEverthingInTheEntireDatabaseEvenThoughYouCannotUndoThis() {
+		this.dataTrain.getDataStore().deleteAll(Absence.class);
+		this.dataTrain.getDataStore().deleteAll(AppData.class);
+		this.dataTrain.getDataStore().deleteAll(Event.class);
+		this.dataTrain.getDataStore().deleteAll(Form.class);
+		this.dataTrain.getDataStore().deleteAll(Event.class);
+		this.dataTrain.getDataStore().deleteAll(MobileDataUpload.class);
+		this.dataTrain.getDataStore().deleteAll(User.class);
 
-		Properties props = new Properties();
-		Session session = Session.getDefaultInstance(props, null);
-		String msgBody = "Severity: " + StringEscapeUtils.escapeHtml4(severity)
-				+ "<br/>\n";
-
-		if (user == null) {
-			msgBody += "From: Anonymous";
-		} else {
-			msgBody += "From: " + user.getName() + " (" + user.getId() + ")";
-		}
-		msgBody += "<br/>\n";
-		msgBody += "Url: " + StringEscapeUtils.escapeHtml4(url) + "<br/>\n";
-		msgBody += "User Agent: " + userAgent + "<br/>\n";
-		msgBody += "On mobile site: " + new Boolean(mobileSite).toString()
-				+ "<br/>\n";
-		msgBody += "<br/>\n";
-		msgBody += "Message: \n"
-				+ StringEscapeUtils.escapeHtml4(message).replace("\n",
-						"\n<br/>");
-
-		try {
-			MimeMessage msg = new MimeMessage(session);
-			msg.setFrom(new InternetAddress(
-					Configuration.Emails.BUGREPORT_EMAIL_FROM));
-			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
-					Configuration.Emails.BUGREPORT_EMAIL_TO));
-
-			msg.setSubject("Attendance Bug Report");
-			msg.setContent(msgBody, "text/html");
-
-			Transport.send(msg);
-
-			return true;
-		} catch (AddressException e) {
-			throw new IllegalArgumentException(
-					"Internal Error: Could not send Email", e);
-		} catch (MessagingException e) {
-			throw new IllegalArgumentException(
-					"Internal Error: Could not send Email", e);
-		}
+		this.dataTrain.getMemCache().clear();
 	}
 
 	public void dumpDatabaseAsJSON(Appendable out) {
@@ -96,19 +75,40 @@ public class DataManager extends AbstractManager {
 
 		dump.format_version = DUMP_FORMAT_VERSION;
 
-		dump.absences = dataTrain.getAbsenceManager().getAll();
+		dump.absences = dataTrain.absences().getAll();
 
-		dump.appData = dataTrain.getAppDataManager().get();
+		dump.appData = dataTrain.appData().get();
 
-		dump.events = dataTrain.getEventManager().getAll();
+		dump.events = dataTrain.events().getAll();
 
-		dump.forms = dataTrain.getFormsManager().getAll();
+		dump.forms = dataTrain.forms().getAll();
 
-		dump.mobileData = dataTrain.getMobileDataManager().getUploads();
+		dump.mobileData = dataTrain.mobileData().getUploads();
 
-		dump.users = dataTrain.getUsersManager().getAll();
+		dump.users = dataTrain.users().getAll();
 
 		GsonWithPartials.toJson(dump, out);
+	}
+
+	public ImportData getImportData(long id) {
+
+		return dataTrain.getDataStore().load(
+				KeyFactory.createKey(dataTrain.getDataStore()
+						.getConfiguration().typeToKind(ImportData.class), id));
+	}
+
+	private <T> void importAll(Class<T> clazz, List<T> instances) {
+		if (instances == null)
+			return;
+
+		LOG.info("Importing " + instances.size() + " " + clazz.getSimpleName()
+				+ " objects");
+
+		try {
+			dataTrain.getDataStore().storeAll(instances);
+		} catch (Exception ex) {
+			LOG.log(Level.WARNING, "Encountered error during import", ex);
+		}
 	}
 
 	public void importJSONDatabaseDump(String string) {
@@ -119,14 +119,14 @@ public class DataManager extends AbstractManager {
 		if (dump.format_version < DUMP_FORMAT_VERSION) {
 			// Old dump, probably not compatible with current database format
 			throw new IllegalStateException(
-					"Tried to import out-of-date dump not compatible with current database structure");
+					"Tried to import out-of-DateTime dump not compatible with current database structure");
 		}
 
 		// Yup
 		deleteEverthingInTheEntireDatabaseEvenThoughYouCannotUndoThis();
 
 		// Insert all things that don't link to other objects first
-		
+
 		importAll(AppData.class, Lists.newArrayList(dump.appData));
 		importAll(User.class, dump.users);
 		importAll(Event.class, dump.events);
@@ -173,7 +173,7 @@ public class DataManager extends AbstractManager {
 						// Try to load user
 						User user = (User) field.get(item);
 						if (user != null) {
-							user = dataTrain.getUsersManager().get(
+							user = dataTrain.users().get(
 									(user).getId());
 							field.set(item, user);
 						}
@@ -181,16 +181,14 @@ public class DataManager extends AbstractManager {
 						// Try to load Absence
 						Absence absence = (Absence) field.get(item);
 						if (absence != null) {
-							absence = dataTrain.getAbsenceManager().get(
-									absence.getId());
+							absence = dataTrain.absences().get(absence.getId());
 							field.set(item, absence);
 						}
 					} else if (Event.class.equals(type)) {
 						// Try to load Event
 						Event event = (Event) field.get(item);
 						if (event != null) {
-							event = dataTrain.getEventManager().get(
-									(event).getId());
+							event = dataTrain.events().get((event).getId());
 							field.set(item, event);
 						}
 					}
@@ -203,56 +201,56 @@ public class DataManager extends AbstractManager {
 		}
 	}
 
-	private <T> void importAll(Class<T> clazz, List<T> instances) {
-		if (instances == null)
-			return;
+	public void removeImportData(ImportData importData) {
+		dataTrain.getDataStore().delete(importData);
+	}
 
-		LOG.info("Importing " + instances.size() + " " + clazz.getSimpleName()
-				+ " objects");
+	public boolean sendBugReportEmail(User user, String severity, String url,
+			String userAgent, boolean mobileSite, String message) {
+
+		Properties props = new Properties();
+		Session session = Session.getDefaultInstance(props, null);
+		String msgBody = "Severity: " + StringEscapeUtils.escapeHtml4(severity)
+				+ "<br/>\n";
+
+		if (user == null) {
+			msgBody += "From: Anonymous";
+		} else {
+			msgBody += "From: " + user.getName() + " (" + user.getId() + ")";
+		}
+		msgBody += "<br/>\n";
+		msgBody += "Url: " + StringEscapeUtils.escapeHtml4(url) + "<br/>\n";
+		msgBody += "User Agent: " + userAgent + "<br/>\n";
+		msgBody += "On mobile site: " + new Boolean(mobileSite).toString()
+				+ "<br/>\n";
+		msgBody += "<br/>\n";
+		msgBody += "Message: \n"
+				+ StringEscapeUtils.escapeHtml4(message).replace("\n",
+						"\n<br/>");
 
 		try {
-			dataTrain.getDataStore().storeAll(instances);
-		} catch (Exception ex) {
-			LOG.log(Level.WARNING, "Encountered error during import", ex);
+			MimeMessage msg = new MimeMessage(session);
+			msg.setFrom(new InternetAddress(
+					App.Emails.BUGREPORT_EMAIL_FROM));
+			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
+					App.Emails.BUGREPORT_EMAIL_TO));
+
+			msg.setSubject("Attendance Bug Report");
+			msg.setContent(msgBody, "text/html");
+
+			Transport.send(msg);
+
+			return true;
+		} catch (AddressException e) {
+			throw new IllegalArgumentException(
+					"Internal Error: Could not send Email", e);
+		} catch (MessagingException e) {
+			throw new IllegalArgumentException(
+					"Internal Error: Could not send Email", e);
 		}
-	}
-
-	public static class Dump {
-
-		public int format_version = -1;
-
-		public List<Absence> absences;
-		public AppData appData;
-		public List<Event> events;
-		public List<Form> forms;
-		public List<MobileDataUpload> mobileData;
-		public List<User> users;
-	}
-
-	public void deleteEverthingInTheEntireDatabaseEvenThoughYouCannotUndoThis() {
-		this.dataTrain.getDataStore().deleteAll(Absence.class);
-		this.dataTrain.getDataStore().deleteAll(AppData.class);
-		this.dataTrain.getDataStore().deleteAll(Event.class);
-		this.dataTrain.getDataStore().deleteAll(Form.class);
-		this.dataTrain.getDataStore().deleteAll(Event.class);
-		this.dataTrain.getDataStore().deleteAll(MobileDataUpload.class);
-		this.dataTrain.getDataStore().deleteAll(User.class);
-
-		this.dataTrain.getMemCache().clear();
 	}
 
 	public Key storeImportData(ImportData iData) {
 		return dataTrain.getDataStore().store(iData);
-	}
-
-	public ImportData getImportData(long id) {
-
-		return dataTrain.getDataStore().load(
-				KeyFactory.createKey(dataTrain.getDataStore()
-						.getConfiguration().typeToKind(ImportData.class), id));
-	}
-
-	public void removeImportData(ImportData importData) {
-		dataTrain.getDataStore().delete(importData);
 	}
 }

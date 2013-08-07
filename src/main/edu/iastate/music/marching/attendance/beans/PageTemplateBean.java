@@ -22,6 +22,11 @@ public class PageTemplateBean implements java.io.Serializable {
 
 	private static final String SESSION_ATTRIBUTE_SHOWMOBILESITE = "PageTemplateBean_showmobilesite";
 
+	public static boolean onMobileSite(HttpSession session) {
+		return Boolean.TRUE.equals(session
+				.getAttribute(SESSION_ATTRIBUTE_SHOWMOBILESITE));
+	}
+
 	private String title;
 
 	private String mJSPPath;
@@ -54,53 +59,6 @@ public class PageTemplateBean implements java.io.Serializable {
 		mJSPPath = jsp_path;
 		mAppData = appData;
 		mAuth = authController;
-	}
-
-	public static boolean onMobileSite(HttpSession session) {
-		return Boolean.TRUE.equals(session
-				.getAttribute(SESSION_ATTRIBUTE_SHOWMOBILESITE));
-	}
-
-	public boolean isMobileDevice() {
-		return mobileBrowser;
-	}
-
-	public boolean isMobileSite() {
-		return mobileSite;
-	}
-
-	public String getJspath() {
-		return mJSPPath;
-	}
-
-	public String getTimeZoneID() {
-		return mAppData.getTimeZone().getID();
-	}
-	
-	public String getSiteTitle() {
-		return mAppData.getTitle();
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getUri() {
-		return this.mRequestUri;
-	}
-
-	public String getPath() {
-		return this.mPath;
-	}
-
-	public NavigationBean getNavigation() {
-		if (this.mNavigationBean == null)
-			this.mNavigationBean = NavigationBean.getInstance(mCurrentUser);
-		return this.mNavigationBean;
 	}
 
 	public void apply(HttpServletRequest request) {
@@ -142,5 +100,47 @@ public class PageTemplateBean implements java.io.Serializable {
 		this.mobileSite = onMobileSite(request.getSession());
 
 		request.setAttribute(ATTRIBUTE_NAME, this);
+	}
+
+	public String getJspath() {
+		return mJSPPath;
+	}
+
+	public NavigationBean getNavigation() {
+		if (this.mNavigationBean == null)
+			this.mNavigationBean = NavigationBean.getInstance(mCurrentUser);
+		return this.mNavigationBean;
+	}
+
+	public String getPath() {
+		return this.mPath;
+	}
+
+	public String getSiteTitle() {
+		return mAppData.getTitle();
+	}
+
+	public String getTimeZoneID() {
+		return mAppData.getTimeZone().toTimeZone().getID();
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public String getUri() {
+		return this.mRequestUri;
+	}
+
+	public boolean isMobileDevice() {
+		return mobileBrowser;
+	}
+
+	public boolean isMobileSite() {
+		return mobileSite;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 }
