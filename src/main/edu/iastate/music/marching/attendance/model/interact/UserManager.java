@@ -1,8 +1,16 @@
 package edu.iastate.music.marching.attendance.model.interact;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.Duration;
+import org.joda.time.Interval;
 
 import com.google.appengine.api.datastore.Email;
 import com.google.appengine.api.datastore.Query.FilterOperator;
@@ -10,6 +18,7 @@ import com.google.code.twig.FindCommand.RootFindCommand;
 import com.google.code.twig.ObjectDatastore;
 
 import edu.iastate.music.marching.attendance.model.store.Absence;
+import edu.iastate.music.marching.attendance.model.store.Event;
 import edu.iastate.music.marching.attendance.model.store.ModelFactory;
 import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.util.ValidationUtil;
@@ -350,50 +359,140 @@ public class UserManager extends AbstractManager {
 	 */
 	public void updateUserGrade(User student) {
 		AbsenceManager ac = this.datatrain.absences();
-		int count = 0;
+		int minutes = 0;
+		DateTimeZone zone = this.datatrain.appData().get().getTimeZone();
 		List<Absence> absences = ac.get(student);
+
+		// class AbsenceComparator implements Comparator<Absence> {
+		// private DateTimeZone zone;
+		//
+		// public AbsenceComparator(DateTimeZone zone) {
+		// this.zone = zone;
+		// }
+		//
+		// @Override
+		// public int compare(Absence a1, Absence a2) {
+		// if (a1.getType() == Absence.Type.Absence
+		// || a2.getType() == Absence.Type.Absence) {
+		// throw new IllegalArgumentException(
+		// "Tried to compare an absence to a tardy or eco.");
+		// }
+		// DateTime first;
+		// if (a1.getType() == Absence.Type.Tardy) {
+		// first = a1.getCheckin(zone);
+		// } else {
+		// first = a1.getCheckout(zone);
+		// }
+		// DateTime second;
+		// if (a2.getType() == Absence.Type.Tardy) {
+		// second = a1.getCheckin(zone);
+		// } else {
+		// second = a1.getCheckout(zone);
+		// }
+		// return first.compareTo(second);
+		// }
+		// }
+		class PresenceInterval {
+
+			private boolean present;
+			private Interval interval;
+
+			public PresenceInterval(Interval interval, boolean present) {
+				this.setInterval(interval);
+				this.setPresent(present);
+			}
+
+			public boolean isPresent() {
+				return present;
+			}
+
+			public void setPresent(boolean present) {
+				this.present = present;
+			}
+
+			public Interval getInterval() {
+				return interval;
+			}
+
+			public void setInterval(Interval interval) {
+				this.interval = interval;
+			}
+		}
+
+		Map<Event, List<Absence>> map = new HashMap<Event, List<Absence>>(
+				absences.size());
 		for (Absence a : absences) {
+			Event e = a.getEvent();
+			if (map.containsKey(e)) {
+				map.get(e).add(a);
+			} else {
+				List<Absence> list = new ArrayList<Absence>();
+				list.add(a);
+				map.put(e, list);
+			}
+		}
 
-			if (a.getStatus() == Absence.Status.Approved) {
-				// nothing to do, it's approved!
-			} else if (a.getStatus() == Absence.Status.Pending
-					|| a.getStatus() == Absence.Status.Denied) {
+		for (Event e : map.keySet()) {
+			List<Absence> l = map.get(e);
+			// Collections.sort(l, new AbsenceComparator(zone));
+			if (l.size() == 1) {
+				minutes += simpleGrade(e, l);
+			} else {
+				minutes += generalGrade(e, l);
+			}
+		}
+		student.setGrade(intToGrade(minutes));
+	}
 
-				// this means that absences with unanchored
-				// events will have no grade penalty
-				if (a.getEvent() != null) {
-					switch (a.getEvent().getType()) {
-					case Performance:
-						switch (a.getType()) {
-						case Absence:
-							count += 6;
-							break;
-						case Tardy:
-							count += 2;
-							break;
-						case EarlyCheckOut:
-							count += 2;
-							break;
-						}
-						break;
-					case Rehearsal:
-						switch (a.getType()) {
-						case Absence:
-							count += 3;
-							break;
-						case Tardy:
-							count += 1;
-							break;
-						case EarlyCheckOut:
-							count += 1;
-							break;
-						}
-						break;
-					}
+	private int generalGrade(Event e, List<Absence> l) {
+		// TODO implement
+		return 0;
+	}
+
+	private int simpleGrade(Event e, List<Absence> l) {
+		if (l.size() != 0) {
+			throw new IllegalArgumentException(
+					"list of Absences must be of size 1");
+		}
+		int minutes = 0;
+		DateTimeZone zone = datatrain.appData().get().getTimeZone();
+		Absence a = l.get(0);
+		if (a.getStatus() == Absence.Status.Approved) {
+			// nothing to do, it's approved!
+		} else if (a.getStatus() == Absence.Status.Pending
+				|| a.getStatus() == Absence.Status.Denied) {
+
+			// this means that absences with unanchored
+			// events will have no grade penalty
+
+			/*
+			 * One thing to remember: If tardy is >= 30 minutes late, they
+			 * automatically lose time equal to the full rehearsal.
+			 */
+
+			if (a.getEvent() != null) {
+				switch (a.getType()) {
+				case Absence:
+					minutes += a.getEvent().getInterval(zone).toDuration()
+							.getStandardMinutes();
+					break;
+				case Tardy: {
+					Duration d = new Duration(a.getEvent().getInterval(zone)
+							.getStart(), a.getCheckin(zone));
+					minutes += d.getStandardMinutes();
+					break;
+				}
+				case EarlyCheckOut:
+					Duration d = new Duration(a.getCheckout(zone), a.getEvent()
+							.getInterval(zone).getEnd());
+					minutes += d.getStandardMinutes();
+					break;
+				default:
+					throw new IllegalArgumentException("invalid Absence type");
 				}
 			}
 		}
-		student.setGrade(intToGrade(count));
+		return minutes;
 	}
 
 	private void validateUser(User user) throws IllegalArgumentException {
