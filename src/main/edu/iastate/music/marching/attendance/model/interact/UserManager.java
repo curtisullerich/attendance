@@ -27,6 +27,9 @@ public class UserManager extends AbstractManager {
 
 	DataTrain datatrain;
 
+	// a user may not be later than this without 'missing' the whole rehearsal
+	private static final int MAXIMUM_LATENESS_MINUTES = 30;
+
 	public UserManager(DataTrain dataTrain) {
 		this.datatrain = dataTrain;
 	}
@@ -278,28 +281,18 @@ public class UserManager extends AbstractManager {
 	}
 
 	private User.Grade intToGrade(int count) {
-		switch (count) {
-		case 0:
+		if (count <= 140) {
 			return User.Grade.A;
-		case 1:
-			return User.Grade.Aminus;
-		case 2:
-			return User.Grade.Bplus;
-		case 3:
+
+		} else if (count <= 155) {
 			return User.Grade.B;
-		case 4:
-			return User.Grade.Bminus;
-		case 5:
-			return User.Grade.Cplus;
-		case 6:
+
+		} else if (count <= 170) {
 			return User.Grade.C;
-		case 7:
-			return User.Grade.Cminus;
-		case 8:
-			return User.Grade.Dplus;
-		case 9:
+
+		} else if (count <= 185) {
 			return User.Grade.D;
-		default:
+		} else {
 			return User.Grade.F;
 		}
 	}
@@ -360,35 +353,7 @@ public class UserManager extends AbstractManager {
 	public void updateUserGrade(User student) {
 		AbsenceManager ac = this.datatrain.absences();
 		int minutes = 0;
-		DateTimeZone zone = this.datatrain.appData().get().getTimeZone();
 		List<Absence> absences = ac.get(student);
-
-		class PresenceInterval {
-
-			private boolean present;
-			private Interval interval;
-
-			public PresenceInterval(Interval interval, boolean present) {
-				this.setInterval(interval);
-				this.setPresent(present);
-			}
-
-			public boolean isPresent() {
-				return present;
-			}
-
-			public void setPresent(boolean present) {
-				this.present = present;
-			}
-
-			public Interval getInterval() {
-				return interval;
-			}
-
-			public void setInterval(Interval interval) {
-				this.interval = interval;
-			}
-		}
 
 		Map<Event, List<Absence>> map = new HashMap<Event, List<Absence>>(
 				absences.size());
@@ -416,7 +381,72 @@ public class UserManager extends AbstractManager {
 
 	private int generalGrade(Event e, List<Absence> l) {
 		// TODO implement
-		return 0;
+		// TODO log that there were multiple absences for an event for a student
+		class PresenceInterval {
+
+			private boolean present;
+			private Interval interval;
+
+			public PresenceInterval(Interval interval, boolean present) {
+				this.setInterval(interval);
+				this.setPresent(present);
+			}
+
+			public boolean isPresent() {
+				return present;
+			}
+
+			public void setPresent(boolean present) {
+				this.present = present;
+			}
+
+			public Interval getInterval() {
+				return interval;
+			}
+
+			public void setInterval(Interval interval) {
+				this.interval = interval;
+			}
+		}
+
+		List<PresenceInterval> ints = new ArrayList<PresenceInterval>();
+		DateTimeZone zone = datatrain.appData().get().getTimeZone();
+		ints.add(new PresenceInterval(e.getInterval(zone), true));
+		for (Absence a : l) {
+			if (a.getType() == Absence.Type.Absence) {
+				throw new IllegalArgumentException(
+						"there were multiple absences of type Absence for a single event!");
+			}
+			DateTime d = a.getType() == Absence.Type.Tardy ? a.getCheckin(zone)
+					: a.getCheckout(zone);
+			for (int i = 0; i < ints.size(); i++) {
+				PresenceInterval p = ints.get(i);
+				if (p.getInterval().contains(d)) {
+					// found a match
+					ints.remove(p);
+					Interval first = new Interval(p.getInterval().getStart(), d);
+					Interval second = new Interval(d, p.getInterval().getEnd());
+					if (a.getType() == Absence.Type.Tardy) {
+						// they were present AFTER the checkin
+						ints.add(new PresenceInterval(first, false));
+						ints.add(new PresenceInterval(second, true));
+					} else {
+						// they were present BEFORE the checkout
+						ints.add(new PresenceInterval(first, true));
+						ints.add(new PresenceInterval(second, false));
+					}
+					break;
+					// move on to the next absence
+				}
+			}
+		}
+		int minutes = 0;
+		for (PresenceInterval p : ints) {
+			if (!p.isPresent()) {
+				minutes += p.getInterval().toDuration().getStandardMinutes();
+			}
+		}
+		return minutes;
 	}
 
 	private int simpleGrade(Event e, List<Absence> l) {
@@ -435,30 +465,31 @@ public class UserManager extends AbstractManager {
 			// this means that absences with unanchored
 			// events will have no grade penalty
 
-			/*
-			 * One thing to remember: If tardy is >= 30 minutes late, they
-			 * automatically lose time equal to the full rehearsal.
-			 */
-
 			if (a.getEvent() != null) {
-				switch (a.getType()) {
-				case Absence:
+				if (a.getType() == Absence.Type.Absence) {
 					minutes += a.getEvent().getInterval(zone).toDuration()
 							.getStandardMinutes();
-					break;
-				case Tardy: {
-					Duration d = new Duration(a.getEvent().getInterval(zone)
-							.getStart(), a.getCheckin(zone));
-					minutes += d.getStandardMinutes();
-					break;
-				}
-				case EarlyCheckOut:
-					Duration d = new Duration(a.getCheckout(zone), a.getEvent()
-							.getInterval(zone).getEnd());
-					minutes += d.getStandardMinutes();
-					break;
-				default:
-					throw new IllegalArgumentException("invalid Absence type");
+
+				} else {
+					Duration d;
+					if (a.getType() == Absence.Type.Tardy) {
+						d = new Duration(a.getEvent().getInterval(zone)
+								.getStart(), a.getCheckin(zone));
+					} else if (a.getType() == Absence.Type.EarlyCheckOut) {
+						d = new Duration(a.getCheckout(zone), a.getEvent()
+								.getInterval(zone).getEnd());
+					} else {
+						d = null;
+						throw new IllegalArgumentException(
+								"invalid absence type");
+					}
+					if (d.getStandardMinutes() > MAXIMUM_LATENESS_MINUTES) {
+						// too late!
+						minutes += a.getEvent().getInterval(zone).toDuration()
+								.getStandardMinutes();
+					} else {
+						minutes += d.getStandardMinutes();
+					}
 				}
 			}
 		}
