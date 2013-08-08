@@ -39,6 +39,10 @@ for obj in users:
   newid = random.choice(newidentities.keys())
   while newid in usednewnetids:
     newid = random.choice(newidentities.keys())
+
+  #note that these will not be the correct grades.
+  #grades will only be correct after recalculating for each user
+  obj['grade'] = obj['grade'][0] #strip plus/minus
   usednewnetids.append(newid)
   oldtonew[obj['id']] = newid
 
