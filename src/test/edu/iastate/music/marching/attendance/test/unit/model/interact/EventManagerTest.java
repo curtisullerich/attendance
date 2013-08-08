@@ -279,11 +279,11 @@ public class EventManagerTest extends AbstractDatastoreTest {
 		ec.createOrUpdate(Event.Type.Rehearsal, new Interval(start, end));
 
 		// now that there's a matching event, it should link
-		assertEquals(User.Grade.Aminus, uc.get(s1.getId()).getGrade());
+		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
 
 		ac.createOrUpdateTardy(s1, tardy2);
 		uc.update(s1);
-		assertEquals(User.Grade.Bplus, uc.get(s1.getId()).getGrade());
+		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
 	}
 
 	@SuppressWarnings("deprecation")
@@ -319,7 +319,7 @@ public class EventManagerTest extends AbstractDatastoreTest {
 		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
 		ec.createOrUpdate(Event.Type.Rehearsal, new Interval(start, end));
 		// now that there's a matching event, it should link
-		assertEquals(User.Grade.B, uc.get(s1.getId()).getGrade());
+		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
 
 		ac.createOrUpdateAbsence(s1, new Interval(start2, end2));
 
@@ -336,7 +336,7 @@ public class EventManagerTest extends AbstractDatastoreTest {
 		assertEquals(2, ac.get(s1).size());
 		// TODO there's gotta be a better way to verify that they linked
 		// correctly
-		assertEquals(User.Grade.D, uc.get(s1.getId()).getGrade());
+		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
 
 		ac.createOrUpdateAbsence(s1, new Interval(start3, end3));
 		assertEquals(3, ac.get(s1).size());

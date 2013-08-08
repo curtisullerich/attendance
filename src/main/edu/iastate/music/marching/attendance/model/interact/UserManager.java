@@ -34,23 +34,23 @@ public class UserManager extends AbstractManager {
 		this.datatrain = dataTrain;
 	}
 
-//	public User.Grade averageGrade() {
-//		int total = 0;
-//		int count = 0;
-//		List<User> students = this.get(User.Type.Student, User.Type.TA);
-//		for (User s : students) {
-//			// if(s.getGrade() != null)
-//			{
-//				total += s.getGrade().ordinal();
-//				count += 1;
-//			}
-//		}
-//
-//		if (count == 0)
-//			return null;
-//		else
-//			return intToGrade(total / count);
-//	}
+	// public User.Grade averageGrade() {
+	// int total = 0;
+	// int count = 0;
+	// List<User> students = this.get(User.Type.Student, User.Type.TA);
+	// for (User s : students) {
+	// // if(s.getGrade() != null)
+	// {
+	// total += s.getGrade().ordinal();
+	// count += 1;
+	// }
+	// }
+	//
+	// if (count == 0)
+	// return null;
+	// else
+	// return intToGrade(total / count);
+	// }
 
 	public User createDirector(String schoolEmail, String loginEmail,
 			String firstName, String lastName) throws IllegalArgumentException {
@@ -281,8 +281,8 @@ public class UserManager extends AbstractManager {
 	}
 
 	private User.Grade intToGrade(int count, User student) {
-		// users may miss up to 140 minutes for free
-		int autoexcused = 140;
+		// users may miss up to 160 minutes for free (two rehearsals)
+		int autoexcused = 160;
 		count -= autoexcused;
 
 		// give credit for the number of minutes worked
@@ -290,13 +290,10 @@ public class UserManager extends AbstractManager {
 
 		if (count <= 0) {
 			return User.Grade.A;
-
 		} else if (count <= 15) {
 			return User.Grade.B;
-
 		} else if (count <= 30) {
 			return User.Grade.C;
-
 		} else if (count <= 45) {
 			return User.Grade.D;
 		} else {

@@ -161,45 +161,45 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		assertEquals(1, mdc.getUploads(null).size());
 	}
 
-	@Test
-	public void averageGrade() {
-
-		DataTrain train = getDataTrain();
-
-		UserManager uc = train.users();
-
-		User s1 = Users.createStudent(uc, "student1", "123456789", "First",
-				"last", 2, "major", User.Section.AltoSax);
-		User s2 = Users.createStudent(uc, "student2", "123456780", "First",
-				"Last", 2, "major", User.Section.AltoSax);
-		User s3 = Users.createStudent(uc, "student3", "123456781", "First",
-				"Last", 2, "major", User.Section.AltoSax);
-		User s4 = Users.createStudent(uc, "stiner", "123456782", "ars", "l", 3,
-				"astart", User.Section.AltoSax);
-
-		s1.setGrade(User.Grade.A);
-		s2.setGrade(User.Grade.A);
-		s3.setGrade(User.Grade.A);
-		s4.setGrade(User.Grade.A);
-
-		assertEquals(User.Grade.A, uc.averageGrade());
-
-		s1.setGrade(User.Grade.A);
-		s2.setGrade(User.Grade.B);
-		s3.setGrade(User.Grade.C);
-		s4.setGrade(User.Grade.D);
-
-		assertEquals(User.Grade.Bminus, uc.averageGrade());
-
-		s1.setGrade(User.Grade.A);
-		s2.setGrade(User.Grade.Aminus);
-		s3.setGrade(User.Grade.A);
-		s4.setGrade(User.Grade.Aminus);
-
-		assertEquals(User.Grade.A, uc.averageGrade());
-
-	}
-
+	// @Test
+	// public void averageGrade() {
+	//
+	// DataTrain train = getDataTrain();
+	//
+	// UserManager uc = train.users();
+	//
+	// User s1 = Users.createStudent(uc, "student1", "123456789", "First",
+	// "last", 2, "major", User.Section.AltoSax);
+	// User s2 = Users.createStudent(uc, "student2", "123456780", "First",
+	// "Last", 2, "major", User.Section.AltoSax);
+	// User s3 = Users.createStudent(uc, "student3", "123456781", "First",
+	// "Last", 2, "major", User.Section.AltoSax);
+	// User s4 = Users.createStudent(uc, "stiner", "123456782", "ars", "l", 3,
+	// "astart", User.Section.AltoSax);
+	//
+	// s1.setGrade(User.Grade.A);
+	// s2.setGrade(User.Grade.A);
+	// s3.setGrade(User.Grade.A);
+	// s4.setGrade(User.Grade.A);
+	//
+	// assertEquals(User.Grade.A, uc.averageGrade());
+	//
+	// s1.setGrade(User.Grade.A);
+	// s2.setGrade(User.Grade.B);
+	// s3.setGrade(User.Grade.C);
+	// s4.setGrade(User.Grade.D);
+	//
+	// assertEquals(User.Grade.Bminus, uc.averageGrade());
+	//
+	// s1.setGrade(User.Grade.A);
+	// s2.setGrade(User.Grade.Aminus);
+	// s3.setGrade(User.Grade.A);
+	// s4.setGrade(User.Grade.Aminus);
+	//
+	// assertEquals(User.Grade.A, uc.averageGrade());
+	//
+	// }
+	//
 	@Test
 	public void testGrade() {
 		DataTrain train = getDataTrain();
@@ -215,25 +215,25 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
 
 		DateTime start = new DateTime(2012, 7, 18, 16, 30, 0, 0, zone);
-		DateTime end = new DateTime(2012, 7, 18, 17, 20, 0, 0, zone);
+		DateTime end = new DateTime(2012, 7, 18, 17, 50, 0, 0, zone);
 
 		Interval i1 = new Interval(start, end);
 		Event e1 = ec.createOrUpdate(Event.Type.Rehearsal, i1);
 		Absence a1 = ac.createOrUpdateAbsence(s1, e1);
 		uc.update(s1);
-		assertEquals(User.Grade.B, uc.get(s1.getId()).getGrade());
+		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
 
 		Interval i2 = new Interval(start.plusDays(1), end.plusDays(1));
 		Event e2 = ec.createOrUpdate(Event.Type.Rehearsal, i2);
 		Absence a2 = ac.createOrUpdateAbsence(s1, e2);
 		uc.update(s1);
-		assertEquals(User.Grade.C, uc.get(s1.getId()).getGrade());
+		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
 
 		Interval i3 = new Interval(start.plusDays(2), end.plusDays(2));
 		Event e3 = ec.createOrUpdate(Event.Type.Rehearsal, i3);
 		Absence a3 = ac.createOrUpdateAbsence(s1, e3);
 		uc.update(s1);
-		assertEquals(User.Grade.D, uc.get(s1.getId()).getGrade());
+		assertEquals(User.Grade.F, uc.get(s1.getId()).getGrade());
 
 		Interval i4 = new Interval(start.plusDays(3), end.plusDays(3));
 		Event e4 = ec.createOrUpdate(Event.Type.Rehearsal, i4);
@@ -252,23 +252,23 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		assertEquals(User.Grade.F, uc.get(s1.getId()).getGrade());
 		a2.setStatus(Absence.Status.Approved);
 		ac.updateAbsence(a2);
-		assertEquals(User.Grade.D, uc.get(s1.getId()).getGrade());
+		assertEquals(User.Grade.F, uc.get(s1.getId()).getGrade());
 		a3.setStatus(Absence.Status.Approved);
 		ac.updateAbsence(a3);
-		assertEquals(User.Grade.C, uc.get(s1.getId()).getGrade());
+		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
 		a4.setStatus(Absence.Status.Approved);
 		ac.updateAbsence(a4);
-		assertEquals(User.Grade.B, uc.get(s1.getId()).getGrade());
+		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
 		a5.setStatus(Absence.Status.Approved);
 		ac.updateAbsence(a5);
 		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
 		a1.setType(Absence.Type.Tardy);
 		a1.setStatus(Absence.Status.Denied);
 		ac.updateAbsence(a1);
-		assertEquals(User.Grade.Aminus, uc.get(s1.getId()).getGrade());
+		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
 		a2.setStatus(Absence.Status.Denied);
 		ac.updateAbsence(a2);
-		assertEquals(User.Grade.Bminus, uc.get(s1.getId()).getGrade());
+		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
 
 		Interval i6 = new Interval(start.plusDays(5), end.plusDays(5));
 		DateTime tardyTime = i6.getStart().plusMinutes(10);
@@ -277,28 +277,16 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		// creating an un-anchored tardy
 		Absence a6 = ac.createOrUpdateTardy(s1, tardyTime);
 		ac.updateAbsence(a6);
-		assertEquals(User.Grade.Bminus, uc.get(s1.getId()).getGrade());
+		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
 
 		Absence a7 = ac.createOrUpdateEarlyCheckout(s1, outTime);
 		a7 = ac.updateAbsence(a7);
 		assertEquals(Absence.Type.EarlyCheckOut, a7.getType());
-		assertEquals(User.Grade.Bminus, uc.get(s1.getId()).getGrade());
+		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
 
 		// auto-linking should happen here, upon creation
-		// Event e6 =
 		ec.createOrUpdate(Event.Type.Rehearsal, i6);
-		// a6.setEvent(e6);
-		// TODO my question here: is there a way to know for sure the types of
-		// a6 and a7 after creating the event? Because automatic linking
-		// happens. Additionally, does it matter? -curtis
-		// a6 = ac.updateAbsence(a6);
-		// assertEquals(Absence.Type.Tardy, a6.getType());
-		// assertEquals(User.Grade.Cplus, uc.get(s1.getId()).getGrade());
-
-		// a7.setEvent(e6);
-		// a7 = ac.updateAbsence(a7);
-		// assertEquals(Absence.Type.EarlyCheckOut, a7.getType());
-		assertEquals(User.Grade.C, uc.get(s1.getId()).getGrade());
+		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
 	}
 
 	@Test
@@ -313,58 +301,59 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		DateTimeZone zone = train.appData().get().getTimeZone();
 
-		User s1 = Users.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		// should be A initially
-		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
+		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
 
 		DateTime start = new DateTime(2012, 9, 18, 16, 30, 0, 0, zone);
 		DateTime end = new DateTime(2012, 9, 18, 17, 50, 0, 0, zone);
-		DateTime tardy = new DateTime(2012, 9, 18, 16, 40, 0, 0, zone);
+		DateTime checkIOtime = new DateTime(2012, 9, 18, 16, 40, 0, 0, zone);
 
-		ac.createOrUpdateTardy(s1, tardy);
-		uc.update(s1);
+		ac.createOrUpdateTardy(student, checkIOtime);
+		uc.update(student);
 
 		// there's a tardy, but it's not linked
-		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
+		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
 		ec.createOrUpdate(Event.Type.Rehearsal, new Interval(start, end));
 
-		// now that there's a matching event, it should link
-		assertEquals(User.Grade.Aminus, uc.get(s1.getId()).getGrade());
+		// now that there's a matching event, it should link, but still be
+		// within the limit
+		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
 
 		start = start.plusDays(1);
 		end = end.plusDays(1);
-		tardy = tardy.plusDays(1);
-		ac.createOrUpdateEarlyCheckout(s1, tardy);
+		checkIOtime = checkIOtime.plusDays(1);
+		ac.createOrUpdateEarlyCheckout(student, checkIOtime);
 		ec.createOrUpdate(Event.Type.Rehearsal, new Interval(start, end));
-		assertEquals(User.Grade.Bplus, uc.get(s1.getId()).getGrade());
+		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
 
 		start = start.plusDays(1);
 		end = end.plusDays(1);
-		tardy = tardy.plusDays(1);
-		ac.createOrUpdateEarlyCheckout(s1, tardy);
+		checkIOtime = checkIOtime.plusDays(1);
+		ac.createOrUpdateEarlyCheckout(student, checkIOtime);
 		ec.createOrUpdate(Event.Type.Performance, new Interval(start, end));
-		assertEquals(User.Grade.Bminus, uc.get(s1.getId()).getGrade());
+		assertEquals(User.Grade.B, uc.get(student.getId()).getGrade());
 
 		start = start.plusDays(1);
 		end = end.plusDays(1);
-		tardy = tardy.plusDays(1);
-		ac.createOrUpdateTardy(s1, tardy);
+		checkIOtime = checkIOtime.plusDays(1);
+		ac.createOrUpdateTardy(student, checkIOtime);
 		ec.createOrUpdate(Event.Type.Performance, new Interval(start, end));
-		assertEquals(User.Grade.C, uc.get(s1.getId()).getGrade());
+		assertEquals(User.Grade.C, uc.get(student.getId()).getGrade());
 
 		start = start.plusDays(1);
 		end = end.plusDays(1);
-		tardy = tardy.plusDays(1);
-		ac.createOrUpdateAbsence(s1, ec.createOrUpdate(Event.Type.Performance,
-				new Interval(start, end)));
-		assertEquals(User.Grade.F, uc.get(s1.getId()).getGrade());
+		checkIOtime = checkIOtime.plusDays(1);
+		ac.createOrUpdateAbsence(student, ec.createOrUpdate(
+				Event.Type.Performance, new Interval(start, end)));
+		assertEquals(User.Grade.F, uc.get(student.getId()).getGrade());
 
-		for (Absence a : ac.get(s1)) {
+		for (Absence a : ac.get(student)) {
 			a.setStatus(Absence.Status.Approved);
 			ac.updateAbsence(a);
 		}
-		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
+		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
 
 	}
 
