@@ -11,8 +11,7 @@ import com.google.code.twig.annotation.Index;
 public class User implements Serializable {
 
 	public enum Grade {
-		A, Aminus("A-"), Bplus("B+"), B, Bminus("B-"), Cplus("C+"), C, Cminus(
-				"C-"), Dplus("D+"), D, Dminus("D-"), F;
+		A, B, C, D, F;
 		private String mDisplayString;
 
 		private Grade() {

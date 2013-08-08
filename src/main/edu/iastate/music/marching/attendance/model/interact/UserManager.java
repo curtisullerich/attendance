@@ -281,6 +281,9 @@ public class UserManager extends AbstractManager {
 	}
 
 	private User.Grade intToGrade(int count) {
+		// users may miss up to 140 minutes for free
+		int autoexcused = 140;
+		count -= autoexcused;
 		if (count <= 140) {
 			return User.Grade.A;
 
@@ -359,17 +362,25 @@ public class UserManager extends AbstractManager {
 				absences.size());
 		for (Absence a : absences) {
 			Event e = a.getEvent();
-			if (map.containsKey(e)) {
-				map.get(e).add(a);
+			if (e == null) {
+				// it's unlinked!
 			} else {
-				List<Absence> list = new ArrayList<Absence>();
-				list.add(a);
-				map.put(e, list);
+				if (map.containsKey(e)) {
+					map.get(e).add(a);
+				} else {
+					List<Absence> list = new ArrayList<Absence>();
+					list.add(a);
+					map.put(e, list);
+				}
 			}
 		}
 
 		for (Event e : map.keySet()) {
 			List<Absence> l = map.get(e);
+			if (l.size() < 1) {
+				throw new IllegalStateException(
+						"Somehow the event had no associated absences");
+			}
 			if (l.size() == 1) {
 				minutes += simpleGrade(e, l);
 			} else {
@@ -450,7 +461,7 @@ public class UserManager extends AbstractManager {
 	}
 
 	private int simpleGrade(Event e, List<Absence> l) {
-		if (l.size() != 0) {
+		if (l.size() != 1) {
 			throw new IllegalArgumentException(
 					"list of Absences must be of size 1");
 		}
