@@ -363,35 +363,6 @@ public class UserManager extends AbstractManager {
 		DateTimeZone zone = this.datatrain.appData().get().getTimeZone();
 		List<Absence> absences = ac.get(student);
 
-		// class AbsenceComparator implements Comparator<Absence> {
-		// private DateTimeZone zone;
-		//
-		// public AbsenceComparator(DateTimeZone zone) {
-		// this.zone = zone;
-		// }
-		//
-		// @Override
-		// public int compare(Absence a1, Absence a2) {
-		// if (a1.getType() == Absence.Type.Absence
-		// || a2.getType() == Absence.Type.Absence) {
-		// throw new IllegalArgumentException(
-		// "Tried to compare an absence to a tardy or eco.");
-		// }
-		// DateTime first;
-		// if (a1.getType() == Absence.Type.Tardy) {
-		// first = a1.getCheckin(zone);
-		// } else {
-		// first = a1.getCheckout(zone);
-		// }
-		// DateTime second;
-		// if (a2.getType() == Absence.Type.Tardy) {
-		// second = a1.getCheckin(zone);
-		// } else {
-		// second = a1.getCheckout(zone);
-		// }
-		// return first.compareTo(second);
-		// }
-		// }
 		class PresenceInterval {
 
 			private boolean present;
@@ -434,7 +405,6 @@ public class UserManager extends AbstractManager {
 
 		for (Event e : map.keySet()) {
 			List<Absence> l = map.get(e);
-			// Collections.sort(l, new AbsenceComparator(zone));
 			if (l.size() == 1) {
 				minutes += simpleGrade(e, l);
 			} else {
