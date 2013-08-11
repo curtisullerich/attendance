@@ -1,12 +1,11 @@
-package edu.iastate.music.marching.attendance.test.util;
+package edu.iastate.music.marching.attendance.testlib;
 
 import com.google.appengine.api.datastore.Email;
 
 import edu.iastate.music.marching.attendance.model.interact.UserManager;
 import edu.iastate.music.marching.attendance.model.store.User;
-import edu.iastate.music.marching.attendance.test.TestConfig;
 
-public class Users {
+public class TestUsers {
 
 	public static final User createDefaultStudent(UserManager uc) {
 		return createStudent(uc, "defaultstudent", "123456789", "John", "Doe", 2,
@@ -54,6 +53,6 @@ public class Users {
 	}
 
 	public static User createDefaultDirector(UserManager uc) {
-		return Users.createDirector(uc, "director", "I am", "The Director");
+		return TestUsers.createDirector(uc, "director", "I am", "The Director");
 	}
 }

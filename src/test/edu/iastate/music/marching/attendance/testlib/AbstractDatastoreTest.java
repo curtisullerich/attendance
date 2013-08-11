@@ -1,4 +1,4 @@
-package edu.iastate.music.marching.attendance.test;
+package edu.iastate.music.marching.attendance.testlib;
 
 import org.junit.After;
 import org.junit.Before;

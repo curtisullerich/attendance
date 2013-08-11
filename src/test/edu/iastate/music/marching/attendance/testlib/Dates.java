@@ -1,4 +1,4 @@
-package edu.iastate.music.marching.attendance.test.util;
+package edu.iastate.music.marching.attendance.testlib;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;

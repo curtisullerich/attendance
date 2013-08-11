@@ -1,4 +1,4 @@
-package edu.iastate.music.marching.attendance.test.unit.util;
+package edu.iastate.music.marching.attendance.test.util;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -8,8 +8,8 @@ import org.junit.Test;
 import com.google.appengine.api.datastore.Email;
 
 import edu.iastate.music.marching.attendance.model.interact.DataTrain;
-import edu.iastate.music.marching.attendance.test.AbstractDatastoreTest;
-import edu.iastate.music.marching.attendance.test.TestConfig;
+import edu.iastate.music.marching.attendance.testlib.AbstractDatastoreTest;
+import edu.iastate.music.marching.attendance.testlib.TestConfig;
 import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
 public class ValidationUtilTest extends AbstractDatastoreTest {

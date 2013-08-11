@@ -1,4 +1,4 @@
-package edu.iastate.music.marching.attendance.test.integration;
+package edu.iastate.music.marching.attendance.test.servlets;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -25,10 +25,10 @@ import edu.iastate.music.marching.attendance.model.store.Absence;
 import edu.iastate.music.marching.attendance.model.store.Event;
 import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.servlets.MobileAppDataServlet;
-import edu.iastate.music.marching.attendance.test.AbstractDatastoreTest;
-import edu.iastate.music.marching.attendance.test.TestConfig;
-import edu.iastate.music.marching.attendance.test.util.ServletMocks;
-import edu.iastate.music.marching.attendance.test.util.Users;
+import edu.iastate.music.marching.attendance.testlib.AbstractDatastoreTest;
+import edu.iastate.music.marching.attendance.testlib.ServletMocks;
+import edu.iastate.music.marching.attendance.testlib.TestConfig;
+import edu.iastate.music.marching.attendance.testlib.TestUsers;
 
 public class MobileDataUploadTest extends AbstractDatastoreTest {
 
@@ -52,7 +52,7 @@ public class MobileDataUploadTest extends AbstractDatastoreTest {
 		HttpServletRequest req = mock(HttpServletRequest.class);
 		HttpServletResponse resp = mock(HttpServletResponse.class);
 
-		ServletMocks.setUserSession(req, Users.createDefaultTA(train.users()));
+		ServletMocks.setUserSession(req, TestUsers.createDefaultTA(train.users()));
 		ServletMocks.setPostedContent(req, SIMPLE_ABSENCE_TESTDATA);
 
 		ServletOutputStream os = mock(ServletOutputStream.class);
@@ -77,11 +77,11 @@ public class MobileDataUploadTest extends AbstractDatastoreTest {
 
 		DataTrain train = getDataTrain();
 
-		User ta = Users.createTA(train.users(), "ta", "123456780", "first",
+		User ta = TestUsers.createTA(train.users(), "ta", "123456780", "first",
 				"last", 2, "major", User.Section.Staff);
-		Users.createStudent(train.users(), "s", "123456719", "first", "last",
+		TestUsers.createStudent(train.users(), "s", "123456719", "first", "last",
 				1, "major", User.Section.Baritone);
-		Users.createStudent(train.users(), "zf", "123456782", "first", "last",
+		TestUsers.createStudent(train.users(), "zf", "123456782", "first", "last",
 				1, "major", User.Section.Drumline_Bass);
 
 		train.mobileData().pushMobileData(SIMPLE_ABSENCE_TESTDATA, ta);
@@ -96,15 +96,15 @@ public class MobileDataUploadTest extends AbstractDatastoreTest {
 
 		// Arrange
 		DataTrain train = getDataTrain();
-		Users.createStudent(train.users(), "s", "123456788", "first", "last",
+		TestUsers.createStudent(train.users(), "s", "123456788", "first", "last",
 				1, "major", User.Section.Clarinet);
-		Users.createStudent(train.users(), "zf", "123456782", "first", "last",
+		TestUsers.createStudent(train.users(), "zf", "123456782", "first", "last",
 				1, "major", User.Section.TenorSax);
 
 		HttpServletRequest req = mock(HttpServletRequest.class);
 		HttpServletResponse resp = mock(HttpServletResponse.class);
 
-		ServletMocks.setUserSession(req, Users.createDefaultTA(train.users()));
+		ServletMocks.setUserSession(req, TestUsers.createDefaultTA(train.users()));
 		ServletMocks.setPostedContent(req, SIMPLE_ABSENCE_TESTDATA);
 
 		ServletOutputStream os = mock(ServletOutputStream.class);
@@ -180,13 +180,13 @@ public class MobileDataUploadTest extends AbstractDatastoreTest {
 
 		UserManager uc = train.users();
 
-		Users.createStudent(uc, "s", "123456780", "test1", "tester", 1,
+		TestUsers.createStudent(uc, "s", "123456780", "test1", "tester", 1,
 				"major", User.Section.AltoSax);
-		Users.createStudent(uc, "zf", "123456781", "test1", "tester", 1,
+		TestUsers.createStudent(uc, "zf", "123456781", "test1", "tester", 1,
 				"major", User.Section.AltoSax);
-		Users.createStudent(uc, "b", "123456782", "test1", "tester", 1,
+		TestUsers.createStudent(uc, "b", "123456782", "test1", "tester", 1,
 				"major", User.Section.AltoSax);
-		User ta = Users.createTA(uc, "ta", "123456783", "test1", "tester", 1,
+		User ta = TestUsers.createTA(uc, "ta", "123456783", "test1", "tester", 1,
 				"major", User.Section.AltoSax);
 
 		train.mobileData().pushMobileData(SIMPLE_TARDY_TESTDATA, ta);

@@ -1,4 +1,4 @@
-package edu.iastate.music.marching.attendance.test.util;
+package edu.iastate.music.marching.attendance.testlib;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -44,15 +44,12 @@ public class ServletMocks {
 	}
 
 	public static HttpServletRequest setUserSession(HttpServletRequest req, User u) {
-		when(req.getSession()).thenReturn(getMockUserSession(u));
-		
-		return req;
-	}
-	
-	public static HttpSession getMockUserSession(User u) {
 		HttpSession session = mock(HttpSession.class);
 		when(session.getAttribute("authenticated_user")).thenReturn(u);
-		return session;
+		
+		when(req.getSession()).thenReturn(session);
+		
+		return req;
 	}
 
 	public static void setPostedContent(HttpServletRequest req, String data)

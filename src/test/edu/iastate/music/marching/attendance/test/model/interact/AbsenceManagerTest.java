@@ -1,4 +1,4 @@
-package edu.iastate.music.marching.attendance.test.unit.model.interact;
+package edu.iastate.music.marching.attendance.test.model.interact;
 
 import static org.junit.Assert.*;
 
@@ -27,8 +27,8 @@ import edu.iastate.music.marching.attendance.model.store.Absence;
 import edu.iastate.music.marching.attendance.model.store.Event;
 import edu.iastate.music.marching.attendance.model.store.Form;
 import edu.iastate.music.marching.attendance.model.store.User;
-import edu.iastate.music.marching.attendance.test.AbstractDatastoreTest;
-import edu.iastate.music.marching.attendance.test.util.Users;
+import edu.iastate.music.marching.attendance.testlib.AbstractDatastoreTest;
+import edu.iastate.music.marching.attendance.testlib.TestUsers;
 
 @SuppressWarnings("deprecation")
 public class AbsenceManagerTest extends AbstractDatastoreTest {
@@ -1184,7 +1184,7 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = Users.createStudent(uc, "student1", "123456789", "John",
+		User student = TestUsers.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
 		LocalDate date = new LocalDate(2012, 7, 7);

@@ -1,4 +1,4 @@
-package edu.iastate.music.marching.attendance.test.unit.model.interact;
+package edu.iastate.music.marching.attendance.test.model.interact;
 
 import static org.junit.Assert.*;
 
@@ -12,8 +12,8 @@ import edu.iastate.music.marching.attendance.model.interact.UserManager;
 import edu.iastate.music.marching.attendance.model.store.AppData;
 import edu.iastate.music.marching.attendance.model.store.Form;
 import edu.iastate.music.marching.attendance.model.store.User;
-import edu.iastate.music.marching.attendance.test.AbstractDatastoreTest;
-import edu.iastate.music.marching.attendance.test.util.Users;
+import edu.iastate.music.marching.attendance.testlib.AbstractDatastoreTest;
+import edu.iastate.music.marching.attendance.testlib.TestUsers;
 
 public class FormTimeWorkedTest extends AbstractDatastoreTest {
 /*
@@ -37,7 +37,7 @@ public class FormTimeWorkedTest extends AbstractDatastoreTest {
 		UserManager uc = train.users();
 		FormManager fc = train.forms();
 
-		User student = Users.createStudent(uc, "student1", "123456789", "John",
+		User student = TestUsers.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
 		LocalDate date = new LocalDate(2012, 7, 7);
@@ -64,7 +64,7 @@ public class FormTimeWorkedTest extends AbstractDatastoreTest {
 		UserManager uc = train.users();
 		FormManager fc = train.forms();
 
-		User student = Users.createStudent(uc, "student1", "123456789", "John",
+		User student = TestUsers.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
 		LocalDate date = new LocalDate(2012, 7, 7);
@@ -96,7 +96,7 @@ public class FormTimeWorkedTest extends AbstractDatastoreTest {
 		UserManager uc = train.users();
 		FormManager fc = train.forms();
 
-		User student = Users.createStudent(uc, "student1", "123456789", "John",
+		User student = TestUsers.createStudent(uc, "student1", "123456789", "John",
 				"Cox", 2, "major", User.Section.AltoSax);
 
 		LocalDate date = new LocalDate(2012, 7, 7);
