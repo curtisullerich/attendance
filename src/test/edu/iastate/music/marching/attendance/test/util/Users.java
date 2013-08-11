@@ -12,6 +12,11 @@ public class Users {
 		return createStudent(uc, "defaultstudent", "123456789", "John", "Doe", 2,
 				"major", User.Section.AltoSax);
 	}
+	
+	public static final User createDefaultTA(UserManager uc) {
+		return createTA(uc, "defaultta", "987654321", "Johnny", "Doe", 2,
+				"major", User.Section.AltoSax);
+	}
 
 	public static final User createStudent(UserManager uc,
 			String email_firstpart, String univID, String firstName,

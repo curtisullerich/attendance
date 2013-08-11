@@ -7,17 +7,14 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletInputStream;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.joda.time.DateTimeZone;
 import org.junit.Test;
@@ -30,7 +27,6 @@ import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.servlets.MobileAppDataServlet;
 import edu.iastate.music.marching.attendance.test.AbstractDatastoreTest;
 import edu.iastate.music.marching.attendance.test.TestConfig;
-import edu.iastate.music.marching.attendance.test.util.MockServletInputStream;
 import edu.iastate.music.marching.attendance.test.util.ServletMocks;
 import edu.iastate.music.marching.attendance.test.util.Users;
 
@@ -46,17 +42,18 @@ public class MobileDataUploadTest extends AbstractDatastoreTest {
 			+ "tardyStudent&split&el&split&Starster&split&s&split&2012-05-03&split&0107&split&|&split&null&newline&"
 			+ "tardyStudent&split&el&split&Starster&split&s&split&2012-05-03&split&0108&split&|&split&null&newline&"
 			+ "tardyStudent&split&P1&split&Z&split&zf&split&2012-05-03&split&0108&split&|&split&4&newline&";
+
 	@Test
 	public void simpleAbsenceInsertionThroughServlet_NullStudent()
 			throws InstantiationException, IllegalAccessException,
 			ServletException, IOException {
 
+		DataTrain train = getDataTrain();
 		HttpServletRequest req = mock(HttpServletRequest.class);
 		HttpServletResponse resp = mock(HttpServletResponse.class);
 
-		setTASession(req);
-
-		setPostedContent(req, SIMPLE_ABSENCE_TESTDATA);
+		ServletMocks.setUserSession(req, Users.createDefaultTA(train.users()));
+		ServletMocks.setPostedContent(req, SIMPLE_ABSENCE_TESTDATA);
 
 		ServletOutputStream os = mock(ServletOutputStream.class);
 		when(resp.getOutputStream()).thenReturn(os);
@@ -74,63 +71,58 @@ public class MobileDataUploadTest extends AbstractDatastoreTest {
 		// assertEquals(0, datastore.find().type(Absence.class).returnCount()
 		// .now().intValue());
 	}
-	
+
 	@Test
 	public void testSimpleAbsenceInsertionThroughController() {
 
 		DataTrain train = getDataTrain();
 
-		User ta = Users.createTA(train.users(), "ta", "123456780",
-				"first", "last", 2, "major", User.Section.Staff);
-		Users.createStudent(train.users(), "s", "123456719",
-				"first", "last", 1, "major", User.Section.Baritone);
-		Users.createStudent(train.users(), "zf", "123456782",
-				"first", "last", 1, "major", User.Section.Drumline_Bass);
+		User ta = Users.createTA(train.users(), "ta", "123456780", "first",
+				"last", 2, "major", User.Section.Staff);
+		Users.createStudent(train.users(), "s", "123456719", "first", "last",
+				1, "major", User.Section.Baritone);
+		Users.createStudent(train.users(), "zf", "123456782", "first", "last",
+				1, "major", User.Section.Drumline_Bass);
 
-		train.mobileData().pushMobileData(SIMPLE_ABSENCE_TESTDATA,
-				ta);
+		train.mobileData().pushMobileData(SIMPLE_ABSENCE_TESTDATA, ta);
 
 		simpleAbsenceInsertionVerification();
 	}
-
-
 
 	@Test
 	public void testSimpleAbsenceInsertionThroughServlet()
 			throws InstantiationException, IllegalAccessException,
 			ServletException, IOException {
 
+		// Arrange
 		DataTrain train = getDataTrain();
-
-		Users.createStudent(train.users(), "s", "123456788",
-				"first", "last", 1, "major", User.Section.Clarinet);
-		Users.createStudent(train.users(), "zf", "123456782",
-				"first", "last", 1, "major", User.Section.TenorSax);
+		Users.createStudent(train.users(), "s", "123456788", "first", "last",
+				1, "major", User.Section.Clarinet);
+		Users.createStudent(train.users(), "zf", "123456782", "first", "last",
+				1, "major", User.Section.TenorSax);
 
 		HttpServletRequest req = mock(HttpServletRequest.class);
 		HttpServletResponse resp = mock(HttpServletResponse.class);
 
-		setTASession(req);
-
-		setPostedContent(req, SIMPLE_ABSENCE_TESTDATA);
+		ServletMocks.setUserSession(req, Users.createDefaultTA(train.users()));
+		ServletMocks.setPostedContent(req, SIMPLE_ABSENCE_TESTDATA);
 
 		ServletOutputStream os = mock(ServletOutputStream.class);
 		when(resp.getOutputStream()).thenReturn(os);
 
+		// Act
 		ServletMocks.doPost(MobileAppDataServlet.class, req, resp);
 
+		// Assert
 		verify(os)
 				.print("{\"error\":\"success\",\"message\":\"Inserted 1/1 events.\\nInserted 2/2 absences/tardies/early checkouts.\\n\"}");
-
 		simpleAbsenceInsertionVerification();
 	}
-
 
 	private void simpleAbsenceInsertionVerification() {
 		Event event;
 		DataTrain train = getDataTrain();
-		DateTimeZone zone = train.appData().get()
-				.getTimeZone();
+		DateTimeZone zone = train.appData().get().getTimeZone();
 
 		// Verify insertion lengths
 		assertEquals(1, train.events().getCount().intValue());
@@ -149,7 +141,10 @@ public class MobileDataUploadTest extends AbstractDatastoreTest {
 		assertEquals(cal.getTime(), event.getInterval(zone).getStart().toDate());
 
 		cal.set(2012, 04, 03, 17, 50, 0);
-		assertEquals(0, cal.getTime().compareTo(event.getInterval(zone).getEnd().toDate()));
+		assertEquals(
+				0,
+				cal.getTime().compareTo(
+						event.getInterval(zone).getEnd().toDate()));
 
 		assertEquals(Event.Type.Rehearsal, event.getType());
 
@@ -194,8 +189,7 @@ public class MobileDataUploadTest extends AbstractDatastoreTest {
 		User ta = Users.createTA(uc, "ta", "123456783", "test1", "tester", 1,
 				"major", User.Section.AltoSax);
 
-		train.mobileData().pushMobileData(SIMPLE_TARDY_TESTDATA,
-				ta);
+		train.mobileData().pushMobileData(SIMPLE_TARDY_TESTDATA, ta);
 
 		// Verify insertion lengths
 		assertEquals(0, train.events().getCount().intValue());
@@ -206,21 +200,4 @@ public class MobileDataUploadTest extends AbstractDatastoreTest {
 		// Check actual data returned
 	}
 
-	private HttpServletRequest setTASession(HttpServletRequest req) {
-		HttpSession session = mock(HttpSession.class);
-		when(session.getAttribute("authenticated_user")).thenReturn(
-				Users.createTA(getDataTrain().users(), "ta",
-						"123456789", "I am", "A TA", 10, "Being Silly",
-						User.Section.AltoSax));
-		when(req.getSession()).thenReturn(session);
-		return req;
-	}
-
-	private void setPostedContent(HttpServletRequest req, String data)
-			throws IOException {
-		ByteArrayInputStream realStream = new ByteArrayInputStream(
-				data.getBytes("UTF-8"));
-		ServletInputStream mockStream = new MockServletInputStream(realStream);
-		when(req.getInputStream()).thenReturn(mockStream);
-	}
 }
