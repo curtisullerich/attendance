@@ -158,7 +158,7 @@ public class ServletAccess extends AbstractDatastoreTest {
 
 		ServletMocks.doGet(DirectorServlet.class, req, resp);
 
-		verifyErrorRedirect(dispatcher, req, resp, 404);
+		verify(dispatcher).forward(req, resp);
 	}
 
 	private void verifyUnauthorizedRedirect(HttpServletRequest req,
@@ -175,13 +175,6 @@ public class ServletAccess extends AbstractDatastoreTest {
 				dispatcher);
 
 		return dispatcher;
-	}
-
-	private void verifyErrorRedirect(RequestDispatcher dispatcher,
-			HttpServletRequest req, HttpServletResponse resp, int code)
-			throws ServletException, IOException {
-		verify(dispatcher).forward(req, resp);
-		verify(resp).sendRedirect("/error/index");
 	}
 
 	private RequestDispatcher setupForwardTo(HttpServletRequest req,
