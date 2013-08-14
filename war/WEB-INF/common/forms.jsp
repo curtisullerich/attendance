@@ -3,11 +3,22 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setTimeZone value="${pagetemplate.timeZoneID}" />
-<style>
-table.gray tbody tr.late td {
-  background-color: #ffa3a3;
-}
-</style>
+  <style>
+    table.gray tbody tr.late td {
+      background-color: #ffa3a3;
+    }
+    .divBox {
+        width: 100%;
+        height: 100%;
+    }
+    .divBox a {
+        width: 100%;
+        height: 100%;
+        display: block;
+        hover:none;
+        color: #444;
+    }
+  </style>
 		<c:choose>
 			<c:when test="${fn:length(forms) > 0}">
  				<div>
@@ -36,25 +47,53 @@ table.gray tbody tr.late td {
 
  						  <tr <c:if test="${form.late}">class="late"</c:if> id="row_form_<c:out value="${form.id}" />">
 							<%--Note that I did this because the last two columns are buttons. --%>
-							<td onclick="window.open('<c:out value="${form_url_view}" />')">${form.student.id}</td>
-							<td onclick="window.open('<c:out value="${form_url_view}" />')">${form.type}</td>
-							<td onclick="window.open('<c:out value="${form_url_view}" />')">${form.status}</td>
-							<td style="white-space: nowrap" onclick="window.open('<c:out value="${form_url_view}" />')"><fmt:formatDate value="${form.submissionTime}" pattern="M/d h:mm a" /></td>
-                            <td onclick="window.open('<c:out value="${form_url_view}" />')">
-							<p style="overflow:hidden;">
-                                <c:if test="${form.late}"><b>LATE SUBMISSION.</b> </c:if>
-								<c:choose>
-									<c:when test="${form.type.performanceAbsence}">
-										<fmt:formatDate value="${form.start}" pattern="M/d/yyyy" /> <c:if test="${not empty form.details }"> - ${form.details }</c:if>
-									</c:when>
-									<c:when test ="${form.type.classConflict }">
-										${form.dept} ${form.course } <c:if test="${not empty form.details }"> - ${form.details }</c:if>
-									</c:when>
-									<c:when test ="${form.type.timeWorked }">
-										<fmt:formatDate value="${form.start}" pattern="M/d/yyyy" /> - ${form.minutesWorked } minutes worked <c:if test="${not empty form.details }"> - ${form.details } </c:if>
-									</c:when>
-								</c:choose>
-								</p>
+                            <td>
+                              <div class="divBox">
+                                <a href="${form_url_view}">
+                                  ${form.student.id}
+                                </a>
+                              </div>
+                            </td>
+                            <td>
+                              <div class="divBox">
+                                <a href="${form_url_view}">
+                                  ${form.type}
+                                </a>
+                              </div>
+                            </td>
+                            <td>
+                              <div class="divBox">
+                                <a href="${form_url_view}">
+                                  ${form.status}
+                                </a>
+                              </div>
+                            </td>
+                            <td>
+                              <div class="divBox">
+                                <a href="${form_url_view}">
+                                  <fmt:formatDate value="${form.submissionTime}" pattern="M/d h:mm a" />&nbsp;
+                                </a>
+                              </div>
+                            </td>
+                            <td>
+                              <div class="divBox">
+                                <a href="${form_url_view}">
+        							<p style="overflow:hidden;">
+                                        <c:if test="${form.late}"><b>LATE SUBMISSION.</b> </c:if>
+        								<c:choose>
+        									<c:when test="${form.type.performanceAbsence}">
+        										<fmt:formatDate value="${form.start}" pattern="M/d/yyyy" /> <c:if test="${not empty form.details }"> - ${form.details }</c:if>
+        									</c:when>
+        									<c:when test ="${form.type.classConflict }">
+        										${form.dept} ${form.course } <c:if test="${not empty form.details }"> - ${form.details }</c:if>
+        									</c:when>
+        									<c:when test ="${form.type.timeWorked }">
+        										<fmt:formatDate value="${form.start}" pattern="M/d/yyyy" /> - ${form.minutesWorked } minutes worked <c:if test="${not empty form.details }"> - ${form.details } </c:if>
+        									</c:when>
+        								</c:choose>
+        								</p>
+                                    </a>
+                                  </div>
 								</td>								
 								<td>
 									<c:choose>

@@ -73,7 +73,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 			new PageBuilder(Page.postdelete, SERVLET_PATH)
 					.setAttribute(
 							"success_message",
-							"Successfully deleted absence, close this window to return to the previous page.")
+							"Successfully deleted absence")//, close this window to return to the previous page.")
 					.passOffToJsp(req, resp);
 			// } else {
 			// // Redirect
@@ -126,16 +126,16 @@ public class DirectorServlet extends AbstractBaseServlet {
 		}
 
 		// Don't redirect to attendance if in a new window
-		if ("true".equals(req.getParameter("newindow"))) {
-			new PageBuilder(Page.postdelete, SERVLET_PATH)
-					.setAttribute(
-							"success_message",
-							success
-									+ ", please close this window to return to the previous page.")
-					.passOffToJsp(req, resp);
-		} else {
+//		if ("true".equals(req.getParameter("newindow"))) {
+//			new PageBuilder(Page.postdelete, SERVLET_PATH)
+//					.setAttribute(
+//							"success_message",
+//							success
+//									+ ", please close this window to return to the previous page.")
+//					.passOffToJsp(req, resp);
+//		} else {
 			showStudent(req, resp, errors, success);
-		}
+//		}
 	}
 
 	private void deleteStudent(HttpServletRequest req, HttpServletResponse resp)
@@ -383,7 +383,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 						req,
 						resp,
 						errors,
-						"Successfully updated absence, close this window to return to the previous page");
+						"Successfully updated absence");//, close this window to return to the previous page");
 				// } else {
 				// resp.sendRedirect(pageToUrl(Page.attendance, SERVLET_PATH));
 				// }

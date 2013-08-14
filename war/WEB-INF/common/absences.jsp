@@ -3,6 +3,19 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <fmt:setTimeZone value="${pagetemplate.timeZoneID}" />
+  <style>
+    .divBox {
+        width: 100%;
+        height: 100%;
+    }
+    .divBox a {
+        width: 100%;
+        height: 100%;
+        display: block;
+        hover:none;
+        color: #444;
+    }
+  </style>
 	<c:choose>
 	<c:when test="${fn:length(absences) > 0}">
 
@@ -24,42 +37,58 @@
 				</c:url>
 				<tr>
 					<c:if test="${empty absence.event}">
-						<td onclick="window.location='${absence_url_view}'">
-							No event.
+						<td>
+                          <div class="divBox">
+                              <a href="${absence_url_view}">No event.</a>
+                          </div>
 						</td>
 					</c:if>
 					<c:if test="${not empty absence.event}">
-						<td onclick="window.location='${absence_url_view}'">
-							<c:out value="${absence.event.type}" />
+						<td>
+                          <div class="divBox">
+                              <a href="${absence_url_view}"><c:out value="${absence.event.type}" />
 							<fmt:formatDate value="${absence.event.start}" pattern="M/d" />
 							<fmt:formatDate value="${absence.event.start}" pattern="h:mm a" />
 							-
-							<fmt:formatDate value="${absence.event.end}" pattern="h:mm a" />
-						</td>
+							<fmt:formatDate value="${absence.event.end}" pattern="h:mm a" /></a>
+                          </div>
+                		</td>
 					</c:if>
 
-					<td onclick="window.location='${absence_url_view}'">
-						${absence.type }
+                    <td>
+                      <div class="divBox">
+                        <a href="${absence_url_view}">${absence.type }</a>
+                      </div>
 					</td>
-					<td onclick="window.location='${absence_url_view}'">
-					${absence.status }
+                    <td>
+                      <div class="divBox">
+                        <a href="${absence_url_view}">${absence.status }</a>
+                      </div>
 					</td>
 					<c:choose>
 						<c:when test="${(absence.type.tardy) || (absence.type.earlyCheckOut)}">
-						<td onclick="window.location='${absence_url_view}'">
-							<fmt:formatDate value="${absence.start}" pattern="h:mm a" />
-						</td>
+                        <td>
+                          <div class="divBox">
+                            <a href="${absence_url_view}"><fmt:formatDate value="${absence.start}" pattern="h:mm a" /></a>
+                          </div>
+                        </td>
 						</c:when>
 						<c:when test="${(absence.type.absence) && (empty absence.event)}">
-						<td onclick="window.location='${absence_url_view}'">
+                        <td>
+                          <div class="divBox">
+                            <a href="${absence_url_view}">
 							<fmt:formatDate value="${absence.start}" pattern="M/d" />
 							<fmt:formatDate value="${absence.start}" pattern="h:mm a" />
 							-
 							<fmt:formatDate value="${absence.end}" pattern="h:mm a" />
+                            </a>
+                          </div>
 						</td>
 						</c:when>
 						<c:when test="${(absence.type.absence) && (not empty absence.event)}">
-							<td onclick="window.location='${absence_url_view}'">-</td>
+                          <div class="divBox">
+                            <a href="${absence_url_view}">-</a>
+                          </div>
 						</c:when>
 					</c:choose>
 				</tr>
