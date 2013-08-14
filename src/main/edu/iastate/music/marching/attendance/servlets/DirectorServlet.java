@@ -70,10 +70,16 @@ public class DirectorServlet extends AbstractBaseServlet {
 			// Do not redirect if in a new window, instead show a success
 			// message
 			// if ("true".equals(req.getParameter("newindow"))) {
-			new PageBuilder(Page.postdelete, SERVLET_PATH)
-					.setAttribute(
-							"success_message",
-							"Successfully deleted absence")//, close this window to return to the previous page.")
+			new PageBuilder(Page.postdelete, SERVLET_PATH).setAttribute(
+					"success_message", "Successfully deleted absence")// , close
+																		// this
+																		// window
+																		// to
+																		// return
+																		// to
+																		// the
+																		// previous
+																		// page.")
 					.passOffToJsp(req, resp);
 			// } else {
 			// // Redirect
@@ -126,16 +132,16 @@ public class DirectorServlet extends AbstractBaseServlet {
 		}
 
 		// Don't redirect to attendance if in a new window
-//		if ("true".equals(req.getParameter("newindow"))) {
-//			new PageBuilder(Page.postdelete, SERVLET_PATH)
-//					.setAttribute(
-//							"success_message",
-//							success
-//									+ ", please close this window to return to the previous page.")
-//					.passOffToJsp(req, resp);
-//		} else {
-			showStudent(req, resp, errors, success);
-//		}
+		// if ("true".equals(req.getParameter("newindow"))) {
+		// new PageBuilder(Page.postdelete, SERVLET_PATH)
+		// .setAttribute(
+		// "success_message",
+		// success
+		// + ", please close this window to return to the previous page.")
+		// .passOffToJsp(req, resp);
+		// } else {
+		showStudent(req, resp, errors, success);
+		// }
 	}
 
 	private void deleteStudent(HttpServletRequest req, HttpServletResponse resp)
@@ -340,13 +346,11 @@ public class DirectorServlet extends AbstractBaseServlet {
 						switch (toUpdate.getType()) {
 						case EarlyCheckOut:
 							toUpdate.setCheckout(d.toDateTime(toUpdate
-									.getCheckout(zone)
-									.toDateMidnight()));
+									.getCheckout(zone).toDateMidnight()));
 							break;
 						case Tardy:
 							toUpdate.setCheckin(d.toDateTime(toUpdate
-									.getCheckin(zone)
-									.toDateMidnight()));
+									.getCheckin(zone).toDateMidnight()));
 							break;
 						default:
 							throw new IllegalStateException();
@@ -379,11 +383,16 @@ public class DirectorServlet extends AbstractBaseServlet {
 				// Do not redirect if in a new window, instead show a success
 				// message
 				// if ("true".equals(req.getParameter("newindow"))) {
-				viewAbsence(
-						req,
-						resp,
-						errors,
-						"Successfully updated absence");//, close this window to return to the previous page");
+				viewAbsence(req, resp, errors, "Successfully updated absence");// ,
+																				// close
+																				// this
+																				// window
+																				// to
+																				// return
+																				// to
+																				// the
+																				// previous
+																				// page");
 				// } else {
 				// resp.sendRedirect(pageToUrl(Page.attendance, SERVLET_PATH));
 				// }
@@ -643,7 +652,19 @@ public class DirectorServlet extends AbstractBaseServlet {
 					// retrieve the event and link it up
 					Event e = ec.get(Long.parseLong(eventID));
 					Absence a = ac.get(Long.parseLong(absenceID));
-					if (Util.overlapDays(a.getInterval(zone), e.getInterval(zone))) {
+					boolean overlap = false;
+
+					if (a.getType() == Absence.Type.Tardy) {
+						overlap = e.getInterval(zone).contains(
+								a.getCheckin(zone));
+					} else if (a.getType() == Absence.Type.EarlyCheckOut) {
+						overlap = e.getInterval(zone).contains(
+								a.getCheckout(zone));
+					} else if (a.getType() == Absence.Type.Absence) {
+						overlap = Util.overlapDays(a.getInterval(zone),
+								e.getInterval(zone));
+					}
+					if (overlap) {
 						errors.add("Absence was not the same day as the event.");
 					} else {
 						a.setEvent(e);
@@ -704,7 +725,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		PageBuilder page = new PageBuilder(Page.appinfo, SERVLET_PATH);
 
 		AppData data = train.appData().get();
-		
+
 		DateTimeZone zone = data.getTimeZone();
 
 		page.setAttribute("appinfo", data);
