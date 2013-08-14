@@ -653,7 +653,6 @@ public class DirectorServlet extends AbstractBaseServlet {
 					Event e = ec.get(Long.parseLong(eventID));
 					Absence a = ac.get(Long.parseLong(absenceID));
 					boolean overlap = false;
-
 					if (a.getType() == Absence.Type.Tardy) {
 						overlap = e.getInterval(zone).contains(
 								a.getCheckin(zone));
@@ -664,6 +663,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 						overlap = Util.overlapDays(a.getInterval(zone),
 								e.getInterval(zone));
 					}
+
 					if (overlap) {
 						errors.add("Absence was not the same day as the event.");
 					} else {
