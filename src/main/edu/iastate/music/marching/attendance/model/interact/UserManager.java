@@ -321,6 +321,7 @@ public class UserManager extends AbstractManager {
 		RootFindCommand<User> find = this.datatrain.find(User.class);
 		find.addFilter(User.FIELD_SECONDARY_EMAIL, FilterOperator.EQUAL,
 				secondaryEmail);
+		find.addFilter(User.FIELD_PRIMARY_EMAIL, FilterOperator.NOT_EQUAL, primary);
 		List<User> found = find.returnAll().now();
 		return found.size() == 0
 				|| (found.size() == 1 && found.get(0).getPrimaryEmail()
@@ -337,14 +338,8 @@ public class UserManager extends AbstractManager {
 		}
 
 		validateUser(u);
-
-		// TODO investigate why this is necessary
-		// this.datatrain.getDataStore().activate(u);
-
-		// I make this redundant call because the call chain in updateUserGrade
-		// wipes the changes from the User
-		this.datatrain.getDataStore().update(u);
 		updateUserGrade(u);
+		
 		this.datatrain.getDataStore().update(u);
 	}
 

@@ -86,30 +86,49 @@ public class AuthManager {
 			session.setAttribute(SESSION_USER_ATTRIBUTE, u);
 	}
 
-	public static void updateCurrentUser(User user, HttpSession session) {
+	public void updateCurrentUser(User user, HttpSession session) {
 		putUserInSession(user, session);
+		setCachedCurrentUser(user);
 	}
 
 	private DataTrain train;
 
 	private User currentUser = null;
 
+	private User cachedCurrentUser;
+
 	public AuthManager(DataTrain dataTrain) {
 		this.train = dataTrain;
 	}
 
 	public User getCurrentUser(HttpSession session) {
+		if (this.currentUser == null) {
+			this.currentUser = getCachedCurrentUser();
+		}
 
 		if (this.currentUser == null) {
 			this.currentUser = getUserFromSession(session);
-
-			if (this.currentUser != null
-					&& !train.getDataStore().isAssociated(this.currentUser)) {
-				train.getDataStore().associate(this.currentUser);
-			}
+			train.getDataStore().activate(this.currentUser);
+		}
+		
+		if (this.currentUser != null
+				&& !train.getDataStore().isAssociated(this.currentUser)) {
+			train.getDataStore().associate(this.currentUser);
+		}
+		
+		if(null != this.currentUser && !train.getDataStore().isActivated(this.currentUser)) {
+			train.getDataStore().activate(this.currentUser);
 		}
 
 		return currentUser;
+	}
+
+	private synchronized User getCachedCurrentUser() {
+		return this.cachedCurrentUser;
+	}
+	
+	private synchronized void setCachedCurrentUser(User u) {
+		this.cachedCurrentUser = u;
 	}
 
 	public boolean login(HttpSession session) {
@@ -141,8 +160,7 @@ public class AuthManager {
 
 			// Check if there is a user in the system already for this
 			// google user
-			matchedUser = train.users().getSecondary(
-					google_users_email);
+			matchedUser = train.users().getSecondary(google_users_email);
 		} else {
 			throw new GoogleAccountException("Not a valid google account",
 					GoogleAccountException.Type.Invalid);
@@ -153,7 +171,7 @@ public class AuthManager {
 			return false;
 		} else {
 			// Did successful login
-			AuthManager.updateCurrentUser(matchedUser, session);
+			updateCurrentUser(matchedUser, session);
 			return true;
 		}
 	}

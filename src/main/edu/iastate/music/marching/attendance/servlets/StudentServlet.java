@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
@@ -13,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.datastore.Email;
 
 import edu.iastate.music.marching.attendance.model.interact.AbsenceManager;
-import edu.iastate.music.marching.attendance.model.interact.AuthManager;
 import edu.iastate.music.marching.attendance.model.interact.DataTrain;
 import edu.iastate.music.marching.attendance.model.interact.UserManager;
 import edu.iastate.music.marching.attendance.model.store.Absence;
@@ -155,8 +155,9 @@ public class StudentServlet extends AbstractBaseServlet {
 			errors.add("Unable to save "
 					+ ((errors.size() == 0) ? "data that wasn't the year."
 							: "any data."));
+			LOG.log(Level.INFO, "Invalid data posted for student updating info", e);
 		}
-		AuthManager.updateCurrentUser(localUser, req.getSession());
+		train.auth().updateCurrentUser(localUser, req.getSession());
 
 		showInfo(req, resp, errors, success);
 

@@ -1,5 +1,7 @@
 package edu.iastate.music.marching.attendance.testlib;
 
+import junit.framework.TestCase;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -11,7 +13,7 @@ import com.google.appengine.tools.development.testing.LocalUserServiceTestConfig
 import edu.iastate.music.marching.attendance.model.interact.DataTrain;
 
 @Ignore
-public class AbstractDatastoreTest {
+public class AbstractDatastoreTest extends TestCase {
 
 	private DataTrain datatrain = null;
 

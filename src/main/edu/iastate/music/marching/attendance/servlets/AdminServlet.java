@@ -481,7 +481,7 @@ public class AdminServlet extends AbstractBaseServlet {
 			// logged in
 			// user
 			if (localUser.equals(train.auth().getCurrentUser(req.getSession())))
-				AuthManager.updateCurrentUser(localUser, req.getSession());
+				train.auth().updateCurrentUser(localUser, req.getSession());
 			success = "User information saved";
 		} catch (IllegalArgumentException e) {
 			// Invalid information
