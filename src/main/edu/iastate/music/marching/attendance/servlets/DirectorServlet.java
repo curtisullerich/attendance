@@ -71,15 +71,8 @@ public class DirectorServlet extends AbstractBaseServlet {
 			// message
 			// if ("true".equals(req.getParameter("newindow"))) {
 			new PageBuilder(Page.postdelete, SERVLET_PATH).setAttribute(
-					"success_message", "Successfully deleted absence")// , close
-																		// this
-																		// window
-																		// to
-																		// return
-																		// to
-																		// the
-																		// previous
-																		// page.")
+					"success_message", "Successfully deleted absence")
+			// , close this window to return to the previous page.")
 					.passOffToJsp(req, resp);
 			// } else {
 			// // Redirect
@@ -146,10 +139,10 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 	private void deleteStudent(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		String sid = req.getParameter("deleteid");
 		String success = "";
 		List<String> errors = new ArrayList<String>();
-		if (sid != null) {
+		String sid = req.getParameter("deleteid");
+		if (sid != null && !"".equals(sid)) {
 			UserManager uc = DataTrain.depart().users();
 			User todie = uc.get(sid);
 			uc.delete(todie);
@@ -157,9 +150,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		} else {
 			errors.add("Unable to delete student.");
 		}
-
-		// add a success or error message
-		showStudent(req, resp, errors, success);
+		showIndex(req, resp, errors, success);
 	}
 
 	@Override
@@ -181,7 +172,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		else
 			switch (page) {
 			case index:
-				showIndex(req, resp);
+				showIndex(req, resp, new ArrayList<String>(), "");
 				break;
 			case viewabsence:
 				viewAbsence(req, resp, new ArrayList<String>(), "");
@@ -815,8 +806,9 @@ public class DirectorServlet extends AbstractBaseServlet {
 		}
 	}
 
-	private void showIndex(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
+	private void showIndex(HttpServletRequest req, HttpServletResponse resp,
+			List<String> errors, String success) throws ServletException,
+			IOException {
 
 		PageBuilder page = new PageBuilder(Page.index, SERVLET_PATH);
 
@@ -824,6 +816,8 @@ public class DirectorServlet extends AbstractBaseServlet {
 		page.setAttribute("StatusMessage", DataTrain.depart().appData().get()
 				.getStatusMessage());
 
+		page.setAttribute("errors", errors);
+		page.setAttribute("success_message", success);
 		page.passOffToJsp(req, resp);
 	}
 
