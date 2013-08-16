@@ -10,7 +10,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.joda.time.LocalDate;
@@ -293,7 +292,7 @@ public class FormsServlet extends AbstractBaseServlet {
 
 			page.setPageTitle(Form.Type.ClassConflict.getDisplayName());
 			page.setAttribute("daysOfWeek", App.WeekDay.values());
-			page.setAttribute("error_messages", errors);
+			page.setErrors(errors);
 			page.setAttribute("Department", department);
 			page.setAttribute("Course", course);
 			page.setAttribute("Section", section);
@@ -369,9 +368,6 @@ public class FormsServlet extends AbstractBaseServlet {
 						+ "If you're still having issues, submit a bug report using the form at the bottom of the page.");
 			}
 		}
-
-		DateTime cutoff = train.appData().get()
-				.getPerformanceAbsenceFormCutoff();
 
 		if (validForm) {
 

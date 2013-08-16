@@ -25,6 +25,7 @@
 			<dt><label class="required" for="NetID">NetID</label></dt>
 			<dd>
 				<input type="text" name="NetID" value="<c:out value="${NetID}" />" disabled readonly/>
+				<strong><c:out value="${NetIDError}" /></strong>
 			</dd>
 			
 			<dt><label class="required" for="FirstName">First Name</label></dt>

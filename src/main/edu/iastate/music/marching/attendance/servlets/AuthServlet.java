@@ -2,6 +2,7 @@ package edu.iastate.music.marching.attendance.servlets;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.appengine.api.datastore.Email;
 
+import edu.iastate.music.marching.attendance.Lang;
 import edu.iastate.music.marching.attendance.model.interact.AuthManager;
 import edu.iastate.music.marching.attendance.model.interact.DataTrain;
 import edu.iastate.music.marching.attendance.model.store.User;
@@ -204,9 +206,8 @@ public class AuthServlet extends AbstractBaseServlet {
 
 		if (errors.size() == 0) {
 			try {
-				new_user = train.users().createStudent(google_user,
-						univID, firstName, lastName, year, major, section,
-						secondEmail);
+				new_user = train.users().createStudent(google_user, univID,
+						firstName, lastName, year, major, section, secondEmail);
 
 			} catch (IllegalArgumentException e) {
 				// Save validation errors
@@ -347,11 +348,19 @@ public class AuthServlet extends AbstractBaseServlet {
 
 	private void showRegistration(HttpServletRequest req,
 			HttpServletResponse resp) throws ServletException, IOException {
-
 		PageBuilder page = new PageBuilder(Page.register, SERVLET_PATH);
+		Email email = new Email(AuthManager.getGoogleUser().getEmail());
+		DataTrain train = DataTrain.depart();
+		List<String> errors = new ArrayList<String>();
 
-		page.setAttribute("NetID", AuthManager.getGoogleUser().getEmail());
+		if (!ValidationUtil.validPrimaryEmail(email, train)) {
+			page.setAttribute("NetIDError",
+					Lang.ERROR_INVALID_PRIMARY_REGISTER_EMAIL);
+			errors.add(Lang.ERROR_INVALID_PRIMARY_REGISTER_EMAIL);
+		}
 
+		page.setErrors(errors);
+		page.setAttribute("NetID", email.getEmail());
 		page.setAttribute("sections", User.Section.values());
 
 		page.setPageTitle("Register");
