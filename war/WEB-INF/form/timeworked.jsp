@@ -25,7 +25,8 @@
 			<dl class="block-layout">
 	
 				<dt><label for="AmountWorked" class="required">Total amount of work</label></dt>
-				<p>If you worked on more than one day/more than one time for this total, just make note of it below.</p>
+				<p>If you worked on more than one day/more than one time for this total, just make note of it below. This must be submitted by
+    <fmt:formatDate value="${cutoff}" pattern="h:mm a 'on' E, MMMMM d, yyyy" />.</p>
 				<dd>
 					<input size='5' type='number' name='AmountWorked' value='<c:out value="${AmountWorked}" />' style="width:64pt" />
 					<label for="AmountWorked">Minutes</label>
