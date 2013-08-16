@@ -2,6 +2,7 @@ package edu.iastate.music.marching.attendance.util;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -107,6 +108,10 @@ public class PageBuilder {
 		mPageTemplateBean.setTitle(title + " - " + mAppData.getTitle());
 
 		return this;
+	}
+
+	public void setErrors(List<String> errors) {
+		setAttribute("error_messages", errors);
 	}
 
 }
