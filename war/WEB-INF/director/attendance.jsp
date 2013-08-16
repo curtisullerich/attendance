@@ -79,8 +79,6 @@ table.gray tr:nth-child(odd) td.highlight, table.gray tr:nth-child(even) td.high
 		</form>
 	</div>
 	
-	<br/><br/>
-
 	<div>
 	Click a column header to sort!
 	<table class="sortable gray">
@@ -113,8 +111,8 @@ table.gray tr:nth-child(odd) td.highlight, table.gray tr:nth-child(even) td.high
 									<c:set var="cellcontents">
 										${cellcontents}
 <%-- 										<a target="_blank" href="/director/viewabsence?absenceid=${absence.id }&newindow=true"> --%>
-                                        <a href="/director/viewabsence?absenceid=${absence.id }">
-                                          ${absence.status} ${absence.type }[<fmt:formatDate value="${absence.datetime}" pattern="M/d"/>]
+                                        <a href="/director/viewabsence?absenceid=${absence.id }" title="${absence.status} ${absence.type }">
+                                          ${absence.type }[<fmt:formatDate value="${absence.datetime}" pattern="M/d"/>]
                                         </a>
                                         <c:if test="${not loop.last}">
                                           <br/>
@@ -124,9 +122,9 @@ table.gray tr:nth-child(odd) td.highlight, table.gray tr:nth-child(even) td.high
 								<c:when test="${absence.type.absence && !absence.status.approved}">
 									<c:set var="cellcontents">
 										${cellcontents}
-										<a href="/director/viewabsence?absenceid=${absence.id }">
+										<a href="/director/viewabsence?absenceid=${absence.id }" title="${absence.status} ${absence.type }">
 <%--                     <a target="_blank" href="/director/viewabsence?absenceid=${absence.id }&newindow=true"> --%>
-                                          ${absence.status} ${absence.type } [<fmt:formatDate value="${absence.datetime}" pattern="M/d"/>]
+                                          ${absence.type } [<fmt:formatDate value="${absence.datetime}" pattern="M/d"/>]
                                         </a>
                                         <c:if test="${not loop.last}">
                                           <br/>
@@ -136,9 +134,9 @@ table.gray tr:nth-child(odd) td.highlight, table.gray tr:nth-child(even) td.high
 								<c:when test="${absence.type.earlyCheckOut && !absence.status.approved}">
 									<c:set var="cellcontents">
 										${cellcontents}
-										<a href="/director/viewabsence?absenceid=${absence.id }">
+										<a href="/director/viewabsence?absenceid=${absence.id }" title="${absence.status} ${absence.type }">
 <%--                     <a target="_blank" href="/director/viewabsence?absenceid=${absence.id }&newindow=true"> --%>
-                                          ${absence.status} ${absence.type }[<fmt:formatDate value="${absence.datetime}" pattern="M/d"/>]
+                                          ${absence.type }[<fmt:formatDate value="${absence.datetime}" pattern="M/d"/>]
                                         </a>
                                         <c:if test="${not loop.last}">
                                           <br/>
@@ -149,9 +147,9 @@ table.gray tr:nth-child(odd) td.highlight, table.gray tr:nth-child(even) td.high
 									<c:if test="${showApproved}">
 										<c:set var="cellcontents">
 											${cellcontents}
-											<a href="/director/viewabsence?absenceid=${absence.id }" >
+											<a href="/director/viewabsence?absenceid=${absence.id }" title="${absence.status} ${absence.type }">
 <%--                       <a target="_blank" href="/director/viewabsence?absenceid=${absence.id }&newindow=true" > --%>
-                                              ${absence.status} ${absence.type }[<fmt:formatDate value="${absence.datetime}" pattern="M/d"/>]
+                                              ${absence.type }[<fmt:formatDate value="${absence.datetime}" pattern="M/d"/>]
                                             </a>
                                             <c:if test="${not loop.last}">
                                               <br/>
@@ -162,9 +160,9 @@ table.gray tr:nth-child(odd) td.highlight, table.gray tr:nth-child(even) td.high
 										<c:set var="cellcontents">
 											${cellcontents}
 											<span class="show-absence-onhover">
-												<a href="/director/viewabsence?absenceid=${absence.id }" >
+												<a href="/director/viewabsence?absenceid=${absence.id }" title="${absence.status} ${absence.type }">
 <%--                         <a target="_blank" href="/director/viewabsence?absenceid=${absence.id }&newindow=true" > --%>
-                                                  ${absence.status} ${absence.type }[<fmt:formatDate value="${absence.datetime}" pattern="M/d"/>]
+                                                  ${absence.type }[<fmt:formatDate value="${absence.datetime}" pattern="M/d"/>]
                                                 </a>
                                                 <c:if test="${not loop.last}">
                                                   <br/>
