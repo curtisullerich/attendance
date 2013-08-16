@@ -5,12 +5,12 @@
 <fmt:setTimeZone value="${pagetemplate.timeZoneID}" />
   <style>
     .divBox {
-        width: 100%;
-        height: 100%;
+        width: 100%; 
+        height: 100%; 
     }
     .divBox a {
-        width: 100%;
-        height: 100%;
+        width: 100%; 
+        height: 100%; 
         display: block;
         hover:none;
         color: #444;
@@ -36,24 +36,23 @@
 					<%--c:param name="redirect" value="${pagetemplate.uri}"/--%>
 				</c:url>
 				<tr>
-					<c:if test="${empty absence.event}">
-						<td>
+				    <td>
+                      <c:if test="${empty absence.event}">
                           <div class="divBox">
                               <a href="${absence_url_view}">No event.</a>
                           </div>
-						</td>
-					</c:if>
-					<c:if test="${not empty absence.event}">
-						<td>
+                      </c:if>
+   					  <c:if test="${not empty absence.event}">
                           <div class="divBox">
-                              <a href="${absence_url_view}"><c:out value="${absence.event.type}" />
-							<fmt:formatDate value="${absence.event.start}" pattern="M/d" />
-							<fmt:formatDate value="${absence.event.start}" pattern="h:mm a" />
-							-
-							<fmt:formatDate value="${absence.event.end}" pattern="h:mm a" /></a>
+                            <a href="${absence_url_view}"><c:out value="${absence.event.type}" />
+    						  <fmt:formatDate value="${absence.event.start}" pattern="M/d" />
+    						  <fmt:formatDate value="${absence.event.start}" pattern="h:mm a" />
+    						  -
+    						  <fmt:formatDate value="${absence.event.end}" pattern="h:mm a" />
+                            </a>
                           </div>
-                		</td>
-					</c:if>
+                      </c:if>
+              		</td>
 
                     <td>
                       <div class="divBox">
@@ -86,9 +85,11 @@
 						</td>
 						</c:when>
 						<c:when test="${(absence.type.absence) && (not empty absence.event)}">
+						<td>
                           <div class="divBox">
                             <a href="${absence_url_view}">-</a>
                           </div>
+                        </td>
 						</c:when>
 					</c:choose>
 				</tr>
