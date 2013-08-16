@@ -1,4 +1,4 @@
-package edu.iastate.music.marching.attendance.test.unit.model.interact;
+package edu.iastate.music.marching.attendance.test.model.interact;
 
 import static org.junit.Assert.assertEquals;
 
@@ -19,8 +19,8 @@ import edu.iastate.music.marching.attendance.model.store.Absence;
 import edu.iastate.music.marching.attendance.model.store.Event;
 import edu.iastate.music.marching.attendance.model.store.Form;
 import edu.iastate.music.marching.attendance.model.store.User;
-import edu.iastate.music.marching.attendance.test.AbstractDatastoreTest;
-import edu.iastate.music.marching.attendance.test.util.Users;
+import edu.iastate.music.marching.attendance.testlib.AbstractDatastoreTest;
+import edu.iastate.music.marching.attendance.testlib.TestUsers;
 import edu.iastate.music.marching.attendance.util.Util;
 
 public class FormClassConflictSimpleTest extends AbstractDatastoreTest {
@@ -1496,7 +1496,7 @@ public class FormClassConflictSimpleTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = Users.createDefaultStudent(uc);
+		User student = TestUsers.createDefaultStudent(uc);
 
 		Form form = fc.createClassConflictForm(student, "department", "course",
 				"section", "building", formDateInterval, formStartTime,

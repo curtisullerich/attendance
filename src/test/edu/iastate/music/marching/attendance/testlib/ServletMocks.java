@@ -1,16 +1,22 @@
-package edu.iastate.music.marching.attendance.test.util;
+package edu.iastate.music.marching.attendance.testlib;
 
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import edu.iastate.music.marching.attendance.model.store.User;
 
 public class ServletMocks {
-	
+
 	public static <T extends HttpServlet> void doGet(Class<T> clazz,
 			HttpServletRequest req, HttpServletResponse resp)
 			throws InstantiationException, IllegalAccessException,
@@ -35,6 +41,23 @@ public class ServletMocks {
 
 		HttpServlet s = clazz.newInstance();
 		s.service(req, resp);
+	}
+
+	public static HttpServletRequest setUserSession(HttpServletRequest req, User u) {
+		HttpSession session = mock(HttpSession.class);
+		when(session.getAttribute("authenticated_user")).thenReturn(u);
+		
+		when(req.getSession()).thenReturn(session);
+		
+		return req;
+	}
+
+	public static void setPostedContent(HttpServletRequest req, String data)
+			throws IOException {
+		ByteArrayInputStream realStream = new ByteArrayInputStream(
+				data.getBytes("UTF-8"));
+		ServletInputStream mockStream = new MockServletInputStream(realStream);
+		when(req.getInputStream()).thenReturn(mockStream);
 	}
 
 	private static void commonSetup(HttpServletRequest req,

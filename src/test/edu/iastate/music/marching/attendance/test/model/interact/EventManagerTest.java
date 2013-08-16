@@ -1,4 +1,4 @@
-package edu.iastate.music.marching.attendance.test.unit.model.interact;
+package edu.iastate.music.marching.attendance.test.model.interact;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -17,8 +17,8 @@ import edu.iastate.music.marching.attendance.model.interact.EventManager;
 import edu.iastate.music.marching.attendance.model.interact.UserManager;
 import edu.iastate.music.marching.attendance.model.store.Event;
 import edu.iastate.music.marching.attendance.model.store.User;
-import edu.iastate.music.marching.attendance.test.AbstractDatastoreTest;
-import edu.iastate.music.marching.attendance.test.util.Users;
+import edu.iastate.music.marching.attendance.testlib.AbstractDatastoreTest;
+import edu.iastate.music.marching.attendance.testlib.TestUsers;
 
 public class EventManagerTest extends AbstractDatastoreTest {
 
@@ -265,7 +265,7 @@ public class EventManagerTest extends AbstractDatastoreTest {
 		DateTime tardy1 = new DateTime(2012, 9, 18, 16, 40, zone);
 		DateTime tardy2 = new DateTime(2012, 9, 18, 16, 35, zone);
 
-		User s1 = Users.createDefaultStudent(uc);
+		User s1 = TestUsers.createDefaultStudent(uc);
 
 		// should be A initially
 		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
@@ -303,7 +303,7 @@ public class EventManagerTest extends AbstractDatastoreTest {
 		DateTime start3 = start.plusDays(18);
 		DateTime end3 = end.plusDays(18);
 
-		User s1 = Users.createDefaultStudent(uc);
+		User s1 = TestUsers.createDefaultStudent(uc);
 
 		// should be A initially
 		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());

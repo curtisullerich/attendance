@@ -1,4 +1,4 @@
-package edu.iastate.music.marching.attendance.test.integration;
+package edu.iastate.music.marching.attendance.test.servlets;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -11,16 +11,15 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.junit.Test;
 
-import edu.iastate.music.marching.attendance.model.store.User;
+import edu.iastate.music.marching.attendance.model.interact.DataTrain;
 import edu.iastate.music.marching.attendance.servlets.DirectorServlet;
 import edu.iastate.music.marching.attendance.servlets.MobileAppDataServlet;
-import edu.iastate.music.marching.attendance.test.AbstractDatastoreTest;
-import edu.iastate.music.marching.attendance.test.util.ServletMocks;
-import edu.iastate.music.marching.attendance.test.util.Users;
+import edu.iastate.music.marching.attendance.testlib.AbstractDatastoreTest;
+import edu.iastate.music.marching.attendance.testlib.ServletMocks;
+import edu.iastate.music.marching.attendance.testlib.TestUsers;
 
 public class ServletAccess extends AbstractDatastoreTest {
 
@@ -28,10 +27,11 @@ public class ServletAccess extends AbstractDatastoreTest {
 	public void DirectorServlet_Student_ClassList_Test()
 			throws ServletException, IOException, InstantiationException,
 			IllegalAccessException {
+		DataTrain train = getDataTrain();
 		HttpServletRequest req = mock(HttpServletRequest.class);
 		HttpServletResponse resp = mock(HttpServletResponse.class);
 
-		setDirectorSession(req);
+		ServletMocks.setUserSession(req, TestUsers.createDefaultDirector(train.users()));
 
 		when(req.getPathInfo()).thenReturn("/classlist");
 
@@ -48,11 +48,12 @@ public class ServletAccess extends AbstractDatastoreTest {
 	@Test
 	public void MobileDataServlet_TA_ClassList_Test() throws ServletException,
 			IOException, InstantiationException, IllegalAccessException {
+		DataTrain train = getDataTrain();
 		HttpServletRequest req = mock(HttpServletRequest.class);
 		HttpServletResponse resp = mock(HttpServletResponse.class);
 
-		setDirectorSession(req);
-
+		ServletMocks.setUserSession(req, TestUsers.createDefaultDirector(train.users()));
+		
 		when(req.getPathInfo()).thenReturn("/classlist");
 
 		ServletOutputStream sos = mock(ServletOutputStream.class);
@@ -66,10 +67,11 @@ public class ServletAccess extends AbstractDatastoreTest {
 	public void MobileDataServlet_Director_ClassList_Test()
 			throws ServletException, IOException, InstantiationException,
 			IllegalAccessException {
+		DataTrain train = getDataTrain();
 		HttpServletRequest req = mock(HttpServletRequest.class);
 		HttpServletResponse resp = mock(HttpServletResponse.class);
 
-		setDirectorSession(req);
+		ServletMocks.setUserSession(req, TestUsers.createDefaultDirector(train.users()));
 
 		when(req.getPathInfo()).thenReturn("/classlist");
 
@@ -83,10 +85,11 @@ public class ServletAccess extends AbstractDatastoreTest {
 	@Test
 	public void DirectorServlet_Student_Test() throws ServletException,
 			IOException, InstantiationException, IllegalAccessException {
+		DataTrain train = getDataTrain();
 		HttpServletRequest req = mock(HttpServletRequest.class);
 		HttpServletResponse resp = mock(HttpServletResponse.class);
 
-		setStudentSession(req);
+		ServletMocks.setUserSession(req, TestUsers.createDefaultStudent(train.users()));
 
 		ServletMocks.doGet(DirectorServlet.class, req, resp);
 
@@ -96,10 +99,11 @@ public class ServletAccess extends AbstractDatastoreTest {
 	@Test
 	public void DirectorServlet_TA_Test() throws ServletException, IOException,
 			InstantiationException, IllegalAccessException {
+		DataTrain train = getDataTrain();
 		HttpServletRequest req = mock(HttpServletRequest.class);
 		HttpServletResponse resp = mock(HttpServletResponse.class);
 
-		setTASession(req);
+		ServletMocks.setUserSession(req, TestUsers.createDefaultTA(train.users()));
 
 		ServletMocks.doGet(DirectorServlet.class, req, resp);
 
@@ -109,10 +113,11 @@ public class ServletAccess extends AbstractDatastoreTest {
 	@Test
 	public void DirectorServlet_TA_Test_NoExist() throws ServletException,
 			IOException, InstantiationException, IllegalAccessException {
+		DataTrain train = getDataTrain();
 		HttpServletRequest req = mock(HttpServletRequest.class);
 		HttpServletResponse resp = mock(HttpServletResponse.class);
 
-		setTASession(req);
+		ServletMocks.setUserSession(req, TestUsers.createDefaultTA(train.users()));
 
 		ServletMocks.doGet(DirectorServlet.class, req, resp);
 
@@ -122,10 +127,11 @@ public class ServletAccess extends AbstractDatastoreTest {
 	@Test
 	public void DirectorServlet_DirectorIndex_Test() throws ServletException,
 			IOException, InstantiationException, IllegalAccessException {
+		DataTrain train = getDataTrain();
 		HttpServletRequest req = mock(HttpServletRequest.class);
 		HttpServletResponse resp = mock(HttpServletResponse.class);
 
-		setDirectorSession(req);
+		ServletMocks.setUserSession(req, TestUsers.createDefaultDirector(train.users()));
 
 		when(req.getPathInfo()).thenReturn("/index");
 
@@ -140,10 +146,11 @@ public class ServletAccess extends AbstractDatastoreTest {
 	@Test
 	public void DirectorServlet_DirectorNoExist_Test() throws ServletException,
 			IOException, InstantiationException, IllegalAccessException {
+		DataTrain train = getDataTrain();
 		HttpServletRequest req = mock(HttpServletRequest.class);
 		HttpServletResponse resp = mock(HttpServletResponse.class);
 
-		setDirectorSession(req);
+		ServletMocks.setUserSession(req, TestUsers.createDefaultDirector(train.users()));
 
 		when(req.getPathInfo()).thenReturn("/nonexistant");
 
@@ -151,7 +158,7 @@ public class ServletAccess extends AbstractDatastoreTest {
 
 		ServletMocks.doGet(DirectorServlet.class, req, resp);
 
-		verifyErrorRedirect(dispatcher, req, resp, 404);
+		verify(dispatcher).forward(req, resp);
 	}
 
 	private void verifyUnauthorizedRedirect(HttpServletRequest req,
@@ -170,12 +177,6 @@ public class ServletAccess extends AbstractDatastoreTest {
 		return dispatcher;
 	}
 
-	private void verifyErrorRedirect(RequestDispatcher dispatcher,
-			HttpServletRequest req, HttpServletResponse resp, int code)
-			throws ServletException, IOException {
-		verify(dispatcher).forward(req, resp);
-	}
-
 	private RequestDispatcher setupForwardTo(HttpServletRequest req,
 			HttpServletResponse resp, String jsp_path) throws ServletException,
 			IOException {
@@ -188,32 +189,5 @@ public class ServletAccess extends AbstractDatastoreTest {
 			HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		verify(dispatcher).forward(req, resp);
-	}
-
-	private HttpServletRequest setStudentSession(HttpServletRequest req) {
-		HttpSession session = mock(HttpSession.class);
-		when(session.getAttribute("authenticated_user")).thenReturn(
-				Users.createDefaultStudent(getDataTrain().users()));
-		when(req.getSession()).thenReturn(session);
-		return req;
-	}
-
-	private HttpServletRequest setDirectorSession(HttpServletRequest req) {
-		HttpSession session = mock(HttpSession.class);
-		when(session.getAttribute("authenticated_user")).thenReturn(
-				Users.createDefaultDirector(getDataTrain().users()));
-		when(req.getSession()).thenReturn(session);
-		return req;
-	}
-
-	private HttpServletRequest setTASession(HttpServletRequest req) {
-		HttpSession session = mock(HttpSession.class);
-		when(session.getAttribute("authenticated_user"))
-				.thenReturn(
-						Users.createTA(getDataTrain().users(), "ta",
-								"123456789", "I am", "A TA", 10, "Being Silly",
-								User.Section.AltoSax));
-		when(req.getSession()).thenReturn(session);
-		return req;
 	}
 }

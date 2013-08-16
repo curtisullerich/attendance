@@ -1,4 +1,4 @@
-package edu.iastate.music.marching.attendance.test.unit.model.interact;
+package edu.iastate.music.marching.attendance.test.model.interact;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -23,8 +23,8 @@ import edu.iastate.music.marching.attendance.model.store.Absence;
 import edu.iastate.music.marching.attendance.model.store.Absence.Type;
 import edu.iastate.music.marching.attendance.model.store.Event;
 import edu.iastate.music.marching.attendance.model.store.User;
-import edu.iastate.music.marching.attendance.test.AbstractDatastoreTest;
-import edu.iastate.music.marching.attendance.test.util.Users;
+import edu.iastate.music.marching.attendance.testlib.AbstractDatastoreTest;
+import edu.iastate.music.marching.attendance.testlib.TestUsers;
 
 @SuppressWarnings("deprecation")
 public class AbsenceManagerLinkingTests extends AbstractDatastoreTest {
@@ -175,7 +175,7 @@ public class AbsenceManagerLinkingTests extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		DateTimeZone zone = train.appData().get().getTimeZone();
 
-		User student = Users.createDefaultStudent(uc);
+		User student = TestUsers.createDefaultStudent(uc);
 
 		Interval firstInterval = new Interval(EDATETIME.toDateTime(zone),
 				new Period().plusHours(1));
@@ -223,7 +223,7 @@ public class AbsenceManagerLinkingTests extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		DateTimeZone zone = train.appData().get().getTimeZone();
 
-		User student = Users.createDefaultStudent(uc);
+		User student = TestUsers.createDefaultStudent(uc);
 
 		Interval firstInterval = new Interval(EDATETIME.toDateTime(zone),
 				new Period().plusHours(1));
@@ -274,7 +274,7 @@ public class AbsenceManagerLinkingTests extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		DateTimeZone zone = train.appData().get().getTimeZone();
 
-		User student = Users.createDefaultStudent(uc);
+		User student = TestUsers.createDefaultStudent(uc);
 
 		Interval firstInterval = new Interval(EDATETIME.toDateTime(zone),
 				new Period().plusHours(1));
@@ -391,7 +391,7 @@ public class AbsenceManagerLinkingTests extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		DateTimeZone zone = train.appData().get().getTimeZone();
 
-		User student = Users.createDefaultStudent(uc);
+		User student = TestUsers.createDefaultStudent(uc);
 
 		Event event1 = ec.createOrUpdate(
 				eventType,
@@ -439,7 +439,7 @@ public class AbsenceManagerLinkingTests extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		DateTimeZone zone = train.appData().get().getTimeZone();
 
-		User student = Users.createDefaultStudent(uc);
+		User student = TestUsers.createDefaultStudent(uc);
 
 		Interval firstInterval = new Interval(startFirst.toDateTime(zone),
 				endFirst.toDateTime(zone));

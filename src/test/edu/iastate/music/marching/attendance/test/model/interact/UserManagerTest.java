@@ -1,4 +1,4 @@
-package edu.iastate.music.marching.attendance.test.unit.model.interact;
+package edu.iastate.music.marching.attendance.test.model.interact;
 
 import static org.junit.Assert.*;
 
@@ -19,9 +19,9 @@ import edu.iastate.music.marching.attendance.model.interact.UserManager;
 import edu.iastate.music.marching.attendance.model.store.Absence;
 import edu.iastate.music.marching.attendance.model.store.Event;
 import edu.iastate.music.marching.attendance.model.store.User;
-import edu.iastate.music.marching.attendance.test.AbstractDatastoreTest;
-import edu.iastate.music.marching.attendance.test.TestConfig;
-import edu.iastate.music.marching.attendance.test.util.Users;
+import edu.iastate.music.marching.attendance.testlib.AbstractDatastoreTest;
+import edu.iastate.music.marching.attendance.testlib.TestConfig;
+import edu.iastate.music.marching.attendance.testlib.TestUsers;
 
 public class UserManagerTest extends AbstractDatastoreTest {
 
@@ -37,7 +37,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 
 		UserManager uc = train.users();
 
-		Users.createDirector(uc, "director", "I am", "The Director");
+		TestUsers.createDirector(uc, "director", "I am", "The Director");
 
 		// Verify
 		List<User> users = uc.getAll();
@@ -63,7 +63,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 
 		UserManager uc = train.users();
 
-		Users.createStudent(uc, "studenttt", "123456789", "I am", "A Student",
+		TestUsers.createStudent(uc, "studenttt", "123456789", "I am", "A Student",
 				10, "Being Silly", User.Section.AltoSax);
 
 		// Verify
@@ -108,7 +108,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		MobileDataManager mdc = train.mobileData();
 
 		// Student 1 setup, the user to be deleted
-		User student1 = Users.createStudent(uc, "studenttt", "123456789",
+		User student1 = TestUsers.createStudent(uc, "studenttt", "123456789",
 				"I am", "A Student", 10, "Being Silly", User.Section.AltoSax);
 
 		ac.createOrUpdateAbsence(student1, (Event) null);
@@ -120,7 +120,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		mdc.pushMobileData(SINGLE_ABSENCE_STUDENT1_TESTDATA, student1);
 
 		// Student 2 setup, the user to keep
-		User student2 = Users
+		User student2 = TestUsers
 				.createStudent(uc, "studenttt2", "123456780", "I am2",
 						"A Student2", 10, "Being Silly2", User.Section.AltoSax);
 		ac.createOrUpdateAbsence(student2, (Event) null);
@@ -209,7 +209,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		EventManager ec = train.events();
 		AbsenceManager ac = train.absences();
 
-		User s1 = Users.createDefaultStudent(uc);
+		User s1 = TestUsers.createDefaultStudent(uc);
 
 		// should be A initially
 		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
@@ -301,7 +301,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		DateTimeZone zone = train.appData().get().getTimeZone();
 
-		User student = Users.createDefaultStudent(uc);
+		User student = TestUsers.createDefaultStudent(uc);
 
 		// should be A initially
 		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
@@ -366,7 +366,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		DateTimeZone zone = train.appData().get().getTimeZone();
 
-		User s1 = Users.createDefaultStudent(uc);
+		User s1 = TestUsers.createDefaultStudent(uc);
 
 		DateTime start = new DateTime(2012, 7, 18, 16, 30, 0, 0, zone);
 		DateTime end = new DateTime(2012, 7, 18, 17, 50, 0, 0, zone);
@@ -400,7 +400,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		DateTimeZone zone = train.appData().get().getTimeZone();
 
-		User s1 = Users.createDefaultStudent(uc);
+		User s1 = TestUsers.createDefaultStudent(uc);
 
 		DateTime start = new DateTime(2012, 7, 18, 16, 30, 0, 0, zone);
 		DateTime end = new DateTime(2012, 7, 18, 17, 50, 0, 0, zone);
