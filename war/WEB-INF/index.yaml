@@ -1,0 +1,8 @@
+indexes:
+
+- kind: User
+  ancestor: no
+  properties:
+  - name: email
+  - name: secondEmail
+    direction: asc
