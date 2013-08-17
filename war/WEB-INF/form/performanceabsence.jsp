@@ -24,7 +24,7 @@
 	<p>
 		This form includes all performances through any post-season activity
 		ending January 30th. It must be submitted by
-		<fmt:formatDate value="${cutoff}" pattern="hh:mm a 'on' E, MMMMM d, yyyy" />. 
+		<fmt:formatDate value="${cutoff}" pattern="h:mm a 'on' E, MMMMM d, yyyy" />. 
 		Documentation must be submitted to the director for all absences
 		(doctor's note, obituary, wedding program, etc.).
 	</p>

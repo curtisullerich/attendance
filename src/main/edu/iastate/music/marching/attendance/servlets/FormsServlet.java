@@ -304,7 +304,8 @@ public class FormsServlet extends AbstractBaseServlet {
 			page.setAttribute("MinutesToOrFrom", minutesToOrFrom);
 			page.setAttribute("Type", absenceType);
 			page.setAttribute("types", Absence.Type.values());
-
+			page.setAttribute("cutoff", train.appData().get()
+					.getClassConflictFormCutoff().toDate());
 			if (fromTime != null) {
 				page.setAttribute("starttime", Util.formatTimeOnly(fromTime));
 			}
@@ -483,7 +484,8 @@ public class FormsServlet extends AbstractBaseServlet {
 			page.setAttribute("AmountWorked", minutes);
 			page.setAttribute("startdate", Util.formatDateOnly(date));
 			page.setAttribute("Details", details);
-
+			page.setAttribute("cutoff", train.appData().get()
+					.getTimeWorkedFormCutoff().toDate());
 			page.passOffToJsp(req, resp);
 		}
 	}

@@ -38,7 +38,12 @@
 					
 					<dt><label class="required" for="LastName">Last Name</label></dt>
 					<dd><input type="text" name="LastName" value="<c:out value="${user.lastName}" />" /></dd>
-					
+
+                    <dt><label for="Grade">Grade</label></dt>
+                    <dd>
+                      <input type="text" value="<c:out value="${user.grade}"/>" disabled readonly/>
+                    </dd>
+          
 					<dt><label for="NetID">NetID</label></dt>
 					<dd>
 						<input type="text" value="<c:out value="${user.id}"/>" disabled readonly/>

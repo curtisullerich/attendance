@@ -79,7 +79,7 @@ public class Export {
 			String humanExportTime = DateFormat.getDateTimeInstance().format(
 					new Date());
 			String filenameExportTime = new SimpleDateFormat("yyMMddHHmmssZ")
-					.format(exportTime);
+					.format(exportTime.toDate());
 
 			Properties props = new Properties();
 			Session session = Session.getDefaultInstance(props, null);

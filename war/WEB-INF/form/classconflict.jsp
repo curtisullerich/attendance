@@ -25,6 +25,7 @@
 		you must submit one form for each day of the week.</p>
 		<p>
 		Helpful hints: All fields are required (except "comments"). If your class doesn't have a section, for instance, enter "none."
+        This must be submitted by <fmt:formatDate value="${cutoff}" pattern="h:mm a 'on' E, MMMMM d, yyyy" />.
 		</p>
 		
 		<form method="post" accept-charset="utf-8">

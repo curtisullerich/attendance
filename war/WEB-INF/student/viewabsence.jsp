@@ -25,7 +25,12 @@
 			</dd>
 
 			<c:if test='${not absence.type.absence }'>
-				<dt>Check in/out time</dt>
+				<c:if test='${absence.type.tardy }'>
+                  <dt>Check in time</dt>
+                </c:if>
+                <c:if test='${absence.type.earlyCheckOut }'>
+                  <dt>Check out time</dt>
+                </c:if>
 				<dd><fmt:formatDate value="${absence.start}" pattern="M/d/yyyy 'at' h:mm a"/></dd>
 			</c:if>
 
@@ -37,11 +42,6 @@
 				End Time: <fmt:formatDate value="${absence.event.end}" pattern="M/d/yyyy 'at' h:mm a"/>
 			</dd>		
 		</dl>
-		
-		<br/>
-		<hr/>
-		<br/>
-	
 		<jsp:include page="/WEB-INF/template/footer.jsp" />	
 	</body>
 </html>	
