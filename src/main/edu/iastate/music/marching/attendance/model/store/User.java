@@ -32,7 +32,8 @@ public class User implements Serializable {
 	}
 
 	public enum Section {
-		Piccolo, Clarinet, AltoSax("Alto Sax"), TenorSax("Tenor Sax"), Trumpet, Trombone, Mellophone, Baritone, Sousaphone, Guard, DrumMajor(
+		Piccolo, Clarinet, AltoSax("Alto Sax"), TenorSax("Tenor Sax"), Trumpet, Trombone, Bass_Trombone(
+				"Bass trombone"), Mellophone, Baritone, Sousaphone, Guard, DrumMajor(
 				"Drum Major"), Staff, Drumline_Cymbals("Drumline: Cymbals"), Drumline_Tenors(
 				"Drumline: Tenors"), Drumline_Snare("Drumline: Snare"), Drumline_Bass(
 				"Drumline: Bass"), Twirler;
