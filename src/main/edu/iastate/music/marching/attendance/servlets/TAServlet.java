@@ -20,9 +20,6 @@ public class TAServlet extends AbstractBaseServlet {
 		index, setranks;
 	}
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -9160409137196393008L;
 
 	private static final String SERVLET_PATH = "ta";
@@ -36,7 +33,7 @@ public class TAServlet extends AbstractBaseServlet {
 		if (!isLoggedIn(req, resp)) {
 			resp.sendRedirect(AuthServlet.getLoginUrl(req));
 			return;
-		} else if (!isLoggedIn(req, resp, User.Type.TA)) {
+		} else if (!isLoggedIn(req, resp, User.Type.TA, User.Type.Director)) {
 			resp.sendRedirect(ErrorServlet.getLoginFailedUrl(req));
 			return;
 		}
@@ -66,7 +63,7 @@ public class TAServlet extends AbstractBaseServlet {
 		if (!isLoggedIn(req, resp)) {
 			resp.sendRedirect(AuthServlet.getLoginUrl());
 			return;
-		} else if (!isLoggedIn(req, resp, User.Type.TA)) {
+		} else if (!isLoggedIn(req, resp, User.Type.TA, User.Type.Director)) {
 			resp.sendRedirect(ErrorServlet.getLoginFailedUrl(req));
 			return;
 		}

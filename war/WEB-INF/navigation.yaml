@@ -15,16 +15,6 @@ links:
         - href: /public/faq
           text: FAQ
 
-    - href: /ta/
-      text: TA
-      auth: [TA]
-      links:
-        - href: /ta/setranks
-          text: Set Ranks
-
-        - href: /field/index.html
-          text: Field App
-
     - href: /director/
       text: Director
       auth: [Director]
@@ -49,6 +39,16 @@ links:
 
         - href: /public/faq
           text: FAQ
+
+    - href: /ta/
+      text: TA
+      auth: [TA,Director]
+      links:
+        - href: /ta/setranks
+          text: Set Ranks
+
+        - href: /field/index.html
+          text: Field App
 
     - href: /admin/
       auth: [Director,Admin]
