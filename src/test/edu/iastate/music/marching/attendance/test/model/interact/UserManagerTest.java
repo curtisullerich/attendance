@@ -1,7 +1,5 @@
 package edu.iastate.music.marching.attendance.test.model.interact;
 
-import static org.junit.Assert.*;
-
 import java.util.List;
 
 import org.joda.time.DateTime;
@@ -18,6 +16,7 @@ import edu.iastate.music.marching.attendance.model.interact.MobileDataManager;
 import edu.iastate.music.marching.attendance.model.interact.UserManager;
 import edu.iastate.music.marching.attendance.model.store.Absence;
 import edu.iastate.music.marching.attendance.model.store.Event;
+import edu.iastate.music.marching.attendance.model.store.Form;
 import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.testlib.AbstractDatastoreTest;
 import edu.iastate.music.marching.attendance.testlib.TestConfig;
@@ -63,8 +62,8 @@ public class UserManagerTest extends AbstractDatastoreTest {
 
 		UserManager uc = train.users();
 
-		TestUsers.createStudent(uc, "studenttt", "123456789", "I am", "A Student",
-				10, "Being Silly", User.Section.AltoSax);
+		TestUsers.createStudent(uc, "studenttt", "123456789", "I am",
+				"A Student", 10, "Being Silly", User.Section.AltoSax);
 
 		// Verify
 		List<User> users = uc.getAll();
@@ -307,31 +306,36 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
 
 		DateTime start = new DateTime(2012, 9, 18, 16, 30, 0, 0, zone);
-		DateTime end = new DateTime(2012, 9, 18, 17, 50, 0, 0, zone);
-		DateTime checkIOtime = new DateTime(2012, 9, 18, 16, 40, 0, 0, zone);
+		DateTime end = start.plusMinutes(80);
+		DateTime checkIOtime = start.plusMinutes(10);
 
 		ac.createOrUpdateTardy(student, checkIOtime);
 		uc.update(student);
 
 		// there's a tardy, but it's not linked
 		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
-		ec.createOrUpdate(Event.Type.Rehearsal, new Interval(start, end));
+		ec.createOrUpdate(Event.Type.Rehearsal, new Interval(start, end)); // total
+																			// =
+																			// 10
 
 		// now that there's a matching event, it should link, but still be
 		// within the limit
 		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
 
 		start = start.plusDays(1);
-		end = end.plusDays(1);
-		checkIOtime = checkIOtime.plusDays(1);
-		ac.createOrUpdateEarlyCheckout(student, checkIOtime);
+		end = start.plusMinutes(80);
+		checkIOtime = start.plusMinutes(10);
+		ac.createOrUpdateEarlyCheckout(student, checkIOtime); // total = 90
 		ec.createOrUpdate(Event.Type.Rehearsal, new Interval(start, end));
 		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
 
 		start = start.plusDays(1);
-		end = end.plusDays(1);
-		checkIOtime = checkIOtime.plusDays(1);
-		ac.createOrUpdateEarlyCheckout(student, checkIOtime);
+		end = start.plusMinutes(80);
+		checkIOtime = start.plusMinutes(10);
+		ac.createOrUpdateEarlyCheckout(student, checkIOtime); // total = 170
+		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
+
+		// now link the last eco
 		ec.createOrUpdate(Event.Type.Performance, new Interval(start, end));
 		assertEquals(User.Grade.B, uc.get(student.getId()).getGrade());
 
@@ -354,6 +358,287 @@ public class UserManagerTest extends AbstractDatastoreTest {
 			ac.updateAbsence(a);
 		}
 		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
+
+	}
+
+	@Test
+	public void testGrade3() {
+		DataTrain train = getDataTrain();
+
+		UserManager uc = train.users();
+		EventManager ec = train.events();
+		AbsenceManager ac = train.absences();
+		DateTimeZone zone = train.appData().get().getTimeZone();
+
+		User student = TestUsers.createDefaultStudent(uc);
+
+		// should be A initially
+		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
+
+		DateTime start = new DateTime(2012, 9, 18, 16, 30, 0, 0, zone);
+		DateTime end = start.plusMinutes(80);
+		DateTime checkIOtime = start.plusMinutes(10);
+
+		ec.createOrUpdate(Event.Type.Rehearsal, new Interval(start, end));
+		ac.createOrUpdateTardy(student, checkIOtime);
+		// 160 - 10
+		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
+
+		start = start.plusDays(1);
+		end = start.plusMinutes(80);
+		checkIOtime = start.plusMinutes(35);// counts as 80
+		ec.createOrUpdate(Event.Type.Rehearsal, new Interval(start, end));
+		Absence a1 = ac.createOrUpdateTardy(student, checkIOtime);
+		// 160 - 10 - 80
+		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
+
+		start = start.plusDays(1);
+		end = start.plusMinutes(80);
+		checkIOtime = end.minusMinutes(45);// counts as 80
+		ec.createOrUpdate(Event.Type.Rehearsal, new Interval(start, end));
+		Absence a2 = ac.createOrUpdateEarlyCheckout(student, checkIOtime);
+		// 160 - 10 - 80 - 80
+		assertEquals(User.Grade.B, uc.get(student.getId()).getGrade());
+
+		start = start.plusDays(1);
+		end = start.plusMinutes(80);
+		checkIOtime = start.plusMinutes(20);
+		ec.createOrUpdate(Event.Type.Rehearsal, new Interval(start, end));
+		ac.createOrUpdateTardy(student, checkIOtime);
+		// 160 - 10 - 80 - 80 - 20
+		assertEquals(User.Grade.C, uc.get(student.getId()).getGrade());
+
+		start = start.plusDays(1);
+		end = start.plusMinutes(80);
+		checkIOtime = end.minusMinutes(14);
+		ec.createOrUpdate(Event.Type.Rehearsal, new Interval(start, end));
+		ac.createOrUpdateEarlyCheckout(student, checkIOtime);
+		// 160 - 10 - 80 - 80 - 20 - 14
+		assertEquals(User.Grade.D, uc.get(student.getId()).getGrade());
+
+		start = start.plusDays(1);
+		end = start.plusMinutes(80);
+		checkIOtime = end.minusMinutes(25);
+		ec.createOrUpdate(Event.Type.Rehearsal, new Interval(start, end));
+		ac.createOrUpdateEarlyCheckout(student, checkIOtime);
+		// 160 - 10 - 80 - 80 - 20 - 16 - 25
+		assertEquals(User.Grade.F, uc.get(student.getId()).getGrade());
+
+		start = start.plusDays(1);
+		end = start.plusMinutes(80);
+		Event e = ec.createOrUpdate(Event.Type.Rehearsal, new Interval(start,
+				end));
+		ac.createOrUpdateAbsence(student, e);
+		// 160 - 10 - 80 - 80 - 20 - 16 - 25 - 80
+		assertEquals(User.Grade.F, uc.get(student.getId()).getGrade());
+
+		a1.setStatus(Absence.Status.Approved);
+		ac.updateAbsence(a1);
+		// 160 - 10 - 80 - 80 - 20 - 16 - 25 - 80 + 80
+		assertEquals(User.Grade.F, uc.get(student.getId()).getGrade());
+
+		a2.setStatus(Absence.Status.Approved);
+		ac.updateAbsence(a2);
+		// 160 - 10 - 80 - 80 - 20 - 16 - 25 - 80 + 80 + 80
+		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
+	}
+
+	@Test
+	public void testGradeWithComplexAbsences() {
+		DataTrain train = getDataTrain();
+
+		UserManager uc = train.users();
+		EventManager ec = train.events();
+		AbsenceManager ac = train.absences();
+		DateTimeZone zone = train.appData().get().getTimeZone();
+
+		User student = TestUsers.createDefaultStudent(uc);
+
+		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
+
+		DateTime start = new DateTime(2012, 9, 18, 12, 30, 0, 0, zone);
+		DateTime end = start.plusMinutes(200);
+		// missed first 10
+		DateTime checkIn1 = start.plusMinutes(10);
+		DateTime checkOut1 = checkIn1.plusMinutes(10);
+		// gone for 18
+		DateTime checkIn2 = checkOut1.plusMinutes(18);
+		DateTime checkOut2 = checkIn2.plusMinutes(30);
+		// gone for 40
+		DateTime checkIn3 = checkOut2.plusMinutes(40);
+		// should be docked for 200 total and have a D
+
+		ec.createOrUpdate(Event.Type.Rehearsal, new Interval(start, end));
+		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
+
+		ac.createOrUpdateTardy(student, checkIn1);
+		// missed 10
+		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
+
+		Absence a1 = ac.createOrUpdateEarlyCheckout(student, checkOut1);
+		// missed 10 + 180, counts as 200. 40 over allowance
+		assertEquals(User.Grade.D, uc.get(student.getId()).getGrade());
+
+		ac.createOrUpdateTardy(student, checkIn2);
+		// missed 10 + 18. within allowance
+		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
+
+		ac.createOrUpdateEarlyCheckout(student, checkOut2);
+		// missed 10 + 18 + rest of rehearsal (counts as 200)
+		assertEquals(User.Grade.D, uc.get(student.getId()).getGrade());
+
+		ac.createOrUpdateTardy(student, checkIn3);
+		// missed 10 + 18 + 40. counts as 200
+		assertEquals(User.Grade.D, uc.get(student.getId()).getGrade());
+
+		// 160 - 10
+		assertEquals(User.Grade.D, uc.get(student.getId()).getGrade());
+	}
+
+	@Test
+	public void testGradeWithComplexAbsencesAndApprovedAbsences() {
+		DataTrain train = getDataTrain();
+
+		UserManager uc = train.users();
+		EventManager ec = train.events();
+		AbsenceManager ac = train.absences();
+		DateTimeZone zone = train.appData().get().getTimeZone();
+
+		User student = TestUsers.createDefaultStudent(uc);
+
+		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
+
+		DateTime start = new DateTime(2012, 9, 18, 12, 30, 0, 0, zone);
+		DateTime end = start.plusMinutes(200);
+		// missed first 10
+
+		DateTime checkIn1 = start.plusMinutes(20);
+		DateTime checkOut1 = end.minusMinutes(20);
+		Event e = ec.createOrUpdate(Event.Type.Rehearsal, new Interval(start,
+				end));
+
+		Absence tardy = ac.createOrUpdateTardy(student, checkIn1);
+		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
+
+		Absence eco = ac.createOrUpdateEarlyCheckout(student, checkOut1);
+		assertEquals(User.Grade.D, uc.get(student.getId()).getGrade());
+
+		tardy.setStatus(Absence.Status.Approved);
+		ac.updateAbsence(tardy);
+		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
+	}
+
+	@Test
+	public void testGradeWithComplexAbsencesAndApprovedAbsences2() {
+		DataTrain train = getDataTrain();
+
+		UserManager uc = train.users();
+		EventManager ec = train.events();
+		AbsenceManager ac = train.absences();
+		DateTimeZone zone = train.appData().get().getTimeZone();
+
+		User student = TestUsers.createDefaultStudent(uc);
+
+		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
+
+		DateTime start = new DateTime(2012, 9, 18, 12, 30, 0, 0, zone);
+		DateTime end = start.plusMinutes(200);
+		// missed first 10
+
+		DateTime checkIn1 = start.plusMinutes(20);
+		DateTime checkOut1 = checkIn1.plusMinutes(20);
+		DateTime checkIn2 = checkOut1.plusMinutes(20);
+		DateTime checkOut2 = checkIn2.plusMinutes(20);
+		Event e = ec.createOrUpdate(Event.Type.Rehearsal, new Interval(start,
+				end));
+
+		Absence tardy1 = ac.createOrUpdateTardy(student, checkIn1);
+		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
+		Absence eco1 = ac.createOrUpdateEarlyCheckout(student, checkOut1);
+		assertEquals(User.Grade.D, uc.get(student.getId()).getGrade());
+		Absence tardy2 = ac.createOrUpdateTardy(student, checkIn2);
+		assertEquals(User.Grade.D, uc.get(student.getId()).getGrade());
+		Absence eco2 = ac.createOrUpdateEarlyCheckout(student, checkOut2);
+		assertEquals(User.Grade.D, uc.get(student.getId()).getGrade());
+
+		eco1.setStatus(Absence.Status.Approved);
+		ac.updateAbsence(eco1);
+		//this means there are basically two tardies in a row now, at 20 and 60 minutes in
+		
+		assertEquals(User.Grade.F, uc.get(student.getId()).getGrade());
+	}
+
+	@Test
+	public void testGradeWithTimeWorked() {
+		DataTrain train = getDataTrain();
+
+		UserManager uc = train.users();
+		EventManager ec = train.events();
+		AbsenceManager ac = train.absences();
+		FormManager fc = train.forms();
+		DateTimeZone zone = train.appData().get().getTimeZone();
+
+		User student = TestUsers.createDefaultStudent(uc);
+
+		// should be A initially
+		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
+
+		DateTime start = new DateTime(2012, 9, 18, 16, 30, 0, 0, zone);
+		DateTime end = start.plusMinutes(80);
+		DateTime checkIOtime = start.plusMinutes(10);
+
+		ec.createOrUpdate(Event.Type.Rehearsal, new Interval(start, end));
+		ac.createOrUpdateTardy(student, checkIOtime);
+		// 160 - 10
+		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
+
+		start = start.plusDays(1);
+		end = start.plusMinutes(80);
+		checkIOtime = start.plusMinutes(35);// counts as 80
+		ec.createOrUpdate(Event.Type.Rehearsal, new Interval(start, end));
+		Absence a1 = ac.createOrUpdateTardy(student, checkIOtime);
+		// 160 - 10 - 80
+		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
+
+		start = start.plusDays(1);
+		end = start.plusMinutes(80);
+		Event e = ec.createOrUpdate(Event.Type.Rehearsal, new Interval(start,
+				end));
+		ac.createOrUpdateAbsence(student, e);
+		// 160 - 10 - 80 - 80
+		assertEquals(User.Grade.B, uc.get(student.getId()).getGrade());
+
+		Form f = fc.createTimeWorkedForm(student, start.toLocalDate(), 10,
+				"arst");
+		assertEquals(User.Grade.B, uc.get(student.getId()).getGrade());
+		f.setStatus(Form.Status.Approved);
+		fc.update(f);
+		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
+
+		Form f2 = fc.createTimeWorkedForm(student, start.toLocalDate(), 175,
+				"arst");
+		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
+
+		start = start.plusDays(1);
+		end = start.plusMinutes(200);
+		Event e2 = ec.createOrUpdate(Event.Type.Performance, new Interval(
+				start, end));
+		ac.createOrUpdateAbsence(student, e2);
+		// 160 - 10 - 80 - 80 + 10 - 200
+		assertEquals(User.Grade.F, uc.get(student.getId()).getGrade());
+
+		f2.setStatus(Form.Status.Denied);
+		fc.update(f2);
+		assertEquals(User.Grade.F, uc.get(student.getId()).getGrade());
+
+		f2.setStatus(Form.Status.Pending);
+		fc.update(f2);
+		assertEquals(User.Grade.F, uc.get(student.getId()).getGrade());
+
+		f2.setStatus(Form.Status.Approved);
+		fc.update(f2);
+		// 160 - 10 - 80 - 80 + 10 - 200 + 100 = -25
+		assertEquals(User.Grade.C, uc.get(student.getId()).getGrade());
 
 	}
 

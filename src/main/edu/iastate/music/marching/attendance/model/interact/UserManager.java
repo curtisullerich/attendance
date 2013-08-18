@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
@@ -26,6 +27,8 @@ import edu.iastate.music.marching.attendance.util.ValidationUtil;
 public class UserManager extends AbstractManager {
 
 	DataTrain datatrain;
+	private static final Logger LOG = Logger.getLogger(UserManager.class
+			.getName());
 
 	// a user may not be later than this without 'missing' the whole rehearsal
 	private static final int MAXIMUM_LATENESS_MINUTES = 30;
@@ -321,7 +324,8 @@ public class UserManager extends AbstractManager {
 		RootFindCommand<User> find = this.datatrain.find(User.class);
 		find.addFilter(User.FIELD_SECONDARY_EMAIL, FilterOperator.EQUAL,
 				secondaryEmail);
-		find.addFilter(User.FIELD_PRIMARY_EMAIL, FilterOperator.NOT_EQUAL, primary);
+		find.addFilter(User.FIELD_PRIMARY_EMAIL, FilterOperator.NOT_EQUAL,
+				primary);
 		List<User> found = find.returnAll().now();
 		return found.size() == 0
 				|| (found.size() == 1 && found.get(0).getPrimaryEmail()
@@ -338,8 +342,8 @@ public class UserManager extends AbstractManager {
 		}
 
 		validateUser(u);
+
 		updateUserGrade(u);
-		
 		this.datatrain.getDataStore().update(u);
 	}
 
@@ -380,6 +384,16 @@ public class UserManager extends AbstractManager {
 			if (l.size() == 1) {
 				minutes += simpleGrade(e, l);
 			} else {
+				DateTimeZone zone = datatrain.appData().get().getTimeZone();
+				String types = "";
+				for (Absence a : l) {
+					types += a.getType() + " ";
+				}
+				LOG.info("There were " + l.size() + " absences for "
+						+ student.getId() + " during event "
+						+ e.getInterval(zone).getStart() + " to "
+						+ e.getInterval(zone).getEnd());
+				LOG.info("absence types: " + types);
 				minutes += generalGrade(e, l);
 			}
 		}
@@ -387,8 +401,9 @@ public class UserManager extends AbstractManager {
 	}
 
 	private int generalGrade(Event e, List<Absence> l) {
-		// TODO implement
-		// TODO log that there were multiple absences for an event for a student
+		// TODO this method does not properly handle tardies/ecos that have been
+		// approved
+
 		class PresenceInterval {
 
 			private boolean present;
@@ -414,6 +429,11 @@ public class UserManager extends AbstractManager {
 			public void setInterval(Interval interval) {
 				this.interval = interval;
 			}
+
+			public String toString() {
+				return (present ? "present " : "absent ") + interval.getStart()
+						+ interval.getEnd();
+			}
 		}
 
 		List<PresenceInterval> ints = new ArrayList<PresenceInterval>();
@@ -424,8 +444,13 @@ public class UserManager extends AbstractManager {
 				throw new IllegalArgumentException(
 						"there were multiple absences of type Absence for a single event!");
 			}
+			if (a.getStatus() == Absence.Status.Approved) {
+				// skip it
+				continue;
+			}
 			DateTime d = a.getType() == Absence.Type.Tardy ? a.getCheckin(zone)
 					: a.getCheckout(zone);
+
 			for (int i = 0; i < ints.size(); i++) {
 				PresenceInterval p = ints.get(i);
 				if (p.getInterval().contains(d)) {
@@ -453,7 +478,13 @@ public class UserManager extends AbstractManager {
 				minutes += p.getInterval().toDuration().getStandardMinutes();
 			}
 		}
-		return minutes;
+
+		if (minutes > MAXIMUM_LATENESS_MINUTES) {
+			// too late!
+			return (int) e.getInterval(zone).toDuration().getStandardMinutes();
+		} else {
+			return minutes;
+		}
 	}
 
 	private int simpleGrade(Event e, List<Absence> l) {
