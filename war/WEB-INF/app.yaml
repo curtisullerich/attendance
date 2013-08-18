@@ -1,13 +1,14 @@
 application: isucfvmb-attendance
 version: 4
 runtime: java
+threadsafe: false
 
 static_files:
   - include: /css/**
   - include: /img/**
   - include: /js/**
   - include: /jquery/**
-  - include: /MobileApp/**
+  - include: /field/**
   - include: /error.html
   - include: /favicon.ico
   - include: /index.html
@@ -57,10 +58,10 @@ handlers:
     path: "director/forms"
   name: director_forms
 
-- url: /MobileApp/data/*
+- url: /field/data/*
   servlet: edu.iastate.music.marching.attendance.servlets.MobileAppDataServlet
   init_params:
-    path: "MobileApp/data"
+    path: "field/data"
   name: mobileapp_data
 
 - url: /student/*

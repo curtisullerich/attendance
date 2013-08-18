@@ -7,7 +7,7 @@
     <include path='/img/**'/>
     <include path='/js/**'/>
     <include path='/jquery/**'/>
-    <include path='/MobileApp/**'/>
+    <include path='/field/**'/>
     <include path='/error.html'/>
     <include path='/favicon.ico'/>
     <include path='/index.html'/>

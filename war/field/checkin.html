@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html manifest="FieldAppCache.appcache">
+<html manifest="field.appcache">
 	<head>	
 		<meta name="viewport" content="width=device-width,initial-scale=1"/>
 	    <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -7,7 +7,7 @@
 	    <link rel="apple-touch-icon" href="/img/404Cy.png"/>
 	    <link rel="apple-touch-startup-image" href="/img/404Cy.png" />
 	
-		<title>Attendance Mobile App</title>
+		<title>Attendance Field App</title>
 	
 		<meta name="viewport" content="width=device-width,initial-scale=1">
 		
@@ -281,7 +281,7 @@
 						document.getElementById("clear").href="javascript: clearTardies();";
 						document.getElementById("submit").href="javascript: submitTardy();";
 						document.getElementById("viewButton").href="javascript: tardiesOnOff()";
-						document.getElementById("back").href="javascript: window.location='FieldAppMain.html'";
+						document.getElementById("back").href="javascript: window.location='index.html'";
 						document.getElementById("re-sort").href="javascript: retrieveTardies()";
 						document.getElementById("student").disabled = false;
 						document.getElementById("clear").innerHTML = "Clear Tardy List";
@@ -298,7 +298,7 @@
 			 * @date 3-30-2012
 			 */
 			function help(){
-				alert("This page is the tardy check-in page for the Attendance Mobile App.\n"+
+				alert("This page is the tardy check-in page for the Attendance Field App.\n"+
 				"\nValid netIDs may be entered to mark a student as tardy. UniversityIDs may also be scanned when the netID input box is selected."+
 				"\n\nClicking View Tardies will show the recorded tardies."+
 				"\n\nThe Re-Sort Tardy List button allows the user to resort the tardy entries by either time or netID.");
@@ -311,7 +311,7 @@
 	
 		<header class="hwrapper">
 			<h1>Attendance</h1>
-   			<a class="left" id="back" href="javascript: window.location='FieldAppMain.html'">Back</a>
+   			<a class="left" id="back" href="javascript: window.location='index.html'">Back</a>
 			<a class="right" id="help" href="javascript: help();">Help</a>
 		</header>
 	
@@ -369,9 +369,9 @@
 		<br/>
 		<footer class="fwrapper">
 			<div>
-				<p><strong>Mobile App</strong> | <a href="/">Full Site</a></p>
+				<p><strong>Field App</strong> | <a href="/">Full Site</a></p>
 				<br/>
-				<p class="light">Template &copy; 2012 <a href="http://m.iastate.edu/">Iowa State University</a></p>
+				<p class="light">Template &copy; 2013 <a href="http://m.iastate.edu/">Iowa State University</a></p>
 			</div>
 		</footer>
     </body>

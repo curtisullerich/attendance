@@ -12,6 +12,7 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Duration;
 import org.joda.time.Interval;
+import org.mortbay.log.Log;
 
 import com.google.appengine.api.datastore.Email;
 import com.google.appengine.api.datastore.Query.FilterOperator;
@@ -436,14 +437,27 @@ public class UserManager extends AbstractManager {
 			}
 		}
 
-		List<PresenceInterval> ints = new ArrayList<PresenceInterval>();
 		DateTimeZone zone = datatrain.appData().get().getTimeZone();
+
+		for (Absence a : l) {
+			if (a.getType().isAbsence()) {
+				if (l.size() > 2) {
+					LOG.info("There were " + l.size()
+							+ " absences for a user during event "
+							+ e.getInterval(zone));
+				}
+				return (int) e.getInterval(zone).toDuration()
+						.getStandardMinutes();
+			}
+		}
+
+		List<PresenceInterval> ints = new ArrayList<PresenceInterval>();
 		ints.add(new PresenceInterval(e.getInterval(zone), true));
 		for (Absence a : l) {
-			if (a.getType() == Absence.Type.Absence) {
-				throw new IllegalArgumentException(
-						"there were multiple absences of type Absence for a single event!");
-			}
+			// if (a.getType() == Absence.Type.Absence) {
+			// throw new IllegalArgumentException(
+			// "there were multiple absences of type Absence for a single event!");
+			// }
 			if (a.getStatus() == Absence.Status.Approved) {
 				// skip it
 				continue;

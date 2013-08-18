@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html manifest="FieldAppCache.appcache">
+<html manifest="field.appcache">
 	<head>
 		<meta name="viewport" content="width=device-width,initial-scale=1"/>
 	    <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -7,7 +7,7 @@
 	    <link rel="apple-touch-icon" href="/img/404Cy.png"/>
 	    <link rel="apple-touch-startup-image" href="/img/404Cy.png" />
 	
-		<title>Attendance Mobile App</title>
+		<title>Attendance Field App</title>
 	
 		<meta name="viewport" content="width=device-width,initial-scale=1">
 		
@@ -109,7 +109,7 @@
                 $("#classList").text("Updating...");
                 $("#update").hide(1000);
                 
-                $.get("/MobileApp/data/classlist", function(result, errorString) {
+                $.get("/field/data/classlist", function(result, errorString) {
                 	
                 	if(errorString != "success")
              	    {
@@ -237,7 +237,7 @@
 				
 				// Post the built string of information to the server
 				// Expects to get a result json string back from server
-				$.post("/MobileApp/data/upload", str, function(result, errorString){
+				$.post("/field/data/upload", str, function(result, errorString){
              	    if(errorString != "success")
              	    {
              	    	// Data did not even get to the server
@@ -353,7 +353,7 @@ would be if there's something in the local storage that causes the error itself,
 			 * @date 2-28-2012
 			 */
 	        function help(){
-	            alert("This page is the start page for the Attendance Mobile App.\n"+
+	            alert("This page is the start page for the Attendance Field App.\n"+
 	            "\nClicking the Update Class List button updates the class list from the server."+
 	            "\n\nThe Tardy Check-In button navigates to the tardy check-in page."+
 	            "\n\nThe Report Absences button navigates to the absence reporting page."+
@@ -371,13 +371,13 @@ would be if there's something in the local storage that causes the error itself,
 			<a class="right" href="javascript: help();">Help</a>
 		</header>
 		
-		<h1>Mobile App Main</h1>
+		<h1>Initial Absence Report</h1>
 		
 		<ul class="navigation group drilldown panel">
 			<li class="selected">
 <!-- 				<div class="flippedButton"> -->
-					<a id="tardy" href="javascript: window.location='FieldAppTardy.html'"><b>Tardy Check-In/Early Check-Out</b></a>
-					<a id="absent" href="javascript: window.location='FieldAppAbsent.html'"><b>Report Absences</b></a>
+					<a id="tardy" href="javascript: window.location='checkin.html'"><b>Tardy Check-In/Early Check-Out</b></a>
+					<a id="absent" href="javascript: window.location='initial.html'"><b>Report Absences</b></a>
 					<a id="submit" href="javascript: loginAndUpload();"><b>Upload Attendance Data</b></a>
 					<a id="clear" href="javascript: clearAll();" style="display: none"><b>Clear All Data</b></a>
 <!-- 				</div> -->
@@ -394,7 +394,7 @@ would be if there's something in the local storage that causes the error itself,
 		<br/>
 		<footer class="fwrapper">
 			<div>
-				<p><strong>Mobile App</strong> | <a href="/">Full Site</a></p>
+				<p><strong>Field App</strong> | <a href="/">Full Site</a></p>
 				<br/>
 				<p class="light">Template &copy; 2013 <a href="http://m.iastate.edu/">Iowa State University</a></p>
 			</div>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html manifest="FieldAppCache.appcache">
+<html manifest="field.appcache">
 	<head>
 		<meta name="viewport" content="width=device-width,initial-scale=1"/>
 	    <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -7,7 +7,7 @@
 	    <link rel="apple-touch-icon" href="/img/404Cy.png"/>
 	    <link rel="apple-touch-startup-image" href="/img/404Cy.png" />
 	
-		<title>Attendance Mobile App</title>
+		<title>Attendance Field App</title>
 	
 		<meta name="viewport" content="width=device-width,initial-scale=1">
 		
@@ -646,7 +646,7 @@
 						document.getElementById("addOrEditButton").href="javascript: cache();";
 						document.getElementById("viewButton").href="javascript: absencesOnOff();";
 						document.getElementById("editMain").href="javascript: handleEdit(true);";
-						document.getElementById("back").href="javascript: window.location='FieldAppMain.html'";
+						document.getElementById("back").href="javascript: window.location='index.html'";
 						document.getElementById("clear").innerHTML = "Clear Absence Data";
 					},1000);
 				}
@@ -661,7 +661,7 @@
 			 * @date 2-28-2012
 			 */
 			function help(){
-				alert("This page is the absence reporting page for the Attendance Mobile App.\n"+
+				alert("This page is the absence reporting page for the Attendance Field App.\n"+
 				"\nSelect the event type, a start time, and an end time, and then select the absent students."+
 				"Clicking submit will store the event and the absent student records locally."+
 				"\n\nClicking View Absences will show the recorded absences and events."+
@@ -676,7 +676,7 @@
     <body>
 
    		<header class="hwrapper"><h1>Attendance</h1>
-   			<a class="left" id="back" href="javascript: window.location='FieldAppMain.html'">Back</a>
+   			<a class="left" id="back" href="javascript: window.location='index.html'">Back</a>
 			<a class="right" id="help" href="javascript: help();">Help</a>
 		</header>
 
@@ -756,9 +756,9 @@
 		<br/>
 		<footer class="fwrapper">
 			<div>
-				<p><strong>Mobile App</strong> | <a href="/">Full Site</a></p>
+				<p><strong>Field App</strong> | <a href="/">Full Site</a></p>
 				<br/>
-				<p class="light">Template &copy; 2012 <a href="http://m.iastate.edu/">Iowa State University</a></p>
+				<p class="light">Template &copy; 2013 <a href="http://m.iastate.edu/">Iowa State University</a></p>
 			</div>
 		</footer>
     </body>

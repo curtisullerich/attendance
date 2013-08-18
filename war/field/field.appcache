@@ -1,11 +1,11 @@
 CACHE MANIFEST
 
 # Attendance Appcache
-# 7-14-13 v2.3.02
+# 8-18-13 v2.4.0
 
 NETWORK:
-/MobileApp/data/classlist
-/MobileApp/data/upload
+/field/data/classlist
+/field/data/upload
 
 CACHE:
 FieldAppMain.html

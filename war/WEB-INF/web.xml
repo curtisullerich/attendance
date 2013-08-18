@@ -8,10 +8,6 @@
       <param-value>public</param-value>
     </init-param>
   </servlet>
-  <servlet-mapping>
-    <servlet-name>public</servlet-name>
-    <url-pattern>/public/*</url-pattern>
-  </servlet-mapping>
   <servlet>
     <servlet-name>error</servlet-name>
     <servlet-class>edu.iastate.music.marching.attendance.servlets.ErrorServlet</servlet-class>
@@ -20,10 +16,6 @@
       <param-value>error</param-value>
     </init-param>
   </servlet>
-  <servlet-mapping>
-    <servlet-name>error</servlet-name>
-    <url-pattern>/error/*</url-pattern>
-  </servlet-mapping>
   <servlet>
     <servlet-name>auth</servlet-name>
     <servlet-class>edu.iastate.music.marching.attendance.servlets.AuthServlet</servlet-class>
@@ -32,10 +24,6 @@
       <param-value>auth</param-value>
     </init-param>
   </servlet>
-  <servlet-mapping>
-    <servlet-name>auth</servlet-name>
-    <url-pattern>/auth/*</url-pattern>
-  </servlet-mapping>
   <servlet>
     <servlet-name>director</servlet-name>
     <servlet-class>edu.iastate.music.marching.attendance.servlets.DirectorServlet</servlet-class>
@@ -44,10 +32,6 @@
       <param-value>director</param-value>
     </init-param>
   </servlet>
-  <servlet-mapping>
-    <servlet-name>director</servlet-name>
-    <url-pattern>/director/*</url-pattern>
-  </servlet-mapping>
   <servlet>
     <servlet-name>director_forms</servlet-name>
     <servlet-class>edu.iastate.music.marching.attendance.servlets.FormsServlet</servlet-class>
@@ -60,22 +44,14 @@
       <param-value>Director</param-value>
     </init-param>
   </servlet>
-  <servlet-mapping>
-    <servlet-name>director_forms</servlet-name>
-    <url-pattern>/director/forms/*</url-pattern>
-  </servlet-mapping>
   <servlet>
     <servlet-name>mobileapp_data</servlet-name>
     <servlet-class>edu.iastate.music.marching.attendance.servlets.MobileAppDataServlet</servlet-class>
     <init-param>
       <param-name>path</param-name>
-      <param-value>MobileApp/data</param-value>
+      <param-value>field/data</param-value>
     </init-param>
   </servlet>
-  <servlet-mapping>
-    <servlet-name>mobileapp_data</servlet-name>
-    <url-pattern>/MobileApp/data/*</url-pattern>
-  </servlet-mapping>
   <servlet>
     <servlet-name>student</servlet-name>
     <servlet-class>edu.iastate.music.marching.attendance.servlets.StudentServlet</servlet-class>
@@ -84,10 +60,6 @@
       <param-value>student</param-value>
     </init-param>
   </servlet>
-  <servlet-mapping>
-    <servlet-name>student</servlet-name>
-    <url-pattern>/student/*</url-pattern>
-  </servlet-mapping>
   <servlet>
     <servlet-name>student_forms</servlet-name>
     <servlet-class>edu.iastate.music.marching.attendance.servlets.FormsServlet</servlet-class>
@@ -100,10 +72,6 @@
       <param-value>Student</param-value>
     </init-param>
   </servlet>
-  <servlet-mapping>
-    <servlet-name>student_forms</servlet-name>
-    <url-pattern>/student/forms/*</url-pattern>
-  </servlet-mapping>
   <servlet>
     <servlet-name>ta</servlet-name>
     <servlet-class>edu.iastate.music.marching.attendance.servlets.TAServlet</servlet-class>
@@ -112,10 +80,6 @@
       <param-value>ta</param-value>
     </init-param>
   </servlet>
-  <servlet-mapping>
-    <servlet-name>ta</servlet-name>
-    <url-pattern>/ta/*</url-pattern>
-  </servlet-mapping>
   <servlet>
     <servlet-name>admin</servlet-name>
     <servlet-class>edu.iastate.music.marching.attendance.servlets.AdminServlet</servlet-class>
@@ -124,10 +88,6 @@
       <param-value>admin</param-value>
     </init-param>
   </servlet>
-  <servlet-mapping>
-    <servlet-name>admin</servlet-name>
-    <url-pattern>/admin/*</url-pattern>
-  </servlet-mapping>
   <servlet>
     <servlet-name>task</servlet-name>
     <servlet-class>edu.iastate.music.marching.attendance.servlets.TaskServlet</servlet-class>
@@ -136,6 +96,46 @@
       <param-value>task</param-value>
     </init-param>
   </servlet>
+  <servlet-mapping>
+    <servlet-name>public</servlet-name>
+    <url-pattern>/public/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>error</servlet-name>
+    <url-pattern>/error/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>auth</servlet-name>
+    <url-pattern>/auth/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>director</servlet-name>
+    <url-pattern>/director/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>director_forms</servlet-name>
+    <url-pattern>/director/forms/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>mobileapp_data</servlet-name>
+    <url-pattern>/field/data/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>student</servlet-name>
+    <url-pattern>/student/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>student_forms</servlet-name>
+    <url-pattern>/student/forms/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ta</servlet-name>
+    <url-pattern>/ta/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>admin</servlet-name>
+    <url-pattern>/admin/*</url-pattern>
+  </servlet-mapping>
   <servlet-mapping>
     <servlet-name>task</servlet-name>
     <url-pattern>/task/*</url-pattern>
