@@ -315,7 +315,7 @@ public class MobileDataManager {
 			// TODO we could optimize here by setting all the grades and then
 			// using an updateAll method in UserController. Just don't have time
 			// to test it now.
-			uc.update(student);
+			// uc.update(student);
 		}
 
 		// } catch (RuntimeException ex) {
