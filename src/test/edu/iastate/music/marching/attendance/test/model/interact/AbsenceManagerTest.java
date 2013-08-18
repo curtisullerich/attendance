@@ -289,21 +289,29 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		assertTrue(absence.getType() == Absence.Type.Absence);
 	}
 
+	// note that the expected option here doesn't work because this class
+	// extends TestCase, which is a JUnit 3 methodology
 	@Test(expected = IllegalArgumentException.class)
 	public void testCreateAbsenceFail() {
-		DataTrain train = getDataTrain();
+		try {
 
-		UserManager uc = train.users();
-		User student = TestUsers.createDefaultStudent(uc);
+			DataTrain train = getDataTrain();
 
-		DateTimeZone zone = train.appData().get().getTimeZone();
-		DateTime eventStart = new DateTime(2012, 7, 15, 16, 0, 0, 0, zone);
-		DateTime eventEnd = eventStart.minusHours(1);
+			UserManager uc = train.users();
+			User student = TestUsers.createDefaultStudent(uc);
 
-		train.events().createOrUpdate(Event.Type.Performance,
-				new Interval(eventStart, eventEnd));
-		train.absences().createOrUpdateAbsence(student,
-				new Interval(eventStart, eventEnd));
+			DateTimeZone zone = train.appData().get().getTimeZone();
+			DateTime eventStart = new DateTime(2012, 7, 15, 16, 0, 0, 0, zone);
+			DateTime eventEnd = eventStart.minusHours(1);
+
+			train.events().createOrUpdate(Event.Type.Performance,
+					new Interval(eventStart, eventEnd));
+			train.absences().createOrUpdateAbsence(student,
+					new Interval(eventStart, eventEnd));
+		} catch (IllegalArgumentException e) {
+			return;
+		}
+		fail("Should have thrown an IllegalArgumentException.");
 	}
 
 	@Test
@@ -435,7 +443,7 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		DateTime event1End = event1Start.plusHours(2);
 
 		DateTime event2Start = new DateTime(2012, 8, 16, 17, 0, 0, 0, zone);
-		DateTime event2End = event1Start.plusHours(2);
+		DateTime event2End = event2Start.plusHours(2);
 
 		DateTime tardyDate = event2Start.plusMinutes(15);
 
@@ -505,7 +513,7 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		DateTime event1End = event1Start.plusHours(2);
 
 		DateTime event2Start = new DateTime(2012, 8, 16, 17, 0, 0, 0, zone);
-		DateTime event2End = event1Start.plusHours(2);
+		DateTime event2End = event2Start.plusHours(2);
 
 		DateTime earlyDateTime = event2Start.plusMinutes(15);
 
@@ -624,7 +632,7 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		DateTime event1End = event1Start.plusHours(2);
 
 		DateTime event2Start = new DateTime(2012, 7, 16, 8, 0, 0, 0, zone);
-		DateTime event2End = event1Start.plusHours(1);
+		DateTime event2End = event2Start.plusHours(1);
 
 		DateTime tardy = event1Start.plusMinutes(15);
 		DateTime otherTardy = event2Start.plusMinutes(20);
@@ -642,14 +650,14 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		assertEquals(2, studentAbsences.size());
 		Absence absence = studentAbsences.get(0);
 
-		assertTrue(absence.getStart().equals(tardy)
-				|| absence.getStart().equals(otherTardy));
+		assertTrue(absence.getCheckin(zone).equals(tardy)
+				|| absence.getCheckin(zone).equals(otherTardy));
 		assertTrue(absence.getType() == Absence.Type.Tardy);
 
 		absence = studentAbsences.get(1);
 
-		assertTrue(absence.getStart().equals(tardy)
-				|| absence.getStart().equals(otherTardy));
+		assertTrue(absence.getCheckin(zone).equals(tardy)
+				|| absence.getCheckin(zone).equals(otherTardy));
 		assertTrue(absence.getType() == Absence.Type.Tardy);
 	}
 
@@ -861,13 +869,13 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 
 		Absence absence = studentAbsences.get(0);
 
-		assertTrue(absence.getInterval(zone).getStart().equals(early)
-				|| absence.getInterval(zone).getStart().equals(otherEarly));
+		assertTrue(absence.getCheckout(zone).equals(early)
+				|| absence.getCheckout(zone).equals(otherEarly));
 		assertTrue(absence.getType() == Absence.Type.EarlyCheckOut);
 
 		absence = studentAbsences.get(0);
-		assertTrue(absence.getInterval(zone).getStart().equals(early)
-				|| absence.getInterval(zone).getStart().equals(otherEarly));
+		assertTrue(absence.getCheckout(zone).equals(early)
+				|| absence.getCheckout(zone).equals(otherEarly));
 		assertTrue(absence.getType() == Absence.Type.EarlyCheckOut);
 	}
 
@@ -1129,12 +1137,10 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 	public void testApprovedTardyVsEarly() {
 
 		// This method tests these four cases: Case 1: don't overlap, both
-		// should
-		// remain. a: Adding Tardy first b: Adding EarlyCheckout first
+		// should remain. a: Adding Tardy first b: Adding EarlyCheckout first
 
 		// Case 2: do overlap, become an absence a: Adding Tardy first b: Adding
 		// EarlyCheckout first
-		//
 		// --revision. both should remain in all cases.
 
 		DataTrain train = getDataTrain();
@@ -1208,7 +1214,8 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		assertTrue(earlyCheckOut.getStatus() == Absence.Status.Pending);
 		assertTrue(earlyCheckOut.getCheckout(zone).equals(earlyNon));
 
-		// Case 2.a t = ac.createOrUpdateTardy(overlapTardyFirst, tardyDate);
+		// Case 2.a 
+		t = ac.createOrUpdateTardy(overlapTardyFirst, tardyDate);
 		t.setStatus(Absence.Status.Approved);
 		ac.updateAbsence(t);
 
