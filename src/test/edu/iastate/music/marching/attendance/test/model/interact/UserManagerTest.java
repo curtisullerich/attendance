@@ -565,7 +565,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		ac.updateAbsence(eco1);
 		//this means there are basically two tardies in a row now, at 20 and 60 minutes in
 		
-		assertEquals(User.Grade.F, uc.get(student.getId()).getGrade());
+		assertEquals(User.Grade.D, uc.get(student.getId()).getGrade());
 	}
 
 	@Test

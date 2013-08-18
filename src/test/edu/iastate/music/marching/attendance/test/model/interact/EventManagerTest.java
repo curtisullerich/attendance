@@ -41,6 +41,7 @@ public class EventManagerTest extends AbstractDatastoreTest {
 		List<Absence> list = ac.getAll(event);
 		assertEquals(2, list.size());
 	}
+
 	@Test
 	public void testLongerEvent() {
 		DataTrain train = getDataTrain();

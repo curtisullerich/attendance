@@ -353,7 +353,7 @@ public class UserManager extends AbstractManager {
 	 * 
 	 * Note that this DOES NOT currently refresh the student in the database.
 	 */
-	public void updateUserGrade(User student) {
+	private void updateUserGrade(User student) {
 		AbsenceManager ac = this.datatrain.absences();
 		int minutes = 0;
 		List<Absence> absences = ac.get(student);

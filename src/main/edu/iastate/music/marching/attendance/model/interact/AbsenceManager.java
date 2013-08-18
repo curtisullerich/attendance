@@ -514,7 +514,7 @@ public class AbsenceManager extends AbstractManager {
 			this.train.getDataStore().storeOrUpdate(resolvedAbsence);
 
 			// Finally check for side-effects caused by absence
-			train.users().updateUserGrade(student);
+			train.users().update(student);
 
 			// Done.
 			return resolvedAbsence;
@@ -600,7 +600,7 @@ public class AbsenceManager extends AbstractManager {
 					this.train.getDataStore().storeOrUpdate(a);
 
 					// Finally check for side-effects caused by absence
-					train.users().updateUserGrade(a.getStudent());
+					train.users().update(a.getStudent());
 				}
 			}
 		}
