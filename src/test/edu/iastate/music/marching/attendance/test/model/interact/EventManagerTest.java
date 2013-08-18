@@ -1,8 +1,5 @@
 package edu.iastate.music.marching.attendance.test.model.interact;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.text.ParseException;
 import java.util.List;
 
@@ -15,12 +12,56 @@ import edu.iastate.music.marching.attendance.model.interact.AbsenceManager;
 import edu.iastate.music.marching.attendance.model.interact.DataTrain;
 import edu.iastate.music.marching.attendance.model.interact.EventManager;
 import edu.iastate.music.marching.attendance.model.interact.UserManager;
+import edu.iastate.music.marching.attendance.model.store.Absence;
 import edu.iastate.music.marching.attendance.model.store.Event;
 import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.testlib.AbstractDatastoreTest;
 import edu.iastate.music.marching.attendance.testlib.TestUsers;
 
 public class EventManagerTest extends AbstractDatastoreTest {
+
+	@Test
+	public void testLongEvent() {
+		DataTrain train = getDataTrain();
+
+		EventManager ec = train.events();
+		AbsenceManager ac = train.absences();
+		DateTimeZone zone = train.appData().get().getTimeZone();
+
+		DateTime start = new DateTime(2012, 9, 21, 1, 0, zone);
+		DateTime end = new DateTime(2012, 9, 21, 23, 0, zone);
+		UserManager uc = train.users();
+		User student = TestUsers.createDefaultStudent(uc);
+
+		Event event = ec.createOrUpdate(Event.Type.Rehearsal, new Interval(
+				start, end));
+		ac.createOrUpdateTardy(student, start.plusMinutes(10));
+		ac.createOrUpdateEarlyCheckout(student, end.minusMinutes(10));
+
+		List<Absence> list = ac.getAll(event);
+		assertEquals(2, list.size());
+	}
+	@Test
+	public void testLongerEvent() {
+		DataTrain train = getDataTrain();
+
+		EventManager ec = train.events();
+		AbsenceManager ac = train.absences();
+		DateTimeZone zone = train.appData().get().getTimeZone();
+
+		DateTime start = new DateTime(2012, 9, 21, 1, 0, zone);
+		DateTime end = new DateTime(2012, 9, 23, 23, 0, zone);
+		UserManager uc = train.users();
+		User student = TestUsers.createDefaultStudent(uc);
+
+		Event event = ec.createOrUpdate(Event.Type.Rehearsal, new Interval(
+				start, end));
+		ac.createOrUpdateTardy(student, start.plusMinutes(10));
+		ac.createOrUpdateEarlyCheckout(student, end.minusMinutes(10));
+
+		List<Absence> list = ac.getAll(event);
+		assertEquals(2, list.size());
+	}
 
 	@Test
 	public void testOverlappingEventsRehersal() {
