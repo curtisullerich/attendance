@@ -114,11 +114,25 @@ public class TaskServlet extends AbstractBaseServlet {
 			case export:
 				doExport(req, resp);
 				break;
-			case export_daily:
-				doDailyExport(req, resp);
-				break;
 			case import_:
 				doImport(req, resp);
+				break;
+			default:
+				ErrorServlet.showError(req, resp, 404);
+			}
+	}
+	
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+		Page page = parsePathInfo(req.getPathInfo(), Page.class);
+
+		if (page == null)
+			ErrorServlet.showError(req, resp, 404);
+		else
+			switch (page) {
+			case export_daily:
+				doDailyExport(req, resp);
 				break;
 			default:
 				ErrorServlet.showError(req, resp, 404);
