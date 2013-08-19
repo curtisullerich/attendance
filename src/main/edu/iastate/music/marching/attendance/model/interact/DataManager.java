@@ -45,8 +45,20 @@ public class DataManager extends AbstractManager {
 		public List<MobileDataUpload> mobileData;
 		public List<User> users;
 	}
+	
+	public static class DumpV2 {
 
-	private static final int DUMP_FORMAT_VERSION = 2;
+		public int format_version = 2;
+
+		public List<Absence> absences;
+		public AppData appData;
+		public List<Event> events;
+		public List<Form> forms;
+		public List<MobileDataUpload> mobileData;
+		public List<User> users;
+	}
+
+	private static final int CURRENT_DUMP_FORMAT_VERSION = 3;
 
 	private static final Logger LOG = Logger.getLogger(DataManager.class
 			.getName());
@@ -73,7 +85,7 @@ public class DataManager extends AbstractManager {
 
 		Dump dump = new Dump();
 
-		dump.format_version = DUMP_FORMAT_VERSION;
+		dump.format_version = CURRENT_DUMP_FORMAT_VERSION;
 
 		dump.absences = dataTrain.absences().getAll();
 
@@ -91,7 +103,6 @@ public class DataManager extends AbstractManager {
 	}
 
 	public ImportData getImportData(long id) {
-
 		return dataTrain.getDataStore().load(
 				KeyFactory.createKey(dataTrain.getDataStore()
 						.getConfiguration().typeToKind(ImportData.class), id));
@@ -116,10 +127,17 @@ public class DataManager extends AbstractManager {
 		Dump dump = GsonWithPartials.fromJson(new StringReader(string),
 				Dump.class);
 
-		if (dump.format_version < DUMP_FORMAT_VERSION) {
+		switch (dump.format_version) {
+		case CURRENT_DUMP_FORMAT_VERSION:
+			// Current format version, needs no conversion
+			break;
+		case 2:
+			dump = convertV2DatabaseDump(string);
+			break;
+		default:
 			// Old dump, probably not compatible with current database format
 			throw new IllegalStateException(
-					"Tried to import out-of-DateTime dump not compatible with current database structure");
+					"Tried to import out-of-date dump not compatible with current database structure");
 		}
 
 		// Yup
@@ -142,6 +160,13 @@ public class DataManager extends AbstractManager {
 		importAll(Form.class, dump.forms);
 		importAll(MobileDataUpload.class, dump.mobileData);
 		// Done!
+	}
+
+	private Dump convertV2DatabaseDump(String string) {
+		DumpV2 dump = GsonWithPartials.fromJson(new StringReader(string),
+				DumpV2.class);
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	private <T> void inject(Class<?> clazz, List<T> src) {
@@ -173,8 +198,7 @@ public class DataManager extends AbstractManager {
 						// Try to load user
 						User user = (User) field.get(item);
 						if (user != null) {
-							user = dataTrain.users().get(
-									(user).getId());
+							user = dataTrain.users().get((user).getId());
 							field.set(item, user);
 						}
 					} else if (Absence.class.equals(type)) {
@@ -230,8 +254,7 @@ public class DataManager extends AbstractManager {
 
 		try {
 			MimeMessage msg = new MimeMessage(session);
-			msg.setFrom(new InternetAddress(
-					App.Emails.BUGREPORT_EMAIL_FROM));
+			msg.setFrom(new InternetAddress(App.Emails.BUGREPORT_EMAIL_FROM));
 			msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
 					App.Emails.BUGREPORT_EMAIL_TO));
 

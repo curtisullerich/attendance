@@ -30,6 +30,7 @@ import org.joda.time.DateTime;
 import edu.iastate.music.marching.attendance.App;
 import edu.iastate.music.marching.attendance.model.interact.DataTrain;
 import edu.iastate.music.marching.attendance.model.store.User;
+import edu.iastate.music.marching.attendance.util.Util;
 
 public class Export {
 
@@ -99,7 +100,7 @@ public class Export {
 			// Add all directors as recipients
 			for (User d : train.users().get(User.Type.Director)) {
 				msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
-						d.getPrimaryEmail().getEmail()));
+						Util.emailToString(d.getPrimaryEmail())));
 			}
 			msg.setSubject(subject);
 

@@ -5,7 +5,6 @@ import java.io.Serializable;
 import com.google.appengine.api.datastore.Email;
 import com.google.code.twig.annotation.Entity;
 import com.google.code.twig.annotation.Id;
-import com.google.code.twig.annotation.Index;
 
 @Entity(kind = "User", allocateIdsBy = 0)
 public class User implements Serializable {
@@ -92,13 +91,10 @@ public class User implements Serializable {
 	@Id
 	private String id;
 
-	@Index
 	private Email email;
 
-	@Index
 	private Email secondEmail;
 
-	@Index
 	private String universityID;
 
 	private Section section;

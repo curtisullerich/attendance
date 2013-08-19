@@ -12,7 +12,6 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Duration;
 import org.joda.time.Interval;
-import org.mortbay.log.Log;
 
 import com.google.appengine.api.datastore.Email;
 import com.google.appengine.api.datastore.Query.FilterOperator;
@@ -23,6 +22,7 @@ import edu.iastate.music.marching.attendance.model.store.Absence;
 import edu.iastate.music.marching.attendance.model.store.Event;
 import edu.iastate.music.marching.attendance.model.store.ModelFactory;
 import edu.iastate.music.marching.attendance.model.store.User;
+import edu.iastate.music.marching.attendance.util.Util;
 import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
 public class UserManager extends AbstractManager {
@@ -60,12 +60,22 @@ public class UserManager extends AbstractManager {
 			String firstName, String lastName) throws IllegalArgumentException {
 
 		// ValiDateTime email
-		Email primaryEmail = new Email(schoolEmail);
-		Email secondaryEmail = new Email(loginEmail);
-		ValidationUtil.validPrimaryEmail(primaryEmail, this.datatrain);
-		ValidationUtil.validSecondaryEmail(secondaryEmail, this.datatrain);
-		ValidationUtil.isUniqueSecondaryEmail(secondaryEmail, primaryEmail,
-				this.datatrain);
+		Email primaryEmail = Util.makeEmail(schoolEmail);
+		Email secondaryEmail = Util.makeEmail(loginEmail);
+
+		if (!ValidationUtil.isValidPrimaryEmail(primaryEmail, this.datatrain)) {
+			throw new IllegalArgumentException("Invalid primary email");
+		}
+
+		if (!ValidationUtil.isValidSecondaryEmail(secondaryEmail,
+				this.datatrain)) {
+			throw new IllegalArgumentException("Invalid second email");
+		}
+
+		if (!ValidationUtil.isUniqueSecondaryEmail(secondaryEmail,
+				primaryEmail, this.datatrain)) {
+			throw new IllegalArgumentException("Non-unique secondary email");
+		}
 
 		// Check no duplicate users exist
 		if (get(primaryEmail) != null)
@@ -92,8 +102,8 @@ public class UserManager extends AbstractManager {
 		// section, uid, year, major, rank, minutesavailable
 		String firstName = parts[0];
 		String lastName = parts[1];
-		Email primaryEmail = new Email(parts[2]);
-		Email secondaryEmail = new Email(parts[3]);
+		Email primaryEmail = Util.makeEmail(parts[2]);
+		Email secondaryEmail = Util.makeEmail(parts[3]);
 		// String type = parts[4];// just in case we want it
 		User.Section section = User.Section.valueOf(parts[5]);
 		String univID = parts[6];
@@ -115,8 +125,6 @@ public class UserManager extends AbstractManager {
 		user.setMinutesAvailable(minutesAvailable);
 		user.setGrade(User.Grade.A);
 
-		// com.google.appengine.api.users.User google_user = AuthController
-		// .getGoogleUser();
 		validateUser(user);
 
 		this.datatrain.getDataStore().store(user);
@@ -133,7 +141,7 @@ public class UserManager extends AbstractManager {
 			throw new IllegalArgumentException("Must give a google user");
 
 		// Extract email
-		Email email = new Email(google_user.getEmail());
+		Email email = Util.makeEmail(google_user.getEmail());
 
 		return createStudent(email, univID, firstName, lastName, year, major,
 				section, secondaryEmail);
@@ -161,12 +169,13 @@ public class UserManager extends AbstractManager {
 		user.setMajor(major);
 		user.setSection(section);
 		user.setSecondaryEmail(secondaryEmail);
+		
+		// Just assume we start with an A
 		user.setGrade(User.Grade.A);
 
 		validateUser(user);
-
+		
 		this.datatrain.getDataStore().store(user);
-		updateUserGrade(user);
 		return user;
 	}
 
@@ -320,30 +329,21 @@ public class UserManager extends AbstractManager {
 	}
 
 	public boolean isUniqueSecondaryEmail(Email secondaryEmail, Email primary) {
-		if (secondaryEmail == null || "".equals(secondaryEmail.getEmail()))
+		if (secondaryEmail == null ||  null == secondaryEmail.getEmail() || "".equals(secondaryEmail.getEmail()))
 			return true;
+		
 		RootFindCommand<User> find = this.datatrain.find(User.class);
 		find.addFilter(User.FIELD_SECONDARY_EMAIL, FilterOperator.EQUAL,
 				secondaryEmail);
 		find.addFilter(User.FIELD_PRIMARY_EMAIL, FilterOperator.NOT_EQUAL,
 				primary);
-		List<User> found = find.returnAll().now();
-		return found.size() == 0
-				|| (found.size() == 1 && found.get(0).getPrimaryEmail()
-						.equals(primary));
+		
+		int found = find.returnCount().now();
+		return found == 0;
 	}
 
 	public void update(User u) {
-
-		// Force user's secondary email to be lowercase
-		if (u.getSecondaryEmail() != null
-				&& u.getSecondaryEmail().getEmail() != null) {
-			u.setSecondaryEmail(new Email(u.getSecondaryEmail().getEmail()
-					.toLowerCase()));
-		}
-
 		validateUser(u);
-
 		updateUserGrade(u);
 		this.datatrain.getDataStore().update(u);
 	}
@@ -554,7 +554,7 @@ public class UserManager extends AbstractManager {
 			throw new IllegalArgumentException("Invalid user");
 
 		// Check primary email
-		if (!ValidationUtil.validPrimaryEmail(user.getPrimaryEmail(),
+		if (!ValidationUtil.isValidPrimaryEmail(user.getPrimaryEmail(),
 				this.datatrain))
 			throw new IllegalArgumentException("Invalid primary email");
 
@@ -576,13 +576,15 @@ public class UserManager extends AbstractManager {
 		}
 
 		// Check secondary email
-		if (!ValidationUtil.validSecondaryEmail(user.getSecondaryEmail(),
-				this.datatrain))
+		if (!ValidationUtil.isValidSecondaryEmail(user.getSecondaryEmail(),
+				this.datatrain)) {
 			throw new IllegalArgumentException("Invalid secondary email");
+		}
 		if (!ValidationUtil.isUniqueSecondaryEmail(user.getSecondaryEmail(),
 				user.getPrimaryEmail(), datatrain)) {
 			throw new IllegalArgumentException("Non-unique secondary email");
 		}
+		
 		// Check student specific things
 		if (user.getType() == User.Type.Student) {
 			String major = user.getMajor();

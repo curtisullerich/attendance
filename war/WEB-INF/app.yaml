@@ -24,6 +24,7 @@ sessions_enabled: true
 
 welcome_files:
   - index.jsp
+  - index.html
 
 handlers:
 

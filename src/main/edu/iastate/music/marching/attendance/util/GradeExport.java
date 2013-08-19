@@ -22,7 +22,7 @@ public class GradeExport {
 		for (User student : train.users().get(User.Type.Student)) {
 
 			String line = "";
-			line += student.getPrimaryEmail().getEmail();
+			line += Util.emailToString(student.getPrimaryEmail());
 			line += "\t";
 			line += student.getUniversityID();
 			line += "\t";

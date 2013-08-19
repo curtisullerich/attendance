@@ -1,16 +1,16 @@
 CACHE MANIFEST
 
 # Attendance Appcache
-# 8-18-13 v2.4.02
+# 8-18-14 v3.0.2
 
 NETWORK:
 /field/data/classlist
 /field/data/upload
 
 CACHE:
-FieldAppMain.html
-FieldAppTardy.html
-FieldAppAbsent.html
+index.html
+checkin.html
+initial.html
 /js/script.js
 /js/sha.js
 /js/common.js
