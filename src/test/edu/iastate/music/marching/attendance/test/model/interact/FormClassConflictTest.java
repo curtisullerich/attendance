@@ -33,6 +33,66 @@ public class FormClassConflictTest extends AbstractDatastoreTest {
 	private void testLinkedAbsence(LocalTime classStart, LocalTime classEnd,
 			int eventMonth, int eventDay, Absence.Status expected,
 			boolean deprecated) {
+		testLinkedAbsence(classStart, classEnd, eventMonth, eventDay, expected,
+				deprecated, true);
+	}
+
+	private void testForm(LocalTime classStart, LocalTime classEnd,
+			LocalDate intervalStartDate, LocalDate intervalEndDate,
+			LocalDate eventDate, Absence.Status expectedStatus,
+			boolean deprecated, Event.Type eType, Absence.Type aType,
+			Form.Status fStatus, int minutesLate) {
+		DataTrain train = getDataTrain();
+
+		UserManager uc = train.users();
+		EventManager ec = train.events();
+		AbsenceManager ac = train.absences();
+		FormManager fc = train.forms();
+
+		User student = TestUsers.createDefaultStudent(uc);
+		DateTimeZone zone = train.appData().get().getTimeZone();
+
+		Interval interval = Util.datesToFullDaysInterval(intervalStartDate,
+				intervalEndDate, zone);
+
+		Form form = fc.createClassConflictForm(student, "department", "course",
+				"section", "building", interval, classStart, classEnd,
+				App.WeekDay.Monday, "details", 10, Absence.Type.Absence);
+
+		LocalTime eventStartTime = new LocalTime(16, 30);
+		DateTime eventStart = eventDate.toDateTime(eventStartTime, zone);
+		DateTime eventEnd = eventStart.plusMinutes(80);
+		DateTime checkIOtime = eventStart.plusMinutes(minutesLate);
+
+		Event e = ec.createOrUpdate(eType, new Interval(eventStart, eventEnd));
+
+		Absence a;
+		if (aType == Absence.Type.Absence) {
+
+			if (deprecated) {
+				a = ac.createOrUpdateAbsence(student, e.getInterval(zone));
+			} else {
+				a = ac.createOrUpdateAbsence(student, e);
+			}
+		} else if (aType == Absence.Type.Tardy) {
+			a = ac.createOrUpdateTardy(student, checkIOtime);
+		} else if (aType == Absence.Type.EarlyCheckOut) {
+			a = ac.createOrUpdateEarlyCheckout(student, checkIOtime);
+		} else {
+			throw new IllegalArgumentException("lolwut");
+		}
+
+		form.setStatus(fStatus);
+		fc.update(form);
+
+		a = ac.get(a.getId());
+
+		assertEquals(expectedStatus, a.getStatus());
+	}
+
+	private void testLinkedAbsence(LocalTime classStart, LocalTime classEnd,
+			int eventMonth, int eventDay, Absence.Status expected,
+			boolean deprecated, boolean rehearsal) {
 		DataTrain train = getDataTrain();
 
 		UserManager uc = train.users();
@@ -55,8 +115,10 @@ public class FormClassConflictTest extends AbstractDatastoreTest {
 		DateTime eventStart = new DateTime(2012, eventMonth, eventDay, 16, 30,
 				0, zone);
 		DateTime eventEnd = eventStart.plusMinutes(80);
-		Event e = ec.createOrUpdate(Event.Type.Rehearsal, new Interval(
-				eventStart, eventEnd));
+
+		Event.Type eType = rehearsal ? Event.Type.Rehearsal
+				: Event.Type.Performance;
+		Event e = ec.createOrUpdate(eType, new Interval(eventStart, eventEnd));
 
 		Absence a;
 
@@ -70,7 +132,7 @@ public class FormClassConflictTest extends AbstractDatastoreTest {
 		fc.update(form);
 
 		a = ac.get(a.getId());
-		
+
 		assertEquals(expected, a.getStatus());
 	}
 
@@ -93,6 +155,14 @@ public class FormClassConflictTest extends AbstractDatastoreTest {
 		LocalTime endTime = new LocalTime(14, 0);
 		testLinkedAbsence(startTime, endTime, 8, 20, Absence.Status.Pending,
 				true);
+	}
+
+	@Test
+	public void testLinkedAbsenceB01Performance() {
+		LocalTime startTime = new LocalTime(13, 10);
+		LocalTime endTime = new LocalTime(14, 0);
+		testLinkedAbsence(startTime, endTime, 8, 20, Absence.Status.Pending,
+				true, false);
 	}
 
 	/**
@@ -125,6 +195,14 @@ public class FormClassConflictTest extends AbstractDatastoreTest {
 		LocalTime endTime = new LocalTime(17, 50);
 		testLinkedAbsence(startTime, endTime, 8, 20, Absence.Status.Approved,
 				false);
+	}
+
+	@Test
+	public void testLinkedAbsence03Performance() {
+		LocalTime startTime = new LocalTime(16, 30);
+		LocalTime endTime = new LocalTime(17, 50);
+		testLinkedAbsence(startTime, endTime, 8, 20, Absence.Status.Pending,
+				false, false);
 	}
 
 	@Test
@@ -210,6 +288,7 @@ public class FormClassConflictTest extends AbstractDatastoreTest {
 		testLinkedAbsence(startTime, endTime, 8, 20, Absence.Status.Approved,
 				true);
 	}
+
 	//
 	// /**
 	// * class times before event
@@ -2142,54 +2221,23 @@ public class FormClassConflictTest extends AbstractDatastoreTest {
 	// assertEquals(Absence.Status.Pending, a.getStatus());
 	// }
 	//
-	// /**
-	// * class times within event, tardy time in start buffer
-	// */
-	// @Test
-	// public void testTardyWithPendingFormB18() {
-	// DataTrain train = getDataTrain();
-	//
-	// UserManager uc = train.users();
-	// EventManager ec = train.events();
-	// AbsenceManager ac = train.absences();
-	// FormManager fc = train.forms();
-	//
-	// User student = Users.createStudent(uc, "student1", "123456789", "John",
-	// "Cox", 2, "major", User.Section.AltoSax);
-	//
-	// Calendar startDateTime = Calendar.getInstance();
-	// startdate.set(2012, 7, 20, 0, 0, 0);
-	// Calendar endDateTime = Calendar.getInstance();
-	// enddate.set(2012, 11, 20, 0, 0, 0);
-	// Calendar starttime = Calendar.getInstance();
-	// starttime.set(0, 0, 0, 17, 0, 0);
-	// Calendar endtime = Calendar.getInstance();
-	// endtime.set(0, 0, 0, 17, 20, 0);
-	//
-	// // a normal rehearsal
-	// Calendar eventstart = Calendar.getInstance();
-	// eventstart.set(2012, 7, 20, 16, 30, 0);
-	// Calendar eventend = Calendar.getInstance();
-	// eventend.set(2012, 7, 20, 17, 50, 0);
-	//
-	// Calendar tardytime = Calendar.getInstance();
-	// tardytime.set(2012, 7, 20, 16, 55, 0);
-	//
-	// Form form = fc.createClassConflictForm(student, "department", "course",
-	// "section",
-	// "building", startdate.getTime(), enddate.getTime(),
-	// Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
-	// "details", 10, Absence.Type.Tardy);
-	//
-	// Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
-	// eventend.getTime());
-	// Absence a = ac.createOrUpdateTardy(student, tardytime.getTime());
-	//
-	// form.setStatus(Form.Status.Pending);
-	// fc.update(form);
-	//
-	// assertEquals(Absence.Status.Pending, a.getStatus());
-	// }
+
+	/**
+	 * class times within event, tardy time in start buffer
+	 */
+	@Test
+	public void testTardyWithPendingFormB18() {
+		LocalDate startDate = new LocalDate(2012, 8, 20);
+		LocalDate endDate = new LocalDate(2012, 12, 20);
+		LocalTime classStart = new LocalTime(17, 0);
+		LocalTime classEnd = classStart.plusMinutes(20);
+		LocalDate eventDate = new LocalDate(2012, 8, 20);
+		int minutesLate = 25;
+		testForm(classStart, classEnd, startDate, endDate, eventDate,
+				Absence.Status.Pending, false, Event.Type.Rehearsal,
+				Absence.Type.Tardy, Form.Status.Pending, minutesLate);
+	}
+
 	//
 	// /**
 	// * class times match event, tardy time in event
@@ -3082,59 +3130,24 @@ public class FormClassConflictTest extends AbstractDatastoreTest {
 	// assertEquals(Absence.Status.Approved, a.getStatus());
 	// }
 	//
-	// /**
-	// * class times overlap event start, tardy time during event, outside
-	// class,
-	// * form for an absence
-	// */
-	// @Test
-	// public void testTardyWithFormB101() {
-	// DataTrain train = getDataTrain();
-	//
-	// UserManager uc = train.users();
-	// EventManager ec = train.events();
-	// AbsenceManager ac = train.absences();
-	// FormManager fc = train.forms();
-	//
-	// User student = Users.createStudent(uc, "student1", "123456789", "John",
-	// "Cox", 2, "major", User.Section.AltoSax);
-	//
-	// Calendar startDateTime = Calendar.getInstance();
-	// startdate.set(2012, 7, 6, 0, 0, 0);
-	// Calendar endDateTime = Calendar.getInstance();
-	// enddate.set(2012, 11, 20, 0, 0, 0);
-	// Calendar starttime = Calendar.getInstance();
-	// starttime.set(0, 0, 0, 16, 10, 0);
-	// Calendar endtime = Calendar.getInstance();
-	// endtime.set(0, 0, 0, 17, 0, 0);
-	//
-	// // a normal rehearsal
-	// Calendar eventstart = Calendar.getInstance();
-	// eventstart.set(2012, 7, 6, 16, 30, 0);
-	// eventstart.set(Calendar.MILLISECOND, 0);
-	// Calendar eventend = Calendar.getInstance();
-	// eventend.set(2012, 7, 6, 17, 50, 0);
-	//
-	// Calendar tardytime = Calendar.getInstance();
-	// tardytime.set(2012, 7, 6, 17, 30, 0);
-	// tardytime.set(Calendar.MILLISECOND, 0);
-	//
-	// Form form = fc.createClassConflictForm(student, "department", "course",
-	// "section",
-	// "building", startdate.getTime(), enddate.getTime(),
-	// Calendar.MONDAY, starttime.getTime(), endtime.getTime(),
-	// "details", 10, Absence.Type.Absence);
-	//
-	// Event e = ec.createOrUpdate(Event.Type.Rehearsal, eventstart.getTime(),
-	// eventend.getTime());
-	// Absence a = ac.createOrUpdateTardy(student, tardytime.getTime());
-	//
-	// form.setStatus(Form.Status.Approved);
-	// fc.update(form);
-	// a = ac.updateAbsence(a);
-	//
-	// assertEquals(Absence.Status.Approved, a.getStatus());
-	// }
+
+	/**
+	 * class times overlap event start, tardy time during event, outside class,
+	 * form for an absence
+	 */
+	@Test
+	public void testTardyWithFormB101() {
+		LocalDate startDate = new LocalDate(2012, 8, 6);
+		LocalDate endDate = new LocalDate(2012, 12, 20);
+		LocalTime classStart = new LocalTime(16, 10);
+		LocalTime classEnd = classStart.plusMinutes(50);
+		LocalDate eventDate = new LocalDate(2012, 8, 6);
+		int minutesLate = 60;
+		testForm(classStart, classEnd, startDate, endDate, eventDate,
+				Absence.Status.Approved, false, Event.Type.Rehearsal,
+				Absence.Type.Absence, Form.Status.Approved, minutesLate);
+	}
+
 	//
 	// /**
 	// * class times overlap event start, ECO time during event, outside class,
