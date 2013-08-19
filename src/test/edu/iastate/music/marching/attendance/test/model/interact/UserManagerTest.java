@@ -610,14 +610,14 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		// 160 - 10 - 80 - 80
 		assertEquals(User.Grade.B, uc.get(student.getId()).getGrade());
 
-		Form f = fc.createTimeWorkedForm(student, start.toLocalDate(), 10,
+		Form f = fc.createTimeWorkedForm(student, start.toLocalDate(), 20,
 				"arst");
 		assertEquals(User.Grade.B, uc.get(student.getId()).getGrade());
 		f.setStatus(Form.Status.Approved);
 		fc.update(f);
 		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
 
-		Form f2 = fc.createTimeWorkedForm(student, start.toLocalDate(), 175,
+		Form f2 = fc.createTimeWorkedForm(student, start.toLocalDate(), 350,
 				"arst");
 		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
 
