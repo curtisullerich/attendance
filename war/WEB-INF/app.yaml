@@ -2,6 +2,7 @@ application: isucfvmb-attendance
 version: 4
 runtime: java
 threadsafe: false
+ssl_enabled: true
 
 static_files:
   - include: /css/**
@@ -33,24 +34,28 @@ handlers:
   init_params:
     path: "public"
   name: public
+  secure: always
 
 - url: /error/*
   servlet: edu.iastate.music.marching.attendance.servlets.ErrorServlet
   init_params:
     path: "error"
   name: error
+  secure: always
 
 - url: /auth/*
   servlet: edu.iastate.music.marching.attendance.servlets.AuthServlet
   init_params:
     path: "auth"
   name: auth
+  secure: always
 
 - url: /director/*
   servlet: edu.iastate.music.marching.attendance.servlets.DirectorServlet
   init_params:
     path: "director"
   name: director
+  secure: always
 
 - url: /director/forms/*
   servlet: edu.iastate.music.marching.attendance.servlets.FormsServlet
@@ -58,18 +63,21 @@ handlers:
     userType: Director
     path: "director/forms"
   name: director_forms
+  secure: always
 
 - url: /field/data/*
   servlet: edu.iastate.music.marching.attendance.servlets.MobileAppDataServlet
   init_params:
     path: "field/data"
   name: mobileapp_data
+  secure: always
 
 - url: /student/*
   servlet: edu.iastate.music.marching.attendance.servlets.StudentServlet
   init_params:
     path: "student"
   name: student
+  secure: always
 
 - url: /student/forms/*
   servlet: edu.iastate.music.marching.attendance.servlets.FormsServlet
@@ -77,18 +85,21 @@ handlers:
     userType: Student
     path: "student/forms"
   name: student_forms
+  secure: always
 
 - url: /ta/*
   servlet: edu.iastate.music.marching.attendance.servlets.TAServlet
   init_params:
     path: "ta"
   name: ta
+  secure: always
 
 - url: /admin/*
   servlet: edu.iastate.music.marching.attendance.servlets.AdminServlet
   init_params:
     path: "admin"
   name: admin
+  secure: always
 
 - url: /task/*
   servlet: edu.iastate.music.marching.attendance.servlets.TaskServlet
@@ -96,6 +107,7 @@ handlers:
     path: "task"
   name: task
   login: admin
+  secure: always
 
 error_handlers:
   - file: /error.html
