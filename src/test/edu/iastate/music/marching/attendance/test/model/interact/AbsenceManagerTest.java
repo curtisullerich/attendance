@@ -1,5 +1,7 @@
 package edu.iastate.music.marching.attendance.test.model.interact;
 
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -158,8 +160,8 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		Absence absence = train.absences().createOrUpdateTardy(student,
 				absenceTime1);
 
-		// upDateTime absence to be during event
-		absence.setCheckout(absenceTime2);
+		// update absence to be during event
+		absence.setCheckin(absenceTime2);
 		train.absences().updateAbsence(absence);
 
 		assertEquals(event, absence.getEvent());
@@ -222,8 +224,8 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		Absence absence = train.absences().createOrUpdateEarlyCheckout(student,
 				absenceTime1);
 
-		// upDateTime absence to be during event
-		absence.setCheckin(absenceTime2);
+		// update absence to be during event
+		absence.setCheckout(absenceTime2);
 		train.absences().updateAbsence(absence);
 
 		assertEquals(event, absence.getEvent());
@@ -293,8 +295,6 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 	// extends TestCase, which is a JUnit 3 methodology
 	@Test(expected = IllegalArgumentException.class)
 	public void testCreateAbsenceFail() {
-		try {
-
 			DataTrain train = getDataTrain();
 
 			UserManager uc = train.users();
@@ -308,10 +308,6 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 					new Interval(eventStart, eventEnd));
 			train.absences().createOrUpdateAbsence(student,
 					new Interval(eventStart, eventEnd));
-		} catch (IllegalArgumentException e) {
-			return;
-		}
-		fail("Should have thrown an IllegalArgumentException.");
 	}
 
 	@Test

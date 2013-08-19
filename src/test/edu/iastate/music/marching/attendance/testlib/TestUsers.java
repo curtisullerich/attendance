@@ -4,6 +4,7 @@ import com.google.appengine.api.datastore.Email;
 
 import edu.iastate.music.marching.attendance.model.interact.UserManager;
 import edu.iastate.music.marching.attendance.model.store.User;
+import edu.iastate.music.marching.attendance.util.Util;
 
 public class TestUsers {
 
@@ -26,7 +27,7 @@ public class TestUsers {
 				"gmail.com");
 
 		return uc.createStudent(google_user, univID, firstName, lastName, year,
-				major, section, new Email(""));
+				major, section, Util.makeEmail(""));
 	}
 
 	public static final User createTA(UserManager uc, String email_firstpart,
@@ -38,7 +39,7 @@ public class TestUsers {
 				"gmail.com");
 
 		User u = uc.createStudent(google_user, univID, firstName, lastName,
-				year, major, section, new Email(""));
+				year, major, section, Util.makeEmail(""));
 		u.setType(User.Type.TA);
 		uc.update(u);
 		return u;

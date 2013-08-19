@@ -5,11 +5,10 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.google.appengine.api.datastore.Email;
-
 import edu.iastate.music.marching.attendance.model.interact.DataTrain;
 import edu.iastate.music.marching.attendance.testlib.AbstractDatastoreTest;
 import edu.iastate.music.marching.attendance.testlib.TestConfig;
+import edu.iastate.music.marching.attendance.util.Util;
 import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
 public class ValidationUtilTest extends AbstractDatastoreTest {
@@ -22,9 +21,9 @@ public class ValidationUtilTest extends AbstractDatastoreTest {
 		String nonValidRealEmail = "bmax921@gmail.com";
 		String nonValidMadeUpEmail = "lkajslkfdjasdf@lkasdlkfj.com";
 		
-		assertTrue(ValidationUtil.validPrimaryEmail(new Email(validIaStateEmail), train));
-		assertFalse(ValidationUtil.validPrimaryEmail(new Email(nonValidRealEmail), train));
-		assertFalse(ValidationUtil.validPrimaryEmail(new Email(nonValidMadeUpEmail), train));
+		assertTrue(ValidationUtil.isValidPrimaryEmail(Util.makeEmail(validIaStateEmail), train));
+		assertFalse(ValidationUtil.isValidPrimaryEmail(Util.makeEmail(nonValidRealEmail), train));
+		assertFalse(ValidationUtil.isValidPrimaryEmail(Util.makeEmail(nonValidMadeUpEmail), train));
 	}
 	
 	@Test

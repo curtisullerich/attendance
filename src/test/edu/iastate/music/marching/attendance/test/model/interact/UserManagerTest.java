@@ -1,5 +1,7 @@
 package edu.iastate.music.marching.attendance.test.model.interact;
 
+import static org.junit.Assert.*;
+
 import java.util.List;
 
 import org.joda.time.DateTime;

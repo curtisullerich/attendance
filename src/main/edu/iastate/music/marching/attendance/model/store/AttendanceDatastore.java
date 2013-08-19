@@ -5,6 +5,8 @@ import com.google.code.twig.annotation.AnnotationConfiguration;
 import com.google.code.twig.standard.BaseObjectDatastore;
 import com.google.code.twig.standard.StandardObjectDatastore;
 
+import edu.iastate.music.marching.attendance.App;
+
 public class AttendanceDatastore extends StandardObjectDatastore {
 
 	public static final int VERSION = 1;
@@ -23,10 +25,12 @@ public class AttendanceDatastore extends StandardObjectDatastore {
 		a.register(User.class);
 		CONFIGURATION = a;
 
-		BaseObjectDatastore.registerCachedKind(a.typeToKind(User.class), 6000,
-				1000, true, true);
-		BaseObjectDatastore.registerCachedKind(a.typeToKind(Event.class), 6000,
-				1000, true, true);
+		if(App.CachingEnabled) {
+			BaseObjectDatastore.registerCachedKind(a.typeToKind(User.class),
+					6000, 1000, true, true);
+			BaseObjectDatastore.registerCachedKind(a.typeToKind(Event.class),
+					6000, 1000, true, true);
+		}
 	}
 
 	public AttendanceDatastore() {

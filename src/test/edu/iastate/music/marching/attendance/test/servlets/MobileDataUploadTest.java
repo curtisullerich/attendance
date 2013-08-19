@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.joda.time.DateTimeZone;
 import org.junit.Test;
 
+import edu.iastate.music.marching.attendance.Lang;
 import edu.iastate.music.marching.attendance.model.interact.DataTrain;
 import edu.iastate.music.marching.attendance.model.interact.UserManager;
 import edu.iastate.music.marching.attendance.model.store.Absence;
@@ -52,7 +53,8 @@ public class MobileDataUploadTest extends AbstractDatastoreTest {
 		HttpServletRequest req = mock(HttpServletRequest.class);
 		HttpServletResponse resp = mock(HttpServletResponse.class);
 
-		ServletMocks.setUserSession(req, TestUsers.createDefaultTA(train.users()));
+		ServletMocks.setUserSession(req,
+				TestUsers.createDefaultTA(train.users()));
 		ServletMocks.setPostedContent(req, SIMPLE_ABSENCE_TESTDATA);
 
 		ServletOutputStream os = mock(ServletOutputStream.class);
@@ -60,8 +62,9 @@ public class MobileDataUploadTest extends AbstractDatastoreTest {
 
 		ServletMocks.doPost(MobileAppDataServlet.class, req, resp);
 
-		verify(os)
-				.print("{\"error\":\"exception\",\"message\":\"Tried to create absence for null user\"}");
+		verify(os).print(
+				"{\"error\":\"exception\",\"message\":\""
+						+ Lang.ERROR_ABSENCE_FOR_NULL_USER + "\"}");
 
 		// TODO: Verify insertion lengths
 		// When transactional support is re-added, uncomment this
@@ -79,10 +82,10 @@ public class MobileDataUploadTest extends AbstractDatastoreTest {
 
 		User ta = TestUsers.createTA(train.users(), "ta", "123456780", "first",
 				"last", 2, "major", User.Section.Staff);
-		TestUsers.createStudent(train.users(), "s", "123456719", "first", "last",
-				1, "major", User.Section.Baritone);
-		TestUsers.createStudent(train.users(), "zf", "123456782", "first", "last",
-				1, "major", User.Section.Drumline_Bass);
+		TestUsers.createStudent(train.users(), "s", "123456719", "first",
+				"last", 1, "major", User.Section.Baritone);
+		TestUsers.createStudent(train.users(), "zf", "123456782", "first",
+				"last", 1, "major", User.Section.Drumline_Bass);
 
 		train.mobileData().pushMobileData(SIMPLE_ABSENCE_TESTDATA, ta);
 
@@ -96,15 +99,16 @@ public class MobileDataUploadTest extends AbstractDatastoreTest {
 
 		// Arrange
 		DataTrain train = getDataTrain();
-		TestUsers.createStudent(train.users(), "s", "123456788", "first", "last",
-				1, "major", User.Section.Clarinet);
-		TestUsers.createStudent(train.users(), "zf", "123456782", "first", "last",
-				1, "major", User.Section.TenorSax);
+		TestUsers.createStudent(train.users(), "s", "123456788", "first",
+				"last", 1, "major", User.Section.Clarinet);
+		TestUsers.createStudent(train.users(), "zf", "123456782", "first",
+				"last", 1, "major", User.Section.TenorSax);
 
 		HttpServletRequest req = mock(HttpServletRequest.class);
 		HttpServletResponse resp = mock(HttpServletResponse.class);
 
-		ServletMocks.setUserSession(req, TestUsers.createDefaultTA(train.users()));
+		ServletMocks.setUserSession(req,
+				TestUsers.createDefaultTA(train.users()));
 		ServletMocks.setPostedContent(req, SIMPLE_ABSENCE_TESTDATA);
 
 		ServletOutputStream os = mock(ServletOutputStream.class);
@@ -186,8 +190,8 @@ public class MobileDataUploadTest extends AbstractDatastoreTest {
 				"major", User.Section.AltoSax);
 		TestUsers.createStudent(uc, "b", "123456782", "test1", "tester", 1,
 				"major", User.Section.AltoSax);
-		User ta = TestUsers.createTA(uc, "ta", "123456783", "test1", "tester", 1,
-				"major", User.Section.AltoSax);
+		User ta = TestUsers.createTA(uc, "ta", "123456783", "test1", "tester",
+				1, "major", User.Section.AltoSax);
 
 		train.mobileData().pushMobileData(SIMPLE_TARDY_TESTDATA, ta);
 

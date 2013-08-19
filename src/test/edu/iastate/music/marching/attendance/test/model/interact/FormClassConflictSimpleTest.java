@@ -38,11 +38,6 @@ public class FormClassConflictSimpleTest extends AbstractDatastoreTest {
 	private static final LocalDate FORM_END_DATE = new LocalDate(2012, 12, 20);
 
 	private static final LocalDate EVENT_DATE = FORM_START_DATE;
-	private static final LocalTime EVENT_START_TIME = new LocalTime(16, 30, 0);
-	private static final LocalTime EVENT_END_TIME = new LocalTime(17, 50, 0);
-
-	private static final LocalTime FORM_START_TIME = new LocalTime(16, 10, 0);
-	private static final LocalTime FORM_END_TIME = new LocalTime(17, 0, 0);
 
 	/**
 	 * class times overlap event start, tardy time within form times
