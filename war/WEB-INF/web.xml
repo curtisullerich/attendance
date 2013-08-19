@@ -151,6 +151,7 @@
   </security-constraint>
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
+    <welcome-file>index.html</welcome-file>
   </welcome-file-list>
 <!-- Set XML mime-mapping so appcaches open properly instead of being sent as an octet/stream --> 
 <mime-mapping> 
