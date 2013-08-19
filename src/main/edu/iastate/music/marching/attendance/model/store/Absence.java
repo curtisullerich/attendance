@@ -230,7 +230,7 @@ public class Absence {
 		if (getType().isTardy())
 			this.start = datetime.toDate();
 		else
-			throw new IllegalStateException("Intervals only valid for absences");
+			throw new IllegalStateException("Check-in times only valid for tardies");
 
 	}
 
@@ -238,7 +238,7 @@ public class Absence {
 		if (getType().isEarlyCheckOut())
 			this.start = datetime.toDate();
 		else
-			throw new IllegalStateException("Intervals only valid for absences");
+			throw new IllegalStateException("Checkout times only valid for early check outs");
 
 	}
 
