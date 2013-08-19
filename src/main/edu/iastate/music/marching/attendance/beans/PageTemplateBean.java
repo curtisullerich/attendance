@@ -63,7 +63,8 @@ public class PageTemplateBean implements java.io.Serializable {
 
 	public void apply(HttpServletRequest request) {
 
-		this.mCurrentUser = this.mAuth.getCurrentUser(request.getSession());
+		if(AuthManager.isLoggedIn(request.getSession()))
+			this.mCurrentUser = this.mAuth.getCurrentUser(request.getSession());
 
 		this.mRequestUri = request.getRequestURI()
 				+ ((request.getQueryString() == null) ? "" : "?"

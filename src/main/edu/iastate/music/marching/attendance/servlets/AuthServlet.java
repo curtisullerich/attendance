@@ -5,6 +5,8 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +20,7 @@ import edu.iastate.music.marching.attendance.model.interact.DataTrain;
 import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.util.GoogleAccountException;
 import edu.iastate.music.marching.attendance.util.PageBuilder;
+import edu.iastate.music.marching.attendance.util.Util;
 import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
 public class AuthServlet extends AbstractBaseServlet {
@@ -36,6 +39,9 @@ public class AuthServlet extends AbstractBaseServlet {
 
 	private static final String URL_REGISTER = pageToUrl(Page.register,
 			SERVLET_PATH);
+	
+	private static final Logger LOG = Logger.getLogger(AuthServlet.class
+			.getName());
 
 	private static String getLoginCallback(HttpServletRequest request) {
 		String url = pageToUrl(Page.login_callback, SERVLET_PATH);
@@ -166,15 +172,15 @@ public class AuthServlet extends AbstractBaseServlet {
 		lastName = req.getParameter("LastName");
 		major = req.getParameter("Major");
 		univID = req.getParameter("UniversityID");
-		secondEmail = new Email(req.getParameter("SecondEmail"));
+		secondEmail = Util.makeEmail(req.getParameter("SecondEmail"));
 
 		if (!ValidationUtil.isValidUniversityID(univID)) {
 			errors.add("University ID was not valid");
 		}
 
 		if (!ValidationUtil.isUniqueId(univID,
-				new Email(google_user.getEmail()))) {
-			errors.add("University ID was not unique");
+				Util.makeEmail(google_user.getEmail()))) {
+			errors.add("User already registered with that University ID / email");
 		}
 
 		try {
@@ -191,15 +197,16 @@ public class AuthServlet extends AbstractBaseServlet {
 			errors.add("Invalid section");
 		}
 
-		if (!ValidationUtil.validPrimaryEmail(
-				new Email(google_user.getEmail()), train)) {
+		if (!ValidationUtil.isValidPrimaryEmail(
+				Util.makeEmail(google_user.getEmail()), train)) {
 			errors.add("Invalid primary email, try logging out and then registering under your school email account");
 		}
 
-		if (!ValidationUtil.validSecondaryEmail(secondEmail, train)) {
+		if (!ValidationUtil.isValidSecondaryEmail(secondEmail, train)) {
 			errors.add("Invalid secondary email");
 		}
-		if (!ValidationUtil.isUniqueSecondaryEmail(secondEmail, new Email(
+		
+		if (!ValidationUtil.isUniqueSecondaryEmail(secondEmail, Util.makeEmail(
 				google_user.getEmail()), train)) {
 			errors.add("Non-unique secondary email");
 		}
@@ -212,7 +219,7 @@ public class AuthServlet extends AbstractBaseServlet {
 			} catch (IllegalArgumentException e) {
 				// Save validation errors
 				errors.add(e.getMessage());
-
+				LOG.log(Level.WARNING, "Error on student registration", e);
 			}
 		}
 
@@ -228,13 +235,13 @@ public class AuthServlet extends AbstractBaseServlet {
 			page.setAttribute("Major", major);
 			page.setAttribute("UniversityID", univID);
 			page.setAttribute("Year", year);
-			page.setAttribute("SecondEmail", secondEmail.getEmail());
+			page.setAttribute("SecondEmail", Util.emailToString(secondEmail));
 			page.setAttribute("Section",
 					(section == null) ? null : section.getValue());
 
 			page.setAttribute("sections", User.Section.values());
 
-			page.setAttribute("error_messages", errors);
+			page.setErrors(errors);
 			page.setPageTitle("Failed Registration");
 
 			page.passOffToJsp(req, resp);
@@ -349,18 +356,18 @@ public class AuthServlet extends AbstractBaseServlet {
 	private void showRegistration(HttpServletRequest req,
 			HttpServletResponse resp) throws ServletException, IOException {
 		PageBuilder page = new PageBuilder(Page.register, SERVLET_PATH);
-		Email email = new Email(AuthManager.getGoogleUser().getEmail());
+		Email email = Util.makeEmail(AuthManager.getGoogleUser().getEmail());
 		DataTrain train = DataTrain.depart();
 		List<String> errors = new ArrayList<String>();
 
-		if (!ValidationUtil.validPrimaryEmail(email, train)) {
+		if (!ValidationUtil.isValidPrimaryEmail(email, train)) {
 			page.setAttribute("NetIDError",
 					Lang.ERROR_INVALID_PRIMARY_REGISTER_EMAIL);
 			errors.add(Lang.ERROR_INVALID_PRIMARY_REGISTER_EMAIL);
 		}
 
 		page.setErrors(errors);
-		page.setAttribute("NetID", email.getEmail());
+		page.setAttribute("NetID", Util.emailToString(email));
 		page.setAttribute("sections", User.Section.values());
 
 		page.setPageTitle("Register");

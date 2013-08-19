@@ -502,7 +502,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 			errors.add("Please supply a last name.");
 		}
 		if (secondEmail != null && !secondEmail.equals("")) {
-			director.setSecondaryEmail(new Email(secondEmail));
+			director.setSecondaryEmail(Util.makeEmail(secondEmail));
 		}
 		if (errors.size() > 0) {
 			req.setAttribute("errors", errors);
@@ -686,7 +686,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		strType = req.getParameter("Type");
 		firstName = req.getParameter("FirstName");
 		lastName = req.getParameter("LastName");
-		secondEmail = new Email(req.getParameter("SecondEmail"));
+		secondEmail = Util.makeEmail(req.getParameter("SecondEmail"));
 
 		User.Type type = User.Type.valueOf(strType);
 

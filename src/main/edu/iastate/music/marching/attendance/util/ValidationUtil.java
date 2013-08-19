@@ -33,10 +33,9 @@ public class ValidationUtil {
 	}
 
 	public static boolean isUniqueSecondaryEmail(Email checkEmail,
-			Email primary, DataTrain train) {
+			Email excludedUserPrimaryEmail, DataTrain train) {
 		return train.users().isUniqueSecondaryEmail(checkEmail,
-				primary);
-
+				excludedUserPrimaryEmail);
 	}
 
 	public static boolean isValidMajor(String major) {
@@ -108,13 +107,19 @@ public class ValidationUtil {
 		return ret;
 	}
 
-	public static boolean validPrimaryEmail(Email email, DataTrain train) {
+	public static boolean isValidPrimaryEmail(Email email, DataTrain train) {
 
 		// TODO https://github.com/curtisullerich/attendance/issues/122
 		// This should be an application setting
 		String domain = App.DOMAIN;
 
-		if (email == null | email.getEmail() == null)
+		if (null == email)
+			return true;
+
+		if ("".equals(email.getEmail()))
+			return false;
+
+		if (null == email.getEmail())
 			return false;
 
 		Matcher emailMatcher = PATTERN_EMAIL.matcher(email.getEmail());
@@ -138,12 +143,14 @@ public class ValidationUtil {
 		return false;
 	}
 
-	public static boolean validSecondaryEmail(Email email, DataTrain train) {
+	public static boolean isValidSecondaryEmail(Email email, DataTrain train) {
 
 		// Null or empty emails are okay for the secondary
-		if (email == null || email.getEmail() == null
-				|| email.getEmail().equals(""))
+		if (email == null)
 			return true;
+
+		if (email.getEmail() == null || email.getEmail().equals(""))
+			return false;
 
 		return PATTERN_EMAIL.matcher(email.getEmail()).matches();
 	}

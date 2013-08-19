@@ -1,5 +1,8 @@
 package edu.iastate.music.marching.attendance.model.interact;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.servlet.http.HttpSession;
 
 import com.google.appengine.api.datastore.Email;
@@ -8,11 +11,15 @@ import com.google.appengine.api.users.UserServiceFactory;
 
 import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.util.GoogleAccountException;
+import edu.iastate.music.marching.attendance.util.Util;
 import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
 public class AuthManager {
 
 	private static final String SESSION_USER_ATTRIBUTE = "authenticated_user";
+
+	private static final Logger LOG = Logger.getLogger(AuthManager.class
+			.getName());
 
 	public static String getGoogleLoginURL(String redirect_url) {
 		UserService userService = UserServiceFactory.getUserService();
@@ -88,14 +95,11 @@ public class AuthManager {
 
 	public void updateCurrentUser(User user, HttpSession session) {
 		putUserInSession(user, session);
-		setCachedCurrentUser(user);
 	}
 
 	private DataTrain train;
 
 	private User currentUser = null;
-
-	private User cachedCurrentUser;
 
 	public AuthManager(DataTrain dataTrain) {
 		this.train = dataTrain;
@@ -103,32 +107,31 @@ public class AuthManager {
 
 	public User getCurrentUser(HttpSession session) {
 		if (this.currentUser == null) {
-			this.currentUser = getCachedCurrentUser();
-		}
-
-		if (this.currentUser == null) {
 			this.currentUser = getUserFromSession(session);
 			train.getDataStore().activate(this.currentUser);
 		}
-		
+
 		if (this.currentUser != null
 				&& !train.getDataStore().isAssociated(this.currentUser)) {
-			train.getDataStore().associate(this.currentUser);
+			try {
+				train.getDataStore().associate(this.currentUser);
+			} catch (Exception e) {
+				LOG.log(Level.WARNING, "Error associating current user: "
+						+ this.currentUser.getId(), e);
+			}
 		}
-		
-		if(null != this.currentUser && !train.getDataStore().isActivated(this.currentUser)) {
-			train.getDataStore().activate(this.currentUser);
+
+		if (null != this.currentUser
+				&& !train.getDataStore().isActivated(this.currentUser)) {
+			try {
+				train.getDataStore().activate(this.currentUser);
+			} catch (Exception e) {
+				LOG.log(Level.WARNING, "Error activating current user: "
+						+ this.currentUser.getId(), e);
+			}
 		}
 
 		return currentUser;
-	}
-
-	private synchronized User getCachedCurrentUser() {
-		return this.cachedCurrentUser;
-	}
-	
-	private synchronized void setCachedCurrentUser(User u) {
-		this.cachedCurrentUser = u;
 	}
 
 	public boolean login(HttpSession session) {
@@ -141,20 +144,19 @@ public class AuthManager {
 					GoogleAccountException.Type.None);
 		}
 
-		Email google_users_email = new Email(google_user.getEmail()
-				.toLowerCase());
+		Email google_users_email = Util.makeEmail(google_user.getEmail());
 
 		User matchedUser = null;
 
 		// Some kind of google user logged in, check it against the
 		// primary email's of all users
-		if (ValidationUtil.validPrimaryEmail(google_users_email, this.train)) {
+		if (ValidationUtil.isValidPrimaryEmail(google_users_email, this.train)) {
 
 			// Check if there is a user in the system already for this
 			// google user
 			matchedUser = train.users().get(google_users_email);
 
-		} else if (ValidationUtil.validSecondaryEmail(google_users_email,
+		} else if (ValidationUtil.isValidSecondaryEmail(google_users_email,
 				this.train)) {
 			// Maybe the secondary email will match a user in the database
 

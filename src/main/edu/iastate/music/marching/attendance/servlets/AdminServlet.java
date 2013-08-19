@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
@@ -26,6 +27,7 @@ import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.tasks.Tasks;
 import edu.iastate.music.marching.attendance.util.PageBuilder;
 import edu.iastate.music.marching.attendance.util.ServletUtil;
+import edu.iastate.music.marching.attendance.util.Util;
 import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
 public class AdminServlet extends AbstractBaseServlet {
@@ -40,7 +42,7 @@ public class AdminServlet extends AbstractBaseServlet {
 
 	public static final String INDEX_URL = pageToUrl(Page.index, SERVLET_PATH);
 
-	private static final Logger log = Logger.getLogger(AdminServlet.class
+	private static final Logger LOG = Logger.getLogger(AdminServlet.class
 			.getName());
 
 	private void bulkmake(HttpServletRequest req, HttpServletResponse resp)
@@ -62,8 +64,8 @@ public class AdminServlet extends AbstractBaseServlet {
 					i++;
 				} catch (Exception e) {
 					errors.add(e.getMessage());
-					log.severe(e.getMessage());
-					log.severe(e.getStackTrace().toString());
+					LOG.severe(e.getMessage());
+					LOG.severe(e.getStackTrace().toString());
 				}
 			}
 
@@ -93,8 +95,8 @@ public class AdminServlet extends AbstractBaseServlet {
 						.deleteEverthingInTheEntireDatabaseEvenThoughYouCannotUndoThis();
 				success = "Successfully, irrevocably, and unequivically removed everything.";
 			} catch (Throwable aDuh) {
-				log.severe(aDuh.getMessage());
-				log.severe(aDuh.getStackTrace().toString());
+				LOG.severe(aDuh.getMessage());
+				LOG.severe(aDuh.getStackTrace().toString());
 				errors.add(aDuh.toString());
 			}
 			PageBuilder page = new PageBuilder(Page.bulkmake, SERVLET_PATH);
@@ -116,8 +118,8 @@ public class AdminServlet extends AbstractBaseServlet {
 				succex = "Absences refreshed.";
 			} catch (Throwable tehThrowable) {
 				errors.add(tehThrowable.getMessage());
-				log.severe(tehThrowable.getMessage());
-				log.severe(tehThrowable.getStackTrace().toString());
+				LOG.severe(tehThrowable.getMessage());
+				LOG.severe(tehThrowable.getStackTrace().toString());
 			}
 			PageBuilder page = new PageBuilder(Page.bulkmake, SERVLET_PATH);
 
@@ -138,8 +140,8 @@ public class AdminServlet extends AbstractBaseServlet {
 				succex = "Forms refreshed.";
 			} catch (Throwable tehThrowable) {
 				errors.add(tehThrowable.getMessage());
-				log.severe(tehThrowable.getMessage());
-				log.severe(tehThrowable.getStackTrace().toString());
+				LOG.severe(tehThrowable.getMessage());
+				LOG.severe(tehThrowable.getStackTrace().toString());
 			}
 			PageBuilder page = new PageBuilder(Page.bulkmake, SERVLET_PATH);
 
@@ -160,8 +162,8 @@ public class AdminServlet extends AbstractBaseServlet {
 				succex = "Users refreshed. <(' '<) <(' ')> (>' ')>";
 			} catch (Throwable tehThrowable) {
 				errors.add(tehThrowable.getMessage());
-				log.severe(tehThrowable.getMessage());
-				log.severe(tehThrowable.getStackTrace().toString());
+				LOG.severe(tehThrowable.getMessage());
+				LOG.severe(tehThrowable.getStackTrace().toString());
 			}
 			PageBuilder page = new PageBuilder(Page.bulkmake, SERVLET_PATH);
 
@@ -202,14 +204,14 @@ public class AdminServlet extends AbstractBaseServlet {
 
 		firstName = req.getParameter("FirstName");
 		lastName = req.getParameter("LastName");
-		primaryEmail = new Email(req.getParameter("NetID"));
-		secondEmail = new Email(req.getParameter("SecondEmail"));
+		primaryEmail = Util.makeEmail(req.getParameter("NetID"));
+		secondEmail = Util.makeEmail(req.getParameter("SecondEmail"));
 
-		if (!ValidationUtil.validPrimaryEmail(primaryEmail, train)) {
+		if (!ValidationUtil.isValidPrimaryEmail(primaryEmail, train)) {
 			errors.add("Invalid primary (school) email");
 		}
 
-		if (!ValidationUtil.validSecondaryEmail(secondEmail, train)) {
+		if (!ValidationUtil.isValidSecondaryEmail(secondEmail, train)) {
 			errors.add("Invalid secondary (google) email");
 		}
 		if (!ValidationUtil.isUniqueSecondaryEmail(secondEmail, primaryEmail,
@@ -220,7 +222,7 @@ public class AdminServlet extends AbstractBaseServlet {
 		if (errors.size() == 0) {
 			try {
 				new_user = train.users().createDirector(
-						primaryEmail.getEmail(), secondEmail.getEmail(),
+						Util.emailToString(primaryEmail), secondEmail.getEmail(),
 						firstName, lastName);
 
 			} catch (IllegalArgumentException e) {
@@ -367,8 +369,8 @@ public class AdminServlet extends AbstractBaseServlet {
 		lastName = req.getParameter("LastName");
 		major = req.getParameter("Major");
 		univID = req.getParameter("UniversityID");
-		primaryEmail = new Email(req.getParameter("PrimaryEmail"));
-		secondEmail = new Email(req.getParameter("SecondEmail"));
+		primaryEmail = Util.makeEmail(req.getParameter("PrimaryEmail"));
+		secondEmail = Util.makeEmail(req.getParameter("SecondEmail"));
 
 		if (!ValidationUtil.isValidUniversityID(univID)) {
 			errors.add("University ID was not valid");
@@ -392,11 +394,11 @@ public class AdminServlet extends AbstractBaseServlet {
 			errors.add("Invalid section");
 		}
 
-		if (!ValidationUtil.validPrimaryEmail(primaryEmail, train)) {
+		if (!ValidationUtil.isValidPrimaryEmail(primaryEmail, train)) {
 			errors.add("Invalid primary email, try logging out and then registering under your school email account");
 		}
 
-		if (!ValidationUtil.validSecondaryEmail(secondEmail, train)) {
+		if (!ValidationUtil.isValidSecondaryEmail(secondEmail, train)) {
 			errors.add("Invalid secondary email");
 		}
 		if (!ValidationUtil.isUniqueSecondaryEmail(secondEmail, primaryEmail,
@@ -424,11 +426,11 @@ public class AdminServlet extends AbstractBaseServlet {
 
 			page.setAttribute("FirstName", firstName);
 			page.setAttribute("LastName", lastName);
-			page.setAttribute("PrimaryEmail", primaryEmail.getEmail());
+			page.setAttribute("PrimaryEmail", Util.emailToString(primaryEmail));
 			page.setAttribute("Major", major);
 			page.setAttribute("UniversityID", univID);
 			page.setAttribute("Year", year);
-			page.setAttribute("SecondEmail", secondEmail.getEmail());
+			page.setAttribute("SecondEmail", Util.emailToString(secondEmail));
 			page.setAttribute("Section",
 					(section == null) ? null : section.getValue());
 
@@ -497,7 +499,7 @@ public class AdminServlet extends AbstractBaseServlet {
 
 		Tasks.exportData();
 
-		log.info("Queueing data export");
+		LOG.info("Queueing data export");
 
 		new PageBuilder(Page.backup, SERVLET_PATH).setPageTitle(
 				"Data Backup Started").passOffToJsp(req, resp);

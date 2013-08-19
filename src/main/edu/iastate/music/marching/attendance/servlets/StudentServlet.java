@@ -20,6 +20,7 @@ import edu.iastate.music.marching.attendance.model.store.Absence;
 import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.model.store.User.Section;
 import edu.iastate.music.marching.attendance.util.PageBuilder;
+import edu.iastate.music.marching.attendance.util.Util;
 
 public class StudentServlet extends AbstractBaseServlet {
 
@@ -118,7 +119,7 @@ public class StudentServlet extends AbstractBaseServlet {
 		firstName = req.getParameter("FirstName");
 		lastName = req.getParameter("LastName");
 		major = req.getParameter("Major");
-		secondEmail = new Email(req.getParameter("SecondEmail"));
+		secondEmail = Util.makeEmail(req.getParameter("SecondEmail"));
 
 		String sectionString = req.getParameter("Section");
 		for (Section s : User.Section.values()) {

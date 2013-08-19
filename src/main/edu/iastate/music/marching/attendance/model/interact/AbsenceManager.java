@@ -15,6 +15,7 @@ import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.code.twig.FindCommand.RootFindCommand;
 import com.google.code.twig.ObjectDatastore;
 
+import edu.iastate.music.marching.attendance.Lang;
 import edu.iastate.music.marching.attendance.model.store.Absence;
 import edu.iastate.music.marching.attendance.model.store.Event;
 import edu.iastate.music.marching.attendance.model.store.Form;
@@ -113,7 +114,7 @@ public class AbsenceManager extends AbstractManager {
 				// nope!
 				return false;
 			} else {
-				//TODO use Absence.isContainedIn(...)?
+				// TODO use Absence.isContainedIn(...)?
 				if (form.getInterval(zone).contains(
 						absence.getEvent().getInterval(zone))) {
 					return true;
@@ -193,8 +194,7 @@ public class AbsenceManager extends AbstractManager {
 	public Absence createOrUpdateAbsence(User student, Interval interval) {
 
 		if (student == null) {
-			throw new IllegalArgumentException(
-					"Tried to create absence for null user");
+			throw new IllegalArgumentException(Lang.ERROR_ABSENCE_FOR_NULL_USER);
 		}
 
 		Absence absence = ModelFactory
@@ -221,8 +221,7 @@ public class AbsenceManager extends AbstractManager {
 	public Absence createOrUpdateAbsence(User student, Event e) {
 
 		if (student == null) {
-			throw new IllegalArgumentException(
-					"Tried to create absence for null user");
+			throw new IllegalArgumentException(Lang.ERROR_ABSENCE_FOR_NULL_USER);
 		}
 
 		DateTimeZone zone = this.train.appData().get().getTimeZone();
@@ -247,8 +246,7 @@ public class AbsenceManager extends AbstractManager {
 	public Absence createOrUpdateEarlyCheckout(User student, DateTime time) {
 
 		if (student == null)
-			throw new IllegalArgumentException(
-					"Tried to create absence for null user");
+			throw new IllegalArgumentException(Lang.ERROR_ABSENCE_FOR_NULL_USER);
 
 		Absence absence = ModelFactory.newAbsence(Absence.Type.EarlyCheckOut,
 				student);
@@ -267,8 +265,7 @@ public class AbsenceManager extends AbstractManager {
 	public Absence createOrUpdateTardy(User student, DateTime time) {
 
 		if (student == null) {
-			throw new IllegalArgumentException(
-					"Tried to create absence for null user");
+			throw new IllegalArgumentException(Lang.ERROR_ABSENCE_FOR_NULL_USER);
 		}
 
 		Absence absence = ModelFactory.newAbsence(Absence.Type.Tardy, student);

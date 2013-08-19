@@ -9,6 +9,8 @@ import org.joda.time.ReadableInterval;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import com.google.appengine.api.datastore.Email;
+
 public class Util {
 
 	private static final DateTimeFormatter DATEFORMAT = DateTimeFormat
@@ -76,5 +78,21 @@ public class Util {
 		DateTime startOfFirstDay = startDate.toInterval(zone).getStart();
 		DateTime endOfFirstDay = endDate.toInterval(zone).getEnd();
 		return new Interval(startOfFirstDay, endOfFirstDay);
+	}
+
+	public static Email makeEmail(String emailString) {
+		if(null == emailString || "".equals(emailString.trim())) {
+			return null;
+		} else {
+			return new Email(emailString.toLowerCase());
+		}
+	}
+
+	public static String emailToString(Email email) {
+		if(null == email) {
+			return null;
+		} else {
+			return email.getEmail();
+		}
 	}
 }
