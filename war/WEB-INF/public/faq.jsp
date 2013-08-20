@@ -11,7 +11,7 @@
         <p>
         <h2>Answers to frequently asked questions about the system.</h2>
         <b>What should I do if I have a specific question about my attendance or grade?</b><br/>
-        If it's a question about an error in the system, email <script>document.write('<a href="mailto:'+ ["curtisu", "iastate.edu"].join('@') +'">'+ ["curtisu", "iastate.edu"].join('@') +'</a>')</script><noscript>curtisu (at) iastate (dot) edu</noscript>. If it's a question about something you've submitted or your grade, email <script>document.write('<a href="mailto:'+ ["cmbattendance", "gmail.com"].join('@') +'">'+ ["cmbattendance", "gmail.com"].join('@') +'</a>')</script><noscript>cmbattendance (at) gmail (dot) com</noscript>.
+        If it's a question about an error in the system, email <script>document.write('<a href="mailto:'+ ["mbattendance", "iastate.edu"].join('@') +'">'+ ["mbattendance", "iastate.edu"].join('@') +'</a>')</script><noscript>mbattendance (at) iastate (dot) edu</noscript>. If it's a question about something you've submitted or your grade, email <script>document.write('<a href="mailto:'+ ["mbattendance", "iastate.edu"].join('@') +'">'+ ["mbattendance", "iastate.edu"].join('@') +'</a>')</script><noscript>mbattendance (at) iastate (dot) edu</noscript>.
         <br/>
         <br/>
         <b>What exactly is the attendance policy as it relates to my grade?</b><br/>
@@ -20,7 +20,7 @@
         missed &lt;= 15 minutes: B<br/>
         missed &lt;= 30 minutes: C<br/>
         missed &lt;= 45 minutes: D<br/>
-        missed     > 45 minutes: F<br/>
+        missed &gt; 45 minutes: F<br/>
         <br/>
         There will be no plus or minus grades.
         <br/>
@@ -49,7 +49,13 @@
         <br/><br/>Forms submitted for an Absence: If you have an absence on same weekday as submitted on an approved class conflict form between the submitted start and end dates, then the form will auto-approve it.
         <br/><br/>Forms submitted for a Tardy: On the correct weekday, a class conflict form will auto-approve any tardy for which you checked in to band on or before the submitted end time of the class + the submitted travel time. <i>If you check in after this time, the form will not auto-approve your tardy, and it will remain pending!</i> To gain back these minutes, you must submit a time worked form.
         <br/><br/>Forms submitted for an EarlyCheckout: On the correct weekday, a class conflict form will auto-approve any earlycheckout for which you checked out of band on or after the submitted start of the class minus the submitted travel time. <i>If you check out before this time, the form will not auto-approve your early checkout, and it will remain pending!</i> To gain back this minutes, submit a time worked form.
-        <br/><br/>  
+        <br/><br/>
+        <b>Why can't I register for the system?</b><br/>
+        When registering, some users will see that their email address has been detected as mynetid%iastate.edu@gtempaccount.com. To our knowledge, the only issues with registering for attendance are due to having an iastate email account that has been grandfathered into the iastate network. Known causes for this: Previously registering for a YouTube account with your iastate account (before the transition to CyMail); and never migrating to CyMail from WebMail.
+        <br/>
+        <br/>
+        If, while attempting to register, you see this problem, just get your netID and University ID to a director, and he or she will be able to register you manually.<br/><br/>
+        If you have any other issues registering for attendance, please ensure that you are logged into you iastate account when registering. If this is the case and you still can't register, then submit a bug report from the bottom of the registration page (preferred) or email <script>document.write('<a href="mailto:'+ ["mbattendance", "iastate.edu"].join('@') +'">'+ ["mbattendance", "iastate.edu"].join('@') +'</a>')</script><noscript>mbattendance (at) iastate (dot) edu</noscript>. If it's a question about something you've submitted or your grade, email <script>document.write('<a href="mailto:'+ ["mbattendance", "iastate.edu"].join('@') +'">'+ ["mbattendance", "iastate.edu"].join('@') +'</a>')</script><noscript>mbattendance (at) iastate (dot) edu</noscript>.
         </p>
 		<jsp:include page="/WEB-INF/common/status.jsp"/>
 		<jsp:include page="/WEB-INF/template/footer.jsp" />
