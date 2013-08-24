@@ -302,8 +302,10 @@ public class FormManager extends AbstractManager {
 		if (f.getType() == Form.Type.TimeWorked && student != null) {
 			if (!f.isApplied()) {
 				if (f.getStatus() == Form.Status.Approved) {
+					// this is divided by two because for every minute a student
+					// misses, he or she must work off TWO minutes
 					student.setMinutesAvailable(student.getMinutesAvailable()
-							+ f.getMinutesWorked());
+							+ (f.getMinutesWorked() / 2));
 					this.train.users().update(student);
 					f.setApplied(true);
 				}

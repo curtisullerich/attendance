@@ -42,7 +42,7 @@ public class FormTimeWorkedTest extends AbstractDatastoreTest {
 
 		LocalDate date = new LocalDate(2012, 7, 7);
 
-		Form form = fc.createTimeWorkedForm(student, date, 10, "details");
+		Form form = fc.createTimeWorkedForm(student, date, 20, "details");
 
 		assertEquals(0, student.getMinutesAvailable());
 		form.setStatus(Form.Status.Approved);
@@ -69,7 +69,7 @@ public class FormTimeWorkedTest extends AbstractDatastoreTest {
 
 		LocalDate date = new LocalDate(2012, 7, 7);
 
-		Form form = fc.createTimeWorkedForm(student, date, 10, "details");
+		Form form = fc.createTimeWorkedForm(student, date, 20, "details");
 
 		assertEquals(0, student.getMinutesAvailable());
 		form.setStatus(Form.Status.Approved);
@@ -101,7 +101,7 @@ public class FormTimeWorkedTest extends AbstractDatastoreTest {
 
 		LocalDate date = new LocalDate(2012, 7, 7);
 
-		Form form = fc.createTimeWorkedForm(student, date, 10, "details");
+		Form form = fc.createTimeWorkedForm(student, date, 20, "details");
 
 		assertEquals(0, student.getMinutesAvailable());
 		form.setStatus(Form.Status.Approved);
