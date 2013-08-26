@@ -54,14 +54,14 @@
 			
 				<dt><label for="startdate" class="required">Starting Date:</label></dt>
                 <dd>
-                  <input type="text" name="startdate" id="startdate" value='<c:out value="${startdate}" />' />
+                  <input type="text" name="startdate" id="startdate" value="<c:out value="${startdate}" />" />
                   <br/>
                   Please enter the <b>first</b> day that the class meets.
                 </dd>
 				
 				<dt><label for="enddate" class="required">Ending Date:</label></dt>
                 <dd>
-                  <input type="text" name="enddate" id="enddate" value='<c:out value="${enddate}" />' />
+                  <input type="text" name="enddate" id="enddate" value="<c:out value="${enddate}" />" />
                   <br/>
                   Please enter the <b>end</b> day that the class meets.
                 </dd>
