@@ -217,8 +217,7 @@ public class FormsServlet extends AbstractBaseServlet {
 			}
 
 			try {
-				startDate = Util.parseDateOnly(req.getParameter("startdate"),
-						train.appData().get().getTimeZone());
+				startDate = Util.parseDateOnly(req.getParameter("startdate"), zone);
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add("The start date is invalid.");
@@ -241,8 +240,7 @@ public class FormsServlet extends AbstractBaseServlet {
 			}
 
 			try {
-				fromTime = Util.parseTimeOnly(req.getParameter("starttime"),
-						train.appData().get().getTimeZone());
+				fromTime = Util.parseTimeOnly(req.getParameter("starttime"), zone);
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add("The start time is invalid.");
@@ -618,7 +616,7 @@ public class FormsServlet extends AbstractBaseServlet {
 					page.setAttribute("formEndTime",
 							Util.formatTimeOnly(form.getEndTime()));
 				}
-				page.setAttribute("day", form.getDayAsString());
+				page.setAttribute("day", form.getDayOfWeek().name());
 				page.setAttribute("isDirector", currentUser.getType()
 						.isDirector());
 

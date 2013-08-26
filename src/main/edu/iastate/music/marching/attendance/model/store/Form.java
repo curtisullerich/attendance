@@ -140,34 +140,6 @@ public class Form {
 		return course;
 	}
 
-	public String getDayAsString() {
-		String ret = "";
-		switch (day) {
-		case 1:
-			ret = "Sunday";
-			break;
-		case 2:
-			ret = "Monday";
-			break;
-		case 3:
-			ret = "Tuesday";
-			break;
-		case 4:
-			ret = "Wednesday";
-			break;
-		case 5:
-			ret = "Thursday";
-			break;
-		case 6:
-			ret = "Friday";
-			break;
-		case 7:
-			ret = "Saturday";
-			break;
-		}
-		return ret;
-	}
-
 	public WeekDay getDayOfWeek() {
 		return WeekDay.valueOf(day);
 	}
