@@ -24,6 +24,10 @@
         <br/>
         There will be no plus or minus grades.
         <br/>
+        <b>What's this business about missing more than 30 minutes of rehearsal or a game?</b><br/>
+        There are a couple of different policies involved. If you miss more than 30 minutes of any rehearsal without a class conflict form to approve your absence, then your grade is affected as though you missed the entire rehearsal. That means that if you show up 15 minutes late and then sign out 15 minutes early, you will lose 80 attendanace minutes (or equal to the total length of that rehearsal, more precisely). If you show up more than 30 minutes late to a GAMEDAY rehearsal, you outright fail band. Talk to Dr. Richards for any clarification about this policy.
+        <br/>
+        <br/>
         <b>I missed more than 160 minutes of band! How can I fix my grade?</b><br/>
         You can work off time and submit a time worked form. For each minute you miss, you must do two minutes of work to make up for it. After performing the work, submit a form stating the date of the absence and how many minutes you worked. If the form contains work toward more than one absence, just list one of them in the form and explain yourself in the comments box.
         <br/>

@@ -57,6 +57,8 @@
 			</dd>
 			
 			<dt><label class="required" for="Year">Years in band</label></dt>
+            <br/>
+            Number of years in the ISUCF'V'MB, including this year.
 			<dd>
 				<select name="Year" id="Year"  >
 					<option value="">(Choose)</option>
