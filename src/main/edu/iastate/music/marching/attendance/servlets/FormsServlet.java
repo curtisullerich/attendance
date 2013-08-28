@@ -615,8 +615,8 @@ public class FormsServlet extends AbstractBaseServlet {
 							Util.formatTimeOnly(form.getStartTime()));
 					page.setAttribute("formEndTime",
 							Util.formatTimeOnly(form.getEndTime()));
+					page.setAttribute("day", form.getDayOfWeek().name());
 				}
-				page.setAttribute("day", form.getDayOfWeek().name());
 				page.setAttribute("isDirector", currentUser.getType()
 						.isDirector());
 
