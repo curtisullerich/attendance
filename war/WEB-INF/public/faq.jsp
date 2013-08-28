@@ -11,7 +11,7 @@
         <p>
         <h2>Answers to frequently asked questions about the system.</h2>
         <b>What should I do if I have a specific question about my attendance or grade?</b><br/>
-        If it's a question about an error in the system, email <script>document.write('<a href="mailto:'+ ["mbattendance", "iastate.edu"].join('@') +'">'+ ["mbattendance", "iastate.edu"].join('@') +'</a>')</script><noscript>mbattendance (at) iastate (dot) edu</noscript>. If it's a question about something you've submitted or your grade, email <script>document.write('<a href="mailto:'+ ["mbattendance", "iastate.edu"].join('@') +'">'+ ["mbattendance", "iastate.edu"].join('@') +'</a>')</script><noscript>mbattendance (at) iastate (dot) edu</noscript>.
+        If it's a question about an error in the system, email <script>document.write('<a href="mailto:'+ ["mbattendance", "iastate.edu"].join('@') +'">'+ ["mbattendance", "iastate.edu"].join('@') +'</a>')</script><noscript>mbattendance (at) iastate (dot) edu</noscript>. If it's a question about something you've submitted or your grade, email <script>document.write('<a href="mailto:'+ ["cmbattendance", "gmail.com"].join('@') +'">'+ ["cmbattendance", "gmail.com"].join('@') +'</a>')</script><noscript>cmbattendance (at) gmail (dot) com</noscript>.
         <br/>
         <br/>
         <b>What exactly is the attendance policy as it relates to my grade?</b><br/>
@@ -59,7 +59,7 @@
         <br/>
         <br/>
         If, while attempting to register, you see this problem, just get your netID and University ID to a director, and he or she will be able to register you manually.<br/><br/>
-        If you have any other issues registering for attendance, please ensure that you are logged into you iastate account when registering. If this is the case and you still can't register, then submit a bug report from the bottom of the registration page (preferred) or email <script>document.write('<a href="mailto:'+ ["mbattendance", "iastate.edu"].join('@') +'">'+ ["mbattendance", "iastate.edu"].join('@') +'</a>')</script><noscript>mbattendance (at) iastate (dot) edu</noscript>. If it's a question about something you've submitted or your grade, email <script>document.write('<a href="mailto:'+ ["mbattendance", "iastate.edu"].join('@') +'">'+ ["mbattendance", "iastate.edu"].join('@') +'</a>')</script><noscript>mbattendance (at) iastate (dot) edu</noscript>.
+        If you have any other issues registering for attendance, please ensure that you are logged into you iastate account when registering. If this is the case and you still can't register, then submit a bug report from the bottom of the registration page (preferred) or email <script>document.write('<a href="mailto:'+ ["mbattendance", "iastate.edu"].join('@') +'">'+ ["mbattendance", "iastate.edu"].join('@') +'</a>')</script><noscript>mbattendance (at) iastate (dot) edu</noscript>.
         </p>
 		<jsp:include page="/WEB-INF/common/status.jsp"/>
 		<jsp:include page="/WEB-INF/template/footer.jsp" />
