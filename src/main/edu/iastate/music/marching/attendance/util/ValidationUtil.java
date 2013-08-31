@@ -20,7 +20,7 @@ public class ValidationUtil {
 			.compile("^([a-zA-Z0-9._%+-]+)@([a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4})$");
 
 	private static final Pattern PATTERN_GTEMPEMAIL = Pattern
-			.compile("^([a-zA-Z0-9._%+-]+)%25([a-zA-Z0-9.-]+)@gtempaccount.com$");
+			.compile("^([a-zA-Z0-9._%+-]+)%([a-zA-Z0-9.-]+)@gtempaccount.com$");
 
 	private static final int MAX_TEXT_LENGTH = 50000;
 
