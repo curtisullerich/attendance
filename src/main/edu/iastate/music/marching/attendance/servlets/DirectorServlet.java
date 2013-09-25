@@ -64,7 +64,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 			throws ServletException, IOException {
 		List<String> errors = new ArrayList<String>();
 		try {
-			Absence a = ac.get(Integer.parseInt(absid));
+			Absence a = ac.get(Absence.parseKey(absid));
 			ac.remove(a);
 
 			// Do not redirect if in a new window, instead show a success
