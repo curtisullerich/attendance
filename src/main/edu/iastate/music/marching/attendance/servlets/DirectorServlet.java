@@ -558,7 +558,6 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 		String firstName, lastName, major, netid, rank;
 		int year = -1;
-		int minutesAvailable = -1;
 		User.Section section = null;
 
 		// Grab all the data from the fields
@@ -574,23 +573,21 @@ public class DirectorServlet extends AbstractBaseServlet {
 			}
 		}
 
+		UserManager uc = train.users();
+
+		User user = uc.get(netid);
+
 		try {
 			year = Integer.parseInt(req.getParameter("Year"));
-			minutesAvailable = Integer.parseInt(req
+			int minutesAvailable = Integer.parseInt(req
 					.getParameter("MinutesAvailable"));
+			user.setMinutesAvailable(minutesAvailable);
 		} catch (NumberFormatException nfe) {
 			LOG.severe(nfe.getStackTrace().toString());
 			LOG.severe(nfe.getMessage());
 			errors.add("Unable to save minutes available.");
 		}
 
-		UserManager uc = train.users();
-
-		User user = uc.get(netid);
-
-		if (minutesAvailable > -1) {
-			user.setMinutesAvailable(minutesAvailable);
-		}
 		user.setYear(year);
 		user.setMajor(major);
 		user.setSection(section);

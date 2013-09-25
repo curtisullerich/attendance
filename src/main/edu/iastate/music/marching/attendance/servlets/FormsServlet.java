@@ -223,15 +223,20 @@ public class FormsServlet extends AbstractBaseServlet {
 				errors.add("The start date is invalid.");
 			}
 			try {
-				endDate = Util.parseDateOnly(req.getParameter("enddate"), zone);
+				endDate = Util.parseDateOnly(req.getParameter("enddate"), train
+						.appData().get().getTimeZone());
+				if (endDate == null) {
+					validForm = false;
+					errors.add("The end date is invalid.");
+				} else {
+					if (endDate.isBefore(startDate)) {
+						validForm = false;
+						errors.add("The end date is before the start date.");
+					}
+				}
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add("The end date is invalid.");
-			}
-
-			if (endDate.isBefore(startDate)) {
-				validForm = false;
-				errors.add("The end date is before the start date.");
 			}
 
 			try {
@@ -242,15 +247,20 @@ public class FormsServlet extends AbstractBaseServlet {
 			}
 
 			try {
-				toTime = Util.parseTimeOnly(req.getParameter("endtime"), zone);
+				toTime = Util.parseTimeOnly(req.getParameter("endtime"), train
+						.appData().get().getTimeZone());
+				if (toTime == null) {
+					errors.add("The end time is invalid.");
+				} else {
+					if (toTime.isBefore(fromTime)) {
+						validForm = false;
+						errors.add("The end time was before the start time.");
+					}
+
+				}
 			} catch (IllegalArgumentException e) {
 				validForm = false;
 				errors.add("The end time is invalid.");
-			}
-			
-			if (toTime.isBefore(fromTime)) {
-				validForm = false;
-				errors.add("The end time was before the start time.");
 			}
 
 		}
@@ -275,7 +285,7 @@ public class FormsServlet extends AbstractBaseServlet {
 
 			if (form == null) {
 				validForm = false;
-				errors.add("Fix any errors above and try to resubmit. If you're still having issues, submit a bug report using the form at the bottom of the page.");
+				//errors.add("Fix any errors above and try to resubmit. If you're still having issues, submit a bug report using the form at the bottom of the page.");
 			}
 		}
 		if (validForm) {
@@ -294,8 +304,8 @@ public class FormsServlet extends AbstractBaseServlet {
 			page.setAttribute("Course", course);
 			page.setAttribute("Section", section);
 			page.setAttribute("Building", building);
-			page.setAttribute("startdate", Util.formatDateOnly(startDate));
-			page.setAttribute("enddate", Util.formatDateOnly(endDate));
+			page.setAttribute("startdate", req.getParameter("startdate"));
+			page.setAttribute("enddate", req.getParameter("enddate"));
 			page.setAttribute("Type", Form.Type.ClassConflict);
 			page.setAttribute("Comments", comments);
 			page.setAttribute("MinutesToOrFrom", minutesToOrFrom);
@@ -303,13 +313,8 @@ public class FormsServlet extends AbstractBaseServlet {
 			page.setAttribute("types", Absence.Type.values());
 			page.setAttribute("cutoff", train.appData().get()
 					.getClassConflictFormCutoff().toDate());
-			if (fromTime != null) {
-				page.setAttribute("starttime", Util.formatTimeOnly(fromTime));
-			}
-
-			if (toTime != null) {
-				page.setAttribute("endtime", Util.formatTimeOnly(toTime));
-			}
+			page.setAttribute("starttime", req.getParameter("starttime"));
+			page.setAttribute("endtime", req.getParameter("endtime"));
 
 			page.passOffToJsp(req, resp);
 		}
@@ -361,9 +366,9 @@ public class FormsServlet extends AbstractBaseServlet {
 
 			if (form == null) {
 				validForm = false;
-				errors.add("--------");
-				errors.add("If any of the errors above are fixable, please address them and try to resubmit. "
-						+ "If you're still having issues, submit a bug report using the form at the bottom of the page.");
+				// errors.add("--------");
+				// errors.add("If any of the errors above are fixable, please address them and try to resubmit. "
+				//		+ "If you're still having issues, submit a bug report using the form at the bottom of the page.");
 			}
 		}
 
@@ -462,7 +467,7 @@ public class FormsServlet extends AbstractBaseServlet {
 
 			if (form == null) {
 				validForm = false;
-				errors.add("Fix any errors above and try to resubmit. If you're still having issues, submit a bug report using the form at the bottom of the page.");
+				//errors.add("Fix any errors above and try to resubmit. If you're still having issues, submit a bug report using the form at the bottom of the page.");
 			}
 		}
 		if (validForm) {
@@ -610,8 +615,8 @@ public class FormsServlet extends AbstractBaseServlet {
 							Util.formatTimeOnly(form.getStartTime()));
 					page.setAttribute("formEndTime",
 							Util.formatTimeOnly(form.getEndTime()));
+					page.setAttribute("day", form.getDayOfWeek().name());
 				}
-				page.setAttribute("day", form.getDayOfWeek().name());
 				page.setAttribute("isDirector", currentUser.getType()
 						.isDirector());
 
