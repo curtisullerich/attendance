@@ -546,7 +546,7 @@ public class UserManager extends AbstractManager {
 					for (Form f : forms) {
 						if (f.getStatus() == Form.Status.Approved
 								&& f.getType() == Form.Type.ClassConflict) {
-							Interval fi = f.getInterval(zone);
+							Interval ei = e.getInterval(zone);
 							Interval ai;
 							if (a.getType() == Type.Absence) {
 								ai = a.getInterval(zone);
@@ -559,11 +559,16 @@ public class UserManager extends AbstractManager {
 										.getMillis(), e.getInterval(zone)
 										.getEndMillis(), zone);
 							}
-							Duration overlap = fi.overlap(ai).toDuration();
-							minutesForTardyOrEco -= overlap.getStandardMinutes();
+
+							Interval lap = ei.overlap(ai);
+							if (lap != null) {
+								Duration overlap = lap.toDuration();
+								minutesForTardyOrEco -= overlap
+										.getStandardMinutes();
+							}
 						}
 					}
-					minutesForTardyOrEco+=d.getStandardMinutes();
+					minutesForTardyOrEco += d.getStandardMinutes();
 
 					if (minutesForTardyOrEco > MAXIMUM_LATENESS_MINUTES) {
 						// too late!

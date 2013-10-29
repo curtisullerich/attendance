@@ -740,7 +740,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		User s1 = TestUsers.createDefaultStudent(uc);
 
 		LocalTime classStart = new LocalTime(16, 10);
-		LocalTime classEnd = new LocalTime(17, 30);
+		LocalTime classEnd = new LocalTime(17, 20);
 		Interval interval = Util.datesToFullDaysInterval(new LocalDate(2012, 8,
 				20), new LocalDate(2012, 12, 20), zone);
 		Form form = fc.createClassConflictForm(s1, "department", "course",
