@@ -19,7 +19,9 @@ import com.google.code.twig.FindCommand.RootFindCommand;
 import com.google.code.twig.ObjectDatastore;
 
 import edu.iastate.music.marching.attendance.model.store.Absence;
+import edu.iastate.music.marching.attendance.model.store.Absence.Type;
 import edu.iastate.music.marching.attendance.model.store.Event;
+import edu.iastate.music.marching.attendance.model.store.Form;
 import edu.iastate.music.marching.attendance.model.store.ModelFactory;
 import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.util.Util;
@@ -169,12 +171,12 @@ public class UserManager extends AbstractManager {
 		user.setMajor(major);
 		user.setSection(section);
 		user.setSecondaryEmail(secondaryEmail);
-		
+
 		// Just assume we start with an A
 		user.setGrade(User.Grade.A);
 
 		validateUser(user);
-		
+
 		this.datatrain.getDataStore().store(user);
 		return user;
 	}
@@ -329,15 +331,16 @@ public class UserManager extends AbstractManager {
 	}
 
 	public boolean isUniqueSecondaryEmail(Email secondaryEmail, Email primary) {
-		if (secondaryEmail == null ||  null == secondaryEmail.getEmail() || "".equals(secondaryEmail.getEmail()))
+		if (secondaryEmail == null || null == secondaryEmail.getEmail()
+				|| "".equals(secondaryEmail.getEmail()))
 			return true;
-		
+
 		RootFindCommand<User> find = this.datatrain.find(User.class);
 		find.addFilter(User.FIELD_SECONDARY_EMAIL, FilterOperator.EQUAL,
 				secondaryEmail);
 		find.addFilter(User.FIELD_PRIMARY_EMAIL, FilterOperator.NOT_EQUAL,
 				primary);
-		
+
 		int found = find.returnCount().now();
 		return found == 0;
 	}
@@ -383,7 +386,7 @@ public class UserManager extends AbstractManager {
 						"Somehow the event had no associated absences");
 			}
 			if (l.size() == 1) {
-				minutes += simpleGrade(e, l);
+				minutes += simpleGrade(e, l, student);
 			} else {
 				DateTimeZone zone = datatrain.appData().get().getTimeZone();
 				String types = "";
@@ -501,7 +504,7 @@ public class UserManager extends AbstractManager {
 		}
 	}
 
-	private int simpleGrade(Event e, List<Absence> l) {
+	private int simpleGrade(Event e, List<Absence> l, User student) {
 		if (l.size() != 1) {
 			throw new IllegalArgumentException(
 					"list of Absences must be of size 1");
@@ -535,12 +538,39 @@ public class UserManager extends AbstractManager {
 						throw new IllegalArgumentException(
 								"invalid absence type");
 					}
-					if (d.getStandardMinutes() > MAXIMUM_LATENESS_MINUTES) {
+
+					int minutesForTardyOrEco = 0;
+					// in case there's an approved form, and they showed up
+					// before or after the actual time by a bit
+					List<Form> forms = datatrain.forms().get(student);
+					for (Form f : forms) {
+						if (f.getStatus() == Form.Status.Approved
+								&& f.getType() == Form.Type.ClassConflict) {
+							Interval fi = f.getInterval(zone);
+							Interval ai;
+							if (a.getType() == Type.Absence) {
+								ai = a.getInterval(zone);
+							} else if (a.getType() == Type.Tardy) {
+								ai = new Interval(e.getInterval(zone)
+										.getStartMillis(), a.getCheckin(zone)
+										.getMillis(), zone);
+							} else {
+								ai = new Interval(a.getCheckout(zone)
+										.getMillis(), e.getInterval(zone)
+										.getEndMillis(), zone);
+							}
+							Duration overlap = fi.overlap(ai).toDuration();
+							minutesForTardyOrEco -= overlap.getStandardMinutes();
+						}
+					}
+					minutesForTardyOrEco+=d.getStandardMinutes();
+
+					if (minutesForTardyOrEco > MAXIMUM_LATENESS_MINUTES) {
 						// too late!
 						minutes += a.getEvent().getInterval(zone).toDuration()
 								.getStandardMinutes();
 					} else {
-						minutes += d.getStandardMinutes();
+						minutes += minutesForTardyOrEco;
 					}
 				}
 			}
@@ -584,7 +614,7 @@ public class UserManager extends AbstractManager {
 				user.getPrimaryEmail(), datatrain)) {
 			throw new IllegalArgumentException("Non-unique secondary email");
 		}
-		
+
 		// Check student specific things
 		if (user.getType() == User.Type.Student) {
 			String major = user.getMajor();

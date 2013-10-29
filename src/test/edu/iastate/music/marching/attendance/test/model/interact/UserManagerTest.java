@@ -1,6 +1,7 @@
 package edu.iastate.music.marching.attendance.test.model.interact;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
 
@@ -8,8 +9,10 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
 import org.junit.Test;
 
+import edu.iastate.music.marching.attendance.App;
 import edu.iastate.music.marching.attendance.model.interact.AbsenceManager;
 import edu.iastate.music.marching.attendance.model.interact.DataTrain;
 import edu.iastate.music.marching.attendance.model.interact.EventManager;
@@ -23,6 +26,7 @@ import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.testlib.AbstractDatastoreTest;
 import edu.iastate.music.marching.attendance.testlib.TestConfig;
 import edu.iastate.music.marching.attendance.testlib.TestUsers;
+import edu.iastate.music.marching.attendance.util.Util;
 
 public class UserManagerTest extends AbstractDatastoreTest {
 
@@ -565,8 +569,9 @@ public class UserManagerTest extends AbstractDatastoreTest {
 
 		eco1.setStatus(Absence.Status.Approved);
 		ac.updateAbsence(eco1);
-		//this means there are basically two tardies in a row now, at 20 and 60 minutes in
-		
+		// this means there are basically two tardies in a row now, at 20 and 60
+		// minutes in
+
 		assertEquals(User.Grade.D, uc.get(student.getId()).getGrade());
 	}
 
@@ -722,4 +727,51 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		// assertEquals(Absence.Type.Absence, a7.getType());
 	}
 
+	@Test
+	public void testGradeWithClassConflictLateness() {
+		DataTrain train = getDataTrain();
+
+		UserManager uc = train.users();
+		EventManager ec = train.events();
+		FormManager fc = train.forms();
+		AbsenceManager ac = train.absences();
+		DateTimeZone zone = train.appData().get().getTimeZone();
+
+		User s1 = TestUsers.createDefaultStudent(uc);
+
+		LocalTime classStart = new LocalTime(16, 10);
+		LocalTime classEnd = new LocalTime(17, 30);
+		Interval interval = Util.datesToFullDaysInterval(new LocalDate(2012, 8,
+				20), new LocalDate(2012, 12, 20), zone);
+		Form form = fc.createClassConflictForm(s1, "department", "course",
+				"section", "building", interval, classStart, classEnd,
+				App.WeekDay.Monday, "details", 10, Absence.Type.Absence);
+
+		LocalDate eventDate = new LocalDate(2012, 9, 17);
+		LocalTime eventStartTime = new LocalTime(16, 30);
+		DateTime eventStart = eventDate.toDateTime(eventStartTime, zone);
+		DateTime eventEnd = eventStart.plusMinutes(80);
+		DateTime checkIOtime1 = eventStart.plusMinutes(70);
+		DateTime checkIOtime2 = eventStart.plusMinutes(70).plusDays(7);
+		DateTime checkIOtime3 = eventStart.plusMinutes(70).plusDays(14);
+
+		Event e1 = ec.createOrUpdate(Event.Type.Rehearsal, new Interval(
+				eventStart, eventEnd));
+		Event e2 = ec.createOrUpdate(Event.Type.Rehearsal, new Interval(
+				eventStart.plusDays(7), eventEnd.plusDays(7)));
+		Event e3 = ec.createOrUpdate(Event.Type.Rehearsal, new Interval(
+				eventStart.plusDays(14), eventEnd.plusDays(14)));
+
+		Absence a1 = ac.createOrUpdateTardy(s1, checkIOtime1);
+		Absence a2 = ac.createOrUpdateTardy(s1, checkIOtime2);
+		Absence a3 = ac.createOrUpdateTardy(s1, checkIOtime3);
+		assertEquals(User.Grade.F, s1.getGrade());
+		form.setStatus(Form.Status.Approved);
+		fc.update(form);
+		s1 = uc.get(s1.getId());
+		assertEquals(Absence.Status.Pending, a1.getStatus());
+		assertEquals(Absence.Status.Pending, a2.getStatus());
+		assertEquals(Absence.Status.Pending, a3.getStatus());
+		assertEquals(User.Grade.A, s1.getGrade());
+	}
 }
