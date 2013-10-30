@@ -330,9 +330,16 @@ public class DirectorServlet extends AbstractBaseServlet {
 				if (toUpdate != null) {
 					try {
 						// TODO same concern as above
-						LocalTime d = Util.parseTimeOnly(
-								req.getParameter("time"), train.appData().get()
-										.getTimeZone());
+						String time = req.getParameter("time");
+						LocalTime d = null;
+						if (time != null && !time.equals("")) {
+							d = Util.parseTimeOnly(time, train.appData().get()
+									.getTimeZone());
+						}
+						if (d == null
+								&& toUpdate.getType() != Absence.Type.Absence) {
+							throw new IllegalArgumentException();
+						}
 
 						switch (toUpdate.getType()) {
 						case EarlyCheckOut:
@@ -342,6 +349,9 @@ public class DirectorServlet extends AbstractBaseServlet {
 						case Tardy:
 							toUpdate.setCheckin(d.toDateTime(toUpdate
 									.getCheckin(zone).toDateMidnight()));
+							break;
+						case Absence:
+							// do nothing. just don't throw an exception.
 							break;
 						default:
 							throw new IllegalStateException();

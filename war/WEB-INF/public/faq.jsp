@@ -11,7 +11,7 @@
         <p>
         <h2>Answers to frequently asked questions about the system.</h2>
         <b>What should I do if I have a specific question about my attendance or grade?</b><br/>
-        If it's a question about an error in the system, email <script>document.write('<a href="mailto:'+ ["mbattendance", "iastate.edu"].join('@') +'">'+ ["mbattendance", "iastate.edu"].join('@') +'</a>')</script><noscript>mbattendance (at) iastate (dot) edu</noscript>. If it's a question about something you've submitted or your grade, email <script>document.write('<a href="mailto:'+ ["cmbattendance", "gmail.com"].join('@') +'">'+ ["cmbattendance", "gmail.com"].join('@') +'</a>')</script><noscript>cmbattendance (at) gmail (dot) com</noscript>.
+        If it's a question about an error in the system, email the developers at <script>document.write('<a href="mailto:'+ ["mbattendance", "iastate.edu"].join('@') +'">'+ ["mbattendance", "iastate.edu"].join('@') +'</a>')</script><noscript>mbattendance (at) iastate (dot) edu</noscript>. If it's a question about something you've submitted or your grade, email the attendance masters (Dr. Richards and Kelsey) at <script>document.write('<a href="mailto:'+ ["cmbattendance", "gmail.com"].join('@') +'">'+ ["cmbattendance", "gmail.com"].join('@') +'</a>')</script><noscript>cmbattendance (at) gmail (dot) com</noscript>.
         <br/>
         <br/>
         <b>What exactly is the attendance policy as it relates to my grade?</b><br/>

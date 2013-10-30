@@ -38,7 +38,7 @@
 			</div>
 			<div class="grid-21 last">
 				<p>
-					ISUCF"V"MB Attendance System, <script>document.write('<a href="mailto:'+ ["mbattendance", "iastate.edu"].join('@') +'">'+ ["mbattendance", "iastate.edu"].join('@') +'</a>')</script><noscript>mbattendance (at) iastate (dot) edu</noscript>.
+					ISUCF"V"MB Attendance System,<!-- <script>document.write('<a href="mailto:'+ ["mbattendance", "iastate.edu"].join('@') +'">'+ ["mbattendance", "iastate.edu"].join('@') +'</a>')</script><noscript>mbattendance (at) iastate (dot) edu</noscript>.-->
 				</p>
 				<p>
 					Template Copyright &copy; 1995-2011, Iowa State University of Science and Technology.
