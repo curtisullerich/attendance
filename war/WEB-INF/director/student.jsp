@@ -43,6 +43,11 @@
                     <dd>
                       <input type="text" value="<c:out value="${user.grade}"/>" disabled readonly/>
                     </dd>
+
+                    <dt><label for="minutesMissed">Minutes Missed</label></dt>
+                    <dd>
+                      <input type="text" value="<c:out value="${user.minutesMissed}"/>" disabled readonly/>
+                    </dd>
           
 					<dt><label for="NetID">NetID</label></dt>
 					<dd>

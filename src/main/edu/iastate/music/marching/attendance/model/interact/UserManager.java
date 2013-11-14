@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Duration;
@@ -401,6 +402,7 @@ public class UserManager extends AbstractManager {
 				minutes += generalGrade(e, l);
 			}
 		}
+		student.setMinutesMissed(minutes);
 		student.setGrade(intToGrade(minutes, student));
 	}
 
@@ -546,26 +548,52 @@ public class UserManager extends AbstractManager {
 					for (Form f : forms) {
 						if (f.getStatus() == Form.Status.Approved
 								&& f.getType() == Form.Type.ClassConflict) {
-							Interval ei = e.getInterval(zone);
-							Interval ai;
-							if (a.getType() == Type.Absence) {
-								ai = a.getInterval(zone);
-							} else if (a.getType() == Type.Tardy) {
-								ai = new Interval(e.getInterval(zone)
-										.getStartMillis(), a.getCheckin(zone)
-										.getMillis(), zone);
-							} else {
-								ai = new Interval(a.getCheckout(zone)
-										.getMillis(), e.getInterval(zone)
-										.getEndMillis(), zone);
-							}
+							// Interval ei = e.getInterval(zone);
+							// Interval fi = f.getInterval(zone);
+							// f.getStartTime();
+							// f.getEndTime();
+							//
+							// f.getDayOfWeek();
+							// Interval ai;
+							// // get interval of time absent
+							// if (a.getType() == Type.Absence) {
+							// ai = a.getInterval(zone);
+							// } else if (a.getType() == Type.Tardy) {
+							// ai = new Interval(e.getInterval(zone)
+							// .getStartMillis(), a.getCheckin(zone)
+							// .getMillis(), zone);
+							// } else {
+							// ai = new Interval(a.getCheckout(zone)
+							// .getMillis(), e.getInterval(zone)
+							// .getEndMillis(), zone);
+							// }
+							//
+							// Interval lap = fi.overlap(ai);
+							// if (lap != null) {
+							// Duration overlap = lap.toDuration();
+							// minutesForTardyOrEco -= overlap
+							// .getStandardMinutes();
+							// }
 
-							Interval lap = ei.overlap(ai);
-							if (lap != null) {
-								Duration overlap = lap.toDuration();
-								minutesForTardyOrEco -= overlap
+							Interval effectiveInterval = DataTrain.depart()
+									.absences()
+									.getEffectiveFormInterval(a, f, zone);
+
+							Interval absence = DataTrain.depart().absences()
+									.getAbsenceInterval(a, e, zone);
+
+							Interval olap = effectiveInterval.overlap(absence);
+							if (null != olap) {
+								// there is some overlap, but apparently not
+								// enough to just approve the absence
+
+								// subtract the number of minutes that the form
+								// DOES intersect with the absence (which we
+								// consider to be approved)
+								minutesForTardyOrEco -= olap.toDuration()
 										.getStandardMinutes();
 							}
+
 						}
 					}
 					minutesForTardyOrEco += d.getStandardMinutes();

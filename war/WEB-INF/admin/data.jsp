@@ -36,6 +36,14 @@
 					<input type="submit" value="Restore" style="float:right" />
 				</fieldset>
 			</form>
+			<form class="grid-8" method="POST" action="/admin/refresh" enctype="multipart/form-data">
+				<fieldset>
+					<legend>Refresh Datastore:</legend>
+					<p>This is a tool for the developers to trigger a full refresh of properties (like grades) 
+					in the case of calculation changes in the code.</p>
+					<input type="submit" value="Refresh" style="float:right" />
+				</fieldset>
+			</form>
 			<br style="clear:both" />
 		</p>
 		

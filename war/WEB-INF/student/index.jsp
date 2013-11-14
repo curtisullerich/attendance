@@ -11,8 +11,11 @@
 
 		<h1>Student Page</h1>
 		<p>
-			Current grade: <c:out value="${user.grade.displayName}" /><br/><br/>
-
+			<b>Current grade:</b> <c:out value="${user.grade.displayName}" /><br/>
+			<b>Total (unexcused) minutes missed:</b> <c:out value="${user.minutesMissed}" /><br/>
+			<b>Total minutes granted via TimeWorked forms:</b> <c:out value="${user.minutesAvailable}" /><br/>
+			If you notice any inconsistencies with this (i.e. numbers aren't adding up like they should) email the developers at <a href="mailto:mbattendance@iastate.edu">mbattendance@iastate.edu</a>.<br/>
+			<br/>
 			Use the navigation options on the left to manage your attendance.
 		</p>
 		<jsp:include page="/WEB-INF/common/status.jsp"/>

@@ -227,53 +227,70 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		Absence a1 = ac.createOrUpdateAbsence(s1, e1);
 		uc.update(s1);
 		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
+		assertEquals(80, uc.get(s1.getId()).getMinutesMissed());
 
 		Interval i2 = new Interval(start.plusDays(1), end.plusDays(1));
 		Event e2 = ec.createOrUpdate(Event.Type.Rehearsal, i2);
 		Absence a2 = ac.createOrUpdateAbsence(s1, e2);
 		uc.update(s1);
 		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
+		assertEquals(160, uc.get(s1.getId()).getMinutesMissed());
 
 		Interval i3 = new Interval(start.plusDays(2), end.plusDays(2));
 		Event e3 = ec.createOrUpdate(Event.Type.Rehearsal, i3);
 		Absence a3 = ac.createOrUpdateAbsence(s1, e3);
 		uc.update(s1);
 		assertEquals(User.Grade.F, uc.get(s1.getId()).getGrade());
+		assertEquals(240, uc.get(s1.getId()).getMinutesMissed());
 
 		Interval i4 = new Interval(start.plusDays(3), end.plusDays(3));
 		Event e4 = ec.createOrUpdate(Event.Type.Rehearsal, i4);
 		Absence a4 = ac.createOrUpdateAbsence(s1, e4);
 		uc.update(s1);
 		assertEquals(User.Grade.F, uc.get(s1.getId()).getGrade());
+		assertEquals(320, uc.get(s1.getId()).getMinutesMissed());
 
 		Interval i5 = new Interval(start.plusDays(4), end.plusDays(4));
 		Event e5 = ec.createOrUpdate(Event.Type.Rehearsal, i5);
 		Absence a5 = ac.createOrUpdateAbsence(s1, e5);
 		uc.update(s1);
 		assertEquals(User.Grade.F, uc.get(s1.getId()).getGrade());
+		assertEquals(400, uc.get(s1.getId()).getMinutesMissed());
 
 		a1.setStatus(Absence.Status.Approved);
 		ac.updateAbsence(a1);
 		assertEquals(User.Grade.F, uc.get(s1.getId()).getGrade());
+		assertEquals(320, uc.get(s1.getId()).getMinutesMissed());
 		a2.setStatus(Absence.Status.Approved);
 		ac.updateAbsence(a2);
 		assertEquals(User.Grade.F, uc.get(s1.getId()).getGrade());
+		assertEquals(240, uc.get(s1.getId()).getMinutesMissed());
+		
 		a3.setStatus(Absence.Status.Approved);
 		ac.updateAbsence(a3);
 		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
+		assertEquals(160, uc.get(s1.getId()).getMinutesMissed());
+		
 		a4.setStatus(Absence.Status.Approved);
 		ac.updateAbsence(a4);
 		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
+		assertEquals(80, uc.get(s1.getId()).getMinutesMissed());
+
 		a5.setStatus(Absence.Status.Approved);
 		ac.updateAbsence(a5);
 		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
+		assertEquals(0, uc.get(s1.getId()).getMinutesMissed());
+
 		a1.setType(Absence.Type.Tardy);
 		a1.setStatus(Absence.Status.Denied);
 		ac.updateAbsence(a1);
 		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
+		assertEquals(0, uc.get(s1.getId()).getMinutesMissed());
+		
 		a2.setStatus(Absence.Status.Denied);
 		ac.updateAbsence(a2);
 		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
+		assertEquals(80, uc.get(s1.getId()).getMinutesMissed());
 
 		Interval i6 = new Interval(start.plusDays(5), end.plusDays(5));
 		DateTime tardyTime = i6.getStart().plusMinutes(10);
@@ -283,15 +300,18 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		Absence a6 = ac.createOrUpdateTardy(s1, tardyTime);
 		ac.updateAbsence(a6);
 		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
+		assertEquals(80, uc.get(s1.getId()).getMinutesMissed());
 
 		Absence a7 = ac.createOrUpdateEarlyCheckout(s1, outTime);
 		a7 = ac.updateAbsence(a7);
 		assertEquals(Absence.Type.EarlyCheckOut, a7.getType());
 		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
+		assertEquals(80, uc.get(s1.getId()).getMinutesMissed());
 
 		// auto-linking should happen here, upon creation
 		ec.createOrUpdate(Event.Type.Rehearsal, i6);
 		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
+		assertEquals(160, uc.get(s1.getId()).getMinutesMissed());
 	}
 
 	@Test
@@ -310,6 +330,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 
 		// should be A initially
 		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
+		assertEquals(0, uc.get(student.getId()).getMinutesMissed());
 
 		DateTime start = new DateTime(2012, 9, 18, 16, 30, 0, 0, zone);
 		DateTime end = start.plusMinutes(80);
@@ -320,6 +341,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 
 		// there's a tardy, but it's not linked
 		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
+		assertEquals(0, uc.get(student.getId()).getMinutesMissed());
 		ec.createOrUpdate(Event.Type.Rehearsal, new Interval(start, end)); // total
 																			// =
 																			// 10
@@ -327,23 +349,28 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		// now that there's a matching event, it should link, but still be
 		// within the limit
 		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
+		assertEquals(10, uc.get(student.getId()).getMinutesMissed());
 
 		start = start.plusDays(1);
 		end = start.plusMinutes(80);
 		checkIOtime = start.plusMinutes(10);
 		ac.createOrUpdateEarlyCheckout(student, checkIOtime); // total = 90
+		assertEquals(10, uc.get(student.getId()).getMinutesMissed());
 		ec.createOrUpdate(Event.Type.Rehearsal, new Interval(start, end));
 		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
+		assertEquals(90, uc.get(student.getId()).getMinutesMissed());
 
 		start = start.plusDays(1);
 		end = start.plusMinutes(80);
 		checkIOtime = start.plusMinutes(10);
 		ac.createOrUpdateEarlyCheckout(student, checkIOtime); // total = 170
+		assertEquals(90, uc.get(student.getId()).getMinutesMissed());
 		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
 
 		// now link the last eco
 		ec.createOrUpdate(Event.Type.Performance, new Interval(start, end));
 		assertEquals(User.Grade.B, uc.get(student.getId()).getGrade());
+		assertEquals(170, uc.get(student.getId()).getMinutesMissed());
 
 		start = start.plusDays(1);
 		end = end.plusDays(1);
@@ -351,6 +378,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		ac.createOrUpdateTardy(student, checkIOtime);
 		ec.createOrUpdate(Event.Type.Performance, new Interval(start, end));
 		assertEquals(User.Grade.C, uc.get(student.getId()).getGrade());
+		assertEquals(180, uc.get(student.getId()).getMinutesMissed());
 
 		start = start.plusDays(1);
 		end = end.plusDays(1);
@@ -358,12 +386,14 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		ac.createOrUpdateAbsence(student, ec.createOrUpdate(
 				Event.Type.Performance, new Interval(start, end)));
 		assertEquals(User.Grade.F, uc.get(student.getId()).getGrade());
+		assertEquals(260, uc.get(student.getId()).getMinutesMissed());
 
 		for (Absence a : ac.get(student)) {
 			a.setStatus(Absence.Status.Approved);
 			ac.updateAbsence(a);
 		}
 		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
+		assertEquals(0, uc.get(student.getId()).getMinutesMissed());
 
 	}
 
@@ -389,6 +419,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		ac.createOrUpdateTardy(student, checkIOtime);
 		// 160 - 10
 		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
+		assertEquals(10, uc.get(student.getId()).getMinutesMissed());
 
 		start = start.plusDays(1);
 		end = start.plusMinutes(80);
@@ -397,6 +428,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		Absence a1 = ac.createOrUpdateTardy(student, checkIOtime);
 		// 160 - 10 - 80
 		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
+		assertEquals(90, uc.get(student.getId()).getMinutesMissed());
 
 		start = start.plusDays(1);
 		end = start.plusMinutes(80);
@@ -405,6 +437,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		Absence a2 = ac.createOrUpdateEarlyCheckout(student, checkIOtime);
 		// 160 - 10 - 80 - 80
 		assertEquals(User.Grade.B, uc.get(student.getId()).getGrade());
+		assertEquals(170, uc.get(student.getId()).getMinutesMissed());
 
 		start = start.plusDays(1);
 		end = start.plusMinutes(80);
@@ -413,6 +446,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		ac.createOrUpdateTardy(student, checkIOtime);
 		// 160 - 10 - 80 - 80 - 20
 		assertEquals(User.Grade.C, uc.get(student.getId()).getGrade());
+		assertEquals(190, uc.get(student.getId()).getMinutesMissed());
 
 		start = start.plusDays(1);
 		end = start.plusMinutes(80);
@@ -421,14 +455,16 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		ac.createOrUpdateEarlyCheckout(student, checkIOtime);
 		// 160 - 10 - 80 - 80 - 20 - 14
 		assertEquals(User.Grade.D, uc.get(student.getId()).getGrade());
+		assertEquals(204, uc.get(student.getId()).getMinutesMissed());
 
 		start = start.plusDays(1);
 		end = start.plusMinutes(80);
 		checkIOtime = end.minusMinutes(25);
 		ec.createOrUpdate(Event.Type.Rehearsal, new Interval(start, end));
 		ac.createOrUpdateEarlyCheckout(student, checkIOtime);
-		// 160 - 10 - 80 - 80 - 20 - 16 - 25
+		// 160 - 10 - 80 - 80 - 20 - 14 - 25
 		assertEquals(User.Grade.F, uc.get(student.getId()).getGrade());
+		assertEquals(229, uc.get(student.getId()).getMinutesMissed());
 
 		start = start.plusDays(1);
 		end = start.plusMinutes(80);
@@ -437,16 +473,19 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		ac.createOrUpdateAbsence(student, e);
 		// 160 - 10 - 80 - 80 - 20 - 16 - 25 - 80
 		assertEquals(User.Grade.F, uc.get(student.getId()).getGrade());
+		assertEquals(309, uc.get(student.getId()).getMinutesMissed());
 
 		a1.setStatus(Absence.Status.Approved);
 		ac.updateAbsence(a1);
 		// 160 - 10 - 80 - 80 - 20 - 16 - 25 - 80 + 80
 		assertEquals(User.Grade.F, uc.get(student.getId()).getGrade());
+		assertEquals(229, uc.get(student.getId()).getMinutesMissed());
 
 		a2.setStatus(Absence.Status.Approved);
 		ac.updateAbsence(a2);
 		// 160 - 10 - 80 - 80 - 20 - 16 - 25 - 80 + 80 + 80
 		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
+		assertEquals(149, uc.get(student.getId()).getMinutesMissed());
 	}
 
 	@Test
@@ -480,25 +519,31 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		ac.createOrUpdateTardy(student, checkIn1);
 		// missed 10
 		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
+		assertEquals(10, uc.get(student.getId()).getMinutesMissed());
 
 		Absence a1 = ac.createOrUpdateEarlyCheckout(student, checkOut1);
 		// missed 10 + 180, counts as 200. 40 over allowance
 		assertEquals(User.Grade.D, uc.get(student.getId()).getGrade());
+		assertEquals(200, uc.get(student.getId()).getMinutesMissed());
 
 		ac.createOrUpdateTardy(student, checkIn2);
 		// missed 10 + 18. within allowance
 		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
+		assertEquals(28, uc.get(student.getId()).getMinutesMissed());
 
 		ac.createOrUpdateEarlyCheckout(student, checkOut2);
 		// missed 10 + 18 + rest of rehearsal (counts as 200)
 		assertEquals(User.Grade.D, uc.get(student.getId()).getGrade());
+		assertEquals(200, uc.get(student.getId()).getMinutesMissed());
 
 		ac.createOrUpdateTardy(student, checkIn3);
 		// missed 10 + 18 + 40. counts as 200
 		assertEquals(User.Grade.D, uc.get(student.getId()).getGrade());
+		assertEquals(200, uc.get(student.getId()).getMinutesMissed());
 
 		// 160 - 10
 		assertEquals(User.Grade.D, uc.get(student.getId()).getGrade());
+		assertEquals(200, uc.get(student.getId()).getMinutesMissed());
 	}
 
 	@Test
@@ -513,6 +558,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		User student = TestUsers.createDefaultStudent(uc);
 
 		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
+		assertEquals(0, uc.get(student.getId()).getMinutesMissed());
 
 		DateTime start = new DateTime(2012, 9, 18, 12, 30, 0, 0, zone);
 		DateTime end = start.plusMinutes(200);
@@ -525,13 +571,16 @@ public class UserManagerTest extends AbstractDatastoreTest {
 
 		Absence tardy = ac.createOrUpdateTardy(student, checkIn1);
 		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
+		assertEquals(20, uc.get(student.getId()).getMinutesMissed());
 
 		Absence eco = ac.createOrUpdateEarlyCheckout(student, checkOut1);
 		assertEquals(User.Grade.D, uc.get(student.getId()).getGrade());
+		assertEquals(200, uc.get(student.getId()).getMinutesMissed());
 
 		tardy.setStatus(Absence.Status.Approved);
 		ac.updateAbsence(tardy);
 		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
+		assertEquals(20, uc.get(student.getId()).getMinutesMissed());
 	}
 
 	@Test
@@ -560,12 +609,19 @@ public class UserManagerTest extends AbstractDatastoreTest {
 
 		Absence tardy1 = ac.createOrUpdateTardy(student, checkIn1);
 		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
+		assertEquals(20, uc.get(student.getId()).getMinutesMissed());
+
 		Absence eco1 = ac.createOrUpdateEarlyCheckout(student, checkOut1);
 		assertEquals(User.Grade.D, uc.get(student.getId()).getGrade());
+		assertEquals(200, uc.get(student.getId()).getMinutesMissed());
+		
 		Absence tardy2 = ac.createOrUpdateTardy(student, checkIn2);
 		assertEquals(User.Grade.D, uc.get(student.getId()).getGrade());
+		assertEquals(200, uc.get(student.getId()).getMinutesMissed());
+		
 		Absence eco2 = ac.createOrUpdateEarlyCheckout(student, checkOut2);
 		assertEquals(User.Grade.D, uc.get(student.getId()).getGrade());
+		assertEquals(200, uc.get(student.getId()).getMinutesMissed());
 
 		eco1.setStatus(Absence.Status.Approved);
 		ac.updateAbsence(eco1);
@@ -573,6 +629,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		// minutes in
 
 		assertEquals(User.Grade.D, uc.get(student.getId()).getGrade());
+		assertEquals(200, uc.get(student.getId()).getMinutesMissed());
 	}
 
 	@Test
@@ -765,6 +822,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		Absence a1 = ac.createOrUpdateTardy(s1, checkIOtime1);
 		Absence a2 = ac.createOrUpdateTardy(s1, checkIOtime2);
 		Absence a3 = ac.createOrUpdateTardy(s1, checkIOtime3);
+		assertEquals(240, uc.get(s1.getId()).getMinutesMissed());
 		assertEquals(User.Grade.F, s1.getGrade());
 		form.setStatus(Form.Status.Approved);
 		fc.update(form);
@@ -772,6 +830,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		assertEquals(Absence.Status.Pending, a1.getStatus());
 		assertEquals(Absence.Status.Pending, a2.getStatus());
 		assertEquals(Absence.Status.Pending, a3.getStatus());
+		assertEquals(30, uc.get(s1.getId()).getMinutesMissed());
 		assertEquals(User.Grade.A, s1.getGrade());
 	}
 }

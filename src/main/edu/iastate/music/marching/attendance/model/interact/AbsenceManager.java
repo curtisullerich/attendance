@@ -70,6 +70,79 @@ public class AbsenceManager extends AbstractManager {
 		return false;
 	}
 
+	Interval getAbsenceInterval(Absence absence, Event event, DateTimeZone zone) {
+		//this assumes that a tardy is the /first/ checkin
+		//and that an eco is the /last/ checkout
+		switch (absence.getType()) {
+		case Absence:
+			// should be the whole thing
+			Interval i = absence.getInterval(zone).overlap(
+					event.getInterval(zone));
+			if (i == null) {
+				return null;
+			}
+			throw new IllegalArgumentException();
+		case EarlyCheckOut:
+			DateTime checkout = absence.getCheckout(zone);
+			if (!event.getInterval(zone).contains(checkout)) {
+				throw new IllegalArgumentException();
+			}
+			return new Interval(checkout, event.getInterval(zone).getEnd());
+		case Tardy:
+			DateTime checkin = absence.getCheckin(zone);
+			if (!event.getInterval(zone).contains(checkin)) {
+				throw new IllegalArgumentException();
+			}
+			return new Interval(event.getInterval(zone).getStart(), checkin);
+		default:
+			throw new UnsupportedOperationException();
+		}
+
+	}
+
+	Interval getEffectiveFormInterval(Absence absence, Form form,
+			DateTimeZone zone) {
+		int formDayOfWeek = form.getDayOfWeek().DayOfWeek;
+		DateMidnight formDayOnAbsenceWeek;
+		switch (absence.getType()) {
+		case Absence:
+
+			DateTime aStart = absence.getInterval(zone).getStart();
+			DateTime aEnd = absence.getInterval(zone).getEnd();
+
+			if (aStart.getDayOfWeek() != aEnd.getDayOfWeek()) {
+				LOG.warning("BLERG");
+			}
+
+			formDayOnAbsenceWeek = aStart.withDayOfWeek(formDayOfWeek)
+					.toDateMidnight();
+			break;
+		case Tardy:
+			DateTime checkin = absence.getCheckin(zone);
+			formDayOnAbsenceWeek = checkin.withDayOfWeek(formDayOfWeek)
+					.toDateMidnight();
+			break;
+		case EarlyCheckOut:
+			DateTime checkout = absence.getCheckout(zone);
+			formDayOnAbsenceWeek = checkout.withDayOfWeek(formDayOfWeek)
+					.toDateMidnight();
+			break;
+		default:
+			throw new UnsupportedOperationException();
+		}
+
+		int minutesToOrFrom = form.getMinutesToOrFrom();
+		DateTime effectiveStartTime = form.getStartTime()
+				.toDateTime(formDayOnAbsenceWeek).minusMinutes(minutesToOrFrom);
+		DateTime effectiveEndTime = form.getEndTime()
+				.toDateTime(formDayOnAbsenceWeek).plusMinutes(minutesToOrFrom);
+
+		Interval effectiveFormInterval = new Interval(effectiveStartTime,
+				effectiveEndTime);
+		return effectiveFormInterval;
+
+	}
+
 	/**
 	 * This does not store any changes in the database!
 	 * 
@@ -128,47 +201,8 @@ public class AbsenceManager extends AbstractManager {
 				return false;
 			}
 
-			int formDayOfWeek = form.getDayOfWeek().DayOfWeek;
-
-			DateMidnight formDayOnAbsenceWeek;
-			switch (absence.getType()) {
-			case Absence:
-
-				DateTime aStart = absence.getInterval(zone).getStart();
-				DateTime aEnd = absence.getInterval(zone).getEnd();
-
-				if (aStart.getDayOfWeek() != aEnd.getDayOfWeek()) {
-					LOG.warning("BLERG");
-				}
-
-				formDayOnAbsenceWeek = aStart.withDayOfWeek(formDayOfWeek)
-						.toDateMidnight();
-				break;
-			case Tardy:
-				DateTime checkin = absence.getCheckin(zone);
-				formDayOnAbsenceWeek = checkin.withDayOfWeek(formDayOfWeek)
-						.toDateMidnight();
-				break;
-			case EarlyCheckOut:
-				DateTime checkout = absence.getCheckout(zone);
-				formDayOnAbsenceWeek = checkout.withDayOfWeek(formDayOfWeek)
-						.toDateMidnight();
-				break;
-			default:
-				throw new UnsupportedOperationException();
-			}
-
-			int minutesToOrFrom = form.getMinutesToOrFrom();
-			DateTime effectiveStartTime = form.getStartTime()
-					.toDateTime(formDayOnAbsenceWeek)
-					.minusMinutes(minutesToOrFrom);
-			DateTime effectiveEndTime = form.getEndTime()
-					.toDateTime(formDayOnAbsenceWeek)
-					.plusMinutes(minutesToOrFrom);
-
-			Interval effectiveFormInterval = new Interval(effectiveStartTime,
-					effectiveEndTime);
-
+			Interval effectiveFormInterval = getEffectiveFormInterval(absence,
+					form, zone);
 			return Absence.isContainedIn(absence, effectiveFormInterval);
 		case TimeWorked:
 			// this does not auto-approve here. It does that upon an upDateTime

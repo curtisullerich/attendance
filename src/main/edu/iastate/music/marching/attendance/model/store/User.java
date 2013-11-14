@@ -111,7 +111,11 @@ public class User implements Serializable {
 
 	private boolean showApproved;
 
+	// number of minutes available from submitted TimeWorked forms
 	private int minutesAvailable;
+
+	// number of unexcused minutes absent so far this semester
+	private int minutesMissed;
 
 	/**
 	 * Create users through UserController (DataModel.users().create(...)
@@ -286,6 +290,14 @@ public class User implements Serializable {
 
 	public void setYear(int year) {
 		this.year = year;
+	}
+
+	public void setMinutesMissed(int minutes) {
+		this.minutesMissed = minutes;
+	}
+
+	public int getMinutesMissed() {
+		return this.minutesMissed;
 	}
 
 	@Override
