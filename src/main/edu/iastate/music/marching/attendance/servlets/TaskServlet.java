@@ -1,6 +1,7 @@
 package edu.iastate.music.marching.attendance.servlets;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -8,15 +9,21 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.iastate.music.marching.attendance.model.interact.AbsenceManager;
 import edu.iastate.music.marching.attendance.model.interact.DataTrain;
+import edu.iastate.music.marching.attendance.model.interact.FormManager;
+import edu.iastate.music.marching.attendance.model.interact.UserManager;
+import edu.iastate.music.marching.attendance.model.store.Absence;
+import edu.iastate.music.marching.attendance.model.store.Form;
 import edu.iastate.music.marching.attendance.model.store.ImportData;
+import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.tasks.Export;
 import edu.iastate.music.marching.attendance.tasks.Import;
 
 public class TaskServlet extends AbstractBaseServlet {
 
 	private enum Page {
-		export, import_, export_daily;
+		export, import_, export_daily, refresh;
 	}
 
 	private static final long serialVersionUID = 2390747813204817960L;
@@ -33,6 +40,57 @@ public class TaskServlet extends AbstractBaseServlet {
 
 	public static final String IMPORT_DATA_URL = pageToUrl(Page.import_,
 			SERVLET_PATH);
+	public static final String REFRESH_URL = pageToUrl(Page.refresh,
+			SERVLET_PATH);
+
+	private void doRefresh(HttpServletRequest req, HttpServletResponse resp)
+			throws IOException {
+		DataTrain train = DataTrain.depart();
+		ArrayList<String> errors = new ArrayList<String>();
+		// if (req.getParameter("RefreshAbsences") != null) {
+		String succex = null;
+		AbsenceManager ac = train.absences();
+		try {
+			for (Absence a : ac.getAll()) {
+				ac.updateAbsence(a);
+			}
+			succex = "Absences refreshed.";
+		} catch (Throwable tehThrowable) {
+			errors.add(tehThrowable.getMessage());
+			LOG.severe(tehThrowable.getMessage());
+			LOG.severe(tehThrowable.getStackTrace().toString());
+		}
+		// } else if (req.getParameter("RefreshForms") != null) {
+		// String succex = null;
+		FormManager fc = train.forms();
+		try {
+			for (Form f : fc.getAll()) {
+				fc.update(f);
+			}
+			succex = "Forms refreshed.";
+		} catch (Throwable tehThrowable) {
+			errors.add(tehThrowable.getMessage());
+			LOG.severe(tehThrowable.getMessage());
+			LOG.severe(tehThrowable.getStackTrace().toString());
+		}
+		// } else if (req.getParameter("RefreshUsers") != null) {
+		// String succex = null;
+		UserManager uc = train.users();
+		try {
+			for (User u : uc.getAll()) {
+				uc.update(u);
+			}
+			succex = "Users refreshed. <(' '<) <(' ')> (>' ')>";
+		} catch (Throwable tehThrowable) {
+			errors.add(tehThrowable.getMessage());
+			LOG.severe(tehThrowable.getMessage());
+			LOG.severe(tehThrowable.getStackTrace().toString());
+		}
+		// }
+		if (errors.isEmpty()) {
+			LOG.info("Successful refresh completed.");
+		}
+	}
 
 	private void doDailyExport(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
@@ -117,11 +175,14 @@ public class TaskServlet extends AbstractBaseServlet {
 			case import_:
 				doImport(req, resp);
 				break;
+			case refresh:
+				doRefresh(req, resp);
+				break;
 			default:
 				ErrorServlet.showError(req, resp, 404);
 			}
 	}
-	
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {

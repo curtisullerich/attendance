@@ -15,6 +15,7 @@ import com.google.appengine.api.taskqueue.QueueFactory;
 import edu.iastate.music.marching.attendance.model.interact.DataTrain;
 import edu.iastate.music.marching.attendance.model.store.ImportData;
 import edu.iastate.music.marching.attendance.model.store.ModelFactory;
+import edu.iastate.music.marching.attendance.servlets.AdminServlet;
 import edu.iastate.music.marching.attendance.servlets.TaskServlet;
 
 public class Tasks {
@@ -22,6 +23,11 @@ public class Tasks {
 	public static void exportData() {
 		Queue queue = QueueFactory.getDefaultQueue();
 		queue.add(withUrl(TaskServlet.EXPORT_DATA_URL));
+	}
+
+	public static void refresh() {
+		Queue queue = QueueFactory.getDefaultQueue();
+		queue.add(withUrl(TaskServlet.REFRESH_URL));
 	}
 
 	public static void importData(InputStream stream) throws IOException {

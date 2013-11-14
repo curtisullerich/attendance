@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
@@ -33,7 +32,7 @@ import edu.iastate.music.marching.attendance.util.ValidationUtil;
 public class AdminServlet extends AbstractBaseServlet {
 
 	private enum Page {
-		index, users, user, data, restore, backup, data_migrate, data_delete, register, bulkmake, student_register
+		index, users, user, data, restore, backup, refresh, data_migrate, data_delete, register, bulkmake, student_register
 	}
 
 	private static final long serialVersionUID = 6636386568039228284L;
@@ -222,8 +221,8 @@ public class AdminServlet extends AbstractBaseServlet {
 		if (errors.size() == 0) {
 			try {
 				new_user = train.users().createDirector(
-						Util.emailToString(primaryEmail), secondEmail.getEmail(),
-						firstName, lastName);
+						Util.emailToString(primaryEmail),
+						secondEmail.getEmail(), firstName, lastName);
 
 			} catch (IllegalArgumentException e) {
 				// Save validation errors
@@ -331,6 +330,9 @@ public class AdminServlet extends AbstractBaseServlet {
 			case restore:
 				doDataImport(req, resp);
 				break;
+			case refresh:
+				queueRefresh(req, resp);
+				break;
 			case users:
 				postUserInfo(req, resp);
 				break;
@@ -408,9 +410,8 @@ public class AdminServlet extends AbstractBaseServlet {
 
 		if (errors.size() == 0) {
 			try {
-				new_user = train.users().createStudent(primaryEmail,
-						univID, firstName, lastName, year, major, section,
-						secondEmail);
+				new_user = train.users().createStudent(primaryEmail, univID,
+						firstName, lastName, year, major, section, secondEmail);
 
 			} catch (IllegalArgumentException e) {
 				// Save validation errors
@@ -492,6 +493,17 @@ public class AdminServlet extends AbstractBaseServlet {
 
 		showUsers(req, resp, errors, success);
 
+	}
+
+	private void queueRefresh(HttpServletRequest req, HttpServletResponse resp)
+			throws ServletException, IOException {
+
+		Tasks.refresh();
+
+		LOG.info("Queueing refresh");
+
+		new PageBuilder(Page.refresh, SERVLET_PATH).setPageTitle(
+				"Refresh Started").passOffToJsp(req, resp);
 	}
 
 	private void queueDataExport(HttpServletRequest req,
