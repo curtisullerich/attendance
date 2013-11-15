@@ -205,8 +205,9 @@ public class UserManagerTest extends AbstractDatastoreTest {
 	//
 	// }
 	//
+
 	@Test
-	public void testGrade() {
+	public void testGrade1() {
 		DataTrain train = getDataTrain();
 
 		DateTimeZone zone = train.appData().get().getTimeZone();
@@ -265,12 +266,12 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		ac.updateAbsence(a2);
 		assertEquals(User.Grade.F, uc.get(s1.getId()).getGrade());
 		assertEquals(240, uc.get(s1.getId()).getMinutesMissed());
-		
+
 		a3.setStatus(Absence.Status.Approved);
 		ac.updateAbsence(a3);
 		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
 		assertEquals(160, uc.get(s1.getId()).getMinutesMissed());
-		
+
 		a4.setStatus(Absence.Status.Approved);
 		ac.updateAbsence(a4);
 		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
@@ -286,7 +287,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		ac.updateAbsence(a1);
 		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
 		assertEquals(0, uc.get(s1.getId()).getMinutesMissed());
-		
+
 		a2.setStatus(Absence.Status.Denied);
 		ac.updateAbsence(a2);
 		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
@@ -614,11 +615,11 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		Absence eco1 = ac.createOrUpdateEarlyCheckout(student, checkOut1);
 		assertEquals(User.Grade.D, uc.get(student.getId()).getGrade());
 		assertEquals(200, uc.get(student.getId()).getMinutesMissed());
-		
+
 		Absence tardy2 = ac.createOrUpdateTardy(student, checkIn2);
 		assertEquals(User.Grade.D, uc.get(student.getId()).getGrade());
 		assertEquals(200, uc.get(student.getId()).getMinutesMissed());
-		
+
 		Absence eco2 = ac.createOrUpdateEarlyCheckout(student, checkOut2);
 		assertEquals(User.Grade.D, uc.get(student.getId()).getGrade());
 		assertEquals(200, uc.get(student.getId()).getMinutesMissed());
@@ -832,5 +833,42 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		assertEquals(Absence.Status.Pending, a3.getStatus());
 		assertEquals(30, uc.get(s1.getId()).getMinutesMissed());
 		assertEquals(User.Grade.A, s1.getGrade());
+	}
+
+	@Test
+	public void testGradeWithClassConflictFullAbsence() {
+		DataTrain train = getDataTrain();
+
+		UserManager uc = train.users();
+		EventManager ec = train.events();
+		FormManager fc = train.forms();
+		AbsenceManager ac = train.absences();
+		DateTimeZone zone = train.appData().get().getTimeZone();
+
+		User s1 = TestUsers.createDefaultStudent(uc);
+
+		LocalTime classStart = new LocalTime(16, 10);
+		LocalTime classEnd = new LocalTime(17, 0);
+		Interval interval = Util.datesToFullDaysInterval(new LocalDate(2013, 8,
+				20), new LocalDate(2013, 12, 20), zone);
+		Form form = fc.createClassConflictForm(s1, "department", "course",
+				"section", "building", interval, classStart, classEnd,
+				App.WeekDay.Tuesday, "details", 20, Absence.Type.Absence);
+
+		LocalDate eventDate = new LocalDate(2013, 11, 12);
+		LocalTime eventStartTime = new LocalTime(16, 30);
+		DateTime eventStart = eventDate.toDateTime(eventStartTime, zone);
+		DateTime eventEnd = eventStart.plusMinutes(80);
+
+		Event e1 = ec.createOrUpdate(Event.Type.Rehearsal, new Interval(
+				eventStart, eventEnd));
+
+		Absence a = ac.createOrUpdateAbsence(s1, e1);
+		assertEquals(80, uc.get(s1.getId()).getMinutesMissed());
+		form.setStatus(Form.Status.Approved);
+		fc.update(form);
+		s1 = uc.get(s1.getId());
+		assertEquals(Absence.Status.Pending, a.getStatus());
+		assertEquals(30, uc.get(s1.getId()).getMinutesMissed());
 	}
 }

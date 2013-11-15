@@ -71,8 +71,8 @@ public class AbsenceManager extends AbstractManager {
 	}
 
 	Interval getAbsenceInterval(Absence absence, Event event, DateTimeZone zone) {
-		//this assumes that a tardy is the /first/ checkin
-		//and that an eco is the /last/ checkout
+		// this assumes that a tardy is the /first/ checkin
+		// and that an eco is the /last/ checkout
 		switch (absence.getType()) {
 		case Absence:
 			// should be the whole thing
@@ -81,7 +81,7 @@ public class AbsenceManager extends AbstractManager {
 			if (i == null) {
 				return null;
 			}
-			throw new IllegalArgumentException();
+			return i;
 		case EarlyCheckOut:
 			DateTime checkout = absence.getCheckout(zone);
 			if (!event.getInterval(zone).contains(checkout)) {

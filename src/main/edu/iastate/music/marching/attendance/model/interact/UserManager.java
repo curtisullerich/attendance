@@ -523,11 +523,11 @@ public class UserManager extends AbstractManager {
 			// events will have no grade penalty
 
 			if (a.getEvent() != null) {
-				if (a.getType() == Absence.Type.Absence) {
-					minutes += a.getEvent().getInterval(zone).toDuration()
-							.getStandardMinutes();
-
-				} else {
+//				if (a.getType() == Absence.Type.Absence) {
+//					minutes += a.getEvent().getInterval(zone).toDuration()
+//							.getStandardMinutes();
+//
+//				} else {
 					Duration d;
 					if (a.getType() == Absence.Type.Tardy) {
 						d = new Duration(a.getEvent().getInterval(zone)
@@ -535,7 +535,10 @@ public class UserManager extends AbstractManager {
 					} else if (a.getType() == Absence.Type.EarlyCheckOut) {
 						d = new Duration(a.getCheckout(zone), a.getEvent()
 								.getInterval(zone).getEnd());
-					} else {
+					} else if (a.getType() == Absence.Type.Absence) {
+						d = new Duration(a.getInterval(zone));
+					}
+					else {
 						d = null;
 						throw new IllegalArgumentException(
 								"invalid absence type");
@@ -606,7 +609,7 @@ public class UserManager extends AbstractManager {
 						minutes += minutesForTardyOrEco;
 					}
 				}
-			}
+//			}
 		}
 		return minutes;
 	}
