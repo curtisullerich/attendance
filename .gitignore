@@ -1,5 +1,6 @@
 Thumbs.db
 *~
+*.sublime-*
 war/WEB-INF/lib/appengine*.jar
 .settings/*
 .project
