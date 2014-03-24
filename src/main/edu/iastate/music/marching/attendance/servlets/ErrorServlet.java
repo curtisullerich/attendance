@@ -30,8 +30,14 @@ public class ErrorServlet extends AbstractBaseServlet {
 	public static void showError(HttpServletRequest req,
 			HttpServletResponse resp, int i) throws ServletException,
 			IOException {
-		new PageBuilder(Page.index, SERVLET_PATH).setPageTitle(
-				new Integer(i).toString() + " Error").passOffToJsp(req, resp);
+
+		showError(req, resp, new Integer(i).toString() + " Error");
+	}
+
+	public static void showError(HttpServletRequest req,
+			HttpServletResponse resp, String message) throws ServletException,
+			IOException {
+		new PageBuilder(Page.index, SERVLET_PATH).setPageTitle(message).passOffToJsp(req, resp);
 	}
 
 	@Override
