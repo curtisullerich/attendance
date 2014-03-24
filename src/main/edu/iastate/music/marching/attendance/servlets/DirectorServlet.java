@@ -975,8 +975,6 @@ public class DirectorServlet extends AbstractBaseServlet {
 		DateTimeZone zone = train.appData().get().getTimeZone();
 		AbsenceManager ac = train.absences();
 
-		boolean validInput = true;
-
 		List<String> errors = new LinkedList<String>();
 
 		String sabsenceid = req.getParameter("absenceid");
@@ -1014,13 +1012,12 @@ public class DirectorServlet extends AbstractBaseServlet {
 						absence.setEvent(e);
 						absence.setInterval(e.getInterval(zone));
 						// associated with this event for this student
-					} else {
-						// the absence is orphaned if there's no event for it
 					}
+					// else: the absence is orphaned if there's no event for it
+					
 					checkedAbsence = absence;
 					page.setAttribute("new", true);
 				} else {
-					validInput = false;
 				}
 			} else {
 				absenceid = Long.parseLong(sabsenceid);
@@ -1028,13 +1025,11 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 			}
 		} else {
-			validInput = false;
 			errors.add("No absence to look for");
 		}
 
 		// Shouldn't ever happen since the id is sent by us from the jsp
 		if (checkedAbsence == null) {
-			validInput = false;
 			errors.add("Could not find the absence.");
 		}
 

@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.logging.Logger;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -30,9 +28,6 @@ public class PageBuilder {
 	private static final String ATTR_REDIRECT_URL = "redirect_url";
 
 	public static final String PARAM_REDIRECT_URL = "redirect";
-
-	private static final Logger LOG = Logger.getLogger(PageBuilder.class
-			.getName());
 
 	private String mJSPPath;
 

@@ -14,8 +14,6 @@ import com.google.code.twig.annotation.Id;
 import com.google.code.twig.annotation.Index;
 import com.google.code.twig.annotation.Store;
 
-import edu.iastate.music.marching.attendance.model.store.Absence.Type;
-
 @Entity(kind = "Absence", allocateIdsBy = 0)
 public class Absence {
 

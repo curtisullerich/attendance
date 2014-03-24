@@ -310,7 +310,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
 
-		Form form = fc.createPerformanceAbsenceForm(student, date,
+		fc.createPerformanceAbsenceForm(student, date,
 				"I love band.");
 		Event e = ec.createOrUpdate(Event.Type.Performance, eventInterval);
 
@@ -1624,9 +1624,9 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
 
-		Form form = fc.createPerformanceAbsenceForm(student, date,
+		fc.createPerformanceAbsenceForm(student, date,
 				"I love band.");
-		Event e = ec.createOrUpdate(Event.Type.Performance, eventInterval);
+		ec.createOrUpdate(Event.Type.Performance, eventInterval);
 
 		Absence a = ac.createOrUpdateEarlyCheckout(student,
 				Dates.getDefaultAdjustedStartTime());

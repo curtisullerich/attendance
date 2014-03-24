@@ -1,7 +1,5 @@
 package edu.iastate.music.marching.attendance.testlib;
 
-import com.google.appengine.api.datastore.Email;
-
 import edu.iastate.music.marching.attendance.model.interact.UserManager;
 import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.util.Util;

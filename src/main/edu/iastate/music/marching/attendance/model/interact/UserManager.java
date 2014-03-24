@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import org.joda.time.DateMidnight;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Duration;
@@ -20,7 +19,6 @@ import com.google.code.twig.FindCommand.RootFindCommand;
 import com.google.code.twig.ObjectDatastore;
 
 import edu.iastate.music.marching.attendance.model.store.Absence;
-import edu.iastate.music.marching.attendance.model.store.Absence.Type;
 import edu.iastate.music.marching.attendance.model.store.Event;
 import edu.iastate.music.marching.attendance.model.store.Form;
 import edu.iastate.music.marching.attendance.model.store.ModelFactory;
@@ -436,6 +434,7 @@ public class UserManager extends AbstractManager {
 				this.interval = interval;
 			}
 
+			@Override
 			public String toString() {
 				return (present ? "present " : "absent ") + interval.getStart()
 						+ interval.getEnd();

@@ -185,12 +185,14 @@ public class GsonWithPartials {
 			this.defaultDateFormatUTC.setTimeZone(TimeZone.getTimeZone("UTC"));
 		}
 
+		@Override
 		public JsonElement serialize(Date src, Type typeOfSrc,
 				JsonSerializationContext context) {
 			String dateFormatAsString = defaultDateFormatUTC.format(src);
 			return new JsonPrimitive(dateFormatAsString);
 		}
 
+		@Override
 		public Date deserialize(JsonElement json, Type typeOfT,
 				JsonDeserializationContext context) throws JsonParseException {
 			if (!(json instanceof JsonPrimitive)) {

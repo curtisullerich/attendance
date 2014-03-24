@@ -163,10 +163,10 @@ public class DataManager extends AbstractManager {
 	}
 
 	private Dump convertV2DatabaseDump(String string) {
-		DumpV2 dump = GsonWithPartials.fromJson(new StringReader(string),
+		GsonWithPartials.fromJson(new StringReader(string),
 				DumpV2.class);
-		// TODO Auto-generated method stub
-		return null;
+		
+		throw new UnsupportedOperationException("Not yet implemented");
 	}
 
 	private <T> void inject(Class<?> clazz, List<T> src) {

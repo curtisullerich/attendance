@@ -1,6 +1,8 @@
 package edu.iastate.music.marching.attendance.test.model.interact;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -117,7 +119,7 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		DateTime absenceStart = eventStart.minusDays(1);
 		DateTime absenceEnd = eventEnd.minusDays(1);
 
-		DateTime absenceStart2 = eventStart.minusHours(2);
+		eventStart.minusHours(2);
 		DateTime absenceEnd2 = eventEnd.minusHours(2);
 
 		Event event = train.events().createOrUpdate(Event.Type.Performance,
@@ -740,7 +742,7 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 				overlapTardyFirst);
 
 		assertEquals(2, overlapTardyFirstAbsences.size());
-		Absence createdAbsence = overlapTardyFirstAbsences.get(0);
+		overlapTardyFirstAbsences.get(0);
 
 		// Case 2.b
 		train.absences().createOrUpdateEarlyCheckout(overlapEarlyFirst,
@@ -751,7 +753,7 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 				overlapEarlyFirst);
 
 		assertEquals(2, overlapEarlyFirstAbsences.size());
-		createdAbsence = overlapEarlyFirstAbsences.get(0);
+		overlapEarlyFirstAbsences.get(0);
 
 	}
 
@@ -781,7 +783,7 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		List<Absence> studentAbsences = train.absences().get(student);
 
 		assertEquals(2, studentAbsences.size());
-		Absence absence = studentAbsences.get(0);
+		studentAbsences.get(0);
 	}
 
 	@Test
@@ -989,7 +991,7 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		List<Absence> studentAbs = train.absences().get(student);
 		assertEquals(2, studentAbs.size());
 
-		Absence absence = studentAbs.get(0);
+		studentAbs.get(0);
 	}
 
 	@Test
@@ -1221,7 +1223,7 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 				overlapTardyFirst);
 
 		assertEquals(2, overlapTardyFirstAbsences.size());
-		Absence createdAbsence = overlapTardyFirstAbsences.get(0);
+		overlapTardyFirstAbsences.get(0);
 
 		// Case 2.b
 		ac.createOrUpdateEarlyCheckout(overlapEarlyFirst, earlyOverlap);

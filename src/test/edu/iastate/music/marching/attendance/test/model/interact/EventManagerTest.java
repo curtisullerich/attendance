@@ -1,6 +1,7 @@
 package edu.iastate.music.marching.attendance.test.model.interact;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.text.ParseException;
 import java.util.List;

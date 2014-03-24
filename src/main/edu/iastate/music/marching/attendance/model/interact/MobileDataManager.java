@@ -169,17 +169,9 @@ public class MobileDataManager {
 
 		Set<User> updatedStudents = new HashSet<User>();
 
-		// Do everything in a transaction so entire upload goes as a single
-		// unit, rolling back if anything fails
-		// Track transaction = train.switchTracks();
-
-		// try {
-
 		EventManager ec = this.train.events();
 		AbsenceManager ac = this.train.absences();
 		UserManager uc = this.train.users();
-
-		// List<Event> localEvents = new LinkedList<Event>();
 
 		for (String s : eventLines) {
 			// TODO: https://github.com/curtisullerich/attendance/issues/62
@@ -309,22 +301,6 @@ public class MobileDataManager {
 				successfulAbscenses++;
 			}
 		}
-
-		// UpDateTime grades
-		for (User student : updatedStudents) {
-			// TODO we could optimize here by setting all the grades and then
-			// using an updateAll method in UserController. Just don't have time
-			// to test it now.
-			// uc.update(student);
-		}
-
-		// } catch (RuntimeException ex) {
-		// transaction.derail();
-		// throw ex;
-		// }
-		//
-		// // Must have all worked
-		// transaction.bendIronBack();
 
 		String errorString = "";
 		for (String s : errors)

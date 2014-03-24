@@ -47,14 +47,11 @@ public class TaskServlet extends AbstractBaseServlet {
 			throws IOException {
 		DataTrain train = DataTrain.depart();
 		ArrayList<String> errors = new ArrayList<String>();
-		// if (req.getParameter("RefreshAbsences") != null) {
-		String succex = null;
 		AbsenceManager ac = train.absences();
 		try {
 			for (Absence a : ac.getAll()) {
 				ac.updateAbsence(a);
 			}
-			succex = "Absences refreshed.";
 		} catch (Throwable tehThrowable) {
 			errors.add(tehThrowable.getMessage());
 			LOG.severe(tehThrowable.getMessage());
@@ -67,7 +64,6 @@ public class TaskServlet extends AbstractBaseServlet {
 			for (Form f : fc.getAll()) {
 				fc.update(f);
 			}
-			succex = "Forms refreshed.";
 		} catch (Throwable tehThrowable) {
 			errors.add(tehThrowable.getMessage());
 			LOG.severe(tehThrowable.getMessage());
@@ -80,7 +76,6 @@ public class TaskServlet extends AbstractBaseServlet {
 			for (User u : uc.getAll()) {
 				uc.update(u);
 			}
-			succex = "Users refreshed. <(' '<) <(' ')> (>' ')>";
 		} catch (Throwable tehThrowable) {
 			errors.add(tehThrowable.getMessage());
 			LOG.severe(tehThrowable.getMessage());

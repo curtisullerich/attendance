@@ -1,6 +1,6 @@
 package edu.iastate.music.marching.attendance.test.model.interact;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
