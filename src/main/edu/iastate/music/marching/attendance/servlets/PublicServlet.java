@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.iastate.music.marching.attendance.App;
 import edu.iastate.music.marching.attendance.beans.PageTemplateBean;
 import edu.iastate.music.marching.attendance.model.interact.DataTrain;
 import edu.iastate.music.marching.attendance.model.store.User;
@@ -79,7 +80,14 @@ public class PublicServlet extends AbstractBaseServlet {
 		String error_messages = req.getParameter("error_messages");
 		String field_values = req.getParameter("FieldValues");
 		String success_message = req.getParameter("success_message");
+		String spam_catcher = req.getParameter("leave_empty_spamcatcher");
 		boolean mobileSite = PageTemplateBean.onMobileSite(req.getSession());
+
+		// This field is hidden in the bug report form, no human should have entered text
+		if(spam_catcher != "") {
+			ErrorServlet.showError(req, resp, "Bug reporting failed, please send an email directly to: " + App.Emails.BUGREPORT_EMAIL_TO);
+			return;
+		}
 
 		if (error_messages != null && !error_messages.equals("[]")) {
 			description = "\nError Messages: " + error_messages + "\n"

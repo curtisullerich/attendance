@@ -25,5 +25,6 @@
 	<input type="hidden" name="FieldValues" value="{}" />
 	<input type="hidden" name="error_messages" value="${error_messages}" />
 	<input type="hidden" name="success_message" value="${success_message}" />
+	<input type="hidden" name="leave_empty_spamcatcher" value="" />
 	<input type="submit" value="Submit" name="Submit" />
 </form>
