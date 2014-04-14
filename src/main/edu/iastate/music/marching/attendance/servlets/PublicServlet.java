@@ -83,8 +83,8 @@ public class PublicServlet extends AbstractBaseServlet {
 		String spam_catcher = req.getParameter("leave_empty_spamcatcher");
 		boolean mobileSite = PageTemplateBean.onMobileSite(req.getSession());
 
-		// This field is hidden in the bug report form, no human should have entered text
-		if(spam_catcher != "") {
+		// spam_catcher field is hidden in the bug report form, no human should have entered text
+		if(!"".equals(spam_catcher)) {
 			ErrorServlet.showError(req, resp, "Bug reporting failed, please send an email directly to: " + App.Emails.BUGREPORT_EMAIL_TO);
 			return;
 		}
