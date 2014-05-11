@@ -333,6 +333,10 @@
 
           <!-- Folder for generated testing stuff -->
           <systemProperties>
+            <property> 
+               <name>java.util.logging.config.file</name>
+               <value>src/test/resources/logging.properties</value>
+             </property>
             <property>
               <name>gwt.args</name>
               <value>-out ${project.build.directory}/${project.build.finalName}</value>
