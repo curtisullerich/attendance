@@ -1,9 +1,12 @@
 package edu.iastate.music.marching.attendance.testlib;
 
+import org.junit.Ignore;
+
 import edu.iastate.music.marching.attendance.model.interact.UserManager;
 import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.util.Util;
 
+@Ignore
 public class TestUsers {
 
 	public static final User createDefaultStudent(UserManager uc) {
