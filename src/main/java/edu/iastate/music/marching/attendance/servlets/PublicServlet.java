@@ -91,9 +91,9 @@ public class PublicServlet extends AbstractBaseServlet {
 
 		// spam_catcher field is hidden in the bug report form, no human should have entered text
 	 	// further, we never expect success and error message to be exactly equal
-	 	// but a spammer will happily fill them out so
+	 	// but a spammer will happily fill them out to be identical
 		if(!"".equals(spam_catcher)
-		|| (success_message != null && success_message.equals(error_messages))) {
+		|| (success_message != null && !"".equals(success_message) && success_message.equals(error_messages))) {
 			ErrorServlet.showError(req, resp, "Bug reporting failed, please send an email directly to: " + App.Emails.BUGREPORT_EMAIL_TO);
 			return;
 		}
