@@ -99,25 +99,22 @@ public class PublicServlet extends AbstractBaseServlet {
 		}
 
 		if (error_messages != null && !error_messages.equals("[]")) {
-			description = "\nError Messages: " + error_messages + "\n"
-					+ description + "\n";
+			description = "Error Messages: " + error_messages + "\n\n"
+					+ description;
 		}
 
 		if (field_values != null) {
-			description = "\nForm Field Values: " + field_values + "\n"
-					+ description + "\n";
+			description = "Form Field Values: " + field_values + "\n\n"
+					+ description;
 		}
 
 		if (success_message != null && !success_message.equals("")) {
-			description = "\nSuccess Message: " + success_message + "\n"
-					+ description + "\n";
+			description = "Success Message: " + success_message + "\n\n"
+					+ description;
 		}
 
-		description = "\nApplication: " + appId + " (" + appVersion + ")\n";
-		description = "\nPlatform: " + platformVersion + "\n";
-
 		datatrain.data().sendBugReportEmail(user, severity, redir, userAgent,
-				mobileSite, description);
+				mobileSite, appId, appVersion, platformVersion, description);
 
 		String append = "?";
 		if (redir.contains("?")) {

@@ -230,7 +230,8 @@ public class DataManager extends AbstractManager {
 	}
 
 	public boolean sendBugReportEmail(User user, String severity, String url,
-			String userAgent, boolean mobileSite, String message) {
+			String userAgent, boolean mobileSite, String appId, String appVersion,
+			String platformVersion, String message) {
 
 		Properties props = new Properties();
 		Session session = Session.getDefaultInstance(props, null);
@@ -247,8 +248,10 @@ public class DataManager extends AbstractManager {
 		msgBody += "User Agent: " + userAgent + "<br/>\n";
 		msgBody += "On mobile site: " + new Boolean(mobileSite).toString()
 				+ "<br/>\n";
+		msgBody += "Application: " + appId + " (" + appVersion + ")<br/>\n";
+		msgBody += "Platform: " + platformVersion + "<br/>\n";
 		msgBody += "<br/>\n";
-		msgBody += "Message: \n"
+		msgBody += "Message: <br/>\n"
 				+ StringEscapeUtils.escapeHtml4(message).replace("\n",
 						"\n<br/>");
 
