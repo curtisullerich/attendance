@@ -6,6 +6,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.appengine.api.utils.SystemProperty;
+
 import edu.iastate.music.marching.attendance.App;
 import edu.iastate.music.marching.attendance.beans.PageTemplateBean;
 import edu.iastate.music.marching.attendance.model.interact.DataTrain;
@@ -83,8 +85,15 @@ public class PublicServlet extends AbstractBaseServlet {
 		String spam_catcher = req.getParameter("leave_empty_spamcatcher");
 		boolean mobileSite = PageTemplateBean.onMobileSite(req.getSession());
 
+	 	String appVersion = SystemProperty.applicationVersion.get();
+	 	String appId = SystemProperty.applicationId.get();
+	 	String platformVersion = SystemProperty.version.get();
+
 		// spam_catcher field is hidden in the bug report form, no human should have entered text
-		if(!"".equals(spam_catcher)) {
+	 	// further, we never expect success and error message to be exactly equal
+	 	// but a spammer will happily fill them out so
+		if(!"".equals(spam_catcher)
+		|| (success_message != null && success_message.equals(error_messages))) {
 			ErrorServlet.showError(req, resp, "Bug reporting failed, please send an email directly to: " + App.Emails.BUGREPORT_EMAIL_TO);
 			return;
 		}
@@ -103,6 +112,9 @@ public class PublicServlet extends AbstractBaseServlet {
 			description = "\nSuccess Message: " + success_message + "\n"
 					+ description + "\n";
 		}
+
+		description = "\nApplication: " + appId + " (" + appVersion + ")\n";
+		description = "\nPlatform: " + platformVersion + "\n";
 
 		datatrain.data().sendBugReportEmail(user, severity, redir, userAgent,
 				mobileSite, description);
