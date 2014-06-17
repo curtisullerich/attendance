@@ -1,7 +1,7 @@
 Thumbs.db
 *~
 *.sublime-*
-/src/main/webapp/WEB-INF/lib/appengine*.jar
+/src/main/webapp/WEB-INF/lib/*
 /.settings/*
 /.project
 /.classpath
