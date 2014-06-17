@@ -1,7 +1,9 @@
 Thumbs.db
 *~
-war/WEB-INF/lib/appengine*.jar
-.settings/*
-.project
-.classpath
-bin
+*.sublime-*
+/src/main/webapp/WEB-INF/lib/appengine*.jar
+/.settings/*
+/.project
+/.classpath
+/bin
+/target
