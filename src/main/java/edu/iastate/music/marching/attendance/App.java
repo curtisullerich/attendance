@@ -7,7 +7,7 @@ import java.util.TimeZone;
 import org.joda.time.DateTimeConstants;
 
 public class App {
-	
+	 
 	public static boolean CachingEnabled = true;
 	
 	public static final String DOMAIN = "iastate.edu";
