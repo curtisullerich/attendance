@@ -3133,23 +3133,23 @@ public class FormClassConflictTest extends AbstractDatastoreTest {
 	// }
 	//
 
-	/**
-	 * class times overlap event start, tardy time during event, outside class,
-	 * form for an absence
-	 */
-	@Test
-	public void testTardyWithFormB101() {
-		LocalDate startDate = new LocalDate(2012, 8, 6);
-		LocalDate endDate = new LocalDate(2012, 12, 20);
-		LocalTime classStart = new LocalTime(16, 10);
-		LocalTime classEnd = classStart.plusMinutes(50);
-		LocalDate eventDate = new LocalDate(2012, 8, 6);
-		int minutesLate = 60;
-		// TODO(curtisullerich) actually fix this test
-		// testForm(classStart, classEnd, startDate, endDate, eventDate,
-		// Absence.Status.Approved, false, Event.Type.Rehearsal,
-		// Absence.Type.Absence, Form.Status.Approved, minutesLate);
-	}
+//	/**
+//	 * class times overlap event start, tardy time during event, outside class,
+//	 * form for an absence
+//	 */
+//	@Test
+//	public void testTardyWithFormB101() {
+//		LocalDate startDate = new LocalDate(2012, 8, 6);
+//		LocalDate endDate = new LocalDate(2012, 12, 20);
+//		LocalTime classStart = new LocalTime(16, 10);
+//		LocalTime classEnd = classStart.plusMinutes(50);
+//		LocalDate eventDate = new LocalDate(2012, 8, 6);
+//		int minutesLate = 60;
+//		// TODO(curtisullerich) actually fix this test
+//		// testForm(classStart, classEnd, startDate, endDate, eventDate,
+//		// Absence.Status.Approved, false, Event.Type.Rehearsal,
+//		// Absence.Type.Absence, Form.Status.Approved, minutesLate);
+//	}
 
 	//
 	// /**
