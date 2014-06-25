@@ -39,24 +39,6 @@ public class UserManager extends AbstractManager {
 		this.datatrain = dataTrain;
 	}
 
-	// public User.Grade averageGrade() {
-	// int total = 0;
-	// int count = 0;
-	// List<User> students = this.get(User.Type.Student, User.Type.TA);
-	// for (User s : students) {
-	// // if(s.getGrade() != null)
-	// {
-	// total += s.getGrade().ordinal();
-	// count += 1;
-	// }
-	// }
-	//
-	// if (count == 0)
-	// return null;
-	// else
-	// return intToGrade(total / count);
-	// }
-
 	public User createDirector(String schoolEmail, String loginEmail,
 			String firstName, String lastName) throws IllegalArgumentException {
 
