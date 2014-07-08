@@ -769,11 +769,14 @@ public class DirectorServlet extends AbstractBaseServlet {
 		List<User> students = train.users().get(User.Type.Student);
 		Map<User, List<Absence>> absenceList = new HashMap<User, List<Absence>>();
 
-		for (User s : students) {
-			// TODO may be more efficient to just get them all and then split
-			// here
-			List<Absence> a = train.absences().get(s);
-			absenceList.put(s, a);
+		for(Absence a : train.absences().getAll())
+		{
+			if (!absenceList.containsKey(a.getStudent()))
+			{
+				absenceList.put(a.getStudent(), new ArrayList<Absence>());
+			}
+			
+			absenceList.get(a.getStudent()).add(a);
 		}
 
 		page.setAttribute("students", students);
