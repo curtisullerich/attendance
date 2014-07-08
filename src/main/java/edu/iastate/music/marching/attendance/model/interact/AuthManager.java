@@ -1,5 +1,6 @@
 package edu.iastate.music.marching.attendance.model.interact;
 
+import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -14,7 +15,9 @@ import edu.iastate.music.marching.attendance.util.GoogleAccountException;
 import edu.iastate.music.marching.attendance.util.Util;
 import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
-public class AuthManager {
+public class AuthManager implements Serializable {
+
+	private static final long serialVersionUID = -962768931131670649L;
 
 	private static final String SESSION_USER_ATTRIBUTE = "authenticated_user";
 

@@ -15,8 +15,7 @@ import org.joda.time.Interval;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
-import edu.iastate.music.marching.attendance.App;
-import edu.iastate.music.marching.attendance.App.WeekDay;
+import edu.iastate.music.marching.attendance.WeekDay;
 import edu.iastate.music.marching.attendance.model.interact.DataTrain;
 import edu.iastate.music.marching.attendance.model.interact.FormManager;
 import edu.iastate.music.marching.attendance.model.store.Absence;
@@ -211,7 +210,7 @@ public class FormsServlet extends AbstractBaseServlet {
 
 			// this is one-based! Starting on Monday as per ISO
 			try {
-				dayOfWeek = App.WeekDay.valueOf(req.getParameter("DayOfWeek"));
+				dayOfWeek = WeekDay.valueOf(req.getParameter("DayOfWeek"));
 			} catch (IllegalArgumentException nfe) {
 				errors.add("Weekday was invalid.");
 			}
@@ -298,7 +297,7 @@ public class FormsServlet extends AbstractBaseServlet {
 			PageBuilder page = new PageBuilder(Page.classconflict, SERVLET_PATH);
 
 			page.setPageTitle(Form.Type.ClassConflict.getDisplayName());
-			page.setAttribute("daysOfWeek", App.WeekDay.values());
+			page.setAttribute("daysOfWeek", WeekDay.values());
 			page.setErrors(errors);
 			page.setAttribute("Department", department);
 			page.setAttribute("Course", course);

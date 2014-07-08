@@ -222,13 +222,12 @@ public class AdminServlet extends AbstractBaseServlet {
 			try {
 				new_user = train.users().createDirector(
 						Util.emailToString(primaryEmail),
-						secondEmail.getEmail(), firstName, lastName);
+						secondEmail == null ? null : secondEmail.getEmail(),
+						firstName, lastName);
 
 			} catch (IllegalArgumentException e) {
 				// Save validation errors
 				errors.add(e.getMessage());
-				System.out.println(e.getMessage());
-				System.out.println(e.getStackTrace());
 			}
 		}
 

@@ -302,13 +302,13 @@ public class MobileDataManager {
 			}
 		}
 
-		String errorString = "";
+		StringBuilder errorStringB = new StringBuilder();
 		for (String s : errors)
-			errorString += s;
+			errorStringB.append(s);
 
 		return "Inserted " + successfulEvents + "/" + eventLines.size()
 				+ " events." + "\n" + "Inserted " + successfulAbscenses + "/"
 				+ otherLines.size() + " absences/tardies/early checkouts."
-				+ "\n" + errorString;
+				+ "\n" + errorStringB.toString();
 	}
 }

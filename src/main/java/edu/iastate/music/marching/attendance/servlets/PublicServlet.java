@@ -116,10 +116,13 @@ public class PublicServlet extends AbstractBaseServlet {
 		datatrain.data().sendBugReportEmail(user, severity, redir, userAgent,
 				mobileSite, appId, appVersion, platformVersion, description);
 
-		String append = "?";
+		String append;
 		if (redir.contains("?")) {
 			append = "&";
+		} else {
+			append = "?";
 		}
+		
 		if (redir.equals("")) {
 			redir = "/";
 		}

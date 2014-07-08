@@ -12,7 +12,7 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.junit.Test;
 
-import edu.iastate.music.marching.attendance.App;
+import edu.iastate.music.marching.attendance.WeekDay;
 import edu.iastate.music.marching.attendance.model.interact.AbsenceManager;
 import edu.iastate.music.marching.attendance.model.interact.DataTrain;
 import edu.iastate.music.marching.attendance.model.interact.EventManager;
@@ -803,7 +803,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 				20), new LocalDate(2012, 12, 20), zone);
 		Form form = fc.createClassConflictForm(s1, "department", "course",
 				"section", "building", interval, classStart, classEnd,
-				App.WeekDay.Monday, "details", 10, Absence.Type.Absence);
+				WeekDay.Monday, "details", 10, Absence.Type.Absence);
 
 		LocalDate eventDate = new LocalDate(2012, 9, 17);
 		LocalTime eventStartTime = new LocalTime(16, 30);
@@ -853,7 +853,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 				20), new LocalDate(2013, 12, 20), zone);
 		Form form = fc.createClassConflictForm(s1, "department", "course",
 				"section", "building", interval, classStart, classEnd,
-				App.WeekDay.Tuesday, "details", 20, Absence.Type.Absence);
+				WeekDay.Tuesday, "details", 20, Absence.Type.Absence);
 
 		LocalDate eventDate = new LocalDate(2013, 11, 12);
 		LocalTime eventStartTime = new LocalTime(16, 30);

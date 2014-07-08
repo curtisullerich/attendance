@@ -9,7 +9,7 @@ import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
 import org.junit.Test;
 
-import edu.iastate.music.marching.attendance.App.WeekDay;
+import edu.iastate.music.marching.attendance.WeekDay;
 import edu.iastate.music.marching.attendance.model.interact.AbsenceManager;
 import edu.iastate.music.marching.attendance.model.interact.DataTrain;
 import edu.iastate.music.marching.attendance.model.interact.EventManager;
