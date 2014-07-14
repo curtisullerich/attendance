@@ -46,7 +46,8 @@ import edu.iastate.music.marching.attendance.util.ValidationUtil;
 public class DirectorServlet extends AbstractBaseServlet {
 
 	private enum Page {
-		index, appinfo, attendance, export, forms, unanchored, users, user, info, viewabsence, student, makeevent, deletestudent, studentinfo, viewevent, deleteevent, postdelete;
+		index, appinfo, attendance, export, forms, unanchored, users, user, info, viewabsence, student, makeevent, deletestudent, studentinfo, @Deprecated
+		viewevent, deleteevent, postdelete;
 	}
 
 	private static final long serialVersionUID = 6100206975846317440L;
@@ -1014,7 +1015,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 						// associated with this event for this student
 					}
 					// else: the absence is orphaned if there's no event for it
-					
+
 					checkedAbsence = absence;
 					page.setAttribute("new", true);
 				} else {
@@ -1065,6 +1066,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 		// }
 	}
 
+	@Deprecated
 	private void viewEvent(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 		DataTrain train = DataTrain.depart();
