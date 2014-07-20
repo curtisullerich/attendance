@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="js/lib/mocha.css" />
+
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/underscore-min.js"></script>
+	<script type="text/javascript" src="js/json2.js"></script>
+	<script type="text/javascript" src="js/backbone-min.js"></script>
+	<script type="text/javascript" src="js/backbone-relational.js"></script>
+	<script type="text/javascript" src="js/backbone.localStorage.js"></script>
+
+	<script type="text/javascript" src="js/app/namespace.js"></script>
+	<script type="text/javascript" src="js/app/model/models.js"></script>
+	<script type="text/javascript" src="js/app/views/attendance.js"></script>
+	<script type="text/javascript" src="js/app/views/check_in_out.js"></script>
+	<script type="text/javascript" src="js/app/views/main.js"></script>
+	<script type="text/javascript" src="js/app/views/student_rank.js"></script>
+	<script type="text/javascript" src="js/bootstrap.js"></script>
+</head>
+<body>
+    <div id="mocha"></div>
+
+    <!-- JavaScript Test Libraries. -->
+    <script src="js/lib/mocha.js"></script>
+    <script src="js/lib/chai.js"></script>
+    <script src="js/lib/sinon.js"></script>
+
+    <!-- Set up Mocha and Chai -->
+    <script>
+      var expect = chai.expect;
+      mocha.setup("bdd");
+
+      window.onload = function () {
+        (window.mochaPhantomJS || mocha).run();
+      };
+    </script>
+
+    <!-- Include specs. -->
+    <script src="js/spec/namespace.spec.js"></script>
+</body>
+</html>
+
