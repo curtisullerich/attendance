@@ -30,15 +30,6 @@ App.Router = Backbone.Router.extend({
 	event: function(id)
 	{
 		App.mainview.render();
-	},
-	checkLogin: function()
-	{
-		if(!App.model.get('loggedin'))
-		{
-			App.loginview.render();
-		}
-
-		return App.model.loggedin;
 	}
 });
 
