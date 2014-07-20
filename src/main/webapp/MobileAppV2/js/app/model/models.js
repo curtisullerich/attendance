@@ -42,7 +42,7 @@ App.Model.DataUpload = Backbone.RelationalModel.extend({
 		relatedModel: 'Student',
 		collectionType: 'Students'
 	}],
-	url: "/MobileApp/data/upload"
+	url: "/m/data/upload"
 });
 
 App.Model.ClassList = Backbone.RelationalModel.extend({
@@ -52,7 +52,7 @@ App.Model.ClassList = Backbone.RelationalModel.extend({
 		relatedModel: 'Student',
 		collectionType: 'Students'
 	}],
-	url: "/MobileApp/data/classlist"
+	url: "/m/data/classlist"
 });
 
 
