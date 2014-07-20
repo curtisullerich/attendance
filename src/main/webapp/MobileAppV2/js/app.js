@@ -17,19 +17,19 @@ App.Router = Backbone.Router.extend({
 
 	main: function()
 	{
-		this.checkLogin() && App.mainview.render();
+		App.mainview.render();
 	},
 	check_in_out: function()
 	{
-		this.checkLogin() && App.checkinout.render();
+		App.checkinout.render();
 	},
 	events: function()
 	{
-		this.checkLogin() && App.mainview.render();
+		App.mainview.render();
 	},
 	event: function(id)
 	{
-		this.checkLogin() && App.mainview.render();
+		App.mainview.render();
 	},
 	checkLogin: function()
 	{
@@ -41,3 +41,4 @@ App.Router = Backbone.Router.extend({
 		return App.model.loggedin;
 	}
 });
+
