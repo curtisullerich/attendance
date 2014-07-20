@@ -51,12 +51,6 @@ App.Model.ClassList = Backbone.RelationalModel.extend({
 		key: 'students',
 		relatedModel: 'Student',
 		collectionType: 'Students'
-	},
-	{
-		type: Backbone.HasMany,
-		key: 'tas',
-		relatedModel: 'TA',
-		collectionType: 'TAs'
 	}],
 	url: "/MobileApp/data/classlist"
 });
@@ -73,13 +67,3 @@ App.Model.Students = Backbone.Collection.extend({
 	localStorage: new Backbone.LocalStorage("Students")
 });
 
-App.Model.TA = Backbone.RelationalModel.extend({
-	initialize: function() {
-
-	}
-});
-
-App.Model.TAs = Backbone.Collection.extend({
-	model: App.Model.TA,
-	localStorage: new Backbone.LocalStorage("TAs")
-});
