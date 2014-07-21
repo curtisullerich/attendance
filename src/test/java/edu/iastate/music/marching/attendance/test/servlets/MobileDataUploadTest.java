@@ -44,6 +44,30 @@ public class MobileDataUploadTest extends AbstractDatastoreTest {
 			+ "tardyStudent&split&el&split&Starster&split&s&split&2012-05-03&split&0108&split&|&split&null&newline&"
 			+ "tardyStudent&split&P1&split&Z&split&zf&split&2012-05-03&split&0108&split&|&split&4&newline&";
 
+	private static final String SIMPLE_V2_TEST_DATA = "[{ \"absences\": [{ \"type\": \"Tardy\", \"time\": \"2014-04-23T16:45:05.511Z\", \"netid\": \"ehayles\" }], \"type\": \"Rehearsal\", \"startDateTime\": \"2014-04-23T16:30:00.511Z\", \"endDateTime\": \"2014-04-23T17:50:00.511Z\" }]";
+
+	@Test
+	public void testV2() throws IOException, InstantiationException,
+			IllegalAccessException, ServletException {
+		DataTrain train = getDataTrain();
+		HttpServletRequest req = mock(HttpServletRequest.class);
+		HttpServletResponse resp = mock(HttpServletResponse.class);
+
+		ServletMocks.setUserSession(req,
+				TestUsers.createDefaultTA(train.users()));
+		ServletMocks.setPostedContent(req, SIMPLE_V2_TEST_DATA);
+
+		ServletOutputStream os = mock(ServletOutputStream.class);
+		when(resp.getOutputStream()).thenReturn(os);
+
+		ServletMocks.doPost(MobileAppDataServlet.class, req, resp);
+
+		// verify(os).print(
+		// "{\"error\":\"exception\",\"message\":\""
+		// + Lang.ERROR_ABSENCE_FOR_NULL_USER + "\"}");
+
+	}
+
 	@Test
 	public void simpleAbsenceInsertionThroughServlet_NullStudent()
 			throws InstantiationException, IllegalAccessException,
