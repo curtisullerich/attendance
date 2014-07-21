@@ -1,5 +1,4 @@
 App.Views.CheckInOut = Backbone.View.extend({
-	// Attach to existing elemnt
 	el: "#app_view",
 
 	template: _.template($("#template-checkinoutview").html()),
@@ -9,3 +8,4 @@ App.Views.CheckInOut = Backbone.View.extend({
 		return this;
 	}
 });
+

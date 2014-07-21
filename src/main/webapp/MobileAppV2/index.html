@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html manifest="cache.appcache">
 <head>
-	<script type="text/javascript" src="js/lib/jquery.min.js"></script>
-	<script type="text/javascript" src="js/lib/underscore-min.js"></script>
-	<script type="text/javascript" src="js/lib/json2.js"></script>
-	<script type="text/javascript" src="js/lib/backbone-min.js"></script>
-	<script type="text/javascript" src="js/lib/backbone-relational.js"></script>
-	<script type="text/javascript" src="js/lib/backbone.localStorage.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/backbone-relational/0.8.8/backbone-relational.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/backbone-localstorage.js/1.1.9/backbone.localStorage-min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/backbone.validation/0.9.1/backbone-validation-min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/backbone.stickit/0.8.0/backbone.stickit.min.js"></script>
 
 	<script type="text/html" id="template-top">
-		<header class="hwrapper"><h1>Attendance</h1>
+		<header class="hwrapper">
+			<h1>Attendance</h1>
 		</header>
 	</script>
 
@@ -28,18 +30,16 @@
 		<%= $("#template-top").html() %>
 		
 		<h1>Mobile App Main</h1>
-		
 		<ul class="navigation group drilldown panel">
-			<li class="selected">
-					<a id="tardy" href="#checkinout"><b>Tardy Check-In/Early Check-Out</b></a>
-					<a id="absent" href="#absent"><b>Report Absences</b></a>
-					<a id="upload" href="#"><b>Upload Attendance Data</b></a>
+			<li>
+					<a href="#checkinout"><b>Tardy Check-In/Early Check-Out</b></a>
+					<a href="#event/list"><b>Report Absences</b></a>
+					<a href="#"><b>Upload Attendance Data</b></a>
 			</li>
 		</ul>
 		
 		<ul class="navigation group drilldown panel">
-			<li class="selected">
-				<a id="update" href="#"><b>Update Class List</b></a>
+			<li>
 				<a class="button" id="classList">Class List Updated: <%= updated %></a>
 			</li>
 		</ul>
@@ -49,50 +49,77 @@
 
 	<script type="text/html" id="template-checkinoutview">
 		<%= $("#template-top").html() %>
+		<form role="form">
+		<div class="input-group">
+			<input type="text" class="form-control" placeholder="NetId">
+			<span class="input-group-addon">@iastate.edu</span>
+		</div>
 
-		<div id="main" style="display: none">
-			<h1>Absence Report</h1>
-			<ul class="navigation group drilldown panel">
-				<li class="selected">
-					<div class="flippedButton">
-						<table> <!-- table 0 -->
-							<tr>
-								<td><strong>Event type </strong></td>
-								<td>
-									<form id="event" name="event" method="get">
-										<input id="rehearsalRadio" type="radio" name="eventType" value="rehearsal"/>Rehearsal
-										<input id="performanceRadio" type="radio" name="eventType" value="performance"/>Performance
-									</form>
-								</td>
-							</tr>
-							<tr>
-								<td>Start time: </td>
-								<td>
-									<form id="startAmPm" name="startAmPm" method="get">
-										<input id="startHour" size="5" type="number" name="startHour" min="01" max="12" value="4"/>
-										<input id="startMinute" size="5" type="number" name="startMinute" min="00" max="50" step="10" value="30"/>
-										<input id="startAM" type="radio" name="startrdio" value="AM"/>AM
-										<input id="startPM" type="radio" name="startrdio" value="PM" checked/>PM
-									</form>
-								</td>
-							</tr>
-							<tr>
-								<td>End time:</td>
-								<td>
-									<form id="endAmPm" name="endAmPm" method="get">
-										<input id="endHour" size="5" type="number" name="endHour" min="01" max="12" value="5"/>
-										<input id="endMinute" size="5" type="number" name="endMinute" min="00" max="50" step="10" value="50"/>
-										<input id="endAM" type="radio" name="endrdio" value="AM"/>AM
-										<input id="endPM" type="radio" name="endrdio" value="PM" checked/>PM
-									</form> 
-								</td>
-							</tr>
-						</table> 
-					</div>
-					<a id="editMain" href="javascript: handleEdit(true);">Remove</a>
-				</li>
-			</ul>
-			
+		<div class="well>
+			<h2><%= user_fullname %></h2>
+		</div>
+
+		<div class="btn-group btn-group-justified">
+			<a class="btn btn-default" role="button" disabled="<%= user_found %>">Check-In</a>
+			<a class="btn btn-default" role="button" disabled="<%= user_found %>">Check-Out</a>
+		</div>
+		</form>
+		<%= $("#template-bottom").html() %>
+	</script>
+
+    <script type="text/html" id="template-eventlist">
+		<%= $("#template-top").html() %>
+
+		<h2>Events</h2>
+		<a role="button" href="#event/new" class="btn btn-primary btn-lg create">Create new</a>
+		<div class="events" />
+
+		<%= $("#template-bottom").html() %>
+	</script>
+
+    <script type="text/html" id="template-event">
+        <p>
+            <%- type %>
+            -
+            <%- start %>
+            -
+            <%- end %>
+	</script>
+
+    <script type="text/html" id="template-eventcreate">
+        <h2>Create event</h2>
+
+        <form role="form">
+            <div class="form-group">
+                <label class="checkbox-inline">
+                    <input type="radio" name="type" value="rehearsal"> Rehearsal
+                </label>
+                <label class="checkbox-inline">
+                    <input type="radio" name="type" value="performance"> Performance
+                </label>
+            </div>
+            <div class="form-group">
+                <label>Start:</label>
+                <div class='input-group date startDateTime'>
+                    <input type='text' class="form-control" />
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>End:</label>
+                <div class='input-group date endDateTime'>
+                    <input type='text' class="form-control" />
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-default">Create</button>
+        </form>
+    </script>
+
+	<script type="text/html" id="template-abscensereport">
+		<%= $("#template-top").html() %>
+
+		<div id="main">
 			<ul class="navigation group drilldown panel">
 				<li class="selected">
 					<div class="flippedButton">
@@ -123,52 +150,31 @@
 			</ul>
 		</div>
 						
-		<div class="box" id="login">
-			<h1>TA Absence Login</h1>
-			<form class="centeralign" id="TACredentials" onsubmit="return confirmTACredentials();">
-				<ul class="navigation group drilldown panel">
-					<li class="selected">
-						<div class="flippedButton">
-							<table>
-								<tr>
-									<td>TA netID:</td>
-									<td><input type="text" id="TA" placeholder="TA netID"/></td>
-								</tr>
-								<tr>
-									<td>Password:</td>
-									<td><input type="password" id="password" placeholder="password"/></td>
-								</tr>
-							</table>
-						</div>
-						<input type="submit" class="submit" id="submit"/>
-					</li>
-				</ul>
-			</form>
-		</div>
-
 		<%= $("#template-bottom").html() %>
 	</script>
-
+	
 	<script type="text/javascript" src="js/app.js"></script>
 	<script type="text/javascript" src="js/app/model/models.js"></script>
 	<script type="text/javascript" src="js/app/views/attendance.js"></script>
 	<script type="text/javascript" src="js/app/views/check_in_out.js"></script>
 	<script type="text/javascript" src="js/app/views/main.js"></script>
 	<script type="text/javascript" src="js/app/views/student_rank.js"></script>
-	<script type="text/javascript" src="js/lib/bootstrap.js"></script>
+	<script type="text/javascript" src="js/app/views/event.js"></script>
+	<script type="text/javascript" src="js/app/views/events.js"></script>
+	<script type="text/javascript" src="js/app/views/eventcreate.js"></script>
+	<script type="text/javascript" src="js/app/views/eventlisting.js"></script>
 
-	<link href="css/base.mobile.css" media="all" rel="stylesheet">
-	<!--[if lte IE 8]>
-			<script>
-				(function()
-				{
-					var els = 'header,footer,section,aside,nav,article,hgroup,time,figure,figcaption'.split(',');
-					for (var i = 0; i < els.length; i++)
-						document.createElement(els[i]);
-				})();
-			</script>
-		<![endif]--> 
-	<link href="css/custom.mobile.css" media="all" rel="stylesheet">
+    <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-formhelpers/2.3.0/js/bootstrap-formhelpers.js"></script>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-formhelpers/2.3.0/css/bootstrap-formhelpers.min.css" />
+
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/3.0.0/js/bootstrap-datetimepicker.min.js"></script>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/3.0.0/css/bootstrap-datetimepicker.min.css" />
+
 </head>
 <body>
 	<div id="app_view" />
