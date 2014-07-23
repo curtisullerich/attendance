@@ -52,6 +52,11 @@ public class ServletMocks {
 		return req;
 	}
 
+	public static HttpServletRequest setPathInfo(HttpServletRequest req, String pathInfo) {
+		when(req.getPathInfo()).thenReturn(pathInfo);
+		return req;
+	}
+
 	public static void setPostedContent(HttpServletRequest req, String data)
 			throws IOException {
 		ByteArrayInputStream realStream = new ByteArrayInputStream(

@@ -86,6 +86,7 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 		HttpServletRequest req = mock(HttpServletRequest.class);
 		HttpServletResponse resp = mock(HttpServletResponse.class);
 
+		ServletMocks.setPathInfo(req, "index2");
 		ServletMocks.setUserSession(req,
 				TestUsers.createDefaultTA(train.users()));
 		ServletMocks.setPostedContent(req, SIMPLE_ABSENCE_TESTDATA_V2);
@@ -141,6 +142,7 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 		HttpServletRequest req = mock(HttpServletRequest.class);
 		HttpServletResponse resp = mock(HttpServletResponse.class);
 
+		ServletMocks.setPathInfo(req, "index2");
 		ServletMocks.setUserSession(req,
 				TestUsers.createDefaultTA(train.users()));
 		ServletMocks.setPostedContent(req, SIMPLE_ABSENCE_TESTDATA_V2);
