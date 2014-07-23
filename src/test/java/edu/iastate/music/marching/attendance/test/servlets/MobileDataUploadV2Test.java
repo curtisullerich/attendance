@@ -1,11 +1,18 @@
 package edu.iastate.music.marching.attendance.test.servlets;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -20,6 +27,7 @@ import org.junit.Test;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
 import edu.iastate.music.marching.attendance.Lang;
 import edu.iastate.music.marching.attendance.model.interact.DataTrain;
@@ -33,11 +41,13 @@ import edu.iastate.music.marching.attendance.testlib.ServletMocks;
 import edu.iastate.music.marching.attendance.testlib.TestConfig;
 import edu.iastate.music.marching.attendance.testlib.TestUsers;
 import edu.iastate.music.marching.attendance.util.DateTimeConverter;
+import edu.iastate.music.marching.attendance.util.UploadAbsence;
+import edu.iastate.music.marching.attendance.util.UploadEvent;
 
 public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 
 	private static final String SIMPLE_ABSENCE_TESTDATA_V2 = "[ { \"absences\": [ { \"type\": \"Absence\", \"netid\": \"ehayles\" }, { \"type\": \"Absence\", \"netid\": \"alusk\" } ], \"type\": \"Rehearsal\", \"startDateTime\": \"2012-05-03T16:30:00.000Z\", \"endDateTime\": \"2012-05-03T17:50:00.000Z\" } ]";
-	private static final String SIMPLE_TARDY_TESTDATA_V2 = "[ { \"absences\": [ { \"type\": \"Tardy\", \"time\": \"2012-05-03T01:09:00.000Z\", \"netid\": \"ehayles\" }, { \"type\": \"Tardy\", \"time\": \"2012-05-03T01:16:00.000Z\", \"netid\": \"ehayles\" }, { \"type\": \"Tardy\", \"time\": \"2012-05-03T01:08:00.000Z\", \"netid\": \"jbade\" }, { \"type\": \"Tardy\", \"time\": \"2012-05-03T01:07:00.000Z\", \"netid\": \"ehayles\" }, { \"type\": \"Tardy\", \"time\": \"2012-05-03T01:08:00.000Z\", \"netid\": \"ehayles\" }, { \"type\": \"Tardy\", \"time\": \"2012-05-03T01:08:00.000Z\", \"netid\": \"alusk\" } ], \"type\": \"Rehearsal\", \"startDateTime\": \"2014-04-23T16:30:00.511Z\", \"endDateTime\": \"2014-04-23T17:50:00.511Z\" } ]";
+	private static final String SIMPLE_TARDY_TESTDATA_V2 = "[ { \"absences\": [ { \"type\": \"Tardy\", \"time\": \"2012-05-03T01:09:00.000Z\", \"netid\": \"ehayles\" }, { \"type\": \"Tardy\", \"time\": \"2012-05-03T01:16:00.000Z\", \"netid\": \"ehayles\" }, { \"type\": \"Tardy\", \"time\": \"2012-05-03T01:08:00.000Z\", \"netid\": \"jbade\" }, { \"type\": \"Tardy\", \"time\": \"2012-05-03T01:07:00.000Z\", \"netid\": \"ehayles\" }, { \"type\": \"Tardy\", \"time\": \"2012-05-03T01:08:00.000Z\", \"netid\": \"ehayles\" }, { \"type\": \"Tardy\", \"time\": \"2012-05-03T01:08:00.000Z\", \"netid\": \"alusk\" } ], \"type\": \"Rehearsal\", \"startDateTime\": \"2012-05-03T16:30:00.000Z\", \"endDateTime\": \"2012-05-03T17:50:00.000Z\" } ]";
 
 	public class DateTimeWrapper {
 		public DateTime value;
@@ -47,17 +57,53 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 	public void deserializeISO8601DateTime_CorrectDateTime() {
 
 		String str = "{value:\"3141-05-09T02:06:05.035Z\"}";
-		DateTime expected = new DateTime(3141, 5, 9, 2, 6, 5, 35, DateTimeZone.UTC);
+		DateTime expected = new DateTime(3141, 5, 9, 2, 6, 5, 35,
+				DateTimeZone.UTC);
 
 		GsonBuilder gsonBuilder = new GsonBuilder();
-		gsonBuilder.registerTypeAdapter(DateTime.class,
-				new DateTimeConverter());
+		gsonBuilder
+				.registerTypeAdapter(DateTime.class, new DateTimeConverter());
 		Gson gson = gsonBuilder.create();
 
 		DateTimeWrapper actual = gson.fromJson(str, DateTimeWrapper.class);
 
 		assertNotNull(actual);
 		assertEquals(expected, actual.value);
+	}
+
+	// TODO @Test
+	public void testSimpleAbsenceListDeserializing() {
+		DateTime start = new DateTime(2012, 5, 3, 16, 30, 0, 0,
+				DateTimeZone.UTC);
+		DateTime end = new DateTime(2012, 5, 3, 17, 50, 0, 0, DateTimeZone.UTC);
+		UploadEvent e = new UploadEvent();
+		e.startDatetime = start;
+		e.endDatetime = end;
+		e.type = Event.Type.Rehearsal;
+		UploadAbsence a = new UploadAbsence();
+		a.netid = "ehayles";
+		a.type = Absence.Type.Absence;
+		UploadAbsence a2 = new UploadAbsence();
+		a2.netid = "alusk";
+		a2.type = Absence.Type.Absence;
+		List<UploadAbsence> l = new ArrayList<UploadAbsence>();
+		l.add(a);
+		l.add(a2);
+		e.absences = l;
+
+		Type listType = new TypeToken<List<UploadEvent>>() {
+		}.getType();
+		GsonBuilder gsonBuilder = new GsonBuilder();
+		gsonBuilder
+				.registerTypeAdapter(DateTime.class, new DateTimeConverter());
+		Gson gson = gsonBuilder.create();
+
+		Reader r = new StringReader(SIMPLE_ABSENCE_TESTDATA_V2);
+		List<UploadEvent> result = gson.fromJson(r, listType);
+		assertEquals(1, result.size());
+		assertEquals(end, result.get(0).endDatetime);
+		assertEquals(start, result.get(0).startDatetime);
+
 	}
 
 	@Test
@@ -68,8 +114,8 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 		data.value = time;
 
 		GsonBuilder gsonBuilder = new GsonBuilder();
-		gsonBuilder.registerTypeAdapter(DateTime.class,
-				new DateTimeConverter());
+		gsonBuilder
+				.registerTypeAdapter(DateTime.class, new DateTimeConverter());
 		Gson gson = gsonBuilder.create();
 
 		String actual = gson.toJson(data, DateTimeWrapper.class);
@@ -77,7 +123,7 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 		assertEquals(expected, actual);
 	}
 
-// TODO	@Test
+	// TODO @Test
 	public void simpleAbsenceInsertionThroughServlet_NullStudent()
 			throws InstantiationException, IllegalAccessException,
 			ServletException, IOException {
@@ -109,7 +155,7 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 		// .now().intValue());
 	}
 
-// TODO	@Test
+	// TODO @Test
 	public void testSimpleAbsenceInsertionThroughController() {
 
 		DataTrain train = getDataTrain();
@@ -127,7 +173,7 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 		simpleAbsenceInsertionVerification();
 	}
 
-// TODO	@Test
+	// TODO @Test
 	public void testSimpleAbsenceInsertionThroughServlet()
 			throws InstantiationException, IllegalAccessException,
 			ServletException, IOException {
@@ -215,7 +261,7 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 		}
 	}
 
-// TODO	@Test
+	// TODO @Test
 	public void simpleTardyInsertionThroughController() {
 		DataTrain train = getDataTrain();
 
