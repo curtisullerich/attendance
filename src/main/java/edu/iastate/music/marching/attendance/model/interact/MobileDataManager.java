@@ -25,7 +25,7 @@ import edu.iastate.music.marching.attendance.model.store.Event;
 import edu.iastate.music.marching.attendance.model.store.MobileDataUpload;
 import edu.iastate.music.marching.attendance.model.store.ModelFactory;
 import edu.iastate.music.marching.attendance.model.store.User;
-import edu.iastate.music.marching.attendance.util.DateTimeDeserializer;
+import edu.iastate.music.marching.attendance.util.DateTimeConverter;
 import edu.iastate.music.marching.attendance.util.UploadAbsence;
 import edu.iastate.music.marching.attendance.util.UploadEvent;
 
@@ -255,7 +255,7 @@ public class MobileDataManager {
 		}.getType();
 		GsonBuilder gsonBuilder = new GsonBuilder();
 		gsonBuilder.registerTypeAdapter(DateTime.class,
-				new DateTimeDeserializer());
+				new DateTimeConverter());
 		Gson gson = gsonBuilder.create();
 
 		List<UploadEvent> uploadEvents = gson.fromJson(r, listType);

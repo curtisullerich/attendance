@@ -1,11 +1,7 @@
 package edu.iastate.music.marching.attendance.test.servlets;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -18,8 +14,12 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.junit.Test;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import edu.iastate.music.marching.attendance.Lang;
 import edu.iastate.music.marching.attendance.model.interact.DataTrain;
@@ -32,13 +32,50 @@ import edu.iastate.music.marching.attendance.testlib.AbstractDatastoreTest;
 import edu.iastate.music.marching.attendance.testlib.ServletMocks;
 import edu.iastate.music.marching.attendance.testlib.TestConfig;
 import edu.iastate.music.marching.attendance.testlib.TestUsers;
+import edu.iastate.music.marching.attendance.util.DateTimeConverter;
 
-public class MobileDataUploadTestV2 extends AbstractDatastoreTest {
+public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 
 	private static final String SIMPLE_ABSENCE_TESTDATA_V2 = "[ { \"absences\": [ { \"type\": \"Absence\", \"netid\": \"ehayles\" }, { \"type\": \"Absence\", \"netid\": \"alusk\" } ], \"type\": \"Rehearsal\", \"startDateTime\": \"2012-05-03T16:30:00.000Z\", \"endDateTime\": \"2012-05-03T17:50:00.000Z\" } ]";
 	private static final String SIMPLE_TARDY_TESTDATA_V2 = "[ { \"absences\": [ { \"type\": \"Tardy\", \"time\": \"2012-05-03T01:09:00.000Z\", \"netid\": \"ehayles\" }, { \"type\": \"Tardy\", \"time\": \"2012-05-03T01:16:00.000Z\", \"netid\": \"ehayles\" }, { \"type\": \"Tardy\", \"time\": \"2012-05-03T01:08:00.000Z\", \"netid\": \"jbade\" }, { \"type\": \"Tardy\", \"time\": \"2012-05-03T01:07:00.000Z\", \"netid\": \"ehayles\" }, { \"type\": \"Tardy\", \"time\": \"2012-05-03T01:08:00.000Z\", \"netid\": \"ehayles\" }, { \"type\": \"Tardy\", \"time\": \"2012-05-03T01:08:00.000Z\", \"netid\": \"alusk\" } ], \"type\": \"Rehearsal\", \"startDateTime\": \"2014-04-23T16:30:00.511Z\", \"endDateTime\": \"2014-04-23T17:50:00.511Z\" } ]";
 
-	private static final String SIMPLE_V2_TEST_DATA = "[{ \"absences\": [{ \"type\": \"Tardy\", \"time\": \"2014-04-23T16:45:05.511Z\", \"netid\": \"ehayles\" }], \"type\": \"Rehearsal\", \"startDateTime\": \"2014-04-23T16:30:00.511Z\", \"endDateTime\": \"2014-04-23T17:50:00.511Z\" }]";
+	public class DateTimeWrapper {
+		public DateTime value;
+	}
+
+	@Test
+	public void deserializeISO8601DateTime_CorrectDateTime() {
+
+		String str = "{value:\"3141-05-09T02:06:05.035Z\"}";
+		DateTime expected = new DateTime(3141, 5, 9, 2, 6, 5, 35, DateTimeZone.UTC);
+
+		GsonBuilder gsonBuilder = new GsonBuilder();
+		gsonBuilder.registerTypeAdapter(DateTime.class,
+				new DateTimeConverter());
+		Gson gson = gsonBuilder.create();
+
+		DateTimeWrapper actual = gson.fromJson(str, DateTimeWrapper.class);
+
+		assertNotNull(actual);
+		assertEquals(expected, actual.value);
+	}
+
+	@Test
+	public void serializeDateTime_CorrectString() {
+		String expected = "{\"value\":\"3141-05-09T02:06:05.035Z\"}";
+		DateTime time = new DateTime(3141, 5, 9, 2, 6, 5, 35, DateTimeZone.UTC);
+		DateTimeWrapper data = new DateTimeWrapper();
+		data.value = time;
+
+		GsonBuilder gsonBuilder = new GsonBuilder();
+		gsonBuilder.registerTypeAdapter(DateTime.class,
+				new DateTimeConverter());
+		Gson gson = gsonBuilder.create();
+
+		String actual = gson.toJson(data, DateTimeWrapper.class);
+
+		assertEquals(expected, actual);
+	}
 
 	@Test
 	public void simpleAbsenceInsertionThroughServlet_NullStudent()
