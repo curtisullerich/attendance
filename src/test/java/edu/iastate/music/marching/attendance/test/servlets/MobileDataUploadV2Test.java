@@ -77,8 +77,8 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 				DateTimeZone.UTC);
 		DateTime end = new DateTime(2012, 5, 3, 17, 50, 0, 0, DateTimeZone.UTC);
 		UploadEvent e = new UploadEvent();
-		e.startDatetime = start;
-		e.endDatetime = end;
+		e.startDateTime = start;
+		e.endDateTime = end;
 		e.type = Event.Type.Rehearsal;
 		UploadAbsence a = new UploadAbsence();
 		a.netid = "ehayles";
@@ -101,8 +101,8 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 		Reader r = new StringReader(SIMPLE_ABSENCE_TESTDATA_V2);
 		List<UploadEvent> result = gson.fromJson(r, listType);
 		assertEquals(1, result.size());
-		assertEquals(end, result.get(0).endDatetime);
-		assertEquals(start, result.get(0).startDatetime);
+		assertEquals(end, result.get(0).endDateTime);
+		assertEquals(start, result.get(0).startDateTime);
 
 	}
 
@@ -144,11 +144,7 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 		assertEquals(expected, actual);
 	}
 
-<<<<<<< HEAD
-	// TODO @Test
-=======
 	@Test
->>>>>>> Fix mobile app data POST v2 endpoint tests
 	public void simpleAbsenceInsertionThroughServlet_NullStudent()
 			throws InstantiationException, IllegalAccessException,
 			ServletException, IOException {
@@ -180,11 +176,7 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 		// .now().intValue());
 	}
 
-<<<<<<< HEAD
-	// TODO @Test
-=======
 	@Test
->>>>>>> Fix mobile app data POST v2 endpoint tests
 	public void testSimpleAbsenceInsertionThroughController() {
 
 		DataTrain train = getDataTrain();
@@ -202,11 +194,7 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 		simpleAbsenceInsertionVerification();
 	}
 
-<<<<<<< HEAD
-	// TODO @Test
-=======
 	@Test
->>>>>>> Fix mobile app data POST v2 endpoint tests
 	public void testSimpleAbsenceInsertionThroughServlet()
 			throws InstantiationException, IllegalAccessException,
 			ServletException, IOException {
@@ -294,11 +282,7 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 		}
 	}
 
-<<<<<<< HEAD
-	// TODO @Test
-=======
 	@Test
->>>>>>> Fix mobile app data POST v2 endpoint tests
 	public void simpleTardyInsertionThroughController() {
 		DataTrain train = getDataTrain();
 
