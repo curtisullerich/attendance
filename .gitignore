@@ -7,3 +7,5 @@ Thumbs.db
 /.classpath
 /bin
 /target
+/war
+
