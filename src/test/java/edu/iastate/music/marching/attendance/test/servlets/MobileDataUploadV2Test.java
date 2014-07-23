@@ -107,6 +107,27 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 	}
 
 	@Test
+	public void deserializeListOfISO8601DateTime_CorrectDateTime() {
+
+		Type listType = new TypeToken<List<DateTimeWrapper>>() {}.getType();
+		String str = "[{value:\"3141-05-09T02:06:05.035Z\"}]";
+		DateTime expected = new DateTime(3141, 5, 9, 2, 6, 5, 35, DateTimeZone.UTC);
+
+		GsonBuilder gsonBuilder = new GsonBuilder();
+		gsonBuilder.registerTypeAdapter(DateTime.class,
+				new DateTimeConverter());
+		Gson gson = gsonBuilder.create();
+
+		List<DateTimeWrapper> actual = gson.fromJson(str, listType);
+
+		assertNotNull(actual);
+		assertEquals(1, actual.size());
+		
+		assertNotNull(actual.get(0));
+		assertEquals(expected, actual.get(0).value);
+	}
+
+	@Test
 	public void serializeDateTime_CorrectString() {
 		String expected = "{\"value\":\"3141-05-09T02:06:05.035Z\"}";
 		DateTime time = new DateTime(3141, 5, 9, 2, 6, 5, 35, DateTimeZone.UTC);
@@ -123,7 +144,11 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 		assertEquals(expected, actual);
 	}
 
+<<<<<<< HEAD
 	// TODO @Test
+=======
+	@Test
+>>>>>>> Fix mobile app data POST v2 endpoint tests
 	public void simpleAbsenceInsertionThroughServlet_NullStudent()
 			throws InstantiationException, IllegalAccessException,
 			ServletException, IOException {
@@ -132,7 +157,7 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 		HttpServletRequest req = mock(HttpServletRequest.class);
 		HttpServletResponse resp = mock(HttpServletResponse.class);
 
-		ServletMocks.setPathInfo(req, "index2");
+		ServletMocks.setPage(req, MobileAppDataServlet.Page.indexv2);
 		ServletMocks.setUserSession(req,
 				TestUsers.createDefaultTA(train.users()));
 		ServletMocks.setPostedContent(req, SIMPLE_ABSENCE_TESTDATA_V2);
@@ -155,7 +180,11 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 		// .now().intValue());
 	}
 
+<<<<<<< HEAD
 	// TODO @Test
+=======
+	@Test
+>>>>>>> Fix mobile app data POST v2 endpoint tests
 	public void testSimpleAbsenceInsertionThroughController() {
 
 		DataTrain train = getDataTrain();
@@ -173,7 +202,11 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 		simpleAbsenceInsertionVerification();
 	}
 
+<<<<<<< HEAD
 	// TODO @Test
+=======
+	@Test
+>>>>>>> Fix mobile app data POST v2 endpoint tests
 	public void testSimpleAbsenceInsertionThroughServlet()
 			throws InstantiationException, IllegalAccessException,
 			ServletException, IOException {
@@ -188,7 +221,7 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 		HttpServletRequest req = mock(HttpServletRequest.class);
 		HttpServletResponse resp = mock(HttpServletResponse.class);
 
-		ServletMocks.setPathInfo(req, "index2");
+		ServletMocks.setPage(req, MobileAppDataServlet.Page.indexv2);
 		ServletMocks.setUserSession(req,
 				TestUsers.createDefaultTA(train.users()));
 		ServletMocks.setPostedContent(req, SIMPLE_ABSENCE_TESTDATA_V2);
@@ -261,7 +294,11 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 		}
 	}
 
+<<<<<<< HEAD
 	// TODO @Test
+=======
+	@Test
+>>>>>>> Fix mobile app data POST v2 endpoint tests
 	public void simpleTardyInsertionThroughController() {
 		DataTrain train = getDataTrain();
 
@@ -280,7 +317,7 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 		train.mobileData().pushMobileDataV2(r, ta);
 
 		// Verify insertion lengths
-		assertEquals(0, train.events().getCount().intValue());
+		assertEquals(1, train.events().getCount().intValue());
 
 		assertEquals(6, train.absences().getCount().intValue());
 

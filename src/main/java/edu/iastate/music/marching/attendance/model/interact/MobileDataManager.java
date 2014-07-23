@@ -262,16 +262,29 @@ public class MobileDataManager {
 		possibleEvents = uploadEvents.size();
 
 		for (UploadEvent ue : uploadEvents) {
+
+			if (ue.startDateTime == null) {
+				errors.add("Event start time is null, skipping");
+				break;
+			}
+
+			if (ue.endDateTime == null) {
+				errors.add("Event end time is null, skipping");
+				break;
+			}
+
 			possibleAbsences += ue.absences.size();
-			Event e = ec.createOrUpdate(ue.type, new Interval(ue.startDatetime,
-					ue.endDatetime));
+			Event e = ec.createOrUpdate(ue.type, new Interval(ue.startDateTime,
+					ue.endDateTime));
 			if (e == null) {
 				errors.add("Insert of event failed: " + ue.type.toString()
-						+ " from " + ue.startDatetime.toString() + " to "
-						+ ue.endDatetime.toString());
+						+ " from " + ue.startDateTime.toString() + " to "
+						+ ue.endDateTime.toString());
+				break;
 			} else {
 				successfulEvents++;
 			}
+
 			for (UploadAbsence ua : ue.absences) {
 
 				// TODO check type?

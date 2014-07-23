@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import edu.iastate.music.marching.attendance.model.store.User;
+import edu.iastate.music.marching.attendance.servlets.MobileAppDataServlet.Page;
 
 public class ServletMocks {
 
@@ -52,8 +53,8 @@ public class ServletMocks {
 		return req;
 	}
 
-	public static HttpServletRequest setPathInfo(HttpServletRequest req, String pathInfo) {
-		when(req.getPathInfo()).thenReturn(pathInfo);
+	public static HttpServletRequest setPage(HttpServletRequest req, Enum<?> page) {
+		when(req.getPathInfo()).thenReturn("somepath/" + page);
 		return req;
 	}
 

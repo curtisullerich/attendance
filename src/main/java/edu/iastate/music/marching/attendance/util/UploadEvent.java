@@ -10,6 +10,6 @@ public class UploadEvent {
 
 	public List<UploadAbsence> absences;
 	public Event.Type type;
-	public DateTime startDatetime;
-	public DateTime endDatetime;
+	public DateTime startDateTime;
+	public DateTime endDateTime;
 }
