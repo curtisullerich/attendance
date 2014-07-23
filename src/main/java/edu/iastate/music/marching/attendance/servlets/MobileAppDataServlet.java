@@ -132,7 +132,7 @@ public class MobileAppDataServlet extends AbstractBaseServlet {
 		UploadResult result = new UploadResult();
 
 		// Check if correct user type is logged in
-		if (!isLoggedIn(req, resp, User.Type.TA, User.Type.Director) && false) {
+		if (!isLoggedIn(req, resp, User.Type.TA, User.Type.Director)) {
 			result.error = ResultErrorType.login;
 		} else {
 			DataTrain train = DataTrain.depart();
