@@ -24,8 +24,8 @@ import edu.iastate.music.marching.attendance.model.store.Event;
 import edu.iastate.music.marching.attendance.model.store.Form;
 import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.testlib.AbstractDatastoreTest;
-import edu.iastate.music.marching.attendance.testlib.TestConfig;
-import edu.iastate.music.marching.attendance.testlib.TestUsers;
+import edu.iastate.music.marching.attendance.testlib.Config;
+import edu.iastate.music.marching.attendance.testlib.Users;
 import edu.iastate.music.marching.attendance.util.Util;
 
 public class UserManagerTest extends AbstractDatastoreTest {
@@ -42,7 +42,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 
 		UserManager uc = train.users();
 
-		TestUsers.createDirector(uc, "director", "I am", "The Director");
+		Users.createDirector(uc, "director", "I am", "The Director");
 
 		// Verify
 		List<User> users = uc.getAll();
@@ -55,7 +55,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		// Check returned object
 		assertNotNull(d);
 		assertEquals(User.Type.Director, d.getType());
-		assertEquals("director@" + TestConfig.getEmailDomain(), d
+		assertEquals("director@" + Config.getEmailDomain(), d
 				.getPrimaryEmail().getEmail());
 		assertEquals("I am", d.getFirstName());
 		assertEquals("The Director", d.getLastName());
@@ -68,7 +68,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 
 		UserManager uc = train.users();
 
-		TestUsers.createStudent(uc, "studenttt", "123456789", "I am",
+		Users.createStudent(uc, "studenttt", "123456789", "I am",
 				"A Student", 10, "Being Silly", User.Section.AltoSax);
 
 		// Verify
@@ -82,7 +82,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		// Check returned object
 		assertNotNull(s);
 		assertEquals(User.Type.Student, s.getType());
-		assertEquals("studenttt@" + TestConfig.getEmailDomain(), s
+		assertEquals("studenttt@" + Config.getEmailDomain(), s
 				.getPrimaryEmail().getEmail());
 		assertEquals("123456789", s.getUniversityID());
 		assertEquals("I am", s.getFirstName());
@@ -113,7 +113,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		MobileDataManager mdc = train.mobileData();
 
 		// Student 1 setup, the user to be deleted
-		User student1 = TestUsers.createStudent(uc, "studenttt", "123456789",
+		User student1 = Users.createStudent(uc, "studenttt", "123456789",
 				"I am", "A Student", 10, "Being Silly", User.Section.AltoSax);
 
 		ac.createOrUpdateAbsence(student1, (Event) null);
@@ -125,7 +125,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		mdc.pushMobileData(SINGLE_ABSENCE_STUDENT1_TESTDATA, student1);
 
 		// Student 2 setup, the user to keep
-		User student2 = TestUsers
+		User student2 = Users
 				.createStudent(uc, "studenttt2", "123456780", "I am2",
 						"A Student2", 10, "Being Silly2", User.Section.AltoSax);
 		ac.createOrUpdateAbsence(student2, (Event) null);
@@ -215,7 +215,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		EventManager ec = train.events();
 		AbsenceManager ac = train.absences();
 
-		User s1 = TestUsers.createDefaultStudent(uc);
+		User s1 = Users.createDefaultStudent(uc);
 
 		// should be A initially
 		assertEquals(User.Grade.A, uc.get(s1.getId()).getGrade());
@@ -327,7 +327,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		DateTimeZone zone = train.appData().get().getTimeZone();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		// should be A initially
 		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
@@ -407,7 +407,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		DateTimeZone zone = train.appData().get().getTimeZone();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		// should be A initially
 		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
@@ -498,7 +498,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		DateTimeZone zone = train.appData().get().getTimeZone();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
 
@@ -556,7 +556,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		DateTimeZone zone = train.appData().get().getTimeZone();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
 		assertEquals(0, uc.get(student.getId()).getMinutesMissed());
@@ -593,7 +593,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		DateTimeZone zone = train.appData().get().getTimeZone();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
 
@@ -643,7 +643,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		FormManager fc = train.forms();
 		DateTimeZone zone = train.appData().get().getTimeZone();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		// should be A initially
 		assertEquals(User.Grade.A, uc.get(student.getId()).getGrade());
@@ -716,7 +716,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		DateTimeZone zone = train.appData().get().getTimeZone();
 
-		User s1 = TestUsers.createDefaultStudent(uc);
+		User s1 = Users.createDefaultStudent(uc);
 
 		DateTime start = new DateTime(2012, 7, 18, 16, 30, 0, 0, zone);
 		DateTime end = new DateTime(2012, 7, 18, 17, 50, 0, 0, zone);
@@ -750,7 +750,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		DateTimeZone zone = train.appData().get().getTimeZone();
 
-		User s1 = TestUsers.createDefaultStudent(uc);
+		User s1 = Users.createDefaultStudent(uc);
 
 		DateTime start = new DateTime(2012, 7, 18, 16, 30, 0, 0, zone);
 		DateTime end = new DateTime(2012, 7, 18, 17, 50, 0, 0, zone);
@@ -795,7 +795,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		DateTimeZone zone = train.appData().get().getTimeZone();
 
-		User s1 = TestUsers.createDefaultStudent(uc);
+		User s1 = Users.createDefaultStudent(uc);
 
 		LocalTime classStart = new LocalTime(16, 10);
 		LocalTime classEnd = new LocalTime(17, 20);
@@ -845,7 +845,7 @@ public class UserManagerTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		DateTimeZone zone = train.appData().get().getTimeZone();
 
-		User s1 = TestUsers.createDefaultStudent(uc);
+		User s1 = Users.createDefaultStudent(uc);
 
 		LocalTime classStart = new LocalTime(16, 10);
 		LocalTime classEnd = new LocalTime(17, 0);

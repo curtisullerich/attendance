@@ -7,7 +7,7 @@ import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.util.Util;
 
 @Ignore
-public class TestUsers {
+public class Users {
 
 	public static final User createDefaultStudent(UserManager uc) {
 		return createStudent(uc, "defaultstudent", "123456789", "John", "Doe", 2,
@@ -24,7 +24,7 @@ public class TestUsers {
 			String lastName, int year, String major, User.Section section) {
 
 		com.google.appengine.api.users.User google_user = new com.google.appengine.api.users.User(
-				email_firstpart + "@" + TestConfig.getEmailDomain(),
+				email_firstpart + "@" + Config.getEmailDomain(),
 				"gmail.com");
 
 		return uc.createStudent(google_user, univID, firstName, lastName, year,
@@ -36,7 +36,7 @@ public class TestUsers {
 			String major, User.Section section) {
 
 		com.google.appengine.api.users.User google_user = new com.google.appengine.api.users.User(
-				email_firstpart + "@" + TestConfig.getEmailDomain(),
+				email_firstpart + "@" + Config.getEmailDomain(),
 				"gmail.com");
 
 		User u = uc.createStudent(google_user, univID, firstName, lastName,
@@ -49,12 +49,12 @@ public class TestUsers {
 	public static final User createDirector(UserManager uc,
 			String email_firstpart, String firstName, String lastName) {
 		return uc.createDirector(
-				email_firstpart + "@" + TestConfig.getEmailDomain(),
+				email_firstpart + "@" + Config.getEmailDomain(),
 				email_firstpart + ".secondemail" + "@"
-						+ TestConfig.getEmailDomain(), firstName, lastName);
+						+ Config.getEmailDomain(), firstName, lastName);
 	}
 
 	public static User createDefaultDirector(UserManager uc) {
-		return TestUsers.createDirector(uc, "director", "I am", "The Director");
+		return Users.createDirector(uc, "director", "I am", "The Director");
 	}
 }

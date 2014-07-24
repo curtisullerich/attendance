@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import edu.iastate.music.marching.attendance.model.interact.DataTrain;
 import edu.iastate.music.marching.attendance.testlib.AbstractDatastoreTest;
-import edu.iastate.music.marching.attendance.testlib.TestConfig;
+import edu.iastate.music.marching.attendance.testlib.Config;
 import edu.iastate.music.marching.attendance.util.Util;
 import edu.iastate.music.marching.attendance.util.ValidationUtil;
 
@@ -17,7 +17,7 @@ public class ValidationUtilTest extends AbstractDatastoreTest {
 	public void testValidGoogleUsers() {
 		DataTrain train = getDataTrain();
 		
-		String validIaStateEmail = "bmax@" + TestConfig.getEmailDomain();
+		String validIaStateEmail = "bmax@" + Config.getEmailDomain();
 		String nonValidRealEmail = "bmax921@gmail.com";
 		String nonValidMadeUpEmail = "lkajslkfdjasdf@lkasdlkfj.com";
 		

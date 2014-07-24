@@ -19,9 +19,9 @@ import edu.iastate.music.marching.attendance.servlets.DirectorServlet;
 import edu.iastate.music.marching.attendance.servlets.MobileAppDataServlet;
 import edu.iastate.music.marching.attendance.testlib.AbstractDatastoreTest;
 import edu.iastate.music.marching.attendance.testlib.ServletMocks;
-import edu.iastate.music.marching.attendance.testlib.TestUsers;
+import edu.iastate.music.marching.attendance.testlib.Users;
 
-public class ServletAccess extends AbstractDatastoreTest {
+public class ServletAccessTest extends AbstractDatastoreTest {
 
 	@Test
 	public void DirectorServlet_Student_ClassList_Test()
@@ -31,7 +31,7 @@ public class ServletAccess extends AbstractDatastoreTest {
 		HttpServletRequest req = mock(HttpServletRequest.class);
 		HttpServletResponse resp = mock(HttpServletResponse.class);
 
-		ServletMocks.setUserSession(req, TestUsers.createDefaultDirector(train.users()));
+		ServletMocks.setUserSession(req, Users.createDefaultDirector(train.users()));
 
 		when(req.getPathInfo()).thenReturn("/classlist");
 
@@ -52,7 +52,7 @@ public class ServletAccess extends AbstractDatastoreTest {
 		HttpServletRequest req = mock(HttpServletRequest.class);
 		HttpServletResponse resp = mock(HttpServletResponse.class);
 
-		ServletMocks.setUserSession(req, TestUsers.createDefaultDirector(train.users()));
+		ServletMocks.setUserSession(req, Users.createDefaultDirector(train.users()));
 		
 		when(req.getPathInfo()).thenReturn("/classlist");
 
@@ -71,7 +71,7 @@ public class ServletAccess extends AbstractDatastoreTest {
 		HttpServletRequest req = mock(HttpServletRequest.class);
 		HttpServletResponse resp = mock(HttpServletResponse.class);
 
-		ServletMocks.setUserSession(req, TestUsers.createDefaultDirector(train.users()));
+		ServletMocks.setUserSession(req, Users.createDefaultDirector(train.users()));
 
 		when(req.getPathInfo()).thenReturn("/classlist");
 
@@ -89,7 +89,7 @@ public class ServletAccess extends AbstractDatastoreTest {
 		HttpServletRequest req = mock(HttpServletRequest.class);
 		HttpServletResponse resp = mock(HttpServletResponse.class);
 
-		ServletMocks.setUserSession(req, TestUsers.createDefaultStudent(train.users()));
+		ServletMocks.setUserSession(req, Users.createDefaultStudent(train.users()));
 
 		ServletMocks.doGet(DirectorServlet.class, req, resp);
 
@@ -103,7 +103,7 @@ public class ServletAccess extends AbstractDatastoreTest {
 		HttpServletRequest req = mock(HttpServletRequest.class);
 		HttpServletResponse resp = mock(HttpServletResponse.class);
 
-		ServletMocks.setUserSession(req, TestUsers.createDefaultTA(train.users()));
+		ServletMocks.setUserSession(req, Users.createDefaultTA(train.users()));
 
 		ServletMocks.doGet(DirectorServlet.class, req, resp);
 
@@ -117,7 +117,7 @@ public class ServletAccess extends AbstractDatastoreTest {
 		HttpServletRequest req = mock(HttpServletRequest.class);
 		HttpServletResponse resp = mock(HttpServletResponse.class);
 
-		ServletMocks.setUserSession(req, TestUsers.createDefaultTA(train.users()));
+		ServletMocks.setUserSession(req, Users.createDefaultTA(train.users()));
 
 		ServletMocks.doGet(DirectorServlet.class, req, resp);
 
@@ -131,7 +131,7 @@ public class ServletAccess extends AbstractDatastoreTest {
 		HttpServletRequest req = mock(HttpServletRequest.class);
 		HttpServletResponse resp = mock(HttpServletResponse.class);
 
-		ServletMocks.setUserSession(req, TestUsers.createDefaultDirector(train.users()));
+		ServletMocks.setUserSession(req, Users.createDefaultDirector(train.users()));
 
 		when(req.getPathInfo()).thenReturn("/index");
 
@@ -150,7 +150,7 @@ public class ServletAccess extends AbstractDatastoreTest {
 		HttpServletRequest req = mock(HttpServletRequest.class);
 		HttpServletResponse resp = mock(HttpServletResponse.class);
 
-		ServletMocks.setUserSession(req, TestUsers.createDefaultDirector(train.users()));
+		ServletMocks.setUserSession(req, Users.createDefaultDirector(train.users()));
 
 		when(req.getPathInfo()).thenReturn("/nonexistant");
 

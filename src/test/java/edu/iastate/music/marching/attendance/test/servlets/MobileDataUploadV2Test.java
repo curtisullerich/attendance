@@ -38,8 +38,8 @@ import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.servlets.MobileAppDataServlet;
 import edu.iastate.music.marching.attendance.testlib.AbstractDatastoreTest;
 import edu.iastate.music.marching.attendance.testlib.ServletMocks;
-import edu.iastate.music.marching.attendance.testlib.TestConfig;
-import edu.iastate.music.marching.attendance.testlib.TestUsers;
+import edu.iastate.music.marching.attendance.testlib.Config;
+import edu.iastate.music.marching.attendance.testlib.Users;
 import edu.iastate.music.marching.attendance.util.DateTimeConverter;
 import edu.iastate.music.marching.attendance.util.UploadAbsence;
 import edu.iastate.music.marching.attendance.util.UploadEvent;
@@ -157,7 +157,7 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 
 		ServletMocks.setPage(req, MobileAppDataServlet.Page.indexv2);
 		ServletMocks.setUserSession(req,
-				TestUsers.createDefaultTA(train.users()));
+				Users.createDefaultTA(train.users()));
 		ServletMocks.setPostedContent(req, SIMPLE_ABSENCE_TESTDATA_V2);
 
 		ServletOutputStream os = mock(ServletOutputStream.class);
@@ -183,11 +183,11 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 
 		DataTrain train = getDataTrain();
 
-		User ta = TestUsers.createTA(train.users(), "ehornbuckle", "123456780",
+		User ta = Users.createTA(train.users(), "ehornbuckle", "123456780",
 				"first", "last", 2, "major", User.Section.Staff);
-		TestUsers.createStudent(train.users(), "ehayles", "123456719", "first",
+		Users.createStudent(train.users(), "ehayles", "123456719", "first",
 				"last", 1, "major", User.Section.Baritone);
-		TestUsers.createStudent(train.users(), "alusk", "123456782", "first",
+		Users.createStudent(train.users(), "alusk", "123456782", "first",
 				"last", 1, "major", User.Section.Drumline_Bass);
 
 		Reader r = new StringReader(SIMPLE_ABSENCE_TESTDATA_V2);
@@ -203,9 +203,9 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 
 		// Arrange
 		DataTrain train = getDataTrain();
-		TestUsers.createStudent(train.users(), "ehayles", "123456788", "first",
+		Users.createStudent(train.users(), "ehayles", "123456788", "first",
 				"last", 1, "major", User.Section.Clarinet);
-		TestUsers.createStudent(train.users(), "alusk", "123456782", "first",
+		Users.createStudent(train.users(), "alusk", "123456782", "first",
 				"last", 1, "major", User.Section.TenorSax);
 
 		HttpServletRequest req = mock(HttpServletRequest.class);
@@ -213,7 +213,7 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 
 		ServletMocks.setPage(req, MobileAppDataServlet.Page.indexv2);
 		ServletMocks.setUserSession(req,
-				TestUsers.createDefaultTA(train.users()));
+				Users.createDefaultTA(train.users()));
 		ServletMocks.setPostedContent(req, SIMPLE_ABSENCE_TESTDATA_V2);
 		ServletOutputStream os = mock(ServletOutputStream.class);
 		when(resp.getOutputStream()).thenReturn(os);
@@ -246,7 +246,7 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 			ServletException, IOException {
 
 		DataTrain train = getDataTrain();
-		TestUsers.createStudent(train.users(), "ehayles", "123456788", "first",
+		Users.createStudent(train.users(), "ehayles", "123456788", "first",
 				"last", 1, "major", User.Section.Clarinet);
 
 		HttpServletRequest req = mock(HttpServletRequest.class);
@@ -255,7 +255,7 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 		ServletMocks.setPage(req, MobileAppDataServlet.Page.indexv2);
 		if (setUserSession) {
 			ServletMocks.setUserSession(req,
-					TestUsers.createDefaultStudent(train.users()));
+					Users.createDefaultStudent(train.users()));
 		}
 		ServletMocks.setPostedContent(req, SIMPLE_SINGLE_TARDY_STRING);
 		ServletOutputStream os = mock(ServletOutputStream.class);
@@ -305,7 +305,7 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 			assertEquals(a.getEvent(), event);
 
 			if (a.getStudent().getPrimaryEmail().getEmail()
-					.equals("ehayles@" + TestConfig.getEmailDomain())) {
+					.equals("ehayles@" + Config.getEmailDomain())) {
 				assertFalse(
 						"There should only be one abscence for user ehayles",
 						foundS);
@@ -313,7 +313,7 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 				// TODO https://github.com/curtisullerich/attendance/issues/123
 				// assert information about inserted absence
 			} else if (a.getStudent().getPrimaryEmail().getEmail()
-					.equals("alusk@" + TestConfig.getEmailDomain())) {
+					.equals("alusk@" + Config.getEmailDomain())) {
 				// TODO https://github.com/curtisullerich/attendance/issues/123
 				// assert information about inserted absence
 			} else
@@ -327,13 +327,13 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 
 		UserManager uc = train.users();
 
-		TestUsers.createStudent(uc, "ehayles", "123456780", "test1", "tester",
+		Users.createStudent(uc, "ehayles", "123456780", "test1", "tester",
 				1, "major", User.Section.AltoSax);
-		TestUsers.createStudent(uc, "alusk", "123456781", "test1", "tester", 1,
+		Users.createStudent(uc, "alusk", "123456781", "test1", "tester", 1,
 				"major", User.Section.AltoSax);
-		TestUsers.createStudent(uc, "jbade", "123456782", "test1", "tester", 1,
+		Users.createStudent(uc, "jbade", "123456782", "test1", "tester", 1,
 				"major", User.Section.AltoSax);
-		User ta = TestUsers.createTA(uc, "ehornbuckle", "123456783", "test1",
+		User ta = Users.createTA(uc, "ehornbuckle", "123456783", "test1",
 				"tester", 1, "major", User.Section.AltoSax);
 
 		Reader r = new StringReader(SIMPLE_TARDY_TESTDATA_V2);
