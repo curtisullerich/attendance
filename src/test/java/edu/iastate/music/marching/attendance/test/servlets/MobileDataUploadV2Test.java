@@ -48,6 +48,7 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 
 	private static final String SIMPLE_ABSENCE_TESTDATA_V2 = "[ { \"absences\": [ { \"type\": \"Absence\", \"netid\": \"ehayles\" }, { \"type\": \"Absence\", \"netid\": \"alusk\" } ], \"type\": \"Rehearsal\", \"startDateTime\": \"2012-05-03T16:30:00.000Z\", \"endDateTime\": \"2012-05-03T17:50:00.000Z\" } ]";
 	private static final String SIMPLE_TARDY_TESTDATA_V2 = "[ { \"absences\": [ { \"type\": \"Tardy\", \"time\": \"2012-05-03T01:09:00.000Z\", \"netid\": \"ehayles\" }, { \"type\": \"Tardy\", \"time\": \"2012-05-03T01:16:00.000Z\", \"netid\": \"ehayles\" }, { \"type\": \"Tardy\", \"time\": \"2012-05-03T01:08:00.000Z\", \"netid\": \"jbade\" }, { \"type\": \"Tardy\", \"time\": \"2012-05-03T01:07:00.000Z\", \"netid\": \"ehayles\" }, { \"type\": \"Tardy\", \"time\": \"2012-05-03T01:08:00.000Z\", \"netid\": \"ehayles\" }, { \"type\": \"Tardy\", \"time\": \"2012-05-03T01:08:00.000Z\", \"netid\": \"alusk\" } ], \"type\": \"Rehearsal\", \"startDateTime\": \"2012-05-03T16:30:00.000Z\", \"endDateTime\": \"2012-05-03T17:50:00.000Z\" } ]";
+	private static final String SIMPLE_SINGLE_TARDY_STRING = "[{\"absences\":[{\"type\":\"Absence\",\"netid\":\"ehayles\"}],\"type\":\"Rehearsal\",\"startDateTime\":\"2012-05-03T16:30:00.000Z\",\"endDateTime\":\"2012-05-03T17:50:00.000Z\"}]";
 
 	public class DateTimeWrapper {
 		public DateTime value;
@@ -71,7 +72,7 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 		assertEquals(expected, actual.value);
 	}
 
-	// TODO @Test
+	@Test
 	public void testSimpleAbsenceListDeserializing() {
 		DateTime start = new DateTime(2012, 5, 3, 16, 30, 0, 0,
 				DateTimeZone.UTC);
@@ -103,26 +104,27 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 		assertEquals(1, result.size());
 		assertEquals(end, result.get(0).endDateTime);
 		assertEquals(start, result.get(0).startDateTime);
-
 	}
 
 	@Test
 	public void deserializeListOfISO8601DateTime_CorrectDateTime() {
 
-		Type listType = new TypeToken<List<DateTimeWrapper>>() {}.getType();
+		Type listType = new TypeToken<List<DateTimeWrapper>>() {
+		}.getType();
 		String str = "[{value:\"3141-05-09T02:06:05.035Z\"}]";
-		DateTime expected = new DateTime(3141, 5, 9, 2, 6, 5, 35, DateTimeZone.UTC);
+		DateTime expected = new DateTime(3141, 5, 9, 2, 6, 5, 35,
+				DateTimeZone.UTC);
 
 		GsonBuilder gsonBuilder = new GsonBuilder();
-		gsonBuilder.registerTypeAdapter(DateTime.class,
-				new DateTimeConverter());
+		gsonBuilder
+				.registerTypeAdapter(DateTime.class, new DateTimeConverter());
 		Gson gson = gsonBuilder.create();
 
 		List<DateTimeWrapper> actual = gson.fromJson(str, listType);
 
 		assertNotNull(actual);
 		assertEquals(1, actual.size());
-		
+
 		assertNotNull(actual.get(0));
 		assertEquals(expected, actual.get(0).value);
 	}
@@ -189,7 +191,7 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 				"last", 1, "major", User.Section.Drumline_Bass);
 
 		Reader r = new StringReader(SIMPLE_ABSENCE_TESTDATA_V2);
-		String result = train.mobileData().pushMobileDataV2(r, ta);
+		train.mobileData().pushMobileDataV2(r, ta);
 
 		simpleAbsenceInsertionVerification();
 	}
@@ -213,7 +215,6 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 		ServletMocks.setUserSession(req,
 				TestUsers.createDefaultTA(train.users()));
 		ServletMocks.setPostedContent(req, SIMPLE_ABSENCE_TESTDATA_V2);
-		// TODO how to set the page?
 		ServletOutputStream os = mock(ServletOutputStream.class);
 		when(resp.getOutputStream()).thenReturn(os);
 
@@ -224,6 +225,44 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 		verify(os)
 				.print("{\"error\":\"success\",\"message\":\"Inserted 1/1 events.\\nInserted 2/2 absences/tardies/early checkouts.\\n\"}");
 		simpleAbsenceInsertionVerification();
+	}
+
+	@Test
+	public void testAttemptedStudentUploadThroughServlet()
+			throws InstantiationException, IllegalAccessException,
+			ServletException, IOException {
+		helpTestUploadThroughServlet(true);
+	}
+
+	@Test
+	public void testAttemptedPublicUploadThroughServlet()
+			throws InstantiationException, IllegalAccessException,
+			ServletException, IOException {
+		helpTestUploadThroughServlet(false);
+	}
+
+	private void helpTestUploadThroughServlet(boolean setUserSession)
+			throws InstantiationException, IllegalAccessException,
+			ServletException, IOException {
+
+		DataTrain train = getDataTrain();
+		TestUsers.createStudent(train.users(), "ehayles", "123456788", "first",
+				"last", 1, "major", User.Section.Clarinet);
+
+		HttpServletRequest req = mock(HttpServletRequest.class);
+		HttpServletResponse resp = mock(HttpServletResponse.class);
+
+		ServletMocks.setPage(req, MobileAppDataServlet.Page.indexv2);
+		if (setUserSession) {
+			ServletMocks.setUserSession(req,
+					TestUsers.createDefaultStudent(train.users()));
+		}
+		ServletMocks.setPostedContent(req, SIMPLE_SINGLE_TARDY_STRING);
+		ServletOutputStream os = mock(ServletOutputStream.class);
+		when(resp.getOutputStream()).thenReturn(os);
+
+		ServletMocks.doPost(MobileAppDataServlet.class, req, resp);
+		verify(os).print("{\"error\":\"login\"}");
 	}
 
 	private void simpleAbsenceInsertionVerification() {
