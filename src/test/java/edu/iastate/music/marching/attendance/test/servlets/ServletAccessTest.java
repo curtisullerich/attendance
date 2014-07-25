@@ -30,10 +30,9 @@ public class ServletAccessTest extends AbstractDatastoreTest {
 		DataTrain train = getDataTrain();
 		HttpServletRequest req = mock(HttpServletRequest.class);
 		HttpServletResponse resp = mock(HttpServletResponse.class);
-
-		ServletMocks.setUserSession(req, Users.createDefaultDirector(train.users()));
-
-		when(req.getPathInfo()).thenReturn("/classlist");
+		
+		ServletMocks.setUserSession(req, Users.createDefaultStudent(train.users()));
+		ServletMocks.setPage(req, MobileAppDataServlet.Page.index);
 
 		ServletOutputStream sos = mock(ServletOutputStream.class);
 
@@ -41,8 +40,8 @@ public class ServletAccessTest extends AbstractDatastoreTest {
 
 		ServletMocks.doGet(MobileAppDataServlet.class, req, resp);
 
-		// Verify data is written to the servlet output stream
-		verify(sos).print("{\"error\":\"success\",\"data\":\"\"}");
+		// Verify login error is written to the servlet output stream
+		verify(sos).print("{\"error\":\"login\"}");
 	}
 
 	@Test
@@ -52,15 +51,17 @@ public class ServletAccessTest extends AbstractDatastoreTest {
 		HttpServletRequest req = mock(HttpServletRequest.class);
 		HttpServletResponse resp = mock(HttpServletResponse.class);
 
-		ServletMocks.setUserSession(req, Users.createDefaultDirector(train.users()));
-		
-		when(req.getPathInfo()).thenReturn("/classlist");
+		ServletMocks.setUserSession(req, Users.createDefaultTA(train.users()));
+		ServletMocks.setPage(req, MobileAppDataServlet.Page.index);
 
 		ServletOutputStream sos = mock(ServletOutputStream.class);
 
 		when(resp.getOutputStream()).thenReturn(sos);
 
 		ServletMocks.doGet(MobileAppDataServlet.class, req, resp);
+		
+		// Verify success code and data for this one TA is written out
+		verify(sos).print("{\"error\":\"success\",\"data\":\"TA\\u0026split\\u0026defaultta\\u0026split\\u0026Johnny\\u0026split\\u0026Doe\\u0026split\\u0026\\u0026split\\u0026null\\u0026newline\\u0026\"}");
 	}
 
 	@Test
@@ -72,14 +73,16 @@ public class ServletAccessTest extends AbstractDatastoreTest {
 		HttpServletResponse resp = mock(HttpServletResponse.class);
 
 		ServletMocks.setUserSession(req, Users.createDefaultDirector(train.users()));
-
-		when(req.getPathInfo()).thenReturn("/classlist");
+		ServletMocks.setPage(req, MobileAppDataServlet.Page.index);
 
 		ServletOutputStream sos = mock(ServletOutputStream.class);
 
 		when(resp.getOutputStream()).thenReturn(sos);
 
 		ServletMocks.doGet(MobileAppDataServlet.class, req, resp);
+		
+		// Verify success message is written, don't worry about data as no students exist
+		verify(sos).print("{\"error\":\"success\",\"data\":\"\"}");
 	}
 
 	@Test
