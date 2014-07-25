@@ -243,6 +243,9 @@
                       <jvmFlag>-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n</jvmFlag>
                     </jvmFlags -->
 	                <port>8008</port>
+ 					<jvmFlags>
+						<jvmFlag>-Ddatastore.backing_store=${project.basedir}/local_db.bin</jvmFlag>
+					</jvmFlags>
                 </configuration>
                 <executions>
                     <execution>

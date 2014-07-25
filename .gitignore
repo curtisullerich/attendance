@@ -8,4 +8,4 @@ Thumbs.db
 /bin
 /target
 /war
-
+/local_db.bin
