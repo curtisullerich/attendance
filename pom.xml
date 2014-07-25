@@ -11,7 +11,6 @@
     <properties>
         <appengine.app.version>1</appengine.app.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
         <!-- GAE properties -->
         <gae.version>1.9.6</gae.version>
     </properties>
@@ -243,6 +242,7 @@
                     <!-- jvmFlags>
                       <jvmFlag>-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n</jvmFlag>
                     </jvmFlags -->
+	                <port>8008</port>
                 </configuration>
                 <executions>
                     <execution>
