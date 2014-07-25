@@ -24,7 +24,7 @@ import edu.iastate.music.marching.attendance.model.store.Event;
 import edu.iastate.music.marching.attendance.model.store.Form;
 import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.testlib.AbstractDatastoreTest;
-import edu.iastate.music.marching.attendance.testlib.TestUsers;
+import edu.iastate.music.marching.attendance.testlib.Users;
 
 @SuppressWarnings("deprecation")
 public class AbsenceManagerTest extends AbstractDatastoreTest {
@@ -36,7 +36,7 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		DataTrain train = getDataTrain();
 		UserManager uc = train.users();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 		DateTimeZone zone = train.appData().get().getTimeZone();
 		DateTime start1 = new DateTime(2012, 7, 16, 5, 0, 0, 0, zone);
 		DateTime end1 = start1.plusHours(1);
@@ -77,7 +77,7 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		DataTrain train = getDataTrain();
 
 		UserManager uc = train.users();
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		DateTimeZone zone = train.appData().get().getTimeZone();
 		DateTime start = new DateTime(2012, 7, 16, 16, 0, 0, 0, zone);
@@ -110,7 +110,7 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		DataTrain train = getDataTrain();
 
 		UserManager uc = train.users();
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		DateTimeZone zone = train.appData().get().getTimeZone();
 		DateTime eventStart = new DateTime(2012, 7, 16, 4, 0, 0, 0, zone);
@@ -147,7 +147,7 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		DataTrain train = getDataTrain();
 
 		UserManager uc = train.users();
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		DateTimeZone zone = train.appData().get().getTimeZone();
 		DateTime eventStart = new DateTime(2012, 7, 16, 16, 0, 0, 0, zone);
@@ -179,7 +179,7 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		DataTrain train = getDataTrain();
 
 		UserManager uc = train.users();
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		DateTimeZone zone = train.appData().get().getTimeZone();
 		DateTime eventStart = new DateTime(2012, 7, 16, 16, 0, 0, 0, zone);
@@ -211,7 +211,7 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		DataTrain train = getDataTrain();
 
 		UserManager uc = train.users();
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		DateTimeZone zone = train.appData().get().getTimeZone();
 		DateTime eventStart = new DateTime(2012, 7, 16, 16, 0, 0, 0, zone);
@@ -242,7 +242,7 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		DataTrain train = getDataTrain();
 
 		UserManager uc = train.users();
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		DateTimeZone zone = train.appData().get().getTimeZone();
 		DateTime eventStart = new DateTime(2012, 7, 16, 16, 0, 0, 0, zone);
@@ -272,7 +272,7 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		DataTrain train = getDataTrain();
 
 		UserManager uc = train.users();
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		DateTimeZone zone = train.appData().get().getTimeZone();
 		DateTime eventStart = new DateTime(2012, 7, 16, 16, 0, 0, 0, zone);
@@ -300,7 +300,7 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 			DataTrain train = getDataTrain();
 
 			UserManager uc = train.users();
-			User student = TestUsers.createDefaultStudent(uc);
+			User student = Users.createDefaultStudent(uc);
 
 			DateTimeZone zone = train.appData().get().getTimeZone();
 			DateTime eventStart = new DateTime(2012, 7, 15, 16, 0, 0, 0, zone);
@@ -321,7 +321,7 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		DataTrain train = getDataTrain();
 
 		UserManager uc = train.users();
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		DateTimeZone zone = train.appData().get().getTimeZone();
 		DateTime eventStart = new DateTime(2012, 7, 16, 17, 0, 0, 0, zone);
@@ -357,7 +357,7 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		DataTrain train = getDataTrain();
 
 		UserManager uc = train.users();
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		DateTimeZone zone = train.appData().get().getTimeZone();
 		DateTime eventStart = new DateTime(2012, 7, 16, 17, 0, 0, 0, zone);
@@ -406,7 +406,7 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		DataTrain train = getDataTrain();
 
 		UserManager uc = train.users();
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		DateTimeZone zone = train.appData().get().getTimeZone();
 		DateTime eventStart = new DateTime(2012, 7, 16, 17, 0, 0, 0, zone);
@@ -434,7 +434,7 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		DataTrain train = getDataTrain();
 
 		UserManager uc = train.users();
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		DateTimeZone zone = train.appData().get().getTimeZone();
 		DateTime event1Start = new DateTime(2012, 7, 16, 17, 0, 0, 0, zone);
@@ -477,7 +477,7 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		DataTrain train = getDataTrain();
 
 		UserManager uc = train.users();
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		DateTimeZone zone = train.appData().get().getTimeZone();
 		DateTime eventStart = new DateTime(2012, 7, 16, 17, 0, 0, 0, zone);
@@ -504,7 +504,7 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		DataTrain train = getDataTrain();
 
 		UserManager uc = train.users();
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		DateTimeZone zone = train.appData().get().getTimeZone();
 		DateTime event1Start = new DateTime(2012, 7, 16, 17, 0, 0, 0, zone);
@@ -548,7 +548,7 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		DataTrain train = getDataTrain();
 
 		UserManager uc = train.users();
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		DateTimeZone zone = train.appData().get().getTimeZone();
 		DateTime eventStart = new DateTime(2012, 7, 16, 17, 0, 0, 0, zone);
@@ -581,9 +581,9 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		DataTrain train = getDataTrain();
 
 		UserManager uc = train.users();
-		User student1 = TestUsers.createStudent(uc, "student1", "123456789",
+		User student1 = Users.createStudent(uc, "student1", "123456789",
 				"First", "last", 2, "major", User.Section.AltoSax);
-		User student2 = TestUsers.createStudent(uc, "student2", "123456782",
+		User student2 = Users.createStudent(uc, "student2", "123456782",
 				"First", "last", 2, "major", User.Section.AltoSax);
 
 		DateTimeZone zone = train.appData().get().getTimeZone();
@@ -623,7 +623,7 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		DataTrain train = getDataTrain();
 
 		UserManager uc = train.users();
-		User student1 = TestUsers.createDefaultStudent(uc);
+		User student1 = Users.createDefaultStudent(uc);
 
 		DateTimeZone zone = train.appData().get().getTimeZone();
 		DateTime event1Start = new DateTime(2012, 7, 16, 5, 0, 0, 0, zone);
@@ -674,14 +674,14 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		DataTrain train = getDataTrain();
 
 		UserManager uc = train.users();
-		User nonOverTardyFirst = TestUsers.createStudent(uc, "student1",
+		User nonOverTardyFirst = Users.createStudent(uc, "student1",
 				"123456780", "First", "last", 2, "major", User.Section.AltoSax);
-		User nonOverEarlyFirst = TestUsers.createStudent(uc, "student2",
+		User nonOverEarlyFirst = Users.createStudent(uc, "student2",
 				"123456789", "First", "last", 2, "major", User.Section.AltoSax);
 
-		User overlapTardyFirst = TestUsers.createStudent(uc, "student3",
+		User overlapTardyFirst = Users.createStudent(uc, "student3",
 				"123456781", "First", "last", 2, "major", User.Section.AltoSax);
-		User overlapEarlyFirst = TestUsers.createStudent(uc, "student4",
+		User overlapEarlyFirst = Users.createStudent(uc, "student4",
 				"123456782", "First", "last", 2, "major", User.Section.AltoSax);
 
 		DateTimeZone zone = train.appData().get().getTimeZone();
@@ -765,7 +765,7 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 
 		DataTrain train = getDataTrain();
 		UserManager uc = train.users();
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		DateTimeZone zone = train.appData().get().getTimeZone();
 		DateTime eventStart = new DateTime(2012, 7, 16, 5, 0, 0, 0, zone);
@@ -796,9 +796,9 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		DataTrain train = getDataTrain();
 
 		UserManager uc = train.users();
-		User student1 = TestUsers.createStudent(uc, "student1", "123456789",
+		User student1 = Users.createStudent(uc, "student1", "123456789",
 				"First", "last", 2, "major", User.Section.AltoSax);
-		User student2 = TestUsers.createStudent(uc, "student2", "123456780",
+		User student2 = Users.createStudent(uc, "student2", "123456780",
 				"First", "last", 2, "major", User.Section.AltoSax);
 
 		DateTimeZone zone = train.appData().get().getTimeZone();
@@ -841,7 +841,7 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		DataTrain train = getDataTrain();
 
 		UserManager uc = train.users();
-		User student1 = TestUsers.createDefaultStudent(uc);
+		User student1 = Users.createDefaultStudent(uc);
 
 		DateTimeZone zone = train.appData().get().getTimeZone();
 		DateTime event1Start = new DateTime(2012, 7, 16, 5, 0, 0, 0, zone);
@@ -882,7 +882,7 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		DataTrain train = getDataTrain();
 
 		UserManager uc = train.users();
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		DateTimeZone zone = train.appData().get().getTimeZone();
 		DateTime start = new DateTime(2012, 7, 16, 5, 0, 0, 0, zone);
@@ -909,7 +909,7 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		DataTrain train = getDataTrain();
 
 		UserManager uc = train.users();
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		DateTimeZone zone = train.appData().get().getTimeZone();
 		DateTime start = new DateTime(2012, 7, 16, 5, 0, 0, 0, zone);
@@ -940,7 +940,7 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		DataTrain train = getDataTrain();
 
 		UserManager uc = train.users();
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		DateTimeZone zone = train.appData().get().getTimeZone();
 		DateTime start = new DateTime(2012, 7, 16, 5, 0, 0, 0, zone);
@@ -971,7 +971,7 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		DataTrain train = getDataTrain();
 
 		UserManager uc = train.users();
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		DateTimeZone zone = train.appData().get().getTimeZone();
 		DateTime start = new DateTime(2012, 7, 16, 5, 0, 0, 0, zone);
@@ -1007,7 +1007,7 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		EventManager ec = train.events();
 		AbsenceManager ac = train.absences();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		DateTimeZone zone = train.appData().get().getTimeZone();
 		DateTime eventStart = new DateTime(2012, 7, 16, 5, 0, 0, 0, zone);
@@ -1038,9 +1038,9 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		DataTrain train = getDataTrain();
 
 		UserManager uc = train.users();
-		User student = TestUsers.createStudent(uc, "student", "123456789",
+		User student = Users.createStudent(uc, "student", "123456789",
 				"First", "last", 2, "major", User.Section.AltoSax);
-		User student1 = TestUsers.createStudent(uc, "student1", "123456780",
+		User student1 = Users.createStudent(uc, "student1", "123456780",
 				"First", "last", 2, "major", User.Section.AltoSax);
 
 		DateTimeZone zone = train.appData().get().getTimeZone();
@@ -1087,9 +1087,9 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		EventManager ec = train.events();
 		AbsenceManager ac = train.absences();
 
-		User student1 = TestUsers.createStudent(uc, "student1", "123456789",
+		User student1 = Users.createStudent(uc, "student1", "123456789",
 				"First", "last", 2, "major", User.Section.AltoSax);
-		User student2 = TestUsers.createStudent(uc, "student2", "123456782",
+		User student2 = Users.createStudent(uc, "student2", "123456782",
 				"First", "last", 2, "major", User.Section.AltoSax);
 
 		DateTimeZone zone = train.appData().get().getTimeZone();
@@ -1147,14 +1147,14 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		EventManager ec = train.events();
 		AbsenceManager ac = train.absences();
 
-		User nonOverTardyFirst = TestUsers.createStudent(uc, "student1",
+		User nonOverTardyFirst = Users.createStudent(uc, "student1",
 				"123456780", "First", "last", 2, "major", User.Section.AltoSax);
-		User nonOverEarlyFirst = TestUsers.createStudent(uc, "student2",
+		User nonOverEarlyFirst = Users.createStudent(uc, "student2",
 				"123456789", "First", "last", 2, "major", User.Section.AltoSax);
 
-		User overlapTardyFirst = TestUsers.createStudent(uc, "student3",
+		User overlapTardyFirst = Users.createStudent(uc, "student3",
 				"123456781", "First", "last", 2, "major", User.Section.AltoSax);
-		User overlapEarlyFirst = TestUsers.createStudent(uc, "student4",
+		User overlapEarlyFirst = Users.createStudent(uc, "student4",
 				"123456782", "First", "last", 2, "major", User.Section.AltoSax);
 
 		DateTimeZone zone = train.appData().get().getTimeZone();
@@ -1240,7 +1240,7 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		DataTrain train = getDataTrain();
 
 		UserManager uc = train.users();
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		DateTimeZone zone = train.appData().get().getTimeZone();
 		DateTime start = new DateTime(2012, 7, 16, 5, 0, 0, 0, zone);
@@ -1274,7 +1274,7 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = new LocalDate(2012, 7, 7);
 
@@ -1303,11 +1303,11 @@ public class AbsenceManagerTest extends AbstractDatastoreTest {
 
 		List<Absence> unanchored = new ArrayList<Absence>();
 
-		User student1 = TestUsers.createStudent(uc, "student1", "123456789",
+		User student1 = Users.createStudent(uc, "student1", "123456789",
 				"First", "last", 2, "major", User.Section.AltoSax);
-		User student2 = TestUsers.createStudent(uc, "student2", "123456788",
+		User student2 = Users.createStudent(uc, "student2", "123456788",
 				"First", "last", 2, "major", User.Section.AltoSax);
-		User student3 = TestUsers.createStudent(uc, "student3", "123456787",
+		User student3 = Users.createStudent(uc, "student3", "123456787",
 				"First", "last", 2, "major", User.Section.AltoSax);
 
 		DateTime unanchoredStart = new DateTime(2012, 10, 21, 6, 0, 0, zone);

@@ -28,8 +28,8 @@ import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.servlets.MobileAppDataServlet;
 import edu.iastate.music.marching.attendance.testlib.AbstractDatastoreTest;
 import edu.iastate.music.marching.attendance.testlib.ServletMocks;
-import edu.iastate.music.marching.attendance.testlib.TestConfig;
-import edu.iastate.music.marching.attendance.testlib.TestUsers;
+import edu.iastate.music.marching.attendance.testlib.Config;
+import edu.iastate.music.marching.attendance.testlib.Users;
 
 public class MobileDataUploadTest extends AbstractDatastoreTest {
 
@@ -44,6 +44,30 @@ public class MobileDataUploadTest extends AbstractDatastoreTest {
 			+ "tardyStudent&split&el&split&Starster&split&s&split&2012-05-03&split&0108&split&|&split&null&newline&"
 			+ "tardyStudent&split&P1&split&Z&split&zf&split&2012-05-03&split&0108&split&|&split&4&newline&";
 
+	private static final String SIMPLE_V2_TEST_DATA = "[{ \"absences\": [{ \"type\": \"Tardy\", \"time\": \"2014-04-23T16:45:05.511Z\", \"netid\": \"ehayles\" }], \"type\": \"Rehearsal\", \"startDateTime\": \"2014-04-23T16:30:00.511Z\", \"endDateTime\": \"2014-04-23T17:50:00.511Z\" }]";
+
+	@Test
+	public void testV2() throws IOException, InstantiationException,
+			IllegalAccessException, ServletException {
+		DataTrain train = getDataTrain();
+		HttpServletRequest req = mock(HttpServletRequest.class);
+		HttpServletResponse resp = mock(HttpServletResponse.class);
+
+		ServletMocks.setUserSession(req,
+				Users.createDefaultTA(train.users()));
+		ServletMocks.setPostedContent(req, SIMPLE_V2_TEST_DATA);
+
+		ServletOutputStream os = mock(ServletOutputStream.class);
+		when(resp.getOutputStream()).thenReturn(os);
+
+		ServletMocks.doPost(MobileAppDataServlet.class, req, resp);
+
+		// verify(os).print(
+		// "{\"error\":\"exception\",\"message\":\""
+		// + Lang.ERROR_ABSENCE_FOR_NULL_USER + "\"}");
+
+	}
+
 	@Test
 	public void simpleAbsenceInsertionThroughServlet_NullStudent()
 			throws InstantiationException, IllegalAccessException,
@@ -54,7 +78,7 @@ public class MobileDataUploadTest extends AbstractDatastoreTest {
 		HttpServletResponse resp = mock(HttpServletResponse.class);
 
 		ServletMocks.setUserSession(req,
-				TestUsers.createDefaultTA(train.users()));
+				Users.createDefaultTA(train.users()));
 		ServletMocks.setPostedContent(req, SIMPLE_ABSENCE_TESTDATA);
 
 		ServletOutputStream os = mock(ServletOutputStream.class);
@@ -80,11 +104,11 @@ public class MobileDataUploadTest extends AbstractDatastoreTest {
 
 		DataTrain train = getDataTrain();
 
-		User ta = TestUsers.createTA(train.users(), "ta", "123456780", "first",
+		User ta = Users.createTA(train.users(), "ta", "123456780", "first",
 				"last", 2, "major", User.Section.Staff);
-		TestUsers.createStudent(train.users(), "s", "123456719", "first",
+		Users.createStudent(train.users(), "s", "123456719", "first",
 				"last", 1, "major", User.Section.Baritone);
-		TestUsers.createStudent(train.users(), "zf", "123456782", "first",
+		Users.createStudent(train.users(), "zf", "123456782", "first",
 				"last", 1, "major", User.Section.Drumline_Bass);
 
 		train.mobileData().pushMobileData(SIMPLE_ABSENCE_TESTDATA, ta);
@@ -99,16 +123,16 @@ public class MobileDataUploadTest extends AbstractDatastoreTest {
 
 		// Arrange
 		DataTrain train = getDataTrain();
-		TestUsers.createStudent(train.users(), "s", "123456788", "first",
+		Users.createStudent(train.users(), "s", "123456788", "first",
 				"last", 1, "major", User.Section.Clarinet);
-		TestUsers.createStudent(train.users(), "zf", "123456782", "first",
+		Users.createStudent(train.users(), "zf", "123456782", "first",
 				"last", 1, "major", User.Section.TenorSax);
 
 		HttpServletRequest req = mock(HttpServletRequest.class);
 		HttpServletResponse resp = mock(HttpServletResponse.class);
 
 		ServletMocks.setUserSession(req,
-				TestUsers.createDefaultTA(train.users()));
+				Users.createDefaultTA(train.users()));
 		ServletMocks.setPostedContent(req, SIMPLE_ABSENCE_TESTDATA);
 
 		ServletOutputStream os = mock(ServletOutputStream.class);
@@ -163,14 +187,14 @@ public class MobileDataUploadTest extends AbstractDatastoreTest {
 			assertEquals(a.getEvent(), event);
 
 			if (a.getStudent().getPrimaryEmail().getEmail()
-					.equals("s@" + TestConfig.getEmailDomain())) {
+					.equals("s@" + Config.getEmailDomain())) {
 				assertFalse("There should only be one abscence for user s",
 						foundS);
 				foundS = true;
 				// TODO https://github.com/curtisullerich/attendance/issues/123
 				// assert information about inserted absence
 			} else if (a.getStudent().getPrimaryEmail().getEmail()
-					.equals("zf@" + TestConfig.getEmailDomain())) {
+					.equals("zf@" + Config.getEmailDomain())) {
 				// TODO https://github.com/curtisullerich/attendance/issues/123
 				// assert information about inserted absence
 			} else
@@ -184,13 +208,13 @@ public class MobileDataUploadTest extends AbstractDatastoreTest {
 
 		UserManager uc = train.users();
 
-		TestUsers.createStudent(uc, "s", "123456780", "test1", "tester", 1,
+		Users.createStudent(uc, "s", "123456780", "test1", "tester", 1,
 				"major", User.Section.AltoSax);
-		TestUsers.createStudent(uc, "zf", "123456781", "test1", "tester", 1,
+		Users.createStudent(uc, "zf", "123456781", "test1", "tester", 1,
 				"major", User.Section.AltoSax);
-		TestUsers.createStudent(uc, "b", "123456782", "test1", "tester", 1,
+		Users.createStudent(uc, "b", "123456782", "test1", "tester", 1,
 				"major", User.Section.AltoSax);
-		User ta = TestUsers.createTA(uc, "ta", "123456783", "test1", "tester",
+		User ta = Users.createTA(uc, "ta", "123456783", "test1", "tester",
 				1, "major", User.Section.AltoSax);
 
 		train.mobileData().pushMobileData(SIMPLE_TARDY_TESTDATA, ta);

@@ -20,7 +20,7 @@ import edu.iastate.music.marching.attendance.model.store.Event;
 import edu.iastate.music.marching.attendance.model.store.Form;
 import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.testlib.AbstractDatastoreTest;
-import edu.iastate.music.marching.attendance.testlib.TestUsers;
+import edu.iastate.music.marching.attendance.testlib.Users;
 import edu.iastate.music.marching.attendance.util.Util;
 
 public class FormClassConflictSimpleTest extends AbstractDatastoreTest {
@@ -1491,7 +1491,7 @@ public class FormClassConflictSimpleTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		Form form = fc.createClassConflictForm(student, "department", "course",
 				"section", "building", formDateInterval, formStartTime,

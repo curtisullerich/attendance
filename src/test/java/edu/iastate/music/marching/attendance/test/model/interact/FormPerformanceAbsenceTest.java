@@ -21,7 +21,7 @@ import edu.iastate.music.marching.attendance.model.store.Form;
 import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.testlib.AbstractDatastoreTest;
 import edu.iastate.music.marching.attendance.testlib.Dates;
-import edu.iastate.music.marching.attendance.testlib.TestUsers;
+import edu.iastate.music.marching.attendance.testlib.Users;
 
 @SuppressWarnings("deprecation")
 public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
@@ -52,7 +52,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -82,7 +82,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -115,7 +115,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -148,7 +148,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -182,7 +182,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -214,7 +214,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -246,7 +246,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -274,7 +274,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -305,7 +305,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -338,7 +338,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -370,7 +370,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -401,7 +401,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -433,7 +433,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -470,7 +470,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -503,7 +503,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -536,7 +536,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -564,7 +564,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -593,7 +593,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -622,8 +622,8 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
-		User student2 = TestUsers.createStudent(uc, "student2", "123456781",
+		User student = Users.createDefaultStudent(uc);
+		User student2 = Users.createStudent(uc, "student2", "123456781",
 				"John", "Cox", 2, "major", User.Section.AltoSax);
 
 		LocalDate date = Dates.getDefaultLocalDate();
@@ -654,8 +654,8 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
-		User student2 = TestUsers.createStudent(uc, "student2", "123456781",
+		User student = Users.createDefaultStudent(uc);
+		User student2 = Users.createStudent(uc, "student2", "123456781",
 				"John", "Cox", 2, "major", User.Section.AltoSax);
 
 		LocalDate date = Dates.getDefaultLocalDate();
@@ -689,8 +689,8 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
-		User student2 = TestUsers.createStudent(uc, "student2", "123456781",
+		User student = Users.createDefaultStudent(uc);
+		User student2 = Users.createStudent(uc, "student2", "123456781",
 				"John", "Cox", 2, "major", User.Section.AltoSax);
 
 		LocalDate date = Dates.getDefaultLocalDate();
@@ -723,7 +723,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -753,7 +753,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -786,7 +786,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -820,7 +820,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -855,7 +855,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -888,7 +888,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -921,7 +921,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -950,7 +950,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -981,7 +981,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -1007,7 +1007,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -1041,7 +1041,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -1073,7 +1073,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -1108,7 +1108,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -1144,7 +1144,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -1181,7 +1181,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -1216,7 +1216,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -1251,7 +1251,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -1282,7 +1282,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -1315,7 +1315,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -1345,7 +1345,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -1377,7 +1377,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -1412,7 +1412,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -1447,7 +1447,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -1483,7 +1483,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -1518,7 +1518,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -1553,7 +1553,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -1584,7 +1584,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -1619,7 +1619,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -1649,7 +1649,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = Dates.getDefaultLocalDate();
 		Interval eventInterval = Dates.getDefaultEventInterval(date);
@@ -1679,7 +1679,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		EventManager ec = train.events();
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = new LocalDate(2012, 9, 21);
 		LocalTime end = new LocalTime(7, 0, 0);
@@ -1712,7 +1712,7 @@ public class FormPerformanceAbsenceTest extends AbstractDatastoreTest {
 		EventManager ec = train.events();
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 
 		LocalDate date = new LocalDate(2012, 9, 21);
 		LocalTime end = new LocalTime(7, 0, 0);

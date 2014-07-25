@@ -1,19 +1,20 @@
 App.Views.Main = Backbone.View.extend({
-	// Attach to existing elemnt
-	el: "#app_view",
+    el: "#app_view",
 
-	initialize:function () {
+    initialize:function () {
         this.model.bind("reset", this.render, this);
+
+        //TODO App..fetch();
     },
 
-	template: _.template($("#template-mainview").html()),
+    template: _.template($("#template-mainview").html()),
 
 	render: function(eventName) {
 		$(this.el).html(this.template(this.model.toJSON()));
 		return this;
 	},
 
-	events: {
+    events: {
         "click #upload": "upload",
         "click #update": "update"
     },
@@ -27,3 +28,4 @@ App.Views.Main = Backbone.View.extend({
     }
 
 });
+

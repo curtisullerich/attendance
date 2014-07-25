@@ -20,7 +20,7 @@ import edu.iastate.music.marching.attendance.model.store.Event;
 import edu.iastate.music.marching.attendance.model.store.Form;
 import edu.iastate.music.marching.attendance.model.store.User;
 import edu.iastate.music.marching.attendance.testlib.AbstractDatastoreTest;
-import edu.iastate.music.marching.attendance.testlib.TestUsers;
+import edu.iastate.music.marching.attendance.testlib.Users;
 import edu.iastate.music.marching.attendance.util.Util;
 
 public class FormClassConflictTest extends AbstractDatastoreTest {
@@ -51,7 +51,7 @@ public class FormClassConflictTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 		DateTimeZone zone = train.appData().get().getTimeZone();
 
 		Interval interval = Util.datesToFullDaysInterval(intervalStartDate,
@@ -102,7 +102,7 @@ public class FormClassConflictTest extends AbstractDatastoreTest {
 		AbsenceManager ac = train.absences();
 		FormManager fc = train.forms();
 
-		User student = TestUsers.createDefaultStudent(uc);
+		User student = Users.createDefaultStudent(uc);
 		DateTimeZone zone = train.appData().get().getTimeZone();
 
 		LocalDate startDate = new LocalDate(2012, 8, 20);
