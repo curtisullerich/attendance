@@ -90,6 +90,12 @@ handlers:
     path: "field/data"
   name: mobileapp_data
 
+- url: /m/data/*
+  servlet: edu.iastate.music.marching.attendance.servlets.MobileAppDataServletV2
+  init_params:
+    path: "m/data"
+  name: mobileappv2_data
+
 - url: /student/*
   servlet: edu.iastate.music.marching.attendance.servlets.StudentServlet
   init_params:

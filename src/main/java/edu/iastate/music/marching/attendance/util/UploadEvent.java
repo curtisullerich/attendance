@@ -8,6 +8,8 @@ import edu.iastate.music.marching.attendance.model.store.Event;
 
 public class UploadEvent {
 
+	// TODO(curtis) use annotations to define shorter serialized names. same for
+	// UploadAbsence.
 	public List<UploadAbsence> absences;
 	public Event.Type type;
 	public DateTime startDateTime;

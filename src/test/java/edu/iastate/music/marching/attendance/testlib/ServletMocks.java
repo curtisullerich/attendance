@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import edu.iastate.music.marching.attendance.model.store.User;
-import edu.iastate.music.marching.attendance.servlets.MobileAppDataServlet.Page;
 
 public class ServletMocks {
 
@@ -44,16 +43,18 @@ public class ServletMocks {
 		s.service(req, resp);
 	}
 
-	public static HttpServletRequest setUserSession(HttpServletRequest req, User u) {
+	public static HttpServletRequest setUserSession(HttpServletRequest req,
+			User u) {
 		HttpSession session = mock(HttpSession.class);
 		when(session.getAttribute("authenticated_user")).thenReturn(u);
-		
+
 		when(req.getSession()).thenReturn(session);
-		
+
 		return req;
 	}
 
-	public static HttpServletRequest setPage(HttpServletRequest req, Enum<?> page) {
+	public static HttpServletRequest setPage(HttpServletRequest req,
+			Enum<?> page) {
 		when(req.getPathInfo()).thenReturn("somepath/" + page);
 		return req;
 	}

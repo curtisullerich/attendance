@@ -35,10 +35,10 @@ import edu.iastate.music.marching.attendance.model.interact.UserManager;
 import edu.iastate.music.marching.attendance.model.store.Absence;
 import edu.iastate.music.marching.attendance.model.store.Event;
 import edu.iastate.music.marching.attendance.model.store.User;
-import edu.iastate.music.marching.attendance.servlets.MobileAppDataServlet;
+import edu.iastate.music.marching.attendance.servlets.MobileAppDataServletV2;
 import edu.iastate.music.marching.attendance.testlib.AbstractDatastoreTest;
-import edu.iastate.music.marching.attendance.testlib.ServletMocks;
 import edu.iastate.music.marching.attendance.testlib.Config;
+import edu.iastate.music.marching.attendance.testlib.ServletMocks;
 import edu.iastate.music.marching.attendance.testlib.Users;
 import edu.iastate.music.marching.attendance.util.DateTimeConverter;
 import edu.iastate.music.marching.attendance.util.UploadAbsence;
@@ -155,15 +155,14 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 		HttpServletRequest req = mock(HttpServletRequest.class);
 		HttpServletResponse resp = mock(HttpServletResponse.class);
 
-		ServletMocks.setPage(req, MobileAppDataServlet.Page.indexv2);
-		ServletMocks.setUserSession(req,
-				Users.createDefaultTA(train.users()));
+		ServletMocks.setPage(req, MobileAppDataServletV2.Page.index);
+		ServletMocks.setUserSession(req, Users.createDefaultTA(train.users()));
 		ServletMocks.setPostedContent(req, SIMPLE_ABSENCE_TESTDATA_V2);
 
 		ServletOutputStream os = mock(ServletOutputStream.class);
 		when(resp.getOutputStream()).thenReturn(os);
 
-		ServletMocks.doPost(MobileAppDataServlet.class, req, resp);
+		ServletMocks.doPost(MobileAppDataServletV2.class, req, resp);
 
 		verify(os).print(
 				"{\"error\":\"exception\",\"message\":\""
@@ -211,15 +210,14 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 		HttpServletRequest req = mock(HttpServletRequest.class);
 		HttpServletResponse resp = mock(HttpServletResponse.class);
 
-		ServletMocks.setPage(req, MobileAppDataServlet.Page.indexv2);
-		ServletMocks.setUserSession(req,
-				Users.createDefaultTA(train.users()));
+		ServletMocks.setPage(req, MobileAppDataServletV2.Page.index);
+		ServletMocks.setUserSession(req, Users.createDefaultTA(train.users()));
 		ServletMocks.setPostedContent(req, SIMPLE_ABSENCE_TESTDATA_V2);
 		ServletOutputStream os = mock(ServletOutputStream.class);
 		when(resp.getOutputStream()).thenReturn(os);
 
 		// Act
-		ServletMocks.doPost(MobileAppDataServlet.class, req, resp);
+		ServletMocks.doPost(MobileAppDataServletV2.class, req, resp);
 
 		// Assert
 		verify(os)
@@ -252,7 +250,7 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 		HttpServletRequest req = mock(HttpServletRequest.class);
 		HttpServletResponse resp = mock(HttpServletResponse.class);
 
-		ServletMocks.setPage(req, MobileAppDataServlet.Page.indexv2);
+		ServletMocks.setPage(req, MobileAppDataServletV2.Page.index);
 		if (setUserSession) {
 			ServletMocks.setUserSession(req,
 					Users.createDefaultStudent(train.users()));
@@ -261,7 +259,7 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 		ServletOutputStream os = mock(ServletOutputStream.class);
 		when(resp.getOutputStream()).thenReturn(os);
 
-		ServletMocks.doPost(MobileAppDataServlet.class, req, resp);
+		ServletMocks.doPost(MobileAppDataServletV2.class, req, resp);
 		verify(os).print("{\"error\":\"login\"}");
 	}
 
@@ -327,8 +325,8 @@ public class MobileDataUploadV2Test extends AbstractDatastoreTest {
 
 		UserManager uc = train.users();
 
-		Users.createStudent(uc, "ehayles", "123456780", "test1", "tester",
-				1, "major", User.Section.AltoSax);
+		Users.createStudent(uc, "ehayles", "123456780", "test1", "tester", 1,
+				"major", User.Section.AltoSax);
 		Users.createStudent(uc, "alusk", "123456781", "test1", "tester", 1,
 				"major", User.Section.AltoSax);
 		Users.createStudent(uc, "jbade", "123456782", "test1", "tester", 1,

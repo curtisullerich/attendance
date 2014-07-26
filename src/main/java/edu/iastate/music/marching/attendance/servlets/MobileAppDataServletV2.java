@@ -1,6 +1,9 @@
 package edu.iastate.music.marching.attendance.servlets;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -12,13 +15,15 @@ import edu.iastate.music.marching.attendance.model.interact.DataTrain;
 import edu.iastate.music.marching.attendance.model.interact.MobileDataManager;
 import edu.iastate.music.marching.attendance.model.store.User;
 
-public class MobileAppDataServlet extends AbstractBaseServlet {
+public class MobileAppDataServletV2 extends AbstractBaseServlet {
 
-	private class ClassListResult {
+	private static final long serialVersionUID = -8060346926573522097L;
+
+	private class ClassListResultV2 {
 		@SuppressWarnings("unused")
 		public ResultErrorType error;
 		@SuppressWarnings("unused")
-		public String data;
+		public List<MobileDataManager.ClassListV2User> data;
 	}
 
 	public enum Page {
@@ -29,15 +34,6 @@ public class MobileAppDataServlet extends AbstractBaseServlet {
 		success, login, exception, empty
 	}
 
-	private class UploadResult {
-		@SuppressWarnings("unused")
-		public ResultErrorType error;
-		@SuppressWarnings("unused")
-		public String message;
-	}
-
-	private static final long serialVersionUID = -3138258973922548889L;
-
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -47,16 +43,16 @@ public class MobileAppDataServlet extends AbstractBaseServlet {
 		else
 			switch (page) {
 			case index:
-				getIndex(req, resp);
+				getIndexV2(req, resp);
 				break;
 			default:
 				ErrorServlet.showError(req, resp, 404);
 			}
 	}
 
-	private void getIndex(HttpServletRequest req, HttpServletResponse resp)
+	private void getIndexV2(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
-		ClassListResult result = new ClassListResult();
+		ClassListResultV2 result = new ClassListResultV2();
 
 		// Check if correct user type is logged in
 		if (!isLoggedIn(req, resp, User.Type.TA, User.Type.Director)) {
@@ -66,7 +62,7 @@ public class MobileAppDataServlet extends AbstractBaseServlet {
 
 			MobileDataManager mdc = train.mobileData();
 
-			result.data = mdc.getClassList();
+			result.data = mdc.getClassListV2();
 			result.error = ResultErrorType.success;
 		}
 
@@ -83,14 +79,21 @@ public class MobileAppDataServlet extends AbstractBaseServlet {
 		else
 			switch (page) {
 			case index:
-				postIndex(req, resp);
+				postIndexV2(req, resp);
 				break;
 			default:
 				ErrorServlet.showError(req, resp, 404);
 			}
 	}
 
-	private void postIndex(HttpServletRequest req, HttpServletResponse resp)
+	private class UploadResult {
+		@SuppressWarnings("unused")
+		public ResultErrorType error;
+		@SuppressWarnings("unused")
+		public String message;
+	}
+
+	private void postIndexV2(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 
 		UploadResult result = new UploadResult();
@@ -99,41 +102,26 @@ public class MobileAppDataServlet extends AbstractBaseServlet {
 		if (!isLoggedIn(req, resp, User.Type.TA, User.Type.Director)) {
 			result.error = ResultErrorType.login;
 		} else {
-
 			DataTrain train = DataTrain.depart();
-
 			MobileDataManager mdc = train.mobileData();
+			Reader r = new InputStreamReader(req.getInputStream());
 
-			// data here is the posted content delimited by "&newline&". Those
-			// values in turn are
-			// delimited by "&split&"
-			String data;
+			// Optimistically set a success type
+			result.error = ResultErrorType.success;
+
+			// TODO set result.error = ResultErrorType.empty if empty,
+
 			try {
-				data = new java.util.Scanner(req.getInputStream())
-						.useDelimiter("\\A").next();
-			} catch (java.util.NoSuchElementException e) {
-				data = "";
+				result.message = mdc.pushMobileDataV2(r, train.auth()
+						.getCurrentUser(req.getSession()));
+				// TODO these exceptions might be different types for gson
+			} catch (IllegalArgumentException e) {
+				result.error = ResultErrorType.exception;
+				result.message = e.getMessage();
+			} catch (IllegalStateException e) {
+				result.error = ResultErrorType.exception;
+				result.message = e.getMessage();
 			}
-
-			if (data.trim().equals("")) {
-				// Empty data uploaded
-				result.error = ResultErrorType.empty;
-			} else {
-				// Optimistically set a success type
-				result.error = ResultErrorType.success;
-
-				try {
-					result.message = mdc.pushMobileData(data, train.auth()
-							.getCurrentUser(req.getSession()));
-				} catch (IllegalArgumentException e) {
-					result.error = ResultErrorType.exception;
-					result.message = e.getMessage();
-				} catch (IllegalStateException e) {
-					result.error = ResultErrorType.exception;
-					result.message = e.getMessage();
-				}
-			}
-
 		}
 
 		// Print out JSON of result
