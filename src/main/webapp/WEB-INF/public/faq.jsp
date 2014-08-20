@@ -11,7 +11,7 @@
         <p>
         <h2>Answers to frequently asked questions about the system.</h2>
         <b>What should I do if I have a specific question about my attendance or grade?</b><br/>
-        If it's a question about an error in the system, email the developers at <script>document.write('<a href="mailto:'+ ["mbattendance", "iastate.edu"].join('@') +'">'+ ["mbattendance", "iastate.edu"].join('@') +'</a>')</script><noscript>mbattendance (at) iastate (dot) edu</noscript>. If it's a question about something you've submitted or your grade, email the attendance masters (Dr. Richards and Kelsey) at <script>document.write('<a href="mailto:'+ ["cmbattendance", "gmail.com"].join('@') +'">'+ ["cmbattendance", "gmail.com"].join('@') +'</a>')</script><noscript>cmbattendance (at) gmail (dot) com</noscript>.
+        If it's a question about an error in the system, email the developers at <script>document.write('<a href="mailto:'+ ["mbattendance", "iastate.edu"].join('@') +'">'+ ["mbattendance", "iastate.edu"].join('@') +'</a>')</script><noscript>mbattendance (at) iastate (dot) edu</noscript>. If it's a question about something you've submitted or your grade, email the attendance masters (Dr. Carichner and Rachel) at <script>document.write('<a href="mailto:'+ ["cmbattendance", "gmail.com"].join('@') +'">'+ ["cmbattendance", "gmail.com"].join('@') +'</a>')</script><noscript>cmbattendance (at) gmail (dot) com</noscript>.
         <br/>
         <br/>
         <b>What exactly is the attendance policy as it relates to my grade?</b><br/>
@@ -25,7 +25,7 @@
         There will be no plus or minus grades.
         <br/>
         <b>What's this business about missing more than 30 minutes of rehearsal or a game?</b><br/>
-        There are a couple of different policies involved. If you miss more than 30 minutes of any rehearsal without a class conflict form to approve your absence, then your grade is affected as though you missed the entire rehearsal. That means that if you show up 15 minutes late and then sign out 15 minutes early, you will lose 80 attendanace minutes (or equal to the total length of that rehearsal, more precisely). If you show up more than 30 minutes late to a GAMEDAY rehearsal, you outright fail band. Talk to Dr. Richards for any clarification about this policy.
+        There are a couple of different policies involved. If you miss more than 30 minutes of any rehearsal without a class conflict form to approve your absence, then your grade is affected as though you missed the entire rehearsal. That means that if you show up 15 minutes late and then sign out 15 minutes early, you will lose 80 attendanace minutes (or equal to the total length of that rehearsal, more precisely). If you show up more than 30 minutes late to a GAMEDAY rehearsal, you outright fail band. Talk to Dr. Carichner for any clarification about this policy.
         <br/>
         <br/>
         <b>I missed more than 160 minutes of band! How can I fix my grade?</b><br/>
@@ -33,15 +33,15 @@
         <br/>
         <br/>
         <b>I missed the deadline for submitting a form! What can I do?</b><br/>
-        If you submit a form after its deadline, then the system will allow the form to submit, but automatically mark it as late. Dr. Richards will see this and make the decision as to whether he will approve the form or not. Make sure you explain yourself thoroughly in these cases. It's probably best to talk to him in person.
+        If you submit a form after its deadline, then the system will allow the form to submit, but automatically mark it as late. Dr. Carichner will see this and make the decision as to whether he will approve the form or not. Make sure you explain yourself thoroughly in these cases. It's probably best to talk to him in person.
         <br/>
         <br/>
         <b>Why is my form not approved?</b><br/>
-        Dr. Richards must approve all forms. Email <script>document.write('<a href="mailto:'+ ["cmbattendance", "gmail.com"].join('@') +'">'+ ["cmbattendance", "gmail.com"].join('@') +'</a>')</script><noscript>cmbattendance (at) gmail (dot) com</noscript> to to ask why this has not happened if you have concerns.
+        Dr. Carichner must approve all forms. Email <script>document.write('<a href="mailto:'+ ["cmbattendance", "gmail.com"].join('@') +'">'+ ["cmbattendance", "gmail.com"].join('@') +'</a>')</script><noscript>cmbattendance (at) gmail (dot) com</noscript> to to ask why this has not happened if you have concerns.
         <br/>
         <br/>
         <b>Why is my tardy, absence, or early checkout not approved?</b><br/>
-        Rehearsal absences will generally only be approved through a class conflict form. If the form is pending, then there is not a correct approved form in the system that can approve this absence. Forms must be approved by Dr. Richards before they will auto-approve any absence. If you did submit a form and the form has been approved, then please check that all the information the form is correct. If it is not, you must resubmit the form. If everything seems to be correct, email Curtis for help. For absences not approved by a class conflict form, you must submit a time worked form to earn back the minutes you missed.
+        Rehearsal absences will generally only be approved through a class conflict form. If the form is pending, then there is not a correct approved form in the system that can approve this absence. Forms must be approved by Dr. Carichner before they will auto-approve any absence. If you did submit a form and the form has been approved, then please check that all the information the form is correct. If it is not, you must resubmit the form. If everything seems to be correct, email Curtis for help. For absences not approved by a class conflict form, you must submit a time worked form to earn back the minutes you missed.
         <br/>
         <br/>
         <b>Why is my tardy, absence, or early checkout not approved? I submitted a performance absence form!</b><br/>
