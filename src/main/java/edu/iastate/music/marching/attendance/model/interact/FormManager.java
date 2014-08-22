@@ -12,7 +12,7 @@ import com.google.appengine.api.datastore.Query.FilterOperator;
 import com.google.code.twig.FindCommand.RootFindCommand;
 import com.google.code.twig.ObjectDatastore;
 
-import edu.iastate.music.marching.attendance.App.WeekDay;
+import edu.iastate.music.marching.attendance.WeekDay;
 import edu.iastate.music.marching.attendance.model.store.Absence;
 import edu.iastate.music.marching.attendance.model.store.AppData;
 import edu.iastate.music.marching.attendance.model.store.Form;

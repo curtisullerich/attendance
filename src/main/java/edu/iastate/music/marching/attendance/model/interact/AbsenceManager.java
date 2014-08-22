@@ -269,9 +269,7 @@ public class AbsenceManager extends AbstractManager {
 			absence.setInterval(e.getInterval(zone));
 			// associated with this event for this student
 		} else {
-			LOG.log(Level.SEVERE,
-					"Orphaned absence being created, bad event passed in, its id was "
-							+ ((e == null) ? "null-event" : e.getId()));
+			LOG.log(Level.SEVERE, "Orphaned absence being created, bad event passed in, its id was null");
 		}
 
 		return storeAbsence(absence, student);

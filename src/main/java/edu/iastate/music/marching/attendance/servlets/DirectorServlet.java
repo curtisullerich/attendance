@@ -594,8 +594,7 @@ public class DirectorServlet extends AbstractBaseServlet {
 					.getParameter("MinutesAvailable"));
 			user.setMinutesAvailable(minutesAvailable);
 		} catch (NumberFormatException nfe) {
-			LOG.severe(nfe.getStackTrace().toString());
-			LOG.severe(nfe.getMessage());
+			LOG.throwing("DirectorServlet", "postStudentInfo", nfe);
 			errors.add("Unable to save minutes available.");
 		}
 
@@ -1021,7 +1020,6 @@ public class DirectorServlet extends AbstractBaseServlet {
 
 					checkedAbsence = absence;
 					page.setAttribute("new", true);
-				} else {
 				}
 			} else {
 				absenceid = Long.parseLong(sabsenceid);

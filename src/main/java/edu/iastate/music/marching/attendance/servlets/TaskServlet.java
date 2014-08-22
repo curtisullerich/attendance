@@ -2,6 +2,7 @@ package edu.iastate.music.marching.attendance.servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -47,44 +48,57 @@ public class TaskServlet extends AbstractBaseServlet {
 			throws IOException {
 		DataTrain train = DataTrain.depart();
 		ArrayList<String> errors = new ArrayList<String>();
+		
+		errors.addAll(refreshAbsences(train));
+		errors.addAll(refreshForms(train));
+		errors.addAll(refreshUsers(train));
+
+		LOG.info("Refresh completed with " + errors.size() + " errors");
+	}
+
+	private Collection<String> refreshAbsences(DataTrain train) {
+		ArrayList<String> errors = new ArrayList<String>();
 		AbsenceManager ac = train.absences();
-		try {
-			for (Absence a : ac.getAll()) {
+		
+		for (Absence a : ac.getAll()) {
+			try {
 				ac.updateAbsence(a);
+			} catch (Throwable t) {
+				LOG.throwing("TaskServlet", "refreshAbsences", t);
 			}
-		} catch (Throwable tehThrowable) {
-			errors.add(tehThrowable.getMessage());
-			LOG.severe(tehThrowable.getMessage());
-			LOG.severe(tehThrowable.getStackTrace().toString());
 		}
-		// } else if (req.getParameter("RefreshForms") != null) {
-		// String succex = null;
+		
+		return errors;
+	}
+	
+	private Collection<String> refreshForms(DataTrain train) {
+		ArrayList<String> errors = new ArrayList<String>();
 		FormManager fc = train.forms();
-		try {
-			for (Form f : fc.getAll()) {
+
+		for (Form f : fc.getAll()) {
+			try {
 				fc.update(f);
+			} catch (Throwable t) {
+				LOG.throwing("TaskServlet", "refreshForms", t);
 			}
-		} catch (Throwable tehThrowable) {
-			errors.add(tehThrowable.getMessage());
-			LOG.severe(tehThrowable.getMessage());
-			LOG.severe(tehThrowable.getStackTrace().toString());
 		}
-		// } else if (req.getParameter("RefreshUsers") != null) {
-		// String succex = null;
+		
+		return errors;
+	}
+	
+	private Collection<String> refreshUsers(DataTrain train) {
+		ArrayList<String> errors = new ArrayList<String>();
 		UserManager uc = train.users();
-		try {
-			for (User u : uc.getAll()) {
+		
+		for (User u : uc.getAll()) {	
+			try {
 				uc.update(u);
+			} catch (Throwable t) {
+				LOG.throwing("TaskServlet", "refreshUsers", t);
 			}
-		} catch (Throwable tehThrowable) {
-			errors.add(tehThrowable.getMessage());
-			LOG.severe(tehThrowable.getMessage());
-			LOG.severe(tehThrowable.getStackTrace().toString());
 		}
-		// }
-		if (errors.isEmpty()) {
-			LOG.info("Successful refresh completed.");
-		}
+		
+		return errors;
 	}
 
 	private void doDailyExport(HttpServletRequest req, HttpServletResponse resp)

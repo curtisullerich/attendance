@@ -13,7 +13,7 @@ import com.google.code.twig.annotation.Entity;
 import com.google.code.twig.annotation.Id;
 import com.google.code.twig.annotation.Index;
 
-import edu.iastate.music.marching.attendance.App.WeekDay;
+import edu.iastate.music.marching.attendance.WeekDay;
 
 @Entity(kind = "Form", allocateIdsBy = 0)
 public class Form {
@@ -223,7 +223,7 @@ public class Form {
 	public void setApplied(boolean applied) {
 		if (this.applied) {
 			throw new IllegalArgumentException(
-					"Once a Time Worked Form has been applied, it can never change again.");
+					"Once a Time Worked Form has been applied, it can never be applied again.");
 		}
 		this.applied = applied;
 	}
