@@ -1,11 +1,10 @@
 CACHE MANIFEST
 
 # Attendance Appcache
-# 8-18-14 v3.0.2
+# Last Updated: 25.8.2014
 
 NETWORK:
-/field/data/classlist
-/field/data/upload
+/field/data
 
 CACHE:
 index.html
