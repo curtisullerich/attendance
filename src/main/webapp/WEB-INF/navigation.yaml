@@ -11,7 +11,7 @@ links:
 
         - href: /student/info
           text: Edit Info
-          
+
         - href: /public/faq
           text: FAQ
 
@@ -56,7 +56,7 @@ links:
       links:
         - href: /admin/register
           text: Add a director
-          
+
         - href: /admin/student_register
           text: Add a student
 
