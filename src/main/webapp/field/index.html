@@ -109,7 +109,7 @@
                 $("#classList").text("Updating...");
                 $("#update").hide(1000);
                 
-                $.get("/field/data/classlist", function(result, errorString) {
+                $.get("/field/data", function(result, errorString) {
                 	
                 	if(errorString != "success")
              	    {
@@ -237,7 +237,7 @@
 				
 				// Post the built string of information to the server
 				// Expects to get a result json string back from server
-				$.post("/field/data/upload", str, function(result, errorString){
+				$.post("/field/data", str, function(result, errorString){
              	    if(errorString != "success")
              	    {
              	    	// Data did not even get to the server
