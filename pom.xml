@@ -11,9 +11,8 @@
 
 	<properties>
 		<appengine.app.version>1</appengine.app.version>
+		<appengine.target.version>1.9.9</appengine.target.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<!-- GAE properties -->
-		<gae.version>1.9.6</gae.version>
 	</properties>
 
 	<prerequisites>
@@ -25,22 +24,9 @@
 			<id>twig</id>
 			<url>http://mvn.twig-persist.googlecode.com/hg</url>
 		</repository>
-		<repository>
-			<id>lib</id>
-			<name>lib</name>
-			<releases>
-				<enabled>true</enabled>
-				<checksumPolicy>ignore</checksumPolicy>
-			</releases>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-			<url>file://${project.basedir}/lib</url>
-		</repository>
 	</repositories>
 
 	<dependencies>
-
 		<!-- JCACHE API -->
 		<dependency>
 			<groupId>net.sf.jsr107cache</groupId>
@@ -122,12 +108,17 @@
 		<dependency>
 			<groupId>com.google.appengine</groupId>
 			<artifactId>appengine-api-1.0-sdk</artifactId>
-			<version>${gae.version}</version>
+			<version>${appengine.target.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.appengine</groupId>
 			<artifactId>appengine-api-labs</artifactId>
-			<version>${gae.version}</version>
+			<version>${appengine.target.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.appengine</groupId>
+			<artifactId>appengine-endpoints</artifactId>
+			<version>${appengine.target.version}</version>
 		</dependency>
 
 		<!-- twig-persist: datastore abstraction layer -->
@@ -144,7 +135,6 @@
 		</dependency>
 
 		<!-- GIN and Guice for IoC / DI -->
-
 		<dependency>
 			<groupId>com.google.inject</groupId>
 			<artifactId>guice</artifactId>
@@ -168,13 +158,13 @@
 		<dependency>
 			<groupId>com.google.appengine</groupId>
 			<artifactId>appengine-testing</artifactId>
-			<version>${gae.version}</version>
+			<version>${appengine.target.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.appengine</groupId>
 			<artifactId>appengine-api-stubs</artifactId>
-			<version>${gae.version}</version>
+			<version>${appengine.target.version}</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -213,32 +203,23 @@
 				<version>2.4</version>
 				<configuration>
 					<webXml>${project.build.directory}/generated-sources/appengine-endpoints/WEB-INF/web.xml</webXml>
-					<webResources>
-						<resource>
-							<!-- this is relative to the pom.xml directory -->
-							<directory>${project.build.directory}/generated-sources/appengine-endpoints</directory>
-							<!-- the list has a default value of ** -->
-							<includes>
-								<include>WEB-INF/*.discovery</include>
-								<include>WEB-INF/*.api</include>
-							</includes>
-						</resource>
-					</webResources>
 				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>com.google.appengine</groupId>
 				<artifactId>appengine-maven-plugin</artifactId>
-				<version>${gae.version}</version>
+				<version>${appengine.target.version}</version>
 				<configuration>
 					<enableJarClasses>false</enableJarClasses>
 					<!-- Comment in the below snippet to bind to all IPs instead of just 
 						localhost -->
-					<!-- address>0.0.0.0</address> <port>8080</port -->
-					<!-- Comment in the below snippet to enable local debugging with a remove 
+					<!-- address>0.0.0.0</address> -->
+					<!-- Enable local debugging with a remote
 						debugger like those included with Eclipse or IntelliJ -->
-					<!-- jvmFlags> <jvmFlag>-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n</jvmFlag> 
-						</jvmFlags -->
+					<jvmFlags>
+						<jvmFlag>-Xdebug=true</jvmFlag>
+						<jvmFlag>-agentlib:jdwp=transport=dt_socket,address=8000,server=y,suspend=n</jvmFlag>
+					</jvmFlags>
 					<port>8008</port>
 					<jvmFlags>
 						<jvmFlag>-Ddatastore.backing_store=${project.basedir}/local_db.bin</jvmFlag>
